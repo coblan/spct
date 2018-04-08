@@ -1,0 +1,220 @@
+{% extends "director/index.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+
+<script type="text/javascript">
+
+    tabs={{ tabs | jsonify | default:'[]' }}
+    crt_tab = '{{ crt_tab | default:'null' }}'
+    crt_tab = crt_tab || tabs[0].name
+
+    page_name="group"
+    heads.push({
+        name:'permit',
+        label:'包含权限',
+        type:'com-permit-show'
+    })
+
+    ex.each(heads,function(head){
+        if(head.name=='users'){
+            head.type='com-user-show'
+        }
+    })
+    heads = ex.sort_by_names(heads,['name','permit','users'])
+//    heads.push({
+//        name:'desp',
+//        label:'描述',
+//    })
+
+//    ex.each(rows,function(row){
+//        row.name=row.name.slice(5)
+//    })
+
+    table_logic={
+        el:'#there',
+        data:{
+            tabs:tabs,
+            crt_tab:crt_tab,
+            import_file:''
+        },
+        mixins:[table_fun],
+        watch:{
+            'row_sort.sort_str':function (v) {
+                this.search_args._sort=v
+                this.search()
+            },
+            import_file:function(v){
+                if(v){
+                    var url='/_ajax/director?_op=upload_group'
+                    fl.upload(v[0],url,function(){
+                        alert('import success')
+                    })
+                }
+            },
+        },
+
+        methods:{
+            item_link:function(name){
+                if(name!=this.crt_tab){
+                    return ex.appendSearch({_tab:name})
+                }else{
+                    return 'javascript:;'
+                }
+            },
+            export_data:function(){
+                var items_str=""
+                ex.each(this.selected,function(pk){
+                    items_str+= pk+'-'
+                })
+                var op_str='download_group:items:'+items_str
+                location='/_download/director'+'?_op='+op_str
+            },
+            import_data:function(){
+                $('#table_import').click()
+            },
+
+        }
+
+    }
+    $(function () {
+        table=new Vue(table_logic)
+    })
+
+</script>
+
+
+<div id='there'>
+
+    <!--<div v-if="can_log" style='float: right;padding: 5px 20px;'>-->
+        <!--<a :href="log_url()">History</a>-->
+    <!--</div>-->
+    <path-nav :menu='menu'>
+        <li><span>编辑</span></li>
+    </path-nav>
+
+    <div class="flex">
+        <ul class="nav nav-tabs tabs flex-grow">
+            <li v-for="tab in tabs" :class="{'active':crt_tab==tab.name}"><a :href="item_link(tab.name)+tab.suffix" v-text="tab.label" ></a></li>
+        </ul>
+
+        <com-table-btn v-if="!search_args._pop" :add_new="add_new" :del_item="del_item" :table_bus="this">
+            <button type="button" class="btn btn-default btn-sm" @click="export_data()">下载</button>
+            <button type="button" class="btn btn-default btn-sm" @click="import_data()">导入</button>
+        </com-table-btn>
+
+    </div>
+
+    <com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"
+               :row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>
+
+    <paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>
+
+    <file-input id="table_import" style="display: none;" v-model="import_file" ></file-input>
+
+</div>
+
+<style type="text/css">
+    .tabs{
+        align-items: center;
+    }
+    .tabs li:first-child{
+        margin-left: 15px;
+    }
+    .tabs li{
+        display: inline-block;
+        margin-left:5px;
+        vertical-align: bottom;
+    }
+
+    .nav.tabs>li>a{
+        padding: 8px 18px 5px 18px;
+        background-color: #f6f7f8;
+        border: 1px solid #dddddd;
+        border-bottom: none;
+        position: relative;
+        margin-bottom: 1px;
+        font-weight: 400;
+    }
+    .nav li>a:hover{
+        text-underline: blue;
+        text-decoration: underline;
+    }
+
+    .nav li.active>a:after{
+        content: ' ';
+        position: absolute;
+        width: 100%;
+        height: 4px;
+        bottom: -4px;
+        left: 0;
+        background-color: #eee;
+    }
+    .nav li.active a{
+        text-decoration: none;
+        background-color: #eeeeee;
+        font-weight: 500;
+    }
+    .nav li.active a:hover{
+        border-bottom: none;
+        text-decoration: none;
+        color: #a2a2a2;
+        font-weight: 500;
+        background-color: #eeeeee;
+    }
+</style>
+
+<style>
+    .td_permit{
+        width: 30%;
+    }
+    .td_users{
+        width: 40%;
+    }
+</style>
+<template id="com-permit-show">
+    <div> <a v-for='permit in row.permit' v-text='permit.name' style="margin-left: 2em;"
+             :title="permit.desp" :href="permit_edit_link(permit)"></a></div>
+</template>
+
+<script>
+    Vue.component('com-permit-show',{
+        props:['row','name'],
+        template:"#com-permit-show",
+        methods:{
+//            rm_prefix:function(str){
+//                return str.slice(5)
+//            }
+            permit_edit_link:function(permit){
+                return engine_url+'/'+'permit.edit?pk='+permit.pk
+            }
+        }
+    })
+</script>
+
+<template id="com-user-show">
+    <div> <a v-for='user in row.users' v-text='user.first_name?user.first_name:user.username' style="margin-left: 2em;"
+             :href="user_link(user)"></a></div>
+</template>
+<script>
+    Vue.component('com-user-show',{
+        props:['row','name'],
+        template:"#com-user-show",
+        methods:{
+            user_link:function(user){
+                return engine_url+ '/user.edit?pk='+user.pk
+            }
+        }
+    })
+
+</script>
+
+
+
+{% endblock %}
+
+
+
+
+

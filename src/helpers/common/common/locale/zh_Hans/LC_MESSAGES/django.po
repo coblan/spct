@@ -1,0 +1,83 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-24 12:09+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\helpers\common\department.py:11
+msgid "department name"
+msgstr ""
+
+#: .\helpers\common\department.py:12
+msgid "parent department"
+msgstr ""
+
+#: .\helpers\common\department.py:13
+msgid "detail"
+msgstr ""
+
+#: .\helpers\common\employee.py:38
+msgid "account"
+msgstr "账号"
+
+#: .\helpers\common\employee.py:40
+msgid "employee id"
+msgstr "员工号"
+
+#: .\helpers\common\employee.py:46
+msgid "unnamed employee"
+msgstr "未命名员工"
+
+#: .\helpers\common\human.py:13
+msgid "male"
+msgstr "男"
+
+#: .\helpers\common\human.py:14
+msgid "femal"
+msgstr "女"
+
+#: .\helpers\common\human.py:18
+msgid "name"
+msgstr "姓名"
+
+#: .\helpers\common\human.py:19
+msgid "age"
+msgstr "年龄"
+
+#: .\helpers\common\human.py:20
+msgid "head image"
+msgstr "头像"
+
+#: .\helpers\common\human.py:21
+msgid "id  number"
+msgstr "身份证"
+
+#: .\helpers\common\human.py:22
+msgid "address"
+msgstr "地址"
+
+#: .\helpers\common\human.py:23
+msgid "gen"
+msgstr "性别"
+
+#: .\helpers\common\human.py:24
+msgid "phone"
+msgstr "电话"
+
+#: .\helpers\common\human.py:31
+msgid "basic info"
+msgstr "基本信息"

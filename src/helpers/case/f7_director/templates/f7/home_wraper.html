@@ -1,0 +1,67 @@
+{% extends "f7/wraper.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block extra_script %}
+<script>
+
+    mainView.hideNavbar()
+
+    $(function(){
+        $('#main-frame').on('load',function(){
+            hide_load(200)
+        })
+
+        show_load()
+        $('#main-frame').attr('src','/f7/home_real.f7')
+    })
+
+</script>
+<script>
+    function main_frame_open(url,event){
+        show_load()
+        $('#main-frame').attr('src',url)
+        $('.weui-tabbar__item').removeClass('weui-bar__item_on')
+        $(event.currentTarget).addClass('weui-bar__item_on')
+    }
+</script>
+{% endblock %}
+
+{% block page_content %}
+<div data-page="home" class="page no-navbar">
+    <!-- Scrollable page content-->
+    <div class="page-content no_top" style="padding-bottom: 3em;">
+        <iframe id="main-frame" class="iframe_wraper"  src="" frameborder="0" width="100%" height="100%"></iframe>
+    </div>
+
+    <div class="toolbar">
+        <div class="weui-tabbar nav footer">
+        <span id="help-page"  onclick="main_frame_open('/f7/help.f7',event)" class="weui-tabbar__item external">
+            <i class="fa fa-info-circle weui-tabbar__icon" aria-hidden="true" ></i>
+            <div class="weui-tabbar__label">信息</div>
+        </span>
+        <span id="work-panel" onclick="main_frame_open('/f7/home_real.f7',event)" class="weui-tabbar__item weui-bar__item_on external">
+            <i class="fa fa-th weui-tabbar__icon" aria-hidden="true" ></i>
+            <div class="weui-tabbar__label">工作</div>
+        </span>
+        <span id="employee-center"  onclick="main_frame_open('/f7/organize.employeeself.f7',event)" class="weui-tabbar__item external">
+            <i class="fa fa-user-circle weui-tabbar__icon" aria-hidden="true" ></i>
+            <div class="weui-tabbar__label">个人设置</div>
+        </span>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block navbar %}
+
+<div class="navbar">
+    <div class="navbar-inner">
+    </div>
+</div>
+{% endblock %}
+
+

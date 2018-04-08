@@ -1,0 +1,199 @@
+{% extends "adminlte/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src='{% static "js/maindb.pack.js?t=" %}{{ js_stamp.maindb_pack_js }}'></script>
+<script type="text/javascript">
+
+    //	row_filters=
+    //	placeholder =
+    //	row_sort=
+    //	heads=
+    //	rows=
+    //	row_pages =
+
+    //	can_add=
+    //	can_del=
+    //	search_args=ex.parseSearch()
+    //	search字段从 search_args._q 来取值
+    tabs={{ tabs | jsonify | default:'[]' }}
+
+    // 基本信息tab 是一个编辑页面
+    heads[0].editor='com_open_detail'
+    table_logic={
+        el:'#there',
+        data:{
+            page_label:page_label,
+            heads:heads,
+            rows:rows,
+            row_filters:row_filters,
+            row_sort:row_sort,
+            row_pages:row_pages,
+            selected:[],
+            tabs:tabs,
+            account_pk:'',
+            crt_tab:'main_table_page',
+            search_args:{}
+        },
+        mixins:[mix_table_data,mix_v_table_adapter],
+        mounted:function(){
+            var self=this
+            // 给每个tab页面设置data getter
+            ex.each(tabs,function(tab){
+                if(tab.com=='com_ajax_fields'){
+                    self.$refs[tab.name][0].data_getter=function(com){
+//                        com.clear()
+                        var loader = layer.load(2)
+                        var post_data=[{fun:'get_row',model_name:tab.model_name,pk:self.account_pk}]
+                        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                            com.row=resp.get_row
+                            layer.close(loader)
+                            com.fetched=true
+                        })
+                    }
+                }else if(tab.com=='com_ajax_table'){
+                    self.$refs[tab.name][0].data_getter=function(com){
+                        // 这里clear，数据被清空，造成table的pagenator上下抖动
+//                       com.clear()
+                        var loader = layer.load(2)
+                        var getter_name = 'get_'+tab.name
+                        var post_data=[{fun:getter_name,account_pk:self.account_pk,searchargs:com.get_search_args()}]
+                        $.post('/d/ajax/'+app,JSON.stringify(post_data),function(resp){
+                            layer.close(loader)
+                            com.rows = resp[getter_name].rows
+                            com.row_pages =resp[getter_name].row_pages
+                            com.fetched=true
+                        })
+                    }
+                }
+            })
+        },
+        methods:{
+            back_to_list:function(){
+                $('#detail_win').hide()
+                $('#list_win').show()
+                this.clear()
+            },
+            set_pk:function(pk){
+                this.account_pk=pk
+                this.crt_tab = 'baseinfo'
+                this.$refs.baseinfo[0].get_data()
+            },
+            open_win:function(name){
+                this.crt_tab = name
+                var crt_tab_com = this.$refs[name][0]
+                if(! crt_tab_com.fetched){
+                    // 变动一下rows ，table的header栏才会显示出来。这个是vtable的问题
+                    crt_tab_com.clear()
+                    crt_tab_com.get_data()
+
+                }
+            },
+            clear:function(){
+                this.account_pk=''
+                this.crt_tab='main_table_page'
+                var self=this
+                ex.each(this.tabs,function(tab){
+                    self.$refs[tab.name][0].clear()
+                    self.$refs[tab.name][0].fetched = false;
+                })
+            },
+//            search:function(){
+//                this.get_data()
+//            },
+        }
+
+    }
+    $(function () {
+        table=new Vue(table_logic)
+    })
+
+</script>
+
+{% block extra_head %}
+{% endblock %}
+
+<div id='there'>
+
+    <ol v-if="page_label" class="breadcrumb">
+        <b v-text="page_label"></b>
+
+        <button v-show="crt_tab != 'main_table_page'" @click="back_to_list()">back</button>
+    </ol>
+
+    <div id="list_win">
+
+        <div class="rows-block">
+            <div class='flex' style="min-height: 3em;">
+                <com-filter class="flex" :heads="row_filters" :search_args="search_args"
+                            @submit="search()"></com-filter>
+                <div class="flex-grow"></div>
+            </div>
+            <div class="box box-success">
+                <div class="table-wraper">
+                    <v-table ref="vtable" is-horizontal-resize
+                             is-vertical-resize
+                             :vertical-resize-offset="80"
+                             :title-row-height="30"
+                             :row-height="24"
+                             odd-bg-color="#f0f6f8"
+                             column-width-drag
+                             style="width: 100%;"
+                             :columns="columns"
+                             :table-data="rows"
+                             @sort-change="sortChange"
+                             row-hover-color="#eee"
+                             row-click-color="#edf7ff">
+                    </v-table>
+                </div>
+                <div style="margin-top: 10px;">
+                    <v-pagination @page-change="get_page($event)"
+                                  :total="row_pages.total"
+                                  :page-size="row_pages.perpage"
+                                  @page-size-change="on_perpage_change($event)"
+                                  :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']">
+                    </v-pagination>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div id="detail_win" style="display: none;">
+        <div class="flex">
+            <ul class="nav nav-tabs tabs flex-grow">
+                <li v-for="tab in tabs" :class="{'active':crt_tab==tab.name}" @click="open_win(tab.name)" style="cursor: pointer;">
+                    <a  v-text="tab.label" ></a>
+                </li>
+            </ul>
+            <!--<com-form-btn :submit="submit" :del_row="del_row" :cancel="cancel"></com-form-btn>-->
+
+        </div>
+
+
+        <component v-for="tab in tabs" v-show="crt_tab==tab.name" :is="tab.com" :kw="tab.kw" :ref="tab.name"></component>
+
+
+
+
+    </div>
+
+</div>
+
+<script>
+    Vue.component('com_open_detail',{
+        props:['rowData','field','index'],
+//        props:['row','name'],
+        template:'<span v-text="rowData[field]" @click="open_detail()" class="clickable"></span>',
+        methods:{
+            open_detail:function(){
+                $('#list_win').hide()
+                $('#detail_win').show()
+                table.set_pk(this.rowData.pk)
+            }
+        }
+    })
+</script>
+{% block extra %}
+{% endblock %}
+{% endblock %}

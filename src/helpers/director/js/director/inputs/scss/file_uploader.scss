@@ -1,0 +1,96 @@
+.file-uploader{
+  .item img{
+    max-width: 300px;
+
+    cursor: pointer;
+  }
+
+  .wrap{
+    display: inline-block;
+  }
+  .sortable{
+    display: flex;
+    flex-wrap:wrap;
+
+    li{
+      display: block;
+      margin: 0.5em;
+      padding: 0.3em;
+      //border: 1px solid #cbcbcb;
+      //background-color: #5491f6;
+      position: relative;
+      //
+      &:hover .remove-btn{
+        visibility:visible ;
+      }
+
+      .file-wrap{
+
+        width: 10em;
+        height: 12em;
+        border: 2em solid #68abff;
+        text-align: center;
+        padding:1em 0;
+        background-color: white;
+        box-shadow: 10px 10px 5px #888888;
+        color: #68abff;
+        display: table-cell;
+        vertical-align:middle;
+
+        cursor: pointer;
+
+        .file-type{
+          font-size: 250%;
+          font-weight: 700;
+          text-transform : uppercase;
+        }
+      }
+
+    }
+
+  }
+
+  .remove-btn{
+    //background-color: #e0e2e4;
+    font-size: 2em;
+    position: absolute;
+    top: -1em;
+    right: 0.3em;
+    visibility: hidden;
+
+    i{
+      color: red;
+
+
+
+    }
+
+  }
+}
+
+.file-uploader-btn-plus{
+
+  display: inline-block;
+  vertical-align: top;
+
+  .inn-btn{
+    width: 5em;
+    height: 5em;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #e1e1e1;
+    cursor: pointer;
+
+    span{
+      font-size: 300%;
+    }
+    &:hover{
+
+      background-color: #e1e1e1;
+    }
+  }
+
+
+
+}

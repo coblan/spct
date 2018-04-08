@@ -1,0 +1,186 @@
+<script>
+    Vue.component('workrecord-panel',{
+        template:'#workrecord-panel',
+        props:['row','checkable'],
+        methods:{
+            ge_edit:function(row){
+                var url=ex.template('{engine_url}/{page_name}.edit',{engine_url:engine_url,page_name:page_name})
+                search_args.pk=row.pk
+                url = ex.appendSearch(url,search_args)
+                setTimeout(function(){
+                    ff.load(url,page_name+'_edit')
+                },200)
+            },
+            get_row_img:function(row){
+                return  row.desp_img || row.work_desp_img || '/static/res/image/person-work.png'
+            },
+            open_image:function(url){
+                ff.open_image(url)
+            },
+            switch_status:function(row){
+                this.$emit('switch_status',row)
+            }
+         }
+    })
+</script>
+
+<template id="workrecord-panel">
+    <div class="weui-cell flex material-wave"  style="padding-top: 2em;">
+        <div class="weui-cell__bd"  style="position: relative;">
+            <div class="flex "  >
+
+                <div  class="flex-grow " @click="ge_edit(row)">
+
+                    <workrecord_display :row="row"></workrecord_display>
+
+                </div>
+                <div @click.stop="" class="flex-v" >
+                    <img @click="open_image(get_row_img(row))" style="width: 4em;" :src="get_row_img(row)" alt=""/>
+                    <div class="flex-grow" style="text-align: center;font-size: 1.5em;color: blue;margin-top: 0.4em;"><span v-text="row.work_span*row.count+row.ex_span"></span></div>
+                    <div @click.stop="" style="text-align: right;">
+                        <button v-if="checkable" @click="switch_status(row)"  style="float: right;" :class="['button',{'color-green':row.status=='pass','color-red':row.status!='pass'}]" v-text="row._tr_status"></button>
+                        <span v-else  style="float: right;" :class="{'color-green':row.status=='pass','color-red':row.status!='pass'}" v-text="row._tr_status"></span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="weui-cell__ft" style="align-self:center;">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </div>
+
+    </div>
+</template>
+<script>
+Vue.component('workrecord_display',{
+    template:'#workrecord-fast-display',
+    props:['row'],
+    methods:{
+        total_hour:function(row){
+            return row.work_span*row.count+row.ex_span
+        },
+        norm_time:function(date_time){
+            return date_time.slice(11)
+        }
+    }
+
+})
+</script>
+
+<style>
+    .record-table td{
+        padding-top: 0.3em;
+        vertical-align: top;
+    }
+    .record-table td:first-child{
+        width: 4.3em;
+    }
+    .record-table td:nth-child(2){
+        width: 1em;
+    }
+    .record-table td:last-child{
+        padding-top: 0.3em;
+        vertical-align: middle;
+        text-align: left;
+    }
+    .record-row{
+        padding: 0.2em 0;
+    }
+    .record-label{
+        /*padding-right:0.5em;*/
+        width: 4em;
+        text-align:justify;
+        height: 1.2em;
+
+    }
+    .record-label:after {width: 100%;height: 0;margin: 0;display: inline-block;overflow: hidden;content: '';}
+    /*.record-table:after{*/
+        /*content:'.';*/
+        /*width: 100%;*/
+        /*display: inline-block;*/
+        /*overflow: hidden;*/
+        /*height: 0;*/
+    /*}*/
+    .lighter{
+        color: #7d7d7d;
+        font-size: 0.8em;
+    }
+</style>
+<template id="workrecord-fast-display">
+    <table style="width: 100%" class="record-table">
+
+        <tr class="record-row">
+            <td>
+                <div class='record-label'>提交</div>
+            </td>
+            <td>:</td>
+            <td style="color: #2e3bba;">
+                <div class="flex" style="align-items:center;">
+                    <span style="white-space:nowrap; " v-text="row._emp_label"></span><span class="lighter" style="margin-left:0.5em; ">于</span><span class="lighter" v-text="norm_time(row.create_time)"></span></div>
+
+            </td>
+        </tr>
+
+        <tr class="record-row">
+            <td  >
+                <div class='record-label'>工作类型</div>
+            </td>
+            <td>:</td>
+            <td v-text="row._work_label" class="lighter"></td>
+        </tr>
+
+        <tr class="record-row">
+            <td  >
+                <div class='record-label'>工时</div>
+            </td>
+            <td>:</td>
+            <td >
+                <span class="lighter"><span v-text="row.work_span"></span><span style="margin: 0 1em;">X</span><span v-text="row.count"></span></span>
+            </td>
+        </tr>
+
+        <tr class="record-row" v-if="row.ex_span">
+            <td  >
+                <div class='record-label'>工时调整</div>
+            </td>
+            <td>:</td>
+            <td class="lighter" v-text="row.ex_span"></td>
+        </tr>
+
+        <tr class="record-row">
+            <td  >
+                <div class='record-label'>完成日期</div>
+            </td>
+            <td>:</td>
+            <td class="lighter" v-text="row.finish_time"></td>
+        </tr>
+        <tr v-if="row.short || row.detail" class="record-row">
+            <td >
+                <div class='record-label'>说明</div>
+            </td>
+            <td>:</td>
+            <td >
+                <div class="lighter">
+                    <div v-text="row.short"></div>
+                    <div v-text="row.detail"></div>
+                </div>
+            </td>
+        </tr>
+        <tr class="record-row">
+            <td >
+                <div class='record-label'>部门</div>
+            </td>
+            <td>:</td>
+            <td ><span class="lighter"><span v-text="row._depart_label"></span> (<span v-text="row._tr_sub_type"></span>)</span></td>
+        </tr>
+        <tr v-if="row.checker">
+            <td >
+                <div class='record-label'>审核人</div>
+            </td>
+            <td>:</td>
+            <td><span class="lighter" v-text="row._checker_label"></span></td>
+        </tr>
+
+    </table>
+</template>

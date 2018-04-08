@@ -1,0 +1,27 @@
+
+
+.flex{
+  display: flex;
+
+}
+.flex-v{
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-grow{
+  flex-grow:10;
+}
+.flex-jc{
+  justify-content: center;
+}
+.flex-ac{
+  align-items: center;
+}
+.flex-sb{
+  justify-content:space-between;
+}
+.flex-vh-center{
+  justify-content: center;
+  align-items: center;
+}

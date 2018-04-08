@@ -1,0 +1,116 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-24 12:09+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\helpers\case\organize\models.py:11
+msgid "male"
+msgstr "男"
+
+#: .\helpers\case\organize\models.py:12
+msgid "femal"
+msgstr "女"
+
+#: .\helpers\case\organize\models.py:16
+msgid "name"
+msgstr "姓名"
+
+#: .\helpers\case\organize\models.py:17
+msgid "age"
+msgstr "年龄"
+
+#: .\helpers\case\organize\models.py:18
+msgid "head image"
+msgstr "头像"
+
+#: .\helpers\case\organize\models.py:19
+msgid "id  number"
+msgstr "身份证号"
+
+#: .\helpers\case\organize\models.py:20
+msgid "address"
+msgstr "地址"
+
+#: .\helpers\case\organize\models.py:21
+msgid "gen"
+msgstr "性别"
+
+#: .\helpers\case\organize\models.py:22
+msgid "phone"
+msgstr "电话号码"
+
+#: .\helpers\case\organize\models.py:34
+msgid "Employee Basic info Table"
+msgstr "员工基本信息表"
+
+#: .\helpers\case\organize\models.py:38
+msgid "department name"
+msgstr "部门名称"
+
+#: .\helpers\case\organize\models.py:39
+msgid "parent department"
+msgstr "上级部门"
+
+#: .\helpers\case\organize\models.py:40
+msgid "detail"
+msgstr "详细"
+
+#: .\helpers\case\organize\models.py:44
+msgid "Department Table"
+msgstr "部门信息表"
+
+#: .\helpers\case\organize\models.py:88 .\helpers\case\organize\models.py:97
+#: .\helpers\case\organize\models.py:120 .\helpers\case\organize\models.py:135
+msgid "department"
+msgstr "部门"
+
+#: .\helpers\case\organize\models.py:89
+msgid "recive pop event"
+msgstr "接受事件"
+
+#: .\helpers\case\organize\models.py:92 .\helpers\case\organize\models.py:134
+msgid "account"
+msgstr "账号"
+
+#: .\helpers\case\organize\models.py:93
+msgid "employee id"
+msgstr "员工号"
+
+#: .\helpers\case\organize\models.py:94
+msgid "basic info"
+msgstr "基本信息"
+
+#: .\helpers\case\organize\models.py:95
+msgid "job position"
+msgstr "职位"
+
+#: .\helpers\case\organize\models.py:101
+msgid "Employee info Table"
+msgstr "员工工作信息表"
+
+#: .\helpers\case\organize\models.py:121
+msgid "group"
+msgstr "权限组"
+
+#: .\helpers\case\organize\models.py:122 .\helpers\case\organize\models.py:127
+msgid "employee"
+msgstr "员工"
+
+#: .\helpers\case\organize\models.py:128
+msgid "content"
+msgstr "内容"

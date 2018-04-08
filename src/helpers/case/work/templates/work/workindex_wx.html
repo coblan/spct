@@ -1,0 +1,246 @@
+{% extends "wx/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src='{% static "js/table.pack.js" %}'></script>
+<script src='{% static "js/ex_inputs.pack.js?t=1236664" %}'></script>
+
+
+<script type="text/javascript">
+
+
+    workindex_url = '{% url "work.workindex" %}'
+
+    item_heads= heads
+    dir_heads={{ dir_heads | jsonify }}
+
+    //    var par_pk=ex.parseSearch().par
+    //    var par ={view:par_pk}
+
+//
+//    $(function(){
+//        ln.history_handle({
+//            init:{crt_view:'main'},
+//            handler:function(state){
+//                if(state.crt_view) {
+//                    table.crt_view = state.crt_view
+////                    Vue.nextTick(function(){
+////                        setTimeout(function(){
+////                            table.$refs.editor_scroller.refresh()
+////                        },500)
+////
+////                    })
+//                }
+//                if (state.op) {
+//                    table[state.op](state.arg)
+//                }
+//            }
+//        })
+//    })
+
+
+    work_editable={{ work_editable | jsonify | default:'false' }}
+    dir_editable={{ dir_editable | jsonify}}
+    dir_can_add={{ dir_can_add | jsonify }}
+    work_can_add={{ work_can_add | jsonify }}
+
+    $(function () {
+        table=new Vue({
+            el:'#there',
+            data:{
+
+                crt_view:'main',
+                crt_name:'',
+//                selected:[],
+//                cut_list:[],
+
+                is_show_menu:false,
+                in_wx_agent:in_wx_agent,
+
+//                ln:ln,
+                work_editable:work_editable,
+                dir_editable:dir_editable,
+                dir_can_add:dir_can_add,
+                work_can_add:work_can_add,
+
+                state:{},
+                ex:ex,
+                workindex_url:workindex_url,
+
+                ln_state:ln_state,
+
+
+            },
+            mixins:[field_fun],
+            mounted:function(){
+                this.$refs.catalog.dir_data()
+                var self=this
+                bus.$on('menu_click',function(){
+                    self.is_show_menu=true
+                })
+//                Vue.nextTick(function(){
+//                    setTimeout(function(){
+//                        self.$refs.scroller.refresh()
+//                    },500)
+//
+//                })
+            },
+            methods:{
+                set_state:function(state){
+                    for(var k in state){
+                        Vue.set(this.state,k,state[k])
+                    }
+                },
+                after_sub:function(){
+                    location=document.referrer
+                },
+
+                item_save:function(){
+                    var self=this
+                    show_upload()
+                    var post_data=[{fun:'save',row:this.kw.row}]
+                    ex.post('/_ajax',JSON.stringify(post_data),function(resp){
+                        if(resp.save.errors){
+                            self.kw.errors=resp.save.errors
+                        }else{
+                            self.kw.errors={}
+//                            self.crt_view='main'
+                            self.$refs.catalog.selected=[]
+                            history.back()
+//                            self.selected=[]
+                        }
+                        hide_upload(200)
+
+                    })
+                },
+
+                edit:function(item){
+//                    ln.pushState({op:'edit_aa',arg:item,crt_view:'editor'})
+                    ln.pushState({crt_view:'editor'})
+                    this.edit_aa(item)
+                },
+                edit_aa:function(item){
+//                    this.crt_view='editor'
+                    if(item._class=='work.index'){
+                        this.kw.heads=dir_heads
+                    }else{
+                        this.kw.heads=item_heads
+                    }
+
+                    this.kw.row=item
+                },
+                show:function(v){
+                    alert(v)
+                }
+            },
+
+        })
+    })
+
+
+</script>
+
+
+
+<div id='there' v-cloak class="flex-grow"  style="position: relative">
+    <!--<path-nav :menu='menu' ></path-nav>-->
+    <!--<div class='btn-panel flex flex-sb' style="padding-left:20px; ">-->
+
+
+    <!--</div>-->
+
+    <div style="position: absolute;top:0;bottom:0;left:0;right:0;overflow: auto;">
+
+        <!--<scroll-wraper class="main-content" ref="scroller" style="width: 100vw;height:90vh;">-->
+            <com-catalog class="mobile" ref="catalog" :url="workindex_url" :root="{pk:null,name:'root'}"
+                         @state_change="set_state($event)" :editable="true">
+
+
+                <template scope="box" slot="check_sel">
+                    <div @click="box.toggle_check(box.value)" >
+                        <i  v-if="ex.isin(box.value,box.selected)" class="fa fa-circle" aria-hidden="true"></i>
+                        <i  v-else  class="fa fa-circle-o" aria-hidden="true"></i>
+                    </div>
+
+                </template>
+
+
+                <div slot="head_end" style="text-align: right;padding: 0.5em 1em;" v-if="in_wx_agent">
+                    <i class="fa fa-align-justify fa-2x" aria-hidden="true" @click="is_show_menu=true"></i>
+                </div>
+
+                <template scope="dir_icon">
+                    <i class="fa fa-folder fa-2x" aria-hidden="true"></i>
+                </template>
+
+                <template scope="box" slot="item_icon">
+                    <i  class="fa fa-file-o fa-2x" aria-hidden="true"></i>
+                </template>
+
+                <template slot="btn-panel" scope="box">
+                    <span style="color: #0092F2;margin-right: 2em;padding: 0.1em;">
+                        <i v-if="ex.isin(box.item,box.selected)" @click="edit(box.item)"  class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </span>
+
+                </template>
+
+            </com-catalog>
+
+    </div>
+        <transition name="fade">
+            <modal v-show="is_show_menu" id="pop-menu">
+                <div class="weui-actionsheet__menu" @click.stop="" style="width: 80vw;">
+                    <div class="weui-actionsheet__cell" @click="edit($refs.catalog.selected[0]);is_show_menu=false" v-show="state.has_select">编辑</div>
+
+                    <div class="weui-actionsheet__cell" @click="$refs.catalog.dir_create();is_show_menu=false" v-if="dir_can_add">新建目录</div>
+                    <div class="weui-actionsheet__cell" @click="$refs.catalog.item_create();is_show_menu=false" v-if="work_can_add">新建工时</div>
+                    <div class="weui-actionsheet__cell" @click="$refs.catalog.item_del();is_show_menu=false" v-show="state.has_select">删除选中项</div>
+                    <div class="weui-actionsheet__cell" @click="$refs.catalog.cut();is_show_menu=false" v-show="state.can_cut">剪切</div>
+                    <div class="weui-actionsheet__cell" @click="$refs.catalog.paste();is_show_menu=false" v-show="state.can_paste">粘贴</div>
+                </div>
+                <div class="weui-actionsheet__cell">
+                    <div class="weui-actionsheet__cell" @click="is_show_menu=false">取消</div>
+                </div>
+            </modal>
+        </transition>
+
+
+
+
+    <transition name="slide">
+        <div v-show="ln_state.crt_view=='editor'" class="slide-win" style="overflow:auto;padding-bottom: 5em;">
+            <!--<scroll-wraper ref="editor_scroller" style="width:100vw;height:90vh;">-->
+                <title-bar :with_back="true" title="编辑工作类型"></title-bar>
+                <!--<div class="weui-cells__title">编辑</div>-->
+
+                <div class="form-pad" >
+                    <field  v-for='head in kw.heads' :key="head.name" :name='head.name' :kw='kw'></field>
+                </div>
+
+                <div v-btn-group>
+                    <a state="success" @click="item_save()">确定</a>
+                </div>
+
+        </div>
+    </transition>
+
+
+
+</div>
+
+
+<style type="text/css" media="screen" id="test">
+
+    body{
+        background-color: #faf6fa;
+
+    }
+
+
+</style>
+
+
+{% block extra %}
+{% endblock %}
+{% endblock %}

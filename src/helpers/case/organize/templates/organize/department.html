@@ -1,0 +1,205 @@
+{% extends "director/index.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src='{% static "js/table.pack.js" %}'></script>
+<script src='{% static "js/ex_inputs.pack.js" %}'></script>
+
+<script type="text/javascript">
+
+    bus=new Vue()
+
+    heads={{ heads | jsonify }}
+    department_url = "{% url 'organize.department' %}"
+
+    $(function () {
+        table=new Vue({
+            el:'#there',
+            data:{
+                department_url:department_url,
+                crt_view:'',
+//                crt_name:'',
+//                selected:[],
+//                cut_list:[],
+//                root:{pk:null,name:'root'},
+                cat_state:{}, // category state
+            },
+            mixins:[field_fun],
+//            watch:{
+//                'row_sort.sort_str':function (v) {
+//                    this.search_args._sort=v
+//                    this.search()
+//                }
+//            },
+//            mounted:function(){
+//                this.dir_data(this.root)
+//                this.kw={heads:[],row:{}}
+//
+//            },
+            computed:{
+//                par_pk:function(){
+//                    if(this.par){return this.par.pk}
+//                    else{return null}
+//                },
+//                can_cut:function(){
+////                    return this.$refs.
+////                    if(this.selected.length>0 ){
+////                        return true
+////                    }
+//                },
+//                can_paste:function(){
+//                    return this.cut_list.length>0
+//                }
+
+            },
+            methods:{
+                set_state:function(state){
+                    for(var k in state){
+                        Vue.set(this.cat_state,k,state[k])
+                    }
+                },
+                on_dirclick:function(dir){
+//                    this.kw.heads=dir_heads
+                    this.kw.row=dir
+                },
+                item_save:function(){
+                    var self=this
+                    show_upload()
+                    var post_data=[{fun:'save',row:this.kw.row}]
+                    ex.post('/_ajax',JSON.stringify(post_data),function(resp){
+                        if(resp.save.errors){
+                            self.kw.errors=resp.save.errors
+                        }else{
+                            self.kw.errors={}
+                        }
+                        hide_upload(200)
+                        self.$refs.catalog.dir_data()
+                    })
+                },
+
+
+            },
+
+        })
+    })
+
+</script>
+<div id='there'>
+    <path-nav :menu='menu' ></path-nav>
+    <div class='btn-panel flex flex-sb' style="padding-left:20px; "></div>
+
+    <div >
+        <div class="btn-toolbar" role="toolbar" aria-label="..." v-if="can_edit">
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default" @click="$refs.catalog.dir_create()">新建部门</button>
+            </div>
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default" :disabled="!cat_state.has_select" @click="$refs.catalog.item_del()">删除选中项</button>
+            </div>
+            <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default" :disabled ="!cat_state.can_cut" @click="$refs.catalog.cut()">剪切</button>
+                <button type="button" class="btn btn-default" :disabled ="!cat_state.can_paste" @click="$refs.catalog.paste()">粘贴</button>
+            </div>
+            <!--<div class="btn-group" role="group" aria-label="...">-->
+            <!--<button type="button" class="btn btn-default" @click="item_save()">保存修改</button>-->
+            <!--</div>-->
+        </div>
+
+    <div class="flex" style="min-width: 500px;">
+        <div class="index-panel">
+
+
+            <com-catalog ref="catalog" :url="department_url" :root="{pk:null,name:'公司'}" @dirclick="on_dirclick($event)"
+                          @state_change="set_state($event)" :editable="can_edit" inline-template>
+
+                <div class="com-catalog">
+                    <div class="flex">
+                        <ol class="breadcrumb flex-grow">
+                            <li ><a href="javacript:;" @click="dir_data(root)" v-text="root.name">root</a></li>
+                            <li v-for="dir in parents" ><a href="javacript:;" v-text="dir.name" @click="dir_data(dir);$emit('dirclick',dir)" ></a></li>
+                        </ol>
+                        <slot name="head_end"></slot>
+                    </div>
+
+                    <div class="bd">
+                        <table class='table fake-suit'>
+                            <tr v-for="dir in dirs">
+                                <td style="width: 2em;">
+                                    <input v-if="editable" type="checkbox" :value="dir" v-model="selected"/>
+                                </td>
+                                <td @click="dir_data(dir)" class="clickable">
+                                    <span v-text="dir.name"></span>
+                                </td>
+                                <td class="clickable">
+                                    <a :href="'/pc/organize.department.edit?pk='+dir.pk">edit</a>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!--<ul>-->
+                            <!--<li v-for="dir in dirs" class="dir">-->
+                                <!--<slot  name="check_sel" :value="dir" :toggle_check="toggle_check" :selected="selected">-->
+                                    <!--<input v-if="editable" type="checkbox" :value="dir" v-model="selected"/>-->
+                                <!--</slot>-->
+
+                                <!--<slot dir_icon>-->
+                                    <!--<i class="fa fa-folder" aria-hidden="true"></i>-->
+                                <!--</slot>-->
+
+                                <!--<span v-text="dir.name" class="clickable name" @click="dir_data(dir);$emit('dirclick',dir)"></span>-->
+                                <!--<slot name="btn-panel" :selected="selected" :item="dir"></slot>-->
+                            <!--</li>-->
+                            <!--<li v-for="item in items" :key="item.pk" class="item">-->
+                                <!--<slot name="check_sel" :value="item" :toggle_check="toggle_check" :selected="selected">-->
+                                    <!--<input v-if="editable" type="checkbox" :value="item" v-model="selected"/>-->
+                                <!--</slot>-->
+                                <!--<slot name="item_icon">-->
+                                    <!--<i class="fa fa-file-o" aria-hidden="true"></i>-->
+                                <!--</slot>-->
+                                <!--<span v-text="item.name" class="clickable name" @click="$emit('itemclick',item)"></span>-->
+                                <!--<slot name="btn-panel" :selected="selected" :item="item"></slot>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    </div>
+                </div>
+
+            </com-catalog>
+
+        </div>
+
+
+
+
+            <!--<div class='field-panel' v-if="kw.heads && kw.heads.length>0">-->
+                <!--<field  v-for='head in kw.heads' :key="head.name" :name='head.name' :kw='kw'></field>-->
+            <!--</div>-->
+
+            <!--<paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>-->
+        </div>
+    </div>
+
+
+</div>
+
+
+<style type="text/css" media="screen" id="test">
+    .index-panel{
+        background-color: white;
+        padding: 2em;
+        min-width: 600px;
+    }
+    .clickable{
+        color: #348fce;
+    }
+    .clickable:hover{
+        cursor: pointer;
+        text-decoration:underline;
+    }
+
+</style>
+
+
+{% block extra %}
+{% endblock %}
+{% endblock %}

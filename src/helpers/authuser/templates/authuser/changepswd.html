@@ -1,0 +1,152 @@
+{% extends 'authuser/base.html' %}
+{% block content %}
+
+<style type="text/css" media="screen" id="test">
+	.warn{
+		color: red;
+	}
+</style>
+<script type="text/javascript">
+
+	username='{{ username }}'
+	uid='{{ uid }}'
+
+	heads=[{name:'old_pswd',type:'password',label:'原密码',help_text:'如果您是超级管理员，不需要输入原密码'},
+		{name:'first_pswd',type:'password',label:'新密码'},
+		{name:'second_pswd',type:'password',label:'确认输入'}]
+	row={
+		uid:uid,
+		old_pswd:'',
+		first_pswd:'',
+		second_pswd:''
+	}
+	$(function(){
+		new Vue({
+			el:'#there',
+			data:{
+				kw:{
+					heads:heads,
+					row:row,
+				},
+				username:username,
+			},
+			methods:{
+				submit:function(){
+					var  self =this
+					var post_data=[{fun:'changepswd',row:this.kw.row},]
+					$.post('',JSON.stringify(post_data),function(resp){
+						if(resp.changepswd.errors){
+							self.kw.errors=resp.changepswd.errors
+						}else if(resp.changepswd.status=='success'){
+							var search_args=ex.parseSearch()
+							if(search_args.next){
+								location=decodeURIComponent(search_args.next)
+							}else{
+								self.kw.errors={}
+								alert('修改成功')
+							}
+						}
+
+					})
+				},
+				cancel:function(){
+					history.back()
+				}
+			}
+		})
+	})
+
+//	app.controller('content',function ($scope,$http,$timeout) {
+//		$scope.username='{{user.username}}'
+//		$scope.is_forget={{is_forget | default:'false'}}
+//		var login_url='{{login_url}}'
+//		$scope.user={}
+//		$scope.submit_func=function (v) {
+//			$scope.submit_clicked=true;
+//			if(!v)return
+//			if ($scope.user.password1!=$scope.user.password2){
+//					alert('两次密码不一致');
+//				return;
+//			}
+//			var postData={
+//				changepswd:{pswd:$scope.user.password1}
+//			}
+//			$http.post('',postData)
+//			.success(function(data, status, headers, config) {
+//				if(data.msg){
+//					alert(data.msg)
+//				}
+//				if(data.changepswd.status=='success'){
+//					alert('修改密码成功，现在跳转到登陆页面，用新密码登陆')
+//					location=login_url;
+//				}
+//
+//
+//			}).error(function(data, status, headers, config) {
+//			    alert('有错误,返回码为:'+status)
+//
+//			});
+//		}
+//	})
+	
+</script>
+<div class="flex flex-jc">
+	<div class='flex-v ' style="max-width: 400px" id="there">
+		<h2 class='form-signin-heading'>更改 <span v-text="username"></span> 密码</h2>
+
+		<field v-for="head in kw.heads" :name="head.name" :kw="kw"></field>
+
+	<button class='btn btn-lg btn-primary btn-block' @click="submit()">确定</button>
+		<div style="text-align: right;padding-top: 10px;">
+			<a href="javascript:;" @click="cancel()">取消</a>
+		</div>
+
+
+	<!--<form name="regForm" -->
+		<!--ng-submit='submit_func(regForm.$valid)' -->
+		<!--class='form-signin' novalidate>-->
+		<!--<h2 class='form-signin-heading'>更改密码</h2>-->
+		<!--<p>当前用户：<span ng-bind='username'></span></p>-->
+
+		<!--<div class="form-group" ng-show='!is_forget'>-->
+			<!--<label for="old_pswd">输入原来的密码</label>-->
+			<!--<input type="password" -->
+		  		<!--class='form-control' -->
+		  		<!--name="old_pswd" -->
+		  		<!--placeholder='password' -->
+		  		<!--ng-model='user.old_pswd' required />-->
+		  	<!--<p ng-show='regForm.old_pswd.$error.required&&submit_clicked'-->
+		  		<!--class='warn'>必须输入原来的密码</p>-->
+		<!--</div>-->
+		<!-- -->
+		<!--<div class="form-group">-->
+		  <!--<label for="pswd1">第一次输入密码</label>-->
+		  <!--<input type="password" -->
+		  		<!--class='form-control' -->
+		  		<!--name="pswd1" -->
+		  		<!--placeholder='password' -->
+		  		<!--ng-model='user.password1' required />-->
+		  <!--<p ng-show='regForm.pswd1.$error.required&&submit_clicked'-->
+		  		<!--class='warn'>密码不能为空</p>-->
+		<!--</div>-->
+
+		<!-- -->
+		<!--<div class="form-group">-->
+			<!--<label for="pswd2">第二次输入密码</label>-->
+			<!--<input type="password" -->
+				<!--class='form-control' -->
+				<!--name="pswd2" -->
+				<!--placeholder='password' -->
+				<!--ng-model='user.password2' required />-->
+			<!--<p ng-show='user.password1!=user.password2&&submit_clicked' -->
+				<!--class='warn'>-->
+				<!--两次密码不相等-->
+			<!--</p>-->
+		<!--</div>-->
+		<!--<input type="submit" class='btn btn-lg btn-primary btn-block' value="确定" />-->
+		<!-- -->
+	<!--</form>-->
+	</div>
+</div>
+
+{% endblock %}

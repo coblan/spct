@@ -1,0 +1,50 @@
+{% extends "director/index.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+
+<script type="text/javascript">
+    change_password_url='{% url "change_password" %}'
+
+    $(function () {
+        new Vue({
+            el:'#there',
+
+            mixins:[field_fun],
+            methods:{
+                change_pswd_link:function(){
+                    return change_password_url+ex.searchfy({uid:this.kw.row.pk,next:encodeURIComponent(location.href)},'?')
+                }
+            }
+
+        })
+    })
+</script>
+
+<div id='there'>
+
+    <div v-if="can_log" style='float: right;padding: 5px 20px;'>
+        <a :href="log_url()">History</a>
+    </div>
+    <path-nav :menu='menu'>
+        <li><span>编辑</span></li>
+    </path-nav>
+
+
+    <com-form-btn :submit="submit" :del_row="del_row" :cancel="cancel" :form_bus="this"></com-form-btn>
+
+    <div style="padding: 0px 20px;">
+        <a :href="change_pswd_link()">修改用户密码</a>
+    </div>
+
+
+    <div class='field-panel'>
+
+        <field  v-for='head in kw.heads' :key="head.name" :name='head.name' :kw='kw'></field>
+    </div>
+
+
+</div>
+
+{% endblock %}

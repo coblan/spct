@@ -1,0 +1,267 @@
+{% extends "f7/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block extra_body %}
+    {% include 'f7/com/popup_page.html' %}
+    {% include 'wx/com/table_filter_wx.html' %}
+{% endblock %}
+
+{% block extra_head %}
+
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=0909294a753dfe00a0aa124b6ecb93eb"></script>
+<script src="{% static 'lib/fingerprint2.min.js' %}"></script>
+<script>
+    ff.pop_menu(function(){
+        var buttons = [
+            {
+                text: '排序过滤',
+                onClick: function () {
+                    filter.open()
+                }
+            },
+//            {
+//                text: '显示选中',
+//                onClick: function () {
+//                    var ls=ex.map(table.selected,function(item){
+//                        var pos=item.pos
+//                        return [pos.lng,pos.lat]
+//                    })
+//                    ff.back(function(last_win){
+//                        last_win.set_marker(ls)
+//                    })
+//                }
+//            },
+        ];
+        if(table.help_url){
+            buttons.push({
+                text: '帮助',
+                onClick: function () {
+                    table.goto(help_url);
+                }
+            })
+        }
+
+        buttons.push({
+            text: '取消',
+            color: 'red',
+        })
+        ff.app.actions(buttons)
+    })
+
+    function daka(){
+        geolocation.getCurrentPosition(function(status,result){
+            if(status=='complete'){
+                var pos=result.position
+                geocoder.getAddress([pos.lng,pos.lat], function(status, result_coder) {
+                    if (status === 'complete' && result_coder.info === 'OK') {
+
+                        pos.addr=result_coder.regeocode.formattedAddress
+
+//                                    alert()
+//                                    //获得了有效的地址信息:
+//                                    //即，result.regeocode.formattedAddress
+                    }else{
+                        ff.alert('获取位置失败，请确定已经打开Gps')
+                    }
+
+                    var post_data=[{fun:'daka',pos:pos,device:fingerprint }]
+                    ex.post('/_ajax/'+app,JSON.stringify(post_data),function(resp){
+                        if(resp.daka.status=='success'){
+                            ff.alert('打卡成功');
+                            location.reload()
+//                            table.rows.unshift(resp.daka.row)
+//                            table.can_daka=true
+
+                        }
+                    })
+                });
+
+
+
+            }else{
+                ff.alert(result.message )
+            }
+        })
+    }
+
+    geolocation=null
+    geocoder=null
+    fingerprint=null
+    $(function(){
+        setTimeout(function(){
+            AMap.plugin('AMap.Geolocation',function(){//异步
+                geolocation = new AMap.Geolocation({
+                    enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                    timeout: 15000,          //超过10秒后停止定位，默认：无穷大
+                    maximumAge: 0,           //定位结果缓存0毫秒，默认：0
+                    convert: true,           //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                });
+
+            });
+            AMap.service('AMap.Geocoder',function(){//回调函数
+                geocoder = new AMap.Geocoder({
+                    city: "010"//城市，默认：“全国”
+                });
+                //TODO: 使用geocoder 对象完成相关功能
+            });
+            var fp = new Fingerprint2();
+            fp.get(function (result, components) {
+                fingerprint=result
+            })
+
+        })
+    })
+</script>
+{% endblock %}
+
+{% block page_content %}
+
+<script type="text/javascript">
+
+    var timer =setInterval(function(){
+        if(geolocation && geocoder && fingerprint){
+            clearInterval(timer)
+            table.can_daka=true
+        }
+    },500)
+
+    table_logic={
+        el:'#there',
+        data:{
+            can_daka:false
+        },
+        mixins:[table_fun],
+
+        computed:{
+            grouped_rows:function(){
+                var new_rows = ex.group_add([],this.rows,function(row){return row.create_time.slice(0,10)})
+                return new_rows
+            },
+
+        },
+        methods:{
+            norm_date:function(date){
+                var span= moment()-moment(date)
+                var span_days= moment.duration(span).days()
+                if(span_days<1){
+                    return '今天'
+                }else if(span_days<2){
+                    return '昨天'
+                }else{
+                    return date
+                }
+            },
+            norm_time:function(date_time){
+                return date_time.slice(11,19)
+            },
+            ge_edit:function(pk){
+                var url = ex.template('{engine_url}/{page_name}.edit?pk={pk}',{engine_url:engine_url,page_name:page_name,pk:pk})
+                ff.load(url,page_name+'_edit')
+            },
+            daka:function(){
+                if(this.can_daka){
+                    daka()
+                }
+                this.can_daka=false
+
+            },
+            del_item:function(row){
+                var self =this
+                ff.confirm('真的删除吗?',function(){
+                    var post_data=[{fun:'del_rows',rows:[row]}]
+                    $.post('/_ajax',JSON.stringify(post_data),function (data) {
+                        if(data.del_rows){
+                            ex.remove(table.rows,function(old_row){
+                                return old_row.pk==row.pk
+                            })
+                        }
+                    })
+                })
+            },
+            mark_map:function(row){
+                ff.load(engine_url+ex.template('/map_daka.map.f7?lng={lng}&lat={lat}',row.pos),'map_daka_map_f7')
+            }
+        }
+    }
+
+
+    $(function(){
+        table= new Vue(table_logic)
+    })
+</script>
+<style>
+    .float-btn{
+        overflow:hidden;
+        position: fixed;
+        right: 1em;
+        bottom: 2em;
+        width: 4em;
+        height: 4em;
+        background-color: #a6aaa6;
+        border-radius: 2em;
+        z-index:200;
+    }
+    .float-btn.can_daka{
+        background-color: #dfda58;
+    }
+</style>
+
+
+<div id="there" v-cloak class="flex-grow"  style="position: relative;">
+
+    <div :class='["float-btn","material-wave",{"can_daka":can_daka}]' style=""
+            data-speed="3" @click="daka()">
+        <i style="pointer-events: none;" class="fa fa-plus fa-2x imiddle" aria-hidden="true"></i>
+    </div>
+    <scroll-loader :can_load="has_next_page" @load_more="load_next_page()">
+
+        <div v-for="sub_rows in grouped_rows">
+            <h3 style="text-align: center;" v-text="norm_date( sub_rows.key)"></h3>
+                <div class="weui-cells" style="margin-bottom: 2em;">
+                <span class="weui-cell" v-for="row in sub_rows.list">
+                <div class="weui-cell__hd" style="padding: 0 1em 0 0.3em;">
+
+                    <!--<com-check-box v-model="selected" :value="row"></com-check-box>-->
+                </div>
+                <div class="weui-cell__bd" >
+                    <div style="position: absolute;bottom: 5px;right: 1em;">
+                            <span style="color: #b86150;padding: 0.5em" v-if="norm_date( sub_rows.key)=='今天'" @click="del_item(row)">
+                                <i class="fa fa-trash" aria-hidden="true"></i></span>
+                        <span style="width: 0.4em;display: inline-block;"></span>
+                            <span style="color: #0b28b5;padding: 0.5em;" @click="mark_map(row)">
+                                <i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                    </div>
+
+                    <p v-text="norm_time(row.create_time)"></p>
+                    <p v-text="row.pos.addr"></p>
+
+                </div>
+                <!--<div class="weui-cell__ft">-->
+                <!--</div>-->
+            </span>
+            </div>
+
+        </div>
+
+
+    </scroll-loader>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
+

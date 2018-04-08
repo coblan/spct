@@ -1,0 +1,21 @@
+{% extends "director/fields.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block extra_head %}
+<script>
+    assem_save={
+        methods:{
+            submit:function(){
+                var post_data=[{fun:'save_assem_group',row:this.kw.row}]
+                ex.post('/_ajax/director',JSON.stringify(post_data),function(resp){
+//                    alert(resp)
+                    alert('save success!')
+                })
+            }
+        }
+    }
+
+    form_logic.mixins=[field_fun,assem_save]
+</script>
+{% endblock %}

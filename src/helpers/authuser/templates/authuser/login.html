@@ -1,0 +1,118 @@
+
+{% extends 'authuser/base.html' %}
+{% block content %}
+
+<script>
+	if(window.java_obj){
+		var now = Date.now()
+		var elapse= now- java_obj.getStartTimestamp()
+		if(elapse>2000){
+			var delay=0
+		}else{
+			var delay=2000-elapse
+		}
+		setTimeout(function(){
+			java_obj.contentShow()
+		},delay)
+	}
+</script>
+
+<script type="text/javascript">
+	if('hide_load' in parent){
+        parent.hide_load()
+	}
+	next="{{next |default:'/'}}"
+	regist_url='{{regist_url}}'
+	
+	meta={
+		errors:{},
+		row:{
+			username:'',
+			password:'',
+		},
+		heads:[
+			{name:'username',label:'用户名',editor:'linetext',autofocus:true,placeholder:'username'},
+			{name:'password',label:'密码',editor:'password',placeholder:'your password',},
+		]
+	}
+
+	$(function () {
+		new Vue({
+			el:'#there',
+			data:{
+				meta:meta,
+				regist_url:regist_url
+			},
+			computed:{
+				full_regist_url:function(){
+					var next = ex.parseSearch().next
+					return ex.appendSearch(regist_url,{next:next})
+				}
+			},
+			methods:{
+				submit_info:function () {
+					var models=this.meta.row
+					var post_data=[{fun:'do_login',username:models.username,password:models.password}]
+					var self=this;
+					$.post('/d/ajax/authuser/',JSON.stringify(post_data),function (data) {
+						if(data.do_login.errors){
+							update_vue_obj(self.meta.errors,data.do_login.errors)
+						}else{
+							if(parent.root_page){
+								// 手机版里面，iframe内容直接跳转到首页
+								parent.location= parent.root_page
+							}else if(next){
+								location=next;
+							}else{
+								location = '/'
+							}
+
+						}
+						//is_valid(data.do_login,self.meta.errors,function () {
+						//	location=next;
+						//})
+			
+					})
+				}
+			}
+		})
+	})
+
+</script>
+
+<div id='there' class="flex">
+	<div class="flex-vh-center flex panel">
+		<form name="logForm" ng-submit='submit_func(logForm.$valid)' class='form-signin' novalidate>
+			<h2 class='form-signin-heading'>欢迎登陆</h2>
+			<field name='username' :row="meta.row" :head='meta.heads[0]'></field>
+			<field name='password' :row="meta.row" :head='meta.heads[1]'></field>
+	
+			<button name="test" type="button" value="val" @click='submit_info()'>登陆</button>
+	
+			<div style='text-align: right;padding-top:10px;'>
+				<a :href="full_regist_url" >注册</a>
+			</div>
+
+		</form>
+
+	</div>
+</div>
+<style type="text/css">
+	.panel{
+		min-height: 100vh;
+		width: 100vw;
+	}
+	.form-signin{
+		min-width:350px;
+		padding: 15px 30px;
+		border:1px solid gainsboro;
+		border-radius: 5px;
+		background-color: #bcf7c2;
+		/*margin: 0 auto;*/
+	}
+	/*input{*/
+		/*margin-bottom:3px;*/
+	/*}*/
+</style>
+
+{% endblock %}

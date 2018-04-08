@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+{% load static %}
+{% load jsonify %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+    <meta name="x5-fullscreen" content="true">
+    <meta name="full-screen" content="yes">
+    
+    <title>My App</title>
+    <script src="{% static 'lib/jquery3.2.1.min.js' %}"></script>
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="/static/lib/framework7/framework7.ios.min.css">
+    <link rel="stylesheet" href="/static/lib/framework7/framework7.ios.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <!--<link rel="stylesheet" href="css/my-app.css">-->
+    <script src='{% static "js/exfun.js?t="%}{{ stamp.exfun_js }}'></script>
+    <link rel="stylesheet" href="{% static 'lib/weui.min.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/font-awesome4.7/font-awesome4.7.min.css' %}">
+    <script src="{% static 'lib/vue2.3.2.js' %}"></script>
+    <script src="{% static 'js/uis_mb.pack.js?t=' %}{{ stamp.uis_mb_pack_js }}"></script>
+    <script src="{% static 'js/fields_mb.pack.js?t=' %}{{ stamp.fields_mb_pack_js }}"></script>
+
+    <script src="{% static 'js/f7_wrap.pack.js?t=' %}{{ js_stamp.f7_wrap_pack_js}}"></script>
+</head>
+
+{% include 'director/reverse.html' %}
+
+
+
+<body class="start">
+<!-- Status bar overlay for fullscreen mode-->
+<!--<div class="statusbar-overlay"></div>-->
+<!-- Panels overlay-->
+<div class="panel-overlay"></div>
+<!-- Left panel with reveal effect-->
+<div class="panel panel-left panel-reveal">
+    <div class="content-block">
+        <p>Left panel content goes here</p>
+    </div>
+</div>
+<!-- Right panel with cover effect-->
+<div class="panel panel-right panel-cover">
+    <div class="content-block">
+        <p>Right panel content goes here</p>
+    </div>
+</div>
+<!-- Views-->
+<div class="views">
+    <!-- Your main view, should have "view-main" class-->
+    <div class="view view-main">
+        {% block navbar %}
+        <!-- Top Navbar-->
+        <div class="navbar">
+            <div class="navbar-inner hide">
+                <!-- We have home navbar without left link-->
+                <div class="center"></div>
+                <div class="right">
+                    <!--<a href="#" class="link icon-only open-panel"> <i class="icon icon-bars"></i></a>-->
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+
+        <!-- Pages, because we need fixed-through navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-through toolbar-through">
+            <!-- Page, data-page contains page name-->
+            {% block page_content %}
+            <div data-page="home" class="page">
+                <!-- Scrollable page content-->
+                <div class="page-content" style="padding-bottom: 3em;">
+                </div>
+                <!--<div class="toolbar">-->
+                    <!--<div class="toolbar-inner"><a href="#" class="link">Link 1</a><a href="#" class="link">Link 2</a></div>-->
+                <!--</div>-->
+            </div>
+            {% endblock %}
+        </div>
+        <!-- Bottom Toolbar-->
+
+
+    </div>
+</div>
+
+<div class="iframe-cache hide">
+
+</div>
+<!-- Path to Framework7 Library JS-->
+<script type="text/javascript" src="/static/lib/framework7/framework7.min.js"></script>
+
+<!--<style>-->
+    <!--.popup-overlay{z-index: 111 !important;}-->
+<!--</style>-->
+<style type="text/css">
+    .pad{
+        background-color: white;
+        margin-top: 20px;
+    }
+    .nav .fake-active>i,.nav .fake-active>p{
+        color: green;
+
+    }
+    p.weui-tabbar__label{
+        margin: 0.2em;
+    }
+    .page-content{
+        z-index: auto;
+    }
+
+    .page-content._no_bottom{
+        padding-bottom: 0;
+    }
+    .page-content.no_top{
+        padding-top: 0;
+    }
+    .iframe_wraper.full-screen{
+        position: fixed;
+        top:0;
+        left:0;
+        bottom: 0;
+        right: 0;
+        z-index: 5000;
+        margin: 0;
+        padding: 0;
+    }
+    .navbar-custom{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        padding: 0.5em 0.8em;
+    }
+    .navbar-custom .left,.navbar-custom .right{
+        min-width: 3em;
+    }
+    .page-cus .page-content{
+        padding-top: 0;
+        margin-top: 3em;
+    }
+</style>
+
+
+
+
+<script>
+
+
+
+
+
+
+
+
+
+
+
+    function replace_iframe(str){
+        // 采用新的history后推机制后，这个函数基本无用了。在iframe中直接调用location.replace就可以了。
+        var page_name=$('.page-on-center').attr('data-page')
+        var iframe=$('.page-on-center .iframe_wraper')
+
+        var html = '<iframe class="iframe_wraper" src='+str + ' frameborder="0" width="100%" height="100%" src="/f7/work.wkself.f7"></iframe>'
+        iframe.after(html)
+        iframe.remove();
+        history.replaceState({name:page_name,kind:'page'}, '');
+
+    }
+    function pop_menu(callback){
+        $('.view .navbar .navbar-inner:last-child .pop-menu').css('visibility','visible')
+        if(callback){
+            $('.view .navbar .navbar-inner').last().find('.pop-menu')[0].onclick=callback
+//            $('.view .navbar-custom').last().find('.pop-menu')[0].onclick=callback
+        }
+//        $('.navbar-on-center .pop-menu').css('visibility','visible')
+//        if(callback){
+//            $('.navbar-on-center .pop-menu')[0].onclick=callback
+//        }
+    }
+//    function back(callback){
+//        if(callback){
+//            var last_win= $(mainView.activePage.fromPage.container).find('.iframe_wraper')[0].contentWindow
+//            callback(last_win)
+//        }
+//        mainView.router.back()
+//    }
+    function iframe_full_screen(value,second){
+        var second= second || 300
+        if(value){
+            $('.page-on-center .iframe_wraper').addClass('full-screen')
+            $('.toolbar').hide()
+            setTimeout(function(){
+                $('.navbar').hide()
+            },second)
+
+        }else{
+            $('.page-on-center .iframe_wraper').removeClass('full-screen')
+            $('.page-on-center .page-content').addClass('_no_bottom')
+            $('.navbar').show()
+            setTimeout(function(){
+                $('.toolbar').show()
+                $('.page-on-center .page-content').removeClass('_no_bottom')
+            },second)
+        }
+    }
+
+    function show_toolbar(){
+        $('.page-content').removeClass('_no_bottom')
+        $('.toolbar').show()
+    }
+    function hide_toolbar(){
+        $('.toolbar').hide()
+        $('.page-content').addClass('_no_bottom')
+
+    }
+    function show_nav(){
+        mainView.showNavbar()
+        $('.pages .page-content').last().removeClass('_no_top')
+    }
+    function hide_nav(){
+        mainView.hideNavbar()
+        $('.pages .page-content').last().addClass('_no_top')
+    }
+
+    function call_iframe(callback_name){
+        var args=Array.prototype.slice.call(arguments)
+        $('.page-on-center .iframe_wraper')[0].contentWindow[callback_name].apply(this,args.slice(1,args.length))
+    }
+    function add_nav(str){
+        $('.view .navbar .navbar-inner').last().after(str)
+    }
+    function remove_nav(){
+        $('.view .navbar .navbar-inner').last().remove()
+    }
+
+
+
+/*
+如果是在手机的webview里面运行，如果暴露了java对象，触发下面代码。
+* */
+
+//    if(window.jsobj){
+//        console.log('js obj ')
+//        console.log(jsobj.contentShow)
+//        setTimeout(function(){
+//            jsobj.contentShow()
+//        },1000)
+//
+//    }
+
+if(window.java_obj){
+    var now = Date.now()
+    var elapse= now- java_obj.getStartTimestamp()
+    if(elapse>2000){
+        var delay=0
+    }else{
+        var delay=2000-elapse
+    }
+    setTimeout(function(){
+        java_obj.contentShow()
+    },delay)
+}
+
+</script>
+
+
+<div class="_full_wraper hide general-loader">
+    <div class="general">
+        <span style="width:42px; height:42px" class="preloader"></span>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        setTimeout(function(){
+            $('body').removeClass('start')
+            $('body').addClass('ready')
+        })
+    })
+</script>
+
+<style>
+    .notifications .bottom_msg {top: 70vh; }
+    body.start{
+        opacity: 0;
+    }
+    body.ready{
+        background-color: #f7f5f3;
+        transition: all 0.2s ease;
+    }
+
+    ._full_wraper{
+        position: fixed;
+        top:0;
+        left:0;
+        right:0;
+        bottom: 0;
+        z-index:5000;
+    }
+    .hide{
+        display: none;
+    }
+    .general-loader .general{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    iframe { display: block; }
+</style>
+
+
+
+</body>
+<script>
+    var load_timer=null
+
+    function show_load(timeout){
+        var timeout= timeout || 10*1000
+        $('.general-loader').removeClass('hide')
+
+        if(load_timer){
+            clearTimeout(load_timer)
+        }
+        load_timer =setTimeout(function(){
+            myApp.alert('请检查网络问题', '加载超时');
+            hide_load()
+        },timeout)
+    }
+    function hide_load(time){
+        if(load_timer){
+            clearTimeout(load_timer)
+            load_timer=null
+        }
+        var time= time || 20
+        setTimeout(function(){
+            $('.general-loader').addClass('hide')
+        },time)
+    }
+
+</script>
+
+<script>
+
+    var myApp = new Framework7({
+        modalTitle:'信息提示',
+        modalButtonOk:'好的',
+        modalButtonCancel:'不了',
+//        animatePages:false,
+
+
+//        pushState:true,
+//        swipeBackPage:true,
+    });
+    var $$ = Dom7;
+
+    // Add view
+    var mainView = myApp.addView('.view-main', {
+        // Because we use fixed-through navbar we can enable dynamic navbar
+        dynamicNavbar: true,
+        domCache:true,
+
+    });
+
+
+    function on_page_switch(page){
+
+    }
+
+    myApp.onPageAfterBack('*', function(page){
+
+        on_page_switch(page.view.activePage)
+    })
+
+//    $$(document).on('pageBack', function (e) {
+//        // Do something here when page loaded and initialized
+//        $('.iframe-cache').append( $('.pages .page').last().find('.page-content.iframe_content .iframe_div'))
+//
+//    })
+    $$(document).on('pageInit', function (e) {
+
+        // Get page data from event data
+        var page = e.detail.page;
+        state_stack=[]
+
+        if($('.page-on-right').attr('data-page')== page.name){
+            on_page_switch(page)
+        }
+
+//        if(page.name.endsWith('vue-com')){
+//            new Vue({
+//                el:page.container,
+//                data:vue_data_stack.pop(),
+//                methods:{
+//                    after_back:vue_callback_stack.pop()
+//                }
+//            })
+//        }
+//        if(page.name=='home'){
+//            home_init()
+//        }
+
+//        if (page.name.startsWith('iframe_')) {
+//
+//            $(page.view.activePage.container).find('.page-content').addClass('_no_bottom')
+//
+//            setTimeout(function(){
+//                var el=$('.page-on-center').find('.iframe_wraper')
+//                var data = el.attr('data-src')
+//                el.attr('src',data)
+//                show_load(10*1000)
+//            },500)
+//        }else if(page.name=='home'){
+//            new Vue({
+//                el:'#there',
+//                data:{
+//                    menu:menu,
+//
+//                },
+//                methods:{
+//                }
+//            })
+//        }
+    })
+</script>
+{% block extra_script %}
+
+{% endblock %}
+</html>

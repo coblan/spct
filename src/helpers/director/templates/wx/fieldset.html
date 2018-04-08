@@ -1,0 +1,80 @@
+{% extends "wx/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src="{% static 'js/fields_mb.pack.js' %}"></script>
+<script type="text/javascript">
+
+
+    //	heads=
+    //	row =
+    //
+    //
+    //	can_add=
+    //	can_log=
+    //	can_del=
+
+    $(function () {
+        new Vue({
+            el:'#there',
+//			data:{
+//				kw:{
+//					heads:heads,
+//			        row:row,
+//			   		errors:{},
+//				},
+//				menu:menu,
+//				can_add:can_add,
+//				can_del:can_del,
+//				can_log:can_log,
+//			},
+            mixins:[fieldset_fun],
+            methods:{
+                get_name:function(field_name){
+                    var ls = field_name.split('.')
+                    return ls[1]
+                },
+                get_kw:function(field_name){
+                    var ls = field_name.split('.')
+                    return this.fieldset[ls[0]]
+                }
+            }
+
+        })
+    })
+</script>
+
+<div id='there'>
+
+    <!--<div v-if="can_log" style='float: right;padding: 5px 20px;'>-->
+        <!--<a :href="log_url()">History</a>-->
+    <!--</div>-->
+    <!--<path-nav :menu='menu'>-->
+        <!--<li><span>编辑</span></li>-->
+    <!--</path-nav>-->
+
+    <!--<com-form-btn :submit="submit" :del_row="del_row" :cancel="cancel"></com-form-btn>-->
+
+    <div v-if="namelist.length>0">
+
+        <div v-for="name in namelist" >
+            <div class="weui-cells__title" v-text="name.label"></div>
+            <!--<div class="weui-cells weui-cells_form">-->
+            <div class="form-pad">
+                <field  v-for='field_name in name.fields' :key="field_name" :name='get_name(field_name)' :kw='get_kw(field_name)'></field>
+            </div>
+
+            <!--</div>-->
+
+        </div>
+
+        <div class="weui-btn-area">
+            <a class="weui-btn weui-btn_primary" href="javascript:" id="showTooltips" @click="submit()" style="width: 50vw;">确定</a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

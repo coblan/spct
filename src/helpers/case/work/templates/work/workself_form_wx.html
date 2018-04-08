@@ -1,0 +1,36 @@
+{% extends "work/workrecord_form_wx.html" %}
+
+
+{% block extra_head %}
+<script>
+
+//    ex.each(heads,function(head){
+//        if(head.name=='')
+//    })
+
+    ex_logic={
+        methods:{
+            submit: function submit() {
+                var self = this;
+                if (window.bus) {
+                    window.bus.$emit('sync_data');
+                }
+                show_upload();
+                var search = ex.parseSearch();
+                var post_data = [{ fun: 'save_workself', row: this.kw.row }];
+                var url = ex.appendSearch('/_ajax/work', search_args);
+                ex.post(url, JSON.stringify(post_data), function (resp) {
+                    hide_upload(500);
+                    if (resp.save_workself.errors) {
+                        self.kw.errors = resp.save_workself.errors;
+                    }else if(search_args.next){
+                        location=decodeURIComponent(search_args.next)
+                    }
+                });
+            },
+        }
+    }
+
+    form_logic.mixins=[field_fun,ex_logic]
+</script>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "director/index.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+
+{% comment  'python-code'%}
+<script type="text/javascript" id="form-meta-data">
+
+    {
+        "heads": [
+            {"name":"richcontent","label":"rich content","type":"richtext"}
+        ]
+    }
+
+</script>
+{% endcomment %}
+
+
+
+
+<script type="text/javascript">
+
+    //	{'name':'content','label':'content','type':'richtext'},
+    //	{'name':'foot','label':'foot','type':'richtext'}
+
+    var ctx={{ ctx | jsonify }}
+    $(function(){
+        new Vue({
+            el:'#home_there',
+            data:{
+                ctx:ctx
+            }
+        })
+    })
+</script>
+
+
+
+
+<div id="home_there">
+    <div v-html="ctx.richcontent"></div>
+</div>
+
+<style type="text/css">
+    #home_there{
+        max-width: 1200px;
+        margin: auto;
+    }
+</style>
+
+{% endblock %}

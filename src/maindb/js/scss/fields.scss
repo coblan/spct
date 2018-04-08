@@ -1,0 +1,14 @@
+.msg-hide .field .msg{
+  display: none;
+}
+
+.field {
+  .picture{
+    // for nice validator
+    position: relative;
+    .msg-box{
+      position: absolute;
+      left: 260px;
+    }
+  }
+}

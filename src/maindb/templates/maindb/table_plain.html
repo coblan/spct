@@ -1,0 +1,127 @@
+{% extends "adminlte/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src='{% static "js/maindb.pack.js?t=" %}{{ js_stamp.maindb_pack_js }}'></script>
+
+<script type="text/javascript">
+
+    //	row_filters=
+    //	placeholder =
+    //	row_sort=
+    //	heads=
+    //	rows=
+    //	row_pages =
+
+    //	can_add=
+    //	can_del=
+    //	search_args=ex.parseSearch()
+    //	search字段从 search_args._q 来取值
+
+    table_logic={
+        el:'#there',
+        data:{
+                page_label:page_label,
+		        heads:heads,
+		        rows:rows,
+		        row_filters:row_filters,
+		        row_sort:row_sort,
+		        row_pages:row_pages,
+		        selected:[],
+                search_args:ex.parseSearch(),
+
+//		        del_info:[],
+//		        menu:menu,
+//		        can_add:can_add,
+//		        can_del:can_del,
+//		        model:model,
+
+        },
+        mixins:[mix_table_data,mix_v_table_adapter],
+        watch:{
+//            'row_sort.sort_str':function (v) {
+//                this.search_args._sort=v
+//                this.search()
+//            }
+        },
+
+    }
+    $(function () {
+        table=new Vue(table_logic)
+    })
+
+</script>
+
+{% block extra_head %}
+{% endblock %}
+
+<div id='there' class="flex-v" style="height: 85vh;">
+
+    <ol v-if="page_label" class="breadcrumb">
+        <b v-text="page_label"></b>
+    </ol>
+    <!--<path-nav v-else :menu='menu'></path-nav>-->
+
+    <div class="rows-block">
+        <div class='flex' style="min-height: 3em;">
+            <com-filter class="flex" :heads="row_filters" :search_args="search_args"
+                        @submit="search()"></com-filter>
+            <div class="flex-grow"></div>
+        </div>
+        <div class="box box-success">
+            <div class="table-wraper">
+                <v-table ref="vtable" is-horizontal-resize
+                         is-vertical-resize
+                         :vertical-resize-offset="80"
+                         :title-row-height="30"
+                         :row-height="24"
+                         odd-bg-color="#f0f6f8"
+                         column-width-drag
+                         style="width: 100%;"
+                         :columns="columns"
+                         :table-data="rows"
+                         @sort-change="sortChange"
+                         row-hover-color="#eee"
+                         row-click-color="#edf7ff">
+                </v-table>
+
+            </div>
+            <div style="margin-top: 10px;">
+                <v-pagination @page-change="get_page($event)"
+                              :total="row_pages.total"
+                              :page-size="row_pages.perpage"
+                              @page-size-change="on_perpage_change($event)"
+                              :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']">
+                </v-pagination>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<style>
+    .fake-suit th{
+        white-space: nowrap;
+    }
+
+    /*.table thead tr {*/
+        /*display:block;*/
+    /*}*/
+    /*.table tbody {*/
+        /*display: block;*/
+        /*height: 300px;*/
+        /*overflow: auto;*/
+    /*}*/
+    /*.table th {*/
+        /*width:20%;*/
+    /*}*/
+    /*.table td {*/
+        /*width:20%;*/
+    /*}*/
+
+</style>
+{% block extra %}
+{% endblock %}
+{% endblock %}

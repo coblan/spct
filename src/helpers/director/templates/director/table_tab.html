@@ -1,0 +1,162 @@
+{% extends "director/index.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<!--<script src='{% static "js/table.pack.js?t=" %}{{ js_stamp.table_pack_js }}'></script>-->
+<script type="text/javascript">
+
+    //	row_filters=
+    //	placeholder =
+    //	row_sort=
+    //	heads=
+    //	rows=
+    //	row_pages =
+
+    //	can_add=
+    //	can_del=
+    //	search_args=ex.parseSearch()
+    //	search字段从 search_args._q 来取值
+
+    tabs={{ tabs | jsonify | default:'[]' }}
+    crt_tab = '{{ crt_tab | default:'null' }}'
+    crt_tab = crt_tab || tabs[0].name
+
+//    page_name = 'liantang.yinji'
+
+    table_logic={
+        el:'#there',
+        data:{
+//		        heads:heads,
+//		        rows:rows,
+//		        row_filters:row_filters,
+//		        row_sort:row_sort,
+//		        row_pages:row_pages,
+//		        placeholder:placeholder,
+//		        selected:[],
+//		        del_info:[],
+//		        menu:menu,
+//		        can_add:can_add,
+//		        can_del:can_del,
+//		        model:model,
+//		        search_args:search_args,
+//		        ex:ex,
+            tabs:tabs,
+            crt_tab:crt_tab,
+            page_label:page_label,
+        },
+        mounted:function(){
+            this.heads[0].type='first_col_next'
+        },
+        mixins:[table_fun],
+        watch:{
+            'row_sort.sort_str':function (v) {
+                this.search_args._sort=v
+                this.search()
+            }
+        },
+        methods:{
+            item_link:function(name){
+                if(name!=this.crt_tab){
+                    return ex.appendSearch({_tab:name})
+                }else{
+                    return 'javascript:;'
+                }
+            },
+            add_new_yinji:function(){
+                var url = '/pc/liantang.yinji.edit'
+                var next = encodeURIComponent(location.href)
+                location = ex.appendSearch(url,{next:next,jianfang_pk :search_args.pk})
+            },
+            map:function(name,row){
+                if(name=='state'){
+                    return row['_tr_state']
+                }else{
+                    return table_fun.methods.map.call(this,name,row)
+                }
+            }
+//            form_link: function(name, row) {
+//                return ex.template('<a href="/pc/liantang.yinji?pk={pk}&next={next}">{value}</a>', { edit: page_name + '.edit',
+//                    pk: row.pk,
+//                    next: encodeURIComponent(location.href),
+//                    value: row[name]
+//                });
+//            },
+        }
+
+    }
+    $(function () {
+        table=new Vue(table_logic)
+    })
+
+</script>
+
+{% block extra_head %}
+{% endblock %}
+
+<div id='there'>
+
+    <ol class="breadcrumb">
+        <b v-text="page_label"></b>
+    </ol>
+
+    <div class="flex">
+        <ul class="nav nav-tabs tabs flex-grow">
+            <li v-for="tab in tabs" :class="{'active':crt_tab==tab.name}"><a :href="item_link(tab.name)" v-text="tab.label" ></a></li>
+
+        </ul>
+
+        <!--<com-form-btn :submit="submit" :del_row="del_row" :cancel="cancel"></com-form-btn>-->
+
+    </div>
+
+
+    <div class='btn-panel flex flex-sb' style="padding-left:20px; ">
+
+        <!--<div v-if="row_filters.length==0" class="flex-grow"></div>-->
+        <com-filter class="flex" :heads="row_filters" :search="search_args"
+                    :search_tip='search_tip' @submit="search()"></com-filter>
+        <div class="flex-grow"></div>
+
+
+        <com-table-btn v-if="!search_args._pop" :add_new="add_new_yinji" :del_item="del_item" :table_bus="this">
+        </com-table-btn>
+
+
+    </div>
+
+    <com-table class='table fake-suit' :has_check="!search_args._pop" :map="map"
+               :row_sort="row_sort" :heads="heads" :rows="rows" v-model="selected"></com-table>
+
+    <paginator :nums='row_pages.options' :crt='row_pages.crt_page' @goto_page='goto_page($event)'></paginator>
+
+
+</div>
+
+
+<script>
+    // 原生的first_col不具备next功能，现在加上改功能，
+    // 以后重构原生的后，记得去掉这里的代码。
+    var first_col_next={
+        props:['row','name'],
+        methods:{
+            ret:function(row){
+                ln.ret(row)
+            },
+            form_link:function(name,row){
+                return ex.template('{edit}?pk={pk}&next={next}',
+                        {	edit:page_name+'.edit',
+                            pk:row.pk,
+                            next:encodeURIComponent(location.href)
+                        })
+            },
+
+        },
+        template:'<div> <a :href="form_link(name,row)" v-text="row[name]"></a> </div>'
+    }
+
+    Vue.component('first_col_next',first_col_next)
+</script>
+{% block extra %}
+{% endblock %}
+{% endblock %}

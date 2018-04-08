@@ -1,0 +1,63 @@
+{% extends "director/index.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+
+<script type="text/javascript">
+
+
+    $(function () {
+        new Vue({
+            el:'#there',
+            mixins:[field_fun],
+            computed:{
+                editor_type:function(){
+                    return this.kw.row.editor_type
+                }
+            },
+            watch:{
+                editor_type:function(v){
+                    this.set_editor_type(v)
+                }
+            },
+            mounted:function(){
+                var self=this
+                self.set_editor_type(this.kw.row.editor_type)
+            },
+            methods:{
+                set_editor_type:function(type){
+                    ex.each(this.kw.heads,function(head){
+                        if(head.name=='value'){
+                            head.type=type
+                        }
+                    })
+                }
+            }
+
+        })
+    })
+</script>
+
+{% block extra_head %}
+
+{% endblock %}
+
+<div id='there'>
+
+    <div v-if="can_log" style='float: right;padding: 5px 20px;'>
+        <a :href="log_url()">History</a>
+    </div>
+    <path-nav :menu='menu'>
+        <li><span>编辑</span></li>
+    </path-nav>
+
+    <com-form-btn :submit="submit" :del_row="del_row" :cancel="cancel"></com-form-btn>
+
+    <div class='field-panel'>
+
+        <field  v-for='head in kw.heads' :key="head.name" :name='head.name' :kw='kw'></field>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends "f7/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+
+{% block page_content %}
+<script src='{% static "js/ex_inputs.pack.js?t=" %}{{ stamp.ex_inputs_pack_js}}'></script>
+
+{% include 'work/com_workindex.html' %}
+
+
+<script type="text/javascript">
+
+
+//    with_menu=false
+    ex.each(heads,function(head){
+        if(head.name=='work'){
+            head.type='btn-dir'
+        }
+    })
+
+
+    form_logic={
+        el:'#there',
+        data:{
+//                menu:menu,
+            crt_view:'main',
+            page_label:page_label,
+            is_shrink:true,
+            importent_fields:['work','finish_time','count','short']
+
+        },
+        mixins:[field_fun],
+
+        computed:{
+            extra_field:function(){
+                var self=this
+                var list=ex.filter(this.kw.heads,function(head){
+                    return !ex.isin(head.name,self.importent_fields)
+                })
+                return list
+            },
+        },
+
+        methods:{
+            after_sub:function(new_row){
+                var self=this
+                ff.back(function(last_win){
+                    if(self.kw.row.pk){
+                        var row = ex.findone(last_win.rows,{pk:new_row.pk})
+                        ex.assign(row,new_row)
+//                        row.work=new_row._work_label
+                    }else{ // 新建
+                        last_win.location.reload()
+                    }
+
+                })
+            },
+            shrinked:function(heads){
+                return ex.sort_by_names(this.kw.heads,this.importent_fields)
+//                if(this.is_shrink){
+//                    return ex.sort_by_names(this.kw.heads,['work','finish_time','count','short'])
+//                }else{
+//                    return ex.sort_by_names(this.kw.heads,['work','finish_time','count','short','status'],true)
+//                }
+
+            },
+
+            expand:function(){
+                if(this.is_shrink){
+                    $('.extra-fields').slideDown(400)
+                    this.is_shrink=false
+                }else{
+                    this.is_shrink=true
+                    $('.extra-fields').slideUp(400)
+                }
+
+
+
+
+
+//                    var self=this
+//                    setTimeout(function(){
+//                        self.$refs.scroller.refresh()
+//                    },500)
+            },
+
+
+        }
+    }
+
+
+    $(function(){
+        form =new Vue(form_logic)
+    })
+</script>
+
+
+
+<div id="there" v-cloak style="overflow: auto;padding-bottom: 5em;">
+    <div v-show="crt_view=='main'">
+
+        <div class="form-pad">
+            <field v-for="head in shrinked(kw.heads)" :name="head.name" :kw="kw"></field>
+            <!--<div v-if="is_shrink" @click="expand()" style="position: absolute;right:1em;padding: 0.3em;color: #3c8aff;">更多<i class="fa fa-angle-down" aria-hidden="true"></i></div>-->
+
+
+        </div>
+
+        <div style="text-align: right;position: relative;border-bottom: 1px solid #f4f4f4;" >
+            <div style="position: absolute;right: 1em;bottom: 0;">
+                <span  @click="expand()">
+                    <span v-show="is_shrink">更多>></span>
+                    <span v-show="!is_shrink">收缩<<</span>
+                </span>
+            </div>
+
+        </div>
+        <div class="form-pad extra-fields" style="display: none;padding-top: 1em;">
+            <field v-for="head in extra_field" :name="head.name" :kw="kw"></field>
+        </div>
+
+
+        <!--<div class="form-pad extra-fields" style="padding-top:0;display: none;">-->
+            <!--<field v-for="head in extra_field" :name="head.name" :kw="kw"></field>-->
+        <!--</div>-->
+
+        <!--<div class="accordion-list">-->
+            <!--<div class="accordion-item">-->
+                <!--<div class="accordion-item-toggle" style="text-align: right;">-->
+                    <!--<span style="padding-right: 1em;">-->
+                        <!--<span>更多>></span>-->
+                        <!--&lt;!&ndash;<span>收缩</span><span></span>&ndash;&gt;-->
+                    <!--</span>-->
+
+                <!--</div>-->
+                <!--<div class="accordion-item-content">-->
+                    <!--<div class="form-pad" style="padding-top: 0">-->
+                        <!--<field v-for="head in extra_field" :name="head.name" :kw="kw"></field>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            <!--</div>-->
+        <!--</div>-->
+
+        <div v-btn-group>
+            <a state="success" @click="submit()">确定</a>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+{% endblock %}

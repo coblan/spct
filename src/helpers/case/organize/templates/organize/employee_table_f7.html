@@ -1,0 +1,59 @@
+{% extends "f7/table.html" %}
+
+
+
+{% block extra_head %}
+<script>
+    ff.pop_menu(function(){
+        var buttons = [
+            {
+                text: '新建',
+                onClick: function () {
+                    table.add_new();
+                }
+            },
+            {
+                text: '排序过滤',
+                onClick: function () {
+                    filter.open()
+                }
+            },
+        ];
+        buttons.push({
+            text: '取消',
+            color: 'red',
+        })
+        ff.app.actions(buttons)
+    })
+</script>
+
+
+<style>
+    .this-item{
+        display: flex;
+        width: 100vw;
+        padding: 1em;
+        padding-left: 2em;
+        align-items: center;
+    }
+    .this-item:nth-child(odd){
+        background-color: white;
+    }
+    .this-item .name{
+        padding-left: 3em;
+    }
+</style>
+{% endblock %}
+
+
+{% block item_view %}
+<div style="width: 100vw;">
+    <div class="this-item flex" v-for="row in rows" @click="ge_edit(row.pk)">
+        <img :src="row.head" alt="" style="width: 3em;height: 3em;"/>
+        <span class="name flex-grow" v-text="row.baseinfo"></span>
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+    </div>
+</div>
+
+
+{% endblock%}

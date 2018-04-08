@@ -1,0 +1,79 @@
+{% extends "director/table.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block extra_head %}
+<script>
+    extra_logic={
+        data:function(){
+          return {
+              import_file:''
+          }
+        },
+        watch:{
+          import_file:function(v){
+              if(v){
+                  var url='/_ajax/director?_op=upload_group_permit'
+                  fl.upload(v[0],url,function(){
+                      alert('import success')
+                  })
+              }
+          }
+        },
+        methods:{
+            export_data:function(){
+                var items_str=""
+                ex.each(this.selected,function(pk){
+                    items_str+= pk+'-'
+                })
+                var op_str='download_group_permit:items:'+items_str
+                location='/_download/director'+'?_op='+op_str
+
+            },
+            import_data:function(){
+                $('#table_import').click()
+            },
+            create_group_filter:function(){
+                location=engine_url+'/'+page_name+'.assem.edit'
+            },
+            map: function map(name, row) {
+                var content = row[name];
+                if(name == this.heads[0].name){
+                    if(content.startsWith('assem.')){
+                        var url=engine_url+'/'+page_name+'.assem.edit?pk='+row.pk
+                        return ex.template('<a href={url}>{content}</a>',{url:url,content:content})
+                    }else{
+                        return this.form_link(name,row)
+                    }
+                }
+//                if (this.search_args._pop) {
+//                    ln.rtWin(row);
+//                } else if (name == this.heads[0].name) {
+//                    return this.form_link(name, row);
+//                } else if (content === true) {
+//                    return '<img src="//res.enjoyst.com/true.png" width="15px" />';
+//                } else if (content === false) {
+//                    return '<img src="//res.enjoyst.com/false.png" width="15px" />';
+//                } else {
+//                    return content;
+//                }
+            },
+        }
+    }
+    table_logic.mixins=[table_fun,extra_logic]
+
+</script>
+{% endblock %}
+
+{% block extra_btn %}
+<button type="button" class="btn btn-default btn-sm" @click="export_data()">下载</button>
+<button type="button" class="btn btn-default btn-sm" @click="import_data()">导入</button>
+<file-input id="table_import" style="display: none;" v-model="import_file" ></file-input>
+
+<button type="button" class="btn btn-default btn-sm" @click="create_group_filter()">创建集成组</button>
+{% endblock %}
+
+{% block extra %}
+
+
+{% endblock %}

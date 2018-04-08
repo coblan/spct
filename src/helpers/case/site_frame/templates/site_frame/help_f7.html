@@ -1,0 +1,76 @@
+{% extends "f7/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block extra_script %}
+
+<style>
+p.weui-tabbar__label{
+    margin: 0.2em;
+}
+    .bang-title{
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        padding: 0.4em;
+        width: 6em;
+    }
+    /*.bang-title span{*/
+        /*display: inline-block;*/
+        /*position: absolute;*/
+        /*top:50%;*/
+        /*transform: translate(0,-50%);*/
+
+    /*}*/
+</style>
+{% endblock %}
+
+{% block page_content %}
+<script>
+
+    page_label='简略帮助'
+    help_info_list={{ help_info_list | jsonify | default:'[]'}}
+//    $('.navbar-inner .center').html('简略帮助')
+$(function(){
+    new Vue({
+        el:'#help-info-list',
+        data:{
+            help_info_list:help_info_list,
+        },
+        methods:{
+            open_page:function(name){
+                var url=engine_url+'/press?_name='+name
+                ff.load(url,name)
+            }
+        }
+    })
+})
+</script>
+
+<div style="height: 5em;background-color: #62c0d1;position: relative;">
+    <div class="bang-title" style="bottom: -2.2em;height: 4em;width: 12em;background-color: #003399">
+        <span class="imiddle" style="color: white;">帮助信息</span>
+    </div>
+</div>
+<!--空白-->
+<div style="height: 6em;">
+
+</div>
+
+<div class="list-block" id="help-info-list">
+    <ul>
+        <li class="item-content material-wave" v-for="help_info in help_info_list" @click="open_page(help_info.name)">
+            <div class="item-inner">
+                <div class="item-title" v-text="help_info.label"></div>
+                <i style="float: right;" class="fa fa-angle-right" aria-hidden="true"></i>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!--<div class='flex-grow' style='overflow: auto;'>-->
+    <!--{{ help_text | safe }}-->
+<!--</div>-->
+
+{% endblock %}
+

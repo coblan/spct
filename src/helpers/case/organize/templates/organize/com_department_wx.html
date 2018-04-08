@@ -1,0 +1,144 @@
+<script>
+    //ln_state={}
+
+    department_url = "{% url 'organize.tree_depart' %}"
+
+    $(function(){
+        depart_win=new Vue({
+            el:'#depart_win',
+            data:{
+//                ln_state:ln_state,
+                department_url:department_url,
+                root:{pk:null,name:'公司'}
+            },
+            mixins:[popup_page],
+            mounted:function(){
+              bus.$on('choice-depart',this.on_dirclick)
+            },
+            methods:{
+                selector:function(){
+                    return '.popup-depart-win'
+                },
+                on_dirclick:function(department){
+                    this.depart_callback(department)
+                    history.back()
+                },
+                get_department:function(root,callback){
+                    var  self=this
+                    this.root=root || {pk:null,name:'公司'}
+                    this.open()
+                    Vue.nextTick(function(){
+                        self.$refs.depart_tree.dir_data(self.root)
+                        self.depart_callback=callback
+                    })
+
+                },
+                add_nav:function(){
+                    ff.add_nav('<div class="navbar-inner temp-navbar" style="background-color: inherit;">\
+                            <div class="left"><a href=" javascript:void(0)" onclick="call_iframe(\'popup_close\')" style="padding-left: 1em;color: #4a4a4a">\
+                            <i class="fa fa-times fa-2x" aria-hidden="true"></i></a></div>\
+                            <div class="center"></div>\
+                            <div class="right"></div>\
+                            </div>')
+
+                },
+            }
+        })
+    })
+</script>
+
+<div id="depart_win">
+    <div class="popup popup-depart-win">
+        <div >
+            <!--<title-bar :with_back="true" title="编辑工作类型"></title-bar>-->
+            <div class="department-win">
+                <layer-tree ref="depart_tree" :url="department_url" :root="root"></layer-tree>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var layer_tree={
+        props:['root','url','readonly'],
+        data:function(){
+            return {
+                parents:[],
+                items:[],
+                crt_dir:{},
+                selected:[],
+                cut_list:[],
+            }
+        },
+        mounted:function(){
+            this.dir_data(this.root)
+        },
+        methods:{
+            dir_data:function(par){
+                this.crt_dir= par
+                var self=this
+                this.selected=[]
+                var post_data=[{fun:'dir_data',root:this.root,par:par}]
+                ex.post(this.url,JSON.stringify(post_data),function(resp){
+                    self.items=resp.dir_data.items
+                    self.parents=resp.dir_data.parents
+
+                    ex.each(self.items,function(item){
+                        item.type='depart-cell'
+                    })
+                })
+            }
+        },
+        template:'#com-layer-tree'
+    }
+
+    Vue.component('layer-tree',layer_tree)
+</script>
+
+<template id="com-layer-tree">
+    <div class="layer-tree">
+        <div class="flex">
+            <ol class="breadcrumb flex-grow">
+                <li v-for="dir in parents" >
+                    <a href="javacript:;" v-text="dir.name" @click="dir_data(dir)" ></a>
+                </li>
+            </ol>
+            <slot name="head_end"></slot>
+        </div>
+        <div class="bd">
+            <component v-for="item in items" :is="item.type" @nextlevel="dir_data(item)" :item="item" :selected.sync="selected"></component>
+        </div>
+    </div>
+</template>
+
+<script>
+    Vue.component('depart-cell',{
+        template:'#depart-cell',
+        props:['item','selected'],
+        computed:{
+            proxy_selected:{
+                get:function(){
+                    return this.selected
+                },
+                set:function(v){
+                    this.$emit('update:selected',v)
+                }
+            }
+        },
+        methods:{
+            choice:function(item){
+                bus.$emit('choice-depart',item)
+            }
+        }
+    })
+</script>
+
+<template id="depart-cell">
+    <div>
+
+        <span v-text="item._label" class="clickable name" @click="$emit('nextlevel')"></span>
+        <button class="btn btn-default btn-xs" type="button" @click="choice(item)">选择</button>
+    </div>
+</template>

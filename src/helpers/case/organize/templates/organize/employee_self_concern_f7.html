@@ -1,0 +1,69 @@
+{% extends "f7/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src='{% static "organize/organize.pack.js?t=" %}{{ stamp.organize_pack_js }}'></script>
+
+
+<script>
+    departs={{ departs | jsonify | default:'[]' }}
+    depart_layer_tree_url = "{% url 'organize.tree_depart' %}"
+
+
+    $(function(){
+        new Vue({
+            el:'#there',
+            data:{
+                departs:departs,
+            },
+            methods:{
+                select_subdepart:function(par_depart){
+                    var depart_selector=new DepartSelect(depart_layer_tree_url,par_depart)
+                    depart_selector.select(function(depart){
+                        if(ex.isin(depart,par_depart.concern_subdepart,function(subitem){return depart.pk==subitem.pk})){
+                            return
+                        }
+                        var url='/_ajax/organize'
+                        var post_data=[{fun:'save_concern_depart',depart:depart}]
+                        ex.post(url,JSON.stringify(post_data),function(resp){
+//                            if(resp.save_concern_depart.status=='success'){
+                                var tmp =par_depart.concern_subdepart.concat([depart])
+                                par_depart.concern_subdepart=tmp
+ //                                par_depart.concern_subdepart.push(depart)  不知道为什么push不能触发vue刷新界面？只能曲线 用concat触发了。
+
+                        })
+                    })
+                },
+                rm_subdepart:function(subdepart,par_depart){
+                    var url='/_ajax/organize'
+                    var post_data=[{fun:'rm_concern_depart',depart:subdepart}]
+                    ex.post(url,JSON.stringify(post_data),function(resp){
+                        ex.remove(par_depart.concern_subdepart,subdepart)
+                    })
+                }
+            }
+
+        })
+    })
+
+</script>
+
+<div id="there">
+    <div v-for="depart in departs">
+        <div class="content-block">
+
+
+            <span v-text="depart._label"></span>
+            <span style="float: right;margin-right: 1em;"><button @click="select_subdepart(depart)">关注下级</button></span>
+            <div style="margin-top:1em;padding-bottom:0.7em;  border-bottom: 1px solid #e1e1e1;">
+                <com-tab-lite v-for="subdepart in depart.concern_subdepart"  :value="subdepart" :label="subdepart._label"
+                                @close="rm_subdepart(subdepart,depart)"></com-tab-lite>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

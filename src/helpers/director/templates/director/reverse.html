@@ -1,0 +1,90 @@
+{% load jsonify %}
+
+<script type="application/javascript">
+    template='{{ template }}'
+    root_page='{{ root_page }}'
+    page_name='{{page_name}}'
+    page_label={{ page_label | jsonify | default:'unlabel page'}}
+    engine_url='{{engine_url}}'
+
+    can_add={{ can_add | jsonify | default:'false' }}
+    can_log={{ can_log | jsonify | default:'false' }}
+    can_del={{ can_del | jsonify | default:'false' }}
+    can_edit={{ can_edit | jsonify | default:'false' }}
+
+    heads={{ heads | jsonify | default:'[]' }}
+
+    row = {{ row | jsonify | default:'[]' }}
+
+    ops={{ops | jsonify | default:'[]' }}
+    row_filters={{row_filters | jsonify | default:'[]' }}
+    search_tip = '{{ search_tip |default:""}}'
+    row_sort={{row_sort | jsonify | default:'[]' }}
+
+    // only in table
+    rows={{ rows | jsonify | default:'[]'}}
+    row_pages = {{ row_pages | jsonify | default:'[]'}}
+
+    //
+    fieldset={{ fieldset | jsonify }}
+    namelist={{ namelist | jsonify | default:'[]' }}
+    delset={{ delset | jsonify | default:'[]' }}
+    save_step={{ save_step | jsonify | default:'[]' }}
+
+    app='{{ app }}'
+    {% if app  %}
+        ajax_url="{% url 'ajax_url' app=app %}"
+    {% endif %}
+
+     search_args=ex.parseSearch()
+     user='{{ user.pk }}'
+    user_name= '{{ user.first_name }}'
+
+    help_url = '{{ help_url |default:""}}'
+
+    table_fun_config= {{ table_fun_config | jsonify }}
+
+        intro_info={
+                template: '{{ template }}',
+                root_page:'{{ root_page }}',
+                page_name:'{{page_name}}',
+                page_label: {{ page_label | jsonify | default:'unlabel page'}},
+                engine_url : '{{engine_url}}',
+
+                can_add : {{ can_add | jsonify | default:'false' }},
+                can_log: {{ can_log | jsonify | default:'false' }},
+                can_del: {{ can_del | jsonify | default:'false' }},
+                can_edit: {{ can_edit | jsonify | default:'false' }},
+
+                heads: {{ heads | jsonify | default:'[]' }},
+
+                row : {{ row | jsonify | default:'[]' }},
+
+
+                row_filters: {{row_filters | jsonify | default:'[]' }},
+                search_tip : '{{ search_tip |default:""}}',
+                row_sort:{{row_sort | jsonify | default:'[]' }},
+
+                // only in table
+                rows:{{ rows | jsonify | default:'[]'}},
+                row_pages : {{ row_pages | jsonify | default:'[]'}},
+
+                //
+                fieldset:{{ fieldset | jsonify }},
+                namelist:{{ namelist | jsonify | default:'[]' }},
+                delset:{{ delset | jsonify | default:'[]' }},
+                save_step:{{ save_step | jsonify | default:'[]' }},
+
+                app: '{{ app }}',
+                        search_args:ex.parseSearch(),
+
+
+                    help_url : '{{ help_url |default:""}}',
+        }
+    {% if intro_info.app  %}
+        intro_info.ajax_url="{% url 'ajax_url' app=app %}"
+     {% endif %}
+
+
+</script>
+

@@ -1,0 +1,219 @@
+{% extends "adminlte/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src='{% static "js/maindb.pack.js?t=" %}{{ js_stamp.maindb_pack_js }}'></script>
+<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
+<!--<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>-->
+<script src="https://unpkg.com/vue-easytable/umd/js/index.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/vue-easytable/umd/css/index.css">
+
+<script type="text/javascript">
+
+    heads[0].editor='com_edit'
+    fields_heads={{ fields_heads | jsonify | default:'[]'}}
+    model_class='{{model_class}}'
+
+    mix_table_page={
+        methods:{
+            on_operation:function(operation){
+                if(operation=='add_new'){
+                    this.add_new()
+                }
+                if(operation=='delete'){
+                    this.del_selected()
+                }
+            },
+        }
+    }
+
+    table_logic={
+        el:'#there',
+        data:{
+//		        heads:heads,
+//		        rows:rows,
+//		        row_filters:row_filters,
+//		        row_sort:row_sort,
+//		        row_pages:row_pages,
+//		        placeholder:placeholder,
+		        selected:[],
+//		        del_info:[],
+//		        menu:menu,
+//		        can_add:can_add,
+//		        can_del:can_del,
+//		        model:model,
+//		        search_args:search_args,
+//		        ex:ex,
+            page_label:page_label,
+            heads:heads,
+            rows:rows,
+            row_filters:row_filters,
+            row_sort:row_sort,
+            row_pages:row_pages,
+            fields_heads:fields_heads,
+            search_args:ex.parseSearch(),
+            ops:ops,
+
+        },
+        mixins:[mix_table_data,mix_v_table_adapter,mix_table_page],
+        mounted:function(){
+            // 刚开始没有选中项
+            this.$refs.op_delete[0].set_enable(false)
+        },
+        watch:{
+            selected:function(nv){
+                this.$refs.op_delete[0].set_enable(nv.length != 0)
+            }
+        },
+        methods:{
+            add_new:function(){
+                var self=this
+                var post_data=[{fun:'get_row',model_name:model_class}]
+                cfg.show_load()
+                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                    cfg.hide_load()
+                    var tmp_row = resp.get_row
+                    self.open_layer(tmp_row)
+                })
+            },
+            open_layer:function(row){
+                var self=this
+                var cache_row=ex.copy(row)
+                self.opened_layer_indx = layer.open({
+                    type: 1,
+                    area: ['700px', '400px'],
+                    shadeClose: true, //点击遮罩关闭
+                    content:'<div id="fields-pop" style="height: 100%;"><com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)" :row="row" :heads="fields_heads"></com-pop-fields></div>'
+                });
+                var copy_fields_heads = ex.copy(fields_heads)
+                new Vue({
+                    el:'#fields-pop',
+                    data:{
+                        row:cache_row,
+                        fields_heads:copy_fields_heads,
+                    },
+                    methods:{
+                        on_sub_success:function(event){
+                            // 将新建的row 插入到表格中
+                            var old_row = event.old_row
+                            var new_row=event.new_row
+                            if(! old_row.pk){
+                                self.rows.splice(0,0,new_row)
+                            }else {
+                                ex.assign(row,new_row)
+                            }
+                        },
+                        on_del:function(){
+                            ex.remove(self.rows,row)
+                            layer.close(self.opened_layer_indx)
+                        },
+                    }
+                })
+            },
+
+            on_select_group_change:function(sel,v){
+                this.selected= sel
+                console.log(sel)
+                console.log(v)
+            }
+        }
+
+    }
+
+
+
+</script>
+
+{% block extra_head %}
+<script>
+    $(function () {
+        table=new Vue(table_logic)
+    })
+</script>
+{% endblock %}
+<script type="text/javascript">
+    Vue.component('com_edit',{
+        template:'<b v-text="rowData[field]" @click="edit_me()" style="cursor: pointer;color: #38c6ff"></b>',
+        props:['rowData','field','index'],
+//        props:['name','row'],
+        methods:{
+            edit_me:function(){
+                this.$root.open_layer(this.rowData)
+            }
+        }
+    })
+</script>
+
+<style>
+    a[disabled] {
+        color: gray;
+        pointer-events: none;
+    }
+</style>
+<div id='there'>
+
+    <ol v-if="page_label" class="breadcrumb" >
+        <span style="margin-right: 5em;">
+              <b v-text="page_label"></b>
+        </span>
+
+        <span class="oprations">
+            <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="'op_'+op.name" :head="op" @operation="on_operation(op.name)"></component>
+        </span>
+    </ol>
+
+    <!--<path-nav v-else :menu='menu'>-->
+        <!---->
+    <!--</path-nav>-->
+
+    <div class='btn-panel flex flex-sb ' style="min-height: 3em;">
+
+        <!--<div v-if="row_filters.length==0" class="flex-grow"></div>-->
+        <com-filter class="flex" :heads="row_filters" :search_args="search_args"
+                    @submit="search()"></com-filter>
+        <div class="flex-grow"></div>
+    </div>
+
+    <div class="box box-success">
+
+        <div class="table-wraper">
+
+            {% block table_content %}
+            <v-table ref="vtable" is-horizontal-resize
+                     is-vertical-resize
+                     :vertical-resize-offset="80"
+                     :title-row-height="30"
+                     :row-height="24"
+                     odd-bg-color="#f0f6f8"
+                     column-width-drag
+                     style="width: 100%;"
+                     :columns="columns"
+                     :table-data="rows"
+                     @sort-change="sortChange"
+                     :select-group-change="on_select_group_change"
+                     :select-all="on_select_group_change"
+                     row-hover-color="#eee"
+                     row-click-color="#edf7ff">
+            </v-table>
+            {% endblock %}
+
+
+        </div>
+
+        <div style="margin-top: 10px;">
+            <v-pagination @page-change="get_page($event)"
+                          :total="row_pages.total"
+                          size="small"
+                          :page-size="row_pages.perpage"
+                          @page-size-change="on_perpage_change($event)"
+                          :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']">
+            </v-pagination>
+        </div>
+    </div>
+
+</div>
+
+{% block extra %}
+{% endblock %}
+{% endblock %}

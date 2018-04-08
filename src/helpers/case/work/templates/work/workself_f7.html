@@ -1,0 +1,229 @@
+{% extends "f7/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+
+{% block extra_head %}
+    <!--{    % include 'f7/com/popup_page.html' %   }-->
+    <!--{    % include 'f7/com/table_time_group.html' %   }-->
+{% endblock %}
+{% block extra_body %}
+
+<!--{   % include 'wx/com/table_filter_wx.html' %   }-->
+
+
+
+{% endblock %}
+
+{% block page_content %}
+
+{% include 'organize/com_depart_btn.html' %}
+
+
+<script type="text/javascript">
+
+
+
+    ff.pop_menu(function(){
+        var buttons = [
+            {
+                text: '新建',
+                onClick: function () {
+                    table.add_new();
+                }
+            },
+            {
+                text: '排序过滤',
+                onClick: function () {
+//                    filter.open()
+                    filter_win.open(intro_info)
+                }
+            },
+        ];
+        if(table.help_url){
+            buttons.push({
+                text: '帮助',
+                onClick: function () {
+                    table.goto(help_url);
+                }
+            })
+        }
+
+        buttons.push({
+                text: '取消',
+                color: 'red',
+        })
+        ff.app.actions(buttons)
+    })
+
+    $(function(){
+
+        table= new Vue({
+            el:'#there',
+            data:{
+            },
+            mixins:[table_fun,table_time_group],
+
+            computed:{
+//                grouped_rows:function(){
+//                    var new_rows = ex.group_add([],this.rows,function(row){return row.create_time.slice(0,10)})
+//                    return new_rows
+//                },
+
+            },
+            methods:{
+                get_group_key:function(row){
+                    return row.create_time.slice(0,10)
+                },
+                add_new: function add_new() {
+                    // 启用
+                    var pathname=ex.template('{engine_url}/{page}.edit', {
+                                    engine_url: engine_url,
+                                    page: page_name,
+                                });
+
+                    var url=ex.appendSearch(pathname,search_args)
+                    ff.load(url,'workself_edit')
+                },
+                ge_edit:function(pk){
+                    var url=ex.template('{engine_url}/{page_name}.edit',{engine_url:engine_url,page_name:page_name})
+                    search_args.pk=pk
+//                    search_args.next=encodeURIComponent(location.href)
+                    setTimeout(function(){
+                        ff.load(ex.appendSearch(url,search_args),'workself_edit')
+                    },300)
+
+                },
+
+                get_row_img:function(row){
+                    return  row.desp_img || row.work_desp_img || '/static/res/image/person-work.png'
+                },
+                del_item:function(row){
+                    var self =this
+                    ff.confirm('真的删除吗?',function(){
+                        var post_data=[{fun:'del_rows',rows:[row]}]
+                        $.post('/_ajax',JSON.stringify(post_data),function (data) {
+                            if(data.del_rows){
+                                location.reload()
+                            }
+                        })
+                    })
+                },
+            }
+        })
+    })
+
+
+</script>
+
+
+<style>
+    .item-content{
+        padding: 1em 0.3em;
+    }
+    .inn.list-block{
+        margin: 0;
+    }
+
+     .float-btn{
+        overflow:hidden;
+        position: fixed;
+        right: 1em;
+        bottom: 2em;
+        width: 4em;
+        height: 4em;
+        background-color: #d9d557;
+        border-radius: 2em;
+        z-index:200;
+    }
+     .ctn-panel span{
+         margin-left: 0.6em;
+     }
+     .ctn-panel .work{
+         min-width: 4em;
+     }
+    .btm-panel span{
+        margin-left: 0.3em;
+    }
+    .item-panel{
+        padding-top: 1em;
+    }
+</style>
+
+
+
+<div id="there" class="cloak-block flex-grow"  style="position: relative;" v-cloak>
+
+    <div :class='["float-btn","material-wave"]' style=""
+         data-speed="3" @click="add_new()">
+        <i style="pointer-events: none;" class="fa fa-plus fa-2x imiddle" aria-hidden="true"></i>
+    </div>
+
+    <scroll-loader :can_load="has_next_page" @load_more="load_next_page()">
+
+        <div v-for="sub_rows in grouped_rows">
+            <h3 style="text-align: center;" v-text="norm_date( sub_rows.key)"></h3>
+
+            <div class="weui-cells" >
+                <div class="weui-cell weui-cell_access material-wave item-panel" v-for="row in sub_rows.list" @click="ge_edit(row.pk)">
+
+                    <div class="weui-cell__bd flex" >
+                        <div style="width: 3em;height: 3em;flex-shrink: 0;">
+                            <img style="width: 100%;height: 100%;" :src="get_row_img(row)" alt=""/>
+                        </div>
+                        <div class="flex-grow" style="padding: 0.3em;">
+                            <div class="flex ctn-panel">
+                                <span class="work" >
+                                    <span style="color: #425baf;" v-text="row.work"></span><br/>
+                                     <span style="font-size: 0.8em;" class="badge" v-text="row.count"></span>
+                                </span>
+                                <span style="font-size: 0.8em;color: #585b59;" v-text="row.short"></span>
+                            </div>
+
+                            <div class="flex btm-panel" style="font-size: 0.6em;color: #7c7e87;position: absolute;bottom: 0;right: 4em;">
+                                <span>
+                                    <i v-if="row.status=='pass'" class="fa fa-circle" aria-hidden="true" style="color: #04be02"></i>
+                                    <i v-if="row.status=='waiting'" class="fa fa-telegram" aria-hidden="true" style="color: #074bb6"></i>
+                                    <i v-if="row.status=='reject'" class="fa fa-info-circle" aria-hidden="true" style="color: red"></i>
+                                </span>
+                                <span v-text="norm_time(row.create_time)"></span>
+                            </div>
+                        </div>
+                        <div style="position: absolute;top: 5px;right: 2em;z-index: 200;">
+                            <span style="color: #b86150;padding: 0.5em" v-if="norm_date( sub_rows.key)=='今天'&&row.status=='waiting'" @click.stop="del_item(row)">
+                                <i class="fa fa-trash" aria-hidden="true"></i></span>
+                        </div>
+
+                    </div>
+                    <div class="weui-cell__ft">
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!--<ul>-->
+                <!--<li class="swipeout" v-for="row in rows" >-->
+                    <!--<div class="swipeout-content item-content flex material-wave" @click="ge_edit(row.pk)">-->
+                        <!--<div><img style="width: 3em;height: 3em" :src="get_row_img(row)" alt=""/></div>-->
+                        <!--<span v-text="row.work"></span>-->
+                        <!--<div> <i v-if="row.status=='pass'" class="fa fa-circle" aria-hidden="true" style="color: #04be02"></i>-->
+                            <!--<i v-if="row.status=='waiting'" class="fa fa-telegram" aria-hidden="true" style="color: #074bb6"></i>-->
+                            <!--<i v-if="row.status=='reject'" class="fa fa-info-circle" aria-hidden="true" style="color: red"></i>-->
+                        <!--</div>-->
+                            <!--<span v-text="row.create_time"></span>-->
+
+                    <!--</div>-->
+                    <!--<div class="swipeout-actions-right">-->
+                        <!--<a href="#" class="swipeout-delete" data-confirm="Are you sure want to delete t">删除</a>-->
+                    <!--</div>-->
+                <!--</li>-->
+            <!--</ul>-->
+        </div>
+
+    </scroll-loader>
+</div>
+
+
+
+{% endblock %}

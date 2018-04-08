@@ -1,0 +1,275 @@
+<!doctype html>
+{% load static %}
+{% load jsonify %}
+<html>
+<head>
+    <meta charset="utf-8">
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>{{ page_label | default:''}}</title>
+
+    <script src="{% static 'lib/jquery3.2.1.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/font-awesome4.7/font-awesome4.7.min.css' %}">
+    <script src="{% static 'lib/vue2.3.2.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'lib/bootstrap.min.css' %}">
+
+
+    <link rel="stylesheet" href="{% static 'lib/weui.min.css' %}">
+    <!--<script src="{% static 'lib/weui.min.js' %}"></script>-->
+
+    <script src='{% static "js/i18n.js" %}'></script>
+    <script src='{% static "js/exfun.js?t="%}{{ stamp.exfun_js }}'></script>
+
+    <script src="{% static 'js/uis_mb.pack.js?t=' %}{{ stamp.uis_mb_pack_js }}"></script>
+    <script src="{% static 'js/fields_mb.pack.js?t=' %}{{ stamp.fields_mb_pack_js}}"></script>
+    <script src="{% static 'js/table_mb.pack.js?t=' %}{{ stamp.table_mb_pack_js }}"></script>
+
+
+    {% include 'director/reverse.html' %}
+
+    <script type="text/javascript">
+//        var strategies = Vue.config.optionMergeStrategies
+//        strategies.myOption = strategies.methods
+
+        menu = {{ menu | jsonify }}
+
+        var org_height=$(window).height()
+        $(function(){
+            $(window).resize(function(){
+                var delta = org_height - $(window).height()
+                if(Math.abs(delta)  > 200){
+                    $(".footer.nav").hide()
+                }else{
+                    $(".footer.nav").show()
+                }
+
+            })
+
+        })
+
+        ex.each(menu,function(act){
+            if(act.url==location.pathname){
+                $('title').html(act.label)
+            }
+        })
+
+        $(function(){
+            $('.weui-tabbar.nav a').on('touchstart',function(){
+                $(this).addClass('fake-active')
+            })
+            $('.weui-tabbar.nav a').on('touchend',function(){
+                var self=this
+                setTimeout(function(){
+                    $(self).removeClass('fake-active')
+                },500)
+
+            })
+            $('.weui-tabbar.nav a').on('click',function(){
+                $(this).addClass('fake-active')
+
+            })
+            setTimeout(function(){
+                $('body').removeClass('start')
+                $('body').addClass('ready')
+            })
+
+
+
+        })
+
+
+    </script>
+</head>
+<body class="start">
+
+<script>
+
+    bus=new Vue()
+
+    in_wx_agent=false
+
+    title_bar=true
+    with_back=true
+    with_menu=true
+
+
+    ln_state={
+        crt_view:''
+    }
+    $(function(){
+        ln.history_handle({
+            init:ln_state,
+            handler:function(state){
+                ex.assign(ln_state,state)
+            }
+        })
+    })
+
+
+
+    $(function(){
+
+        if($('#pop-menu').length>0){
+            var with_menu=true
+        }else{
+            var with_menu=false
+        }
+
+        new Vue({
+            el:'#com-title',
+            data:{
+                title_bar:title_bar,
+                page_label:page_label,
+                with_back:with_back,
+                with_menu:with_menu,
+            },
+            computed:{
+                is_show_back:function(){
+                    if(this.with_back){
+                        return true
+                    }else{
+                        return false
+                    }
+                }
+            },
+            methods:{
+
+            }
+        })
+    })
+
+
+</script>
+<style>
+
+    .title-bar{
+        width: 100vw;
+        height: 3em;
+        background-color: #323232;
+        color: white;
+    }
+    .title-bar div{
+        min-width: 3em;
+        padding: 0.3em 0.6em;
+    }
+    /*.main.content{*/
+        /*padding: 0.5em 0 4em 0;*/
+    /*}*/
+
+    .total-page{
+        height: 100vh;
+        width: 100vm;
+    }
+</style>
+
+<div class="flex-v total-page">
+    <div id="com-title">
+        <title-bar v-if="title_bar" :title="page_label" :with_back="is_show_back" :with_menu="with_menu"></title-bar>
+    </div>
+
+
+    <div id="main-content-wrap" class="flex-grow flex-v" >
+
+        {% block page_content %}
+
+        {% endblock %}
+
+
+    </div>
+
+    <div style="position: relative;">
+    {% block main_menu %}
+
+        <div class="weui-tabbar nav footer">
+            <a id="help-page" href="/wx/help.wx" class="weui-tabbar__item ">
+                <i class="fa fa-info-circle weui-tabbar__icon" aria-hidden="true" ></i>
+                <p class="weui-tabbar__label">信息</p>
+            </a>
+            <a id="work-panel" href="/wx/home.wx" class="weui-tabbar__item weui-bar__item_on">
+                <i class="fa fa-th weui-tabbar__icon" aria-hidden="true" ></i>
+                <p class="weui-tabbar__label">工作</p>
+            </a>
+            <a id="employee-center" href="/wx/organize.employeeself.wx" class="weui-tabbar__item">
+                <i class="fa fa-user-circle weui-tabbar__icon" aria-hidden="true" ></i>
+                <p class="weui-tabbar__label">我的信息</p>
+            </a>
+
+        </div>
+
+    {% endblock %}
+
+    </div>
+</div>
+
+
+
+<style type="text/css">
+    body.start{
+        opacity: 0;
+    }
+    body.ready{
+        background-color: #f7f5f3;
+        transition: all 0.2s ease;
+    }
+
+    .nav .fake-active>i,.nav .fake-active>p{
+        color: green;
+
+    }
+    /*.nav.footer{*/
+        /*position: static;*/
+        /*margin: 0;*/
+    /*}*/
+    /*.weui-tab__panel{*/
+        /*padding-bottom: 150px;*/
+    /*}*/
+    .field .error{
+        color: red;
+    }
+    [v-cloak] {
+        display: none;
+    }
+    .nav.footer{
+        position: static;
+    }
+
+    .scroll-wraper{
+        position: absolute;
+        top:0;
+        left:0;
+        bottom: 0;
+        right:0;
+    }
+
+
+</style>
+
+<script type="application/javascript">
+    Vue.component('title-bar',{
+        template:'#title-bar',
+        props:['title','with_back','with_menu'],
+        methods:{
+            go_back:function(){
+                history.back()
+            },
+            on_menu_click:function(){
+
+                bus.$emit('menu_click')
+
+            }
+        }
+
+    })
+</script>
+
+<template id="title-bar">
+    <div class="flex title-bar" style="align-items:center;">
+        <div><div v-if="with_back" @click="go_back()"><i class="fa fa-chevron-left" aria-hidden="true"></i><span>返回</span></div></div>
+        <div  class="flex-grow" style="text-align: center;"><span v-text="title"></span></div>
+        <div><div v-if="with_menu" @click="on_menu_click()"><i  class="fa fa-align-justify" aria-hidden="true" style="font-size: 1.5em;"></i></div></div>
+    </div>
+</template>
+
+</body>
+
+
+</html>

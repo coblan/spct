@@ -1,0 +1,19 @@
+.head-item{
+  display: inline-block;
+
+  &.brand{
+    font-size: 150%;
+    width: 10em;
+    padding: 0.3em 1em;
+  }
+}
+
+#menu{
+  ._expand_menu{
+    margin-top: 1em;
+
+    &>ul>li{
+      margin-bottom: 0.2em;
+    }
+  }
+}

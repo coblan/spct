@@ -1,0 +1,167 @@
+{% extends "director/index.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+
+<script type="text/javascript">
+
+    heads={{ heads | jsonify }}
+    row = {{ row | jsonify }}
+
+    if(row.content){
+        page_row=JSON.parse(row.content)
+    }else{
+        page_row={}
+    }
+
+    errors={}
+
+    bus=new Vue()
+    $(function () {
+        new Vue({
+            el:'#there',
+            data:{
+                kw:{
+                    heads:heads,
+                    row:row,
+                    errors:errors,
+                },
+//                menu:menu,
+//                can_save:false,
+//                can_delete:false,
+//                can_log:false,
+
+                page_kw:{
+                    heads:[],
+                    row:page_row,
+                    errors:{},
+                },
+                tabs:['基本设置','页面内容'],
+                crt_tab:'基本设置'
+            },
+            mixins:[field_fun],
+
+//            mounted:function () {
+//                var self=this
+//                var ls = row._class.split('.')
+//                var app_label=ls[0]
+//                var model_name=ls[1]
+//                var post_data=[{fun:'model_perm',perm:'can_add',model:row._class,_rt_key:'can_save'},
+//                    {fun:'model_perm',perm:'can_del',model:row._class,_rt_key:'can_delete'},
+//                    {fun:'model_perm',perm:'can_log',model:row._class,_rt_key:'can_log'}]
+//                $.post('',JSON.stringify(post_data),function (data) {
+//                    self.can_save=data.can_save
+//                    self.can_delete=data.can_delete
+//                    self.can_log=data.can_log
+//                })
+//                if(this.kw.row.temp){
+//                    this.init_page_content(this.kw.row.temp)
+//                }
+//            },
+            mounted:function(){
+                if(this.kw.row.temp){
+                    this.init_page_content(this.kw.row.temp)
+                }
+            },
+            watch:{
+                'kw.row.temp':function(v){
+                    this.init_page_content(v)
+                }
+            },
+
+            methods:{
+                init_page_content:function(v){
+                    var temp = ex.findone(this.kw.heads,{name:'temp'})
+                    var page_meta = ex.findone(temp.options,{value:v})
+                    this.page_kw.heads =page_meta.heads
+                },
+                before_sub:function(){
+                    bus.$emit('sync_data')
+                    this.kw.row.content=JSON.stringify(this.page_kw.row)
+                },
+//                submit:function () {
+//                    bus.$emit('sync_data')
+//                    var self =this;
+//                    show_upload()
+//                    var search =ex.parseSearch()
+//                    this.kw.row.content=JSON.stringify(this.page_kw.row)
+//                    var post_data=[{fun:'save',row:this.kw.row}]
+//                    $.post('',JSON.stringify(post_data),function (data) {
+//                        if(data.msg){
+//                            hide_upload()
+//                            return
+//                        }
+//                        if(data.save && data.save.errors){
+//                            self.kw.errors = data.save.errors
+//                            hide_upload()
+//                        }else if(search._pop==1){
+//                            if(window.opener.on_subwin_close){
+//                                window.opener.on_subwin_close({pk:data.save.pk,_class:data.save._class})
+//                            }
+//                            window.close()
+//                        }else if(search.next){
+//                            location=atob(search.next)
+//                        }else{
+//                            hide_upload(1000)
+//
+//                        }
+//                    })
+//                },
+//                cancel:function () {
+//                    var search =ex.parseSearch() //parseSearch(location.search)
+//                    if(search.next){
+//                        location=atob(search.next)
+//                    }
+//                },
+//                del_row:function () {
+//                    if(!confirm('真的删除吗?'))
+//                        return
+//                    var obj={
+//                        pk:this.kw.row.pk,
+//                        _class:this.kw.row._class
+//                    }
+//                    var obj_str=JSON.stringify([obj])
+//                    var path = '{ url "del_rows" %}'
+//                    location=ex.template('{path}?rows={rows}&next={next}',{path:path,
+//                        rows:btoa(obj_str),
+//                        next:btoa(location.pathname)})
+//                }
+            },
+
+        })
+    })
+</script>
+
+<div id='there'>
+
+    <div style='float: right;padding: 5px 20px;'>
+        <a href="ss">History</a>
+    </div>
+    <path-nav :menu='menu'>
+        <li><span>编辑</span></li>
+    </path-nav>
+
+    <com-form-btn :submit="submit" :del_row="del_row" :cancel="cancel"></com-form-btn>
+    <!--<div style='overflow: hidden;'>-->
+        <!--<div class="btn-group" style='float: right;'>-->
+            <!--<button type="button" class="btn btn-default" @click='submit()' v-if='can_save'>Save</button>-->
+            <!--<button type="button" class="btn btn-default" v-if='can_delete' @click='del_row()'>删除</button>-->
+            <!--<button type="button" class="btn btn-default" @click='cancel()' >Cancel</button>-->
+        <!--</div>-->
+    <!--</div>-->
+
+    <page-tab :tabs="tabs" v-model="crt_tab"></page-tab>
+
+    <div class='field-panel' v-show="crt_tab==tabs[0]">
+        <field  v-for='head in kw.heads' :name='head.name' :kw='kw'></field>
+    </div>
+
+    <div class='field-panel' v-show="crt_tab==tabs[1]">
+        <field  v-for='head in page_kw.heads' :name='head.name' :kw='page_kw'></field>
+        <!--<div class='field-inn'></div>-->
+    </div>
+
+</div>
+
+{% endblock %}

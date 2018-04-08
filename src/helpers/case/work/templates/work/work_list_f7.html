@@ -1,0 +1,188 @@
+{% extends "f7/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+
+{% block extra_head %}
+    <!--{   % include 'f7/com/popup_page.html' %  }-->
+    <!--{   % include 'f7/com/table_time_group.html' %  }-->
+{% endblock %}
+
+{% block page_content %}
+
+{% comment %}
+{% include 'organize/com_department_wx.html' %}
+{% include 'organize/com_depart_btn.html' %}
+<!--{  % include 'wx/com/table_filter_wx.html' %  }-->
+{% include 'organize/com/active_department.html' %}
+{% endcomment %}
+
+{% include 'work/com/workrecord_fast_display.html' %}
+<script src='{% static "organize/organize.pack.js?t=" %}{{ organize_stamp.organize_pack_js }}'></script>
+
+<script type="text/javascript">
+
+
+    ff.pop_menu(function(){
+        var buttons = [
+//            {
+//                text: '下属部门',
+//                onClick: function () {
+//                    active_depart.open();
+//                }
+//            },
+            {
+                text: '排序过滤',
+                onClick: function () {
+                    filter_win.open(intro_info)
+                }
+            },
+        ];
+        if(table.help_url){
+            buttons.push({
+                text: '帮助',
+                onClick: function () {
+                    table.goto(help_url);
+                }
+            })
+        }
+
+        buttons.push({
+            text: '取消',
+            color: 'red',
+        })
+        ff.app.actions(buttons)
+    })
+
+    depart_list={{ depart_list | jsonify | default:'false' }}
+    crt_depart={{ crt_depart | jsonify | default:'false' }}
+
+    main_logic={
+        el:'#there',
+        data:{
+
+            ln:ln,
+            page_label:page_label,
+            show_menu:false,
+
+            depart_list:depart_list,
+            crt_depart:crt_depart,
+        },
+        mixins:[table_fun,table_time_group],
+        mounted:function(){
+            var self=this
+//            Vue.nextTick(function(){
+//                self.$refs.scroller.refresh()
+//            })
+
+//            bus.$on('menu_click',function(){
+//                self.show_menu=true
+//            })
+        },
+        methods:{
+            get_group_key:function(row){
+              return row.create_time.slice(0,10)
+            },
+            ge_edit:function(pk){
+                var url=ex.template('{engine_url}/{page_name}.edit',{engine_url:engine_url,page_name:page_name})
+                search_args.pk=pk
+                url = ex.appendSearch(url,search_args)
+                setTimeout(function(){
+                    ff.load(url,page_name+'_edit')
+                },300)
+            },
+            get_row_img:function(row){
+                return  row.desp_img || row.work_desp_img || '/static/res/image/person-work.png'
+            },
+            open_image:function(url){
+                ff.open_image(url)
+            },
+
+
+        }
+    }
+
+
+    $(function(){
+        table= new Vue(main_logic)
+    })
+</script>
+
+
+<div id="there" v-cloak class="flex-grow flex-v" style="position: relative">
+
+
+    <depart-btn-panel :depart_list="depart_list" :crt_depart="crt_depart"></depart-btn-panel>
+
+    <div class="flex-grow" style="position: relative;">
+        <scroll-loader :can_load="has_next_page" @load_more="load_next_page()">
+            <div v-for="sub_rows in grouped_rows">
+                <h3 style="text-align: center;" v-text="norm_date( sub_rows.key)"></h3>
+
+                <div class="weui-cells" >
+                    <workrecord-panel v-for="row in sub_rows.list" :row="row" :checkable="false"></workrecord-panel>
+                    <!--<div class="weui-cell flex " v-for="row in sub_rows.list" style="padding-top: 2em;">-->
+
+
+
+                    <!--<div class="weui-cell__bd"  style="position: relative;">-->
+
+                    <!--&lt;!&ndash;<img style="position:absolute;right:1em;top:-0.4em;width: 1.5em;height: 1.5em;border-radius: 1em;" :src="row.emp.head" alt=""/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div v-if="row.status=='pass'" style="position:absolute;right:1em;top:-0.4em;color: green;">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<i class="fa fa-check" aria-hidden="true"></i>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+
+
+                    <!--<div class="flex">-->
+
+                    <!--<div style="padding: 0 1em;" @click="ge_edit(row.pk)" class="material-wave">-->
+
+                    <!--<workrecord_display :row="row"></workrecord_display>-->
+
+                    <!--</div>-->
+                    <!--<div  class="flex-v" >-->
+                    <!--<img @click="open_image(get_row_img(row))" style="width: 4em;" :src="get_row_img(row)" alt=""/>-->
+                    <!--<div class="flex-grow" style="text-align: center;font-size: 1.5em;color: blue;margin-top: 0.4em;"><span v-text="row.work_span*row.count+row.ex_span"></span></div>-->
+                    <!--<div @click.stop="" @mousedown.stop="" style="text-align: right;">-->
+                    <!--<button  style="float: right;" :class="['button',{'color-green':row.status=='pass','color-red':row.status!='pass'}]" v-text="row._tr_status"></button>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <!--</div>-->
+                    <!-- -->
+                    <!--</div>-->
+                    <!--<div class="weui-cell__ft" style="align-self:center;">-->
+                    <!--<i class="fa fa-angle-right" aria-hidden="true"></i>-->
+                    <!--</div>-->
+
+                    <!--</div>-->
+                </div>
+            </div>
+        </scroll-loader>
+    </div>
+
+
+
+
+    <!--<transition name="fade">-->
+        <!--<modal id="pop-menu" v-show="show_menu" @click.native="show_menu=false">-->
+
+            <!--<div class="weui-actionsheet__menu up-menu" @click.stop="" style="width: 80vw;">-->
+                <!--&lt;!&ndash;<div class="weui-actionsheet__cell" @click="add_new();show_menu=false" v-if="can_add">新建</div>&ndash;&gt;-->
+                <!--<div class="weui-actionsheet__cell" @click="ln.pushState({crt_view:'show_active-depart'});show_menu=false">下属部门</div>-->
+                <!--<div class="weui-actionsheet__cell" @click="del_item();is_show_menu=false" v-if="can_del &&selected.length>0">删除选中</div>-->
+                <!--<div class="weui-actionsheet__cell" @click="ln.pushState({crt_view:'show_filter'});show_menu=false" v-if="can_search">排序过滤</div>-->
+                <!--<div class="weui-actionsheet__cell" v-if="help_url" @click="goto(help_url)">帮助</div>-->
+            <!--</div>-->
+            <!--<div class="weui-actionsheet__cell">-->
+                <!--<div class="weui-actionsheet__cell" @click="show_menu=false">取消</div>-->
+            <!--</div>-->
+
+        <!--</modal>-->
+    <!--</transition>-->
+
+</div>
+
+
+{% endblock %}

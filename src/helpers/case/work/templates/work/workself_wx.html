@@ -1,0 +1,234 @@
+{% extends "wx/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+
+{% block page_content %}
+
+{% include 'organize/com_depart_btn.html' %}
+{% include 'wx/com/table_filter_wx.html' %}
+<script type="text/javascript">
+
+
+    $(function(){
+
+//        crt_view = 'main'
+
+        table= new Vue({
+            el:'#there',
+            data:{
+//                crt_view:crt_view,
+                ln:ln,
+                page_label:page_label,
+                in_wx_agent:in_wx_agent,
+                show_menu:false,
+
+                depart_list:depart_list,
+                crt_depart:crt_depart,
+
+
+            },
+            mixins:[table_fun],
+            mounted:function(){
+                var self=this
+//                Vue.nextTick(function(){
+//                    self.$refs.scroller.refresh()
+//                })
+                bus.$on('menu_click',function(){
+                    self.show_menu=true
+                })
+            },
+            computed:{
+//              has_next_page:function(){
+//                  var final=row_pages.options[row_pages.options.length-1]
+//                  return  row_pages.crt_page < parseInt(final)
+//              }
+            },
+            methods:{
+
+                ge_edit:function(pk){
+                    var url=ex.template('{engine_url}/{page_name}.edit',{engine_url:engine_url,page_name:page_name})
+                    search_args.pk=pk
+                    search_args.next=encodeURIComponent(location.href)
+                    location= ex.appendSearch(url,search_args)
+                },
+
+                get_color:function(row){
+                    if(row.status=='waiting'){
+                        return '#828fb2'
+                    }else if(row.status=='pass'){
+                        return '#88b288'
+                    }else if(row.status=='reject'){
+                        return '#b25d64'
+                    }
+                },
+                get_row_img:function(row){
+                    return  row.desp_img || row.work_desp_img || '/static/res/image/person-work.png'
+                },
+//                show_menu:function(){
+//                    this.is_show_menu=true
+//                },
+                depart_link:function(pk){
+                    return ex.appendSearch({_depart:pk})
+                }
+
+            }
+        })
+    })
+
+
+</script>
+
+<style>
+    .item-table{
+        width: 100vw;
+    }
+    .item-table td{
+        padding:1em 0.3em;
+        min-width: 2em;
+        text-align: center;
+    }
+    tr:nth-child(odd){background-color: #ffffff;}
+    td:nth-child(1){
+        padding-left: 0.5em;
+    }
+    .item-table img{
+        box-shadow:0 0 10px rgba(38, 67, 201, 0.5);
+    }
+</style>
+
+<script>
+    Vue.directive('tap', {
+        bind: function (el, binding) {
+            el.addEventListener('tap', function(){
+                binding.value.fun(binding.value.arg)
+            }, false);
+
+        }
+    })
+</script>
+
+
+<div id="there" class="cloak-block flex-grow"  style="position: relative;" v-cloak>
+
+        <scroll-loader :can_load="has_next_page" @load_more="load_next_page()">
+            <table class="item-table">
+                <tr v-for="row in rows" @click="ge_edit(row.pk)">
+                    <td><img style="width: 3em;height: 3em" :src="get_row_img(row)" alt=""/></td>
+                    <td><span v-text="row.work"></span></td>
+                    <td> <i v-if="row.status=='pass'" class="fa fa-circle" aria-hidden="true" style="color: #04be02"></i>
+                        <i v-if="row.status=='waiting'" class="fa fa-telegram" aria-hidden="true" style="color: #074bb6"></i>
+                        <i v-if="row.status=='reject'" class="fa fa-info-circle" aria-hidden="true" style="color: red"></i>
+                    </td>
+                    <td>
+                        <span v-text="row.create_time"></span>
+                    </td>
+
+                </tr>
+            </table>
+        </scroll-loader>
+
+
+    <!--</div>-->
+    <!--<transition name="slide">-->
+        <!--<div v-show="crt_view=='search'" class="slide-win">-->
+            <!--<title-bar :with_back="true" title="筛选"></title-bar>-->
+            <!--<com-filter :row_filters="row_filters" :search_args="search_args" :search_tip='search_tip'></com-filter>-->
+
+            <!--<div class="weui-btn-area">-->
+                <!--<a class="weui-btn weui-btn_primary" href="javascript:" @click='search()' style="width: 50%;">-->
+                    <!--<i class="fa fa-search" aria-hidden="true"></i>-->
+                <!--</a>-->
+            <!--</div>-->
+
+        <!--</div>-->
+    <!--</transition>-->
+
+    <transition name="fade">
+        <modal id="pop-menu" v-show="show_menu" @click.native="show_menu=false">
+            <div class="weui-actionsheet__menu" @click.stop="" style="width: 80vw;">
+
+                <div class="weui-actionsheet__cell" @click="add_new();show_menu=false" v-if="can_add">新建</div>
+                <div class="weui-actionsheet__cell" @click="del_item();show_menu=false" v-if="can_del &&selected.length>0">删除选中</div>
+                <div class="weui-actionsheet__cell" @click="ln.pushState({crt_view:'show_filter'});show_menu=false" v-if="can_search">排序过滤</div>
+                <div class="weui-actionsheet__cell" v-if="help_url" @click="goto(help_url)">帮助</div>
+
+            </div>
+
+            <div class="weui-actionsheet__cell">
+                <div class="weui-actionsheet__cell" @click="show_menu=false">取消</div>
+            </div>
+        </modal>
+    </transition>
+
+
+</div>
+
+
+<!--<script>-->
+    <!--Vue.component('scroll-loader',{-->
+        <!--template:'#scroll-loader',-->
+        <!--props:['can_load'],-->
+        <!--data:function(){-->
+          <!--return {-->
+              <!--loading:false,-->
+          <!--}-->
+        <!--},-->
+        <!--watch:{-->
+            <!--loading:function(v){-->
+                <!--if(v && this.can_load){-->
+                    <!--this.$emit('load_more')-->
+                <!--}-->
+            <!--}-->
+        <!--},-->
+        <!--mounted:function(){-->
+            <!--var self=this-->
+            <!--var wraper= $(this.$el)-->
+            <!--var content=wraper.find('.scroll-content')-->
+            <!--wraper.scroll(function(){-->
+                <!--if(wraper.scrollTop()+wraper.height() +20 >content.outerHeight()){-->
+                    <!--self.loading=true-->
+                <!--}-->
+                <!--if(wraper.scrollTop()+wraper.height() <content.outerHeight()){-->
+                    <!--self.loading=false-->
+                <!--}-->
+
+            <!--})-->
+        <!--}-->
+    <!--})-->
+
+<!--</script>-->
+
+<!--<template id="scroll-loader">-->
+<!--<div class="scroll-wraper">-->
+    <!--<div class="scroll-content">-->
+        <!--<slot></slot>-->
+        <!--<div class="load-icon" v-if="loading" style="height: 3em;text-align: center;">-->
+            <!--<span v-if="can_load">加载...</span>-->
+            <!--<span v-else>没有更多数据了</span>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--</template>-->
+
+<!--<style>-->
+    <!--.scroll-wraper{-->
+        <!--position: absolute;-->
+        <!--overflow: auto;-->
+
+        <!--top:0;-->
+        <!--left: 0;-->
+        <!--bottom: 0;-->
+        <!--right: 0;-->
+    <!--}-->
+    <!--.scroll-content{-->
+        <!--padding-bottom: 4em;-->
+        <!--position: relative;-->
+    <!--}-->
+    <!--.load-icon{-->
+        <!--position: absolute;-->
+        <!--bottom: 0;-->
+        <!--width: 100%;-->
+    <!--}-->
+<!--</style>-->
+{% endblock %}

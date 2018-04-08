@@ -1,0 +1,92 @@
+{% extends "wx/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src='{% static "js/exfun.js" %}'></script>
+<script src='{% static "js/fields_mb.pack.js" %}'></script>
+<script src='{% static "js/table_mb.pack.js" %}'></script>
+<script type="text/javascript">
+	infos = {{ infos | jsonify }}
+	rows = {{ rows | jsonify}}
+	search_args=ex.parseSearch()
+
+	$(function () {
+		new Vue({
+			el:'#there',
+			data:{
+		        infos:infos,
+		        rows:rows,
+			},
+			methods:{
+				map:function (name,row) {
+					if(name==heads[0].name){
+			                return '<a href="edit/'+row.pk+'">'+row[name]+'</a>'
+		                }else{
+			                return row[name]
+			        }
+				},
+				del_rows:function () {
+					var self =this
+					var post_data=[{fun:'del_rows',rows:this.rows}]
+					$.post('/_ajax',JSON.stringify(post_data),function (data) {
+						if(data.del_rows){
+							if(search_args._pop){
+								ln.rtWin({del_rows:self.rows})
+							}else if(search_args.next){
+								location=decodeURIComponent(search_args.next)
+							}else{
+								location='/'
+							}
+
+						}
+					})
+				},
+				cancel:function () {
+					var search = ex.parseSearch()
+					if(search._pop){
+						window.close()
+					}else{
+						history.back()
+					}
+
+
+				}
+			}
+			
+		})
+	})
+</script>
+
+	<div id='there'>
+		<article class="weui-article">
+			<h1>需要(关联)删除的记录是：</h1>
+			<div v-for='(info,key) in infos'>
+				<h3 v-text='key'></h3>
+				<ul>
+					<li v-for='item in info'>
+						<span v-text='item.str'></span>
+					</li>
+				</ul>
+			</div>
+		</article>
+		<div style="text-align: center;padding-top: 3em;">
+			<button  @click='del_rows()' type="button" class="btn btn-danger btn-sm" style="width: 16em;">确定删除</button>
+		</div>
+
+		<!--<button name="test" type="button" @click='cancel()'>取消</button>-->
+	</div>
+	
+</div>
+<style type="text/css" media="screen" id="test">
+	.btn-group{
+		display: inline-block;
+		margin: 3px 10px;
+		padding: 5px 5px;
+		background-color: #F2F2F2;
+		border: 1px solid #D4D4D4;
+		border-radius:3px;
+	}
+</style>
+
+{% endblock %}

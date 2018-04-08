@@ -1,0 +1,82 @@
+<script>
+    workindex_url = '{% url "work.workindex" %}'
+
+</script>
+
+<script type="application/javascript">
+    Vue.component('btn-dir',{
+        template:'#btn-dir',
+        props:['row','name','kw'],
+        data:function(){
+            return {
+                is_tmp:false,
+                show_win:false,
+                workindex_url:workindex_url,
+            }
+        },
+        watch:{
+        },
+        computed:{
+            show_name:function(){
+                var pk =this.row[this.name]
+                var option = ex.findone(this.kw.options,{value:pk})
+                if(option){
+                    return option.label
+                }else{
+                    return '点击选择'
+                }
+            }
+        },
+        methods:{
+            open:function(){
+                this.show_win=true
+                disable_scroll()
+//                ln.pushState({crt_view:'dir'})
+
+            },
+            itclick:function(item){
+                this.row[this.name]=item.pk
+               this.close_win()
+            },
+            close_win:function(){
+                this.show_win=false
+                enable_scroll()
+            }
+        }
+    })
+
+    transfer={}
+    function disable_scroll(){
+        window.transfer.wsctop=$(window).scrollTop();  //记住滚动条的位置
+        $('body').addClass('modal-show')
+        $('body').css('top',-transfer.wsctop)
+//        $("body").css({position:'fixed',top:-transfer.wsctop});
+    }
+    function enable_scroll(){
+//        $("body").css({position:'static'});
+        $("body").removeClass('modal-show')
+        $(window).scrollTop(window.transfer.wsctop);//弹框关闭时，启动滚动条，并滚动到原来的位置
+    }
+
+</script>
+
+<template id="btn-dir">
+    <div >
+        <span v-if="kw.readonly" v-text="show_name"></span>
+        <button type="button" class="btn btn-default btn-sm" v-else @click="open()" v-text="show_name" style="color: #0099CC;padding: 0.3em 2em;" :disabled="is_tmp"></button>
+
+        <modal v-show="show_win" :with_close_btn="true" @close="close_win()">
+
+                <com-catalog class="mobile" ref="catalog" :url="workindex_url" :root="{pk:null,name:'root'}"
+                             @itemclick="itclick($event)" :editable="false" style="width: 90vw;height: 70vh;"></com-catalog>
+
+
+        </modal>
+
+    </div>
+</template>
+
+<style>
+
+</style>
+
