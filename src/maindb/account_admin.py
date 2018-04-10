@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter
+     TabPage,RowSearch,RowSort,RowFilter,model_to_name
 from .models import TbAccount,TbBalancelog,TbLoginlog,TbTrans,TbTicketmaster,TbWithdrawlimitlog,TbTokencode
 from .status_code import *
 # Register your models here.
@@ -11,6 +11,52 @@ class AccountPage(TablePage):
     template='maindb/table_ajax_tab.html'
     def get_label(self):
         return '会员管理'
+    
+    def get_context(self):
+        ctx = TablePage.get_context(self)
+        ls = [
+            {'name':'baseinfo',
+             'label':'基本信息','com':'com_ajax_fields',
+             'model_name':'maindb.TbAccount',
+             'relat_field':'accountid',
+             'kw': AccoutBaseinfo(crt_user=self.crt_user).get_heads()},
+            {'name':'balance_log',
+             'label':'帐目记录',
+             'com':'com_ajax_table',
+             'model':model_to_name(TbBalancelog),
+             'relat_field':'accountid',
+             'kw':AccountBalanceTable(crt_user=self.crt_user).get_head_context()},
+            {'name':'account_trans',
+             'label':'交易记录',
+             'com':'com_ajax_table',
+             'model':model_to_name(TbTrans),
+             'relat_field':'accountid',
+             'kw':AccountTransTable(crt_user=self.crt_user).get_head_context()},
+            {'name':'account_ticket',
+             'label':'投注记录',
+             'com':'com_ajax_table',
+             'model':model_to_name(TbTicketmaster),
+             'relat_field':'accountid',
+             'kw':AccountTicketTable(crt_user=self.crt_user).get_head_context()},
+            {'name':'account_login',
+            'label':'登录日志',
+            'com':'com_ajax_table',
+            'model':model_to_name(TbLoginlog),
+            'relat_field':'accountid',
+            'kw':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
+            {'name':'account_withdrawlimitlog',
+            'label':'提款限额记录',
+            'com':'com_ajax_table',
+            'model':model_to_name(TbWithdrawlimitlog),
+            'relat_field':'accountid',
+            'kw':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
+            #{'name':'account_tokencode',
+             #'label':'验证码查询',
+             #'com':'com_ajax_table',
+             #'kw':AccountTokenCodeTable(crt_user=self.crt_user).get_head_context()},                 
+            ]
+        ctx['tabs']=ls
+        return ctx
     
     class tableCls(ModelTable):
         model = TbAccount
@@ -36,42 +82,7 @@ class AccountPage(TablePage):
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])
             return head
-        
-        def get_context(self):
-            ctx = ModelTable.get_context(self)
-            ls = [
-                {'name':'baseinfo',
-                 'label':'基本信息','com':'com_ajax_fields',
-                 'model_name':'maindb.TbAccount',
-                 'kw': AccoutBaseinfo(crt_user=self.crt_user).get_heads()},
-                {'name':'balance_log',
-                 'label':'帐目记录',
-                 'com':'com_ajax_table',
-                 'kw':AccountBalanceTable(crt_user=self.crt_user).get_head_context()},
-                {'name':'account_trans',
-                 'label':'交易记录',
-                 'com':'com_ajax_table',
-                 'kw':AccountTransTable(crt_user=self.crt_user).get_head_context()},
-                {'name':'account_ticket',
-                 'label':'投注记录',
-                 'com':'com_ajax_table',
-                 'kw':AccountTicketTable(crt_user=self.crt_user).get_head_context()},
-                {'name':'account_login',
-                'label':'登录日志',
-                'com':'com_ajax_table',
-                'kw':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
-                {'name':'account_withdrawlimitlog',
-                'label':'提款限额记录',
-                'com':'com_ajax_table',
-                'kw':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
-                #{'name':'account_tokencode',
-                 #'label':'验证码查询',
-                 #'com':'com_ajax_table',
-                 #'kw':AccountTokenCodeTable(crt_user=self.crt_user).get_head_context()},                 
-            ]
-            ctx['tabs']=ls
-            return ctx
-            
+    
         class search(RowSearch):
             names=['account']
 
@@ -88,10 +99,11 @@ class AccoutBaseinfo(ModelFields):
 class AccountTabBase(ModelTable):
     def __init__(self, *args,**kws):
         ModelTable.__init__(self,*args,**kws)
-        account_pk = self.kw.get('account_pk')
-        if account_pk:
-            account = TbAccount.objects.get(pk=account_pk)
-            self.accountid = account.accountid
+        accountid = self.kw.get('accountid')
+        self.accountid = accountid
+        #if accountid:
+            #account = TbAccount.objects.get(accountid=accountid)
+            #self.accountid = account.accountid
     
     def inn_filter(self, query):
         return query.filter(accountid=self.accountid) 

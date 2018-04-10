@@ -282,10 +282,10 @@ export var field_base={
             }
         },
         bool:{
-            props:['name','row','kw'],
+            props:['row','head'],
             template:`<div class="checkbox">
-	        <input type="checkbox" :id="'id_'+name" v-model='row[name]' :disabled="kw.readonly">
-			 <label :for="'id_'+name"><span v-text='kw.label'></span></label>
+	        <input type="checkbox" :id="'id_'+head.name" v-model='row[head.name]' :disabled="head.readonly">
+			 <label :for="'id_'+head.name"><span v-text='head.label'></span></label>
 					  </div>`
         },
         date: {

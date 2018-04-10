@@ -6,7 +6,7 @@ var mapper = {
         // find head from parent table
         var table_par = this.$parent
         while (true){
-            if (table_par.columns){
+            if (table_par.heads){
                 break
             }
             table_par = table_par.$parent
@@ -18,11 +18,9 @@ var mapper = {
     },
     computed:{
         show_data:function(){
-
-
             if(this.table_par){
                 var value = this.rowData[this.field]
-                var head  = ex.findone(this.table_par.columns,{name:this.field})
+                var head  = ex.findone(this.table_par.heads,{name:this.field})
                 var options = head.options
                 return options[value]
             }

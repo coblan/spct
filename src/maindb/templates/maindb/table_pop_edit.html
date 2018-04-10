@@ -134,7 +134,7 @@
 {% endblock %}
 <script type="text/javascript">
     Vue.component('com_edit',{
-        template:'<b v-text="rowData[field]" @click="edit_me()" style="cursor: pointer;color: #38c6ff"></b>',
+        template:'<b v-text="rowData[field]" @click="edit_me()" class="clickable"></b>',
         props:['rowData','field','index'],
 //        props:['name','row'],
         methods:{
@@ -167,7 +167,7 @@
         <!---->
     <!--</path-nav>-->
 
-    <div class='btn-panel flex flex-sb ' style="min-height: 3em;">
+    <div v-if="row_filters.length > 0" class='btn-panel flex flex-sb ' style="min-height: 3em;">
 
         <!--<div v-if="row_filters.length==0" class="flex-grow"></div>-->
         <com-filter class="flex" :heads="row_filters" :search_args="search_args"
@@ -182,7 +182,7 @@
             {% block table_content %}
             <v-table ref="vtable" is-horizontal-resize
                      is-vertical-resize
-                     :vertical-resize-offset="80"
+                     :vertical-resize-offset="74"
                      :title-row-height="30"
                      :row-height="24"
                      odd-bg-color="#f0f6f8"

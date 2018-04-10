@@ -1,3 +1,4 @@
+// 无用了。准备删除
 var delete_op = {
     props:['name'],
     template:` <a class="clickable" @click="delete_op()" :disabled="!enable">删除</a>`,

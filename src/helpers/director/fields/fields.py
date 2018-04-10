@@ -115,9 +115,29 @@ class ModelFields(forms.ModelForm):
         return {
             'heads':self.get_heads(),
             'row': self.get_row(),
+            #'permit':self.get_permit(),
+            'ops':self.get_operations(),
         }  
     def get_del_info(self):
         return {'%(model)s:%(inst)s <id=%(pk)s>'%{'model':self.instance.__class__.__name__,'inst':unicode(self.instance),'pk':self.instance.pk}:delete_related_query(self.instance)}
+    
+    def get_operations(self):
+        ls=[]
+        if self.permit.changeable_fields():
+            ls.append({
+                'name':'save','editor':'com-field-op-btn','label':'保存'
+            })
+        return ls
+    
+    def get_permit(self):
+        permit_dc = {
+            'can_add':self.permit.can_add(),
+            'can_del':self.permit.can_del() ,
+            'can_log':self.permit.can_log(),
+            'can_edit':bool( self.permit.changeable_fields() )
+        }
+
+        return permit_dc
     
     def pop_fields(self):
         """
@@ -209,7 +229,7 @@ class ModelFields(forms.ModelForm):
         # self.fields 是经过 权限 处理了的。可读写的字段
         return to_dict(self.instance,filt_attr=self.dict_row,include=self.fields)
 
-    def dict_row(self,row):
+    def dict_row(self,inst):
         return {}
     
     def get_options(self):
@@ -227,16 +247,6 @@ class ModelFields(forms.ModelForm):
             
         return options
 
-    #def sort_option(self,option):
-        #index=0
-        #for opt in option:
-            #if opt['value']:
-                #break
-            #else:
-                #index+=1
-        #option[index:]=sorted(option[index:],key=lambda x:pinyin.get_initial(x['label']))
-        #return option
-    
     def dict_options(self):
         return {}
     

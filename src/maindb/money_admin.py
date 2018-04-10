@@ -52,10 +52,37 @@ class TransPage(TablePage):
     template='maindb/table_plain.html'
     class tableCls(ModelTable):
         model = TbTrans
-        exclude = []
+        include=['account','channelid','amount','realamount','fee','status','createtime','exectime']
+        def dict_head(self, head):
+            dc={
+                'account':80,
+                'channelid':100,
+                'amount':100,
+                'realamount':100,
+                'fee':100,
+                'status':80,
+                'createtime':150,
+                'exectime':150
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head
+        
+        def dict_row(self, inst):
+            channel = TbChannel.objects.get(pk=inst.channelid)
+            return {
+                'channelid':unicode(channel)
+            }
         class filters(RowFilter):
             names=['channelid']
             range_fields=['createtime']
+            
+            def get_options(self, name):
+                if name =='channelid':
+                    return [{'value':x.channelid,'label':unicode(x)} for x in TbChannel.objects.all()]
+                else:
+                    return RowFilter.get_options(name)
+            
         class sort(RowSort):
             names=['tranid'] 
             
@@ -67,13 +94,33 @@ class ChannelPage(TablePage):
     class tableCls(ModelTable):
         model = TbChannel
         exclude = []
+        fields_sort=['channel','channelname','channelgroup','cashflow','returntype',
+                     'maxlimit','minlimit','grouptitle','btnname','status']
         
-        class filters(RowFilter):
-            names=['channel','channelname','returntype']
-        class search(RowSearch):
-            names=['channel']
+        def dict_head(self, head):
+            dc={
+                'channel':80,
+                'channelname':80,
+                'channelgroup':80,
+                'cashflow':80,
+                'returntype':80,
+                'maxlimit':80,
+                'minlimit':80,
+                'grouptitle':80,
+                'btnname':80,
+                'status':80,
+              
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head        
+        
+        #class filters(RowFilter):
+            #names=['channel','channelname','returntype']
+        #class search(RowSearch):
+            #names=['channel']
         class sort(RowSort):
-            names=['channel']
+            names=['channel','returntype']
     
     class fieldsCls(ModelFields):
         class Meta:

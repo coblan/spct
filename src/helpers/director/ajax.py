@@ -25,15 +25,25 @@ def save(row,user,request):
     except ValidationError as e:
         return {'errors':dict(e)}
 
-def get_row(model_name,pk=None,user=None):
+def get_row(model_name,pk=None,user=None,**kws):
     model = name_to_model(model_name)
     fields_cls = model_dc[model].get('fields')
     if pk:
         instance = model.objects.get(pk =pk)
         fields_obj = fields_cls(instance=instance,crt_user = user)
+    elif kws:
+        instance = model.objects.get(**kws)
+        fields_obj = fields_cls(instance=instance,crt_user = user)
     else:
         fields_obj =fields_cls(crt_user = user)
     return fields_obj.get_row()
+
+def get_rows(model_name,search_args,user):
+    model = name_to_model(model_name)
+    table_cls = model_dc[model].get('table')
+    table_obj = table_cls.gen_from_search_args(search_args,user)
+    return table_obj.get_data_context()
+    
 
 def del_rows(rows,user):
     for row in rows:

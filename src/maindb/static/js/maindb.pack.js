@@ -134,7 +134,7 @@ var ajax_table = {
     //        this.get_data()
     //    }
     //},
-    template: '<div class="rows-block">\n        <div class=\'flex\' style="min-height: 3em;">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success">\n            <div class="table-wraper">\n                <v-table ref="vtable"\n                         is-horizontal-resize\n                         is-vertical-resize\n                         :title-row-height="30"\n                         :vertical-resize-offset="80"\n                         :row-height="24"\n                         odd-bg-color="#f0f6f8"\n                         column-width-drag\n                         style="width: 100%;"\n                         :columns="columns"\n                         :table-data="rows"\n                         @sort-change="sortChange"\n                         row-hover-color="#eee"\n                         row-click-color="#edf7ff">\n                </v-table>\n            </div>\n            <div style="margin-top: 10px;">\n                <v-pagination @page-change="get_page($event)"\n                              :total="row_pages.total"\n                              :page-size="row_pages.perpage"\n                              @page-size-change="on_perpage_change($event)"\n                              :layout="[\'total\', \'prev\', \'pager\', \'next\', \'sizer\', \'jumper\']">\n                </v-pagination>\n            </div>\n        </div>\n    </div>',
+    template: '<div class="rows-block">\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success">\n            <div class="table-wraper">\n                <v-table ref="vtable"\n                         is-horizontal-resize\n                         is-vertical-resize\n                         :title-row-height="30"\n                         :vertical-resize-offset="80"\n                         :row-height="24"\n                         odd-bg-color="#f0f6f8"\n                         column-width-drag\n                         style="width: 100%;"\n                         :columns="columns"\n                         :table-data="rows"\n                         @sort-change="sortChange"\n                         row-hover-color="#eee"\n                         row-click-color="#edf7ff">\n                </v-table>\n            </div>\n            <div style="margin-top: 10px;">\n                <v-pagination @page-change="get_page($event)"\n                              :total="row_pages.total"\n                              size="small"\n                              :page-size="row_pages.perpage"\n                              @page-size-change="on_perpage_change($event)"\n                              :layout="[\'total\', \'prev\', \'pager\', \'next\', \'sizer\', \'jumper\']">\n                </v-pagination>\n            </div>\n        </div>\n    </div>',
 
     methods: {
         del_item: function del_item() {
@@ -186,9 +186,14 @@ Vue.component('com_ajax_table', ajax_table);
 
 
 Vue.component('com-pop-fields', {
-    props: ['row', 'heads'],
+    props: ['row', 'heads', 'ops'],
     mixins: [mix_fields_data, mix_nice_validator],
     methods: {
+        on_operat: function on_operat(name) {
+            if (name == 'save') {
+                this.save();
+            }
+        },
         before_save: function before_save() {
             eventBus.$emit('sync_data');
             if (this.nice_validator.isValid()) {
@@ -215,7 +220,7 @@ Vue.component('com-pop-fields', {
         }
 
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div>\n        <button @click="save()">\u4FDD\u5B58</button>\n        <button @click="del_row()" v-if="row.pk">\u5220\u9664</button>\n    </div>\n    <div class = "flex-grow" style="overflow: scroll;margin: 0;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div>\n        <component v-for="op in ops" :is="op.editor" @operate="on_operat(op.name)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n    <div class = "flex-grow" style="overflow: scroll;margin: 0;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {
@@ -897,6 +902,10 @@ var _mapper = __webpack_require__(19);
 
 var table_mapper = _interopRequireWildcard(_mapper);
 
+var _pop_fields = __webpack_require__(20);
+
+var table_pop_fields = _interopRequireWildcard(_pop_fields);
+
 var _label_shower2 = __webpack_require__(14);
 
 var field_label_shower = _interopRequireWildcard(_label_shower2);
@@ -909,6 +918,10 @@ var _delete_op = __webpack_require__(16);
 
 var delete_op = _interopRequireWildcard(_delete_op);
 
+var _btn = __webpack_require__(21);
+
+var btn = _interopRequireWildcard(_btn);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 __webpack_require__(7);
@@ -917,6 +930,9 @@ __webpack_require__(7);
 
 
 // table operator
+
+
+//fields operator
 
 /***/ }),
 /* 12 */
@@ -983,6 +999,7 @@ Vue.component('com-field-label-shower', label_shower);
 "use strict";
 
 
+// 无用了。准备删除
 var delete_op = {
     props: ['name'],
     template: ' <a class="clickable" @click="delete_op()" :disabled="!enable">\u5220\u9664</a>',
@@ -1043,7 +1060,7 @@ var mapper = {
         // find head from parent table
         var table_par = this.$parent;
         while (true) {
-            if (table_par.columns) {
+            if (table_par.heads) {
                 break;
             }
             table_par = table_par.$parent;
@@ -1055,10 +1072,9 @@ var mapper = {
     },
     computed: {
         show_data: function show_data() {
-
             if (this.table_par) {
                 var value = this.rowData[this.field];
-                var head = ex.findone(this.table_par.columns, { name: this.field });
+                var head = ex.findone(this.table_par.heads, { name: this.field });
                 var options = head.options;
                 return options[value];
             }
@@ -1067,6 +1083,102 @@ var mapper = {
 };
 
 Vue.component('com-table-mapper', mapper);
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var pop_fields = {
+    template: '<span v-text="rowData[field].label" @click="edit_me()" class="clickable"></span>',
+    props: ['rowData', 'field', 'index'],
+    created: function created() {
+        // find head from parent table
+        var table_par = this.$parent;
+        while (true) {
+            if (table_par.heads) {
+                break;
+            }
+            table_par = table_par.$parent;
+            if (!table_par) {
+                break;
+            }
+        }
+        if (table_par) {
+            var value = this.rowData[this.field];
+            this.head = ex.findone(table_par.heads, { name: this.field });
+        }
+    },
+    methods: {
+        edit_me: function edit_me() {
+            this.open_layer();
+        },
+        open_layer: function open_layer() {
+            var self = this;
+            var id = new Date().getTime();
+            var pk = this.rowData[this.field].pk;
+            var model_name = this.head.model_name;
+            var ops = this.head.ops;
+            self.opened_layer_indx = layer.open({
+                type: 1,
+                area: ['700px', '400px'],
+                shadeClose: true, //点击遮罩关闭
+                content: '<div id="fields-pop-' + id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
+            });
+            //var copy_fields_heads = ex.copy(fields_heads)
+            new Vue({
+                el: '#fields-pop-' + id,
+                data: {
+                    row: {},
+                    fields_heads: this.head.fields_heads,
+                    pk: pk,
+                    ops: ops
+                },
+                mounted: function mounted() {
+                    var self = this;
+                    cfg.show_load();
+                    var post_data = [{ fun: 'get_row', pk: this.pk, model_name: model_name }];
+                    ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                        self.row = resp.get_row;
+                        cfg.hide_load();
+                    });
+                },
+                methods: {
+                    on_sub_success: function on_sub_success(event) {
+                        // 将新建的row 插入到表格中
+                        var old_row = event.old_row;
+                        var new_row = event.new_row;
+                        if (!old_row.pk) {
+                            self.rows.splice(0, 0, new_row);
+                        } else {
+                            ex.assign(row, new_row);
+                        }
+                    },
+                    on_del: function on_del() {
+                        ex.remove(self.rows, row);
+                        layer.close(self.opened_layer_indx);
+                    }
+                }
+            });
+        }
+    }
+};
+Vue.component('com-table-pop-fields', pop_fields);
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Vue.component('com-field-op-btn', {
+    props: ['head'],
+    template: '<button @click="$emit(\'operate\')"><span v-text="head.label"></span></button>'
+
+});
 
 /***/ })
 /******/ ]);

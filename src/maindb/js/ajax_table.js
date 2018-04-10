@@ -30,7 +30,7 @@ var ajax_table={
     //    }
     //},
     template:`<div class="rows-block">
-        <div class='flex' style="min-height: 3em;">
+        <div class='flex' style="min-height: 3em;" v-if="row_filters.length > 0">
             <com-filter class="flex" :heads="row_filters" :search_args="search_args"
                         @submit="search()"></com-filter>
             <div class="flex-grow"></div>
@@ -56,6 +56,7 @@ var ajax_table={
             <div style="margin-top: 10px;">
                 <v-pagination @page-change="get_page($event)"
                               :total="row_pages.total"
+                              size="small"
                               :page-size="row_pages.perpage"
                               @page-size-change="on_perpage_change($event)"
                               :layout="['total', 'prev', 'pager', 'next', 'sizer', 'jumper']">

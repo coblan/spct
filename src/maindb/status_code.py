@@ -14,3 +14,12 @@ BANNER_STATUS=(
     (1,'在线'),
     (0,'离线')
 )
+
+CHANNEL_STATUS=(
+    (0,'close'),
+    (1,'open')
+)
+CHANNEL_CASHFLOW=(
+    (1,'Deposit'),
+    (0,'Withdrawal')
+)

@@ -20,14 +20,14 @@ class PcMenu(BaseEngine):
             {'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
             ]},   
         
-        {'label':'金流管理','icon':fa('fa-users'),'visible':can_list((User,Group)),
+        {'label':'金流管理','icon':fa('fa-dollar'),'visible':can_list((User,Group)),
         'submenu':[
             {'label':'账目记录','url':page('maindb.balancelog'),'icon':fa('fa-home')},
             {'label':'存款记录','url':page('maindb.trans'),'icon':fa('fa-home')},
             {'label':'金流渠道','url':page('maindb.channel'),'icon':fa('fa-home')},
                          ]}, 
         
-        {'label':'赛事及赔率','icon':fa('fa-users'),'visible':can_list((User,Group)),
+        {'label':'赛事及赔率','icon':fa('fa-globe'),'visible':can_list((User,Group)),
         'submenu':[
             {'label':'注单列表','url':page('maindb.ticketmaster'),'icon':fa('fa-home')},
             {'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},

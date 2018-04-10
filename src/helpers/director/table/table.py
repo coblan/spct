@@ -397,22 +397,34 @@ class ModelTable(object):
         """
         ls = self.permited_fields()   
         heads = model_to_head(self.model,include=ls)
-        heads = [self.dict_head(head) for head in heads]
-        #for head in heads:
-            #if head.get('name') in self.sortable:
-                #head['sortable'] = True 
         heads = self.fields_sort_heads(heads)
+        heads=[self.fields_map_head(head) for head in heads]
+        heads = [self.dict_head(head) for head in heads]
+        
         return heads
     
+    def dict_head(self,head):
+        return head
+    
+    def fields_map_head(self,head):
+        field = self.model._meta.get_field(head['name'])
+        if field.choices:
+            head['options']=dict(field.choices)
+            head['editor']='com-table-mapper'
+        return head
+
     def fields_sort_heads(self,heads):
+        if not self.fields_sort:
+            return heads
+        
         tmp_heads = []
         for k in self.fields_sort:
             for head in heads:
                 if head['name'] == k:
                     tmp_heads.append(head)
-                    heads.remove(head)
+                    #heads.remove(head)
                     break
-        tmp_heads.extend(heads)
+        #tmp_heads.extend(heads)
         return tmp_heads
             
     def get_rows(self):
@@ -427,8 +439,7 @@ class ModelTable(object):
             out.append(dc)
         return out
     
-    def dict_head(self,head):
-        return head
+
     
     def dict_row(self,inst):
         """

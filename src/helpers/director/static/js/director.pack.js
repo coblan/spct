@@ -1456,8 +1456,8 @@ var field_base = exports.field_base = {
             }
         },
         bool: {
-            props: ['name', 'row', 'kw'],
-            template: '<div class="checkbox">\n\t        <input type="checkbox" :id="\'id_\'+name" v-model=\'row[name]\' :disabled="kw.readonly">\n\t\t\t <label :for="\'id_\'+name"><span v-text=\'kw.label\'></span></label>\n\t\t\t\t\t  </div>'
+            props: ['row', 'head'],
+            template: '<div class="checkbox">\n\t        <input type="checkbox" :id="\'id_\'+head.name" v-model=\'row[head.name]\' :disabled="head.readonly">\n\t\t\t <label :for="\'id_\'+head.name"><span v-text=\'head.label\'></span></label>\n\t\t\t\t\t  </div>'
         },
         date: {
             props: ['name', 'row', 'kw'],
