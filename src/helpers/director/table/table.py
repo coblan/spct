@@ -1,7 +1,7 @@
 # encoding:utf-8
 
 from __future__ import unicode_literals
-
+from django.utils.translation import ugettext as _
 #from core.db_tools import to_dict,model_to_head,model_stringfy
 import json
 from django.db.models import Q,fields
@@ -97,7 +97,7 @@ class RowSearch(object):
         if self.valid_name:
             ls=[]
             for name in self.valid_name:
-                ls.append(self.model._meta.get_field(name).verbose_name)
+                ls.append(_(self.model._meta.get_field(name).verbose_name) )
             dc = {
                 'search_tip':','.join(ls),
                 'editor':'com-search-filter',
@@ -160,12 +160,12 @@ class RowFilter(object):
             if name in self.range_fields:
                 if isinstance(f,fields.DateField):
                     ls.append({'name':name,
-                               'label':f.verbose_name,
+                               'label':_(f.verbose_name),
                                'editor':'com-date-range-filter'
                                })
             elif isinstance(f,fields.BooleanField):
                 ls.append({'name':name,
-                           'label':f.verbose_name,
+                           'label':_(f.verbose_name),
                            'editor':'com-select-filter',
                            'options':[
                                {'value':'1','label':'Yes'},
@@ -173,7 +173,7 @@ class RowFilter(object):
             else:
                 ls.append({'name':name,
                            'editor':'com-select-filter',
-                           'label':f.verbose_name,
+                           'label':_(f.verbose_name),
                            'options':self.get_options(name)})
         return ls
       

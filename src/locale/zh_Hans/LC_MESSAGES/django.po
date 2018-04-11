@@ -1,0 +1,157 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-11 17:04+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\hello\engine_menu.py:20
+msgid "DashBoard"
+msgstr "控制面板"
+
+#: .\hello\engine_menu.py:21
+msgid "Banner"
+msgstr "广告"
+
+#: .\hello\engine_menu.py:22
+msgid "Member"
+msgstr "会员管理"
+
+#: .\hello\engine_menu.py:24
+msgid "Tb Account"
+msgstr "会员列表"
+
+#: .\hello\engine_menu.py:25 .\maindb\account_admin.py:164
+msgid "Tb Login Log"
+msgstr "登录日志"
+
+#: .\hello\engine_menu.py:29
+msgid "MoneyFlow"
+msgstr "金流管理"
+
+#: .\hello\engine_menu.py:31
+msgid "Tb Balance Log"
+msgstr "账目记录"
+
+
+#: .\hello\engine_menu.py:33
+msgid "Tb Channel"
+msgstr "金流渠道"
+
+#: .\hello\engine_menu.py:36
+msgid "Games"
+msgstr "赛事及赔率"
+
+#: .\hello\engine_menu.py:38 .\maindb\ticket_admin.py:14
+msgid "Tb Trans"
+msgstr "存款记录"
+
+#: .\hello\js_translation.py:6
+msgid "Basic Setting"
+msgstr "基本设置"
+
+#: .\hello\js_translation.py:7
+msgid "Language"
+msgstr "语言"
+
+#: .\helpers\authuser\forms.py:10
+msgid "second password"
+msgstr "第二次密码"
+
+#: .\helpers\authuser\forms.py:19
+msgid "need password"
+msgstr ""
+
+#: .\helpers\authuser\forms.py:26
+msgid "two password should be same"
+msgstr ""
+
+#: .\helpers\authuser\forms.py:33
+msgid "username has been exist"
+msgstr "用户名已经存在"
+
+#: .\helpers\authuser\forms.py:63
+msgid "user has been disabled"
+msgstr "用户被禁用"
+
+#: .\helpers\authuser\forms.py:67
+msgid "user exist,but password not match"
+msgstr "密码不对"
+
+#: .\helpers\authuser\forms.py:69
+msgid "user not exist"
+msgstr "用户不存在"
+
+#: .\helpers\common\model_validator.py:8
+#, python-format
+msgid "%(value)s is not integer number"
+msgstr ""
+
+#: .\helpers\common\model_validator.py:15
+msgid "must input string"
+msgstr "必须输入文字"
+
+#: .\maindb\models.py:434
+msgid "Account"
+msgstr "账号"
+
+#: .\maindb\models.py:435
+msgid "Device Code"
+msgstr "设备码"
+
+#: .\maindb\models.py:436
+msgid "Device Ip"
+msgstr "设备IP"
+
+#: .\maindb\models.py:438
+msgid "Login Type"
+msgstr "登录类型"
+
+#: .\maindb\models.py:439
+msgid "Login Time"
+msgstr "登录时间"
+
+#: .\maindb\models.py:440
+msgid "App Version"
+msgstr "应用版本"
+
+#: .\maindb\models.py:441
+msgid "Device Name"
+msgstr "设备名"
+
+#: .\maindb\models.py:443
+msgid "Device Version"
+msgstr "设备版本"
+
+#: .\maindb\models.py:446
+msgid "Logout Time"
+msgstr "退出时间"
+
+#: .\maindb\models.py:1131
+msgid "Picture Name"
+msgstr "图片名称"
+
+#: .\maindb\models.py:1132
+msgid "Priority"
+msgstr "优先级"
+
+#: .\maindb\models.py:1136
+msgid "status"
+msgstr "状态"
+
+#: .\maindb\models.py:1137
+msgid "Navigate Url"
+msgstr "导航地址"

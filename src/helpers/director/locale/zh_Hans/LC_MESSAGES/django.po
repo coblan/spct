@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-24 12:09+0800\n"
+"POT-Creation-Date: 2018-04-11 17:04+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,54 +18,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\helpers\director\admin.py:185
+#: .\helpers\director\admin.py:198
 #, fuzzy
 #| msgid "username has been exist"
 msgid "permit name has been exist"
 msgstr "用户名已经存在了"
 
-#: .\helpers\director\db_tools.py:270
+#: .\helpers\director\model_func\dictfy.py:287
 msgid "ID"
 msgstr "序号"
-
-#: .\helpers\director\forms.py:8
-msgid "second password"
-msgstr "确认密码"
-
-#: .\helpers\director\forms.py:17
-#, fuzzy
-#| msgid "second password"
-msgid "need password"
-msgstr "确认密码"
-
-#: .\helpers\director\forms.py:24
-msgid "two password should be same"
-msgstr "两次密码不一致"
-
-#: .\helpers\director\forms.py:31
-msgid "username has been exist"
-msgstr "用户名已经存在了"
-
-#: .\helpers\director\forms.py:58
-msgid "user has been disabled"
-msgstr "用户已经被禁止"
-
-#: .\helpers\director\forms.py:62
-msgid "user exist,but password not match"
-msgstr "用户名与密码不匹配"
-
-#: .\helpers\director\forms.py:64
-msgid "user not exist"
-msgstr "用户不存在"
-
-#: .\helpers\director\model_validator.py:8
-#, python-format
-msgid "%(value)s is not integer number"
-msgstr "%(value)s不能转换为整数"
-
-#: .\helpers\director\model_validator.py:15
-msgid "must input string"
-msgstr "不能为空"
 
 #: .\helpers\director\models.py:12
 msgid "operator"
@@ -86,3 +47,32 @@ msgstr "用户组"
 #: .\helpers\director\models.py:27
 msgid "user permit"
 msgstr "用户权限"
+
+#~ msgid "second password"
+#~ msgstr "确认密码"
+
+#, fuzzy
+#~| msgid "second password"
+#~ msgid "need password"
+#~ msgstr "确认密码"
+
+#~ msgid "two password should be same"
+#~ msgstr "两次密码不一致"
+
+#~ msgid "username has been exist"
+#~ msgstr "用户名已经存在了"
+
+#~ msgid "user has been disabled"
+#~ msgstr "用户已经被禁止"
+
+#~ msgid "user exist,but password not match"
+#~ msgstr "用户名与密码不匹配"
+
+#~ msgid "user not exist"
+#~ msgstr "用户不存在"
+
+#~ msgid "%(value)s is not integer number"
+#~ msgstr "%(value)s不能转换为整数"
+
+#~ msgid "must input string"
+#~ msgstr "不能为空"

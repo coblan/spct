@@ -1,5 +1,6 @@
 # encoding:utf-8
 from __future__ import unicode_literals
+from django.utils.translation import ugettext as _
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
      TabPage,RowSearch,RowSort,RowFilter,model_to_name
@@ -132,7 +133,6 @@ class AccountTransTable(AccountTabBase):
     exclude=[]  
    
     
-
 class AccountTicketTable(AccountTabBase):
     """投注记录"""
     model=TbTicketmaster
@@ -158,10 +158,30 @@ class AccountTokenCodeTable(AccountTabBase):
     class filters(RowFilter):
         names=['tokentypeid']
 
+class LoginLogPage(TablePage):
+    template='maindb/table_plain.html'
+    def get_label(self):
+        return _('Tb Login Log')
+    
+    class tableCls(ModelTable):
+        model=TbLoginlog
+        exclude=[]
+        fields_sort=['account','devicecode','deviceip','appversion','devicename','deviceversion',
+                     'logintype','createtime','logouttime']
+        class search(RowSearch):
+            names=['account','deviceip']
+        
+        class filters(RowFilter):
+            range_fields=['createtime']
+
 model_dc[TbAccount]={'fields':AccoutBaseinfo}
 model_dc[TbTicketmaster]={'table':AccountTicketTable}
 model_dc[TbLoginlog]={'table':AccountLoginTable}
 model_dc[TbTrans]={'table':AccountTransTable}
 model_dc[TbBalancelog]={'table':AccountBalanceTable}
+
+page_dc.update({
+    'maindb.loginlog':LoginLogPage
+})
 
     

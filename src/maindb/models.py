@@ -7,7 +7,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from __future__ import unicode_literals
-
+from django.utils.translation import ugettext as _
 from django.db import models
 from status_code import *
 
@@ -431,16 +431,19 @@ class TbIpdata(models.Model):
 class TbLoginlog(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
-    account = models.CharField(db_column='Account', max_length=30)  # Field name made lowercase.
-    devicecode = models.CharField(db_column='DeviceCode', max_length=40)  # Field name made lowercase.
-    deviceip = models.CharField(db_column='DeviceIP', max_length=20)  # Field name made lowercase.
-    logintype = models.SmallIntegerField(db_column='LoginType')  # Field name made lowercase.
-    createtime = models.DateTimeField(verbose_name='登录时间',db_column='CreateTime')  # Field name made lowercase.
-    appversion = models.CharField(db_column='AppVersion', max_length=20)  # Field name made lowercase.
-    devicename = models.CharField(db_column='DeviceName', max_length=40)  # Field name made lowercase.
-    deviceversion = models.CharField(db_column='DeviceVersion', max_length=20)  # Field name made lowercase.
+    account = models.CharField(db_column='Account',verbose_name=_('Account'), max_length=30)  # Field name made lowercase.
+    devicecode = models.CharField(db_column='DeviceCode',verbose_name=_('Device Code'), max_length=40)  # Field name made lowercase.
+    deviceip = models.CharField(db_column='DeviceIP', verbose_name=_('Device Ip'),max_length=20)  # Field name made lowercase.
+    logintype = models.SmallIntegerField(db_column='LoginType',verbose_name=_(
+        'Login Type'))  # Field name made lowercase.
+    createtime = models.DateTimeField(verbose_name=_('Login Time'),db_column='CreateTime')  # Field name made lowercase.
+    appversion = models.CharField(db_column='AppVersion',verbose_name=_('App Version'), max_length=20)  # Field name made lowercase.
+    devicename = models.CharField(db_column='DeviceName', verbose_name=_('Device Name'),max_length=40)  # Field name made lowercase.
+    deviceversion = models.CharField(db_column='DeviceVersion',verbose_name=_(
+        'Device Version'), max_length=20)  # Field name made lowercase.
     logoutreason = models.SmallIntegerField(db_column='LogoutReason')  # Field name made lowercase.
-    logouttime = models.DateTimeField(db_column='LogoutTime')  # Field name made lowercase.
+    logouttime = models.DateTimeField(db_column='LogoutTime',verbose_name=_(
+        'Logout Time'))  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -880,6 +883,7 @@ class TbStatuscode(models.Model):
 
 
 class TbTicketmaster(models.Model):
+    "注单列表"
     ticketid = models.AutoField(db_column='TicketID',verbose_name='单号', primary_key=True)
     #ticketid = models.BigIntegerField(db_column='TicketID', verbose_name='单号',primary_key=True, )  # Field name made lowercase.
     #accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
@@ -959,7 +963,7 @@ class TbTicketstake(models.Model):
 
 class TbTickets(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
+    #accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=20)  # Field name made lowercase.
     matchid = models.IntegerField(db_column='MatchID')  # Field name made lowercase.
     oddstid = models.IntegerField(db_column='OddsTid')  # Field name made lowercase.
@@ -1125,13 +1129,13 @@ class TbVipRescueLog(models.Model):
 class TbBanner(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    picturename = models.CharField(db_column='PictureName',verbose_name='图片', max_length=255)  # Field name made lowercase.
-    order = models.IntegerField(db_column='Order',verbose_name='优先级')  # Field name made lowercase.
+    picturename = models.CharField(db_column='PictureName',verbose_name=_('Picture Name'), max_length=255)  # Field name made lowercase.
+    order = models.IntegerField(db_column='Order',verbose_name=_('Priority'))  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now=True)  # Field name made lowercase.
     createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=1024, blank=True, null=True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status',verbose_name='状态', null=True,choices=BANNER_STATUS,default=0)  # Field name made lowercase.
-    navigateurl = models.CharField(db_column='NavigateUrl', max_length=512,verbose_name='跳转地址', blank=True, null=True)
+    status = models.IntegerField(db_column='Status',verbose_name=_('status'), null=True,choices=BANNER_STATUS,default=0)  # Field name made lowercase.
+    navigateurl = models.CharField(db_column='NavigateUrl', max_length=512,verbose_name=_('Navigate Url'), blank=True, null=True)
 
     class Meta:
         managed = False

@@ -575,6 +575,8 @@ var _patch = __webpack_require__(10);
 
 var path = _interopRequireWildcard(_patch);
 
+var _cookie = __webpack_require__(74);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var ex = {
@@ -589,8 +591,68 @@ ex.assign(ex, _old.old);
 ex.assign(ex, _network.network);
 ex.assign(ex, _urlparse.urlparse);
 ex.assign(ex, _collection.collection);
+ex.assign(ex, _cookie.cookie);
 
 window.ex = ex;
+
+/***/ }),
+
+/***/ 74:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/*
+setCookie('name', 1111, 5);
+setCookie('name1', 22222, 5);
+
+console.log(getCookie('name'));
+console.log(getAllCookie());
+
+delCookie('name1');
+clearCookie('undefined')    //清除未定义的名的cookie
+*/
+/*set cookie*/
+var cookie = exports.cookie = {
+    setCookie: function setCookie(name, value, Days) {
+        if (Days == null || Days == '') {
+            Days = 300;
+        }
+        var exp = new Date();
+        exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);
+        document.cookie = name + "=" + escape(value) + "; path=/;expires=" + exp.toGMTString();
+        //document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+    },
+
+    /*get cookie*/
+    getCookie: function getCookie(name) {
+        var arr,
+            reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg)) return unescape(arr[2]);else return null;
+    },
+
+    /*get all cookie*/
+    getAllCookie: function getAllCookie() {
+        return document.cookie;
+    },
+
+    /* clear cookie*/
+    clearCookie: function clearCookie(name) {
+        setCookie(name, '', -1);
+    },
+
+    /* del cookie*/
+    delCookie: function delCookie(name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() - 1);
+        var cval = getCookie(name);
+        if (cval != null) document.cookie = name + "=" + cval + "; path=/;expires=" + exp.toGMTString();
+    }
+};
 
 /***/ }),
 

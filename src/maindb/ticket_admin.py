@@ -1,15 +1,17 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.contrib import admin
+from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
      TabPage,RowSearch,RowSort,RowFilter,model_to_name
 from .models import TbTicketmaster,TbTicketstake,TbTicketparlay,TbMatches
 from .status_code import *
 
+
 class TicketMasterPage(TablePage):
     template='maindb/table_ajax_tab.html'
     def get_label(self):
-        return '注单列表'
+        return  _('Tb Trans') #  '注单列表'
 
     def get_context(self):
         ctx = TablePage.get_context(self)
