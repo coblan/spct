@@ -74,7 +74,8 @@ class ModelFields(forms.ModelForm):
         @dc: 当post save时 ,dc是前端传来的row字典
              当get 时，dc是前端传来的url参数，排除pk后的额外的字典
         """
-        dc = clean_dict(dc, self._meta.model)
+        #dc = clean_dict(dc, self._meta.model)
+        dc = self.clean_dict(dc)
         if not crt_user:
             self.crt_user=dc.get('crt_user')
         else:
@@ -104,6 +105,18 @@ class ModelFields(forms.ModelForm):
         self.custom_permit()
         self.pop_fields()
         self.init_value()
+    
+    def clean_dict(self,dc):
+        """利用field_map字典，查找前端传来的dc中，某个字段的转换方式"""
+        model_name = model_to_name(self.Meta.model)
+        for k,v in dc.items():
+            if not k.startswith('_'):
+                field_path = model_name+'.'+k
+                if field_map.get(field_path):
+                    map_cls = field_map[field_path]
+                    field = model._meta.get_fields()
+                    dc[k]=map_cls().from_dict(v,model._meta.get_field(k))         
+        return dc
     
     def custom_permit(self):
         self.permit=ModelPermit(self.Meta.model,self.crt_user,nolimit=self.nolimit)

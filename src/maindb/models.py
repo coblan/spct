@@ -469,7 +469,7 @@ class TbMatches(models.Model):
     categoryid = models.IntegerField(db_column='CategoryID')  # Field name made lowercase.
     tournamentid = models.IntegerField(db_column='TournamentID')  # Field name made lowercase.
     tournamentzh = models.CharField(db_column='TournamentZH',verbose_name='联赛名称', max_length=50)  # Field name made lowercase.
-    matchid = models.IntegerField(db_column='MatchID')  # Field name made lowercase.
+    matchid = models.IntegerField(db_column='MatchID',unique=True)  # Field name made lowercase.
     prematchdate = models.DateTimeField(db_column='PreMatchDate')  # Field name made lowercase.
     matchdate = models.DateTimeField(db_column='MatchDate',verbose_name='比赛日期')  # Field name made lowercase.
     currentperiodstart = models.DateTimeField(db_column='CurrentPeriodStart', blank=True, null=True)  # Field name made lowercase.
@@ -771,7 +771,7 @@ class TbQa(models.Model):
 
 class TbRcFilter(models.Model):
     rc_rule_id = models.AutoField(db_column='RC_rule_id', primary_key=True)  # Field name made lowercase.
-    rc_level = models.CharField(db_column='RC_Level', max_length=1)  # Field name made lowercase.
+    rc_level = models.CharField(db_column='RC_Level',verbose_name=_('RC Level'), max_length=1)  # Field name made lowercase.
     rc_rule = models.IntegerField(db_column='RC_rule')  # Field name made lowercase.
     rc_rule_name = models.CharField(db_column='RC_rule_Name', max_length=30)  # Field name made lowercase.
     rc_filter = models.DecimalField(db_column='RC_filter', max_digits=18, decimal_places=2)  # Field name made lowercase.
@@ -904,7 +904,8 @@ class TbTicketmaster(models.Model):
     stakecount = models.IntegerField(db_column='StakeCount')  # Field name made lowercase.
     parlaycount = models.IntegerField(db_column='ParlayCount')  # Field name made lowercase.
     reststakecount = models.IntegerField(db_column='RestStakeCount')  # Field name made lowercase.
-    accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
+    accountid = models.ForeignKey(TbAccount,db_column='AccountID',db_constraint=False) 
 
     class Meta:
         managed = False
@@ -936,10 +937,13 @@ class TbTicketparlay(models.Model):
 class TbTicketstake(models.Model):
     """子注单"""
     tid = models.AutoField(db_column='Tid', primary_key=True,verbose_name='序号')  # Field name made lowercase.
-    ticketid = models.CharField(db_column='TicketID', max_length=20)  # Field name made lowercase.
+    #ticketid = models.CharField(db_column='TicketID', max_length=20)  # Field name made lowercase.
+    ticketid = models.ForeignKey(TbTicketmaster,db_column='TicketID', db_constraint=False,verbose_name=_(
+        'ticket master'))
     stakeid = models.SmallIntegerField(db_column='StakeID')  # Field name made lowercase.
     #accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
-    matchid = models.IntegerField(db_column='MatchID',verbose_name='比赛')  # Field name made lowercase.
+    matchid = models.ForeignKey(TbMatches,db_constraint=False,db_column='MatchID',to_field='matchid')
+    #matchid = models.IntegerField(db_column='MatchID',verbose_name='比赛')  # Field name made lowercase.
     dangeroustid = models.BigIntegerField(db_column='DangerousTid')  # Field name made lowercase.
     oddsid = models.BigIntegerField(db_column='OddsID')  # Field name made lowercase.
     specialbetvalue = models.CharField(db_column='SpecialBetValue',verbose_name='让分', max_length=12)  # Field name made lowercase.
@@ -965,7 +969,7 @@ class TbTickets(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     #accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=20)  # Field name made lowercase.
-    matchid = models.IntegerField(db_column='MatchID')  # Field name made lowercase.
+    match = models.ForeignKey(TbMatches,db_constraint=False,db_column='MatchID') #models.IntegerField(db_column='MatchID')  # Field name made lowercase.
     oddstid = models.IntegerField(db_column='OddsTid')  # Field name made lowercase.
     odds = models.DecimalField(db_column='Odds', max_digits=18, decimal_places=2)  # Field name made lowercase.
     betamount = models.IntegerField(db_column='BetAmount')  # Field name made lowercase.

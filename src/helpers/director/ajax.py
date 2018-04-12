@@ -43,7 +43,16 @@ def get_rows(model_name,search_args,user):
     table_cls = model_dc[model].get('table')
     table_obj = table_cls.gen_from_search_args(search_args,user)
     return table_obj.get_data_context()
-    
+
+def save_rows(rows,user,request):
+    kw=request.GET.dict()
+    ls =[]
+    for row in rows:
+        field_obj = permit_save_model(user, row,**kw)
+        dc = field_obj.get_row() 
+        ls.append(dc)
+    return ls
+
 
 def del_rows(rows,user):
     for row in rows:

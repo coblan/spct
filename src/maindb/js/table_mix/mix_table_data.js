@@ -25,6 +25,18 @@ var mix_table_data={
                 cfg.hide_load()
             })
         },
+        save_rows:function(rows){
+            var self=this
+            var post_data=[{fun:'save_rows',rows:rows}]
+            cfg.show_load()
+            ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                ex.each(rows,function(row){
+                    var new_row = ex.findone( resp.save_rows,{pk:row.pk})
+                    ex.assign(row,new_row)
+                })
+                cfg.hide_load(2000)
+            })
+        },
         clear: function () {
             this.rows = []
             this.row_pages = {}

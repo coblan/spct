@@ -16,6 +16,7 @@
     model_class='{{model_class}}'
 
     mix_table_page={
+
         methods:{
             on_operation:function(operation){
                 if(operation=='add_new'){
@@ -23,6 +24,9 @@
                 }
                 if(operation=='delete'){
                     this.del_selected()
+                }
+                if(operation=='save'){
+                    this.save_changed_rows()
                 }
             },
         }

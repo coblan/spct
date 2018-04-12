@@ -40,6 +40,17 @@ class PcMenu(BaseEngine):
                 {'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
                         ]}, 
             
+            {'label':_('RiskControl'),'icon':fa('fa-globe'),'visible':can_list((User,Group)),
+            'submenu':[
+                {'label':_('Tb RC Filter'),'url':page('maindb.TbRcFilter'),'icon':fa('fa-home')},
+                {'label':_('Tb RC Level'),'url':page('maindb.TbRcLevel')},
+                {'label':_('Tb RC User'),'url':page('maindb.TbRcUser')},
+                {'label':_('Tb Blankuserlist'),'url':page('maindb.TbBlackuserlist')},
+                {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog')},
+                
+                {'label':_('Tb Withdraw Limit Log'),'url':page('maindb.TbWithdrawlimitlog')}
+                        ]},             
+            
             
             {'label':'Betradar','icon':fa('fa-users'),'visible':can_list((User,Group)),
             'submenu':[

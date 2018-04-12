@@ -53,4 +53,6 @@ class TablePage(object):
     
     def get_operation(self):
         return [{'name':'add_new','editor':'com-op-a','label':'创建'},
-                {'name':'delete','editor':'com-op-a','label':'删除'}]
+                {'name':'save_changed_rows','editor':'com-op-a','label':'保存'},
+                {'name':'delete','editor':'com-op-a','label':'删除'},
+                ]

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -239,6 +239,38 @@ Vue.component('com-pop-fields', {
 "use strict";
 
 
+var label_shower = {
+    props: ['row', 'head'],
+    template: '<div><span v-if=\'head.readonly\' v-text=\'label\'></span></div>',
+    computed: {
+        label: function label() {
+            return this.row['_' + this.head.name + '_label'];
+        }
+    }
+};
+
+Vue.component('com-field-label-shower', label_shower);
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Vue.component('com-field-op-btn', {
+    props: ['head'],
+    template: '<button @click="$emit(\'operate\')"><span v-text="head.label"></span></button>'
+
+});
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var mix_fields_data = {
     methods: {
         get_data: function get_data() {
@@ -302,7 +334,7 @@ var mix_fields_data = {
 window.mix_fields_data = mix_fields_data;
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -326,106 +358,8 @@ var nice_validator = {
 window.mix_nice_validator = nice_validator;
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var mix_table_data = {
-    methods: {
-        search: function search() {
-            this.search_args._page = 1;
-            this.get_data();
-        },
-        get_data: function get_data() {
-            this.data_getter(this);
-        },
-        get_page: function get_page(page_number) {
-            this.search_args._page = page_number;
-            this.get_data();
-        },
-        get_search_args: function get_search_args() {
-            return this.search_args;
-        },
-        data_getter: function data_getter() {
-            // 默认的 data_getter
-            var self = this;
-            //var loader = layer.load(2);
-            cfg.show_load();
-            $.get(ex.appendSearch(this.search_args), function (resp) {
-                self.rows = resp.rows;
-                self.row_pages = resp.row_pages;
-                cfg.hide_load();
-            });
-        },
-        clear: function clear() {
-            this.rows = [];
-            this.row_pages = {};
-        },
-
-        del_selected: function del_selected() {
-            var self = this;
-            layer.confirm('真的删除吗?', { icon: 3, title: '确认' }, function (index) {
-                layer.close(index);
-                var ss = layer.load(2);
-                var post_data = [{ fun: 'del_rows', rows: self.selected }];
-                $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    layer.close(ss);
-                    ex.each(self.selected, function (item) {
-                        ex.remove(self.rows, item);
-                    });
-                    self.selected = [];
-                    layer.msg('删除成功', { time: 2000 });
-                });
-            });
-        }
-
-        //del_item: function () {
-        //    if (this.selected.length == 0) {
-        //        return
-        //    }
-        //    var del_obj = {}
-        //    for (var j = 0; j < this.selected.length; j++) {
-        //        var pk = this.selected[j]
-        //        for (var i = 0; i < this.rows.length; i++) {
-        //            if (this.rows[i].pk.toString() == pk) {
-        //                if (!del_obj[this.rows[i]._class]) {
-        //                    del_obj[this.rows[i]._class] = []
-        //                }
-        //                del_obj[this.rows[i]._class].push(pk)
-        //            }
-        //        }
-        //    }
-        //    var out_str = ''
-        //    for (var key in del_obj) {
-        //        out_str += (key + ':' + del_obj[key].join(':') + ',')
-        //    }
-        //    location = ex.template("{engine_url}/del_rows?rows={rows}&next={next}", {
-        //        engine_url: engine_url,
-        //        rows: encodeURI(out_str),
-        //        next: encodeURIComponent(location.href)
-        //    })
-        //},
-        //goto_page: function (page) {
-        //    this.search_args._page = page
-        //    this.get_data()
-        //},
-        //add_new: function () {
-        //    var url = ex.template('{engine_url}/{page}.edit/?next={next}', {
-        //        engine_url: engine_url,
-        //        page: page_name,
-        //        next: encodeURIComponent(ex.appendSearch(location.pathname, search_args))
-        //    })
-        //    location = url
-        //},
-    }
-};
-
-window.mix_table_data = mix_table_data;
-
-/***/ }),
-/* 6 */
+/* 7 */,
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -508,16 +442,250 @@ var mix_v_table_adapter = {
 window.mix_v_table_adapter = mix_v_table_adapter;
 
 /***/ }),
-/* 7 */
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var label_shower = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span v-text="rowData[label]"></span>',
+    data: function data() {
+        return {
+            label: '_' + this.field + '_label'
+        };
+    }
+};
+
+Vue.component('com-table-label-shower', label_shower);
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var line_text = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div ><input @change="on_changed()" style="width: 100%" type="text" v-model="rowData[field]"></div>',
+    data: function data() {
+        return {};
+    },
+    methods: {
+        on_changed: function on_changed() {
+            this.$emit('on-custom-comp', { name: 'row-changed', row: this.rowData });
+        }
+    }
+};
+
+Vue.component('com-table-linetext', line_text);
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var mapper = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span v-text="show_data"></span>',
+    created: function created() {
+        // find head from parent table
+        var table_par = this.$parent;
+        while (true) {
+            if (table_par.heads) {
+                break;
+            }
+            table_par = table_par.$parent;
+            if (!table_par) {
+                break;
+            }
+        }
+        this.table_par = table_par;
+    },
+    computed: {
+        show_data: function show_data() {
+            if (this.table_par) {
+                var value = this.rowData[this.field];
+                var head = ex.findone(this.table_par.heads, { name: this.field });
+                var options = head.options;
+                return options[value];
+            }
+        }
+    }
+};
+
+Vue.component('com-table-mapper', mapper);
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var picture = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span>\n        <img @click="open()" :src="rowData[field]" alt="" height="96px" style="cursor: pointer;">\n        </span>',
+    methods: {
+        open: function open() {
+            window.open(this.rowData[this.field]);
+        }
+    }
+};
+
+Vue.component('com-table-picture', picture);
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var pop_fields = {
+    template: '<span v-text="rowData[field].label" @click="edit_me()" class="clickable"></span>',
+    props: ['rowData', 'field', 'index'],
+    created: function created() {
+        // find head from parent table
+        var table_par = this.$parent;
+        while (true) {
+            if (table_par.heads) {
+                break;
+            }
+            table_par = table_par.$parent;
+            if (!table_par) {
+                break;
+            }
+        }
+        if (table_par) {
+            var value = this.rowData[this.field];
+            this.head = ex.findone(table_par.heads, { name: this.field });
+        }
+    },
+    methods: {
+        edit_me: function edit_me() {
+            this.open_layer();
+        },
+        open_layer: function open_layer() {
+            var self = this;
+            var id = new Date().getTime();
+            var pk = this.rowData[this.field].pk;
+            var model_name = this.head.model_name;
+            var ops = this.head.ops;
+            self.opened_layer_indx = layer.open({
+                type: 1,
+                area: ['700px', '400px'],
+                shadeClose: true, //点击遮罩关闭
+                content: '<div id="fields-pop-' + id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
+            });
+            //var copy_fields_heads = ex.copy(fields_heads)
+            new Vue({
+                el: '#fields-pop-' + id,
+                data: {
+                    row: {},
+                    fields_heads: this.head.fields_heads,
+                    pk: pk,
+                    ops: ops
+                },
+                mounted: function mounted() {
+                    var self = this;
+                    cfg.show_load();
+                    var post_data = [{ fun: 'get_row', pk: this.pk, model_name: model_name }];
+                    ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                        self.row = resp.get_row;
+                        cfg.hide_load();
+                    });
+                },
+                methods: {
+                    on_sub_success: function on_sub_success(event) {
+                        // 将新建的row 插入到表格中
+                        var old_row = event.old_row;
+                        var new_row = event.new_row;
+                        if (!old_row.pk) {
+                            self.rows.splice(0, 0, new_row);
+                        } else {
+                            ex.assign(row, new_row);
+                        }
+                    },
+                    on_del: function on_del() {
+                        ex.remove(self.rows, row);
+                        layer.close(self.opened_layer_indx);
+                    }
+                }
+            });
+        }
+    }
+};
+Vue.component('com-table-pop-fields', pop_fields);
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// 无用了。准备删除
+var delete_op = {
+    props: ['name'],
+    template: ' <a class="clickable" @click="delete_op()" :disabled="!enable">\u5220\u9664</a>',
+    data: function data() {
+        return {
+            enable: false
+        };
+    },
+    methods: {
+        delete_op: function delete_op() {
+            this.$emit('operation', this.name);
+        },
+        set_enable: function set_enable(yes) {
+            this.enable = yes;
+        }
+    }
+};
+Vue.component('com-op-delete', delete_op);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var op_a = {
+    props: ['head'],
+    template: ' <a class="clickable" @click="operation_call()" :disabled="!enable" v-text="head.label" ></a>',
+    data: function data() {
+        return {
+            enable: true
+        };
+    },
+    methods: {
+        operation_call: function operation_call() {
+            this.$emit('operation', this.head.name);
+        },
+        set_enable: function set_enable(yes) {
+            this.enable = yes;
+        }
+    }
+};
+Vue.component('com-op-a', op_a);
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(8);
+var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(10)(content, {});
+var update = __webpack_require__(19)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -534,10 +702,10 @@ if(false) {
 }
 
 /***/ }),
-/* 8 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(9)();
+exports = module.exports = __webpack_require__(18)();
 // imports
 
 
@@ -548,7 +716,7 @@ exports.push([module.i, ".msg-hide .field .msg {\n  display: none; }\n\n.field .
 
 
 /***/ }),
-/* 9 */
+/* 18 */
 /***/ (function(module, exports) {
 
 /*
@@ -604,7 +772,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 10 */
+/* 19 */
 /***/ (function(module, exports) {
 
 /*
@@ -856,25 +1024,29 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 11 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mix_table_data = __webpack_require__(5);
+var _mix_table_data = __webpack_require__(22);
 
 var mix_table_data = _interopRequireWildcard(_mix_table_data);
 
-var _mix_v_table_adapter = __webpack_require__(6);
+var _table_base_opration = __webpack_require__(23);
+
+var mix_table_base_op = _interopRequireWildcard(_table_base_opration);
+
+var _mix_v_table_adapter = __webpack_require__(8);
 
 var mix_v_table_adapter = _interopRequireWildcard(_mix_v_table_adapter);
 
-var _mix_nice_validator = __webpack_require__(4);
+var _mix_nice_validator = __webpack_require__(6);
 
 var mix_nice_validator = _interopRequireWildcard(_mix_nice_validator);
 
-var _mix_fields_data = __webpack_require__(3);
+var _mix_fields_data = __webpack_require__(5);
 
 var mix_fields_data = _interopRequireWildcard(_mix_fields_data);
 
@@ -894,37 +1066,48 @@ var _picture = __webpack_require__(12);
 
 var table_picture = _interopRequireWildcard(_picture);
 
-var _label_shower = __webpack_require__(13);
+var _label_shower = __webpack_require__(9);
 
 var table_label_shower = _interopRequireWildcard(_label_shower);
 
-var _mapper = __webpack_require__(19);
+var _mapper = __webpack_require__(11);
 
 var table_mapper = _interopRequireWildcard(_mapper);
 
-var _pop_fields = __webpack_require__(20);
+var _pop_fields = __webpack_require__(13);
 
 var table_pop_fields = _interopRequireWildcard(_pop_fields);
 
-var _label_shower2 = __webpack_require__(14);
+var _linetext = __webpack_require__(10);
+
+var table_linetext = _interopRequireWildcard(_linetext);
+
+var _check_box = __webpack_require__(21);
+
+var table_checkbox = _interopRequireWildcard(_check_box);
+
+var _label_shower2 = __webpack_require__(3);
 
 var field_label_shower = _interopRequireWildcard(_label_shower2);
 
-var _operator_a = __webpack_require__(17);
+var _operator_a = __webpack_require__(15);
 
 var op_a = _interopRequireWildcard(_operator_a);
 
-var _delete_op = __webpack_require__(16);
+var _delete_op = __webpack_require__(14);
 
 var delete_op = _interopRequireWildcard(_delete_op);
 
-var _btn = __webpack_require__(21);
+var _btn = __webpack_require__(4);
 
 var btn = _interopRequireWildcard(_btn);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(7);
+__webpack_require__(16);
+
+//table mix
+
 
 // table editor
 
@@ -935,250 +1118,180 @@ __webpack_require__(7);
 //fields operator
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var picture = {
-    props: ['rowData', 'field', 'index'],
-    template: '<span>\n        <img @click="open()" :src="rowData[field]" alt="" height="96px" style="cursor: pointer;">\n        </span>',
-    methods: {
-        open: function open() {
-            window.open(this.rowData[this.field]);
-        }
-    }
-};
-
-Vue.component('com-table-picture', picture);
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var label_shower = {
-    props: ['rowData', 'field', 'index'],
-    template: '<span v-text="rowData[label]"></span>',
-    data: function data() {
-        return {
-            label: '_' + this.field + '_label'
-        };
-    }
-};
-
-Vue.component('com-table-label-shower', label_shower);
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var label_shower = {
-    props: ['row', 'head'],
-    template: '<div><span v-if=\'head.readonly\' v-text=\'label\'></span></div>',
-    computed: {
-        label: function label() {
-            return this.row['_' + this.head.name + '_label'];
-        }
-    }
-};
-
-Vue.component('com-field-label-shower', label_shower);
-
-/***/ }),
-/* 15 */,
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-// 无用了。准备删除
-var delete_op = {
-    props: ['name'],
-    template: ' <a class="clickable" @click="delete_op()" :disabled="!enable">\u5220\u9664</a>',
-    data: function data() {
-        return {
-            enable: false
-        };
-    },
-    methods: {
-        delete_op: function delete_op() {
-            this.$emit('operation', this.name);
-        },
-        set_enable: function set_enable(yes) {
-            this.enable = yes;
-        }
-    }
-};
-Vue.component('com-op-delete', delete_op);
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var op_a = {
-    props: ['head'],
-    template: ' <a class="clickable" @click="operation_call()" :disabled="!enable" v-text="head.label" ></a>',
-    data: function data() {
-        return {
-            enable: true
-        };
-    },
-    methods: {
-        operation_call: function operation_call() {
-            this.$emit('operation', this.head.name);
-        },
-        set_enable: function set_enable(yes) {
-            this.enable = yes;
-        }
-    }
-};
-Vue.component('com-op-a', op_a);
-
-/***/ }),
-/* 18 */,
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var mapper = {
-    props: ['rowData', 'field', 'index'],
-    template: '<span v-text="show_data"></span>',
-    created: function created() {
-        // find head from parent table
-        var table_par = this.$parent;
-        while (true) {
-            if (table_par.heads) {
-                break;
-            }
-            table_par = table_par.$parent;
-            if (!table_par) {
-                break;
-            }
-        }
-        this.table_par = table_par;
-    },
-    computed: {
-        show_data: function show_data() {
-            if (this.table_par) {
-                var value = this.rowData[this.field];
-                var head = ex.findone(this.table_par.heads, { name: this.field });
-                var options = head.options;
-                return options[value];
-            }
-        }
-    }
-};
-
-Vue.component('com-table-mapper', mapper);
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var pop_fields = {
-    template: '<span v-text="rowData[field].label" @click="edit_me()" class="clickable"></span>',
-    props: ['rowData', 'field', 'index'],
-    created: function created() {
-        // find head from parent table
-        var table_par = this.$parent;
-        while (true) {
-            if (table_par.heads) {
-                break;
-            }
-            table_par = table_par.$parent;
-            if (!table_par) {
-                break;
-            }
-        }
-        if (table_par) {
-            var value = this.rowData[this.field];
-            this.head = ex.findone(table_par.heads, { name: this.field });
-        }
-    },
-    methods: {
-        edit_me: function edit_me() {
-            this.open_layer();
-        },
-        open_layer: function open_layer() {
-            var self = this;
-            var id = new Date().getTime();
-            var pk = this.rowData[this.field].pk;
-            var model_name = this.head.model_name;
-            var ops = this.head.ops;
-            self.opened_layer_indx = layer.open({
-                type: 1,
-                area: ['700px', '400px'],
-                shadeClose: true, //点击遮罩关闭
-                content: '<div id="fields-pop-' + id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
-            });
-            //var copy_fields_heads = ex.copy(fields_heads)
-            new Vue({
-                el: '#fields-pop-' + id,
-                data: {
-                    row: {},
-                    fields_heads: this.head.fields_heads,
-                    pk: pk,
-                    ops: ops
-                },
-                mounted: function mounted() {
-                    var self = this;
-                    cfg.show_load();
-                    var post_data = [{ fun: 'get_row', pk: this.pk, model_name: model_name }];
-                    ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                        self.row = resp.get_row;
-                        cfg.hide_load();
-                    });
-                },
-                methods: {
-                    on_sub_success: function on_sub_success(event) {
-                        // 将新建的row 插入到表格中
-                        var old_row = event.old_row;
-                        var new_row = event.new_row;
-                        if (!old_row.pk) {
-                            self.rows.splice(0, 0, new_row);
-                        } else {
-                            ex.assign(row, new_row);
-                        }
-                    },
-                    on_del: function on_del() {
-                        ex.remove(self.rows, row);
-                        layer.close(self.opened_layer_indx);
-                    }
-                }
-            });
-        }
-    }
-};
-Vue.component('com-table-pop-fields', pop_fields);
-
-/***/ }),
 /* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-Vue.component('com-field-op-btn', {
-    props: ['head'],
-    template: '<button @click="$emit(\'operate\')"><span v-text="head.label"></span></button>'
+var check_box = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div ><input style="width: 100%" @change="on_changed()" type="checkbox" v-model="rowData[field]"></div>',
+    data: function data() {
+        return {};
+    },
+    methods: {
+        on_changed: function on_changed() {
+            this.$emit('on-custom-comp', { name: 'row-changed', row: this.rowData });
+        }
+    }
+};
 
-});
+Vue.component('com-table-checkbox', check_box);
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var mix_table_data = {
+    methods: {
+        search: function search() {
+            this.search_args._page = 1;
+            this.get_data();
+        },
+        get_data: function get_data() {
+            this.data_getter(this);
+        },
+        get_page: function get_page(page_number) {
+            this.search_args._page = page_number;
+            this.get_data();
+        },
+        get_search_args: function get_search_args() {
+            return this.search_args;
+        },
+        data_getter: function data_getter() {
+            // 默认的 data_getter
+            var self = this;
+            //var loader = layer.load(2);
+            cfg.show_load();
+            $.get(ex.appendSearch(this.search_args), function (resp) {
+                self.rows = resp.rows;
+                self.row_pages = resp.row_pages;
+                cfg.hide_load();
+            });
+        },
+        save_rows: function save_rows(rows) {
+            var self = this;
+            var post_data = [{ fun: 'save_rows', rows: rows }];
+            cfg.show_load();
+            ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                ex.each(rows, function (row) {
+                    var new_row = ex.findone(resp.save_rows, { pk: row.pk });
+                    ex.assign(row, new_row);
+                });
+                cfg.hide_load(2000);
+            });
+        },
+        clear: function clear() {
+            this.rows = [];
+            this.row_pages = {};
+        },
+
+        del_selected: function del_selected() {
+            var self = this;
+            layer.confirm('真的删除吗?', { icon: 3, title: '确认' }, function (index) {
+                layer.close(index);
+                var ss = layer.load(2);
+                var post_data = [{ fun: 'del_rows', rows: self.selected }];
+                $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    layer.close(ss);
+                    ex.each(self.selected, function (item) {
+                        ex.remove(self.rows, item);
+                    });
+                    self.selected = [];
+                    layer.msg('删除成功', { time: 2000 });
+                });
+            });
+        }
+
+        //del_item: function () {
+        //    if (this.selected.length == 0) {
+        //        return
+        //    }
+        //    var del_obj = {}
+        //    for (var j = 0; j < this.selected.length; j++) {
+        //        var pk = this.selected[j]
+        //        for (var i = 0; i < this.rows.length; i++) {
+        //            if (this.rows[i].pk.toString() == pk) {
+        //                if (!del_obj[this.rows[i]._class]) {
+        //                    del_obj[this.rows[i]._class] = []
+        //                }
+        //                del_obj[this.rows[i]._class].push(pk)
+        //            }
+        //        }
+        //    }
+        //    var out_str = ''
+        //    for (var key in del_obj) {
+        //        out_str += (key + ':' + del_obj[key].join(':') + ',')
+        //    }
+        //    location = ex.template("{engine_url}/del_rows?rows={rows}&next={next}", {
+        //        engine_url: engine_url,
+        //        rows: encodeURI(out_str),
+        //        next: encodeURIComponent(location.href)
+        //    })
+        //},
+        //goto_page: function (page) {
+        //    this.search_args._page = page
+        //    this.get_data()
+        //},
+        //add_new: function () {
+        //    var url = ex.template('{engine_url}/{page}.edit/?next={next}', {
+        //        engine_url: engine_url,
+        //        page: page_name,
+        //        next: encodeURIComponent(ex.appendSearch(location.pathname, search_args))
+        //    })
+        //    location = url
+        //},
+    }
+};
+
+window.mix_table_data = mix_table_data;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var mix_table_base_op = {
+    data: function data() {
+        return {
+            changed_rows: []
+        };
+    },
+    mounted: function mounted() {
+        this.$refs.op_save_changed_rows[0].set_enable(false);
+        this.$refs.op_delete[0].set_enable(false);
+    },
+    watch: {
+        changed_rows: function changed_rows(v) {
+            this.$refs.op_save_changed_rows[0].set_enable(v.length != 0);
+        },
+        selected: function selected(v) {
+            this.$refs.op_delete[0].set_enable(v.length != 0);
+        }
+    },
+    methods: {
+        on_operation: function on_operation(operation) {
+            if (operation == 'add_new') {
+                this.add_new();
+            }
+            if (operation == 'delete') {
+                this.del_selected();
+            }
+            if (operation == 'save_changed_rows') {
+                this.save_rows(this.changed_rows);
+                this.changed_rows = [];
+            }
+        }
+    }
+};
+
+window.mix_table_base_op = mix_table_base_op;
 
 /***/ })
 /******/ ]);

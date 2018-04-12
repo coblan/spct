@@ -140,4 +140,4 @@ class PicturenameProc(object):
             
 model_dc[TbBanner]={'fields':BannerPage.fieldsCls}
 field_map[model_to_name(TbBanner)+'.picturename']=PicturenameProc
-#TbBanner.picturename.attname
+

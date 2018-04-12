@@ -448,6 +448,9 @@ class ModelTable(object):
         return {}
     
     def get_query(self):
+        if not self.crt_user.is_superuser and not self.permit.readable_fields():
+            raise PermissionDenied,'no permission to browse %s'%self.model._meta.model_name
+        
         query = self.inn_filter(self.model.objects.all())
         query=self.row_filter.get_query(query)
     
@@ -460,11 +463,7 @@ class ModelTable(object):
         #return self.pagenum.get_query()
     
     def inn_filter(self,query):
-        if not self.crt_user.is_superuser and not self.permit.readable_fields():
-            raise PermissionDenied,'no permission to browse %s'%self.model._meta.model_name
-        else:
-            #return query
-            return query.order_by('-pk')
+        return query.order_by('-pk')
     
     #def search_filter(self,query):
         #return self.row_search.get_query(query)
