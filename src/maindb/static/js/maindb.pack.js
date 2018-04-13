@@ -74,26 +74,42 @@
 
 
 var ajax_fields = {
-    props: ['kw'],
+    props: ['tab_head', 'par_row'],
     data: function data() {
         return {
-            heads: this.kw,
+            heads: this.tab_head.fields_heads,
+            ops: this.tab_head.fields_ops,
+            relat_field: this.tab_head.relat_field,
+            model_name: this.tab_head.model_name,
             errors: {},
             row: {}
-            //fields_kw:{
-            //    heads:this.kw,
-            //    errors:{},
-            //    row:{}
-            //}
         };
     },
     mixins: [mix_fields_data, mix_nice_validator],
-    template: '<div>\n    <div style="margin: 5px 1em;">\n        <button type="button" class="btn btn-default" title="\u4FDD\u5B58" @click="save()"><i class="fa fa-save"></i><span>\u4FDD\u5B58</span></button>\n    </div>\n\n    <form class=\'field-panel msg-hide\' id="form">\n\t\t<field  v-for=\'head in heads\' :key="head.name" :head="head" :row=\'row\'></field>\n\t</form></div>'
+    template: '<div>\n    <!--<div style="margin: 5px 1em;">-->\n        <!--<button type="button" class="btn btn-default" title="\u4FDD\u5B58" @click="save()"><i class="fa fa-save"></i><span>\u4FDD\u5B58</span></button>-->\n    <!--</div>-->\n\n    <span class="oprations">\n            <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op.name)"></component>\n    </span>\n\n    <form class=\'field-panel msg-hide\' id="form">\n\t\t<field  v-for=\'head in heads\' :key="head.name" :head="head" :row=\'row\'></field>\n\t</form></div>',
 
-    // data_getter  回调函数，获取数据,
+    methods: {
+        on_show: function on_show() {
+            if (!this.fetched) {
+                this.get_data();
+                this.fetched = true;
+            }
+        },
+        data_getter: function data_getter() {
+            var self = this;
+            cfg.show_load();
+            var dt = { fun: 'get_row', model_name: this.model_name };
+            dt[this.relat_field] = this.par_row[this.relat_field];
+            var post_data = [dt];
+            $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                self.row = resp.get_row;
+                cfg.hide_load();
+            });
+        }
+        // data_getter  回调函数，获取数据,
 
 
-};
+    } };
 
 Vue.component('com_ajax_fields', ajax_fields);
 
@@ -105,23 +121,23 @@ Vue.component('com_ajax_fields', ajax_fields);
 
 
 var ajax_table = {
-    props: ['kw'], //['heads','row_filters','kw'],
+    props: ['tab_head', 'par_row'], //['heads','row_filters','kw'],
     data: function data() {
+        var table_head = this.tab_head.table_head;
         return {
-            heads: this.kw.heads,
-            row_filters: this.kw.row_filters,
+            heads: table_head.heads,
+            row_filters: table_head.row_filters,
+            row_sort: table_head.row_sort,
 
-            row_sort: this.kw.row_sort,
+            relat_field: this.tab_head.relat_field,
+            model_name: this.tab_head.model_name,
+
             rows: [],
             row_pages: {},
             //search_tip:this.kw.search_tip,
 
             selected: [],
             del_info: [],
-
-            can_add: this.kw.can_add,
-            can_del: this.kw.can_del,
-            can_edit: this.kw.can_edit,
 
             search_args: {}
         };
@@ -137,6 +153,29 @@ var ajax_table = {
     template: '<div class="rows-block">\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success">\n            <div class="table-wraper">\n                <v-table ref="vtable"\n                         is-horizontal-resize\n                         is-vertical-resize\n                         :title-row-height="30"\n                         :vertical-resize-offset="80"\n                         :row-height="24"\n                         odd-bg-color="#f0f6f8"\n                         column-width-drag\n                         style="width: 100%;"\n                         :columns="columns"\n                         :table-data="rows"\n                         @sort-change="sortChange"\n                         row-hover-color="#eee"\n                         row-click-color="#edf7ff">\n                </v-table>\n            </div>\n            <div style="margin-top: 10px;">\n                <v-pagination @page-change="get_page($event)"\n                              :total="row_pages.total"\n                              size="small"\n                              :page-size="row_pages.perpage"\n                              @page-size-change="on_perpage_change($event)"\n                              :layout="[\'total\', \'prev\', \'pager\', \'next\', \'sizer\', \'jumper\']">\n                </v-pagination>\n            </div>\n        </div>\n    </div>',
 
     methods: {
+        on_show: function on_show() {
+            if (!this.fetched) {
+                this.get_data();
+                this.fetched = true;
+            }
+        },
+        data_getter: function data_getter() {
+            // 这里clear，数据被清空，造成table的pagenator上下抖动
+            //                       com.clear()
+
+            //                        var getter_name = 'get_'+tab.name
+            var self = this;
+            var relat_pk = this.par_row[this.relat_field];
+            var relat_field = this.relat_field;
+            this.search_args[relat_field] = relat_pk;
+            var post_data = [{ fun: 'get_rows', search_args: this.search_args, model_name: this.model_name }];
+            cfg.show_load();
+            $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                cfg.hide_load();
+                self.rows = resp.get_rows.rows;
+                self.row_pages = resp.get_rows.row_pages;
+            });
+        },
         del_item: function del_item() {
             if (this.selected.length == 0) {
                 return;
@@ -188,18 +227,14 @@ Vue.component('com_ajax_table', ajax_table);
 Vue.component('com-pop-fields', {
     props: ['row', 'heads', 'ops'],
     mixins: [mix_fields_data, mix_nice_validator],
+
     methods: {
-        on_operat: function on_operat(name) {
-            if (name == 'save') {
-                this.save();
-            }
-        },
         before_save: function before_save() {
             eventBus.$emit('sync_data');
             if (this.nice_validator.isValid()) {
-                return true;
+                return 'continue';
             } else {
-                return false;
+                return 'break';
             }
         },
         after_save: function after_save(new_row) {
@@ -220,7 +255,7 @@ Vue.component('com-pop-fields', {
         }
 
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div>\n        <component v-for="op in ops" :is="op.editor" @operate="on_operat(op.name)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n    <div class = "flex-grow" style="overflow: scroll;margin: 0;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div>\n        <component v-for="op in ops" :is="op.editor" @operate="on_operation(op.name)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n    <div class = "flex-grow" style="overflow: scroll;margin: 0;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {
@@ -272,7 +307,23 @@ Vue.component('com-field-op-btn', {
 
 
 var mix_fields_data = {
+    data: function data() {
+        return {
+            op_funs: {}
+        };
+    },
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            save: function save() {
+                self.save();
+            }
+        });
+    },
     methods: {
+        on_operation: function on_operation(name) {
+            this.op_funs[name]();
+        },
         get_data: function get_data() {
             this.data_getter(this);
         },
@@ -287,7 +338,7 @@ var mix_fields_data = {
         },
         save: function save() {
             var self = this;
-            if (!self.before_save()) {
+            if (self.before_save() == 'break') {
                 return;
             }
             //var loader = layer.load(2)
@@ -296,7 +347,6 @@ var mix_fields_data = {
             var post_data = [{ fun: 'save', row: this.row }];
             var url = ex.appendSearch('/d/ajax', search_args);
             ex.post(url, JSON.stringify(post_data), function (resp) {
-                //layer.close(loader)
                 if (resp.save.errors) {
                     cfg.hide_load();
                     self.set_errors(resp.save.errors);
@@ -311,7 +361,7 @@ var mix_fields_data = {
         },
         before_save: function before_save() {
             eventBus.$emit('sync_data');
-            return true;
+            return 'continue';
         },
         after_save: function after_save(new_row) {
             ex.assign(this.row, new_row);
@@ -547,7 +597,7 @@ Vue.component('com-table-picture', picture);
 
 
 var pop_fields = {
-    template: '<span v-text="rowData[field].label" @click="edit_me()" class="clickable"></span>',
+    template: '<span v-text="rowData[field]" @click="edit_me(rowData,head)" class="clickable"></span>',
     props: ['rowData', 'field', 'index'],
     created: function created() {
         // find head from parent table
@@ -571,53 +621,24 @@ var pop_fields = {
             this.open_layer();
         },
         open_layer: function open_layer() {
-            var self = this;
-            var id = new Date().getTime();
-            var pk = this.rowData[this.field].pk;
-            var model_name = this.head.model_name;
-            var ops = this.head.ops;
-            self.opened_layer_indx = layer.open({
-                type: 1,
-                area: ['700px', '400px'],
-                shadeClose: true, //点击遮罩关闭
-                content: '<div id="fields-pop-' + id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
-            });
-            //var copy_fields_heads = ex.copy(fields_heads)
-            new Vue({
-                el: '#fields-pop-' + id,
-                data: {
-                    row: {},
-                    fields_heads: this.head.fields_heads,
-                    pk: pk,
-                    ops: ops
-                },
-                mounted: function mounted() {
-                    var self = this;
-                    cfg.show_load();
-                    var post_data = [{ fun: 'get_row', pk: this.pk, model_name: model_name }];
-                    ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                        self.row = resp.get_row;
-                        cfg.hide_load();
-                    });
-                },
-                methods: {
-                    on_sub_success: function on_sub_success(event) {
-                        // 将新建的row 插入到表格中
-                        var old_row = event.old_row;
-                        var new_row = event.new_row;
-                        if (!old_row.pk) {
-                            self.rows.splice(0, 0, new_row);
-                        } else {
-                            ex.assign(row, new_row);
-                        }
-                    },
-                    on_del: function on_del() {
-                        ex.remove(self.rows, row);
-                        layer.close(self.opened_layer_indx);
-                    }
-                }
-            });
+
+            //if(! trigger.head.use_table_row){
+            //    var self=this
+            //    cfg.show_load()
+            //    var dc ={fun:'get_row',model_name:model_name}
+            //    dc[relat_field] = trigger.rowData[relat_field]
+            //    var post_data=[dc]
+            //    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            //        self.row = resp.get_row
+            //        cfg.hide_load()
+            //    })
+            //}
+            if (this.head.use_table_) var relat_field = head.relat_field;
+            var model_name = head.model_name;
+            var ops = head.ops;
+            pop_fields_layer(row, heads, ops);
         }
+
     }
 };
 Vue.component('com-table-pop-fields', pop_fields);
@@ -658,7 +679,7 @@ Vue.component('com-op-delete', delete_op);
 
 var op_a = {
     props: ['head'],
-    template: ' <a class="clickable" @click="operation_call()" :disabled="!enable" v-text="head.label" ></a>',
+    template: ' <a class="clickable" @click="operation_call()"  v-text="head.label" ></a>',
     data: function data() {
         return {
             enable: true
@@ -1030,13 +1051,9 @@ function updateLink(linkElement, obj) {
 "use strict";
 
 
-var _mix_table_data = __webpack_require__(22);
+var _mix_table_data = __webpack_require__(25);
 
 var mix_table_data = _interopRequireWildcard(_mix_table_data);
-
-var _table_base_opration = __webpack_require__(23);
-
-var mix_table_base_op = _interopRequireWildcard(_table_base_opration);
 
 var _mix_v_table_adapter = __webpack_require__(8);
 
@@ -1062,6 +1079,10 @@ var _com_pop_fields = __webpack_require__(2);
 
 var com_pop_fields = _interopRequireWildcard(_com_pop_fields);
 
+var _pop_fields_layer = __webpack_require__(27);
+
+var pop_fields_layer = _interopRequireWildcard(_pop_fields_layer);
+
 var _picture = __webpack_require__(12);
 
 var table_picture = _interopRequireWildcard(_picture);
@@ -1085,6 +1106,10 @@ var table_linetext = _interopRequireWildcard(_linetext);
 var _check_box = __webpack_require__(21);
 
 var table_checkbox = _interopRequireWildcard(_check_box);
+
+var _switch_to_tab = __webpack_require__(24);
+
+var switch_to_tab = _interopRequireWildcard(_switch_to_tab);
 
 var _label_shower2 = __webpack_require__(3);
 
@@ -1140,14 +1165,83 @@ var check_box = {
 Vue.component('com-table-checkbox', check_box);
 
 /***/ }),
-/* 22 */
+/* 22 */,
+/* 23 */,
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var switch_to_tab = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span v-text="rowData[field]" @click="goto_tab()" class="clickable"></span>',
+    created: function created() {
+        // find head from parent table
+        var table_par = this.$parent;
+        while (true) {
+            if (table_par.heads) {
+                break;
+            }
+            table_par = table_par.$parent;
+            if (!table_par) {
+                break;
+            }
+        }
+        var head = ex.findone(table_par.heads, { name: this.field });
+        this.head = head;
+    },
+    methods: {
+        goto_tab: function goto_tab() {
+            this.$emit('on-custom-comp', { name: 'switch_to_tab',
+                tab_name: this.head.tab_name,
+                row: this.rowData });
+        }
+    }
+};
+
+Vue.component('com-table-switch-to-tab', switch_to_tab);
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var mix_table_data = {
+    data: function data() {
+        return {
+            op_funs: {},
+            changed_rows: []
+        };
+    },
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            save_changed_rows: function save_changed_rows() {
+                self.save_rows(self.changed_rows);
+                self.changed_rows = [];
+            },
+            add_new: function add_new() {
+                self.add_new();
+            },
+            delete: function _delete() {
+                self.del_selected();
+            }
+        });
+        //this.$refs.op_save_changed_rows[0].set_enable(false)
+        //this.$refs.op_delete[0].set_enable(false)
+    },
+    computed: {
+        changed: function changed() {
+            return this.changed_rows.length != 0;
+        }
+    },
     methods: {
+        on_operation: function on_operation(name) {
+            this.op_funs[name]();
+        },
         search: function search() {
             this.search_args._page = 1;
             this.get_data();
@@ -1251,47 +1345,82 @@ var mix_table_data = {
 window.mix_table_data = mix_table_data;
 
 /***/ }),
-/* 23 */
+/* 26 */,
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var mix_table_base_op = {
-    data: function data() {
-        return {
-            changed_rows: []
-        };
-    },
-    mounted: function mounted() {
-        this.$refs.op_save_changed_rows[0].set_enable(false);
-        this.$refs.op_delete[0].set_enable(false);
-    },
-    watch: {
-        changed_rows: function changed_rows(v) {
-            this.$refs.op_save_changed_rows[0].set_enable(v.length != 0);
-        },
-        selected: function selected(v) {
-            this.$refs.op_delete[0].set_enable(v.length != 0);
-        }
-    },
-    methods: {
-        on_operation: function on_operation(operation) {
-            if (operation == 'add_new') {
-                this.add_new();
-            }
-            if (operation == 'delete') {
-                this.del_selected();
-            }
-            if (operation == 'save_changed_rows') {
-                this.save_rows(this.changed_rows);
-                this.changed_rows = [];
-            }
-        }
-    }
-};
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.pop_fields_layer = pop_fields_layer;
+function pop_fields_layer(row, heads, ops) {
+    // row,head ->//model_name,relat_field
 
-window.mix_table_base_op = mix_table_base_op;
+    //var id = new Date().getTime()
+    //var relat_field = head.relat_field
+    //var model_name = head.model_name
+    //var ops = head.ops
+    //if(dc.head.use_table_row){
+    //    var lay_row = dc.row
+    //}else{
+    //    var lay_row ={}
+    //}
+
+    self.opened_layer_indx = layer.open({
+        type: 1,
+        area: ['700px', '400px'],
+        shadeClose: true, //点击遮罩关闭
+        content: '<div id="fields-pop-' + id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
+    });
+
+    new Vue({
+        el: '#fields-pop-' + id,
+        data: {
+            row: row,
+            fields_heads: heads,
+            ops: ops
+        },
+        mounted: function mounted() {
+            //if(! trigger.head.use_table_row){
+            //    var self=this
+            //    cfg.show_load()
+            //    var dc ={fun:'get_row',model_name:model_name}
+            //    dc[relat_field] = trigger.rowData[relat_field]
+            //    var post_data=[dc]
+            //    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            //        self.row = resp.get_row
+            //        cfg.hide_load()
+            //    })
+            //}
+
+        },
+        methods: {
+            on_sub_success: function on_sub_success(event) {
+                // 将新建的row 插入到表格中
+                //if(! old_row.pk) {
+                //    self.rows.splice(0, 0, new_row)
+                //}
+                //if(this.head.use_table_row){
+                //    var old_row = event.old_row
+                //    var new_row=event.new_row
+                //    ex.assign(self.row,new_row)
+                //}else{
+                //    trigger.update_row()
+                //}
+
+            }
+            //on_del:function(){
+            //    ex.remove(self.rows,row)
+            //    layer.close(self.opened_layer_indx)
+            //},
+        }
+    });
+}
+
+window.pop_fields_layer = pop_fields_layer;
 
 /***/ })
 /******/ ]);

@@ -1,35 +1,22 @@
-{% extends "maindb/table_pop_edit.html" %}
+{% extends "maindb/table.html" %}
 
 {% block extra_head %}
 <script>
 
     this_table_logic={
         mounted:function(){
-            // 刚开始没有选中项
-            this.$refs.op_offline[0].set_enable(false)
-            this.$refs.op_online[0].set_enable(false)
+            var self=this
+            ex.assign(this.op_funs,{
+                online:function(){
+                    self.set_banner_state(1)
+                },
+                offline:function(){
+                    self.set_banner_state(0)
+                }
+            })
         },
-        watch:{
-            selected:function(nv){
-                this.$refs.op_offline[0].set_enable(nv.length != 0)
-                this.$refs.op_online[0].set_enable(nv.length != 0)
-            }
-        },
+
         methods:{
-            on_operation:function(operation){
-                if(operation=='add_new'){
-                    this.add_new()
-                }
-                if(operation=='delete'){
-                    this.del_selected()
-                }
-                if(operation=='online'){
-                    this.set_banner_state(1)
-                }
-                if(operation=='offline'){
-                    this.set_banner_state(0)
-                }
-         },
             set_banner_state:function(state){
                 var self=this
                 var post_data=[{fun:'set_banner_status',rows:this.selected,status:state}]
@@ -40,14 +27,23 @@
                         item.status = state
                     })
                 })
-            }
+            },
+            add_new:function(){
+                var self=this
+                var post_data=[{fun:'get_row',model_name:model_class}]
+                cfg.show_load()
+                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                    cfg.hide_load()
+                    var tmp_row = resp.get_row
+
+//                    self.open_layer(tmp_row)
+                })
+            },
      }
 }
-table_logic.mixins=[mix_table_data,mix_v_table_adapter,mix_table_page,this_table_logic]
 
-    $(function () {
-        table=new Vue(table_logic)
-    })
+table_logic.mixins=[mix_table_data,mix_v_table_adapter,this_table_logic]
+
 </script>
 {% endblock %}
 

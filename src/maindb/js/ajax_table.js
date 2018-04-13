@@ -1,22 +1,22 @@
 
 var ajax_table={
-    props:['kw'],//['heads','row_filters','kw'],
+    props:['tab_head','par_row'],//['heads','row_filters','kw'],
     data:function(){
+        var table_head = this.tab_head.table_head
         return {
-            heads:this.kw.heads,
-            row_filters:this.kw.row_filters,
+            heads:table_head.heads,
+            row_filters:table_head.row_filters,
+            row_sort:table_head.row_sort,
 
-            row_sort:this.kw.row_sort,
+            relat_field:this.tab_head.relat_field,
+            model_name:this.tab_head.model_name,
+
             rows:[],
             row_pages:{},
             //search_tip:this.kw.search_tip,
 
             selected:[],
             del_info:[],
-
-            can_add:this.kw.can_add,
-            can_del:this.kw.can_del,
-            can_edit:this.kw.can_edit,
 
             search_args: {}
         }
@@ -66,6 +66,29 @@ var ajax_table={
     </div>`,
 
     methods:{
+        on_show:function(){
+            if(! this.fetched){
+                this.get_data()
+                this.fetched = true
+            }
+        },
+        data_getter:function(){
+        // 这里clear，数据被清空，造成table的pagenator上下抖动
+//                       com.clear()
+
+//                        var getter_name = 'get_'+tab.name
+            var self=this
+            var relat_pk = this.par_row[this.relat_field]
+        var relat_field = this.relat_field
+        this.search_args[relat_field] = relat_pk
+        var post_data=[{fun:'get_rows',search_args:this.search_args,model_name:this.model_name}]
+            cfg.show_load()
+        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            cfg.hide_load()
+            self.rows = resp.get_rows.rows
+            self.row_pages =resp.get_rows.row_pages
+        })
+    },
         del_item:function () {
             if (this.selected.length==0){
                 return

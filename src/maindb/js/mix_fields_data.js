@@ -1,5 +1,22 @@
 var mix_fields_data ={
+    data:function(){
+        return {
+            op_funs:{
+            }
+        }
+    },
+    mounted:function(){
+        var self=this
+        ex.assign(this.op_funs,{
+            save:function(){
+                self.save()
+            }
+        })
+    },
     methods:{
+        on_operation:function(name){
+            this.op_funs[name]()
+        },
         get_data:function(){
             this.data_getter(this)
         },
@@ -14,7 +31,7 @@ var mix_fields_data ={
         },
         save:function () {
             var self =this;
-            if(!self.before_save()){
+            if(self.before_save() == 'break'){
                 return
             }
             //var loader = layer.load(2)
@@ -23,7 +40,6 @@ var mix_fields_data ={
             var post_data=[{fun:'save',row:this.row}]
             var url = ex.appendSearch('/d/ajax',search_args)
             ex.post(url,JSON.stringify(post_data),function (resp) {
-                //layer.close(loader)
                 if( resp.save.errors){
                     cfg.hide_load()
                     self.set_errors(resp.save.errors)
@@ -38,7 +54,7 @@ var mix_fields_data ={
         },
         before_save:function(){
             eventBus.$emit('sync_data')
-            return true
+            return 'continue'
         },
         after_save:function(new_row){
             ex.assign(this.row,new_row)

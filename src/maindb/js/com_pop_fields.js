@@ -1,18 +1,14 @@
 Vue.component('com-pop-fields',{
     props:['row','heads','ops'],
     mixins:[mix_fields_data,mix_nice_validator],
+
     methods:{
-        on_operat:function(name){
-            if(name=='save'){
-                this.save()
-            }
-        },
         before_save:function(){
             eventBus.$emit('sync_data')
             if(this.nice_validator.isValid()){
-                return true
+                return 'continue'
             }else{
-                return false
+                return 'break'
             }
         },
         after_save:function(new_row){
@@ -35,7 +31,7 @@ Vue.component('com-pop-fields',{
     },
     template:`<div class="flex-v" style="margin: 0;height: 100%;">
     <div>
-        <component v-for="op in ops" :is="op.editor" @operate="on_operat(op.name)" :head="op"></component>
+        <component v-for="op in ops" :is="op.editor" @operate="on_operation(op.name)" :head="op"></component>
         <!--<button @click="save()">保存</button>-->
         <!--<button @click="del_row()" v-if="row.pk">删除</button>-->
     </div>

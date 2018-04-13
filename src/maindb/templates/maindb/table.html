@@ -18,6 +18,7 @@
     //	can_del=
     //	search_args=ex.parseSearch()
     //	search字段从 search_args._q 来取值
+    tabs={{ tabs | jsonify | default:'[]' }}
 
     table_logic={
         el:'#there',
@@ -31,16 +32,19 @@
             selected:[],
             search_args:ex.parseSearch(),
             ops:ops,
-
-//		        del_info:[],
-//		        menu:menu,
-//		        can_add:can_add,
-//		        can_del:can_del,
-//		        model:model,
+            tabgroup:{
+                crt:'main',
+                tabs:tabs
+            },
+            crt_row:{}
 
         },
-        mixins:[mix_table_data,mix_v_table_adapter,mix_table_base_op],
-
+        mixins:[mix_table_data,mix_v_table_adapter],
+        computed:{
+            has_select:function(){
+                return this.selected !=0
+            },
+        },
         methods:{
             on_td_event:function(e){
                 if(e.name=='row-changed'){
@@ -49,9 +53,38 @@
                         this.changed_rows.push(row)
                     }
                 }
+                if(e.name=='switch_to_tab'){
+                    this.show_tab(e.tab_name)
+                    this.crt_row= e.row
+
+                }
             },
             on_select_group_change:function(sel,v){
                 this.selected= sel
+            },
+            back_to_main_page:function(){
+                this.tabgroup.crt='main'
+            },
+            show_tab:function(name){
+                this.tabgroup.crt = name
+                var self =this
+                Vue.nextTick(function(){
+                    self.$refs['_tab_'+name][0].on_show()
+                })
+
+            },
+            get_attr:function(name){
+                if(name == undefined){
+                    return false
+                }
+                if(name.startsWith('!')){
+                    name=name.slice(1)
+                    name= name.trim()
+                    return !this[name]
+                }else{
+                    name= name.trim()
+                    return this[name]
+                }
             }
         }
 
@@ -75,13 +108,21 @@
     <ol v-if="page_label" class="breadcrumb">
         <b v-text="page_label"></b>
 
+        <button v-show="tabgroup.crt != 'main'" @click="back_to_main_page()">back</button>
+
         <span class="oprations">
-            <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="'op_'+op.name" :head="op" @operation="on_operation(op.name)"></component>
+            <component style="padding: 0.5em;" v-for="op in ops"
+                       :is="op.editor"
+                       :ref="'op_'+op.name"
+                       :head="op"
+                       :disabled="get_attr(op.disabled)"
+                       v-show="! get_attr(op.hide)"
+                       @operation="on_operation(op.name)"></component>
         </span>
     </ol>
     <!--<path-nav v-else :menu='menu'></path-nav>-->
 
-    <div class="rows-block">
+    <div id="main-page" class="rows-block" v-show="tabgroup.crt =='main'">
         <div class='flex' v-if="row_filters.length > 0" style="min-height: 3em;">
             <com-filter class="flex" :heads="row_filters" :search_args="search_args"
                         @submit="search()"></com-filter>
@@ -89,6 +130,7 @@
         </div>
         <div class="box box-success">
             <div class="table-wraper">
+                {% block table_content %}
                 <v-table ref="vtable" is-horizontal-resize
                          is-vertical-resize
                          :vertical-resize-offset="80"
@@ -106,7 +148,7 @@
                          row-hover-color="#eee"
                          row-click-color="#edf7ff">
                 </v-table>
-
+                {% endblock %}
             </div>
             <div style="margin-top: 10px;">
                 <v-pagination @page-change="get_page($event)"
@@ -118,6 +160,25 @@
                 </v-pagination>
             </div>
         </div>
+    </div>
+    <div id="tab-wrap" v-if="tabgroup.crt!='main'">
+        <div class="flex">
+            <ul class="nav nav-tabs tabs flex-grow">
+                <li v-for="tab in tabgroup.tabs"
+                    :class="{'active':tabgroup.crt==tab.name}"
+                    @click="show_tab(tab.name)"
+                    style="cursor: pointer;">
+                    <a  v-text="tab.label" ></a>
+                </li>
+            </ul>
+        </div>
+
+        <component v-for="tab in tabgroup.tabs"
+                   v-show="tabgroup.crt==tab.name"
+                   :is="tab.com" :tab_head="tab"
+                   :par_row="crt_row"
+                   :ref="'_tab_'+tab.name" ></component>
+
     </div>
 
 

@@ -2,9 +2,7 @@ require('./scss/fields.scss')
 
 
 //table mix
-import * as mix_table_data from  './table_mix/mix_table_data.js'
-import * as mix_table_base_op from  './table_mix/table_base_opration.js'
-
+import * as mix_table_data from  './mix/mix_table_data.js'
 import * as mix_v_table_adapter from './mix_v_table_adapter.js'
 import * as mix_nice_validator from './mix_nice_validator.js'
 
@@ -13,6 +11,8 @@ import * as mix_fields_data from './mix_fields_data.js'
 import * as ajax_fields from './ajax_fields.js'
 import * as ajax_table from './ajax_table.js'
 import * as com_pop_fields from './com_pop_fields.js'
+
+import * as pop_fields_layer from  './field_editor/func/pop_fields_layer.js'
 
 
 
@@ -23,6 +23,8 @@ import * as table_mapper from  './table_editor/mapper.js'
 import * as table_pop_fields from  './table_editor/pop_fields.js'
 import * as table_linetext from  './table_editor/linetext.js'
 import * as table_checkbox from  './table_editor/check_box.js'
+import * as switch_to_tab from  './table_editor/switch_to_tab.js'
+
 
 import * as field_label_shower from  './field_editor/label_shower.js'
 

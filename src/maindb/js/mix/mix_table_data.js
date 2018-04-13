@@ -1,5 +1,36 @@
 var mix_table_data={
+    data:function(){
+        return {
+            op_funs:{},
+            changed_rows:[]
+        }
+    },
+    mounted:function(){
+        var self=this
+        ex.assign(this.op_funs,{
+            save_changed_rows:function(){
+                self.save_rows(self.changed_rows)
+                self.changed_rows=[]
+            },
+            add_new:function(){
+                self.add_new()
+            },
+            delete:function(){
+                self.del_selected()
+            }
+        })
+        //this.$refs.op_save_changed_rows[0].set_enable(false)
+        //this.$refs.op_delete[0].set_enable(false)
+    },
+    computed:{
+        changed:function(){
+            return this.changed_rows.length != 0
+        }
+    },
     methods: {
+        on_operation:function(name){
+            this.op_funs[name]()
+        },
         search:function(){
             this.search_args._page=1
             this.get_data()

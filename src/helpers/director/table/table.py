@@ -232,6 +232,8 @@ class RowSort(object):
     def get_context(self):
         return {'sortable':self.valid_name,'sort_str':self.sort_str}
     
+  
+    
     def get_query(self,query):
         if self.sort_str:
             ls=self.sort_str.split(',')
@@ -277,10 +279,10 @@ class ModelTable(object):
     exclude=[]
     pagenator=PageNum
     fields_sort=[]
-    def __init__(self,page=1,row_sort=[],row_filter={},row_search={},crt_user=None,perpage=None,**kw):
+    def __init__(self,_page=1,row_sort=[],row_filter={},row_search={},crt_user=None,perpage=None,**kw):
         self.kw=kw
         self.crt_user=crt_user 
-        self.page=page
+        self.page=_page
         
         self.custom_permit()
         allowed_names=self.permited_fields()
@@ -355,6 +357,7 @@ class ModelTable(object):
             'row_filters':ls,
             #'search_tip':self.row_search.get_context(),
             'model':model_to_name(self.model),
+            'ops' : self.get_operation()
         }
     
     def get_head_context(self):
@@ -369,6 +372,7 @@ class ModelTable(object):
             'row_filters':self.row_filter.get_context(),
             'search_tip':self.row_search.get_context(),
             'model':model_to_name(self.model),
+            'ops' : self.get_operation()
         }        
     
     def get_data_context(self):
@@ -458,12 +462,15 @@ class ModelTable(object):
         query = self.row_sort.get_query(query)
         query = self.pagenum.get_query(query)  
         return query
-    #def page_filter(self,query):
-        #self.pagenum = PageNum(query,perPage=self.perPage, pageNumber=self.page)
-        #return self.pagenum.get_query()
-    
+ 
     def inn_filter(self,query):
         return query.order_by('-pk')
+    
+    def get_operation(self):
+        return [{'name':'add_new','editor':'com-op-a','label':'创建'},
+                {'name':'save_changed_rows','editor':'com-op-a','label':'保存','hide':'!changed'},
+                {'name':'delete','editor':'com-op-a','label':'删除','disabled':'!has_select'},
+                ]      
     
     #def search_filter(self,query):
         #return self.row_search.get_query(query)

@@ -108,7 +108,8 @@ class ModelFields(forms.ModelForm):
     
     def clean_dict(self,dc):
         """利用field_map字典，查找前端传来的dc中，某个字段的转换方式"""
-        model_name = model_to_name(self.Meta.model)
+        model = self.Meta.model
+        model_name = model_to_name(model)
         for k,v in dc.items():
             if not k.startswith('_'):
                 field_path = model_name+'.'+k
@@ -120,7 +121,6 @@ class ModelFields(forms.ModelForm):
     
     def custom_permit(self):
         self.permit=ModelPermit(self.Meta.model,self.crt_user,nolimit=self.nolimit)
-        
         
     def get_context(self):
         """

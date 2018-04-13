@@ -9,48 +9,51 @@ from .status_code import *
 # Register your models here.
 
 class AccountPage(TablePage):
-    template='maindb/table_ajax_tab.html'
+    template='maindb/table.html'
     def get_label(self):
         return '会员管理'
     
     def get_context(self):
         ctx = TablePage.get_context(self)
+        baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
         ls = [
             {'name':'baseinfo',
              'label':'基本信息','com':'com_ajax_fields',
              'model_name':'maindb.TbAccount',
              'relat_field':'accountid',
-             'kw': AccoutBaseinfo(crt_user=self.crt_user).get_heads()},
+             'fields_heads': baseinfo.get_heads(),
+             'fields_ops': baseinfo.get_operations()
+             },
             {'name':'balance_log',
              'label':'帐目记录',
              'com':'com_ajax_table',
-             'model':model_to_name(TbBalancelog),
-             'relat_field':'accountid',
-             'kw':AccountBalanceTable(crt_user=self.crt_user).get_head_context()},
+             'model_name':model_to_name(TbBalancelog),
+             'relat_field':'account',
+             'table_head':AccountBalanceTable(crt_user=self.crt_user).get_head_context()},
             {'name':'account_trans',
              'label':'交易记录',
              'com':'com_ajax_table',
-             'model':model_to_name(TbTrans),
-             'relat_field':'accountid',
-             'kw':AccountTransTable(crt_user=self.crt_user).get_head_context()},
+             'model_name':model_to_name(TbTrans),
+             'relat_field':'account',
+             'table_head':AccountTransTable(crt_user=self.crt_user).get_head_context()},
             {'name':'account_ticket',
              'label':'投注记录',
              'com':'com_ajax_table',
-             'model':model_to_name(TbTicketmaster),
-             'relat_field':'accountid',
-             'kw':AccountTicketTable(crt_user=self.crt_user).get_head_context()},
+             'model_name':model_to_name(TbTicketmaster),
+             'relat_field':'account',
+             'table_head':AccountTicketTable(crt_user=self.crt_user).get_head_context()},
             {'name':'account_login',
             'label':'登录日志',
             'com':'com_ajax_table',
-            'model':model_to_name(TbLoginlog),
-            'relat_field':'accountid',
-            'kw':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
+            'model_name':model_to_name(TbLoginlog),
+            'relat_field':'account',
+            'table_head':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
             {'name':'account_withdrawlimitlog',
             'label':'提款限额记录',
             'com':'com_ajax_table',
-            'model':model_to_name(TbWithdrawlimitlog),
-            'relat_field':'accountid',
-            'kw':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
+            'model_name':model_to_name(TbWithdrawlimitlog),
+            'relat_field':'account',
+            'table_head':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
             #{'name':'account_tokencode',
              #'label':'验证码查询',
              #'com':'com_ajax_table',
@@ -82,6 +85,9 @@ class AccountPage(TablePage):
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])
+            if head['name'] == 'accountid':
+                head['editor'] = 'com-table-switch-to-tab'
+                head['tab_name']='baseinfo'
             return head
     
         class search(RowSearch):
@@ -91,11 +97,11 @@ class AccountPage(TablePage):
             names=['account']
 
 class AccoutBaseinfo(ModelFields):
-    field_sort=['accounttype','account','username','status','agent','verify','viplv','createtime']
-    readonly=['account','createtime']
-    class Meta:
-        model=TbAccount
-        exclude =[]
+        field_sort=['accounttype','account','username','status','agent','verify','viplv','createtime']
+        readonly=['account','createtime']
+        class Meta:
+            model=TbAccount
+            exclude =[]
 
 class AccountTabBase(ModelTable):
     def __init__(self, *args,**kws):
@@ -109,11 +115,18 @@ class AccountTabBase(ModelTable):
     def inn_filter(self, query):
         return query.filter(accountid=self.accountid) 
     
+class WithAccoutInnFilter(ModelTable):
+    def inn_filter(self, query):
+        query = ModelTable.inn_filter(self,query)
+        if self.kw.get('account'):
+            return query.filter(account=self.kw.get('account'))   
+        else:
+            return query    
 
-class AccountBalanceTable(AccountTabBase):
+class AccountBalanceTable(WithAccoutInnFilter):
     model = TbBalancelog
     exclude = []
-       
+     
     def dict_row(self, inst):
         ba_cat = dict(BALANCE_CAT)
         return {
@@ -128,23 +141,23 @@ class AccountBalanceTable(AccountTabBase):
         range_fields = [{'name':'createtime','type':'date'}]
 
 
-class AccountTransTable(AccountTabBase):
+class AccountTransTable(WithAccoutInnFilter):
     model=TbTrans
     exclude=[]  
    
     
-class AccountTicketTable(AccountTabBase):
+class AccountTicketTable(WithAccoutInnFilter):
     """投注记录"""
     model=TbTicketmaster
     exclude=[]  
   
 
-class AccountLoginTable(AccountTabBase):
+class AccountLoginTable(WithAccoutInnFilter):
     model=TbLoginlog
     exclude=[]
   
 
-class AccoutWithdrawLimitLogTable(AccountTabBase):
+class AccoutWithdrawLimitLogTable(WithAccoutInnFilter):
     model=TbWithdrawlimitlog
     exclude=[]
    
@@ -179,6 +192,7 @@ model_dc[TbTicketmaster]={'table':AccountTicketTable}
 model_dc[TbLoginlog]={'table':AccountLoginTable}
 model_dc[TbTrans]={'table':AccountTransTable}
 model_dc[TbBalancelog]={'table':AccountBalanceTable}
+model_dc[TbWithdrawlimitlog]={'table':AccoutWithdrawLimitLogTable}
 
 page_dc.update({
     'maindb.loginlog':LoginLogPage

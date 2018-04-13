@@ -4,6 +4,7 @@ import {urlparse} from './urlparse.js'
 import {collection} from  './collection.js'
 import * as path from './patch.js'
 import {cookie} from './cookie.js'
+import {obj_control} from  './obj'
 var ex={
     assign:function (dst,src) {
         for(var key in src){
@@ -17,5 +18,6 @@ ex.assign(ex,network)
 ex.assign(ex,urlparse)
 ex.assign(ex,collection)
 ex.assign(ex,cookie)
+ex.assign(ex,obj_control)
 
 window.ex = ex
