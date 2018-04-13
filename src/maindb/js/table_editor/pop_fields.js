@@ -1,5 +1,5 @@
 var pop_fields={
-    template:'<span v-text="rowData[field]" @click="edit_me(rowData,head)" class="clickable"></span>',
+    template:'<span v-text="rowData[field]" @click="edit_me()" class="clickable"></span>',
     props:['rowData','field','index'],
     created:function(){
         // find head from parent table
@@ -36,11 +36,14 @@ var pop_fields={
             //        cfg.hide_load()
             //    })
             //}
-            if(this.head.use_table_)
-            var relat_field = head.relat_field
-            var model_name = head.model_name
-            var ops = head.ops
-            pop_fields_layer(row,heads,ops)
+
+            var relat_field = this.head.relat_field
+            var model_name = this.head.model_name
+            var ops = this.head.ops
+            if(this.head.use_table_row){
+                pop_fields_layer(this.rowData,this.head.fields_heads,ops)
+            }
+
 
         }
 

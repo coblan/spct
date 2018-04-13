@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -32,9 +32,6 @@
 /******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
 /******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
@@ -63,11 +60,404 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 20);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _mix_table_data = __webpack_require__(1);
+
+var mix_table_data = _interopRequireWildcard(_mix_table_data);
+
+var _mix_v_table_adapter = __webpack_require__(2);
+
+var mix_v_table_adapter = _interopRequireWildcard(_mix_v_table_adapter);
+
+var _mix_nice_validator = __webpack_require__(3);
+
+var mix_nice_validator = _interopRequireWildcard(_mix_nice_validator);
+
+var _mix_fields_data = __webpack_require__(4);
+
+var mix_fields_data = _interopRequireWildcard(_mix_fields_data);
+
+var _ajax_fields = __webpack_require__(5);
+
+var ajax_fields = _interopRequireWildcard(_ajax_fields);
+
+var _ajax_table = __webpack_require__(6);
+
+var ajax_table = _interopRequireWildcard(_ajax_table);
+
+var _com_pop_fields = __webpack_require__(7);
+
+var com_pop_fields = _interopRequireWildcard(_com_pop_fields);
+
+var _pop_fields_layer = __webpack_require__(8);
+
+var pop_fields_layer = _interopRequireWildcard(_pop_fields_layer);
+
+var _picture = __webpack_require__(9);
+
+var table_picture = _interopRequireWildcard(_picture);
+
+var _label_shower = __webpack_require__(10);
+
+var table_label_shower = _interopRequireWildcard(_label_shower);
+
+var _mapper = __webpack_require__(11);
+
+var table_mapper = _interopRequireWildcard(_mapper);
+
+var _pop_fields = __webpack_require__(12);
+
+var table_pop_fields = _interopRequireWildcard(_pop_fields);
+
+var _linetext = __webpack_require__(13);
+
+var table_linetext = _interopRequireWildcard(_linetext);
+
+var _check_box = __webpack_require__(14);
+
+var table_checkbox = _interopRequireWildcard(_check_box);
+
+var _switch_to_tab = __webpack_require__(15);
+
+var switch_to_tab = _interopRequireWildcard(_switch_to_tab);
+
+var _label_shower2 = __webpack_require__(16);
+
+var field_label_shower = _interopRequireWildcard(_label_shower2);
+
+var _operator_a = __webpack_require__(17);
+
+var op_a = _interopRequireWildcard(_operator_a);
+
+var _delete_op = __webpack_require__(18);
+
+var delete_op = _interopRequireWildcard(_delete_op);
+
+var _btn = __webpack_require__(19);
+
+var btn = _interopRequireWildcard(_btn);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+__webpack_require__(20);
+
+//table mix
+
+
+// table editor
+
+
+// table operator
+
+
+//fields operator
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var mix_table_data = {
+    data: function data() {
+        return {
+            op_funs: {},
+            changed_rows: []
+        };
+    },
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            save_changed_rows: function save_changed_rows() {
+                self.save_rows(self.changed_rows);
+                self.changed_rows = [];
+            },
+            add_new: function add_new() {
+                self.add_new();
+            },
+            delete: function _delete() {
+                self.del_selected();
+            }
+        });
+        //this.$refs.op_save_changed_rows[0].set_enable(false)
+        //this.$refs.op_delete[0].set_enable(false)
+    },
+    computed: {
+        changed: function changed() {
+            return this.changed_rows.length != 0;
+        }
+    },
+    methods: {
+        on_operation: function on_operation(name) {
+            this.op_funs[name]();
+        },
+        search: function search() {
+            this.search_args._page = 1;
+            this.get_data();
+        },
+        get_data: function get_data() {
+            this.data_getter(this);
+        },
+        get_page: function get_page(page_number) {
+            this.search_args._page = page_number;
+            this.get_data();
+        },
+        get_search_args: function get_search_args() {
+            return this.search_args;
+        },
+        data_getter: function data_getter() {
+            // 默认的 data_getter
+            var self = this;
+            //var loader = layer.load(2);
+            cfg.show_load();
+            $.get(ex.appendSearch(this.search_args), function (resp) {
+                self.rows = resp.rows;
+                self.row_pages = resp.row_pages;
+                cfg.hide_load();
+            });
+        },
+        save_rows: function save_rows(rows) {
+            var self = this;
+            var post_data = [{ fun: 'save_rows', rows: rows }];
+            cfg.show_load();
+            ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                ex.each(rows, function (row) {
+                    var new_row = ex.findone(resp.save_rows, { pk: row.pk });
+                    ex.assign(row, new_row);
+                });
+                cfg.hide_load(2000);
+            });
+        },
+        clear: function clear() {
+            this.rows = [];
+            this.row_pages = {};
+        },
+
+        del_selected: function del_selected() {
+            var self = this;
+            layer.confirm('真的删除吗?', { icon: 3, title: '确认' }, function (index) {
+                layer.close(index);
+                var ss = layer.load(2);
+                var post_data = [{ fun: 'del_rows', rows: self.selected }];
+                $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    layer.close(ss);
+                    ex.each(self.selected, function (item) {
+                        ex.remove(self.rows, item);
+                    });
+                    self.selected = [];
+                    layer.msg('删除成功', { time: 2000 });
+                });
+            });
+        }
+
+    }
+};
+
+window.mix_table_data = mix_table_data;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var mix_v_table_adapter = {
+
+    mounted: function mounted() {
+        eventBus.$on('content_resize', this.resize);
+    },
+    computed: {
+        columns: function columns() {
+            var self = this;
+            var first_col = {
+                width: 60,
+                titleAlign: 'center',
+                columnAlign: 'center',
+                type: 'selection'
+            };
+            var cols = [first_col];
+            var converted_heads = ex.map(this.heads, function (head) {
+                var col = ex.copy(head);
+                var dc = {
+                    field: head.name,
+                    title: head.label,
+                    isResize: true
+                };
+                if (head.editor) {
+                    dc.componentName = head.editor;
+                }
+                if (ex.isin(head.name, self.row_sort.sortable)) {
+                    dc.orderBy = '';
+                }
+                ex.assign(col, dc);
+                if (!col.width) {
+                    col.width = 200;
+                }
+                return col;
+            });
+            cols = cols.concat(converted_heads);
+            return cols;
+        }
+    },
+    methods: {
+        resize: function resize() {
+            var self = this;
+            $(self.$refs.vtable.$el).find('.v-table-rightview').css('width', '100%');
+            $(self.$refs.vtable.$el).find('.v-table-header').css('width', '100%');
+            $(self.$refs.vtable.$el).find('.v-table-body').css('width', '100%');
+
+            var tmid = setInterval(function () {
+                self.$refs.vtable.resize();
+            }, 50);
+            setTimeout(function () {
+                //self.$refs.vtable.resize()
+                clearInterval(tmid);
+            }, 600);
+        },
+        on_perpage_change: function on_perpage_change(perpage) {
+            this.search_args._perpage = perpage;
+            this.search_args._page = 1;
+            this.get_data();
+        },
+        sortChange: function sortChange(params) {
+            var self = this;
+            ex.each(this.row_sort.sortable, function (name) {
+                if (params[name]) {
+                    if (params[name] == 'asc') {
+                        self.search_args._sort = name;
+                    } else {
+                        self.search_args._sort = '-' + name;
+                    }
+                    return 'break';
+                }
+            });
+            this.get_data();
+        }
+    }
+};
+window.mix_v_table_adapter = mix_v_table_adapter;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var nice_validator = {
+    mounted: function mounted() {
+        var self = this;
+        var validator = {};
+        ex.each(this.heads, function (head) {
+            if (head.required) {
+                validator[head.name] = 'required';
+            }
+        });
+        this.nice_validator = $(this.$el).find('.field-panel').validator({
+            fields: validator
+        });
+    }
+};
+
+window.mix_nice_validator = nice_validator;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var mix_fields_data = {
+    data: function data() {
+        return {
+            op_funs: {}
+        };
+    },
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            save: function save() {
+                self.save();
+            }
+        });
+    },
+    methods: {
+        on_operation: function on_operation(name) {
+            this.op_funs[name]();
+        },
+        get_data: function get_data() {
+            this.data_getter(this);
+        },
+        set_errors: function set_errors(errors) {
+            ex.each(this.heads, function (head) {
+                if (errors[head.name]) {
+                    Vue.set(head, 'error', errors[head.name].join(';'));
+                } else {
+                    Vue.set(head, 'error', null);
+                }
+            });
+        },
+        save: function save() {
+            var self = this;
+            if (self.before_save() == 'break') {
+                return;
+            }
+            //var loader = layer.load(2)
+            cfg.show_load();
+
+            var post_data = [{ fun: 'save', row: this.row }];
+            var url = ex.appendSearch('/d/ajax', search_args);
+            ex.post(url, JSON.stringify(post_data), function (resp) {
+                if (resp.save.errors) {
+                    cfg.hide_load();
+                    self.set_errors(resp.save.errors);
+                    self.show_error(resp.save.errors);
+                } else {
+                    cfg.hide_load(2000);
+                    //layer.msg('保存成功',{time:2000})
+                    self.after_save(resp.save.row);
+                    self.set_errors({});
+                }
+            });
+        },
+        before_save: function before_save() {
+            eventBus.$emit('sync_data');
+            return 'continue';
+        },
+        after_save: function after_save(new_row) {
+            ex.assign(this.row, new_row);
+        },
+        show_error: function show_error(errors) {
+            var str = "";
+            for (var k in errors) {
+                str += k + ':' + errors[k] + '<br>';
+            }
+            layer.confirm(str, { title: ['错误', 'color:white;background-color:red'] });
+        },
+        clear: function clear() {
+            this.row = {};
+            this.set_errors({});
+        }
+
+    }
+};
+
+window.mix_fields_data = mix_fields_data;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -106,15 +496,16 @@ var ajax_fields = {
                 cfg.hide_load();
             });
         }
-        // data_getter  回调函数，获取数据,
+    }
+    // data_getter  回调函数，获取数据,
 
 
-    } };
+};
 
 Vue.component('com_ajax_fields', ajax_fields);
 
 /***/ }),
-/* 1 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -218,7 +609,7 @@ var ajax_table = {
 Vue.component('com_ajax_table', ajax_table);
 
 /***/ }),
-/* 2 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -268,231 +659,99 @@ Vue.component('com-pop-fields', {
 });
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var label_shower = {
-    props: ['row', 'head'],
-    template: '<div><span v-if=\'head.readonly\' v-text=\'label\'></span></div>',
-    computed: {
-        label: function label() {
-            return this.row['_' + this.head.name + '_label'];
-        }
-    }
-};
-
-Vue.component('com-field-label-shower', label_shower);
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Vue.component('com-field-op-btn', {
-    props: ['head'],
-    template: '<button @click="$emit(\'operate\')"><span v-text="head.label"></span></button>'
-
-});
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var mix_fields_data = {
-    data: function data() {
-        return {
-            op_funs: {}
-        };
-    },
-    mounted: function mounted() {
-        var self = this;
-        ex.assign(this.op_funs, {
-            save: function save() {
-                self.save();
-            }
-        });
-    },
-    methods: {
-        on_operation: function on_operation(name) {
-            this.op_funs[name]();
-        },
-        get_data: function get_data() {
-            this.data_getter(this);
-        },
-        set_errors: function set_errors(errors) {
-            ex.each(this.heads, function (head) {
-                if (errors[head.name]) {
-                    Vue.set(head, 'error', errors[head.name].join(';'));
-                } else {
-                    Vue.set(head, 'error', null);
-                }
-            });
-        },
-        save: function save() {
-            var self = this;
-            if (self.before_save() == 'break') {
-                return;
-            }
-            //var loader = layer.load(2)
-            cfg.show_load();
-
-            var post_data = [{ fun: 'save', row: this.row }];
-            var url = ex.appendSearch('/d/ajax', search_args);
-            ex.post(url, JSON.stringify(post_data), function (resp) {
-                if (resp.save.errors) {
-                    cfg.hide_load();
-                    self.set_errors(resp.save.errors);
-                    self.show_error(resp.save.errors);
-                } else {
-                    cfg.hide_load(2000);
-                    //layer.msg('保存成功',{time:2000})
-                    self.after_save(resp.save.row);
-                    self.set_errors({});
-                }
-            });
-        },
-        before_save: function before_save() {
-            eventBus.$emit('sync_data');
-            return 'continue';
-        },
-        after_save: function after_save(new_row) {
-            ex.assign(this.row, new_row);
-        },
-        show_error: function show_error(errors) {
-            var str = "";
-            for (var k in errors) {
-                str += k + ':' + errors[k] + '<br>';
-            }
-            layer.confirm(str, { title: ['错误', 'color:white;background-color:red'] });
-        },
-        clear: function clear() {
-            this.row = {};
-            this.set_errors({});
-        }
-
-    }
-};
-
-window.mix_fields_data = mix_fields_data;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var nice_validator = {
-    mounted: function mounted() {
-        var self = this;
-        var validator = {};
-        ex.each(this.heads, function (head) {
-            if (head.required) {
-                validator[head.name] = 'required';
-            }
-        });
-        this.nice_validator = $(this.$el).find('.field-panel').validator({
-            fields: validator
-        });
-    }
-};
-
-window.mix_nice_validator = nice_validator;
-
-/***/ }),
-/* 7 */,
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var mix_v_table_adapter = {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.pop_fields_layer = pop_fields_layer;
+function pop_fields_layer(row, heads, ops) {
+    // row,head ->//model_name,relat_field
 
-    mounted: function mounted() {
-        eventBus.$on('content_resize', this.resize);
-    },
-    computed: {
-        columns: function columns() {
-            var self = this;
-            var first_col = {
-                width: 60,
-                titleAlign: 'center',
-                columnAlign: 'center',
-                type: 'selection'
-            };
-            var cols = [first_col];
-            var converted_heads = ex.map(this.heads, function (head) {
-                var col = ex.copy(head);
-                var dc = {
-                    field: head.name,
-                    title: head.label,
-                    isResize: true
-                };
-                if (head.editor) {
-                    dc.componentName = head.editor;
-                }
-                if (ex.isin(head.name, self.row_sort.sortable)) {
-                    dc.orderBy = '';
-                }
-                ex.assign(col, dc);
-                if (!col.width) {
-                    col.width = 200;
-                }
-                return col;
-            });
-            cols = cols.concat(converted_heads);
-            return cols;
-        }
-    },
-    methods: {
-        resize: function resize() {
-            var self = this;
-            $(self.$refs.vtable.$el).find('.v-table-rightview').css('width', '100%');
-            $(self.$refs.vtable.$el).find('.v-table-header').css('width', '100%');
-            $(self.$refs.vtable.$el).find('.v-table-body').css('width', '100%');
+    var id = new Date().getTime();
+    //var relat_field = head.relat_field
+    //var model_name = head.model_name
+    //var ops = head.ops
+    //if(dc.head.use_table_row){
+    //    var lay_row = dc.row
+    //}else{
+    //    var lay_row ={}
+    //}
 
-            var tmid = setInterval(function () {
-                self.$refs.vtable.resize();
-            }, 50);
-            setTimeout(function () {
-                //self.$refs.vtable.resize()
-                clearInterval(tmid);
-            }, 600);
+    self.opened_layer_indx = layer.open({
+        type: 1,
+        area: ['700px', '400px'],
+        shadeClose: true, //点击遮罩关闭
+        content: '<div id="fields-pop-' + id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
+    });
+
+    new Vue({
+        el: '#fields-pop-' + id,
+        data: {
+            row: row,
+            fields_heads: heads,
+            ops: ops
         },
-        on_perpage_change: function on_perpage_change(perpage) {
-            this.search_args._perpage = perpage;
-            this.search_args._page = 1;
-            this.get_data();
+        mounted: function mounted() {
+            //if(! trigger.head.use_table_row){
+            //    var self=this
+            //    cfg.show_load()
+            //    var dc ={fun:'get_row',model_name:model_name}
+            //    dc[relat_field] = trigger.rowData[relat_field]
+            //    var post_data=[dc]
+            //    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            //        self.row = resp.get_row
+            //        cfg.hide_load()
+            //    })
+            //}
+
         },
-        sortChange: function sortChange(params) {
-            var self = this;
-            ex.each(this.row_sort.sortable, function (name) {
-                if (params[name]) {
-                    if (params[name] == 'asc') {
-                        self.search_args._sort = name;
-                    } else {
-                        self.search_args._sort = '-' + name;
-                    }
-                    return 'break';
-                }
-            });
-            this.get_data();
+        methods: {
+            on_sub_success: function on_sub_success(event) {
+                // 将新建的row 插入到表格中
+                //if(! old_row.pk) {
+                //    self.rows.splice(0, 0, new_row)
+                //}
+                //if(this.head.use_table_row){
+                //    var old_row = event.old_row
+                //    var new_row=event.new_row
+                //    ex.assign(self.row,new_row)
+                //}else{
+                //    trigger.update_row()
+                //}
+
+            }
         }
-    }
-};
-window.mix_v_table_adapter = mix_v_table_adapter;
+    });
+}
+
+window.pop_fields_layer = pop_fields_layer;
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var picture = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span>\n        <img @click="open()" :src="rowData[field]" alt="" height="96px" style="cursor: pointer;">\n        </span>',
+    methods: {
+        open: function open() {
+            window.open(this.rowData[this.field]);
+        }
+    }
+};
+
+Vue.component('com-table-picture', picture);
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -509,28 +768,6 @@ var label_shower = {
 };
 
 Vue.component('com-table-label-shower', label_shower);
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var line_text = {
-    props: ['rowData', 'field', 'index'],
-    template: '<div ><input @change="on_changed()" style="width: 100%" type="text" v-model="rowData[field]"></div>',
-    data: function data() {
-        return {};
-    },
-    methods: {
-        on_changed: function on_changed() {
-            this.$emit('on-custom-comp', { name: 'row-changed', row: this.rowData });
-        }
-    }
-};
-
-Vue.component('com-table-linetext', line_text);
 
 /***/ }),
 /* 11 */
@@ -577,27 +814,8 @@ Vue.component('com-table-mapper', mapper);
 "use strict";
 
 
-var picture = {
-    props: ['rowData', 'field', 'index'],
-    template: '<span>\n        <img @click="open()" :src="rowData[field]" alt="" height="96px" style="cursor: pointer;">\n        </span>',
-    methods: {
-        open: function open() {
-            window.open(this.rowData[this.field]);
-        }
-    }
-};
-
-Vue.component('com-table-picture', picture);
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var pop_fields = {
-    template: '<span v-text="rowData[field]" @click="edit_me(rowData,head)" class="clickable"></span>',
+    template: '<span v-text="rowData[field]" @click="edit_me()" class="clickable"></span>',
     props: ['rowData', 'field', 'index'],
     created: function created() {
         // find head from parent table
@@ -633,10 +851,13 @@ var pop_fields = {
             //        cfg.hide_load()
             //    })
             //}
-            if (this.head.use_table_) var relat_field = head.relat_field;
-            var model_name = head.model_name;
-            var ops = head.ops;
-            pop_fields_layer(row, heads, ops);
+
+            var relat_field = this.head.relat_field;
+            var model_name = this.head.model_name;
+            var ops = this.head.ops;
+            if (this.head.use_table_row) {
+                pop_fields_layer(this.rowData, this.head.fields_heads, ops);
+            }
         }
 
     }
@@ -644,7 +865,132 @@ var pop_fields = {
 Vue.component('com-table-pop-fields', pop_fields);
 
 /***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var line_text = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div ><input @change="on_changed()" style="width: 100%" type="text" v-model="rowData[field]"></div>',
+    data: function data() {
+        return {};
+    },
+    methods: {
+        on_changed: function on_changed() {
+            this.$emit('on-custom-comp', { name: 'row-changed', row: this.rowData });
+        }
+    }
+};
+
+Vue.component('com-table-linetext', line_text);
+
+/***/ }),
 /* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var check_box = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div ><input style="width: 100%" @change="on_changed()" type="checkbox" v-model="rowData[field]"></div>',
+    data: function data() {
+        return {};
+    },
+    methods: {
+        on_changed: function on_changed() {
+            this.$emit('on-custom-comp', { name: 'row-changed', row: this.rowData });
+        }
+    }
+};
+
+Vue.component('com-table-checkbox', check_box);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var switch_to_tab = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span v-text="rowData[field]" @click="goto_tab()" class="clickable"></span>',
+    created: function created() {
+        // find head from parent table
+        var table_par = this.$parent;
+        while (true) {
+            if (table_par.heads) {
+                break;
+            }
+            table_par = table_par.$parent;
+            if (!table_par) {
+                break;
+            }
+        }
+        var head = ex.findone(table_par.heads, { name: this.field });
+        this.head = head;
+    },
+    methods: {
+        goto_tab: function goto_tab() {
+            this.$emit('on-custom-comp', { name: 'switch_to_tab',
+                tab_name: this.head.tab_name,
+                row: this.rowData });
+        }
+    }
+};
+
+Vue.component('com-table-switch-to-tab', switch_to_tab);
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var label_shower = {
+    props: ['row', 'head'],
+    template: '<div><span v-if=\'head.readonly\' v-text=\'label\'></span></div>',
+    computed: {
+        label: function label() {
+            return this.row['_' + this.head.name + '_label'];
+        }
+    }
+};
+
+Vue.component('com-field-label-shower', label_shower);
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var op_a = {
+    props: ['head'],
+    template: ' <a class="clickable" @click="operation_call()"  v-text="head.label" ></a>',
+    data: function data() {
+        return {
+            enable: true
+        };
+    },
+    methods: {
+        operation_call: function operation_call() {
+            this.$emit('operation', this.head.name);
+        },
+        set_enable: function set_enable(yes) {
+            this.enable = yes;
+        }
+    }
+};
+Vue.component('com-op-a', op_a);
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -671,49 +1017,36 @@ var delete_op = {
 Vue.component('com-op-delete', delete_op);
 
 /***/ }),
-/* 15 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var op_a = {
+Vue.component('com-field-op-btn', {
     props: ['head'],
-    template: ' <a class="clickable" @click="operation_call()"  v-text="head.label" ></a>',
-    data: function data() {
-        return {
-            enable: true
-        };
-    },
-    methods: {
-        operation_call: function operation_call() {
-            this.$emit('operation', this.head.name);
-        },
-        set_enable: function set_enable(yes) {
-            this.enable = yes;
-        }
-    }
-};
-Vue.component('com-op-a', op_a);
+    template: '<button @click="$emit(\'operate\')"><span v-text="head.label"></span></button>'
+
+});
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(17);
+var content = __webpack_require__(21);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(19)(content, {});
+var update = __webpack_require__(23)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields.scss", function() {
-			var newContent = require("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields.scss");
+		module.hot.accept("!!./../../../../../../coblan/webcode/node_modules/.0.26.1@css-loader/index.js!./../../../../../../coblan/webcode/node_modules/.6.0.0@sass-loader/lib/loader.js!./fields.scss", function() {
+			var newContent = require("!!./../../../../../../coblan/webcode/node_modules/.0.26.1@css-loader/index.js!./../../../../../../coblan/webcode/node_modules/.6.0.0@sass-loader/lib/loader.js!./fields.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -723,10 +1056,10 @@ if(false) {
 }
 
 /***/ }),
-/* 17 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(18)();
+exports = module.exports = __webpack_require__(22)();
 // imports
 
 
@@ -737,7 +1070,7 @@ exports.push([module.i, ".msg-hide .field .msg {\n  display: none; }\n\n.field .
 
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ (function(module, exports) {
 
 /*
@@ -793,7 +1126,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 19 */
+/* 23 */
 /***/ (function(module, exports) {
 
 /*
@@ -809,7 +1142,7 @@ var stylesInDom = {},
 		};
 	},
 	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
+		return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
 	}),
 	getHeadElement = memoize(function () {
 		return document.head || document.getElementsByTagName("head")[0];
@@ -1043,384 +1376,6 @@ function updateLink(linkElement, obj) {
 		URL.revokeObjectURL(oldSrc);
 }
 
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _mix_table_data = __webpack_require__(25);
-
-var mix_table_data = _interopRequireWildcard(_mix_table_data);
-
-var _mix_v_table_adapter = __webpack_require__(8);
-
-var mix_v_table_adapter = _interopRequireWildcard(_mix_v_table_adapter);
-
-var _mix_nice_validator = __webpack_require__(6);
-
-var mix_nice_validator = _interopRequireWildcard(_mix_nice_validator);
-
-var _mix_fields_data = __webpack_require__(5);
-
-var mix_fields_data = _interopRequireWildcard(_mix_fields_data);
-
-var _ajax_fields = __webpack_require__(0);
-
-var ajax_fields = _interopRequireWildcard(_ajax_fields);
-
-var _ajax_table = __webpack_require__(1);
-
-var ajax_table = _interopRequireWildcard(_ajax_table);
-
-var _com_pop_fields = __webpack_require__(2);
-
-var com_pop_fields = _interopRequireWildcard(_com_pop_fields);
-
-var _pop_fields_layer = __webpack_require__(27);
-
-var pop_fields_layer = _interopRequireWildcard(_pop_fields_layer);
-
-var _picture = __webpack_require__(12);
-
-var table_picture = _interopRequireWildcard(_picture);
-
-var _label_shower = __webpack_require__(9);
-
-var table_label_shower = _interopRequireWildcard(_label_shower);
-
-var _mapper = __webpack_require__(11);
-
-var table_mapper = _interopRequireWildcard(_mapper);
-
-var _pop_fields = __webpack_require__(13);
-
-var table_pop_fields = _interopRequireWildcard(_pop_fields);
-
-var _linetext = __webpack_require__(10);
-
-var table_linetext = _interopRequireWildcard(_linetext);
-
-var _check_box = __webpack_require__(21);
-
-var table_checkbox = _interopRequireWildcard(_check_box);
-
-var _switch_to_tab = __webpack_require__(24);
-
-var switch_to_tab = _interopRequireWildcard(_switch_to_tab);
-
-var _label_shower2 = __webpack_require__(3);
-
-var field_label_shower = _interopRequireWildcard(_label_shower2);
-
-var _operator_a = __webpack_require__(15);
-
-var op_a = _interopRequireWildcard(_operator_a);
-
-var _delete_op = __webpack_require__(14);
-
-var delete_op = _interopRequireWildcard(_delete_op);
-
-var _btn = __webpack_require__(4);
-
-var btn = _interopRequireWildcard(_btn);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-__webpack_require__(16);
-
-//table mix
-
-
-// table editor
-
-
-// table operator
-
-
-//fields operator
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var check_box = {
-    props: ['rowData', 'field', 'index'],
-    template: '<div ><input style="width: 100%" @change="on_changed()" type="checkbox" v-model="rowData[field]"></div>',
-    data: function data() {
-        return {};
-    },
-    methods: {
-        on_changed: function on_changed() {
-            this.$emit('on-custom-comp', { name: 'row-changed', row: this.rowData });
-        }
-    }
-};
-
-Vue.component('com-table-checkbox', check_box);
-
-/***/ }),
-/* 22 */,
-/* 23 */,
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var switch_to_tab = {
-    props: ['rowData', 'field', 'index'],
-    template: '<span v-text="rowData[field]" @click="goto_tab()" class="clickable"></span>',
-    created: function created() {
-        // find head from parent table
-        var table_par = this.$parent;
-        while (true) {
-            if (table_par.heads) {
-                break;
-            }
-            table_par = table_par.$parent;
-            if (!table_par) {
-                break;
-            }
-        }
-        var head = ex.findone(table_par.heads, { name: this.field });
-        this.head = head;
-    },
-    methods: {
-        goto_tab: function goto_tab() {
-            this.$emit('on-custom-comp', { name: 'switch_to_tab',
-                tab_name: this.head.tab_name,
-                row: this.rowData });
-        }
-    }
-};
-
-Vue.component('com-table-switch-to-tab', switch_to_tab);
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var mix_table_data = {
-    data: function data() {
-        return {
-            op_funs: {},
-            changed_rows: []
-        };
-    },
-    mounted: function mounted() {
-        var self = this;
-        ex.assign(this.op_funs, {
-            save_changed_rows: function save_changed_rows() {
-                self.save_rows(self.changed_rows);
-                self.changed_rows = [];
-            },
-            add_new: function add_new() {
-                self.add_new();
-            },
-            delete: function _delete() {
-                self.del_selected();
-            }
-        });
-        //this.$refs.op_save_changed_rows[0].set_enable(false)
-        //this.$refs.op_delete[0].set_enable(false)
-    },
-    computed: {
-        changed: function changed() {
-            return this.changed_rows.length != 0;
-        }
-    },
-    methods: {
-        on_operation: function on_operation(name) {
-            this.op_funs[name]();
-        },
-        search: function search() {
-            this.search_args._page = 1;
-            this.get_data();
-        },
-        get_data: function get_data() {
-            this.data_getter(this);
-        },
-        get_page: function get_page(page_number) {
-            this.search_args._page = page_number;
-            this.get_data();
-        },
-        get_search_args: function get_search_args() {
-            return this.search_args;
-        },
-        data_getter: function data_getter() {
-            // 默认的 data_getter
-            var self = this;
-            //var loader = layer.load(2);
-            cfg.show_load();
-            $.get(ex.appendSearch(this.search_args), function (resp) {
-                self.rows = resp.rows;
-                self.row_pages = resp.row_pages;
-                cfg.hide_load();
-            });
-        },
-        save_rows: function save_rows(rows) {
-            var self = this;
-            var post_data = [{ fun: 'save_rows', rows: rows }];
-            cfg.show_load();
-            ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                ex.each(rows, function (row) {
-                    var new_row = ex.findone(resp.save_rows, { pk: row.pk });
-                    ex.assign(row, new_row);
-                });
-                cfg.hide_load(2000);
-            });
-        },
-        clear: function clear() {
-            this.rows = [];
-            this.row_pages = {};
-        },
-
-        del_selected: function del_selected() {
-            var self = this;
-            layer.confirm('真的删除吗?', { icon: 3, title: '确认' }, function (index) {
-                layer.close(index);
-                var ss = layer.load(2);
-                var post_data = [{ fun: 'del_rows', rows: self.selected }];
-                $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    layer.close(ss);
-                    ex.each(self.selected, function (item) {
-                        ex.remove(self.rows, item);
-                    });
-                    self.selected = [];
-                    layer.msg('删除成功', { time: 2000 });
-                });
-            });
-        }
-
-        //del_item: function () {
-        //    if (this.selected.length == 0) {
-        //        return
-        //    }
-        //    var del_obj = {}
-        //    for (var j = 0; j < this.selected.length; j++) {
-        //        var pk = this.selected[j]
-        //        for (var i = 0; i < this.rows.length; i++) {
-        //            if (this.rows[i].pk.toString() == pk) {
-        //                if (!del_obj[this.rows[i]._class]) {
-        //                    del_obj[this.rows[i]._class] = []
-        //                }
-        //                del_obj[this.rows[i]._class].push(pk)
-        //            }
-        //        }
-        //    }
-        //    var out_str = ''
-        //    for (var key in del_obj) {
-        //        out_str += (key + ':' + del_obj[key].join(':') + ',')
-        //    }
-        //    location = ex.template("{engine_url}/del_rows?rows={rows}&next={next}", {
-        //        engine_url: engine_url,
-        //        rows: encodeURI(out_str),
-        //        next: encodeURIComponent(location.href)
-        //    })
-        //},
-        //goto_page: function (page) {
-        //    this.search_args._page = page
-        //    this.get_data()
-        //},
-        //add_new: function () {
-        //    var url = ex.template('{engine_url}/{page}.edit/?next={next}', {
-        //        engine_url: engine_url,
-        //        page: page_name,
-        //        next: encodeURIComponent(ex.appendSearch(location.pathname, search_args))
-        //    })
-        //    location = url
-        //},
-    }
-};
-
-window.mix_table_data = mix_table_data;
-
-/***/ }),
-/* 26 */,
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.pop_fields_layer = pop_fields_layer;
-function pop_fields_layer(row, heads, ops) {
-    // row,head ->//model_name,relat_field
-
-    //var id = new Date().getTime()
-    //var relat_field = head.relat_field
-    //var model_name = head.model_name
-    //var ops = head.ops
-    //if(dc.head.use_table_row){
-    //    var lay_row = dc.row
-    //}else{
-    //    var lay_row ={}
-    //}
-
-    self.opened_layer_indx = layer.open({
-        type: 1,
-        area: ['700px', '400px'],
-        shadeClose: true, //点击遮罩关闭
-        content: '<div id="fields-pop-' + id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
-    });
-
-    new Vue({
-        el: '#fields-pop-' + id,
-        data: {
-            row: row,
-            fields_heads: heads,
-            ops: ops
-        },
-        mounted: function mounted() {
-            //if(! trigger.head.use_table_row){
-            //    var self=this
-            //    cfg.show_load()
-            //    var dc ={fun:'get_row',model_name:model_name}
-            //    dc[relat_field] = trigger.rowData[relat_field]
-            //    var post_data=[dc]
-            //    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //        self.row = resp.get_row
-            //        cfg.hide_load()
-            //    })
-            //}
-
-        },
-        methods: {
-            on_sub_success: function on_sub_success(event) {
-                // 将新建的row 插入到表格中
-                //if(! old_row.pk) {
-                //    self.rows.splice(0, 0, new_row)
-                //}
-                //if(this.head.use_table_row){
-                //    var old_row = event.old_row
-                //    var new_row=event.new_row
-                //    ex.assign(self.row,new_row)
-                //}else{
-                //    trigger.update_row()
-                //}
-
-            }
-            //on_del:function(){
-            //    ex.remove(self.rows,row)
-            //    layer.close(self.opened_layer_indx)
-            //},
-        }
-    });
-}
-
-window.pop_fields_layer = pop_fields_layer;
 
 /***/ })
 /******/ ]);

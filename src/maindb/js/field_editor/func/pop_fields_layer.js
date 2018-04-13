@@ -1,7 +1,7 @@
 export  function pop_fields_layer (row,heads,ops){
     // row,head ->//model_name,relat_field
 
-    //var id = new Date().getTime()
+    var id = new Date().getTime()
     //var relat_field = head.relat_field
     //var model_name = head.model_name
     //var ops = head.ops
