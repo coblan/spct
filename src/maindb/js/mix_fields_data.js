@@ -24,8 +24,9 @@ var mix_fields_data ={
             ex.each(this.heads,function(head){
                 if(errors[head.name]){
                     Vue.set(head,'error',errors[head.name].join(';'))
-                }else{
-                    Vue.set(head,'error',null)
+                }else if(head.error){
+                    delete head.error
+                    //Vue.set(head,'error',null)
                 }
             })
         },
@@ -46,7 +47,6 @@ var mix_fields_data ={
                     self.show_error(resp.save.errors)
                 }else{
                     cfg.hide_load(2000)
-                    //layer.msg('保存成功',{time:2000})
                     self.after_save(resp.save.row)
                     self.set_errors({})
                 }

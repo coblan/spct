@@ -42,12 +42,27 @@ class BannerPage(TablePage):
             
             if head['name'] =='title':
                 head['editor'] = 'com-table-pop-fields'
-                head['model_name']=model_to_name(TbBanner)
                 head['fields_heads']=BannerForm(crt_user=self.crt_user).get_heads()
-                head['relat_field']='pk'
-                head['use_table_row']=True
+                head['get_row'] = {
+                    #'fun':'use_table_row'
+                    "fun":'get_table_row'
+                    #'fun':'get_with_relat_field',
+                    #'kws':{
+                        #"model_name":model_to_name(TbBanner),
+                        #'relat_field':'pk'
+                    #}
+                }
+                head['after_save']={
+                    #'fun':'do_nothing'
+                    'fun':'update_or_insert'
+                }
                 head['ops']=BannerForm(crt_user=self.crt_user).get_operations()
-            
+                
+                #head['model_name']=model_to_name(TbBanner)
+                
+                #head['relat_field']='pk'
+                #head['use_table_row']=True
+
             return head
         
         def dict_row(self, inst):

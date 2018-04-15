@@ -404,8 +404,9 @@ var mix_fields_data = {
             ex.each(this.heads, function (head) {
                 if (errors[head.name]) {
                     Vue.set(head, 'error', errors[head.name].join(';'));
-                } else {
-                    Vue.set(head, 'error', null);
+                } else if (head.error) {
+                    delete head.error;
+                    //Vue.set(head,'error',null)
                 }
             });
         },
@@ -426,7 +427,6 @@ var mix_fields_data = {
                     self.show_error(resp.save.errors);
                 } else {
                     cfg.hide_load(2000);
-                    //layer.msg('保存成功',{time:2000})
                     self.after_save(resp.save.row);
                     self.set_errors({});
                 }
@@ -669,10 +669,14 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.pop_fields_layer = pop_fields_layer;
-function pop_fields_layer(row, heads, ops) {
+/*
+* root 层面创建Vue组件，形成弹出框
+* */
+
+function pop_fields_layer(row, heads, ops, pop_id) {
     // row,head ->//model_name,relat_field
 
-    var id = new Date().getTime();
+
     //var relat_field = head.relat_field
     //var model_name = head.model_name
     //var ops = head.ops
@@ -686,11 +690,11 @@ function pop_fields_layer(row, heads, ops) {
         type: 1,
         area: ['700px', '400px'],
         shadeClose: true, //点击遮罩关闭
-        content: '<div id="fields-pop-' + id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
+        content: '<div id="fields-pop-' + pop_id + '" style="height: 100%;">\n                    <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>\n                </div>'
     });
 
     new Vue({
-        el: '#fields-pop-' + id,
+        el: '#fields-pop-' + pop_id,
         data: {
             row: row,
             fields_heads: heads,
@@ -724,6 +728,7 @@ function pop_fields_layer(row, heads, ops) {
                 //    trigger.update_row()
                 //}
 
+                eventBus.$emit('pop-win-' + pop_id, { name: 'after_save', new_row: event.new_row, old_row: event.old_row });
             }
         }
     });
@@ -852,17 +857,67 @@ var pop_fields = {
             //    })
             //}
 
-            var relat_field = this.head.relat_field;
-            var model_name = this.head.model_name;
+            //var relat_field = this.head.relat_field
+            //var model_name = this.head.model_name
+            var self = this;
+            var pop_id = new Date().getTime();
+            eventBus.$on('pop-win-' + pop_id, function (kws) {
+                if (kws.name == 'after_save') {
+                    var fun = after_save[self.head.after_save.fun];
+                    fun(kws.new_row, kws.old_row, self);
+                }
+            });
+
             var ops = this.head.ops;
-            if (this.head.use_table_row) {
-                pop_fields_layer(this.rowData, this.head.fields_heads, ops);
-            }
+
+            var fun = get_row[this.head.get_row.fun];
+            var kws = this.head.get_row.kws;
+            fun(function (pop_row) {
+                pop_fields_layer(pop_row, self.head.fields_heads, ops, pop_id);
+            }, this.rowData, kws);
         }
 
     }
 };
 Vue.component('com-table-pop-fields', pop_fields);
+
+var get_row = {
+    use_table_row: function use_table_row(callback, row, kws) {
+        callback(row);
+    },
+    get_table_row: function get_table_row(callback, row, kws) {
+        var cache_row = ex.copy(row);
+        callback(cache_row);
+    },
+    get_with_relat_field: function get_with_relat_field(callback, row, kws) {
+        var model_name = kws.model_name;
+        var relat_field = kws.relat_field;
+
+        var dc = { fun: 'get_row', model_name: model_name };
+        dc[relat_field] = row[relat_field];
+        var post_data = [dc];
+        cfg.show_load();
+        ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+            cfg.hide_load();
+            callback(resp.get_row);
+        });
+    }
+};
+
+var after_save = {
+    do_nothing: function do_nothing(new_row, old_row, table) {
+        // һ����Ӧ use_table_row����������Ϊ����ʱ����table_row�Ѿ��Զ��������ˡ�
+        //alert('fuck 111')
+    },
+    update_or_insert: function update_or_insert(new_row, old_row, table) {
+        // ���½���row ���뵽������
+        if (!old_row.pk) {
+            table.rows.splice(0, 0, new_row);
+        } else {
+            ex.assign(table.rowData, new_row);
+        }
+    }
+};
 
 /***/ }),
 /* 13 */

@@ -1,7 +1,11 @@
-export  function pop_fields_layer (row,heads,ops){
+/*
+* root 层面创建Vue组件，形成弹出框
+* */
+
+export  function pop_fields_layer (row,heads,ops,pop_id){
     // row,head ->//model_name,relat_field
 
-    var id = new Date().getTime()
+
     //var relat_field = head.relat_field
     //var model_name = head.model_name
     //var ops = head.ops
@@ -15,14 +19,14 @@ export  function pop_fields_layer (row,heads,ops){
         type: 1,
         area: ['700px', '400px'],
         shadeClose: true, //点击遮罩关闭
-        content:`<div id="fields-pop-${id}" style="height: 100%;">
+        content:`<div id="fields-pop-${pop_id}" style="height: 100%;">
                     <com-pop-fields @del_success="on_del()" @sub_success="on_sub_success($event)"
                     :row="row" :heads="fields_heads" :ops="ops"></com-pop-fields>
                 </div>`
     });
 
     new Vue({
-        el:'#fields-pop-'+id,
+        el:'#fields-pop-'+pop_id,
         data:{
             row:row,
             fields_heads:heads,
@@ -55,6 +59,8 @@ export  function pop_fields_layer (row,heads,ops){
                 //}else{
                 //    trigger.update_row()
                 //}
+
+                eventBus.$emit('pop-win-'+pop_id,{name:'after_save',new_row:event.new_row,old_row:event.old_row})
 
             },
             //on_del:function(){

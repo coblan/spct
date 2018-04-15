@@ -37,16 +37,69 @@ var pop_fields={
             //    })
             //}
 
-            var relat_field = this.head.relat_field
-            var model_name = this.head.model_name
-            var ops = this.head.ops
-            if(this.head.use_table_row){
-                pop_fields_layer(this.rowData,this.head.fields_heads,ops)
-            }
+            //var relat_field = this.head.relat_field
+            //var model_name = this.head.model_name
+            var self=this
+            var pop_id = new Date().getTime()
+            eventBus.$on('pop-win-'+pop_id,function(kws){
+                if(kws.name =='after_save'){
+                    var fun = after_save[self.head.after_save.fun]
+                    fun(kws.new_row,kws.old_row,self)
+                }
+            })
 
+            var ops = this.head.ops
+
+            var fun= get_row[this.head.get_row.fun]
+            var kws= this.head.get_row.kws
+            fun(function(pop_row){
+                pop_fields_layer(pop_row,self.head.fields_heads,ops,pop_id)
+            },this.rowData,kws)
 
         }
 
     }
 }
 Vue.component('com-table-pop-fields',pop_fields)
+
+
+var get_row={
+    use_table_row:function(callback,row,kws){
+        callback(row)
+    },
+    get_table_row:function(callback,row,kws){
+        var cache_row=ex.copy(row)
+        callback(cache_row)
+    },
+    get_with_relat_field:function(callback,row,kws){
+        var model_name=kws.model_name
+        var relat_field = kws.relat_field
+
+        var dc ={fun:'get_row',model_name:model_name}
+        dc[relat_field] = row[relat_field]
+        var post_data=[dc]
+        cfg.show_load()
+        ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            cfg.hide_load()
+            callback(resp.get_row)
+        })
+
+    }
+}
+
+var after_save={
+    do_nothing:function(new_row,old_row,table){
+        // 一般对应 use_table_row的情况，因为这个时候，table_row已经自动被更新了。
+        //alert('fuck 111')
+    },
+    update_or_insert:function(new_row,old_row,table){
+        // 将新建的row 插入到表格中
+        if(! old_row.pk) {
+            table.rows.splice(0, 0, new_row)
+        }else{
+            ex.assign(table.rowData,new_row)
+        }
+
+
+    }
+}
