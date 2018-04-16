@@ -9,7 +9,7 @@ from .status_code import *
 
 
 class TicketMasterPage(TablePage):
-    template='maindb/table_ajax_tab.html'
+    template='maindb/table.html' #'maindb/table_ajax_tab.html'
     def get_label(self):
         return  _('Tb Trans') #  '注单列表'
 
@@ -44,7 +44,11 @@ class TicketMasterPage(TablePage):
                 head['width'] = 150
             else:
                 head['width'] =80
-        
+                
+            if head['name'] == 'account':
+                head['editor'] = 'com-table-switch-to-tab'
+                head['tab_name']='ticketstake'  
+                
             return head         
 
         #def dict_row(self, inst):

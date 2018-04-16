@@ -2,10 +2,8 @@ var ajax_fields={
     props:['tab_head','par_row'],
     data:function(){
       return {
-          heads:this.tab_head.fields_heads,
-          ops:this.tab_head.fields_ops,
-          relat_field:this.tab_head.relat_field,
-          model_name:this.tab_head.model_name,
+          heads:this.tab_head.heads,
+          ops:this.tab_head.ops,
           errors:{},
           row:{},
       }
@@ -34,14 +32,20 @@ var ajax_fields={
         },
         data_getter:function(){
             var self=this
-            cfg.show_load()
-            var dt = {fun:'get_row',model_name:this.model_name}
-            dt[this.relat_field] = this.par_row[this.relat_field]
-            var post_data=[dt]
-            $.post('/d/ajax',JSON.stringify(post_data),function(resp){
-                self.row=resp.get_row
-                cfg.hide_load()
-            })
+            var fun = get_data [this.tab_head.get_data.fun]
+            fun(function(row){
+                self.row = row
+            },this.par_row,this.tab_head.get_data.kws)
+
+            //var self=this
+            //cfg.show_load()
+            //var dt = {fun:'get_row',model_name:this.model_name}
+            //dt[this.relat_field] = this.par_row[this.relat_field]
+            //var post_data=[dt]
+            //$.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            //    self.row=resp.get_row
+            //    cfg.hide_load()
+            //})
          }
     }
         // data_getter  回调函数，获取数据,
@@ -50,3 +54,19 @@ var ajax_fields={
 }
 
 Vue.component('com_ajax_fields',ajax_fields)
+
+var get_data={
+    get_row:function(callback,row,kws){
+        var model_name = kws.model_name
+        var relat_field = kws.relat_field
+        var dt = {fun:'get_row',model_name:model_name}
+        dt[relat_field] = row[relat_field]
+        var post_data=[dt]
+        cfg.show_load()
+        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            cfg.hide_load()
+            callback(resp.get_row)
+
+        })
+    }
+}

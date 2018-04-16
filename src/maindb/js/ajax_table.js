@@ -2,14 +2,11 @@
 var ajax_table={
     props:['tab_head','par_row'],//['heads','row_filters','kw'],
     data:function(){
-        var table_head = this.tab_head.table_head
+        var heads_ctx = this.tab_head.heads_ctx
         return {
-            heads:table_head.heads,
-            row_filters:table_head.row_filters,
-            row_sort:table_head.row_sort,
-
-            relat_field:this.tab_head.relat_field,
-            model_name:this.tab_head.model_name,
+            heads:heads_ctx.heads,
+            row_filters:heads_ctx.row_filters,
+            row_sort:heads_ctx.row_sort,
 
             rows:[],
             row_pages:{},
@@ -78,16 +75,23 @@ var ajax_table={
 
 //                        var getter_name = 'get_'+tab.name
             var self=this
-            var relat_pk = this.par_row[this.relat_field]
-        var relat_field = this.relat_field
-        this.search_args[relat_field] = relat_pk
-        var post_data=[{fun:'get_rows',search_args:this.search_args,model_name:this.model_name}]
-            cfg.show_load()
-        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            cfg.hide_load()
-            self.rows = resp.get_rows.rows
-            self.row_pages =resp.get_rows.row_pages
-        })
+            var fun = get_data[this.tab_head.get_data.fun ]
+            fun(function(rows,row_pages){
+                self.rows = rows
+                self.row_pages =row_pages
+            },this.par_row,this.tab_head.get_data.kws,this.search_args)
+
+//            var self=this
+//            var relat_pk = this.par_row[this.relat_field]
+//        var relat_field = this.relat_field
+//        this.search_args[relat_field] = relat_pk
+//        var post_data=[{fun:'get_rows',search_args:this.search_args,model_name:this.model_name}]
+//            cfg.show_load()
+//        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
+//            cfg.hide_load()
+//            self.rows = resp.get_rows.rows
+//            self.row_pages =resp.get_rows.row_pages
+//        })
     },
         del_item:function () {
             if (this.selected.length==0){
@@ -129,3 +133,23 @@ var ajax_table={
 }
 
 Vue.component('com_ajax_table',ajax_table)
+
+var get_data={
+    get_rows:function(callback,row,kws,search_args){
+        var relat_field = kws.relat_field
+        var model_name = kws.model_name
+
+        var self=this
+        var relat_pk = row[kws.relat_field]
+        var relat_field = kws.relat_field
+        search_args[relat_field] = relat_pk
+        var post_data=[{fun:'get_rows',search_args:search_args,model_name:model_name}]
+        cfg.show_load()
+        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            cfg.hide_load()
+            callback(resp.get_rows.rows,resp.get_rows.row_pages)
+            //self.rows = resp.get_rows.rows
+            //self.row_pages =resp.get_rows.row_pages
+        })
+    }
+}

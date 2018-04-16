@@ -18,46 +18,78 @@ class AccountPage(TablePage):
         baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
         ls = [
             {'name':'baseinfo',
-             'label':'基本信息','com':'com_ajax_fields',
-             'model_name':'maindb.TbAccount',
-             'relat_field':'accountid',
-             'fields_heads': baseinfo.get_heads(),
-             'fields_ops': baseinfo.get_operations()
+             'label':'基本信息',
+             'com':'com_ajax_fields',
+             'get_data':{
+                 'fun':'get_row',
+                 'kws':{
+                    'model_name':'maindb.TbAccount',
+                    'relat_field':'accountid',              
+                 }
+             },
+             'heads': baseinfo.get_heads(),
+             'ops': baseinfo.get_operations()                 
              },
             {'name':'balance_log',
              'label':'帐目记录',
              'com':'com_ajax_table',
-             'model_name':model_to_name(TbBalancelog),
-             'relat_field':'account',
-             'table_head':AccountBalanceTable(crt_user=self.crt_user).get_head_context()},
+             'get_data':{
+                 'fun':'get_rows',
+                 'kws':{
+                    'model_name':model_to_name(TbBalancelog),
+                    'relat_field':'account',
+                 }
+                 
+             },
+             'heads_ctx':AccountBalanceTable(crt_user=self.crt_user).get_head_context()
+             },
             {'name':'account_trans',
              'label':'交易记录',
              'com':'com_ajax_table',
-             'model_name':model_to_name(TbTrans),
-             'relat_field':'account',
-             'table_head':AccountTransTable(crt_user=self.crt_user).get_head_context()},
+             'get_data':{
+                 'fun':'get_rows',
+                 'kws':{
+                     'model_name':model_to_name(TbTrans),
+                     'relat_field':'account',                     
+                 }
+             },
+             'heads_ctx':AccountTransTable(crt_user=self.crt_user).get_head_context()
+             },
             {'name':'account_ticket',
              'label':'投注记录',
              'com':'com_ajax_table',
-             'model_name':model_to_name(TbTicketmaster),
-             'relat_field':'account',
-             'table_head':AccountTicketTable(crt_user=self.crt_user).get_head_context()},
+             'get_data':{
+                 'fun':'get_rows',
+                 'kws':{
+                     'model_name':model_to_name(TbTicketmaster),
+                     'relat_field':'account',
+                 }
+             },
+             'heads_ctx':AccountTicketTable(crt_user=self.crt_user).get_head_context()
+             },
             {'name':'account_login',
             'label':'登录日志',
             'com':'com_ajax_table',
-            'model_name':model_to_name(TbLoginlog),
-            'relat_field':'account',
-            'table_head':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
+            'get_data':{
+                'fun':'get_rows',
+                'kws':{
+                    'model_name':model_to_name(TbLoginlog),
+                    'relat_field':'account',                    
+                }
+            },
+            'heads_ctx':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
             {'name':'account_withdrawlimitlog',
             'label':'提款限额记录',
             'com':'com_ajax_table',
-            'model_name':model_to_name(TbWithdrawlimitlog),
-            'relat_field':'account',
-            'table_head':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
-            #{'name':'account_tokencode',
-             #'label':'验证码查询',
-             #'com':'com_ajax_table',
-             #'kw':AccountTokenCodeTable(crt_user=self.crt_user).get_head_context()},                 
+            'get_data':{
+                'fun':'get_rows',
+                'kws':{
+                    'model_name':model_to_name(TbWithdrawlimitlog),
+                    'relat_field':'account',                    
+                }
+            },
+            'heads_ctx':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
+                       
             ]
         ctx['tabs']=ls
         return ctx
