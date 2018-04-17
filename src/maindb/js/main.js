@@ -3,13 +3,12 @@ require('./scss/fields.scss')
 
 //table mix
 import * as mix_table_data from  './mix/mix_table_data.js'
-import * as mix_v_table_adapter from './mix_v_table_adapter.js'
-import * as mix_nice_validator from './mix_nice_validator.js'
+import * as mix_v_table_adapter from './mix/mix_v_table_adapter.js'
+import * as mix_nice_validator from './mix/mix_nice_validator.js'
+import * as mix_fields_data from './mix/mix_fields_data.js'
 
-import * as mix_fields_data from './mix_fields_data.js'
-
-import * as ajax_fields from './ajax_fields.js'
-import * as ajax_table from './ajax_table.js'
+import * as ajax_fields from './tabs/ajax_fields.js'
+import * as ajax_table from './tabs/ajax_table.js'
 import * as com_pop_fields from './com_pop_fields.js'
 
 import * as pop_fields_layer from  './field_editor/func/pop_fields_layer.js'

@@ -28,8 +28,8 @@ var mix_table_data={
         }
     },
     methods: {
-        on_operation:function(name){
-            this.op_funs[name]()
+        on_operation:function(kws){
+            this.op_funs[kws.name](kws)
         },
         search:function(){
             this.search_args._page=1

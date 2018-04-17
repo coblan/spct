@@ -31,7 +31,7 @@ Vue.component('com-pop-fields',{
     },
     template:`<div class="flex-v" style="margin: 0;height: 100%;">
     <div>
-        <component v-for="op in ops" :is="op.editor" @operate="on_operation(op.name)" :head="op"></component>
+        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>
         <!--<button @click="save()">保存</button>-->
         <!--<button @click="del_row()" v-if="row.pk">删除</button>-->
     </div>

@@ -22,6 +22,20 @@ var ajax_fields={
 		<field  v-for='head in heads' :key="head.name" :head="head" :row='row'></field>
 	</form></div>`,
 
+    //created:function(){
+    //    // find head from parent table
+    //    var table_par = this.$parent
+    //    while (true){
+    //        if (table_par.heads){
+    //            break
+    //        }
+    //        table_par = table_par.$parent
+    //        if(!table_par){
+    //            break
+    //        }
+    //    }
+    //    this.table_par = table_par
+    //},
 
     methods:{
         on_show:function(){
@@ -32,10 +46,12 @@ var ajax_fields={
         },
         data_getter:function(){
             var self=this
-            var fun = get_data [this.tab_head.get_data.fun]
-            fun(function(row){
+            var fun = get_data [self.tab_head.get_data.fun]
+            var kws = self.tab_head.get_data.kws
+            fun(self,function(row){
+                //ex.assign(self.row,row)
                 self.row = row
-            },this.par_row,this.tab_head.get_data.kws)
+            },kws)
 
             //var self=this
             //cfg.show_load()
@@ -46,7 +62,16 @@ var ajax_fields={
             //    self.row=resp.get_row
             //    cfg.hide_load()
             //})
-         }
+         },
+        after_save:function(new_row){
+            if(this.tab_head.after_save){
+                var fun = after_save[this.tab_head.after_save.fun]
+                var kws = this.tab_head.after_save.kws
+                // new_row ,old_row
+                fun(this,new_row,kws)
+            }
+            this.row=new_row
+        }
     }
         // data_getter  回调函数，获取数据,
 
@@ -56,17 +81,24 @@ var ajax_fields={
 Vue.component('com_ajax_fields',ajax_fields)
 
 var get_data={
-    get_row:function(callback,row,kws){
+    get_row:function(self,callback,kws){
+        //kws={model_name ,relat_field}
         var model_name = kws.model_name
         var relat_field = kws.relat_field
         var dt = {fun:'get_row',model_name:model_name}
-        dt[relat_field] = row[relat_field]
+        dt[relat_field] = self.par_row[relat_field]
         var post_data=[dt]
         cfg.show_load()
         $.post('/d/ajax',JSON.stringify(post_data),function(resp){
             cfg.hide_load()
             callback(resp.get_row)
-
         })
+    }
+}
+
+var after_save={
+    update_or_insert:function(self,new_row,kws){
+        var old_row= self.row
+        self.$emit('tab-event',{name:'update-or-insert',new_row:new_row,old_row:old_row})
     }
 }

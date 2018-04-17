@@ -4,7 +4,7 @@ from helpers.director.shortcut import ModelTable,TablePage,page_dc
 from ..models import TbMatches
 
 class MatchsPage(TablePage):
-    
+    template='maindb/table_plain.html'
     class tableCls(ModelTable):
         model = TbMatches
         exclude=[]

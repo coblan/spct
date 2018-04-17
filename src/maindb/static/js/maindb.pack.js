@@ -67,200 +67,8 @@
 /******/ })
 /************************************************************************/
 /******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ajax_fields = {
-    props: ['tab_head', 'par_row'],
-    data: function data() {
-        return {
-            heads: this.tab_head.heads,
-            ops: this.tab_head.ops,
-            errors: {},
-            row: {}
-        };
-    },
-    mixins: [mix_fields_data, mix_nice_validator],
-    template: '<div>\n    <!--<div style="margin: 5px 1em;">-->\n        <!--<button type="button" class="btn btn-default" title="\u4FDD\u5B58" @click="save()"><i class="fa fa-save"></i><span>\u4FDD\u5B58</span></button>-->\n    <!--</div>-->\n\n    <span class="oprations">\n            <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op.name)"></component>\n    </span>\n\n    <form class=\'field-panel msg-hide\' id="form">\n\t\t<field  v-for=\'head in heads\' :key="head.name" :head="head" :row=\'row\'></field>\n\t</form></div>',
-
-    methods: {
-        on_show: function on_show() {
-            if (!this.fetched) {
-                this.get_data();
-                this.fetched = true;
-            }
-        },
-        data_getter: function data_getter() {
-            var self = this;
-            var fun = get_data[this.tab_head.get_data.fun];
-            fun(function (row) {
-                self.row = row;
-            }, this.par_row, this.tab_head.get_data.kws);
-
-            //var self=this
-            //cfg.show_load()
-            //var dt = {fun:'get_row',model_name:this.model_name}
-            //dt[this.relat_field] = this.par_row[this.relat_field]
-            //var post_data=[dt]
-            //$.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //    self.row=resp.get_row
-            //    cfg.hide_load()
-            //})
-        }
-        // data_getter  回调函数，获取数据,
-
-
-    } };
-
-Vue.component('com_ajax_fields', ajax_fields);
-
-var get_data = {
-    get_row: function get_row(callback, row, kws) {
-        var model_name = kws.model_name;
-        var relat_field = kws.relat_field;
-        var dt = { fun: 'get_row', model_name: model_name };
-        dt[relat_field] = row[relat_field];
-        var post_data = [dt];
-        cfg.show_load();
-        $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-            cfg.hide_load();
-            callback(resp.get_row);
-        });
-    }
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ajax_table = {
-    props: ['tab_head', 'par_row'], //['heads','row_filters','kw'],
-    data: function data() {
-        var heads_ctx = this.tab_head.heads_ctx;
-        return {
-            heads: heads_ctx.heads,
-            row_filters: heads_ctx.row_filters,
-            row_sort: heads_ctx.row_sort,
-
-            rows: [],
-            row_pages: {},
-            //search_tip:this.kw.search_tip,
-
-            selected: [],
-            del_info: [],
-
-            search_args: {}
-        };
-    },
-    mixins: [mix_table_data, mix_v_table_adapter],
-    //watch:{
-    //    // 排序变换，获取数据
-    //    'row_sort.sort_str':function(v){
-    //        this.search_args._sort=v
-    //        this.get_data()
-    //    }
-    //},
-    template: '<div class="rows-block">\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success">\n            <div class="table-wraper">\n                <v-table ref="vtable"\n                         is-horizontal-resize\n                         is-vertical-resize\n                         :title-row-height="30"\n                         :vertical-resize-offset="80"\n                         :row-height="24"\n                         odd-bg-color="#f0f6f8"\n                         column-width-drag\n                         style="width: 100%;"\n                         :columns="columns"\n                         :table-data="rows"\n                         @sort-change="sortChange"\n                         row-hover-color="#eee"\n                         row-click-color="#edf7ff">\n                </v-table>\n            </div>\n            <div style="margin-top: 10px;">\n                <v-pagination @page-change="get_page($event)"\n                              :total="row_pages.total"\n                              size="small"\n                              :page-size="row_pages.perpage"\n                              @page-size-change="on_perpage_change($event)"\n                              :layout="[\'total\', \'prev\', \'pager\', \'next\', \'sizer\', \'jumper\']">\n                </v-pagination>\n            </div>\n        </div>\n    </div>',
-
-    methods: {
-        on_show: function on_show() {
-            if (!this.fetched) {
-                this.get_data();
-                this.fetched = true;
-            }
-        },
-        data_getter: function data_getter() {
-            // 这里clear，数据被清空，造成table的pagenator上下抖动
-            //                       com.clear()
-
-            //                        var getter_name = 'get_'+tab.name
-            var self = this;
-            var fun = get_data[this.tab_head.get_data.fun];
-            fun(function (rows, row_pages) {
-                self.rows = rows;
-                self.row_pages = row_pages;
-            }, this.par_row, this.tab_head.get_data.kws, this.search_args);
-
-            //            var self=this
-            //            var relat_pk = this.par_row[this.relat_field]
-            //        var relat_field = this.relat_field
-            //        this.search_args[relat_field] = relat_pk
-            //        var post_data=[{fun:'get_rows',search_args:this.search_args,model_name:this.model_name}]
-            //            cfg.show_load()
-            //        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //            cfg.hide_load()
-            //            self.rows = resp.get_rows.rows
-            //            self.row_pages =resp.get_rows.row_pages
-            //        })
-        },
-        del_item: function del_item() {
-            if (this.selected.length == 0) {
-                return;
-            }
-            var del_obj = {};
-            for (var j = 0; j < this.selected.length; j++) {
-                var pk = this.selected[j];
-                for (var i = 0; i < this.rows.length; i++) {
-                    if (this.rows[i].pk.toString() == pk) {
-                        if (!del_obj[this.rows[i]._class]) {
-                            del_obj[this.rows[i]._class] = [];
-                        }
-                        del_obj[this.rows[i]._class].push(pk);
-                    }
-                }
-            }
-            var out_str = '';
-            for (var key in del_obj) {
-                out_str += key + ':' + del_obj[key].join(':') + ',';
-            }
-            location = ex.template("{engine_url}/del_rows?rows={rows}&next={next}", { engine_url: engine_url,
-                rows: encodeURI(out_str),
-                next: encodeURIComponent(location.href) });
-        },
-        goto_page: function goto_page(page) {
-            this.search_args._page = page;
-            this.search();
-        },
-        add_new: function add_new() {
-            var url = ex.template('{engine_url}/{page}.edit/?next={next}', {
-                engine_url: engine_url,
-                page: page_name,
-                next: encodeURIComponent(ex.appendSearch(location.pathname, search_args))
-            });
-            location = url;
-        }
-    }
-};
-
-Vue.component('com_ajax_table', ajax_table);
-
-var get_data = {
-    get_rows: function get_rows(callback, row, kws, search_args) {
-        var relat_field = kws.relat_field;
-        var model_name = kws.model_name;
-
-        var self = this;
-        var relat_pk = row[kws.relat_field];
-        var relat_field = kws.relat_field;
-        search_args[relat_field] = relat_pk;
-        var post_data = [{ fun: 'get_rows', search_args: search_args, model_name: model_name }];
-        cfg.show_load();
-        $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-            cfg.hide_load();
-            callback(resp.get_rows.rows, resp.get_rows.row_pages);
-            //self.rows = resp.get_rows.rows
-            //self.row_pages =resp.get_rows.row_pages
-        });
-    }
-};
-
-/***/ }),
+/* 0 */,
+/* 1 */,
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -298,7 +106,7 @@ Vue.component('com-pop-fields', {
         }
 
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div>\n        <component v-for="op in ops" :is="op.editor" @operate="on_operation(op.name)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n    <div class = "flex-grow" style="overflow: scroll;margin: 0;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div>\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n    <div class = "flex-grow" style="overflow: scroll;margin: 0;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {
@@ -338,203 +146,19 @@ Vue.component('com-field-label-shower', label_shower);
 
 Vue.component('com-field-op-btn', {
     props: ['head'],
-    template: '<button @click="$emit(\'operate\')"><span v-text="head.label"></span></button>'
-
+    template: '<button @click="operation_call()"><span v-text="head.label"></span></button>',
+    methods: {
+        operation_call: function operation_call() {
+            this.$emit('operation', this.head.name);
+        }
+    }
 });
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var mix_fields_data = {
-    data: function data() {
-        return {
-            op_funs: {}
-        };
-    },
-    mounted: function mounted() {
-        var self = this;
-        ex.assign(this.op_funs, {
-            save: function save() {
-                self.save();
-            }
-        });
-    },
-    methods: {
-        on_operation: function on_operation(name) {
-            this.op_funs[name]();
-        },
-        get_data: function get_data() {
-            this.data_getter(this);
-        },
-        set_errors: function set_errors(errors) {
-            ex.each(this.heads, function (head) {
-                if (errors[head.name]) {
-                    Vue.set(head, 'error', errors[head.name].join(';'));
-                } else if (head.error) {
-                    delete head.error;
-                    //Vue.set(head,'error',null)
-                }
-            });
-        },
-        save: function save() {
-            var self = this;
-            if (self.before_save() == 'break') {
-                return;
-            }
-            //var loader = layer.load(2)
-            cfg.show_load();
-
-            var post_data = [{ fun: 'save', row: this.row }];
-            var url = ex.appendSearch('/d/ajax', search_args);
-            ex.post(url, JSON.stringify(post_data), function (resp) {
-                if (resp.save.errors) {
-                    cfg.hide_load();
-                    self.set_errors(resp.save.errors);
-                    self.show_error(resp.save.errors);
-                } else {
-                    cfg.hide_load(2000);
-                    self.after_save(resp.save.row);
-                    self.set_errors({});
-                }
-            });
-        },
-        before_save: function before_save() {
-            eventBus.$emit('sync_data');
-            return 'continue';
-        },
-        after_save: function after_save(new_row) {
-            ex.assign(this.row, new_row);
-        },
-        show_error: function show_error(errors) {
-            var str = "";
-            for (var k in errors) {
-                str += k + ':' + errors[k] + '<br>';
-            }
-            layer.confirm(str, { title: ['错误', 'color:white;background-color:red'] });
-        },
-        clear: function clear() {
-            this.row = {};
-            this.set_errors({});
-        }
-
-    }
-};
-
-window.mix_fields_data = mix_fields_data;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var nice_validator = {
-    mounted: function mounted() {
-        var self = this;
-        var validator = {};
-        ex.each(this.heads, function (head) {
-            if (head.required) {
-                validator[head.name] = 'required';
-            }
-        });
-        this.nice_validator = $(this.$el).find('.field-panel').validator({
-            fields: validator
-        });
-    }
-};
-
-window.mix_nice_validator = nice_validator;
-
-/***/ }),
+/* 5 */,
+/* 6 */,
 /* 7 */,
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var mix_v_table_adapter = {
-
-    mounted: function mounted() {
-        eventBus.$on('content_resize', this.resize);
-    },
-    computed: {
-        columns: function columns() {
-            var self = this;
-            var first_col = {
-                width: 60,
-                titleAlign: 'center',
-                columnAlign: 'center',
-                type: 'selection'
-            };
-            var cols = [first_col];
-            var converted_heads = ex.map(this.heads, function (head) {
-                var col = ex.copy(head);
-                var dc = {
-                    field: head.name,
-                    title: head.label,
-                    isResize: true
-                };
-                if (head.editor) {
-                    dc.componentName = head.editor;
-                }
-                if (ex.isin(head.name, self.row_sort.sortable)) {
-                    dc.orderBy = '';
-                }
-                ex.assign(col, dc);
-                if (!col.width) {
-                    col.width = 200;
-                }
-                return col;
-            });
-            cols = cols.concat(converted_heads);
-            return cols;
-        }
-    },
-    methods: {
-        resize: function resize() {
-            var self = this;
-            $(self.$refs.vtable.$el).find('.v-table-rightview').css('width', '100%');
-            $(self.$refs.vtable.$el).find('.v-table-header').css('width', '100%');
-            $(self.$refs.vtable.$el).find('.v-table-body').css('width', '100%');
-
-            var tmid = setInterval(function () {
-                self.$refs.vtable.resize();
-            }, 50);
-            setTimeout(function () {
-                //self.$refs.vtable.resize()
-                clearInterval(tmid);
-            }, 600);
-        },
-        on_perpage_change: function on_perpage_change(perpage) {
-            this.search_args._perpage = perpage;
-            this.search_args._page = 1;
-            this.get_data();
-        },
-        sortChange: function sortChange(params) {
-            var self = this;
-            ex.each(this.row_sort.sortable, function (name) {
-                if (params[name]) {
-                    if (params[name] == 'asc') {
-                        self.search_args._sort = name;
-                    } else {
-                        self.search_args._sort = '-' + name;
-                    }
-                    return 'break';
-                }
-            });
-            this.get_data();
-        }
-    }
-};
-window.mix_v_table_adapter = mix_v_table_adapter;
-
-/***/ }),
+/* 8 */,
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -568,7 +192,7 @@ var line_text = {
     },
     methods: {
         on_changed: function on_changed() {
-            this.$emit('on-custom-comp', { name: 'row-changed', row: this.rowData });
+            this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
         }
     }
 };
@@ -664,27 +288,12 @@ var pop_fields = {
             this.open_layer();
         },
         open_layer: function open_layer() {
-
-            //if(! trigger.head.use_table_row){
-            //    var self=this
-            //    cfg.show_load()
-            //    var dc ={fun:'get_row',model_name:model_name}
-            //    dc[relat_field] = trigger.rowData[relat_field]
-            //    var post_data=[dc]
-            //    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //        self.row = resp.get_row
-            //        cfg.hide_load()
-            //    })
-            //}
-
-            //var relat_field = this.head.relat_field
-            //var model_name = this.head.model_name
             var self = this;
             var pop_id = new Date().getTime();
             eventBus.$on('pop-win-' + pop_id, function (kws) {
                 if (kws.name == 'after_save') {
                     var fun = after_save[self.head.after_save.fun];
-                    fun(kws.new_row, kws.old_row, self);
+                    fun(self, kws.new_row, kws.old_row);
                 }
             });
 
@@ -725,17 +334,18 @@ var get_row = {
 };
 
 var after_save = {
-    do_nothing: function do_nothing(new_row, old_row, table) {
+    do_nothing: function do_nothing(self, new_row, old_row, table) {
         // һ���Ӧ use_table_row���������Ϊ���ʱ��table_row�Ѿ��Զ��������ˡ�
         //alert('fuck 111')
     },
-    update_or_insert: function update_or_insert(new_row, old_row, table) {
-        // ���½���row ���뵽�����
-        if (!old_row.pk) {
-            table.rows.splice(0, 0, new_row);
-        } else {
-            ex.assign(table.rowData, new_row);
-        }
+    update_or_insert: function update_or_insert(self, new_row, old_row) {
+        self.$emit('on-custom-comp', { name: 'update_or_insert', new_row: new_row, old_row: old_row });
+        //if(! old_row.pk) {
+        //    table.rows.splice(0, 0, new_row)
+        //}else{
+        //    ex.assign(table.rowData,new_row)
+        //}
+
     }
 };
 
@@ -1151,23 +761,23 @@ var _mix_table_data = __webpack_require__(25);
 
 var mix_table_data = _interopRequireWildcard(_mix_table_data);
 
-var _mix_v_table_adapter = __webpack_require__(8);
+var _mix_v_table_adapter = __webpack_require__(32);
 
 var mix_v_table_adapter = _interopRequireWildcard(_mix_v_table_adapter);
 
-var _mix_nice_validator = __webpack_require__(6);
+var _mix_nice_validator = __webpack_require__(31);
 
 var mix_nice_validator = _interopRequireWildcard(_mix_nice_validator);
 
-var _mix_fields_data = __webpack_require__(5);
+var _mix_fields_data = __webpack_require__(30);
 
 var mix_fields_data = _interopRequireWildcard(_mix_fields_data);
 
-var _ajax_fields = __webpack_require__(0);
+var _ajax_fields = __webpack_require__(28);
 
 var ajax_fields = _interopRequireWildcard(_ajax_fields);
 
-var _ajax_table = __webpack_require__(1);
+var _ajax_table = __webpack_require__(29);
 
 var ajax_table = _interopRequireWildcard(_ajax_table);
 
@@ -1253,7 +863,7 @@ var check_box = {
     },
     methods: {
         on_changed: function on_changed() {
-            this.$emit('on-custom-comp', { name: 'row-changed', row: this.rowData });
+            this.$emit('on-custom-comp', { name: 'row_changed', row: this.rowData });
         }
     }
 };
@@ -1335,8 +945,8 @@ var mix_table_data = {
         }
     },
     methods: {
-        on_operation: function on_operation(name) {
-            this.op_funs[name]();
+        on_operation: function on_operation(kws) {
+            this.op_funs[kws.name](kws);
         },
         search: function search() {
             this.search_args._page = 1;
@@ -1522,6 +1132,425 @@ function pop_fields_layer(row, heads, ops, pop_id) {
 }
 
 window.pop_fields_layer = pop_fields_layer;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ajax_fields = {
+    props: ['tab_head', 'par_row'],
+    data: function data() {
+        return {
+            heads: this.tab_head.heads,
+            ops: this.tab_head.ops,
+            errors: {},
+            row: {}
+        };
+    },
+    mixins: [mix_fields_data, mix_nice_validator],
+    template: '<div>\n    <!--<div style="margin: 5px 1em;">-->\n        <!--<button type="button" class="btn btn-default" title="\u4FDD\u5B58" @click="save()"><i class="fa fa-save"></i><span>\u4FDD\u5B58</span></button>-->\n    <!--</div>-->\n\n    <span class="oprations">\n            <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op.name)"></component>\n    </span>\n\n    <form class=\'field-panel msg-hide\' id="form">\n\t\t<field  v-for=\'head in heads\' :key="head.name" :head="head" :row=\'row\'></field>\n\t</form></div>',
+
+    //created:function(){
+    //    // find head from parent table
+    //    var table_par = this.$parent
+    //    while (true){
+    //        if (table_par.heads){
+    //            break
+    //        }
+    //        table_par = table_par.$parent
+    //        if(!table_par){
+    //            break
+    //        }
+    //    }
+    //    this.table_par = table_par
+    //},
+
+    methods: {
+        on_show: function on_show() {
+            if (!this.fetched) {
+                this.get_data();
+                this.fetched = true;
+            }
+        },
+        data_getter: function data_getter() {
+            var self = this;
+            var fun = get_data[self.tab_head.get_data.fun];
+            var kws = self.tab_head.get_data.kws;
+            fun(self, function (row) {
+                //ex.assign(self.row,row)
+                self.row = row;
+            }, kws);
+
+            //var self=this
+            //cfg.show_load()
+            //var dt = {fun:'get_row',model_name:this.model_name}
+            //dt[this.relat_field] = this.par_row[this.relat_field]
+            //var post_data=[dt]
+            //$.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            //    self.row=resp.get_row
+            //    cfg.hide_load()
+            //})
+        },
+        after_save: function after_save(new_row) {
+            if (this.tab_head.after_save) {
+                var fun = _after_save[this.tab_head.after_save.fun];
+                var kws = this.tab_head.after_save.kws;
+                // new_row ,old_row
+                fun(this, new_row, kws);
+            }
+            this.row = new_row;
+        }
+        // data_getter  回调函数，获取数据,
+
+
+    } };
+
+Vue.component('com_ajax_fields', ajax_fields);
+
+var get_data = {
+    get_row: function get_row(self, callback, kws) {
+        //kws={model_name ,relat_field}
+        var model_name = kws.model_name;
+        var relat_field = kws.relat_field;
+        var dt = { fun: 'get_row', model_name: model_name };
+        dt[relat_field] = self.par_row[relat_field];
+        var post_data = [dt];
+        cfg.show_load();
+        $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+            cfg.hide_load();
+            callback(resp.get_row);
+        });
+    }
+};
+
+var _after_save = {
+    update_or_insert: function update_or_insert(self, new_row, kws) {
+        var old_row = self.row;
+        self.$emit('tab-event', { name: 'update-or-insert', new_row: new_row, old_row: old_row });
+    }
+};
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ajax_table = {
+    props: ['tab_head', 'par_row'], //['heads','row_filters','kw'],
+    data: function data() {
+        var heads_ctx = this.tab_head.heads_ctx;
+        return {
+            heads: heads_ctx.heads,
+            row_filters: heads_ctx.row_filters,
+            row_sort: heads_ctx.row_sort,
+
+            rows: [],
+            row_pages: {},
+            //search_tip:this.kw.search_tip,
+
+            selected: [],
+            del_info: [],
+
+            search_args: {}
+        };
+    },
+    mixins: [mix_table_data, mix_v_table_adapter],
+    //watch:{
+    //    // 排序变换，获取数据
+    //    'row_sort.sort_str':function(v){
+    //        this.search_args._sort=v
+    //        this.get_data()
+    //    }
+    //},
+    template: '<div class="rows-block">\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success">\n            <div class="table-wraper">\n                <v-table ref="vtable"\n                         is-horizontal-resize\n                         is-vertical-resize\n                         :title-row-height="30"\n                         :vertical-resize-offset="80"\n                         :row-height="24"\n                         odd-bg-color="#f0f6f8"\n                         column-width-drag\n                         style="width: 100%;"\n                         :columns="columns"\n                         :table-data="rows"\n                         @sort-change="sortChange"\n                         row-hover-color="#eee"\n                         row-click-color="#edf7ff">\n                </v-table>\n            </div>\n            <div style="margin-top: 10px;">\n                <v-pagination @page-change="get_page($event)"\n                              :total="row_pages.total"\n                              size="small"\n                              :page-size="row_pages.perpage"\n                              @page-size-change="on_perpage_change($event)"\n                              :layout="[\'total\', \'prev\', \'pager\', \'next\', \'sizer\', \'jumper\']">\n                </v-pagination>\n            </div>\n        </div>\n    </div>',
+
+    methods: {
+        on_show: function on_show() {
+            if (!this.fetched) {
+                this.get_data();
+                this.fetched = true;
+            }
+        },
+        data_getter: function data_getter() {
+            // 这里clear，数据被清空，造成table的pagenator上下抖动
+            //                       com.clear()
+
+            //                        var getter_name = 'get_'+tab.name
+            var self = this;
+            var fun = get_data[this.tab_head.get_data.fun];
+            fun(function (rows, row_pages) {
+                self.rows = rows;
+                self.row_pages = row_pages;
+            }, this.par_row, this.tab_head.get_data.kws, this.search_args);
+
+            //            var self=this
+            //            var relat_pk = this.par_row[this.relat_field]
+            //        var relat_field = this.relat_field
+            //        this.search_args[relat_field] = relat_pk
+            //        var post_data=[{fun:'get_rows',search_args:this.search_args,model_name:this.model_name}]
+            //            cfg.show_load()
+            //        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            //            cfg.hide_load()
+            //            self.rows = resp.get_rows.rows
+            //            self.row_pages =resp.get_rows.row_pages
+            //        })
+        },
+        del_item: function del_item() {
+            if (this.selected.length == 0) {
+                return;
+            }
+            var del_obj = {};
+            for (var j = 0; j < this.selected.length; j++) {
+                var pk = this.selected[j];
+                for (var i = 0; i < this.rows.length; i++) {
+                    if (this.rows[i].pk.toString() == pk) {
+                        if (!del_obj[this.rows[i]._class]) {
+                            del_obj[this.rows[i]._class] = [];
+                        }
+                        del_obj[this.rows[i]._class].push(pk);
+                    }
+                }
+            }
+            var out_str = '';
+            for (var key in del_obj) {
+                out_str += key + ':' + del_obj[key].join(':') + ',';
+            }
+            location = ex.template("{engine_url}/del_rows?rows={rows}&next={next}", { engine_url: engine_url,
+                rows: encodeURI(out_str),
+                next: encodeURIComponent(location.href) });
+        },
+        goto_page: function goto_page(page) {
+            this.search_args._page = page;
+            this.search();
+        },
+        add_new: function add_new() {
+            var url = ex.template('{engine_url}/{page}.edit/?next={next}', {
+                engine_url: engine_url,
+                page: page_name,
+                next: encodeURIComponent(ex.appendSearch(location.pathname, search_args))
+            });
+            location = url;
+        }
+    }
+};
+
+Vue.component('com_ajax_table', ajax_table);
+
+var get_data = {
+    get_rows: function get_rows(callback, row, kws, search_args) {
+        var relat_field = kws.relat_field;
+        var model_name = kws.model_name;
+
+        var self = this;
+        var relat_pk = row[kws.relat_field];
+        var relat_field = kws.relat_field;
+        search_args[relat_field] = relat_pk;
+        var post_data = [{ fun: 'get_rows', search_args: search_args, model_name: model_name }];
+        cfg.show_load();
+        $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+            cfg.hide_load();
+            callback(resp.get_rows.rows, resp.get_rows.row_pages);
+            //self.rows = resp.get_rows.rows
+            //self.row_pages =resp.get_rows.row_pages
+        });
+    }
+};
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var mix_fields_data = {
+    data: function data() {
+        return {
+            op_funs: {}
+        };
+    },
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            save: function save() {
+                self.save();
+            }
+        });
+    },
+    methods: {
+        on_operation: function on_operation(op) {
+            this.op_funs[op.name](op.kws);
+        },
+        get_data: function get_data() {
+            this.data_getter(this);
+        },
+        set_errors: function set_errors(errors) {
+            ex.each(this.heads, function (head) {
+                if (errors[head.name]) {
+                    Vue.set(head, 'error', errors[head.name].join(';'));
+                } else if (head.error) {
+                    delete head.error;
+                    //Vue.set(head,'error',null)
+                }
+            });
+        },
+        save: function save() {
+            var self = this;
+            if (self.before_save() == 'break') {
+                return;
+            }
+            //var loader = layer.load(2)
+            cfg.show_load();
+
+            var post_data = [{ fun: 'save', row: this.row }];
+            var url = ex.appendSearch('/d/ajax', search_args);
+            ex.post(url, JSON.stringify(post_data), function (resp) {
+                if (resp.save.errors) {
+                    cfg.hide_load();
+                    self.set_errors(resp.save.errors);
+                    self.show_error(resp.save.errors);
+                } else {
+                    cfg.hide_load(2000);
+                    self.after_save(resp.save.row);
+                    self.set_errors({});
+                }
+            });
+        },
+        before_save: function before_save() {
+            eventBus.$emit('sync_data');
+            return 'continue';
+        },
+        after_save: function after_save(new_row) {
+            ex.assign(this.row, new_row);
+        },
+        show_error: function show_error(errors) {
+            var str = "";
+            for (var k in errors) {
+                str += k + ':' + errors[k] + '<br>';
+            }
+            layer.confirm(str, { title: ['错误', 'color:white;background-color:red'] });
+        },
+        clear: function clear() {
+            this.row = {};
+            this.set_errors({});
+        }
+
+    }
+};
+
+window.mix_fields_data = mix_fields_data;
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var nice_validator = {
+    mounted: function mounted() {
+        var self = this;
+        var validator = {};
+        ex.each(this.heads, function (head) {
+            if (head.required) {
+                validator[head.name] = 'required';
+            }
+        });
+        this.nice_validator = $(this.$el).find('.field-panel').validator({
+            fields: validator
+        });
+    }
+};
+
+window.mix_nice_validator = nice_validator;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var mix_v_table_adapter = {
+
+    mounted: function mounted() {
+        eventBus.$on('content_resize', this.resize);
+    },
+    computed: {
+        columns: function columns() {
+            var self = this;
+            var first_col = {
+                width: 60,
+                titleAlign: 'center',
+                columnAlign: 'center',
+                type: 'selection'
+            };
+            var cols = [first_col];
+            var converted_heads = ex.map(this.heads, function (head) {
+                var col = ex.copy(head);
+                var dc = {
+                    field: head.name,
+                    title: head.label,
+                    isResize: true
+                };
+                if (head.editor) {
+                    dc.componentName = head.editor;
+                }
+                if (ex.isin(head.name, self.row_sort.sortable)) {
+                    dc.orderBy = '';
+                }
+                ex.assign(col, dc);
+                if (!col.width) {
+                    col.width = 200;
+                }
+                return col;
+            });
+            cols = cols.concat(converted_heads);
+            return cols;
+        }
+    },
+    methods: {
+        resize: function resize() {
+            var self = this;
+            $(self.$refs.vtable.$el).find('.v-table-rightview').css('width', '100%');
+            $(self.$refs.vtable.$el).find('.v-table-header').css('width', '100%');
+            $(self.$refs.vtable.$el).find('.v-table-body').css('width', '100%');
+
+            var tmid = setInterval(function () {
+                self.$refs.vtable.resize();
+            }, 50);
+            setTimeout(function () {
+                //self.$refs.vtable.resize()
+                clearInterval(tmid);
+            }, 600);
+        },
+        on_perpage_change: function on_perpage_change(perpage) {
+            this.search_args._perpage = perpage;
+            this.search_args._page = 1;
+            this.get_data();
+        },
+        sortChange: function sortChange(params) {
+            var self = this;
+            ex.each(this.row_sort.sortable, function (name) {
+                if (params[name]) {
+                    if (params[name] == 'asc') {
+                        self.search_args._sort = name;
+                    } else {
+                        self.search_args._sort = '-' + name;
+                    }
+                    return 'break';
+                }
+            });
+            this.get_data();
+        }
+    }
+};
+window.mix_v_table_adapter = mix_v_table_adapter;
 
 /***/ })
 /******/ ]);

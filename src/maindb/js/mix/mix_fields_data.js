@@ -14,8 +14,8 @@ var mix_fields_data ={
         })
     },
     methods:{
-        on_operation:function(name){
-            this.op_funs[name]()
+        on_operation:function(op){
+            this.op_funs[op.name](op.kws)
         },
         get_data:function(){
             this.data_getter(this)

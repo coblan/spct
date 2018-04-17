@@ -24,27 +24,12 @@ var pop_fields={
             this.open_layer()
         },
         open_layer:function(){
-
-            //if(! trigger.head.use_table_row){
-            //    var self=this
-            //    cfg.show_load()
-            //    var dc ={fun:'get_row',model_name:model_name}
-            //    dc[relat_field] = trigger.rowData[relat_field]
-            //    var post_data=[dc]
-            //    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //        self.row = resp.get_row
-            //        cfg.hide_load()
-            //    })
-            //}
-
-            //var relat_field = this.head.relat_field
-            //var model_name = this.head.model_name
             var self=this
             var pop_id = new Date().getTime()
             eventBus.$on('pop-win-'+pop_id,function(kws){
                 if(kws.name =='after_save'){
                     var fun = after_save[self.head.after_save.fun]
-                    fun(kws.new_row,kws.old_row,self)
+                    fun(self,kws.new_row,kws.old_row)
                 }
             })
 
@@ -88,17 +73,17 @@ var get_row={
 }
 
 var after_save={
-    do_nothing:function(new_row,old_row,table){
-        // Ò»°ã¶ÔÓ¦ use_table_rowµÄÇé¿ö£¬ÒòÎªÕâ¸öÊ±ºò£¬table_rowÒÑ¾­×Ô¶¯±»¸üÐÂÁË¡£
+    do_nothing:function(self,new_row,old_row,table){
+        // Ò»ï¿½ï¿½ï¿½Ó¦ use_table_rowï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Ê±ï¿½ï¿½table_rowï¿½Ñ¾ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½
         //alert('fuck 111')
     },
-    update_or_insert:function(new_row,old_row,table){
-        // ½«ÐÂ½¨µÄrow ²åÈëµ½±í¸ñÖÐ
-        if(! old_row.pk) {
-            table.rows.splice(0, 0, new_row)
-        }else{
-            ex.assign(table.rowData,new_row)
-        }
+    update_or_insert:function(self,new_row,old_row){
+        self.$emit('on-custom-comp',{name:'update_or_insert',new_row:new_row,old_row:old_row})
+        //if(! old_row.pk) {
+        //    table.rows.splice(0, 0, new_row)
+        //}else{
+        //    ex.assign(table.rowData,new_row)
+        //}
 
 
     }

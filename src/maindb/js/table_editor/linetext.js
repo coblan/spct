@@ -8,7 +8,7 @@ var line_text = {
     },
     methods:{
         on_changed:function(){
-            this.$emit('on-custom-comp',{name:'row-changed',row:this.rowData})
+            this.$emit('on-custom-comp',{name:'row_changed',row:this.rowData})
         }
     }
 }

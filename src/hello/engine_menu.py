@@ -36,6 +36,7 @@ class PcMenu(BaseEngine):
             {'label':_('Games'),'icon':fa('fa-globe'),'visible':can_list((User,Group)),
             'submenu':[
                 {'label':_('Tb TicketMaster'),'url':page('maindb.ticketmaster'),'icon':fa('fa-home')},
+                {'label':_('Tb Match'),'url':page('maindb.Matches')},
                 {'label':_('View TicketSingleByMatch'),'url':page('maindb.TicketSingleByMatch')},
                 {'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
                         ]}, 

@@ -45,19 +45,69 @@
                 return this.selected !=0
             },
         },
+        mounted:function(){
+            var self=this
+            ex.assign(this.op_funs,{
+                row_changed:function(kws){
+                    var row= kws.row
+                    if(!ex.isin(row,self.changed_rows)){
+                        self.changed_rows.push(row)
+                    }
+                },
+                switch_to_tab:function(kws){
+                    self.show_tab(kws.tab_name)
+                    self.crt_row= kws.row
+                },
+                update_or_insert:function(kws){
+                    var new_row = kws.new_row
+                    var old_row= kws.old_row
+                    if(! old_row.pk) {
+                        self.rows.splice(0, 0, new_row)
+                    }else{
+                        var table_row = ex.findone(self.rows,{pk:new_row.pk})
+                        ex.assign(table_row,new_row)
+                    }
+                },
+
+            })
+
+        },
         methods:{
             on_td_event:function(e){
-                if(e.name=='row-changed'){
-                    var row= e.row
-                    if(!ex.isin(row,this.changed_rows)){
-                        this.changed_rows.push(row)
-                    }
-                }
-                if(e.name=='switch_to_tab'){
-                    this.show_tab(e.tab_name)
-                    this.crt_row= e.row
+                this.op_funs[e.name](e)
 
-                }
+//                if(e.name=='row-changed'){
+//                    var row= e.row
+//                    if(!ex.isin(row,this.changed_rows)){
+//                        this.changed_rows.push(row)
+//                    }
+//                }
+//                if(e.name=='switch_to_tab'){
+//                    this.show_tab(e.tab_name)
+//                    this.crt_row= e.row
+//                }
+//                if(e.name=='update_or_insert'){
+//                    var new_row = e.new_row
+//                    var old_row= e.old_row
+//                    if(! old_row.pk) {
+//                        this.rows.splice(0, 0, new_row)
+//                    }else{
+//                        var table_row = ex.findone(this.rows,{pk:new_row.pk})
+//                        ex.assign(table_row,new_row)
+//                    }
+//                }
+            },
+            on_tab_event:function(e){
+                this.op_funs[e.name](e)
+//                if(e.name=='update-or-insert'){
+//                    var new_row = e.new_row
+//                    var old_row= e.old_row
+//                    if(! old_row.pk) {
+//                        this.rows.splice(0, 0, new_row)
+//                    }else{
+//                        ex.assign(this.crt_row,new_row)
+//                    }
+//                }
             },
             on_select_group_change:function(sel,v){
                 this.selected= sel
@@ -117,7 +167,7 @@
                        :head="op"
                        :disabled="get_attr(op.disabled)"
                        v-show="! get_attr(op.hide)"
-                       @operation="on_operation(op.name)"></component>
+                       @operation="on_operation(op)"></component>
         </span>
     </ol>
     <!--<path-nav v-else :menu='menu'></path-nav>-->
@@ -177,7 +227,7 @@
                    v-show="tabgroup.crt==tab.name"
                    :is="tab.com" :tab_head="tab"
                    :par_row="crt_row"
-                   :ref="'_tab_'+tab.name" ></component>
+                   :ref="'_tab_'+tab.name" @tab-event="on_tab_event($event)"></component>
 
     </div>
 

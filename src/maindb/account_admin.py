@@ -27,6 +27,9 @@ class AccountPage(TablePage):
                     'relat_field':'accountid',              
                  }
              },
+             'after_save':{
+                 'fun':'update_or_insert'
+             },
              'heads': baseinfo.get_heads(),
              'ops': baseinfo.get_operations()                 
              },

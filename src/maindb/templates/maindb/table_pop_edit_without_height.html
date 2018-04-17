@@ -60,6 +60,7 @@ table_logic.mixins=[mix_table_data,mix_v_table_adapter,this_table_logic]
          style="width: 100%;"
          :columns="columns"
          :table-data="rows"
+         @on-custom-comp="on_td_event($event)"
          @sort-change="sortChange"
          :select-group-change="on_select_group_change"
          :select-all="on_select_group_change"
