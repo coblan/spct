@@ -6,7 +6,7 @@ from helpers.func.dot_dict import DotObj
 
 def get_static_obj(path):
     if not os.path.exists(path):
-        return
+        return {}
     
     dc={}
     for name in os.listdir(path):

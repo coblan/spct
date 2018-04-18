@@ -19,9 +19,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <link rel="stylesheet" href="{% static 'lib/bootstrap.min.css' %}">
     <script src="{% static 'lib/bootstrap.min.js' %}"></script>
-    <script src='{% static "js/i18n.js?t=" %}{{ js_stamp.i18n_js }}'></script>
-    <script src='{% static "js/exfun.pack.js?t=" %}{{ js_stamp.exfun_pack_js }}'></script>
-    <script src='{% static "js/director.pack.js?t=" %}{{ js_stamp.director_pack_js }}'></script>
+    <script src='{% static "js/i18n.js" %}?t={{ js_stamp.i18n_js }}'></script>
+    <script src='{% static "js/exfun.pack.js" %}?t={{ js_stamp.exfun_pack_js }}'></script>
+    <script src='{% static "js/director.pack.js" %}?t={{ js_stamp.director_pack_js }}'></script>
 
 
     <!--<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">-->
