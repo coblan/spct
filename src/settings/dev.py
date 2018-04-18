@@ -47,6 +47,7 @@ DATABASES = {
        } ,     
 }
 
+
 DATABASE_ROUTERS = ['hello.db_router.DbRouter']
 
 MAX_BANNER_SIZE=1024*1024*1

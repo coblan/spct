@@ -89,7 +89,7 @@ def sim_dict(instance,filt_attr=None,include=None,exclude=None):
                     mt = [x for x in field.choices if x[0]==org_value]
                     if mt:
                         out[ '_%s_label'%field.name]=mt[0][1]
-    if 'id' in instance._meta.get_all_field_names() and \
+    if 'id' in [x.name for x in instance._meta.get_fields()] and \
        instance.id:
         out['id']=instance.id
     return out

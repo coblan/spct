@@ -55,7 +55,10 @@ class TbAccount(models.Model):
     pwupdatetime = models.DateTimeField(db_column='PWUpdateTime')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount',verbose_name='余额', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
     phone = models.CharField(db_column='Phone', max_length=64, blank=True, null=True)  # Field name made lowercase.
-    currency = models.IntegerField(db_column='Currency', blank=True, null=True)  # Field name made lowercase.
+    #currency = models.IntegerField(db_column='Currency', blank=True, null=True)  # Field name made lowercase.
+    avatar = models.CharField(db_column='Avatar', max_length=255)  # Field name made lowercase.
+    gender = models.IntegerField(db_column='Gender')  # Field name made lowercase.
+    birthday = models.CharField(db_column='Birthday', max_length=10, blank=True, null=True)  # Field name 
 
     class Meta:
         managed = False
