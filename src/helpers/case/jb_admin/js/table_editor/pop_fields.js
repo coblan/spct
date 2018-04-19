@@ -74,8 +74,6 @@ var get_row={
 
 var after_save={
     do_nothing:function(self,new_row,old_row,table){
-        // һ���Ӧ use_table_row���������Ϊ���ʱ��table_row�Ѿ��Զ��������ˡ�
-        //alert('fuck 111')
     },
     update_or_insert:function(self,new_row,old_row){
         self.$emit('on-custom-comp',{name:'update_or_insert',new_row:new_row,old_row:old_row})

@@ -17,7 +17,8 @@ var mix_table_data={
             },
             delete:function(){
                 self.del_selected()
-            }
+            },
+
         })
         //this.$refs.op_save_changed_rows[0].set_enable(false)
         //this.$refs.op_delete[0].set_enable(false)
@@ -34,6 +35,29 @@ var mix_table_data={
         search:function(){
             this.search_args._page=1
             this.get_data()
+        },
+        add_new:function(kws){
+            var self = this
+            var post_data=[{fun:'get_row',model_name:kws.model_name},]
+            cfg.show_load()
+            ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                cfg.hide_load()
+                var new_row = resp.get_row
+                var pop_id= new Date().getTime()
+                // e = {name:'after_save',new_row:event.new_row,old_row:event.old_row}
+                eventBus.$on('pop-win-'+pop_id,function(e){
+                    self.update_or_insert(e.new_row, e.old_row)
+                })
+                pop_fields_layer(new_row,kws.heads,kws.ops,pop_id)
+            })
+        },
+        update_or_insert:function(new_row,old_row){
+            if(old_row && ! old_row.pk) {
+                self.rows.splice(0, 0, new_row)
+            }else{
+                var table_row = ex.findone(self.rows,{pk:new_row.pk})
+                ex.assign(table_row,new_row)
+            }
         },
         get_data: function () {
             this.data_getter(this)

@@ -61,18 +61,16 @@
                 update_or_insert:function(kws){
                     var new_row = kws.new_row
                     var old_row= kws.old_row
-                    if(! old_row.pk) {
-                        self.rows.splice(0, 0, new_row)
-                    }else{
-                        var table_row = ex.findone(self.rows,{pk:new_row.pk})
-                        ex.assign(table_row,new_row)
-                    }
+                    self.update_or_insert(new_row,old_row)
                 },
 
             })
 
         },
         methods:{
+
+
+
             on_td_event:function(e){
                 this.op_funs[e.name](e)
 

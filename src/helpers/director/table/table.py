@@ -7,7 +7,7 @@ import json
 from django.db.models import Q,fields
 from django.core.exceptions import PermissionDenied
 from ..access.permit import ModelPermit
-from ..model_func.dictfy import model_to_name,to_dict,model_to_head,model_to_name
+from ..model_func.dictfy import model_to_name,to_dict,model_to_head,model_to_name,model_dc
 from django.db import models
 import math
 import time
@@ -468,9 +468,13 @@ class ModelTable(object):
     
     def get_operation(self):
         model_name =model_to_name(self.model)
+        fieldCls=model_dc[self.model].get('fields')
+        fieldobj=fieldCls(crt_user=self.crt_user)
         return [{'name':'add_new',
                  'editor':'com-op-a',
                  'label':'创建',
+                 'heads':fieldobj.get_heads(),
+                 'ops': fieldobj.get_operations(), # model_dc[self.model].get('fields'),
                  'model_name':model_name,},
                 {'name':'save_changed_rows','editor':'com-op-a','label':'保存','hide':'!changed'},
                 {'name':'delete','editor':'com-op-a','label':'删除','disabled':'!has_select'},
