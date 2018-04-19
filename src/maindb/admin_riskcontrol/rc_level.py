@@ -5,7 +5,7 @@ from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFi
 from ..models import TbRcLevel
 
 class RcLevelPage(TablePage):
-    template='maindb/table.html'
+    template='jb_admin/table.html'
     def get_label(self):
         return _('Main.TbRcLevel')
     

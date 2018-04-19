@@ -15,9 +15,9 @@
     <script src="{% static 'lib/bootstrap.min.js' %}"></script>
     <script src="{% static 'lib/moment2.17.1.min.js' %}"></script>
 
-    <script src='{% static "js/i18n.js?t=" %}{{ js_stamp.i18n_js }}'></script>
-    <script src='{% static "js/exfun.pack.js?t=" %}{{ js_stamp.exfun_pack_js }}'></script>
-    <script src='{% static "js/director.pack.js?t=" %}{{ js_stamp.director_pack_js }}'></script>
+    <script src='{% static "js/i18n.js" %}?t={{ js_stamp.i18n_js }}'></script>
+    <script src='{% static "js/exfun.pack.js" %}?t={{ js_stamp.exfun_pack_js }}'></script>
+    <script src='{% static "js/director.pack.js" %}?t={{ js_stamp.director_pack_js }}'></script>
 
     {% for js in ex_js %}
         <script src='{{js}}'></script>

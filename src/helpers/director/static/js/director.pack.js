@@ -646,6 +646,10 @@ var _file_uploader = __webpack_require__(30);
 
 var file_uploaer = _interopRequireWildcard(_file_uploader);
 
+var _multi_chosen = __webpack_require__(76);
+
+var multi_chosen = _interopRequireWildcard(_multi_chosen);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
@@ -1469,14 +1473,28 @@ var field_base = exports.field_base = {
             },
             template: '<div>\n                <ul>\n                <li v-for=\'option in kw.options\' v-if="option.value"><input type="checkbox" :value="option.value" v-model="selected"/><span v-text="option.label"></span></li>\n                </ul>\n            </div>'
         },
-        tow_col: {
-            props: ['name', 'row', 'kw'],
-            template: '<div>\n\t        \t<ul v-if=\'kw.readonly\'><li v-for=\'value in row[name]\' v-text=\'get_label(value)\'></li></ul>\n\t        \t<tow-col-sel v-else v-model=\'row[name]\' :id="\'id_\'+name" :choices=\'kw.options\' :size=\'kw.size\' ></tow-col-sel>\n\t        \t</div>',
+        field_multi_chosen: {
+            props: ['row', 'head'],
+            template: '<div>\n\t        \t<ul v-if=\'head.readonly\'><li v-for=\'value in row[head.name]\' v-text=\'get_label(value)\'></li></ul>\n\t        \t<multi-chosen v-else v-model=\'row[head.name]\' :id="\'id_\'+head.name" :options=\'head.options\'></multi-chosen>\n\t        \t</div>',
             methods: {
                 get_label: function get_label(value) {
-                    for (var i = 0; i < this.kw.options.length; i++) {
-                        if (this.kw.options[i].value == value) {
-                            return this.kw.options[i].label;
+                    for (var i = 0; i < this.head.options.length; i++) {
+                        if (this.head.options[i].value == value) {
+                            return this.head.options[i].label;
+                        }
+                    }
+                }
+            }
+        },
+
+        tow_col: {
+            props: ['row', 'head'],
+            template: '<div>\n\t        \t<ul v-if=\'head.readonly\'><li v-for=\'value in row[head.name]\' v-text=\'get_label(value)\'></li></ul>\n\t        \t<tow-col-sel v-else v-model=\'row[head.name]\' :id="\'id_\'+head.name" :choices=\'head.options\' :size=\'head.size\' ></tow-col-sel>\n\t        \t</div>',
+            methods: {
+                get_label: function get_label(value) {
+                    for (var i = 0; i < this.head.options.length; i++) {
+                        if (this.head.options[i].value == value) {
+                            return this.head.options[i].label;
                         }
                     }
                 }
@@ -4342,6 +4360,45 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 __webpack_require__(18);
 __webpack_require__(17);
+
+/***/ }),
+/* 74 */,
+/* 75 */,
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var multi_chosen = {
+    props: ['value', 'options'],
+    template: '<select  multiple="multiple" class="multi-chosen form-control">\n    <option v-for="option in options" :value="option.value" v-text="option.label"></option>\n</select>',
+    mounted: function mounted() {
+        var self = this;
+        ex.load_css('https://cdn.bootcss.com/chosen/1.8.2/chosen.min.css');
+        ex.load_js('https://cdn.bootcss.com/chosen/1.8.2/chosen.jquery.min.js', function () {
+            $(self.$el).chosen({
+                search_contains: true
+            }).change(function (event) {
+                self.$emit('input', $(this).val());
+            });
+            self.setValue(self.value);
+        });
+    },
+    watch: {
+        value: function value(nv) {
+            this.setValue(nv);
+        }
+    },
+    methods: {
+        setValue: function setValue(val) {
+            $(this.$el).val(val);
+            $(this.$el).trigger("chosen:updated");
+        }
+    }
+};
+
+Vue.component('multi-chosen', multi_chosen);
 
 /***/ })
 /******/ ]);

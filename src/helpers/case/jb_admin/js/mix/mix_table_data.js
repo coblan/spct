@@ -12,8 +12,8 @@ var mix_table_data={
                 self.save_rows(self.changed_rows)
                 self.changed_rows=[]
             },
-            add_new:function(){
-                self.add_new()
+            add_new:function(kws){
+                self.add_new(kws)
             },
             delete:function(){
                 self.del_selected()

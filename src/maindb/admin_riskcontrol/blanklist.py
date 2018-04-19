@@ -5,7 +5,7 @@ from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFi
 from ..models import TbBlackuserlist,TbBlackuserlistLog
 
 class TbBlackuserlistPage(TablePage):
-    template='maindb/table.html'
+    template='jb_admin/table.html'
     def get_label(self):
         return _('Main.TbBlackuserlist')
     
@@ -14,7 +14,7 @@ class TbBlackuserlistPage(TablePage):
         exclude=[]
 
 class TbBlackuserlistLogPage(TablePage):
-    template='maindb/table.html'
+    template='jb_admin/table.html'
     def get_label(self):
         return _('Main.TbBlackuserlistLog')
     

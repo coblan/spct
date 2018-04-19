@@ -131,6 +131,8 @@ class ModelFields(forms.ModelForm):
             #'permit':self.get_permit(),
             'ops':self.get_operations(),
         }  
+
+    
     def get_del_info(self):
         return {'%(model)s:%(inst)s <id=%(pk)s>'%{'model':self.instance.__class__.__name__,'inst':unicode(self.instance),'pk':self.instance.pk}:delete_related_query(self.instance)}
     

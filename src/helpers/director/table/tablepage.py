@@ -48,6 +48,6 @@ class TablePage(object):
         """
         返回空，让title默认显示菜单项的名字
         """
-        return getattr(self,'page_label','')
+        return getattr(self,'page_label',' ')
     
 

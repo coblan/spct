@@ -467,7 +467,11 @@ class ModelTable(object):
         return query.order_by('-pk')
     
     def get_operation(self):
-        return [{'name':'add_new','editor':'com-op-a','label':'创建'},
+        model_name =model_to_name(self.model)
+        return [{'name':'add_new',
+                 'editor':'com-op-a',
+                 'label':'创建',
+                 'model_name':model_name,},
                 {'name':'save_changed_rows','editor':'com-op-a','label':'保存','hide':'!changed'},
                 {'name':'delete','editor':'com-op-a','label':'删除','disabled':'!has_select'},
                 ]      

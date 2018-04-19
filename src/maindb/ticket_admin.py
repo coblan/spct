@@ -9,7 +9,7 @@ from .status_code import *
 
 
 class TicketMasterPage(TablePage):
-    template='maindb/table.html' #'maindb/table_ajax_tab.html'
+    template='jb_admin/table.html' #'maindb/table_ajax_tab.html'
     def get_label(self):
         return  _('Tb Trans') #  '注单列表'
 

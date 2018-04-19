@@ -265,17 +265,34 @@ export var field_base={
                 </ul>
             </div>`,
         },
-        tow_col:{
-            props:['name','row','kw'],
+        field_multi_chosen:{
+            props:['row','head'],
             template:`<div>
-	        	<ul v-if='kw.readonly'><li v-for='value in row[name]' v-text='get_label(value)'></li></ul>
-	        	<tow-col-sel v-else v-model='row[name]' :id="'id_'+name" :choices='kw.options' :size='kw.size' ></tow-col-sel>
+	        	<ul v-if='head.readonly'><li v-for='value in row[head.name]' v-text='get_label(value)'></li></ul>
+	        	<multi-chosen v-else v-model='row[head.name]' :id="'id_'+head.name" :options='head.options'></multi-chosen>
 	        	</div>`,
             methods:{
                 get_label:function (value) {
-                    for(var i =0;i<this.kw.options.length;i++){
-                        if(this.kw.options[i].value==value){
-                            return this.kw.options[i].label
+                    for(var i =0;i<this.head.options.length;i++){
+                        if(this.head.options[i].value==value){
+                            return this.head.options[i].label
+                        }
+                    }
+                }
+            }
+        },
+
+        tow_col:{
+            props:['row','head'],
+            template:`<div>
+	        	<ul v-if='head.readonly'><li v-for='value in row[head.name]' v-text='get_label(value)'></li></ul>
+	        	<tow-col-sel v-else v-model='row[head.name]' :id="'id_'+head.name" :choices='head.options' :size='head.size' ></tow-col-sel>
+	        	</div>`,
+            methods:{
+                get_label:function (value) {
+                    for(var i =0;i<this.head.options.length;i++){
+                        if(this.head.options[i].value==value){
+                            return this.head.options[i].label
                         }
                     }
                 }

@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'helpers.director',
     'helpers.common',
+    'helpers.case.jb_admin',
     'helpers.authuser',
+    
     #'orgmodel',
     'betradar',
     'maindb',

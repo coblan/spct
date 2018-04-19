@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Starter</title>
+    <!--<title>AdminLTE 2 | Starter</title>-->
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
@@ -43,6 +43,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!--<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>-->
     <![endif]-->
 
+    <title></title>
     <!-- Google Font -->
     <!--<link rel="stylesheet"-->
           <!--href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">-->
@@ -77,6 +78,10 @@ desired effect
     ex.assign(cfg.tr,site_settings.tr)
 
     $(function(){
+        if(!document.title){
+            document.title = page_label + '| {{brand}}'
+        }
+
         var crt_lan=ex.getCookie('django_language') || site_settings.lans[0].value
         new Vue({
             el:'#control-sidebar-settings-tab',

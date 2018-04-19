@@ -25,6 +25,11 @@ def save(row,user,request):
     except ValidationError as e:
         return {'errors':dict(e)}
 
+def get_new_row_ctx(model_name,user):
+    model = name_to_model(model_name)
+    fields_cls = model_dc[model].get('fields')
+    return fields_cls(crt_user = user).get_context()
+    
 def get_row(model_name,pk=None,user=None,**kws):
     model = name_to_model(model_name)
     fields_cls = model_dc[model].get('fields')

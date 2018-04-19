@@ -27,6 +27,9 @@
 //				can_del:can_del,
 //				can_log:can_log,
 //			},
+        data:{
+            row:row,
+        },
         mixins:[field_fun],
         methods:{
             save:function(){
@@ -75,7 +78,7 @@
 
     <div class='field-panel'>
 
-        <field  v-for='head in kw.heads' :key="head.name" :name='head.name' :kw='kw'></field>
+        <field  v-for='head in kw.heads' :key="head.name" :name='head.name' :row="row" :head='head'></field>
     </div>
 </div>
 

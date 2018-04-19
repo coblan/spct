@@ -6,7 +6,7 @@ from ..models import TbMatches,TbTickets,TbTicketstake
 from django.db.models.aggregates import Count
 
 class TicketSingleByMatchPage(TablePage):
-    template = 'maindb/table_plain.html'
+    template = 'jb_admin/table.html'
     class tableCls(ModelTable):
         model = TbMatches
         exclude=[]

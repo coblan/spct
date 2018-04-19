@@ -9,7 +9,7 @@ from .status_code import *
 # Register your models here.
 
 class AccountPage(TablePage):
-    template='maindb/table.html'
+    template='jb_admin/table.html'
     def get_label(self):
         return '会员管理'
     
@@ -207,7 +207,7 @@ class AccountTokenCodeTable(AccountTabBase):
         names=['tokentypeid']
 
 class LoginLogPage(TablePage):
-    template='maindb/table_plain.html'
+    template='jb_admin/table.html'
     def get_label(self):
         return _('Tb Login Log')
     

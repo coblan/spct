@@ -8,7 +8,7 @@ module.exports =
 {
     //context:__dirname,
     entry: {
-        maindb:'./main.js',
+        jb_admin:'./main.js',
     },
     output: {
         path:path.resolve(__dirname, '../static/js'),

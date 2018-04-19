@@ -8,7 +8,7 @@ from .models import TbBalancelog,TbTrans,TbChannel
 from .status_code import *
 
 class BalancelogPage(TablePage):
-    template='maindb/table_plain.html'
+    template='jb_admin/table.html'
     def get_label(self):
         return '账目记录'
     
@@ -38,6 +38,8 @@ class BalancelogPage(TablePage):
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])
             return head
+        def get_operation(self):
+            return []
         
         class filters(RowFilter):
             names=['categoryid']
@@ -49,7 +51,7 @@ class BalancelogPage(TablePage):
             
 
 class TransPage(TablePage):
-    template='maindb/table_plain.html'
+    template='jb_admin/table.html'
     class tableCls(ModelTable):
         model = TbTrans
         include=['account','channelid','amount','realamount','fee','status','createtime','exectime']
@@ -67,6 +69,9 @@ class TransPage(TablePage):
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])
             return head
+        
+        def get_operation(self):
+            return []
         
         def dict_row(self, inst):
             channel = TbChannel.objects.get(pk=inst.channelid)
@@ -90,7 +95,7 @@ class TransPage(TablePage):
         return '存款记录'
         
 class ChannelPage(TablePage):
-    template='maindb/table_pop_edit.html'
+    template='jb_admin/table.html'
     class tableCls(ModelTable):
         model = TbChannel
         exclude = []
@@ -114,6 +119,9 @@ class ChannelPage(TablePage):
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])
             return head        
+        
+        def get_operation(self):
+            return []
         
         #class filters(RowFilter):
             #names=['channel','channelname','returntype']

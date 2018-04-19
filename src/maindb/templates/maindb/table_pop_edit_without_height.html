@@ -1,4 +1,4 @@
-{% extends "maindb/table.html" %}
+{% extends "jb_admin/table.html" %}
 
 {% block extra_head %}
 <script>
@@ -28,17 +28,24 @@
                     })
                 })
             },
-            add_new:function(){
+            add_new:function(kws){
                 var self=this
-                var post_data=[{fun:'get_row',model_name:model_class}]
+                var post_data=[{fun:'get_new_row_ctx',model_name:kws.model_name},]
                 cfg.show_load()
                 ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
                     cfg.hide_load()
-                    var tmp_row = resp.get_row
-
-//                    self.open_layer(tmp_row)
+                    var ctx = resp.get_new_row_ctx
+                    var pop_id= new Date().getTime()
+                    // e = {name:'after_save',new_row:event.new_row,old_row:event.old_row}
+                    eventBus.$on('pop-win-'+pop_id,function(e){
+                        self.insert_row(e.new_row)
+                    })
+                    pop_fields_layer(ctx.row,ctx.heads,ctx.ops,pop_id)
                 })
             },
+            insert_row:function(row){
+                this.rows.splice(0,0,row)
+            }
      }
 }
 

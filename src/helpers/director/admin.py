@@ -237,6 +237,11 @@ class UserFields(ModelFields):
     class Meta:
         model=User
         fields=['username','first_name','is_active','is_staff','is_superuser','email','groups']
+        
+    def dict_head(self, head):
+        if head['name']=='groups':
+            head['editor']='field_multi_chosen'
+        return head
 
 class UserTable(ModelTable):
     model=User
