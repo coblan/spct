@@ -12,7 +12,7 @@ import * as ajax_table from './tabs/ajax_table.js'
 import * as com_pop_fields from './com_pop_fields.js'
 
 import * as pop_fields_layer from  './field_editor/func/pop_fields_layer.js'
-
+import * as ele_tree from  './field_editor/ele_tree_name_layer'
 
 
 // table editor

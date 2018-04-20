@@ -102,7 +102,7 @@ class GroupFormPage(FieldsPage):
             heads= super(self.__class__,self).get_heads()
             heads.append({
                 'name':'permit',
-                'type':'tow_col',
+                'editor':'tow_col',
                 'label':'权限选择',
                 'options':[{'value':x.pk,'label':unicode(x)} for x in PermitModel.objects.all()]
             })

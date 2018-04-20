@@ -26,6 +26,8 @@
 //                permits: permits?permits:{},
                 permits:row.permit,
                 sld_md_name:'',
+                heads:heads,
+                row:row,
                 kw:{
                     heads:heads,
                     row:row,
@@ -40,6 +42,9 @@
                 })
             },
             methods:{
+                get_head:function(name){
+                    return ex.findone(this.heads,{name:name})
+                },
                 add_permit:function (name) {
                     if(!name){
                         return
@@ -95,8 +100,8 @@
 
 
     <div class='field-panel' style='margin-top:5em;'>
-        <field name='name' :kw='kw'></field>
-        <field  name='desp' :kw='kw'></field>
+        <field  :row="row" :head='get_head("name")'></field>
+        <field  :row="row" :head='get_head("desp")'></field>
     </div>
 
     <div style="text-align: center;">

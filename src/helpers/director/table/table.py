@@ -467,6 +467,8 @@ class ModelTable(object):
         return query.order_by('-pk')
     
     def get_operation(self):
+        if not model_dc.get(self.model) or not model_dc.get(self.model).get('fields'):
+            return []
         model_name =model_to_name(self.model)
         fieldCls=model_dc[self.model].get('fields')
         fieldobj=fieldCls(crt_user=self.crt_user)

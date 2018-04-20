@@ -11,9 +11,9 @@
     //	row =
     //
     //
-    //	can_add=
-    //	can_log=
-    //	can_del=
+    	can_add= true
+    	can_log=true
+    	can_del=true
     form_logic={
         el:'#there',
 //			data:{
@@ -29,14 +29,18 @@
 //			},
         data:{
             row:row,
+            heads:heads,
         },
         mixins:[field_fun],
         methods:{
+            get_head:function(name){
+                return ex.findone(this.heads,{name:name})
+            },
             save:function(){
                 var self=this
                 show_upload()
-                var post_data=[{fun:'save_group_permit',row:this.kw.row}]
-                ex.post('/_ajax/director',JSON.stringify(post_data),function(resp){
+                var post_data=[{fun:'save_group_permit',row:this.row}]
+                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
                     hide_upload(200)
                     self.after_sub()
                 })
@@ -78,7 +82,7 @@
 
     <div class='field-panel'>
 
-        <field  v-for='head in kw.heads' :key="head.name" :name='head.name' :row="row" :head='head'></field>
+        <field  v-for='head in heads' :key="head.name" :row="row" :head='head'></field>
     </div>
 </div>
 
