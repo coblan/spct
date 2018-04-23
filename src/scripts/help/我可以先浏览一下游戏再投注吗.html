@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>我可以先浏览一下游戏再投注吗？ </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<script>
+
+   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+   content = {"description": "\u6211\u4eec\u975e\u5e38\u6b22\u8fce\u60a8\u6d4f\u89c8\u6211\u4eec\u7684\u6e38\u620f\u7cfb\u7edf\u3002\r\n\u5f53\u7136\uff0c\u8fd9\u662f\u514d\u8d39\u7684\u3002\u60a8\u53ea\u9700\u5728\u624b\u673a\u7aef\u8fdb\u884c\u6ce8\u518c\u540e\u5373\u53ef\u4ee5\u767b\u5165\u6d4f\u89c8\u6211\u4eec\u7684\u6e38\u620f\u3002\r\n", "title": "\u6211\u53ef\u4ee5\u5148\u6d4f\u89c8\u4e00\u4e0b\u6e38\u620f\u518d\u6295\u6ce8\u5417\uff1f"}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+    }
+    .section{
+        margin: 20px;
+        /*border-top:1px solid #63646b;*/
+    }
+    .section-title{
+        color: #e6e8f6;
+        /*border-left: 2px solid #72727e;*/
+        font-size: 2em;
+        padding: 1em 0;
+
+    }
+    .content{
+        color: #9fa1af;
+        font-size: 1.5em;
+    }
+
+</style>
+
+<div id="there">
+    <div  class="section">
+        <div  class="section-title" v-text="content.title"></div>
+        <div v-text="content.description" class="content">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            content:content,
+        }
+    })
+</script>
+</body>
+</html>

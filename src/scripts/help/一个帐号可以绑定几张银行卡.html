@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>一个帐号可以绑定几张银行卡？ </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<script>
+
+   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+   content = {"description": "\u4e00\u4e2a\u8d26\u53f7\u6700\u591a\u53ef\u4ee5\u7ed1\u5b9a4\u5f20\u94f6\u884c\u5361\uff0c\u540c\u4e00\u5f20\u5361\u540c\u65f6\u53ea\u80fd\u7ed1\u5b9a\u5728\u4e00\u4e2a\u8d26\u53f7\u4e0a\uff0c\u4e0d\u80fd\u5728\u5176\u4ed6\u8d26\u53f7\u4e0a\u518d\u6b21\u7ed1\u5b9a\u8be5\u94f6\u884c\u5361\uff0c\u5ba2\u6237\u5728\u624b\u673a\u7aef\u65e0\u6cd5\u770b\u5230\u672c\u4eba\u7ed1\u5b9a\u7684\u94f6\u884c\u5361\u8d26\u6237\u540d\u548c\u5f00\u6237\u884c\u5730\u5740\uff0c\u7ed1\u5b9a\u94f6\u884c\u5361\u4e24\u4e2a\u5c0f\u65f6\u540e\u624d\u80fd\u63d0\u6b3e\u3002\r\n", "title": "\u4e00\u4e2a\u5e10\u53f7\u53ef\u4ee5\u7ed1\u5b9a\u51e0\u5f20\u94f6\u884c\u5361\uff1f"}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+    }
+    .section{
+        margin: 20px;
+        /*border-top:1px solid #63646b;*/
+    }
+    .section-title{
+        color: #e6e8f6;
+        /*border-left: 2px solid #72727e;*/
+        font-size: 2em;
+        padding: 1em 0;
+
+    }
+    .content{
+        color: #9fa1af;
+        font-size: 1.5em;
+    }
+
+</style>
+
+<div id="there">
+    <div  class="section">
+        <div  class="section-title" v-text="content.title"></div>
+        <div v-text="content.description" class="content">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            content:content,
+        }
+    })
+</script>
+</body>
+</html>

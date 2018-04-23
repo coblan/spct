@@ -78,7 +78,7 @@ var ajax_fields={
 
 }
 
-Vue.component('com_ajax_fields',ajax_fields)
+Vue.component('com_tab_fields',ajax_fields)
 
 var get_data={
     get_row:function(self,callback,kws){

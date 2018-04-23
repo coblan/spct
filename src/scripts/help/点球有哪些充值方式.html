@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>点球有哪些充值方式 </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<script>
+
+   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+   content = {"description": "\u70b9\u7403\u76ee\u524d\u652f\u6301\u7684\u5145\u503c\u65b9\u5f0f\u5305\u62ec\uff1a\u7f51\u94f6\u8f6c\u8d26\u3001\u5fae\u4fe1\u652f\u4ed8\u3001\u4e00\u952e\u652f\u4ed8\u3001\u652f\u4ed8\u5b9d\u8f6c\u5361\u3001QQ\u652f\u4ed8\u5145\u503c\u3001\u5feb\u6377\u5145\u503c\u3001 \u516d\u79cd\u65b9\u5f0f\u3002 \u76ee\u524d\u652f\u6301\u94f6\u884c\uff1a\u4e2d\u56fd\u5de5\u5546\u94f6\u884c\u3001\u4e2d\u56fd\u5efa\u8bbe\u94f6\u884c\u3001\u62db\u5546\u94f6\u884c\u3001\u4e2d\u56fd\u519c\u4e1a\u94f6\u884c\u3001\u4ea4\u901a\u94f6\u884c\u3001\u4e2d\u4fe1\u94f6\u884c\u3001\u6d66\u53d1\u94f6\u884c\u3001\u6c11\u751f\u94f6\u884c\u3001\u5149\u5927\u94f6\u884c\u3001\u5174\u4e1a\u94f6\u884c\u3001\u5e7f\u4e1c\u53d1\u5c55\u94f6\u884c\u3001\u534e\u590f\u94f6\u884c\u3001\u4e2d\u56fd\u94f6\u884c\u3001\u5e73\u5b89\u94f6\u884c\u3001\u4e2d\u56fd\u90ae\u653f\u50a8\u84c4\u94f6\u884c\u3001\u4e0a\u6d77\u94f6\u884c\u3001\u5b81\u6ce2\u94f6\u884c\u3001\u5317\u4eac\u94f6\u884c\u3002", "title": "\u70b9\u7403\u6709\u54ea\u4e9b\u5145\u503c\u65b9\u5f0f"}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+    }
+    .section{
+        margin: 20px;
+        /*border-top:1px solid #63646b;*/
+    }
+    .section-title{
+        color: #e6e8f6;
+        /*border-left: 2px solid #72727e;*/
+        font-size: 2em;
+        padding: 1em 0;
+
+    }
+    .content{
+        color: #9fa1af;
+        font-size: 1.5em;
+    }
+
+</style>
+
+<div id="there">
+    <div  class="section">
+        <div  class="section-title" v-text="content.title"></div>
+        <div v-text="content.description" class="content">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            content:content,
+        }
+    })
+</script>
+</body>
+</html>

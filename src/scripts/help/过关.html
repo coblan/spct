@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>过关 </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<script>
+
+   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+   content = {"description": "1. \u8fc7\u5173\u662f\u5bf9\u591a\u9879\u72ec\u7acb\u8d5b\u4e8b\u7684\u7ed3\u679c\u8fdb\u884c\u6295\u6ce8\u3002\u8fc7\u5173\u7684\u4e2d\u5956\u91d1\u989d\u7b49\u4e8e\u6295\u6ce8\u603b\u989d\u4e58\u4ee5\u8be5\u8fc7\u5173\u4e2d\u6240\u6709\u8d5b\u4e8b\u7ed3\u679c\u7684\u8d54\u7387\u3002\u5982\u679c\u672a\u80fd\u6b63\u786e\u9884\u6d4b\u4efb\u610f\u4e00\u573a\u8d5b\u4e8b\u7684\u7ed3\u679c\uff0c\u672c\u6ce8\u8fc7\u5173\u89c6\u4e3a\u6295\u6ce8\u5931\u8d25\u3002\r\n\r\n2. \u9664\u4e86\u540c\u573a\u8d5b\u4e8b\u4e2d\u7684\u6240\u6709\u6295\u6ce8\u9009\u9879\u65e0\u6cd5\u4e92\u4e32\u5916\uff0c\u76ee\u524d\u7684\u516d\u79cd\u73a9\u6cd5(1x2\uff0c\u5927\u5c0f\uff0c\u5355\u53cc\uff0c\u603b\u8fdb\u7403\uff0c\u6b63\u786e\u6bd4\u5206\uff0c\u4e9a\u6d32\u8ba9\u5206)\u7684\u65e9\u76d8\u4e0e\u8d70\u5730\u90fd\u5141\u8bb8\u4efb\u610f\u4e92\u4e32\uff0c\u7ed3\u7b97\u65f6\u95f4\u540c\u5355\u6ce8\u6295\u6ce8\uff0c\u8d5b\u679c\u4ea7\u751f\u540e\u8fdb\u884c\u7ed3\u7b97\u4e0e\u6d3e\u5f69\u3002\r\n\r\n3. \u82e5\u8be5\u5f20\u8fc7\u5173\u6240\u6709\u9009\u9879\u7ec4\u5408\u5df2\u7ecf\u4e0d\u53ef\u80fd\u4e2d\u6ce8\uff0c\u867d\u5c1a\u6709\u6bd4\u8d5b\u672a\u4ea7\u751f\u8d5b\u679c\u4e5f\u63d0\u524d\u8fdb\u884c\u7ed3\u7b97\u3002\u4e3e\u4f8b : ABC\u4e09\u4e2a\u9009\u9879\u4e09\u4e32\u4e00\uff0cA\u6bd4\u8d5b\u5b8c\u8d5b\u679c\u4e3a\u5168\u8f93\uff0c\u5219\u867d\u7136BC\u672a\u5f00\u8d5b\uff0c\u4ea6\u53ef\u63d0\u524d\u8fdb\u884c\u7ed3\u7b97\r\n", "title": "\u8fc7\u5173"}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+    }
+    .section{
+        margin: 20px;
+        /*border-top:1px solid #63646b;*/
+    }
+    .section-title{
+        color: #e6e8f6;
+        /*border-left: 2px solid #72727e;*/
+        font-size: 2em;
+        padding: 1em 0;
+
+    }
+    .content{
+        color: #9fa1af;
+        font-size: 1.5em;
+    }
+
+</style>
+
+<div id="there">
+    <div  class="section">
+        <div  class="section-title" v-text="content.title"></div>
+        <div v-text="content.description" class="content">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            content:content,
+        }
+    })
+</script>
+</body>
+</html>

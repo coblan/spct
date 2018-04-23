@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>如何投注？ </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<script>
+
+   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+   content = {"description": "\u8bf7\u4ece\"\u7ade\u731c\u5927\u5385\"\u8fdb\u5165\u6295\u6ce8\u9875\uff0c\u9009\u62e9\u60a8\u60f3\u6295\u6ce8\u7684\u73a9\u6cd5\uff0c\u70b9\u51fb\u8d54\u7387\uff0c\u5373\u53ef\u5c06\u9009\u9879\u52a0\u5165\u6295\u6ce8\u5355\uff1b\u4e00\u65e6\u51fa\u73b0\u5728\u6295\u6ce8\u5355\u4e0a\uff0c\u8f93\u5165\u6295\u6ce8\u7684\u91d1\u989d\uff0c\u786e\u5b9a\u60a8\u7684\u9009\u9879\u51c6\u786e\u65e0\u8bef\u540e\uff0c\u70b9\u51fb\u201c\u6295\u6ce8\u201d\u5373\u53ef\u3002", "title": "\u5982\u4f55\u6295\u6ce8\uff1f"}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+    }
+    .section{
+        margin: 20px;
+        /*border-top:1px solid #63646b;*/
+    }
+    .section-title{
+        color: #e6e8f6;
+        /*border-left: 2px solid #72727e;*/
+        font-size: 2em;
+        padding: 1em 0;
+
+    }
+    .content{
+        color: #9fa1af;
+        font-size: 1.5em;
+    }
+
+</style>
+
+<div id="there">
+    <div  class="section">
+        <div  class="section-title" v-text="content.title"></div>
+        <div v-text="content.description" class="content">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            content:content,
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>忘记密码怎么办？ </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<script>
+
+   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+   content = {"description": "1. \u60a8\u53ef\u4ee5\u901a\u8fc7\u4e2a\u4eba\u8d44\u6599\u8bbe\u7f6e\uff0c\u7559\u4e0b\u7684\u624b\u673a\u53f7\u7801\u3001\u7535\u90ae\u3001\u8d44\u91d1\u5bc6\u7801\u6216\u5bc6\u4fdd\u95ee\u9898\u5728\u7ebf\u627e\u56de\uff1b\r\n2. \u8054\u7cfb24\u5c0f\u65f6\u5728\u7ebf\u5ba2\u670d\u6216\u7535\u90ae\u81f3 d9server@gmail.com \u534f\u52a9\u627e\u56de\u60a8\u7684\u5e10\u53f7\u5bc6\u7801\uff1b", "title": "\u5fd8\u8bb0\u5bc6\u7801\u600e\u4e48\u529e\uff1f"}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+    }
+    .section{
+        margin: 20px;
+        /*border-top:1px solid #63646b;*/
+    }
+    .section-title{
+        color: #e6e8f6;
+        /*border-left: 2px solid #72727e;*/
+        font-size: 2em;
+        padding: 1em 0;
+
+    }
+    .content{
+        color: #9fa1af;
+        font-size: 1.5em;
+    }
+
+</style>
+
+<div id="there">
+    <div  class="section">
+        <div  class="section-title" v-text="content.title"></div>
+        <div v-text="content.description" class="content">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            content:content,
+        }
+    })
+</script>
+</body>
+</html>

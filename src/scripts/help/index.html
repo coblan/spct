@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>新手帮助</title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    </head>
+<body>
+<script>
+    var section_list=[
+        {title:'足球规则',
+            items:[
+                {title:'玩法简介',url:'xxx'},
+                {title:'单注',url:'bbb'},
+                {title:'单注',url:'bbb'},
+                {title:'单注',url:'bbb'}
+            ]
+        },
+        {title:'VIP俱乐部',
+            items:[
+                {title:'玩法简介',url:'xxx'},
+                {title:'单注',url:'bbb'}
+            ]
+        },
+
+    ]
+
+    var section_list=[{"items": [{"url": "\u4e3a\u4ec0\u4e48\u5728\u7ebf\u652f\u4ed8\u6210\u529f\u540e.html", "title": "\u4e3a\u4ec0\u4e48\u5728\u7ebf\u652f\u4ed8\u6210\u529f\u540e\uff0c\u989d\u5ea6\u6ca1\u6709\u7acb\u5373\u8fd4\u5230\u6211\u7684\u6e38\u620f\u5e10\u53f7\u5462\uff1f"}, {"url": "\u7ed3\u675f\u540e\u600e\u4e48\u53d6\u6b3e.html", "title": "\u7ed3\u675f\u540e\u600e\u4e48\u53d6\u6b3e\uff1f"}, {"url": "\u4e3a\u4ec0\u4e48\u6211\u7684\u6295\u6ce8\u88ab\u7ed3\u7b97\u4e3a\u4f5c\u5e9f.html", "title": "\u4e3a\u4ec0\u4e48\u6211\u7684\u6295\u6ce8\u88ab\u7ed3\u7b97\u4e3a\u4f5c\u5e9f"}, {"url": "\u5982\u4f55\u627e\u5230\u60a8\u6295\u6ce8\u7684\u7ed3\u679c.html", "title": "\u5982\u4f55\u627e\u5230\u60a8\u6295\u6ce8\u7684\u7ed3\u679c"}, {"url": "\u6295\u6ce8\u7ed3\u7b97.html", "title": "\u6295\u6ce8\u7ed3\u7b97"}, {"url": "\u4ec0\u4e48\u662f\u6709\u6548\u6295\u6ce8.html", "title": "\u4ec0\u4e48\u662f\u6709\u6548\u6295\u6ce8\uff1f"}, {"url": "\u5982\u679c\u5728\u6295\u6ce8\u65f6\u7f51\u7edc\u8fde\u63a5\u65ad\u5f00.html", "title": "\u5982\u679c\u5728\u6295\u6ce8\u65f6\u7f51\u7edc\u8fde\u63a5\u65ad\u5f00\uff0c\u6211\u8be5\u600e\u4e48\u529e\uff1f"}, {"url": "\u5982\u4f55\u6295\u6ce8.html", "title": "\u5982\u4f55\u6295\u6ce8\uff1f"}, {"url": "\u4ec0\u4e48\u662f\u5b89\u5168\u8bbe\u7f6e.html", "title": "\u4ec0\u4e48\u662f\u5b89\u5168\u8bbe\u7f6e\uff1f"}, {"url": "\u6211\u53ef\u4ee5\u5148\u6d4f\u89c8\u4e00\u4e0b\u6e38\u620f\u518d\u6295\u6ce8\u5417.html", "title": "\u6211\u53ef\u4ee5\u5148\u6d4f\u89c8\u4e00\u4e0b\u6e38\u620f\u518d\u6295\u6ce8\u5417\uff1f"}, {"url": "\u5b89\u5168\u6027\u95ee\u9898.html", "title": "\u5b89\u5168\u6027\u95ee\u9898"}, {"url": "\u5fd8\u8bb0\u5bc6\u7801\u600e\u4e48\u529e.html", "title": "\u5fd8\u8bb0\u5bc6\u7801\u600e\u4e48\u529e\uff1f"}], "title": "\u5e38\u89c1\u95ee\u9898"}, {"items": [{"url": "\u5145\u503c\u9650\u989d.html", "title": "\u5145\u503c\u9650\u989d"}, {"url": "\u5145\u503c\u65f6\u95f4.html", "title": "\u5145\u503c\u65f6\u95f4"}, {"url": "\u70b9\u7403\u6709\u54ea\u4e9b\u5145\u503c\u65b9\u5f0f.html", "title": "\u70b9\u7403\u6709\u54ea\u4e9b\u5145\u503c\u65b9\u5f0f"}], "title": "\u5145\u503c\u5e2e\u52a9"}, {"items": [{"url": "\u7ed1\u5b9a\u94f6\u884c\u5361\u7684\u6ce8\u610f\u4e8b\u9879.html", "title": "\u7ed1\u5b9a\u94f6\u884c\u5361\u7684\u6ce8\u610f\u4e8b\u9879\uff1f\r\n"}, {"url": "\u4e00\u4e2a\u5e10\u53f7\u53ef\u4ee5\u7ed1\u5b9a\u51e0\u5f20\u94f6\u884c\u5361.html", "title": "\u4e00\u4e2a\u5e10\u53f7\u53ef\u4ee5\u7ed1\u5b9a\u51e0\u5f20\u94f6\u884c\u5361\uff1f"}, {"url": "\u63d0\u73b0\u9650\u989d\u662f\u591a\u5c11.html", "title": "\u63d0\u73b0\u9650\u989d\u662f\u591a\u5c11\uff1f"}, {"url": "\u63d0\u73b0\u65f6\u6bb5\u662f\u4ec0\u4e48\u65f6\u5019.html", "title": "\u63d0\u73b0\u65f6\u6bb5\u662f\u4ec0\u4e48\u65f6\u5019\uff1f"}], "title": "\u63d0\u73b0\u5e2e\u52a9"}, {"items": [{"url": "\u8d5b\u4e8b\u9009\u9879.html", "title": "\u8d5b\u4e8b\u9009\u9879"}, {"url": "\u73b0\u573a\u6295\u6ce8\u89c4\u5219.html", "title": "\u73b0\u573a\u6295\u6ce8\u89c4\u5219(\u8d70\u5730)"}, {"url": "\u8fc7\u5173.html", "title": "\u8fc7\u5173"}, {"url": "\u5355\u6ce8.html", "title": "\u5355\u6ce8"}, {"url": "\u73a9\u6cd5\u89c4\u5219.html", "title": "\u73a9\u6cd5\u89c4\u5219"}], "title": "\u8db3\u7403\u89c4\u5219"}, {"items": [{"url": "Q.html", "title": "Q&A"}, {"url": "VIP\u798f\u5229.html", "title": "VIP\u798f\u5229"}, {"url": "VIP\u5236\u5ea6.html", "title": "VIP\u5236\u5ea6"}], "title": "VIP\u4ff1\u4e50\u90e8"}]
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+        /*font-size: 1.5em;*/
+    }
+    .section-title{
+        color: #72727e;
+        /*border-left: 2px solid #72727e;*/
+        margin: 0.9em;
+        font-size: 1.5em;
+    }
+    .section-content{
+        background-color: #2b2e37;
+        padding-left: 0;
+        margin-left: 1em;
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .section-content li{
+        list-style-type:none;
+        padding-top: 1.7em;
+        padding-bottom: 1.7em;
+    }
+    .itm-title{
+        color: #dee0ed;
+        margin-left: 5px;
+        border-bottom: 2px solid #34343e;
+        position: relative;
+        display: flex;
+        align-items:center;
+    }
+    .section-content>li:last-child{
+        border-bottom: none;
+    }
+    .right-arrow{
+        padding-right: 0.6em;
+        font-size: 1.5em;
+        color: #72727e;
+    }
+</style>
+
+<div id="there">
+    <div v-for="sec in section_list">
+
+        <div class="section-title">
+            <span style="border-left: 3px solid #72727e;margin-right: 0.7em;"> </span>
+            <span  v-text="sec.title"></span>
+        </div>
+
+        <ul class="section-content">
+            <li class="itm-title" v-for="itm in sec.items" @click="goto(itm.url)">
+                <div style="flex-grow:10;font-size: 1.8em;color: #e6e8f6">
+                    <span v-text="itm.title"></span>
+                </div>
+
+
+                <div class="right-arrow">
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            section_list:section_list,
+        },
+        methods:{
+            goto:function(url){
+                location = url
+            }
+        }
+    })
+</script>
+</body>
+</html>

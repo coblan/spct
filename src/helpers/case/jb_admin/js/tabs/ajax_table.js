@@ -132,7 +132,7 @@ var ajax_table={
     }
 }
 
-Vue.component('com_ajax_table',ajax_table)
+Vue.component('com_tab_table',ajax_table)
 
 var get_data={
     get_rows:function(callback,row,kws,search_args){

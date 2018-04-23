@@ -19,7 +19,7 @@ class AccountPage(TablePage):
         ls = [
             {'name':'baseinfo',
              'label':'基本信息',
-             'com':'com_ajax_fields',
+             'com':'com_tab_fields',
              'get_data':{
                  'fun':'get_row',
                  'kws':{
@@ -35,7 +35,7 @@ class AccountPage(TablePage):
              },
             {'name':'balance_log',
              'label':'帐目记录',
-             'com':'com_ajax_table',
+             'com':'com_tab_table',
              'get_data':{
                  'fun':'get_rows',
                  'kws':{
@@ -48,7 +48,7 @@ class AccountPage(TablePage):
              },
             {'name':'account_trans',
              'label':'交易记录',
-             'com':'com_ajax_table',
+             'com':'com_tab_table',
              'get_data':{
                  'fun':'get_rows',
                  'kws':{
@@ -60,7 +60,7 @@ class AccountPage(TablePage):
              },
             {'name':'account_ticket',
              'label':'投注记录',
-             'com':'com_ajax_table',
+             'com':'com_tab_table',
              'get_data':{
                  'fun':'get_rows',
                  'kws':{
@@ -72,7 +72,7 @@ class AccountPage(TablePage):
              },
             {'name':'account_login',
             'label':'登录日志',
-            'com':'com_ajax_table',
+            'com':'com_tab_table',
             'get_data':{
                 'fun':'get_rows',
                 'kws':{
@@ -83,7 +83,7 @@ class AccountPage(TablePage):
             'heads_ctx':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
             {'name':'account_withdrawlimitlog',
             'label':'提款限额记录',
-            'com':'com_ajax_table',
+            'com':'com_tab_table',
             'get_data':{
                 'fun':'get_rows',
                 'kws':{

@@ -1,3 +1,5 @@
+require('./scss/multi_chosen.scss')
+
 var multi_chosen={
     props:['value','options'],
     template:`<select  multiple="multiple" class="multi-chosen form-control">

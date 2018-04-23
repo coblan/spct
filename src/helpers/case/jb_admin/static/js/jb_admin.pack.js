@@ -1050,7 +1050,7 @@ var ajax_fields = {
 
     } };
 
-Vue.component('com_ajax_fields', ajax_fields);
+Vue.component('com_tab_fields', ajax_fields);
 
 var get_data = {
     get_row: function get_row(self, callback, kws) {
@@ -1181,7 +1181,7 @@ var ajax_table = {
     }
 };
 
-Vue.component('com_ajax_table', ajax_table);
+Vue.component('com_tab_table', ajax_table);
 
 var get_data = {
     get_rows: function get_rows(callback, row, kws, search_args) {

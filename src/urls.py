@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from helpers.authuser import urls as authuser_urls
 from hello.engine_menu import PcMenu
 from django.views.generic import RedirectView 
-
+from maindb.views import test
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/',include(authuser_urls)),
@@ -29,7 +29,8 @@ urlpatterns = [
     url(r'^main/',include('maindb.urls')),
     
     url(r'^d/',include('helpers.director.urls'),name='director'),
-    url(r'^$',RedirectView.as_view(url='/pc/maindb.account'))    
+    url(r'^$',RedirectView.as_view(url='/pc/maindb.account')) ,
+    url(r'test',test)
 ]
 
 if settings.DEBUG:

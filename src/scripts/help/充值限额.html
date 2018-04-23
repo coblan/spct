@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>充值限额 </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<script>
+
+   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+   content = {"description": "\u7f51\u94f6\u8f6c\u8d26\uff1a\u6700\u4f4e\u9650\u989d1\u5143\uff0c\u6700\u9ad8\u9650\u989d49,999\u5143\uff1b\r\n\u5fae\u4fe1\u652f\u4ed8\uff1a\u6700\u4f4e\u9650\u989d10\u5143\uff0c\u6700\u9ad8\u9650\u989d3,000\u5143\uff1b\r\n\u4e00\u952e\u652f\u4ed8\uff1a\u6700\u4f4e\u9650\u989d10\u5143\uff0c\u6700\u9ad8\u9650\u989d3,000\u5143\uff1b\r\n\u652f\u4ed8\u5b9d\u8f6c\u5361\uff1a\u6700\u4f4e\u9650\u989d50\u5143\uff0c\u6700\u9ad8\u9650\u989d10,000\u5143\uff1b\r\nQQ\u652f\u4ed8\u5145\u503c\uff1a\u6700\u4f4e\u9650\u989d10\u5143\uff0c\u6700\u9ad8\u9650\u989d5,000\u5143\uff1b\r\n\u5feb\u6377\u5145\u503c\uff1a\u5355\u7b14\u6700\u4f4e\u9650\u989d1\u5143\uff0c\u6700\u9ad8\u9650\u989d49,999\u5143\u3002\r\n", "title": "\u5145\u503c\u9650\u989d"}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+    }
+    .section{
+        margin: 20px;
+        /*border-top:1px solid #63646b;*/
+    }
+    .section-title{
+        color: #e6e8f6;
+        /*border-left: 2px solid #72727e;*/
+        font-size: 2em;
+        padding: 1em 0;
+
+    }
+    .content{
+        color: #9fa1af;
+        font-size: 1.5em;
+    }
+
+</style>
+
+<div id="there">
+    <div  class="section">
+        <div  class="section-title" v-text="content.title"></div>
+        <div v-text="content.description" class="content">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            content:content,
+        }
+    })
+</script>
+</body>
+</html>

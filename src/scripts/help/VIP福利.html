@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>VIP福利 </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<script>
+
+   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+   content = {"description": "\u60a8\u53ef\u83b7\u5f97\u6211\u4eec\u7684\u4e30\u5bcc\u7684VIP\u4ff1\u4e50\u90e8\u5956\u52b1\uff0c\u5305\u62ec\u73b0\u91d1\u5956\u52b1\uff0c\u5f53\u60a8\u8fdb\u884c\u5404\u9879\u6e38\u620f\u65f6\uff0c\u5747\u53ef\u8d5a\u53d6VIP\u79ef\u5206\u4f5c\u4e3a\u56de\u62a5\uff0c\u60a8\u53ef\u4f9d\u636e\u7d2f\u79ef\u7684VIP\u79ef\u5206\uff0c\u5c06\u83b7\u5f97\u7684\u5956\u52b1\u76f4\u63a5\u52a0\u5165\u60a8\u7684\u8d26\u6237\u3002\u800c\u4e14\u6211\u4eec\u4f1a\u5b9a\u671f\u63a8\u51fa\u8bf1\u4eba\u7684\u7279\u522b\u5956\u52b1\uff0c\u8fd9\u4e9b\u5956\u52b1\u53ef\u80fd\u4e0e\u6b63\u5728\u8fdb\u884c\u7684\u7cbe\u5f69\u6d3b\u52a8\u76f8\u5173\u3002", "title": "VIP\u798f\u5229"}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+    }
+    .section{
+        margin: 20px;
+        /*border-top:1px solid #63646b;*/
+    }
+    .section-title{
+        color: #e6e8f6;
+        /*border-left: 2px solid #72727e;*/
+        font-size: 2em;
+        padding: 1em 0;
+
+    }
+    .content{
+        color: #9fa1af;
+        font-size: 1.5em;
+    }
+
+</style>
+
+<div id="there">
+    <div  class="section">
+        <div  class="section-title" v-text="content.title"></div>
+        <div v-text="content.description" class="content">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            content:content,
+        }
+    })
+</script>
+</body>
+</html>

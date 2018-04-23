@@ -18,16 +18,38 @@ class TicketMasterPage(TablePage):
         ls = [
             {'name':'ticketstake',
              'label':'子注单',
-             'com':'com_ajax_table',
-             'model':model_to_name(TbTicketstake),
-             'relat_field':'ticketid',
-             'kw': TicketstakeTable(crt_user=self.crt_user).get_head_context()},
+             'com':'com_tab_table',
+             
+             'get_data':{
+                 'fun':'get_rows',
+                 'kws':{
+                    'model_name':model_to_name(TbTicketstake),
+                    'relat_field':'ticketid',
+                 }
+                 
+             },
+             'heads_ctx':TicketstakeTable(crt_user=self.crt_user).get_head_context()  
+             },
+             #'model':model_to_name(TbTicketstake),
+             #'relat_field':'ticketid',
+             #'kw': TicketstakeTable(crt_user=self.crt_user).get_head_context()},
             {'name':'ticketparlay',
              'label':'串关规则',
-             'com':'com_ajax_table',
-             'model':model_to_name(TbTicketparlay),
-             'relat_field':'ticketid',
-             'kw':TicketparlayTable(crt_user=self.crt_user).get_head_context()},                     
+             'com':'com_tab_table',
+             'get_data':{
+                 'fun':'get_rows',
+                 'kws':{
+                    'model_name':model_to_name(TbTicketparlay),
+                    'relat_field':'ticketid',
+                 }
+                 
+             },
+             'heads_ctx':TicketparlayTable(crt_user=self.crt_user).get_head_context()
+             }
+             
+             #'model':model_to_name(TbTicketparlay),
+             #'relat_field':'ticketid',
+             #'kw':TicketparlayTable(crt_user=self.crt_user).get_head_context()},                     
         ]
         ctx['tabs']=ls
         return ctx
@@ -82,7 +104,7 @@ class TicketstakeTable(TicketTabBase):
     fields_sort=['tid','matchid','specialbetvalue','odds','confirmodds','realodds','confirmoddsid_ori',
                  'status','createtime','updatetime']
     def dict_row(self, inst):
-        match = TbMatches.objects.get(matchid =  inst.matchid)
+        match = inst.match # TbMatches.objects.get(matchid =  inst.matchid)
         return {
             'matchid':{'label':'{tournamentzh} {team1zh}VS{team2zh}'.format(tournamentzh=match.tournamentzh,
                                                                    team1zh=match.team1zh,
