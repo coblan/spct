@@ -102,7 +102,8 @@ class BannerForm(ModelFields):
             head['editor']='picture'
             head['up_url']=reverse('banner_upload')
             head['config']={
-                'maxsize': settings.MAX_BANNER_SIZE #1024*1024*1
+                'maxsize': settings.MAX_BANNER_SIZE, #1024*1024*1
+                #'url_prefix':settings. BANNER_ACCESS_URL
             }                
         if head['name'] =='createuser':
             head['editor']='com-field-label-shower'
@@ -126,7 +127,8 @@ class PicturenameProc(object):
     def to_dict(self,inst,name):
         pic=getattr(inst,name,None)
         if pic:
-            return '/media/banners/'+pic
+            #return '/media/banners/'+pic
+            return settings.BANNER_ACCESS_URL+pic
         else:
             return '' 
     
@@ -137,8 +139,12 @@ class PicturenameProc(object):
     
     def from_dict(self,value,field):
         if value:
-            mt = re.search(r'[^\/]+$',value)
-            return mt.group(0) 
+            if value.startswith(settings.BANNER_ACCESS_URL):
+                return value[len(settings.BANNER_ACCESS_URL):]
+            #mt = re.search(r'[^\/]+$',value)
+            #return mt.group(0) 
+            else:
+                return value
         
             
         #if isinstance(value,models.Model):

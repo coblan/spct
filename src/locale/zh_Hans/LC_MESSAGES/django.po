@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-11 17:04+0800\n"
+"POT-Creation-Date: 2018-04-25 10:22+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\_helpers\authuser\forms.py:10 .\helpers\authuser\forms.py:10
+msgid "second password"
+msgstr "第二次密码"
+
+#: .\_helpers\authuser\forms.py:19 .\helpers\authuser\forms.py:19
+msgid "need password"
+msgstr ""
+
+#: .\_helpers\authuser\forms.py:26 .\helpers\authuser\forms.py:26
+msgid "two password should be same"
+msgstr ""
+
+#: .\_helpers\authuser\forms.py:33 .\helpers\authuser\forms.py:33
+msgid "username has been exist"
+msgstr "用户名已经存在"
+
+#: .\_helpers\authuser\forms.py:63 .\helpers\authuser\forms.py:63
+msgid "user has been disabled"
+msgstr "用户被禁用"
+
+#: .\_helpers\authuser\forms.py:67 .\helpers\authuser\forms.py:67
+msgid "user exist,but password not match"
+msgstr "密码不对"
+
+#: .\_helpers\authuser\forms.py:69 .\helpers\authuser\forms.py:69
+msgid "user not exist"
+msgstr "用户不存在"
+
+#: .\_helpers\common\model_validator.py:8 .\helpers\common\model_validator.py:8
+#, python-format
+msgid "%(value)s is not integer number"
+msgstr ""
+
+#: .\_helpers\common\model_validator.py:15
+#: .\helpers\common\model_validator.py:15
+msgid "must input string"
+msgstr "必须输入文字"
 
 #: .\hello\engine_menu.py:20
 msgid "DashBoard"
@@ -34,7 +72,7 @@ msgstr "会员管理"
 msgid "Tb Account"
 msgstr "会员列表"
 
-#: .\hello\engine_menu.py:25 .\maindb\account_admin.py:164
+#: .\hello\engine_menu.py:25 .\maindb\account_admin.py:212
 msgid "Tb Login Log"
 msgstr "登录日志"
 
@@ -46,6 +84,9 @@ msgstr "金流管理"
 msgid "Tb Balance Log"
 msgstr "账目记录"
 
+#: .\hello\engine_menu.py:32 .\maindb\ticket_admin.py:14
+msgid "Tb Trans"
+msgstr "存款记录"
 
 #: .\hello\engine_menu.py:33
 msgid "Tb Channel"
@@ -55,9 +96,47 @@ msgstr "金流渠道"
 msgid "Games"
 msgstr "赛事及赔率"
 
-#: .\hello\engine_menu.py:38 .\maindb\ticket_admin.py:14
-msgid "Tb Trans"
-msgstr "存款记录"
+#: .\hello\engine_menu.py:38
+msgid "Tb TicketMaster"
+msgstr ""
+
+#: .\hello\engine_menu.py:39
+msgid "Tb Match"
+msgstr ""
+
+#: .\hello\engine_menu.py:40
+msgid "View TicketSingleByMatch"
+msgstr ""
+
+#: .\hello\engine_menu.py:44
+msgid "RiskControl"
+msgstr ""
+
+#: .\hello\engine_menu.py:46
+msgid "Tb RC Filter"
+msgstr ""
+
+#: .\hello\engine_menu.py:47
+msgid "Tb RC Level"
+msgstr ""
+
+#: .\hello\engine_menu.py:48
+msgid "Tb RC User"
+msgstr ""
+
+#: .\hello\engine_menu.py:49
+msgid "Tb Blankuserlist"
+msgstr ""
+
+#: .\hello\engine_menu.py:50
+#, fuzzy
+#| msgid "Tb Balance Log"
+msgid "Tb BlackuserlistLog"
+msgstr "账目记录"
+
+#: .\hello\engine_menu.py:52
+msgid "Tb Withdraw Limit Log"
+msgstr ""
 
 #: .\hello\js_translation.py:6
 msgid "Basic Setting"
@@ -67,91 +146,100 @@ msgstr "基本设置"
 msgid "Language"
 msgstr "语言"
 
-#: .\helpers\authuser\forms.py:10
-msgid "second password"
-msgstr "第二次密码"
+#: .\hello\js_translation.py:8
+msgid "back"
+msgstr "返回"
 
-#: .\helpers\authuser\forms.py:19
-msgid "need password"
+#: .\maindb\admin_games\ViewTicketSingleByMatch.py:21
+msgid "Ticket Count"
 msgstr ""
 
-#: .\helpers\authuser\forms.py:26
-msgid "two password should be same"
+#: .\maindb\admin_games\ViewTicketSingleByMatch.py:22
+#, fuzzy
+#| msgid "Account"
+msgid "Num Account"
+msgstr "账号"
+
+#: .\maindb\admin_riskcontrol\blanklist.py:10
+msgid "Main.TbBlackuserlist"
 msgstr ""
 
-#: .\helpers\authuser\forms.py:33
-msgid "username has been exist"
-msgstr "用户名已经存在"
-
-#: .\helpers\authuser\forms.py:63
-msgid "user has been disabled"
-msgstr "用户被禁用"
-
-#: .\helpers\authuser\forms.py:67
-msgid "user exist,but password not match"
-msgstr "密码不对"
-
-#: .\helpers\authuser\forms.py:69
-msgid "user not exist"
-msgstr "用户不存在"
-
-#: .\helpers\common\model_validator.py:8
-#, python-format
-msgid "%(value)s is not integer number"
+#: .\maindb\admin_riskcontrol\blanklist.py:19
+msgid "Main.TbBlackuserlistLog"
 msgstr ""
 
-#: .\helpers\common\model_validator.py:15
-msgid "must input string"
-msgstr "必须输入文字"
+#: .\maindb\admin_riskcontrol\rc_filter.py:10
+msgid "Main.TbRcFilter"
+msgstr ""
 
-#: .\maindb\models.py:434
+#: .\maindb\admin_riskcontrol\rc_level.py:10
+msgid "Main.TbRcLevel"
+msgstr ""
+
+#: .\maindb\admin_riskcontrol\rc_user.py:10
+msgid "Main.TbRcUser"
+msgstr ""
+
+#: .\maindb\admin_riskcontrol\withdraw_limit_log.py:10
+msgid "Main.TbWithdrawlimitlog"
+msgstr ""
+
+#: .\maindb\models.py:437
 msgid "Account"
 msgstr "账号"
 
-#: .\maindb\models.py:435
+#: .\maindb\models.py:438
 msgid "Device Code"
 msgstr "设备码"
 
-#: .\maindb\models.py:436
+#: .\maindb\models.py:439
 msgid "Device Ip"
 msgstr "设备IP"
 
-#: .\maindb\models.py:438
+#: .\maindb\models.py:441
 msgid "Login Type"
 msgstr "登录类型"
 
-#: .\maindb\models.py:439
+#: .\maindb\models.py:442
 msgid "Login Time"
 msgstr "登录时间"
 
-#: .\maindb\models.py:440
+#: .\maindb\models.py:443
 msgid "App Version"
 msgstr "应用版本"
 
-#: .\maindb\models.py:441
+#: .\maindb\models.py:444
 msgid "Device Name"
 msgstr "设备名"
 
-#: .\maindb\models.py:443
+#: .\maindb\models.py:446
 msgid "Device Version"
 msgstr "设备版本"
 
-#: .\maindb\models.py:446
+#: .\maindb\models.py:449
 msgid "Logout Time"
 msgstr "退出时间"
 
-#: .\maindb\models.py:1131
+#: .\maindb\models.py:777
+msgid "RC Level"
+msgstr ""
+
+#: .\maindb\models.py:945
+msgid "ticket master"
+msgstr ""
+
+#: .\maindb\models.py:1139
 msgid "Picture Name"
 msgstr "图片名称"
 
-#: .\maindb\models.py:1132
+#: .\maindb\models.py:1140
 msgid "Priority"
 msgstr "优先级"
 
-#: .\maindb\models.py:1136
+#: .\maindb\models.py:1144
 msgid "status"
 msgstr "状态"
 
-#: .\maindb\models.py:1137
+#: .\maindb\models.py:1145
 msgid "Navigate Url"
 msgstr "导航地址"
