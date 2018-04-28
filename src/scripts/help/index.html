@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    </head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+</head>
 <body>
 <script>
     var section_list=[
@@ -46,7 +47,7 @@
         color: #72727e;
         /*border-left: 2px solid #72727e;*/
         margin: 0.9em;
-        font-size: 1.5em;
+        font-size: 1.2em;
     }
     .section-content{
         background-color: #2b2e37;
@@ -58,8 +59,8 @@
 
     .section-content li{
         list-style-type:none;
-        padding-top: 1.7em;
-        padding-bottom: 1.7em;
+        padding-top: 0.7em;
+        padding-bottom: 0.7em;
     }
     .itm-title{
         color: #dee0ed;
@@ -73,10 +74,35 @@
         border-bottom: none;
     }
     .right-arrow{
-        padding-right: 0.6em;
-        font-size: 1.5em;
+        padding-right: 1em;
+        font-size: 1em;
         color: #72727e;
     }
+
+
+    * {
+        moz-user-select: -moz-none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /*body{*/
+        /*width: 100vw;*/
+        /*height: 100vh;*/
+        /*overflow: hidden;*/
+    /*}*/
+    /*#there{*/
+        /*width: 100vw;*/
+        /*height: 100vh;*/
+        /*overflow-y: auto;*/
+    /*}*/
+    /*#there::-webkit-scrollbar{width:0;height:0}*/
+
+    /*body::-webkit-scrollbar {display:none}*/
 </style>
 
 <div id="there">
@@ -89,7 +115,7 @@
 
         <ul class="section-content">
             <li class="itm-title" v-for="itm in sec.items" @click="goto(itm.url)">
-                <div style="flex-grow:10;font-size: 1.8em;color: #e6e8f6">
+                <div style="flex-grow:10;font-size: 1em;color: #e6e8f6">
                     <span v-text="itm.title"></span>
                 </div>
 
@@ -112,7 +138,13 @@
         },
         methods:{
             goto:function(url){
-                location = url
+//                location = url+'?'
+                var path = location.href
+                var mt = /(.*?)[^\/]+$/.exec(path)
+                var org_url = mt[1]+url
+                location='jb://www.jb.com/help?org_url='+encodeURIComponent(org_url)
+                //<a href='jb://www.jb.com/help?org_url=xxxx' target='_blank'>xxxx</a>
+                 //       <a href='xxxx?op=newwin' target='_blank'>xxxx</a>
             }
         }
     })
