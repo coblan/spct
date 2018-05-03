@@ -45,6 +45,7 @@ DATABASES = {
         'OPTIONS': {
             #'driver': 'ODBC Driver 11 for SQL Server',
             #'driver':'SQL Server Native Client 11.0',
+            'driver': 'FreeTDS',
             #'MARS_Connection': True,
               },
        } ,     
