@@ -49,7 +49,7 @@ DATABASES = {
        } ,     
 }
 
-ALLOWED_HOSTS=['192.168.0.244','localhost']
+ALLOWED_HOSTS=['192.168.0.244','103.246.219.202']
 DATABASE_ROUTERS = ['hello.db_router.DbRouter']
 
 MAX_BANNER_SIZE=1024*1024*2
