@@ -20,6 +20,10 @@ class RcFilterPage(TablePage):
             if head['name'] == 'rc_active':
                 head['editor'] = 'com-table-checkbox'
             return head
+        def dict_row(self, inst):
+            return {
+                'rc_active': inst.rc_active ==1
+            }
         
         class filters(RowFilter):
             names=['rc_level']
