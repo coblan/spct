@@ -1,6 +1,6 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,ModelFields,model_dc
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,ModelFields,model_dc,RowFilter
 from ..models import TbMatches
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 
@@ -13,6 +13,12 @@ class MatchsPage(TablePage):
     class tableCls(ModelTable):
         model = TbMatches
         exclude=[]
+        fields_sort=['matchdate','tournamentzh','team1zh','team2zh','matchscore','winner','statuscode','roundinfo',
+                     'isrecommend','livebet','categoryid','currentperiodstart']
+        class filters(RowFilter):
+            range_fields=['matchdate']
+            names=['isrecommend','livebet']
+            
         def get_context(self):
             ctx = ModelTable.get_context(self)
             ctx['extra_table_logic'] = 'match_logic'
@@ -42,7 +48,31 @@ class MatchsPage(TablePage):
             ]
             return ops
         
-        
+        def dict_head(self, head):
+            dc={
+                'matchdate':120,
+                'tournamentzh':70,
+                'team1zh':60,
+                'team2zh':60,
+                'matchscore':20,
+                'winner':60,
+                'statuscode':20,
+                'roundinfo':20,
+                'isrecommend':20,
+                'livebet':20,
+                'categoryid':20,
+                'currentperiodstart':120,
+                 
+                #'picturename':160,
+                #'order':80,
+                #'createtime':160,
+                #'createuser':80,
+                #'description':250,
+                #'status':60
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])            
+            return head
         #def get_heads(self):
             #heads = [{'name':'operations',
                     #'label':'操作',

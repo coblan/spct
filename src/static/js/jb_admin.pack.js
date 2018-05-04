@@ -427,7 +427,7 @@ Vue.component('com-pop-fields', {
 
         after_save: function after_save(new_row) {
             this.$emit('sub_success', { new_row: new_row, old_row: this.row });
-            //ex.assign(this.row,new_row)
+            ex.assign(this.row, new_row);
         },
         del_row: function del_row() {
             var self = this;
@@ -815,9 +815,14 @@ var nice_validator = {
         var self = this;
         var validator = {};
         ex.each(this.heads, function (head) {
+            var ls = [];
             if (head.required) {
-                validator[head.name] = 'required';
+                ls.push('required');
             }
+            if (head.fv_rule) {
+                ls.push(head.fv_rule);
+            }
+            validator[head.name] = ls.join(';');
         });
         this.nice_validator = $(this.$el).find('.field-panel').validator({
             fields: validator
@@ -2250,6 +2255,10 @@ var _operations = __webpack_require__(20);
 
 var operations = _interopRequireWildcard(_operations);
 
+var _bool_shower = __webpack_require__(40);
+
+var bool_shower = _interopRequireWildcard(_bool_shower);
+
 var _label_shower2 = __webpack_require__(8);
 
 var field_label_shower = _interopRequireWildcard(_label_shower2);
@@ -2274,6 +2283,10 @@ var _btn = __webpack_require__(9);
 
 var btn = _interopRequireWildcard(_btn);
 
+var _validator = __webpack_require__(41);
+
+var validate = _interopRequireWildcard(_validator);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 __webpack_require__(29);
@@ -2292,6 +2305,38 @@ __webpack_require__(30);
 
 
 //fields operator
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bool_shower = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span>\n    <i v-if="rowData[field]" style="color: green" class="fa fa-check-circle"></i>\n    <i v-else style="color: red" class="fa fa-times-circle"></i>\n    </span>'
+
+};
+
+Vue.component('com-table-bool-shower', bool_shower);
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var rules = {
+    mobile: [/^1[3-9]\d{9}$/, "请填写有效的手机号"],
+    chinese: [/^[\u0391-\uFFE5]+$/, "请填写中文字符"],
+    ip: [/^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})$/i, '请填写有效的 IP 地址']
+};
+
+$.validator.config({
+    rules: rules
+});
 
 /***/ })
 /******/ ]);

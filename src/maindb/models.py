@@ -25,14 +25,15 @@ class Blackiplist(models.Model):
 
 
 class Blackiprangelist(models.Model):
-    blackiprangelistid = models.AutoField(db_column='BlackIpRangeListID', primary_key=True)  # Field name made lowercase.
-    startip = models.CharField(db_column='StartIp', max_length=16)  # Field name made lowercase.
+    blackiprangelistid = models.AutoField(db_column='BlackIpRangeListID', primary_key=True,verbose_name='序号')  # Field name made lowercase.
+    startip = models.CharField(db_column='StartIp', max_length=16,verbose_name='开始IP')  # Field name made lowercase.
     startipnum = models.BigIntegerField(db_column='StartIpNum')  # Field name made lowercase.
-    endip = models.CharField(db_column='EndIp', max_length=16)  # Field name made lowercase.
+    endip = models.CharField(db_column='EndIp', max_length=16,verbose_name='结束IP')  # Field name made lowercase.
     endipnum = models.BigIntegerField(db_column='EndIpNum')  # Field name made lowercase.
-    remark = models.CharField(db_column='Remark', max_length=200)  # Field name made lowercase.
-    iswork = models.BooleanField(db_column='IsWork')  # Field name made lowercase.
-    itype = models.IntegerField(db_column='IType')  # Field name made lowercase.
+    remark = models.CharField(db_column='Remark', max_length=200,verbose_name='描述')  # Field name made lowercase.
+    iswork = models.BooleanField(db_column='IsWork',verbose_name='生效')  # Field name made lowercase.
+    #itype = models.IntegerField(db_column='IType')  # Field name made lowercase.
+    area = models.CharField(db_column='Area', max_length=255,verbose_name='区域')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -469,13 +470,13 @@ class TbMaintournament(models.Model):
 class TbMatches(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
-    categoryid = models.IntegerField(db_column='CategoryID')  # Field name made lowercase.
+    categoryid = models.IntegerField(db_column='CategoryID',verbose_name='类别')  # Field name made lowercase.
     tournamentid = models.IntegerField(db_column='TournamentID')  # Field name made lowercase.
     tournamentzh = models.CharField(db_column='TournamentZH',verbose_name='联赛名称', max_length=50)  # Field name made lowercase.
     matchid = models.IntegerField(db_column='MatchID',unique=True)  # Field name made lowercase.
     prematchdate = models.DateTimeField(db_column='PreMatchDate')  # Field name made lowercase.
     matchdate = models.DateTimeField(db_column='MatchDate',verbose_name='比赛日期')  # Field name made lowercase.
-    currentperiodstart = models.DateTimeField(db_column='CurrentPeriodStart', blank=True, null=True)  # Field name made lowercase.
+    currentperiodstart = models.DateTimeField(db_column='CurrentPeriodStart',verbose_name='结束时间', blank=True, null=True)  # Field name made lowercase.
     team1id = models.IntegerField(db_column='Team1ID')  # Field name made lowercase.
     superteam1id = models.BigIntegerField(db_column='SuperTeam1Id')  # Field name made lowercase.
     team1zh = models.CharField(db_column='Team1ZH', verbose_name='主队',max_length=20)  # Field name made lowercase.
@@ -484,9 +485,9 @@ class TbMatches(models.Model):
     team2zh = models.CharField(db_column='Team2ZH', verbose_name='客队',max_length=20)  # Field name made lowercase.
     matchscore = models.CharField(db_column='MatchScore', max_length=8,verbose_name='比分',blank=True)  # Field name made lowercase.
     winner = models.IntegerField(db_column='Winner',verbose_name='胜队')  # Field name made lowercase.
-    statuscode = models.IntegerField(db_column='StatusCode')  # Field name made lowercase.
+    statuscode = models.IntegerField(db_column='StatusCode',verbose_name='状态')  # Field name made lowercase.
     roundinfo = models.IntegerField(db_column='RoundInfo',verbose_name='轮数')  # Field name made lowercase.
-    isrecommend = models.BooleanField(db_column='IsRecommend')  # Field name made lowercase.
+    isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name='推介')  # Field name made lowercase.
     livebet = models.BooleanField(db_column='LiveBet',verbose_name='滚球')  # Field name made lowercase.
     generatedat = models.DateTimeField(db_column='GeneratedAt',verbose_name='生成日期')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
@@ -1192,11 +1193,12 @@ class Whiteiplist(models.Model):
 class Whiteuserlist(models.Model):
     whiteuserlistid = models.AutoField(db_column='WhiteUserListID', primary_key=True)  # Field name made lowercase.
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    userid = models.IntegerField(db_column='UserID', blank=True, null=True)  # Field name made lowercase.
+    #userid = models.IntegerField(db_column='UserID', blank=True, null=True)  # Field name made lowercase.
+    account = models.ForeignKey(TbAccount,db_column='UserID',db_constraint=False)
     itype = models.IntegerField(db_column='Itype', blank=True, null=True)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=100, blank=True, null=True)  # Field name made lowercase.
     addtime = models.DateTimeField(db_column='AddTime', blank=True, null=True)  # Field name made lowercase.
-    iswork = models.NullBooleanField(db_column='IsWork')  # Field name made lowercase.
+    iswork = models.BooleanField(db_column='IsWork')  # Field name made lowercase.
 
     class Meta:
         managed = False

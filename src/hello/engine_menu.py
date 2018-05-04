@@ -49,6 +49,12 @@ class PcMenu(BaseEngine):
                 {'label':_('Tb Blankuserlist'),'url':page('maindb.TbBlackuserlist')},
                 {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog')},
                 
+                {'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList')},
+                {'label':_('White IP'),'url':page('maindb.WhiteIpList')},
+                {'label':_('White User'),'url':page('maindb.Whiteuserlist')},
+                
+                
+                
                 {'label':_('Tb Withdraw Limit Log'),'url':page('maindb.TbWithdrawlimitlog')}
                         ]},             
             
