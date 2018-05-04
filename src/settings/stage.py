@@ -47,6 +47,11 @@ DATABASES = {
             #'driver':'SQL Server Native Client 11.0',
             #'driver': 'FreeTDS',
             #'MARS_Connection': True,
+            'AUTOCOMMIT': True,
+            'host_is_server': True,
+            'unicode_results': True,
+            'driver': 'FreeTDS',
+            'extra_params': 'TDS_VERSION=8.0',            
               },
        } ,     
 }
