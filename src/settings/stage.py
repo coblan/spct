@@ -37,7 +37,7 @@ DATABASES = {
     'MainDB': {
         'NAME': 'MainDB',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': '192.168.40.79,1436',
+        'HOST': '192.168.40.79,1433',
         #'HOST': '103.246.219.202,1436',
         'USER': 'sa',
         'PASSWORD': 'cdqg@1215',
