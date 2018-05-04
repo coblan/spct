@@ -33,9 +33,11 @@ class MatchsPage(TablePage):
                           {'name':'away_score','label':'客队分数','editor':'linetext'},
                           {'name':'away_corner','label':'客队角球','editor':'linetext'},
                           {'name':'statuscode','label':'赛事状态','editor':'linetext'},
-                          {'name':'close_time','label':'结束时间','editor':'field_datetime'}],
+                          {'name':'close_time','label':'结束时间','editor':'com-field-datetime'}],
                  'ops':[{"fun":'xxx','label':'保存','editor':'com-field-op-btn'}]},
                 {'fun':'jie_suan_pai_cai','editor':'com-op-a','label':'结算派彩'},
+                {'fun':'recommendate','editor':'com-op-a','label':'推介'},
+                {'fun':'livebet','editor':'com-op-a','label':'滚球'},
                 
             ]
             return ops

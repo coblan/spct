@@ -52,6 +52,34 @@ var match_logic = {
                     cfg.showMsg('请选择一条记录')
                     return
                 }
+            },
+            recommendate:function(kws){
+                if(self.selected.length==0){
+                    cfg.showMsg('请选择一些记录')
+                    return
+                }
+                ex.each(self.selected,function(row){
+                    row.isrecommend=true
+                })
+                var post_data=[{fun:'save_rows',rows:self.selected}]
+                cfg.show_load()
+                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                    cfg.hide_load(2000)
+                })
+            },
+            livebet:function(kws){
+                if(self.selected.length==0){
+                    cfg.showMsg('请选择一些记录')
+                    return
+                }
+                ex.each(self.selected,function(row){
+                    row.livebet=true
+                })
+                var post_data=[{fun:'save_rows',rows:self.selected}]
+                cfg.show_load()
+                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                    cfg.hide_load(2000)
+                })
             }
         })
     },
