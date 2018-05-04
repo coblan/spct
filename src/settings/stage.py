@@ -37,8 +37,8 @@ DATABASES = {
     'MainDB': {
         'NAME': 'MainDB',
         'ENGINE': 'sql_server.pyodbc',
-        #'HOST': '192.168.40.79,1436',
-        'HOST': '103.246.219.202,1436',
+        'HOST': '192.168.40.79,1436',
+        #'HOST': '103.246.219.202,1436',
         'USER': 'sa',
         'PASSWORD': 'cdqg@1215',
         #'PORT': '1436',
@@ -56,7 +56,7 @@ DATABASES = {
        } ,     
 }
 
-ALLOWED_HOSTS=['192.168.0.244','103.246.219.202']
+ALLOWED_HOSTS=['103.246.219.202']
 DATABASE_ROUTERS = ['hello.db_router.DbRouter']
 
 MAX_BANNER_SIZE=1024*1024*2
