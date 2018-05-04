@@ -96,14 +96,15 @@ class PcMenu(BaseEngine):
         #ctx['table_fun_config'] ={
             #'detail_link': '详情', #'<i class="fa fa-info-circle" aria-hidden="true" title="查看详情"></i>'#,
         #}
-        lans = []
-        for k,v in settings.LANGUAGES:
-            lans.append({'value':k,'label':v})
+        #lans = []
+        #for k,v in settings.LANGUAGES:
+            #lans.append({'value':k,'label':v})
             
-        ctx['site_settings']={
-            'lans':lans,
-            'tr':get_tr()
-        }
+        #ctx['site_settings']={
+            #'lans':lans,
+            #'tr':get_tr()
+        #}
+        
         return ctx      
 
 PcMenu.add_pages(page_dc)
