@@ -222,7 +222,7 @@ class LoginLogPage(TablePage):
         class filters(RowFilter):
             range_fields=['createtime']
 
-model_dc[TbAccount]={'fields':AccoutBaseinfo}
+model_dc[TbAccount]={'fields':AccoutBaseinfo,'table':AccountPage.tableCls}
 model_dc[TbTicketmaster]={'table':AccountTicketTable}
 model_dc[TbLoginlog]={'table':AccountLoginTable}
 model_dc[TbTrans]={'table':AccountTransTable}

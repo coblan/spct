@@ -1,8 +1,9 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields
-from ..models import TbBlackuserlist,TbBlackuserlistLog,Blackiplist,Blackiprangelist,Whiteiplist,Whiteuserlist
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields,RowSearch
+from ..models import TbBlackuserlist,TbBlackuserlistLog,Blackiplist,Blackiprangelist,\
+     Whiteiplist,Whiteuserlist,TbAccount
 
 class TbBlackuserlistPage(TablePage):
     template='jb_admin/table.html'
@@ -91,7 +92,21 @@ class WhiteuserlistForm(ModelFields):
     class Meta:
         model=Whiteuserlist
         exclude = ['username','addtime']
-        
+    
+    def dict_head(self, head):
+        if head['name'] =='account':
+            table_obj = AccountSelect(crt_user=self.crt_user)
+            head['editor'] = 'com-field-pop-table-select'
+            head['table_ctx'] = table_obj.get_head_context()
+        return head
+            
+
+class AccountSelect(ModelTable):
+    model = TbAccount
+    include=['accountid','account']
+    
+    class search(RowSearch):
+        names=['account']
 
 def ip2num(ip):
     arr=ip.split('.')
