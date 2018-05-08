@@ -108,7 +108,7 @@ class TbAppversion(models.Model):
     versionid = models.IntegerField(db_column='VersionId',default=0)  # Field name made lowercase.
     versionname = models.CharField(db_column='VersionName', max_length=64, blank=False)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=512, blank=True, null=True)  # Field name made lowercase.
-    required = models.IntegerField(db_column='Required', default=0, null=True)  # Field name made lowercase.
+    required = models.IntegerField(db_column='Required',verbose_name='强制升级', default=0, choices=REQUIRED)  # Field name made lowercase.
     size = models.FloatField(db_column='Size',default=0)  # Field name made lowercase.
 
     class Meta:

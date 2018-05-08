@@ -46,7 +46,8 @@ var app_pkg={
             var self=this
             ex.each(self.heads,function(head){
                 if(ex.isin(head.name,['versionid','versionname']) ){
-                    if(self.row.terminal==1){
+                    // 2 == android
+                    if(self.row.terminal==2){
                         head.readonly=true
                     }else{
                         head.readonly=false

@@ -24,6 +24,11 @@ CHANNEL_CASHFLOW=(
     (0,'Withdrawal')
 )
 PLATFORM=(
-    (1,'Android'),
-    (2,'IOS')
+    (1,'IOS'),
+    (2,'Android')
 )
+REQUIRED=(
+    (0,'否'),
+    (1,'是')
+)
+
