@@ -23,3 +23,7 @@ CHANNEL_CASHFLOW=(
     (1,'Deposit'),
     (0,'Withdrawal')
 )
+PLATFORM=(
+    (1,'Android'),
+    (2,'IOS')
+)

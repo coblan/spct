@@ -110,6 +110,32 @@ var field_file_uploader = exports.field_file_uploader = {
 
 Vue.component('com-field-app-pkg-uploader', field_file_uploader);
 
+var app_pkg = {
+    mounted: function mounted() {
+        this.updateReadonly();
+    },
+    watch: {
+        'row.terminal': function rowTerminal() {
+            this.updateReadonly();
+        }
+    },
+    methods: {
+        updateReadonly: function updateReadonly() {
+            var self = this;
+            ex.each(self.heads, function (head) {
+                if (ex.isin(head.name, ['versionid', 'versionname'])) {
+                    if (self.row.terminal == 1) {
+                        head.readonly = true;
+                    } else {
+                        head.readonly = false;
+                    }
+                }
+            });
+        }
+    }
+};
+window.app_pkg = app_pkg;
+
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {

@@ -102,13 +102,13 @@ class TbAreacode(models.Model):
 
 class TbAppversion(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    terminal = models.IntegerField(db_column='Terminal')  # Field name made lowercase.
+    terminal = models.IntegerField(db_column='Terminal',choices=PLATFORM)  # Field name made lowercase.
     packageurl = models.CharField(db_column='PackageUrl', max_length=255, blank=True, null=True)  # Field name made lowercase.
     md5 = models.CharField(db_column='Md5', max_length=32, blank=True, null=True)  # Field name made lowercase.
     versionid = models.IntegerField(db_column='VersionId',default=0)  # Field name made lowercase.
-    versionname = models.CharField(db_column='VersionName', max_length=64, blank=True, null=True)  # Field name made lowercase.
+    versionname = models.CharField(db_column='VersionName', max_length=64, blank=False)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=512, blank=True, null=True)  # Field name made lowercase.
-    required = models.IntegerField(db_column='Required', blank=True, null=True)  # Field name made lowercase.
+    required = models.IntegerField(db_column='Required', default=0, null=True)  # Field name made lowercase.
     size = models.FloatField(db_column='Size',default=0)  # Field name made lowercase.
 
     class Meta:

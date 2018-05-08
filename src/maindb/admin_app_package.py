@@ -35,8 +35,10 @@ class AppPackage(TablePage):
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])  
             return head
+              
     
 class AppPackageForm(ModelFields):
+    extra_mixins=['app_pkg']
     class Meta:
         model = TbAppversion
         exclude = []
@@ -49,7 +51,7 @@ class AppPackageForm(ModelFields):
             head['editor']= 'com-field-app-pkg-uploader' #'com-field-plain-file'
             head['config']={
                 'multiple':False,
-                'accept':'application/apk',
+                'accept':'.apk,.ipa',
                 'upload_url':reverse('app_pkg_upload')
             }
             

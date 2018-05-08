@@ -31,3 +31,30 @@ export var field_file_uploader={
 }
 
 Vue.component('com-field-app-pkg-uploader',field_file_uploader)
+
+var app_pkg={
+    mounted:function(){
+        this.updateReadonly()
+    },
+    watch:{
+        'row.terminal':function (){
+            this.updateReadonly()
+        }
+    },
+    methods:{
+        updateReadonly:function(){
+            var self=this
+            ex.each(self.heads,function(head){
+                if(ex.isin(head.name,['versionid','versionname']) ){
+                    if(self.row.terminal==1){
+                        head.readonly=true
+                    }else{
+                        head.readonly=false
+                    }
+                }
+            })
+        }
+    }
+}
+window.app_pkg=app_pkg
+
