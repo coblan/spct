@@ -49,6 +49,9 @@ class WhiteIpListPage(TablePage):
 
 class WhiteuserlistPage(TablePage):
     template='jb_admin/table.html'
+    def get_label(self):
+        return '用户白名单'
+    
     class tableCls(ModelTable):
         model=Whiteuserlist
         exclude=['username','addtime']
@@ -104,6 +107,10 @@ class WhiteuserlistForm(ModelFields):
 class AccountSelect(ModelTable):
     model = TbAccount
     include=['accountid','account']
+    def dict_head(self, head):
+        if head['name']=='accountid':
+            head['editor']='com-table-foreign-click-select'
+        return head
     
     class search(RowSearch):
         names=['account']

@@ -55,5 +55,8 @@ MAX_BANNER_SIZE=1024*1024*2
 BANNER_UPLOAD_URL='http://103.246.219.202:9004/upload?folder=banner'
 BANNER_ACCESS_URL='http://103.246.219.202:9004/file' 
 
+APP_PKG_UPLOAD_URL='http://103.246.219.202:9004/upload?folder=package'
+APP_PKG_ACCESS_URL='http://103.246.219.202:9004/file' 
+
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 

@@ -18,7 +18,15 @@ class PcMenu(BaseEngine):
     def menu(self):
         menu=[
             {'label':_('DashBoard'),'url':page('home'),'icon':fa('fa-home')},
-            {'label':_('Banner'),'url':page('TbBanner'),'icon':fa('fa-image')},
+            
+            {'label':_('App Update'),'icon':fa('fa-image'),'visible':can_list((User,Group)),
+            'submenu':[
+                {'label':_('Banner'),'url':page('TbBanner')},
+                {'label':_('App Package'),'url':page('maindb.TbAppversion')},
+                
+                ]},  
+            
+            
             {'label':_('Member'),'icon':fa('fa-users'),'visible':can_list((User,Group)),
             'submenu':[
                 {'label':_('Tb Account'),'url':page('maindb.account'),'icon':fa('fa-home')},
@@ -52,8 +60,6 @@ class PcMenu(BaseEngine):
                 {'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList')},
                 {'label':_('White IP'),'url':page('maindb.WhiteIpList')},
                 {'label':_('White User'),'url':page('maindb.Whiteuserlist')},
-                
-                
                 
                 {'label':_('Tb Withdraw Limit Log'),'url':page('maindb.TbWithdrawlimitlog')}
                         ]},             

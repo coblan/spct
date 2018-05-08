@@ -12,6 +12,7 @@ from .banner_admin import BannerPage
 from .admin_games import ViewTicketSingleByMatch,matchs
 
 from .admin_riskcontrol import rc_filter,rc_level,rc_user,withdraw_limit_log,blanklist
+import admin_app_package
 
 # Register your models here.
 #class AccountPage(TablePage):
