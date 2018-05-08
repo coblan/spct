@@ -386,6 +386,9 @@ window.cfg = {
     showMsg: function showMsg(msg) {
         alert(msg);
     },
+    warning: function warning(msg) {
+        alert(msg);
+    },
     tr: {
         'picture_size_excceed': '图片尺寸不能超过{maxsize}'
     },
@@ -2701,7 +2704,6 @@ var date_config_set = {
         startView: "months",
         minViewMode: "months",
         autoclose: true
-
     }
 };
 
@@ -2756,8 +2758,14 @@ Vue.component('datetime', {
     //    }
     //},
     //template:'<input type="text" class="form-control">',
-    template: "<span class=\"datetime-picker\">\n                <span class=\"cross\" @click=\"$emit('input','')\">X</span>\n                <input type=\"text\" readonly/>\n                </span>",
-    props: ['value', 'config'],
+    //template:`<span class="datetime-picker">
+    //            <span class="cross" @click="$emit('input','')">X</span>
+    //            <input type="text" readonly/>
+    //            </span>`,
+    template: " <div class=\"input-group datetime-picker\" style=\"width: 12em;\">\n                <input type=\"text\" class=\"form-control input-sm\" readonly :placeholder=\"placeholder\"/>\n                <div class=\"input-group-addon\" >\n                    <i v-if=\"! value\" @click=\"click_input()\" class=\"fa fa-calendar\" aria-hidden=\"true\"></i>\n                    <i v-else @click=\"$emit('input','')\" class=\"fa fa-calendar-times-o\" aria-hidden=\"true\"></i>\n                </div>\n                </div>",
+
+    //props:['value','config'],
+    props: ['value', 'set', 'config', 'placeholder'],
     mounted: function mounted() {
         var self = this;
         var def_conf = {
@@ -2786,7 +2794,11 @@ Vue.component('datetime', {
             }
         });
     },
-
+    methods: {
+        click_input: function click_input() {
+            this.input.focus();
+        }
+    },
     watch: {
         value: function value(n) {
             this.input.val(n);
@@ -2812,13 +2824,15 @@ __webpack_require__(68);
 
 /*
 * config={
-*    accept:""
+*    accept:"xx.jpg",
+*     multiple:true,
+*
 * }
 * */
 
 var field_file_uploader = exports.field_file_uploader = {
-    props: ['name', 'row', 'kw'],
-    template: '<div><com-file-uploader v-model="row[name]" :config="kw.config" :readonly="kw.readonly"></com-file-uploader></div>'
+    props: ['row', 'head'],
+    template: '<div><com-file-uploader v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader></div>'
 };
 
 var com_file_uploader = exports.com_file_uploader = {

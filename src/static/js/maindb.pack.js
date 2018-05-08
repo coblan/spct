@@ -63,11 +63,55 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var field_file_uploader = exports.field_file_uploader = {
+    props: ['row', 'head'],
+    template: '<div><com-file-uploader-tmp v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader-tmp></div>',
+    computed: {
+        url: function url() {
+            return this.row[this.head.name];
+        }
+    },
+    watch: {
+        url: function url(v) {
+            var mt = /([^\?]+)\?([^\?]+)/.exec(v);
+            if (mt) {
+                var args = ex.parseSearch(mt[2]);
+                if (args.version_code) {
+                    this.row.versionid = args.version_code;
+                }
+                if (args.version_name) {
+                    this.row.versionname = args.version_name;
+                }
+                if (args.size) {
+                    this.row.size = args.size;
+                }
+                if (args.md5) {
+                    this.row.md5 = args.md5;
+                }
+
+                this.row[this.head.name] = mt[1];
+            }
+        }
+    }
+};
+
+Vue.component('com-field-app-pkg-uploader', field_file_uploader);
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -175,15 +219,19 @@ var match_logic = {
 window.match_logic = match_logic;
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _match = __webpack_require__(0);
+var _match = __webpack_require__(1);
 
 var match = _interopRequireWildcard(_match);
+
+var _app_pkg = __webpack_require__(0);
+
+var app_pkg = _interopRequireWildcard(_app_pkg);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
