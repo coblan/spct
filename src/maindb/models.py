@@ -9,7 +9,9 @@
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from django.db import models
+from django.contrib.auth.models import User
 from status_code import *
+from .cus_models_fields import CusPictureField
 
 class Blackiplist(models.Model):
     blackiplistid = models.AutoField(db_column='BlackIpListID', primary_key=True)  # Field name made lowercase.
@@ -80,6 +82,19 @@ class TbAccountMatchFav(models.Model):
         unique_together = (('accountid', 'matchid'),)
 
 
+class TbActivity(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    cover = CusPictureField(db_column='Cover', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    zip = models.CharField(db_column='Zip', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', null=True,default=0,choices=ONLINE_STATUS)  # Field name made lowercase.
+    priority = models.IntegerField(db_column='Priority', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Activity'
+
 class TbAreacitycode(models.Model):
     areacitycodeid = models.AutoField(db_column='AreaCityCodeID', primary_key=True)  # Field name made lowercase.
     cityid = models.IntegerField(db_column='CityId')  # Field name made lowercase.
@@ -110,6 +125,7 @@ class TbAppversion(models.Model):
     description = models.CharField(db_column='Description', max_length=512, blank=True, null=True)  # Field name made lowercase.
     required = models.IntegerField(db_column='Required',verbose_name='强制升级', default=0, choices=REQUIRED)  # Field name made lowercase.
     size = models.FloatField(db_column='Size',default=0)  # Field name made lowercase.
+    valid = models.BooleanField(db_column='Valid')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -364,6 +380,17 @@ class TbConcurrentuserscount(models.Model):
         db_table = 'TB_ConcurrentUsersCount'
 
 
+class TbCurrency(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    price = models.IntegerField(db_column='Price')  # Field name made lowercase.
+    value = models.DecimalField(db_column='Value', max_digits=18, decimal_places=0)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    icon = models.CharField(db_column='Icon', max_length=255, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Currency'
+
 class TbContacts(models.Model):
     contactsid = models.AutoField(db_column='ContactsId', primary_key=True)  # Field name made lowercase.
     accountid = models.IntegerField(db_column='AccountId')  # Field name made lowercase.
@@ -607,6 +634,20 @@ class TbNetworkerror(models.Model):
         db_table = 'TB_NetworkError'
 
 
+class TbNotice(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=1024, blank=False, null=True)  # Field name made lowercase.
+    url = models.CharField(db_column='Url', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now=True,verbose_name='修改时间')  # Field name made lowercase.
+    #createuser = models.ForeignKey(to=User,db_column='CreateUser', blank=True, null=True,db_constraint=False)  #
+    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', blank=True, null=True,choices=ONLINE_STATUS)  # Field name made lowercase.
+    content = models.TextField(db_column='Content', blank=True, null=True,default='')  # Field name made lowercase.
+    
+    class Meta:
+        managed = False
+        db_table = 'TB_Notice'
+
 class TbOdds(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
@@ -775,15 +816,15 @@ class TbPlayers(models.Model):
 
 class TbQa(models.Model):
     qaid = models.AutoField(db_column='QAID', primary_key=True)  # Field name made lowercase.
-    class_field = models.CharField(db_column='Class', max_length=1)  # Field name made lowercase. Field renamed because it was a Python reserved word.
-    mtype = models.IntegerField(db_column='MType')  # Field name made lowercase.
+    class_field = models.CharField(db_column='Class', max_length=1,default=0,blank=True)  # Field name made lowercase. Field renamed because it was a Python reserved word.
+    mtype = models.IntegerField(db_column='MType',verbose_name='从属于')  # Field name made lowercase.
     type = models.IntegerField(db_column='Type')  # Field name made lowercase.
-    priority = models.SmallIntegerField(db_column='Priority')  # Field name made lowercase.
+    priority = models.SmallIntegerField(db_column='Priority',default=0,blank=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=100)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=1500)  # Field name made lowercase.
-    status = models.SmallIntegerField(db_column='Status')  # Field name made lowercase.
-    updatetime = models.DateTimeField(db_column='UpdateTime')  # Field name made lowercase.
-    ver = models.IntegerField(db_column='Ver')  # Field name made lowercase.
+    status = models.SmallIntegerField(db_column='Status',choices=ONLINE_STATUS)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime',auto_now=True)  # Field name made lowercase.
+    ver = models.IntegerField(db_column='Ver',default=0,blank=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1159,7 +1200,7 @@ class TbBanner(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime',auto_now=True)  # Field name made lowercase.
     createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=1024, blank=True, null=True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status',verbose_name=_('status'), null=True,choices=BANNER_STATUS,default=0)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',verbose_name=_('status'), null=True,choices=ONLINE_STATUS,default=0)  # Field name made lowercase.
     navigateurl = models.CharField(db_column='NavigateUrl', max_length=512,verbose_name=_('Navigate Url'), blank=True, null=True)
 
     class Meta:

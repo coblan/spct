@@ -3,9 +3,10 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter,model_to_name
+     TabPage,RowSearch,RowSort,RowFilter,model_to_name,director
 from .models import TbAccount,TbBalancelog,TbLoginlog,TbTrans,TbTicketmaster,TbWithdrawlimitlog,TbTokencode
 from .status_code import *
+
 # Register your models here.
 
 class AccountPage(TablePage):
@@ -23,7 +24,7 @@ class AccountPage(TablePage):
              'get_data':{
                  'fun':'get_row',
                  'kws':{
-                    'model_name':'maindb.TbAccount',
+                    'director_name':AccoutBaseinfo.get_director_name(),
                     'relat_field':'accountid',              
                  }
              },
@@ -39,12 +40,12 @@ class AccountPage(TablePage):
              'get_data':{
                  'fun':'get_rows',
                  'kws':{
-                    'model_name':model_to_name(TbBalancelog),
+                    'director_name':AccountBalanceTable.get_director_name() ,# model_to_name(TbBalancelog),
                     'relat_field':'account',
                  }
                  
              },
-             'heads_ctx':AccountBalanceTable(crt_user=self.crt_user).get_head_context()
+             'table_ctx':AccountBalanceTable(crt_user=self.crt_user).get_head_context()
              },
             {'name':'account_trans',
              'label':'交易记录',
@@ -52,11 +53,11 @@ class AccountPage(TablePage):
              'get_data':{
                  'fun':'get_rows',
                  'kws':{
-                     'model_name':model_to_name(TbTrans),
+                     'director_name':AccountTransTable.get_director_name(),# model_to_name(TbTrans),
                      'relat_field':'account',                     
                  }
              },
-             'heads_ctx':AccountTransTable(crt_user=self.crt_user).get_head_context()
+             'table_ctx':AccountTransTable(crt_user=self.crt_user).get_head_context()
              },
             {'name':'account_ticket',
              'label':'投注记录',
@@ -64,11 +65,11 @@ class AccountPage(TablePage):
              'get_data':{
                  'fun':'get_rows',
                  'kws':{
-                     'model_name':model_to_name(TbTicketmaster),
+                     'director_name': AccountTicketTable.get_director_name(), #model_to_name(TbTicketmaster),
                      'relat_field':'account',
                  }
              },
-             'heads_ctx':AccountTicketTable(crt_user=self.crt_user).get_head_context()
+             'table_ctx':AccountTicketTable(crt_user=self.crt_user).get_head_context()
              },
             {'name':'account_login',
             'label':'登录日志',
@@ -76,22 +77,22 @@ class AccountPage(TablePage):
             'get_data':{
                 'fun':'get_rows',
                 'kws':{
-                    'model_name':model_to_name(TbLoginlog),
+                    'director_name':AccountLoginTable.get_director_name(), #model_to_name(TbLoginlog),
                     'relat_field':'account',                    
                 }
             },
-            'heads_ctx':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
+            'table_ctx':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
             {'name':'account_withdrawlimitlog',
             'label':'提款限额记录',
             'com':'com_tab_table',
             'get_data':{
                 'fun':'get_rows',
                 'kws':{
-                    'model_name':model_to_name(TbWithdrawlimitlog),
+                    'director_name': AccoutWithdrawLimitLogTable.get_director_name(),#model_to_name(TbWithdrawlimitlog),
                     'relat_field':'account',                    
                 }
             },
-            'heads_ctx':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
+            'table_ctx':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
                        
             ]
         ctx['tabs']=ls
@@ -222,12 +223,21 @@ class LoginLogPage(TablePage):
         class filters(RowFilter):
             range_fields=['createtime']
 
-model_dc[TbAccount]={'fields':AccoutBaseinfo,'table':AccountPage.tableCls}
-model_dc[TbTicketmaster]={'table':AccountTicketTable}
-model_dc[TbLoginlog]={'table':AccountLoginTable}
-model_dc[TbTrans]={'table':AccountTransTable}
-model_dc[TbBalancelog]={'table':AccountBalanceTable}
-model_dc[TbWithdrawlimitlog]={'table':AccoutWithdrawLimitLogTable}
+director.update({
+    'account':AccountPage.tableCls,
+    'account.base.edit':AccoutBaseinfo,
+    'account.log':AccountLoginTable,
+    'account.ticketmaster':AccountTicketTable,
+    'account.trans':AccountTransTable,
+    'account.balancelog':AccountBalanceTable,
+    'account.withdrawlimitlog':AccoutWithdrawLimitLogTable,
+})
+#model_dc[TbAccount]={'fields':AccoutBaseinfo,'table':AccountPage.tableCls}
+#model_dc[TbTicketmaster]={'table':AccountTicketTable}
+#model_dc[TbLoginlog]={'table':AccountLoginTable}
+#model_dc[TbTrans]={'table':AccountTransTable}
+#model_dc[TbBalancelog]={'table':AccountBalanceTable}
+#model_dc[TbWithdrawlimitlog]={'table':AccoutWithdrawLimitLogTable}
 
 page_dc.update({
     'maindb.loginlog':LoginLogPage

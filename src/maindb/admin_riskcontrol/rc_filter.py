@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields,director
 from ..models import TbRcFilter
 
 class RcFilterPage(TablePage):
@@ -42,6 +42,11 @@ class RcFilterForm(ModelFields):
     
 
 model_dc[TbRcFilter]={'fields':RcFilterForm}
+
+director.update({
+    'risk.filter':RcFilterPage.tableCls,
+    'risk.filter.edit':RcFilterForm
+})
 
 page_dc.update({
     'maindb.TbRcFilter':RcFilterPage

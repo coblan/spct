@@ -1,0 +1,44 @@
+# encoding:utf-8
+from __future__ import unicode_literals
+from django.db import models
+from helpers.director.shortcut import field_map
+from helpers.director.model_func.fieldMapper import BasicMapper
+import re
+
+class CusPictureField(models.CharField):
+    pass
+
+class CusPictureMap(BasicMapper):
+    def to_dict(self,inst,name):
+        value = getattr(inst,name,None)
+        if value and value.startswith('/images/'):
+            out =  '/media/public%(file_path)s'%{'file_path':value}
+        else:
+            out = value
+        return {
+            name:out
+        }
+    
+    def clean_field(self,dc,name):
+        """
+        """
+        value = dc.get(name)
+        mt = re.search('/media/public(/.*)',value)
+        if mt:
+            return mt.group(1)
+        else:
+            return value
+    
+    def dict_table_head(self,head): 
+        head['editor']='com-table-picture'
+        return head
+    
+    def dict_field_head(self,head):
+        head['editor']='picture'
+        head['up_url']='/d/upload?path=public/images'
+        #head['config']={
+            #'up_url':'/d/upload?path=public/images'
+        #}
+        return head
+
+field_map[CusPictureField]=CusPictureMap

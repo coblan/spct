@@ -24,7 +24,7 @@ DATABASES = {
     'Betradar': {
         'NAME': 'Betradar',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': '103.246.219.202,1436',
+        'HOST': '192.168.40.79,1433',
         'USER': 'sa',
         'PASSWORD': 'cdqg@1215',
         #'PORT': '1436',
@@ -62,11 +62,11 @@ DATABASE_ROUTERS = ['hello.db_router.DbRouter']
 MAX_BANNER_SIZE=1024*1024*2
 
 # 上传时，由后端服务器发起post，所以采用局域网ip
-BANNER_UPLOAD_URL='http://192.168.40.103:9004/upload?folder=banner'
+BANNER_UPLOAD_URL='http://192.168.40.103:9004/api/upload?folder=banner'
 # 访问时由浏览器发起get，所以采用公网地址
 BANNER_ACCESS_URL='http://103.246.219.202:9004/file' 
 
-APP_PKG_UPLOAD_URL='http://192.168.40.103:9004/upload?folder=package'
+APP_PKG_UPLOAD_URL='http://192.168.40.103:9004/api/upload?folder=package'
 APP_PKG_ACCESS_URL='http://103.246.219.202:9004/file' 
 
 

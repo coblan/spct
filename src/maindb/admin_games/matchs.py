@@ -1,8 +1,10 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,ModelFields,model_dc,RowFilter
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,ModelFields,model_dc,RowFilter,RowSort
 from ..models import TbMatches
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
+from helpers.director.base_data import director
+from django.utils.timezone import datetime
 
 class MatchsPage(TablePage):
     template='jb_admin/table.html'
@@ -13,11 +15,14 @@ class MatchsPage(TablePage):
     class tableCls(ModelTable):
         model = TbMatches
         exclude=[]
-        fields_sort=['matchdate','tournamentzh','team1zh','team2zh','matchscore','winner','statuscode','roundinfo',
+        fields_sort=['matchid','matchdate','tournamentzh','team1zh','team2zh','matchscore','winner','statuscode','roundinfo',
                      'isrecommend','livebet','categoryid','currentperiodstart']
         class filters(RowFilter):
             range_fields=['matchdate']
             names=['isrecommend','livebet']
+        
+        class sort(RowSort):
+            names=['matchdate']
             
         def get_context(self):
             ctx = ModelTable.get_context(self)
@@ -33,15 +38,20 @@ class MatchsPage(TablePage):
                  'editor':'com-op-a',
                  'label':'产生赛果',
                  #'disabled':'!only_one_selected',
-                 'heads':[{'name':'matchid','label':'赛事ID','editor':'linetext'},
-                          {'name':'home_score','label':'主队分数','editor':'linetext'},
-                          {'name':'home_corner','label':'主队角球','editor':'linetext'},
-                          {'name':'away_score','label':'客队分数','editor':'linetext'},
-                          {'name':'away_corner','label':'客队角球','editor':'linetext'},
-                          {'name':'statuscode','label':'赛事状态','editor':'linetext'},
-                          {'name':'close_time','label':'结束时间','editor':'com-field-datetime'}],
-                 'ops':[{"fun":'xxx','label':'保存','editor':'com-field-op-btn'}]},
-                {'fun':'jie_suan_pai_cai','editor':'com-op-a','label':'结算派彩'},
+                 'fields_ctx':{
+                      'heads':[{'name':'matchid','label':'比赛','editor':'com-field-label-shower','readonly':True},
+                               {'name':'home_score','label':'主队分数','editor':'linetext'},
+                               {'name':'home_corner','label':'主队角球','editor':'linetext'},
+                               {'name':'away_score','label':'客队分数','editor':'linetext'},
+                               {'name':'away_corner','label':'客队角球','editor':'linetext'},
+                               #{'name':'statuscode','label':'赛事状态','editor':'linetext'},
+                               #{'name':'close_time','label':'结束时间','editor':'com-field-datetime'}
+                               ],
+                      'ops':[{"fun":'produce_match_outcome','label':'请求Service','editor':'com-field-op-btn'},],
+                      'extra_mixins':['produce_match_outcome']
+                 }
+                },
+                #{'fun':'jie_suan_pai_cai','editor':'com-op-a','label':'结算派彩'},
                 {'fun':'recommendate','editor':'com-op-a','label':'推介'},
                 {'fun':'livebet','editor':'com-op-a','label':'滚球'},
                 
@@ -50,6 +60,7 @@ class MatchsPage(TablePage):
         
         def dict_head(self, head):
             dc={
+                'matchid':60,
                 'matchdate':120,
                 'tournamentzh':70,
                 'team1zh':60,
@@ -73,6 +84,11 @@ class MatchsPage(TablePage):
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])            
             return head
+        
+        def dict_row(self, inst):
+            return {
+                '_matchid_label': '%(home)s VS %(away)s'%{'home':inst.team1zh,'away':inst.team2zh}
+            }
         #def get_heads(self):
             #heads = [{'name':'operations',
                     #'label':'操作',
@@ -100,8 +116,22 @@ class MatchForm(ModelFields):
     class Meta:
         model=TbMatches
         exclude=[]
+ 
+    
+    #def clean(self):
+        #if 'statuscode' in self.changed_data:
+            #self.instance.currentperiodstart = datetime.now()
+            #self.instance.save()
+        #return ModelFields.clean(self)
 
-model_dc[TbMatches]={'fields':MatchForm}
+
+
+director.update({
+    'match.table':MatchsPage.tableCls,
+    'match.table.edit':MatchForm
+})
+
+#model_dc[TbMatches]={'fields':MatchForm,'table':MatchsPage}
 
 page_dc.update({
     'maindb.Matches':MatchsPage

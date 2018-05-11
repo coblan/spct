@@ -8,21 +8,10 @@ import urlparse
 from androguard import misc
 import hashlib
 
-
-
 class AppPackageReciever(BasicReciever):
-    #def asView(self,request):
-        #file_dict = request.FILES
-        #file_url_list=[]
-        #for name, fl in file_dict.items():
-            #file_data= self.readFile(fl)
-            #file_url = self.procFile(file_data,name)
-            #file_url_list.append(file_url)
-            
-        #return HttpResponse(json.dumps(file_url_list),content_type="application/json")
-    
+
     def procFile(self,file_data,name):
-        file_path,file_name = self.getFilePath(file_data,name)
+        file_path,file_name = self.getFileName(file_data,name)
         with open(file_path,'wb') as general_file:
             general_file.write(file_data)
             general_file.flush()

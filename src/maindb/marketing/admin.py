@@ -4,12 +4,17 @@ from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
      TabPage,RowSearch,RowSort,RowFilter,field_map,model_to_name
 from helpers.director.model_func.dictfy import model_to_name
-from .models import TbBanner
-from .status_code import *
+from ..models import TbBanner
+from ..status_code import *
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import re
 from django.conf import settings
+from helpers.director.base_data import director
+from admin_TbNotice import *
+from admin_TbCurrency import *
+from admin_help import *
+from admin_activity import *
 
 class BannerPage(TablePage):
     template='maindb/table_pop_edit_without_height.html'
@@ -38,11 +43,12 @@ class BannerPage(TablePage):
             
             if head['name'] in ['status']:
                 head['editor'] = 'com-table-mapper'  
-                head['options'] = dict( BANNER_STATUS )
+                head['options'] = dict( ONLINE_STATUS )
             
             if head['name'] =='title':
                 head['editor'] = 'com-table-pop-fields'
-                head['fields_heads']=BannerForm(crt_user=self.crt_user).get_heads()
+                head['fields_ctx'] = BannerForm(crt_user=self.crt_user).get_head_context()
+                #head['fields_heads']=BannerForm(crt_user=self.crt_user).get_heads()
                 head['get_row'] = {
                     #'fun':'use_table_row'
                     "fun":'get_table_row'
@@ -56,7 +62,7 @@ class BannerPage(TablePage):
                     #'fun':'do_nothing'
                     'fun':'update_or_insert'
                 }
-                head['ops']=BannerForm(crt_user=self.crt_user).get_operations()
+                #head['ops']=BannerForm(crt_user=self.crt_user).get_operations()
                 
                 #head['model_name']=model_to_name(TbBanner)
                 
@@ -155,7 +161,15 @@ class PicturenameProc(object):
                 #return None
             #else:
                 #return model.objects.get(pk=value)  
-            
-model_dc[TbBanner]={'fields':BannerForm}
+
+director.update({
+    'banner.table':BannerPage.tableCls,
+    'banner.table.edit':BannerForm,
+})
+   
+#model_dc[TbBanner]={'fields':BannerForm}
 field_map[model_to_name(TbBanner)+'.picturename']=PicturenameProc
 
+page_dc.update({
+    'TbBanner':BannerPage
+})

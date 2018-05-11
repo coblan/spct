@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter,model_to_name
-from .models import TbTicketmaster,TbTicketstake,TbTicketparlay,TbMatches
-from .status_code import *
+     TabPage,RowSearch,RowSort,RowFilter,model_to_name,director
+from ..models import TbTicketmaster,TbTicketstake,TbTicketparlay,TbMatches
+from ..status_code import *
 
 
 class TicketMasterPage(TablePage):
@@ -23,12 +23,12 @@ class TicketMasterPage(TablePage):
              'get_data':{
                  'fun':'get_rows',
                  'kws':{
-                    'model_name':model_to_name(TbTicketstake),
+                    'director_name': TicketstakeTable.get_director_name(),#model_to_name(TbTicketstake),
                     'relat_field':'ticketid',
                  }
                  
              },
-             'heads_ctx':TicketstakeTable(crt_user=self.crt_user).get_head_context()  
+             'table_ctx':TicketstakeTable(crt_user=self.crt_user).get_head_context()  
              },
              #'model':model_to_name(TbTicketstake),
              #'relat_field':'ticketid',
@@ -39,12 +39,12 @@ class TicketMasterPage(TablePage):
              'get_data':{
                  'fun':'get_rows',
                  'kws':{
-                    'model_name':model_to_name(TbTicketparlay),
+                    'director_name': TicketparlayTable.get_director_name(),#model_to_name(TbTicketparlay),
                     'relat_field':'ticketid',
                  }
                  
              },
-             'heads_ctx':TicketparlayTable(crt_user=self.crt_user).get_head_context()
+             'table_ctx':TicketparlayTable(crt_user=self.crt_user).get_head_context()
              }
              
              #'model':model_to_name(TbTicketparlay),
@@ -171,8 +171,18 @@ class MatchForm(ModelFields):
             'winner':winner
         }
     
-model_dc[TbTicketstake] = {'table':TicketstakeTable}
-model_dc[TbTicketparlay] = {'table':TicketparlayTable}
-model_dc[TbMatches] = {'fields':MatchForm}
+#model_dc[TbTicketstake] = {'table':TicketstakeTable}
+#model_dc[TbTicketparlay] = {'table':TicketparlayTable}
+#model_dc[TbMatches] = {'fields':MatchForm}
+director.update({
+    'games.ticketmaster':TicketMasterPage.tableCls,
+    'games.TicketstakeTable':TicketstakeTable,
+    'games.TicketparlayTable':TicketparlayTable
+    
+})
+
+page_dc.update({
+    'maindb.ticketmaster':TicketMasterPage,
+})
 
     

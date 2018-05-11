@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>公告</title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+</head>
+<body>
+<script>
+    var activity_list=[
+        {cover:'',url:'sxxx'}
+    ]
+
+   var activity_list={{ activity_list | safe }}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+        /*font-size: 1.5em;*/
+    }
+
+
+    * {
+        moz-user-select: -moz-none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+</style>
+
+<div id="there">
+    <div v-for="itm in activity_list" class="itm-title"  @click="goto(itm.url)" style="margin-top: 1em;">
+        <img :src="itm.cover" alt="" width="100%">
+    </div>
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            activity_list:activity_list,
+        },
+        methods:{
+            goto:function(url){
+                var path = location.href
+                var mt = /(.*?)[^\/]+$/.exec(path)
+                var org_url = mt[1]+url
+                location='jb://www.jb.com/help?org_url='+encodeURIComponent(org_url)
+
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,9 +1,44 @@
 from account_admin import AccountBalanceTable,AccountTransTable,AccountTicketTable,AccountLoginTable,\
      AccoutWithdrawLimitLogTable,AccountTokenCodeTable
 from .models import TbBanner
+from .marketing.admin_help import get_mtype_options
+from .marketing.gen_help_file import gen_help_file
+from .marketing.gen_notice import gen_notice_file
+from .marketing.gen_activity_file import gen_activity_file
+import requests
+import json
 
 def get_global():
     return globals()
+
+def get_help_options():
+    return get_mtype_options()
+
+def update_help_file():
+    gen_help_file()
+    return {'status':'success'}
+
+def update_notice_file():
+    gen_notice_file()
+    return {'status':'success'}
+
+def produce_match_outcome(row):
+    url = 'http://192.168.40.103:9001/Match/ManualResulting'
+    data ={
+        'MatchID':row.get('matchid'),
+        'Team1Score':row.get('home_score'),
+        'Team2Score':row.get('away_score'),
+        'Team1Corner':row.get('home_corner'),
+        'Team2Corner':row.get('away_corner'),
+    }    
+    
+    rt = requests.post(url,data=data)
+    return json.loads( rt.content )
+    
+def update_activity_file():
+    gen_activity_file()
+    return {'status':'success'}
+
 
 #def get_balance_log(account_pk,user,searchargs={}):
     #dc={'account_pk':account_pk}

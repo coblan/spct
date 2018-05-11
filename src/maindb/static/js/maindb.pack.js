@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -144,6 +144,51 @@ window.app_pkg = app_pkg;
 "use strict";
 
 
+var help_logic = {
+
+    mounted: function mounted() {
+
+        var self = this;
+        ex.assign(this.op_funs, {
+            update_help_file: function update_help_file() {
+                cfg.show_load();
+                var post_data = [{ fun: 'update_help_file' }];
+                ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                    if (resp.update_help_file.status == 'success') {
+                        cfg.hide_load(500);
+                    } else {
+                        cfg.warning(resp);
+                        cfg.hide_load();
+                    }
+                });
+            }
+        });
+    },
+
+    computed: {
+        row_count: function row_count() {
+            return this.rows.length;
+        }
+    },
+    watch: {
+        row_count: function row_count(v) {
+            var post_data = [{ fun: 'get_help_options' }];
+            ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                var mtype_filter = ex.findone(row_filters, { name: 'mtype' });
+                mtype_filter.options = resp.get_help_options;
+            });
+        }
+    }
+};
+window.help_logic = help_logic;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var match_logic = {
     mounted: function mounted() {
         var self = this;
@@ -160,12 +205,12 @@ var match_logic = {
                 }
 
                 var index = layer.confirm('结束比赛?', function (index) {
-
+                    layer.close(index);
                     crt_row.statuscode = 100;
                     var post_data = [{ fun: 'save_row', row: crt_row }];
                     cfg.show_load();
                     ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                        layer.close(index);
+
                         if (resp.save_row.errors) {
                             cfg.warning(JSON.stringify(resp.save_row.errors));
                         } else {
@@ -181,14 +226,29 @@ var match_logic = {
                 }
 
                 var crt_row = self.selected[0];
+                //if(crt_row.statuscode !=100){
+                //    cfg.showMsg('请先结束比赛')
+                //    return
+                //}
+
+                var mt = /(\d+):(\d+)/.exec(crt_row.matchscore);
+                if (mt) {
+                    var home_score = mt[1];
+                    var away_score = mt[2];
+                } else {
+                    var home_score = 0;
+                    var away_score = 0;
+                }
+
                 var row = {
-                    matchid: '123',
-                    home_score: '123',
-                    away_score: '213',
-                    statuscode: crt_row.statuscode
+                    matchid: crt_row.matchid,
+                    _matchid_label: crt_row._matchid_label,
+                    home_score: home_score,
+                    away_score: away_score
+                    //statuscode:crt_row.statuscode
                 };
-                pop_fields_layer(row, kws.heads, kws.ops, function (kws) {
-                    alert(kws.new_row);
+                pop_fields_layer(row, kws.fields_ctx, function (e) {
+                    alert(e.new_row);
                 });
             },
             jie_suan_pai_cai: function jie_suan_pai_cai(kws) {
@@ -243,16 +303,83 @@ var match_logic = {
     }
 };
 
+var produce_match_outcome = {
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            produce_match_outcome: function produce_match_outcome(kws) {
+
+                var index = layer.confirm('确认手动结算?', function (index) {
+                    layer.close(index);
+
+                    var post_data = [{ fun: 'produce_match_outcome', row: self.row }];
+                    cfg.show_load();
+                    ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                        cfg.hide_load();
+                        cfg.showMsg(resp.produce_match_outcome.Message);
+                    });
+                });
+            }
+        });
+    }
+};
+
 window.match_logic = match_logic;
+window.produce_match_outcome = produce_match_outcome;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _match = __webpack_require__(1);
+var notice_logic = {
+
+    mounted: function mounted() {
+
+        var self = this;
+        ex.assign(this.op_funs, {
+            update_notice_file: function update_notice_file() {
+                cfg.show_load();
+                var post_data = [{ fun: 'update_notice_file' }];
+                ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                    if (resp.update_notice_file.status == 'success') {
+                        cfg.hide_load(500);
+                    } else {
+                        cfg.warning(resp);
+                        cfg.hide_load();
+                    }
+                });
+            }
+        });
+    }
+
+    //computed:{
+    //    row_count:function(){
+    //        return this.rows.length
+    //    }
+    //},
+    //watch:{
+    //    row_count:function(v){
+    //        var post_data=[{fun:'get_help_options'}]
+    //        ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+    //            var mtype_filter = ex.findone(row_filters,{name:'mtype'})
+    //            mtype_filter.options = resp.get_help_options
+    //        })
+    //    }
+    //},
+};
+window.notice_logic = notice_logic;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _match = __webpack_require__(2);
 
 var match = _interopRequireWildcard(_match);
 
@@ -260,7 +387,48 @@ var _app_pkg = __webpack_require__(0);
 
 var app_pkg = _interopRequireWildcard(_app_pkg);
 
+var _help = __webpack_require__(1);
+
+var help_logic = _interopRequireWildcard(_help);
+
+var _notice = __webpack_require__(3);
+
+var notice_logic = _interopRequireWildcard(_notice);
+
+var _activity = __webpack_require__(5);
+
+var activity_logic = _interopRequireWildcard(_activity);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var activity_logic = {
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            update_activity_file: function update_activity_file() {
+                cfg.show_load();
+                var post_data = [{ fun: 'update_activity_file' }];
+                ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                    if (resp.update_activity_file.status == 'success') {
+                        cfg.hide_load(500);
+                    } else {
+                        cfg.warning(resp);
+                        cfg.hide_load();
+                    }
+                });
+            }
+        });
+    }
+};
+
+window.activity_logic = activity_logic;
 
 /***/ })
 /******/ ]);

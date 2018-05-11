@@ -121,6 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 TIME_ZONE = 'UTC'
 
+
 USE_I18N = True
 
 USE_L10N = True
@@ -144,9 +145,10 @@ STATIC_URL = '/static/'
 
 
 #地区信息
-LANGUAGE_CODE = 'en'
-#LANGUAGE_CODE = 'zh-hans'
+#LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'zh-hans'
 TIME_ZONE='Asia/Shanghai'
+TIME_ZONE = 'UTC'
 
 # 优先使用app目录下的templates，这样更加便于开发
 STATICFILES_FINDERS=[
@@ -159,6 +161,8 @@ import sys
 if 'collectstatic' not in sys.argv:
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, 'static').replace('\\', '/'),
+        # 因为资源服务器的暴露方式，所以要求用 /static/xxx的方式来访问 ckeditor的图片
+        os.path.join( os.path.dirname(BASE_DIR),'media','public')
     )
 else:
     STATIC_ROOT= os.path.join(BASE_DIR, 'static').replace('\\', '/')

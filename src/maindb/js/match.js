@@ -14,12 +14,12 @@ var match_logic = {
                 }
 
                 var index = layer.confirm('结束比赛?',function(index){
-
+                    layer.close(index);
                     crt_row.statuscode=100
                     var post_data=[{fun:'save_row',row:crt_row}]
                     cfg.show_load()
                     ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
-                        layer.close(index);
+
                         if(resp.save_row.errors){
                             cfg.warning(JSON.stringify( resp.save_row.errors))
                         }else{
@@ -37,14 +37,29 @@ var match_logic = {
                 }
 
                 var crt_row = self.selected[0]
-                var row={
-                    matchid:'123',
-                    home_score:'123',
-                    away_score:'213',
-                    statuscode:crt_row.statuscode
+                //if(crt_row.statuscode !=100){
+                //    cfg.showMsg('请先结束比赛')
+                //    return
+                //}
+
+                var mt = /(\d+):(\d+)/.exec(crt_row.matchscore)
+                if(mt){
+                    var home_score= mt[1]
+                    var away_score=mt[2]
+                }else{
+                    var home_score= 0
+                    var away_score=0
                 }
-                pop_fields_layer(row,kws.heads,kws.ops,function(kws){
-                    alert(kws.new_row)
+
+                var row={
+                    matchid:crt_row.matchid,
+                    _matchid_label:crt_row._matchid_label,
+                    home_score:home_score,
+                    away_score:away_score,
+                    //statuscode:crt_row.statuscode
+                }
+                pop_fields_layer(row,kws.fields_ctx,function(e){
+                    alert(e.new_row)
                 })
             },
             jie_suan_pai_cai:function(kws){
@@ -99,4 +114,28 @@ var match_logic = {
     }
 }
 
+var produce_match_outcome={
+    mounted:function(){
+        var self=this
+        ex.assign(this.op_funs, {
+            produce_match_outcome: function (kws) {
+
+                var index = layer.confirm('确认手动结算?',function(index){
+                    layer.close(index);
+
+                    var post_data = [{fun:'produce_match_outcome',row:self.row}]
+                    cfg.show_load()
+                    ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+                        cfg.hide_load()
+                        cfg.showMsg(resp.produce_match_outcome.Message)
+                    })
+                })
+
+            }
+        })
+
+    }
+}
+
 window.match_logic = match_logic
+window.produce_match_outcome = produce_match_outcome

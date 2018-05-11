@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields,director
 from ..models import TbRcLevel
 
 class RcLevelPage(TablePage):
@@ -34,8 +34,12 @@ class RcLevelForm(ModelFields):
             #dc['rc_active']=0
         #return dc
 
-model_dc[TbRcLevel]={'fields':RcLevelForm}
+#model_dc[TbRcLevel]={'fields':RcLevelForm}
 
+director.update({
+    'risk.RcLevelPage':RcLevelPage.tableCls,
+    'risk.RcLevelPage.edit':RcLevelForm,
+})
 page_dc.update({
     'maindb.TbRcLevel':RcLevelPage
 })

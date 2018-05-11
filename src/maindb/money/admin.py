@@ -2,10 +2,10 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter
+     TabPage,RowSearch,RowSort,RowFilter,director
 from helpers.director.model_func.dictfy import model_to_name
-from .models import TbBalancelog,TbTrans,TbChannel
-from .status_code import *
+from ..models import TbBalancelog,TbTrans,TbChannel
+from ..status_code import *
 
 class BalancelogPage(TablePage):
     template='jb_admin/table.html'
@@ -143,5 +143,21 @@ class ChannelPage(TablePage):
     def get_label(self):
         return '金流渠道'
 
-model_dc[TbChannel]={'fields':ChannelPage.fieldsCls}
+director.update({
+    'money.balancelog':BalancelogPage.tableCls,
+    'money.channel':ChannelPage.tableCls,
+    'money.trans':TransPage.tableCls,
+    
+})
+
+page_dc.update({
+    #'maindb.account':AccountPage,
+    #'maindb.account.edit':AccountEditGroup,
+    #'maindb.ticketmaster':TicketMasterPage,
+    'maindb.balancelog':BalancelogPage,
+    'maindb.trans':TransPage,
+    'maindb.channel':ChannelPage,
+    #'TbBanner':BannerPage
+})
+#model_dc[TbChannel]={'fields':ChannelPage.fieldsCls}
                     

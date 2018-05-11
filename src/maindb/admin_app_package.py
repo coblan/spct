@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter,model_to_name,field_map
+     TabPage,RowSearch,RowSort,RowFilter,model_to_name,field_map,director
 from .models import TbAppversion
 from .status_code import *
 from django.core.urlresolvers import reverse
@@ -20,9 +20,10 @@ class AppPackage(TablePage):
         pop_edit_field='versionid'
         model=TbAppversion
         exclude=['id']
-        fields_sort=['versionid','versionname','md5','terminal','required','size','packageurl','description']
+        fields_sort=['versionid','versionname','md5','terminal','required','size','valid','packageurl','description']
         def dict_head(self, head):
             dc={
+                'valid':40,
                 'terminal':80,
                 'packageurl':180,
                 'md5':160,
@@ -80,9 +81,12 @@ class AppPkgUrlProc(object):
 
 field_map[model_to_name(TbAppversion)+'.packageurl']=AppPkgUrlProc
 
-model_dc[TbAppversion]={'fields':AppPackageForm}
+#model_dc[TbAppversion]={'fields':AppPackageForm}
 
-
+director.update({
+    'app_pkg':AppPackage.tableCls,
+    'app_pkg.edit':AppPackageForm,
+})
 page_dc.update({
     'maindb.TbAppversion':AppPackage
 })

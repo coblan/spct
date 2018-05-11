@@ -22,7 +22,7 @@ DATABASES = {
     'Betradar': {
         'NAME': 'Betradar',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': '103.246.219.202,1436',
+        'HOST': '192.168.40.79,1433',
         'USER': 'sa',
         'PASSWORD': 'cdqg@1215',
         #'PORT': '1436',
@@ -35,7 +35,7 @@ DATABASES = {
     'MainDB': {
         'NAME': 'MainDB',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': '103.246.219.202,1436',
+        'HOST': '192.168.40.79,1433',
         'USER': 'sa',
         'PASSWORD': 'cdqg@1215',
         #'PORT': '1436',
@@ -52,11 +52,12 @@ DATABASE_ROUTERS = ['hello.db_router.DbRouter']
 
 MAX_BANNER_SIZE=1024*1024*2
 
-BANNER_UPLOAD_URL='http://103.246.219.202:9004/upload?folder=banner'
-BANNER_ACCESS_URL='http://103.246.219.202:9004/file' 
+BANNER_UPLOAD_URL='http://103.246.219.202:9004/api/upload?folder=banner'
+BANNER_ACCESS_URL='http://103.246.219.202:9004' 
 
-APP_PKG_UPLOAD_URL='http://103.246.219.202:9004/upload?folder=package'
-APP_PKG_ACCESS_URL='http://103.246.219.202:9004/file' 
+
+APP_PKG_UPLOAD_URL='http://103.246.219.202:9004/api/upload?folder=package'
+APP_PKG_ACCESS_URL='http://103.246.219.202:9004' 
 
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 

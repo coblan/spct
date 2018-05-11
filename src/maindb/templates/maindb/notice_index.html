@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>公告</title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+</head>
+<body>
+<script>
+    var notice_list=[
+                {title:'玩法简介',url:'xxx',update_date:'2018-10-01'},
+                {title:'单注这个是啊啊大发动双攻暗算噶双噶双噶双噶双噶双安东噶东个',url:'bbb',update_date:'2018-10-01'},
+                {title:'单注',url:'bbb',update_date:'2018-10-01'},
+                {title:'单注',url:'bbb',update_date:'2018-10-01'}
+            ]
+
+   var notice_list={{ notice_list | safe }}
+
+</script>
+
+<style>
+    body{
+        background-color: #27282c;
+        /*font-size: 1.5em;*/
+    }
+    .section-title{
+        color: #72727e;
+        /*border-left: 2px solid #72727e;*/
+        margin: 0.9em;
+        font-size: 1.2em;
+    }
+    .section-content{
+        background-color: #2b2e37;
+        padding-left: 0;
+        margin-left: 1em;
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .section-content li{
+        list-style-type:none;
+        padding-top: 0.7em;
+        padding-bottom: 0.7em;
+    }
+    .itm-title{
+        color: #dee0ed;
+        margin-left: 5px;
+        border-bottom: 2px solid #34343e;
+        position: relative;
+        /*display: flex;*/
+        /*align-items:center;*/
+    }
+    .section-content>li:last-child{
+        border-bottom: none;
+    }
+    .right-arrow{
+        padding-right: 1em;
+        font-size: 1em;
+        color: #72727e;
+    }
+
+    .ellipsis{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+    }
+
+    * {
+        moz-user-select: -moz-none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /*body{*/
+    /*width: 100vw;*/
+    /*height: 100vh;*/
+    /*overflow: hidden;*/
+    /*}*/
+    /*#there{*/
+    /*width: 100vw;*/
+    /*height: 100vh;*/
+    /*overflow-y: auto;*/
+    /*}*/
+    /*#there::-webkit-scrollbar{width:0;height:0}*/
+
+    /*body::-webkit-scrollbar {display:none}*/
+</style>
+
+<div id="there">
+
+    <ul class="section-content">
+        <li v-for="itm in notice_list" class="itm-title"  @click="goto(itm.url)">
+            <div>
+                <div style="width: 2em;float: left;padding-top: 0.3em">
+                    <img style="width: 1.2em" src="/static/images/home_ic_gonggao.png" alt="">
+                </div>
+
+                <div style="margin-left: 2.5em;padding-right: 2em;">
+                    <div >
+                        <div style="color: #e6e8f6" class="ellipsis">
+                            <span v-text="itm.title"></span>
+                        </div>
+                        <div style="color: #7d7f8c;font-size: 80%">
+                            <span v-text="itm.update_date"></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </li>
+    </ul>
+
+
+</div>
+
+<script>
+    new Vue({
+        el:'#there',
+        data:{
+            notice_list:notice_list,
+        },
+        methods:{
+            goto:function(url){
+//                location = url+'?'
+                var path = location.href
+                var mt = /(.*?)[^\/]+$/.exec(path)
+                var org_url = mt[1]+url
+                location='jb://www.jb.com/help?org_url='+encodeURIComponent(org_url)
+                //<a href='jb://www.jb.com/help?org_url=xxxx' target='_blank'>xxxx</a>
+                //       <a href='xxxx?op=newwin' target='_blank'>xxxx</a>
+            }
+        }
+    })
+</script>
+</body>
+</html>

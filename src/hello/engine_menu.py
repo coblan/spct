@@ -19,10 +19,16 @@ class PcMenu(BaseEngine):
         menu=[
             {'label':_('DashBoard'),'url':page('home'),'icon':fa('fa-home')},
             
-            {'label':_('App Update'),'icon':fa('fa-image'),'visible':can_list((User,Group)),
+            {'label':_('Marketing'),'icon':fa('fa-image'),'visible':can_list((User,Group)),
             'submenu':[
                 {'label':_('Banner'),'url':page('TbBanner')},
                 {'label':_('App Package'),'url':page('maindb.TbAppversion')},
+                {'label':_('Notice'),'url':page('maindb.TbNotice')},
+                {'label':_('Currency'),'url':page('maindb.TbCurrency')},
+                {'label':_('Help'),'url':page('maindb.TbQa')},
+                {'label':_('Activity'),'url':page('maindb.TBActive')},
+                   
+                 
                 
                 ]},  
             

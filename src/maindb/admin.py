@@ -2,14 +2,18 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter
+     TabPage,RowSearch,RowSort,RowFilter,director
 from .models import TbAccount,TbBalancelog,TbLoginlog,TbTrans,TbTicketmaster
 from .status_code import *
 from .account_admin import AccountPage
-from .ticket_admin import TicketMasterPage
-from .money_admin import BalancelogPage,TransPage,ChannelPage
-from .banner_admin import BannerPage
-from .admin_games import ViewTicketSingleByMatch,matchs
+from .admin_games import admin
+#from .ticket_admin import TicketMasterPage
+#from .money_admin import BalancelogPage,TransPage,ChannelPage
+from .money import admin
+from .marketing import admin
+
+#from .banner_admin import BannerPage
+#from .admin_games import ViewTicketSingleByMatch,matchs
 
 from .admin_riskcontrol import rc_filter,rc_level,rc_user,withdraw_limit_log,blanklist
 import admin_app_package
@@ -96,16 +100,16 @@ class AccountLoginPage(TablePage):
         
 
 
-   
+
 
 page_dc.update({
     'maindb.account':AccountPage,
     'maindb.account.edit':AccountEditGroup,
-    'maindb.ticketmaster':TicketMasterPage,
-    'maindb.balancelog':BalancelogPage,
-    'maindb.trans':TransPage,
-    'maindb.channel':ChannelPage,
-    'TbBanner':BannerPage
+    #'maindb.ticketmaster':TicketMasterPage,
+    #'maindb.balancelog':BalancelogPage,
+    #'maindb.trans':TransPage,
+    #'maindb.channel':ChannelPage,
+    #'TbBanner':BannerPage
 })
 
-admin.site.register(TbAccount)
+#admin.site.register(TbAccount)

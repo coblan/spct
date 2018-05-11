@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields,RowSearch
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields,RowSearch,director
 from ..models import TbBlackuserlist,TbBlackuserlistLog,Blackiplist,Blackiprangelist,\
      Whiteiplist,Whiteuserlist,TbAccount
 
@@ -42,6 +42,9 @@ class BlankipRangeListPage(TablePage):
 
 class WhiteIpListPage(TablePage):
     template='jb_admin/table.html'
+    def get_label(self):
+        return 'IP白名单'
+    
     class tableCls(ModelTable):
         model = Whiteiplist
         exclude=[]
@@ -120,9 +123,26 @@ def ip2num(ip):
     num = 256 * 256 * 256 * long(arr[0]) + 256 * 256 * long(arr[1]) + 256 * long(arr[2]) +long(arr[3])
     return num
 
-model_dc[Blackiprangelist]={'fields':BlankipRangeListForm}
-model_dc[Whiteiplist]={'fields':WhiteIpListForm}
-model_dc[Whiteuserlist]={'fields':WhiteuserlistForm}
+#model_dc[Blackiprangelist]={'fields':BlankipRangeListForm}
+#model_dc[Whiteiplist]={'fields':WhiteIpListForm}
+#model_dc[Whiteuserlist]={'fields':WhiteuserlistForm}
+
+director.update({
+    'risk.TbBlackuserlistPage':TbBlackuserlistPage.tableCls,
+    'risk.TbBlackuserlistLogPage':TbBlackuserlistLogPage.tableCls,
+ 
+    'risk.WhiteIpListPage':WhiteIpListPage.tableCls,
+    'risk.WhiteIpListPage.edit':WhiteIpListForm,
+    
+    'risk.WhiteuserlistPage':WhiteuserlistPage.tableCls,
+    'risk.WhiteuserlistPage.edit':WhiteuserlistForm,
+    'risk.AccountSelect':AccountSelect,
+    
+    'risk.BlankipRangeListPage':BlankipRangeListPage.tableCls,
+    'risk.BlankipRangeListPage.edit':BlankipRangeListForm
+    
+    
+})
 
 page_dc.update({
     'maindb.TbBlackuserlist':TbBlackuserlistPage,

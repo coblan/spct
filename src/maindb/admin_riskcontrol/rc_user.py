@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter,model_dc,ModelFields,director
 from ..models import TbRcUser
 
 class RcUserPage(TablePage):
@@ -23,7 +23,10 @@ class RcUserPage(TablePage):
         class filters(RowFilter):
             names=['rc_level']
 
-
+director.update({
+    'risk.RcUserPage':RcUserPage.tableCls,
+    
+})
 page_dc.update({
     'maindb.TbRcUser':RcUserPage
 })

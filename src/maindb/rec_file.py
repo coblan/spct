@@ -13,7 +13,7 @@ import urlparse
 import hashlib
 import re
 from django.views.decorators.csrf import csrf_exempt
-from .banner.upload import upload_banner
+from .marketing.upload import upload_banner
 try:
     banners= os.path.join(settings.MEDIA_ROOT,'banners')
     os.makedirs(banners)
