@@ -976,7 +976,7 @@ var ck_complex = {
 	//height:800,
 };
 
-Vue.component('ckeditor', {
+var ckeditor = {
 	template: '<div class=\'ckeditor\'>\n\t\t    \t<textarea class="form-control" name="ri" ></textarea>\n\t    \t</div>',
 	props: {
 		value: {},
@@ -987,12 +987,18 @@ Vue.component('ckeditor', {
 	},
 	created: function created() {
 		var self = this;
-		if (!window.bus) {
-			window.bus = new Vue();
-		}
-		bus.$on('sync_data', function () {
+		//if(!window.bus){
+		//	window.bus=new Vue()
+		//}
+		eventBus.$on('sync_data', function () {
 			self.$emit('input', self.editor.getData());
 		});
+	},
+	watch: {
+		value: function value(v) {
+			this.editor.setData(this.value);
+			this.editor.checkDirty();
+		}
 	},
 	mounted: function mounted() {
 		var self = this;
@@ -1007,35 +1013,41 @@ Vue.component('ckeditor', {
 		ex.assign(config, self.config);
 		// 4.5.10   4.6.2   ///static/lib/ckeditor4.6.2.js
 		//
-		ex.load_js('https://cdn.bootcss.com/ckeditor/4.6.2/ckeditor.js', function () {
-			//CKEDITOR.timestamp='GABCDFDGff'
-			//self.input.value=self.value
+		//ex.load_js('https://cdn.bootcss.com/ckeditor/4.6.2/ckeditor.js',function(){
+		//CKEDITOR.timestamp='GABCDFDGff'
+		//self.input.value=self.value
 
-			var editor = CKEDITOR.replace(self.input, config);
-			editor.setData(self.value);
-			editor.checkDirty();
-			self.editor = editor;
+		var editor = CKEDITOR.replace(self.input, config);
+		editor.setData(self.value);
+		editor.checkDirty();
+		self.editor = editor;
 
-			//var is_changed=false
-			//editor.on( 'change', function( evt ) {
-			//	// getData() returns CKEditor's HTML content.
-			//	is_changed=true
-			//	//self.$emit('input',editor.getData())
-			//});
-			//
-			//setInterval(function(){
-			//	if(is_changed){
-			//		self.$emit('input',editor.getData())
-			//		is_changed=false
-			//	}
-			//},3000)
-		});
+		//var is_changed=false
+		//editor.on( 'change', function( evt ) {
+		//	// getData() returns CKEditor's HTML content.
+		//	is_changed=true
+		//	//self.$emit('input',editor.getData())
+		//});
+		//
+		//setInterval(function(){
+		//	if(is_changed){
+		//		self.$emit('input',editor.getData())
+		//		is_changed=false
+		//	}
+		//},3000)
+		//})
 	}
 	//events:{
 	//	'sync_data':function () {
 	//		this.model=this.editor.getData()
 	//	}
 	//}
+};
+
+Vue.component('ckeditor', function (resolve, reject) {
+	ex.load_js('https://cdn.bootcss.com/ckeditor/4.6.2/ckeditor.js', function () {
+		resolve(ckeditor);
+	});
 });
 
 var edit_level = {
@@ -1333,7 +1345,7 @@ var field_base = exports.field_base = {
             //        })
             //    }
             //},
-            template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            <textarea v-else class="form-control input-sm" rows="3" :id="\'id_\'+head.name" v-model="row[head.name]" :placeholder="head.placeholder" :readonly=\'head.readonly\'></textarea>\n            </div>'
+            template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            <textarea :style="head.style" v-else :maxlength="head.maxlength" class="form-control input-sm" rows="3" :id="\'id_\'+head.name" v-model="row[head.name]" :placeholder="head.placeholder" :readonly=\'head.readonly\'></textarea>\n            </div>'
         },
         color: {
             props: ['name', 'row', 'kw'],
@@ -1391,7 +1403,10 @@ var field_base = exports.field_base = {
         sim_select: {
             props: ['row', 'head'],
             data: function data() {
-                var inn_config = {};
+                var inn_config = {
+                    //orgin_order:true,
+                    order: false
+                };
                 if (this.head.config) {
                     ex.assign(inn_config, this.head.config);
                 }
@@ -1417,10 +1432,10 @@ var field_base = exports.field_base = {
                     }
                 },
                 orderBy: function orderBy(array, key) {
-                    if (this.head.orgin_order || this.cfg.orgin_order) {
-                        return array;
-                    } else {
+                    if (this.head.order || this.cfg.order) {
                         return order_by_key(array, key);
+                    } else {
+                        return array;
                     }
                 }
             }
@@ -1520,7 +1535,7 @@ var field_base = exports.field_base = {
         },
         richtext: {
             props: ['row', 'head'],
-            template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t\t<ckeditor  v-model="row[head.name]" :id="\'id_\'+head.name"></ckeditor>\n                       </div>'
+            template: '<div style="position: relative"><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t\t<ckeditor :style="head.style" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></ckeditor>\n                       </div>'
         }
 
     }
@@ -3193,7 +3208,7 @@ var com_select = {
     template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm" >\n        <option :value="undefined" v-text=\'head.label\'></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy( head.options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
         var inn_cfg = {
-            sort: true
+            order: false
         };
         ex.assign(inn_cfg, this.config);
         return {
@@ -3207,7 +3222,7 @@ var com_select = {
     },
     methods: {
         orderBy: function orderBy(array, key) {
-            if (!this.cfg.sort) {
+            if (!this.cfg.order) {
                 return array;
             } else {
                 return array.slice().sort(function (a, b) {
@@ -3859,7 +3874,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".error {\n  color: red; }\n\n.field-panel {\n  background-color: #F5F5F5;\n  margin: 20px;\n  padding: 20px 30px;\n  position: relative;\n  border: 1px solid #D9D9D9; }\n  .field-panel:after {\n    content: '';\n    display: block;\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    bottom: 0px;\n    width: 180px;\n    border-radius: 6px;\n    background-color: #fff;\n    z-index: 0; }\n  .field-panel .form-group.field {\n    display: flex;\n    align-items: flex-start;\n    margin-bottom: 0; }\n    .field-panel .form-group.field .field_input {\n      flex-grow: 0;\n      padding: 5px 20px;\n      width: 25em; }\n      .field-panel .form-group.field .field_input .ckeditor {\n        padding: 20px; }\n    .field-panel .form-group.field:first-child .control-label {\n      border-top: 5px solid #FFF; }\n    .field-panel .form-group.field .control-label {\n      width: 150px;\n      text-align: right;\n      padding: 5px 30px;\n      z-index: 100;\n      flex-shrink: 0;\n      border-top: 1px solid #EEE; }\n  .field-panel .form-group.field .field_input ._tow-col-sel {\n    /*width:750px;*/ }\n  .field-panel .form-group.field .help_text {\n    padding: 10px;\n    color: #999;\n    font-style: italic;\n    font-size: 0.9em; }\n  .field-panel .field {\n    position: relative; }\n\n._tow-col-sel select {\n  min-height: 7em; }\n\nimg.img-uploador {\n  max-width: 100px;\n  max-height: 100px; }\n\n.req_star {\n  color: red; }\n", ""]);
+exports.push([module.i, ".error {\n  color: red; }\n\n.field-panel {\n  background-color: #F5F5F5;\n  margin: 20px;\n  padding: 20px 30px;\n  position: relative;\n  border: 1px solid #D9D9D9; }\n  .field-panel:after {\n    content: '';\n    display: block;\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    bottom: 0px;\n    width: 180px;\n    border-radius: 6px;\n    background-color: #fff;\n    z-index: 0; }\n  .field-panel .form-group.field {\n    display: flex;\n    align-items: flex-start;\n    margin-bottom: 0; }\n    .field-panel .form-group.field .field_input {\n      flex-grow: 0;\n      padding: 5px 20px; }\n      .field-panel .form-group.field .field_input input {\n        max-width: 25em; }\n      .field-panel .form-group.field .field_input .ckeditor {\n        padding: 20px; }\n    .field-panel .form-group.field:first-child .control-label {\n      border-top: 5px solid #FFF; }\n    .field-panel .form-group.field .control-label {\n      width: 150px;\n      text-align: right;\n      padding: 5px 30px;\n      z-index: 100;\n      flex-shrink: 0;\n      border-top: 1px solid #EEE; }\n  .field-panel .form-group.field .field_input ._tow-col-sel {\n    /*width:750px;*/ }\n  .field-panel .form-group.field .help_text {\n    padding: 10px;\n    color: #999;\n    font-style: italic;\n    font-size: 0.9em; }\n  .field-panel .field {\n    position: relative; }\n\n._tow-col-sel select {\n  min-height: 7em; }\n\nimg.img-uploador {\n  max-width: 100px;\n  max-height: 100px; }\n\n.req_star {\n  color: red; }\n", ""]);
 
 // exports
 
