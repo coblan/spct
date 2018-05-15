@@ -63,15 +63,10 @@ class AppPkgUrlProc(object):
     def to_dict(self,inst,name):
         relative_url=getattr(inst,name,None)
         if relative_url:
-            return settings.APP_PKG_ACCESS_URL+relative_url
+            return {name:settings.APP_PKG_ACCESS_URL+relative_url}
         else:
-            return '' 
-    
-    #def get_label(self,inst,name):
-        #foreign=getattr(inst,name,None)
-        #if foreign:
-            #return unicode(foreign)
-    
+            return {name:''}
+     
     def from_dict(self,value,field):
         if value:
             if value.startswith(settings.APP_PKG_ACCESS_URL):

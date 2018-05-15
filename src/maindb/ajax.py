@@ -5,6 +5,7 @@ from .marketing.admin_help import get_mtype_options
 from .marketing.gen_help_file import gen_help_file
 from .marketing.gen_notice import gen_notice_file
 from .marketing.gen_activity_file import gen_activity_file
+from .admin_games.matchs import get_special_bet_value,save_special_bet_value_proc
 import requests
 import json
 
@@ -38,6 +39,14 @@ def produce_match_outcome(row):
 def update_activity_file():
     gen_activity_file()
     return {'status':'success'}
+
+
+def update_special_bet_value(matchid):
+    return get_special_bet_value(matchid)
+
+def save_special_bet_value(matchid, match_opened,oddstype,specialbetvalue):
+    return save_special_bet_value_proc(matchid,match_opened, oddstype,
+                                       specialbetvalue)
 
 
 #def get_balance_log(account_pk,user,searchargs={}):

@@ -7,3 +7,5 @@ import * as notice_logic from  './notice.js'
 import * as activity_logic from  './activity.js'
 
 
+import * as com_tab_special_bet_value from  './com_tab_special_bet_value.js'
+

@@ -53,11 +53,11 @@ DATABASE_ROUTERS = ['hello.db_router.DbRouter']
 MAX_BANNER_SIZE=1024*1024*2
 
 BANNER_UPLOAD_URL='http://103.246.219.202:9004/api/upload?folder=banner'
-BANNER_ACCESS_URL='http://103.246.219.202:9004' 
+BANNER_ACCESS_URL='http://103.246.219.202:9004/static' 
 
 
 APP_PKG_UPLOAD_URL='http://103.246.219.202:9004/api/upload?folder=package'
-APP_PKG_ACCESS_URL='http://103.246.219.202:9004' 
+APP_PKG_ACCESS_URL='http://103.246.219.202:9004/static' 
 
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 

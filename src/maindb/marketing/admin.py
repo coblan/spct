@@ -15,6 +15,7 @@ from admin_TbNotice import *
 from admin_TbCurrency import *
 from admin_help import *
 from admin_activity import *
+from helpers.director.model_func.fieldMapper import BasicMapper
 
 class BannerPage(TablePage):
     template='maindb/table_pop_edit_without_height.html'
@@ -51,12 +52,12 @@ class BannerPage(TablePage):
                 #head['fields_heads']=BannerForm(crt_user=self.crt_user).get_heads()
                 head['get_row'] = {
                     #'fun':'use_table_row'
-                    "fun":'get_table_row'
-                    #'fun':'get_with_relat_field',
-                    #'kws':{
-                        #"model_name":model_to_name(TbBanner),
-                        #'relat_field':'pk'
-                    #}
+                    #"fun":'get_table_row'
+                    'fun':'get_with_relat_field',
+                    'kws':{
+                        "director_name":'banner.table.edit',
+                        'relat_field':'pk'
+                    }
                 }
                 head['after_save']={
                     #'fun':'do_nothing'
@@ -129,20 +130,29 @@ class BannerForm(ModelFields):
             self.instance.save()
         return self.instance
 
-class PicturenameProc(object):
+class PicturenameProc(BasicMapper):
     def to_dict(self,inst,name):
         pic=getattr(inst,name,None)
         if pic:
             #return '/media/banners/'+pic
-            return settings.BANNER_ACCESS_URL+pic
+            return {name:settings.BANNER_ACCESS_URL+pic}
         else:
-            return '' 
+            return {} 
     
     #def get_label(self,inst,name):
         #foreign=getattr(inst,name,None)
         #if foreign:
             #return unicode(foreign)
-    
+    def clean_field(self, dc, name):
+        value = dc.get(name)
+        if value:
+            if value.startswith(settings.BANNER_ACCESS_URL):
+                return value[len(settings.BANNER_ACCESS_URL):]
+            #mt = re.search(r'[^\/]+$',value)
+            #return mt.group(0) 
+            else:
+                return value   
+            
     def from_dict(self,value,field):
         if value:
             if value.startswith(settings.BANNER_ACCESS_URL):
