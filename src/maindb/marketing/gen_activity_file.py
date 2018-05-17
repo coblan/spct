@@ -26,7 +26,7 @@ def gen_activity_file():
                 
                 unzip(par_path,zip_path)
                 ls.append({'cover':'/static'+itm.cover,
-                           'url':'/static/activity/%s/index.html'%mt.group(1)})
+                           'url':'%s/index.html'%mt.group(1)})
     
     index_temp = loader.get_template('maindb/activity_index.html')
     index_html = index_temp.render({'activity_list': json.dumps(ls)})

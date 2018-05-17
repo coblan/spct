@@ -1,4 +1,7 @@
 # encoding:utf-8
+"""
+该文件无用了。
+"""
 from __future__ import unicode_literals
 import requests
 from django.conf import settings

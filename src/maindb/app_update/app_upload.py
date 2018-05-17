@@ -7,19 +7,26 @@ import requests
 import urlparse
 from androguard import misc
 import hashlib
+import os
 
 class AppPackageReciever(BasicReciever):
 
+    def getParDir(self):
+        return os.path.join(settings.MEDIA_ROOT,'public/package')
+    
     def procFile(self,file_data,name):
-        file_path,file_name = self.getFileName(file_data,name)
+        par_dir = self.getParDir()
+        file_name = self.getFileName(file_data,name)
+        file_path = os.path.join(par_dir,file_name)
+        
         with open(file_path,'wb') as general_file:
             general_file.write(file_data)
             general_file.flush()
             
             ext = self.getSufix(name)
             
-            relative_path = self.sendToService(file_data, ext)
-            
+            #relative_path = self.sendToService(file_data, ext)
+            relative_path = '/package/%s'%file_name
             md5= self.getMd5(file_data)
             size = float( len(file_data) )/(1024*1024)
             size=round(size,2)
@@ -40,18 +47,18 @@ class AppPackageReciever(BasicReciever):
         m.update(file_data)  
         return  m.hexdigest() 
     
-    def sendToService(self,file_data,ext):
-        """
-        blob:文件二进制
-        ext:文件扩展名   .jpg
-        """
+    #def sendToService(self,file_data,ext):
+        #"""
+        #blob:文件二进制
+        #ext:文件扩展名   .jpg
+        #"""
         
-        upload_url =settings.APP_PKG_UPLOAD_URL
+        #upload_url =settings.APP_PKG_UPLOAD_URL
 
-        header={ 'Authorization': '76bbc167ed744ddd9d409b09705ddf13',
-                 'X-Extension':'.'+ext}
+        #header={ 'Authorization': '76bbc167ed744ddd9d409b09705ddf13',
+                 #'X-Extension':'.'+ext}
 
-        rt = requests.post(upload_url,data=file_data,headers=header)
-        return rt.text
+        #rt = requests.post(upload_url,data=file_data,headers=header)
+        #return rt.text
 
     

@@ -149,6 +149,7 @@ STATIC_URL = '/static/'
 LANGUAGE_CODE = 'zh-hans'
 TIME_ZONE='Asia/Shanghai'
 TIME_ZONE = 'UTC'
+USE_TZ = False
 
 # 优先使用app目录下的templates，这样更加便于开发
 STATICFILES_FINDERS=[

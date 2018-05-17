@@ -71,6 +71,13 @@ class PcMenu(BaseEngine):
                         ]},             
             
             
+            {'label':_('Report'),'icon':fa('fa-users'),'visible':can_list((User,Group)),
+            'submenu':[
+                {'label':'Channel','url':page('maindb.report.channel')},
+                {'label':'Account','url':page('maindb.report.account')},
+                ]},            
+            
+            
             {'label':'Betradar','icon':fa('fa-users'),'visible':can_list((User,Group)),
             'submenu':[
                 {'label':'Alltournamentsidcn','url':page('betradar.Alltournamentsidcn'),'icon':fa('fa-home')},

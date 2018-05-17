@@ -13,7 +13,7 @@ from django.conf import settings
 from helpers.director.base_data import director
 
 class CurrencyPage(TablePage):
-    template='jb_admin/table.html'
+    template='jb_admin/table_with_height.html'
     def get_label(self):
         return '金币管理'
     
@@ -34,10 +34,10 @@ class CurrencyForm(ModelFields):
     class Meta:
         model = TbCurrency
         exclude=[]
-    #def dict_head(self, head):
-        #if head['name'] =='createuser':
-            #head['editor']='com-field-label-shower'  
-        #return head
+    def dict_head(self, head):
+        if head['name'] =='icon':
+            head['up_url']='/d/upload?path=public/currency'  
+        return head
     
     #def save_form(self):
         #ModelFields.save_form(self)

@@ -9,6 +9,7 @@ from .status_code import *
 from django.core.urlresolvers import reverse
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from django.conf import settings
+from helpers.director.model_func.field_proc import BaseFieldProc
 
 class AppPackage(TablePage):
     template='jb_admin/table.html'
@@ -19,8 +20,8 @@ class AppPackage(TablePage):
     class tableCls(ModelTable):
         pop_edit_field='versionid'
         model=TbAppversion
-        exclude=['id']
-        fields_sort=['versionid','versionname','md5','terminal','required','size','valid','packageurl','description']
+        exclude=[]
+        fields_sort=['versionid','versionname','md5','terminal','required','size','valid','description']
         def dict_head(self, head):
             dc={
                 'valid':40,
@@ -59,7 +60,7 @@ class AppPackageForm(ModelFields):
         return head
 
 
-class AppPkgUrlProc(object):
+class AppPkgUrlProc(BaseFieldProc):
     def to_dict(self,inst,name):
         relative_url=getattr(inst,name,None)
         if relative_url:
@@ -67,12 +68,12 @@ class AppPkgUrlProc(object):
         else:
             return {name:''}
      
-    def from_dict(self,value,field):
-        if value:
-            if value.startswith(settings.APP_PKG_ACCESS_URL):
-                return value[len(settings.APP_PKG_ACCESS_URL):]
-            else:
-                return value
+    def clean_field(self,dc,name):
+        value = dc.get(name)
+        if value and value.startswith(settings.APP_PKG_ACCESS_URL):
+            return value[len(settings.APP_PKG_ACCESS_URL):]
+        else:
+            return value
 
 field_map[model_to_name(TbAppversion)+'.packageurl']=AppPkgUrlProc
 

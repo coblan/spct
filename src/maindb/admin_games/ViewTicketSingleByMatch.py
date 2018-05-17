@@ -50,6 +50,7 @@ class TicketSingleByMatchPage(TablePage):
                 dc[k] = unicode(dc[k])
             footer = [dc.get( mapper.get( name) ,'') for name in self.fields_sort]
             self.footer = footer
+            return query
         
         def dict_head(self, head):
             dc={

@@ -839,7 +839,8 @@ function pop_fields_layer(row, fields_ctx, callback) {
         shadeClose: true, //点击遮罩关闭
         content: '<div id="fields-pop-' + pop_id + '" style="height: 100%;">\n                    <component :is="\'com-pop-fields-\'+com_id" @del_success="on_del()" @sub_success="on_sub_success($event)"\n                    :row="row" :heads="fields_heads" :ops="ops"></component>\n                </div>',
         end: function end() {
-            $(window).resize();
+
+            eventBus.$emit('openlayer_changed');
         }
     });
 
@@ -888,7 +889,7 @@ function pop_fields_layer(row, fields_ctx, callback) {
         }
     });
 
-    $(window).resize();
+    eventBus.$emit('openlayer_changed');
 } /*
   * root 层面创建Vue组件，形成弹出框
   * */
@@ -1239,6 +1240,7 @@ var mix_table_data = {
             $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
                 self.rows = resp.get_rows.rows;
                 self.row_pages = resp.get_rows.row_pages;
+                self.search_args = resp.get_rows.search_args;
                 cfg.hide_load();
             });
         },
@@ -1317,6 +1319,7 @@ var mix_v_table_adapter = {
 
     mounted: function mounted() {
         eventBus.$on('content_resize', this.resize);
+        eventBus.$on('openlayer_changed', this.refreshSize);
     },
     computed: {
         columns: function columns() {
@@ -1325,7 +1328,8 @@ var mix_v_table_adapter = {
                 width: 60,
                 titleAlign: 'center',
                 columnAlign: 'center',
-                type: 'selection'
+                type: 'selection',
+                isFrozen: true
             };
             var cols = [first_col];
             var converted_heads = ex.map(this.heads, function (head) {
@@ -1352,6 +1356,9 @@ var mix_v_table_adapter = {
         }
     },
     methods: {
+        refreshSize: function refreshSize() {
+            this.$refs.vtable.resize();
+        },
         resize: function resize() {
             var self = this;
             $(self.$refs.vtable.$el).find('.v-table-rightview').css('width', '100%');
@@ -1864,10 +1871,10 @@ var get_row = {
         callback(cache_row);
     },
     get_with_relat_field: function get_with_relat_field(callback, row, kws) {
-        var model_name = kws.model_name;
+        var director_name = kws.director_name;
         var relat_field = kws.relat_field;
 
-        var dc = { fun: 'get_row', model_name: model_name };
+        var dc = { fun: 'get_row', director_name: director_name };
         dc[relat_field] = row[relat_field];
         var post_data = [dc];
         cfg.show_load();

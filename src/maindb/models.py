@@ -62,6 +62,7 @@ class TbAccount(models.Model):
     avatar = models.CharField(db_column='Avatar', max_length=255)  # Field name made lowercase.
     gender = models.IntegerField(db_column='Gender')  # Field name made lowercase.
     birthday = models.CharField(db_column='Birthday', max_length=10, blank=True, null=True)  # Field name 
+    points = models.IntegerField(db_column='Points', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -247,15 +248,16 @@ class TbChannel(models.Model):
     channelid = models.IntegerField(db_column='ChannelID',verbose_name='渠道ID', primary_key=True)  # Field name made lowercase.
     channel = models.CharField(db_column='Channel',verbose_name='渠道', max_length=40)  # Field name made lowercase.
     channelname = models.CharField(db_column='ChannelName',verbose_name='渠道名称', max_length=30)  # Field name made lowercase.
-    channelgroup = models.CharField(db_column='ChannelGroup', verbose_name='渠道群组',max_length=20)  # Field name made lowercase.
-    cashflow = models.SmallIntegerField(db_column='CashFlow',verbose_name='存提状态',choices=CHANNEL_CASHFLOW,default=0)  # Field name made lowercase.
-    returntype = models.CharField(db_column='ReturnType',verbose_name='回传类型', max_length=10)  # Field name made lowercase.
+    #channelgroup = models.CharField(db_column='ChannelGroup', verbose_name='渠道群组',max_length=20)  # Field name made lowercase.
+    #cashflow = models.SmallIntegerField(db_column='CashFlow',verbose_name='存提状态',choices=CHANNEL_CASHFLOW,default=0)  # Field name made lowercase.
+    #returntype = models.CharField(db_column='ReturnType',verbose_name='回传类型', max_length=10)  # Field name made lowercase.
     maxlimit = models.DecimalField(db_column='MaxLimit',verbose_name='最大限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
     minlimit = models.DecimalField(db_column='MinLimit',verbose_name='最小限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
     grouptitle = models.CharField(db_column='GroupTitle',verbose_name='群组名', max_length=20)  # Field name made lowercase.
-    btnname = models.CharField(db_column='BtnName',verbose_name='类型名', max_length=20)  # Field name made lowercase.
+    #btnname = models.CharField(db_column='BtnName',verbose_name='类型名', max_length=20)  # Field name made lowercase.
     status = models.SmallIntegerField(db_column='Status',verbose_name='状态',choices=CHANNEL_STATUS,default=0)  # Field name made lowercase.
-
+    terminal = models.IntegerField(db_column='Terminal')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_Channel'
@@ -385,11 +387,30 @@ class TbCurrency(models.Model):
     price = models.IntegerField(db_column='Price')  # Field name made lowercase.
     value = models.DecimalField(db_column='Value', max_digits=18, decimal_places=0)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    icon = models.CharField(db_column='Icon', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    icon = CusPictureField(db_column='Icon', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'TB_Currency'
+
+class TbChargeflow(models.Model):
+    id = models.BigIntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    channel = models.IntegerField(db_column='Channel')  # Field name made lowercase.
+    productid = models.IntegerField(db_column='ProductId')  # Field name made lowercase.
+    createtime = models.CharField(db_column='CreateTime', max_length=27)  # Field name made lowercase.
+    callbacktime = models.CharField(db_column='CallbackTime', max_length=27, blank=True, null=True)  # Field name made lowercase.
+    accountid = models.IntegerField(db_column='AccountId')  # Field name made lowercase.
+    amount = models.IntegerField(db_column='Amount')  # Field name made lowercase.
+    success = models.IntegerField(db_column='Success')  # Field name made lowercase.
+    credential = models.CharField(db_column='Credential', max_length=2048)  # Field name made lowercase.
+    error = models.CharField(db_column='Error', max_length=4096, blank=True, null=True)  # Field name made lowercase.
+    providerid = models.CharField(db_column='ProviderId', max_length=64, blank=True, null=True)  # Field name made lowercase.
+    currency = models.DecimalField(db_column='Currency', max_digits=18, decimal_places=0)  # Field name made lowercase.
+    remark = models.CharField(db_column='Remark', max_length=255, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_ChargeFlow'
 
 class TbContacts(models.Model):
     contactsid = models.AutoField(db_column='ContactsId', primary_key=True)  # Field name made lowercase.
@@ -992,11 +1013,38 @@ class TbStatuscode(models.Model):
         db_table = 'TB_StatusCode'
 
 
+#class TbTicketmaster(models.Model):
+    #ticketid = models.BigIntegerField(db_column='TicketID', primary_key=True)  # Field name made lowercase.
+    #account = models.CharField(db_column='Account', max_length=200)  # Field name made lowercase.
+    #stakeamount = models.DecimalField(db_column='StakeAmount', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    #betamount = models.DecimalField(db_column='BetAmount', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    #parlayrule = models.IntegerField(db_column='ParlayRule')  # Field name made lowercase.
+    #allowauto = models.SmallIntegerField(db_column='AllowAuto')  # Field name made lowercase.
+    #status = models.IntegerField(db_column='Status')  # Field name made lowercase.
+    #winbet = models.SmallIntegerField(db_column='WinBet')  # Field name made lowercase.
+    #createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    #betoutcome = models.DecimalField(db_column='BetOutcome', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    #turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    #bonuspa = models.DecimalField(db_column='BonusPa', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    #bonus = models.DecimalField(db_column='Bonus', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    #rawdata = models.CharField(db_column='RawData', max_length=4000)  # Field name made lowercase.
+    #settletime = models.DateTimeField(db_column='SettleTime', blank=True, null=True)  # Field name made lowercase.
+    #stakecount = models.IntegerField(db_column='StakeCount')  # Field name made lowercase.
+    #parlaycount = models.IntegerField(db_column='ParlayCount')  # Field name made lowercase.
+    #reststakecount = models.IntegerField(db_column='RestStakeCount')  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
+    #orderid = models.BigIntegerField(db_column='OrderID', unique=True)  # Field name made lowercase.
+    #handicap = models.IntegerField(db_column='Handicap')  # Field name made lowercase.
+    #possibleturnover = models.DecimalField(db_column='PossibleTurnover', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+
+    #class Meta:
+        #managed = False
+        #db_table = 'TB_TicketMaster'
+
+
 class TbTicketmaster(models.Model):
     "注单列表"
     ticketid = models.AutoField(db_column='TicketID',verbose_name='单号', primary_key=True)
-    #ticketid = models.BigIntegerField(db_column='TicketID', verbose_name='单号',primary_key=True, )  # Field name made lowercase.
-    #accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
     account = models.CharField(db_column='Account',verbose_name='账号', max_length=20)  # Field name made lowercase.
     stakeamount = models.DecimalField(db_column='StakeAmount',verbose_name='单注金额', max_digits=18, decimal_places=4)  # Field name made lowercase.
     betamount = models.DecimalField(db_column='BetAmount',verbose_name='总金额', max_digits=18, decimal_places=4)  # Field name made lowercase.
@@ -1006,9 +1054,9 @@ class TbTicketmaster(models.Model):
     winbet = models.SmallIntegerField(db_column='WinBet',verbose_name='是否中注')  # Field name made lowercase.
     createtime = models.DateTimeField(verbose_name='创建时间',db_column='CreateTime')  # Field name made lowercase.
     betoutcome = models.DecimalField(db_column='BetOutcome',verbose_name='派彩金额', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    turnover = models.DecimalField(db_column='Turnover', verbose_name='净利',max_digits=18, decimal_places=4)  # Field name made lowercase.
+    turnover = models.DecimalField(db_column='Turnover', verbose_name='流水',max_digits=18, decimal_places=4)  # Field name made lowercase.
     bonuspa = models.DecimalField(db_column='BonusPa',verbose_name='反水比例', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    bonus = models.DecimalField(db_column='Bonus',verbose_name='反水', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    bonus = models.DecimalField(db_column='Bonus',verbose_name='反水/红利', max_digits=18, decimal_places=4)  # Field name made lowercase.
     rawdata = models.CharField(db_column='RawData',verbose_name='原始数据', max_length=4000)  # Field name made lowercase.
     settletime = models.DateTimeField(verbose_name='结算时间',db_column='SettleTime')  # Field name made lowercase.
     stakecount = models.IntegerField(db_column='StakeCount')  # Field name made lowercase.
@@ -1016,6 +1064,9 @@ class TbTicketmaster(models.Model):
     reststakecount = models.IntegerField(db_column='RestStakeCount')  # Field name made lowercase.
     #accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(TbAccount,db_column='AccountID',db_constraint=False) 
+    orderid = models.BigIntegerField(db_column='OrderID', unique=True)  # Field name made lowercase.
+    handicap = models.IntegerField(db_column='Handicap')  # Field name made lowercase.
+    possibleturnover = models.DecimalField(db_column='PossibleTurnover', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.    
 
     class Meta:
         managed = False
@@ -1243,7 +1294,8 @@ class TbVipRescueLog(models.Model):
 class TbBanner(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    picturename = models.CharField(db_column='PictureName',verbose_name=_('Picture Name'), max_length=255)  # Field name made lowercase.
+    picturename = CusPictureField(db_column='PictureName',verbose_name=_('Picture Name'), max_length=255)  # Field name made lowercase
+    #picturename = models.CharField(db_column='PictureName',verbose_name=_('Picture Name'), max_length=255)  # Field name made lowercase.
     order = models.IntegerField(db_column='Order',verbose_name=_('Priority'))  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now=True)  # Field name made lowercase.
     createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
@@ -1259,7 +1311,8 @@ class TbWithdrawlimit(models.Model):
     accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=20)  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount',verbose_name='提款限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    accountid = models.IntegerField(db_column='AccountID', primary_key=True)  # Field name made lowercase.
+    accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',primary_key=True, db_constraint=False)  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountID', primary_key=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

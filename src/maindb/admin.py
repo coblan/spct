@@ -11,6 +11,7 @@ from .admin_games import admin
 #from .money_admin import BalancelogPage,TransPage,ChannelPage
 from .money import admin
 from .marketing import admin
+from .report import admin
 
 #from .banner_admin import BannerPage
 #from .admin_games import ViewTicketSingleByMatch,matchs
