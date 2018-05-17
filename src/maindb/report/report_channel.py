@@ -4,7 +4,7 @@ from helpers.director.shortcut import TablePage,ModelTable,page_dc,RowSort,direc
 from ..models import TbChannel,TbChargeflow
 from django.db.models.aggregates import Count,Sum
 from django.utils import timezone
-from helpers.director.table.filter_adapter import datetime_range_adapter
+
 
 class ReportChnnel(TablePage):
     template='jb_admin/table.html'
@@ -15,15 +15,16 @@ class ReportChnnel(TablePage):
         model=TbChargeflow
         exclude=[]
         
-
         @classmethod
-        def dict_search_args(cls,search_args):
-            proc,show = ModelTable.dict_search_args(search_args)
-            proc1,show1 = datetime_range_adapter(search_args, 'createtime', month=1)
-            proc.update(proc1)
-            show.update(show1)
-            
-            return proc,show
+        def clean_search_args(cls,search_args):
+            today = timezone.now()
+            sp = timezone.timedelta(days=30)
+            last = today-sp
+            def_start = last.strftime('%Y-%m-%d')
+            def_end=today.strftime('%Y-%m-%d')
+            search_args['_start_createtime'] =search_args.get('_start_createtime',def_start)
+            search_args['_end_createtime'] =search_args.get('_end_createtime',def_end)
+            return search_args
         
         def get_heads(self):
             heads = [{'name':'createdate','label':'日期','width':120}]
