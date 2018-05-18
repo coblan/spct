@@ -9,7 +9,7 @@ from datetime import datetime
 import json
 import hashlib
 import io
-import urlparse
+
 import hashlib
 import re
 from django.views.decorators.csrf import csrf_exempt

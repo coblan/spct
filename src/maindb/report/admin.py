@@ -1,2 +1,2 @@
-from report_channel import *
-from report_account import *
+from .report_channel import *
+from .report_account import *

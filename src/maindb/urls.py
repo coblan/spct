@@ -2,8 +2,8 @@
 """
 from django.conf.urls import include, url
 
-import rec_file
-import views
+from . import  rec_file
+from . import views
 
 
 urlpatterns = [ 

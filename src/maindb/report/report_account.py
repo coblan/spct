@@ -60,7 +60,7 @@ class ReportAccout(TablePage):
             for row in rows:
                 for k,v in row.items():
                     if isinstance(v,decimal.Decimal):
-                        row[k]=unicode(v)
+                        row[k]=str(v)
                     elif k =='ratio':
                         row[k]=round(v*100,2)
             return rows

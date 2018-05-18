@@ -76,7 +76,7 @@ class TransPage(TablePage):
         def dict_row(self, inst):
             channel = TbChannel.objects.get(pk=inst.channelid)
             return {
-                'channelid':unicode(channel)
+                'channelid':str(channel)
             }
         class filters(RowFilter):
             names=['channelid']
@@ -84,7 +84,7 @@ class TransPage(TablePage):
             
             def get_options(self, name):
                 if name =='channelid':
-                    return [{'value':x.channelid,'label':unicode(x)} for x in TbChannel.objects.all()]
+                    return [{'value':x.channelid,'label':str(x)} for x in TbChannel.objects.all()]
                 else:
                     return RowFilter.get_options(name)
             

@@ -10,7 +10,7 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from django.db import models
 from django.contrib.auth.models import User
-from status_code import *
+from .status_code import *
 from .cus_models_fields import CusPictureField
 
 class Blackiplist(models.Model):
@@ -69,7 +69,7 @@ class TbAccount(models.Model):
         db_table = 'TB_Account'
     
     def __unicode__(self):
-        return self.account or unicode(self.accountid) or 'new Account'
+        return self.account or str(self.accountid) or 'new Account'
 
 
 class TbAccountMatchFav(models.Model):

@@ -17,7 +17,7 @@ from .report import admin
 #from .admin_games import ViewTicketSingleByMatch,matchs
 
 from .admin_riskcontrol import rc_filter,rc_level,rc_user,withdraw_limit_log,blanklist
-import admin_app_package
+from . import  admin_app_package
 
 # Register your models here.
 #class AccountPage(TablePage):
@@ -66,7 +66,7 @@ class AccountEditGroup(TabPage):
             #tabs=[{'name':'blockgroup_normal','label':'基本信息','page_cls':JianFangInfoFormPage},]
         return tabs    
     def get_label(self):
-        return unicode(self.account)
+        return str(self.account)
 
 class AccountBaseInfoPage(FieldsPage):
     class fieldsCls(ModelFields):
@@ -76,7 +76,7 @@ class AccountBaseInfoPage(FieldsPage):
             
         def dict_row(self, inst):
             return {
-                'amount':unicode(inst.amount)
+                'amount':str(inst.amount)
             }        
 
 

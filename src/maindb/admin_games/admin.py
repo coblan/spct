@@ -1,3 +1,3 @@
-from ticket_admin import *
-from ViewTicketSingleByMatch import *
-from matchs import *
+from .ticket_admin import *
+from .ViewTicketSingleByMatch import *
+from .matchs import *

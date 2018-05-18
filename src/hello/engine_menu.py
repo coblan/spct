@@ -7,7 +7,7 @@ from django.contrib.auth.models import User,Group
 from helpers.maintenance.update_static_timestamp import js_stamp
 from django.utils.translation import ugettext as _
 from django.conf import settings
-from js_translation import get_tr
+from .js_translation import get_tr
 
 class PcMenu(BaseEngine):
     url_name='sportcenter'

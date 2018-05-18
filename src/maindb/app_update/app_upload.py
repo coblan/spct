@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from helpers.director.recv_file import BasicReciever
 from django.conf import settings
 import requests
-import urlparse
+
 from androguard import misc
 import hashlib
 import os

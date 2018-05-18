@@ -106,7 +106,7 @@ class AccountPage(TablePage):
         def dict_row(self, inst):
             account_type = dict(ACCOUNT_TYPE)
             return {
-                'amount':unicode(inst.amount),
+                'amount':str(inst.amount),
                 'accounttype': account_type.get(inst.accounttype)
             }
         

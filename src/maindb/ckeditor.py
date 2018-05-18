@@ -1,7 +1,6 @@
 from helpers.director.network.ckeditor import Ckeditor
 from django.conf import settings
 import os
-import urlparse
 
 class CusCkeditor(Ckeditor):
     def getParentPath(self):

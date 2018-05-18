@@ -47,7 +47,7 @@ class TicketSingleByMatchPage(TablePage):
             }
             out_dc={}
             for k in dc:
-                dc[k] = unicode(dc[k])
+                dc[k] = str(dc[k])
             footer = [dc.get( mapper.get( name) ,'') for name in self.fields_sort]
             self.footer = footer
             return query
@@ -96,9 +96,9 @@ class TicketSingleByMatchPage(TablePage):
                 'team_zh':team_zh,
                 'nums_stake':inst.nums_stake,
                 'nums_account':inst.nums_account,
-                'sum_betamount':unicode( inst.sum_betamount ) if inst.sum_betamount else '',
-                'sum_betoutcome':unicode( inst.sum_betoutcome ) if inst.sum_betoutcome else '',
-                'sum_profit':unicode( inst.sum_profit ) if inst.sum_profit else ''
+                'sum_betamount':str( inst.sum_betamount ) if inst.sum_betamount else '',
+                'sum_betoutcome':str( inst.sum_betoutcome ) if inst.sum_betoutcome else '',
+                'sum_profit':str( inst.sum_profit ) if inst.sum_profit else ''
                 #'team':inst.team1zh +' vs '+ inst.team2zh
             }
         
