@@ -56,11 +56,12 @@ DATABASES = {
        } ,     
 }
 
-ALLOWED_HOSTS=['103.246.219.202']
+ALLOWED_HOSTS=['103.246.219.202', '192.168.40.116']
 DATABASE_ROUTERS = ['hello.db_router.DbRouter']
 
 MAX_BANNER_SIZE=1024*1024*2
 
+# 下面两个地址没用了，现在采用mount路径解决了。
 # 上传时，由后端服务器发起post，所以采用局域网ip
 BANNER_UPLOAD_URL='http://192.168.40.103:9004/api/upload?folder=banner'
 # 访问时由浏览器发起get，所以采用公网地址
