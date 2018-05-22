@@ -6,6 +6,7 @@ from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,Mode
 from helpers.director.model_func.dictfy import model_to_name
 from ..models import TbBalancelog,TbTrans,TbChannel
 from ..status_code import *
+from .admin_chargeflow import *
 
 class BalancelogPage(TablePage):
     template='jb_admin/table.html'
@@ -55,6 +56,11 @@ class TransPage(TablePage):
     class tableCls(ModelTable):
         model = TbTrans
         include=['account','channelid','amount','realamount','fee','status','createtime','exectime']
+        #fields_sort = ['account','channelid__channelname','amount','realamount','fee','status','createtime','exectime']
+        
+        #def inn_filter(self, query):
+            #return query.values(self.include)
+        
         def dict_head(self, head):
             dc={
                 'account':80,
@@ -74,10 +80,15 @@ class TransPage(TablePage):
             return []
         
         def dict_row(self, inst):
-            channel = TbChannel.objects.get(pk=inst.channelid)
-            return {
-                'channelid':str(channel)
-            }
+            #channel = TbChannel.objects.get(pk=inst.channelid)
+            try:
+                return {
+                    'channelid':str(inst.channelid)
+                }
+            except:
+                return {
+                    'channelid':''
+                }
         class filters(RowFilter):
             names=['channelid']
             range_fields=['createtime']

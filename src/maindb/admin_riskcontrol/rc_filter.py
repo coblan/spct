@@ -15,10 +15,24 @@ class RcFilterPage(TablePage):
         #fields_sort=['rc_level','rc_rule','rc_rule_name','rc_filter','rc_active','']
         
         def dict_head(self, head):
+            
             if head['name'] in ['rc_filter','rc_days']:
                 head['editor'] = 'com-table-linetext'
             if head['name'] == 'rc_active':
                 head['editor'] = 'com-table-checkbox'
+                
+            dc={
+                'rc_level':60,
+                'rc_rule':80,
+                'rc_rule_name':70,
+                'rc_filter':60,
+                'rc_active':60,
+                'rc_days':80,
+                'description': 200,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])   
+                
             return head
         def dict_row(self, inst):
             return {

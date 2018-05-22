@@ -6,6 +6,7 @@ from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
 from django.utils.timezone import datetime
 import time
+import requests
 
 class MatchsPage(TablePage):
     template='jb_admin/table.html'
@@ -45,7 +46,7 @@ class MatchsPage(TablePage):
             ops =[
                 #{'name':'save_changed_rows','editor':'com-op-a','label':'保存','hide':'!changed'},
                 
-                {'fun':'close_match','editor':'com-op-a','label':'结束比赛'},
+                #{'fun':'close_match','editor':'com-op-a','label':'结束比赛'},
                 {'fun':'manual_end_money',
                  'editor':'com-op-a',
                  'label':'产生赛果',
@@ -151,7 +152,7 @@ def get_special_bet_value(matchid):
             }            
         )
 
-    for odd in TbOdds.objects.filter(matchid=matchid,status=1,oddstype__enabled=1)\
+    for odd in TbOdds.objects.filter(matchid=matchid,status=1,oddstype__enabled=1,oddstype__oddstypegroup__enabled=1)\
         .values('oddstype__oddstypenamezh','oddstype__oddstypegroup','specialbetvalue'):
         #print(odd.specialbetvalue)
         if odd['specialbetvalue'] !='':
@@ -175,20 +176,19 @@ def get_special_bet_value(matchid):
             tmp_ls.append(i)
     specialbetvalue=tmp_ls 
     
-    for oddsswitch in TbMatchesoddsswitch.objects.filter(matchid=matchid,status=1):
+    for oddsswitch in TbMatchesoddsswitch.objects.select_related('oddstypegroup').filter(matchid=matchid,status=1,oddstypegroup__enabled=1):
+        # 1 封盘 比赛
         if oddsswitch.types==1:
             match_opened =False
+        # 2 封盘 玩法
         elif oddsswitch.types ==2:
-            #ls =[odd for odd in match_odds if odd.oddstype.oddstypegroup==oddsswitch.oddstypegroup]
-            #for odd in ls :#match_odds.filter(oddstype__oddstypegroup=oddsswitch.oddstypegroup):
             for i in oddstype:
-                if i['oddstypegroup'] == oddsswitch.oddstypegroup:
+                if i['oddstypegroup'] == oddsswitch.oddstypegroup_id:
                     i['opened']=False
+        # 3 封盘 值 specialbetvalue
         elif oddsswitch.types==3:
-            #ls =[odd for odd in match_odds if odd.specialbetvalue==oddsswitch.specialbetvalue]
-            #for odd in ls: #match_odds.filter(specialbetvalue=oddsswitch.specialbetvalue):
             for i in specialbetvalue:
-                if i['oddstypegroup'] == oddsswitch.oddstypegroup and i['specialbetvalue']==oddsswitch.specialbetvalue:
+                if i['oddstypegroup'] == oddsswitch.oddstypegroup_id and i['specialbetvalue']==oddsswitch.specialbetvalue:
                     i['opened']=False
 
     return {
@@ -206,7 +206,7 @@ def save_special_bet_value_proc(matchid, match_opened,oddstype,specialbetvalue):
     else:
         for odtp in oddstype:
             if not odtp['opened']:
-                TbMatchesoddsswitch.objects.create(matchid=matchid,types=2,status=1,oddstypegroup=odtp['oddstypegroup'])
+                TbMatchesoddsswitch.objects.create(matchid=matchid,types=2,status=1,oddstypegroup_id=odtp['oddstypegroup'])
         
         for spbt in specialbetvalue:
             if not spbt['opened']:
@@ -218,13 +218,22 @@ def save_special_bet_value_proc(matchid, match_opened,oddstype,specialbetvalue):
                         break
                 if par_odd['opened']:
                     TbMatchesoddsswitch.objects.create(matchid=matchid,types=3,status=1,
-                                                       oddstypegroup=par_odd['oddstypegroup'],
+                                                       oddstypegroup_id=par_odd['oddstypegroup'],
                                                        specialbetvalue=spbt['specialbetvalue'])
-    return {'status':'success'}
+    # 请求service，关闭盘口
+    match = TbMatches.objects.get(matchid=matchid)
+    msg = ['TbMatchesoddsswitch操作成功']
+    if match.livebet==1:
+        url = 'http://192.168.40.103:9001/Match/Messages'
+        rt = requests.post(url,data={'EventName':'oddtypesChanged','MatchID':matchid})
+        msg.append('已经滚球，请求service封盘，返回结果为:%s'%rt.content.decode('utf-8'))
+    
+    return {'status':'success','msg':msg}
 
 director.update({
     'match.table':MatchsPage.tableCls,
-    'match.table.edit':MatchForm
+    'match.table.edit':MatchForm,
+    
 })
 
 #model_dc[TbMatches]={'fields':MatchForm,'table':MatchsPage}

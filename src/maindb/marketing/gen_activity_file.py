@@ -57,8 +57,8 @@ def get_html_name(title):
     return fl_name+'.html'
 
 def unzip(par_path,path):
-    zip_ref = zipfile.ZipFile(path.encode('utf-8', 'r'))
-    zip_ref.extractall(par_path.encode('utf-8'))
+    zip_ref = zipfile.ZipFile(path)
+    zip_ref.extractall(par_path)
     zip_ref.close()    
     
     #zfile = zipfile.ZipFile(path,'r')

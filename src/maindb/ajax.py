@@ -1,5 +1,5 @@
-from account_admin import AccountBalanceTable,AccountTransTable,AccountTicketTable,AccountLoginTable,\
-     AccoutWithdrawLimitLogTable,AccountTokenCodeTable
+from .account_admin import AccountBalanceTable,AccountTransTable,AccountTicketTable,AccountLoginTable,\
+     AccoutWithdrawLimitLogTable
 from .models import TbBanner
 from .marketing.admin_help import get_mtype_options
 from .marketing.gen_help_file import gen_help_file

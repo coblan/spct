@@ -4,7 +4,7 @@ from django.utils.translation import ugettext as _
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
      TabPage,RowSearch,RowSort,RowFilter,model_to_name,director
-from .models import TbAccount,TbBalancelog,TbLoginlog,TbTrans,TbTicketmaster,TbWithdrawlimitlog,TbTokencode
+from .models import TbAccount,TbBalancelog,TbLoginlog,TbTrans,TbTicketmaster,TbWithdrawlimitlog
 from .status_code import *
 
 # Register your models here.
@@ -19,7 +19,7 @@ class AccountPage(TablePage):
         baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
         ls = [
             {'name':'baseinfo',
-             'label':'基本信息',
+             'label':_('Basic Info'),
              'com':'com_tab_fields',
              'get_data':{
                  'fun':'get_row',
@@ -35,7 +35,7 @@ class AccountPage(TablePage):
              'ops': baseinfo.get_operations()                 
              },
             {'name':'balance_log',
-             'label':'帐目记录',
+             'label':_('Balance Log'),
              'com':'com_tab_table',
              'get_data':{
                  'fun':'get_rows',
@@ -48,7 +48,7 @@ class AccountPage(TablePage):
              'table_ctx':AccountBalanceTable(crt_user=self.crt_user).get_head_context()
              },
             {'name':'account_trans',
-             'label':'交易记录',
+             'label':_('Transaction Log'),
              'com':'com_tab_table',
              'get_data':{
                  'fun':'get_rows',
@@ -60,7 +60,7 @@ class AccountPage(TablePage):
              'table_ctx':AccountTransTable(crt_user=self.crt_user).get_head_context()
              },
             {'name':'account_ticket',
-             'label':'投注记录',
+             'label':_('Ticket'),
              'com':'com_tab_table',
              'get_data':{
                  'fun':'get_rows',
@@ -72,18 +72,18 @@ class AccountPage(TablePage):
              'table_ctx':AccountTicketTable(crt_user=self.crt_user).get_head_context()
              },
             {'name':'account_login',
-            'label':'登录日志',
+            'label':_('Login Log'),
             'com':'com_tab_table',
             'get_data':{
                 'fun':'get_rows',
                 'kws':{
                     'director_name':AccountLoginTable.get_director_name(), #model_to_name(TbLoginlog),
-                    'relat_field':'account',                    
+                    'relat_field':'accountid',                    
                 }
             },
             'table_ctx':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
             {'name':'account_withdrawlimitlog',
-            'label':'提款限额记录',
+            'label':_('Withdraw Log'),
             'com':'com_tab_table',
             'get_data':{
                 'fun':'get_rows',
@@ -198,14 +198,14 @@ class AccoutWithdrawLimitLogTable(WithAccoutInnFilter):
     exclude=[]
    
 
-class AccountTokenCodeTable(AccountTabBase):
-    # 去掉了。
-    model=TbTokencode
-    exclude=[]
-    class sort(RowSort):
-        names=['tokentypeid']
-    class filters(RowFilter):
-        names=['tokentypeid']
+#class AccountTokenCodeTable(AccountTabBase):
+    ## 去掉了。
+    #model=TbTokencode
+    #exclude=[]
+    #class sort(RowSort):
+        #names=['tokentypeid']
+    #class filters(RowFilter):
+        #names=['tokentypeid']
 
 class LoginLogPage(TablePage):
     template='jb_admin/table.html'
@@ -215,8 +215,26 @@ class LoginLogPage(TablePage):
     class tableCls(ModelTable):
         model=TbLoginlog
         exclude=[]
-        fields_sort=['account','devicecode','deviceip','appversion','devicename','deviceversion',
-                     'logintype','createtime','logouttime']
+        fields_sort=['accountid__username','devicecode','deviceip','appversion','devicename','deviceversion',
+                     'logintype','createtime']
+        
+        def get_heads(self):
+            heads=[{
+                'name':'accountid__username',
+                'label':'用户'
+            }]
+            heads2 = ModelTable.get_heads(self)
+            heads.extend(heads2)
+            return heads
+        
+        def permited_fields(self):
+            fields = ModelTable.permited_fields(self)
+            fields.append('accountid__username')
+            return fields
+        
+        def inn_filter(self, query):
+            return query.values(*self.fields_sort)
+        
         class search(RowSearch):
             names=['account','deviceip']
         
@@ -231,6 +249,8 @@ director.update({
     'account.trans':AccountTransTable,
     'account.balancelog':AccountBalanceTable,
     'account.withdrawlimitlog':AccoutWithdrawLimitLogTable,
+    
+    'account.loginpage':LoginLogPage.tableCls,
 })
 #model_dc[TbAccount]={'fields':AccoutBaseinfo,'table':AccountPage.tableCls}
 #model_dc[TbTicketmaster]={'table':AccountTicketTable}

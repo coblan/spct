@@ -37,6 +37,7 @@ class BlankipRangeListPage(TablePage):
     class tableCls(ModelTable):
         model=Blackiprangelist
         exclude=[]
+        hide_fields = ['startipnum', 'endipnum']
         pop_edit_field='blackiprangelistid'
         
 
@@ -47,7 +48,7 @@ class WhiteIpListPage(TablePage):
     
     class tableCls(ModelTable):
         model = Whiteiplist
-        exclude=[]
+        exclude=['itype']
         pop_edit_field='whiteiplistid'
 
 class WhiteuserlistPage(TablePage):
@@ -57,11 +58,12 @@ class WhiteuserlistPage(TablePage):
     
     class tableCls(ModelTable):
         model=Whiteuserlist
-        exclude=['username','addtime']
+        exclude=['username','addtime', 'itype']
     
         pop_edit_field='whiteuserlistid'
 
 class BlankipRangeListForm(ModelFields):
+    #hide_fields = ['startipnum', '']
     class Meta:
         model=Blackiprangelist
         exclude=[]

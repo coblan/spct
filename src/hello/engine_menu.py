@@ -42,9 +42,10 @@ class PcMenu(BaseEngine):
             
             {'label':_('MoneyFlow'),'icon':fa('fa-dollar'),'visible':can_list((User,Group)),
             'submenu':[
-                {'label':_('Tb Balance Log'),'url':page('maindb.balancelog'),'icon':fa('fa-home')},
-                {'label':_('Tb Trans'),'url':page('maindb.trans'),'icon':fa('fa-home')},
-                {'label':_('Tb Channel'),'url':page('maindb.channel'),'icon':fa('fa-home')},
+                {'label':_('Tb Balance Log'),'url':page('maindb.balancelog')},
+                {'label':_('Charge Flow'),'url':page('ChargeFlow'),},
+                #{'label':_('Tb Trans'),'url':page('maindb.trans'),'icon':fa('fa-home')},
+                {'label':_('Tb Channel'),'url':page('maindb.channel')},
                              ]}, 
             
             {'label':_('Games'),'icon':fa('fa-globe'),'visible':can_list((User,Group)),
@@ -73,8 +74,8 @@ class PcMenu(BaseEngine):
             
             {'label':_('Report'),'icon':fa('fa-users'),'visible':can_list((User,Group)),
             'submenu':[
-                {'label':'Channel','url':page('maindb.report.channel')},
-                {'label':'Account','url':page('maindb.report.account')},
+                {'label':_('Channel'),'url':page('maindb.report.channel')},
+                {'label':_('Account'),'url':page('maindb.report.account')},
                 ]},            
             
             

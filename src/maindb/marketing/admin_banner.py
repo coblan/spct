@@ -11,14 +11,20 @@ from django.core.urlresolvers import reverse
 import re
 from django.conf import settings
 from helpers.director.base_data import director
-
+from helpers.maintenance.update_static_timestamp import js_stamp_dc
 #from helpers.director.model_func.field_proc import BaseFieldProc
 
 class BannerPage(TablePage):
     template='jb_admin/table_with_height.html'
+    extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
     class tableCls(ModelTable):
         model = TbBanner
         include = ['title','status','picturename','order','createuser','createtime','description']
+        
+        def get_context(self):
+            ctx = ModelTable.get_context(self)
+            ctx['extra_table_logic'] = 'banner_logic'
+            return ctx  
         
         def dict_head(self, head):
             dc={
