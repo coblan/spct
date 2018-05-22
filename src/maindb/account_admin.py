@@ -41,24 +41,24 @@ class AccountPage(TablePage):
                  'fun':'get_rows',
                  'kws':{
                     'director_name':AccountBalanceTable.get_director_name() ,# model_to_name(TbBalancelog),
-                    'relat_field':'account',
+                    'relat_field':'accountid',
                  }
                  
              },
              'table_ctx':AccountBalanceTable(crt_user=self.crt_user).get_head_context()
              },
-            {'name':'account_trans',
-             'label':_('Transaction Log'),
-             'com':'com_tab_table',
-             'get_data':{
-                 'fun':'get_rows',
-                 'kws':{
-                     'director_name':AccountTransTable.get_director_name(),# model_to_name(TbTrans),
-                     'relat_field':'account',                     
-                 }
-             },
-             'table_ctx':AccountTransTable(crt_user=self.crt_user).get_head_context()
-             },
+            #{'name':'account_trans',
+             #'label':_('Transaction Log'),
+             #'com':'com_tab_table',
+             #'get_data':{
+                 #'fun':'get_rows',
+                 #'kws':{
+                     #'director_name':AccountTransTable.get_director_name(),# model_to_name(TbTrans),
+                     #'relat_field':'account',                     
+                 #}
+             #},
+             #'table_ctx':AccountTransTable(crt_user=self.crt_user).get_head_context()
+             #},
             {'name':'account_ticket',
              'label':_('Ticket'),
              'com':'com_tab_table',
@@ -66,7 +66,7 @@ class AccountPage(TablePage):
                  'fun':'get_rows',
                  'kws':{
                      'director_name': AccountTicketTable.get_director_name(), #model_to_name(TbTicketmaster),
-                     'relat_field':'account',
+                     'relat_field':'accountid',
                  }
              },
              'table_ctx':AccountTicketTable(crt_user=self.crt_user).get_head_context()
@@ -82,17 +82,17 @@ class AccountPage(TablePage):
                 }
             },
             'table_ctx':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
-            {'name':'account_withdrawlimitlog',
-            'label':_('Withdraw Log'),
-            'com':'com_tab_table',
-            'get_data':{
-                'fun':'get_rows',
-                'kws':{
-                    'director_name': AccoutWithdrawLimitLogTable.get_director_name(),#model_to_name(TbWithdrawlimitlog),
-                    'relat_field':'account',                    
-                }
-            },
-            'table_ctx':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
+            #{'name':'account_withdrawlimitlog',
+            #'label':_('Withdraw Log'),
+            #'com':'com_tab_table',
+            #'get_data':{
+                #'fun':'get_rows',
+                #'kws':{
+                    #'director_name': AccoutWithdrawLimitLogTable.get_director_name(),#model_to_name(TbWithdrawlimitlog),
+                    #'relat_field':'accountid',                    
+                #}
+            #},
+            #'table_ctx':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
                        
             ]
         ctx['tabs']=ls
@@ -154,8 +154,8 @@ class AccountTabBase(ModelTable):
 class WithAccoutInnFilter(ModelTable):
     def inn_filter(self, query):
         query = ModelTable.inn_filter(self,query)
-        if self.kw.get('account'):
-            return query.filter(account=self.kw.get('account'))   
+        if self.kw.get('accountid'):
+            return query.filter(accountid=self.kw.get('accountid'))   
         else:
             return query    
 
@@ -233,7 +233,7 @@ class LoginLogPage(TablePage):
             return fields
         
         def inn_filter(self, query):
-            return query.values(*self.fields_sort)
+            return query.values(*self.fields_sort).order_by('-createtime')
         
         class search(RowSearch):
             names=['account','deviceip']

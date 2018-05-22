@@ -785,7 +785,7 @@ Vue.component('com-field-pop-table-select', pop_table_select);
 
 Vue.component('com-field-op-btn', {
     props: ['head'],
-    template: '<button @click="operation_call()"><span v-text="head.label"></span></button>',
+    template: '<button @click="operation_call()" class="btn btn-default">\n        <i v-if="head.icon" :class="[\'fa\',head.icon]"></i><span v-text="head.label"></span>\n        </button>',
     methods: {
         operation_call: function operation_call() {
             this.$emit('operation', this.head.name);
@@ -2112,7 +2112,7 @@ var ajax_fields = {
         };
     },
     mixins: [mix_fields_data, mix_nice_validator],
-    template: '<div class="flex-v">\n    <!--<div style="margin: 5px 1em;">-->\n        <!--<button type="button" class="btn btn-default" title="\u4FDD\u5B58" @click="save()"><i class="fa fa-save"></i><span>\u4FDD\u5B58</span></button>-->\n    <!--</div>-->\n\n    <span class="oprations">\n            <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </span>\n\n    <div style="overflow: auto;" class="flex-grow">\n        <div class=\'field-panel msg-hide\' id="form" >\n            <field  v-for=\'head in heads\' :key="head.name" :head="head" :row=\'row\'></field>\n        </div>\n    </div>\n    </div>',
+    template: '<div class="flex-v" style="height: 100%;">\n    <!--<div style="margin: 5px 1em;">-->\n        <!--<button type="button" class="btn btn-default" title="\u4FDD\u5B58" @click="save()"><i class="fa fa-save"></i><span>\u4FDD\u5B58</span></button>-->\n    <!--</div>-->\n\n    <span class="oprations">\n            <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </span>\n\n    <div style="overflow: auto;" class="flex-grow">\n        <div class=\'field-panel msg-hide\' id="form" >\n            <field  v-for=\'head in heads\' :key="head.name" :head="head" :row=\'row\'></field>\n        </div>\n    </div>\n    </div>',
 
     //created:function(){
     //    // find head from parent table
@@ -2241,7 +2241,7 @@ var ajax_table = {
                 this.fetched = true;
             }
         },
-        data_getter: function data_getter() {
+        getRows: function getRows() {
             // 这里clear，数据被清空，造成table的pagenator上下抖动
             //                       com.clear()
 

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -173,6 +173,43 @@ window.app_pkg = app_pkg;
 "use strict";
 
 
+var banner_logic = {
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            online: function online() {
+                self.set_banner_state(1);
+            },
+            offline: function offline() {
+                self.set_banner_state(0);
+            }
+        });
+    },
+
+    methods: {
+        set_banner_state: function set_banner_state(state) {
+            var self = this;
+            var post_data = [{ fun: 'set_banner_status', rows: this.selected, status: state }];
+            cfg.show_load();
+            ex.post('/d/ajax/' + app, JSON.stringify(post_data), function (resp) {
+                cfg.hide_load(2000);
+                ex.each(self.selected, function (item) {
+                    item.status = state;
+                });
+            });
+        }
+    }
+};
+
+window.banner_logic = banner_logic;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 __webpack_require__(10);
 
 var com_tab_special_bet_value = {
@@ -251,7 +288,7 @@ var com_tab_special_bet_value = {
 Vue.component('com-tab-special-bet-value', com_tab_special_bet_value);
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -296,7 +333,7 @@ var help_logic = {
 window.help_logic = help_logic;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -441,7 +478,7 @@ window.match_logic = match_logic;
 window.produce_match_outcome = produce_match_outcome;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -486,39 +523,6 @@ var notice_logic = {
 window.notice_logic = notice_logic;
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _match = __webpack_require__(4);
-
-var match = _interopRequireWildcard(_match);
-
-var _app_pkg = __webpack_require__(1);
-
-var app_pkg = _interopRequireWildcard(_app_pkg);
-
-var _help = __webpack_require__(3);
-
-var help_logic = _interopRequireWildcard(_help);
-
-var _notice = __webpack_require__(5);
-
-var notice_logic = _interopRequireWildcard(_notice);
-
-var _activity = __webpack_require__(0);
-
-var activity_logic = _interopRequireWildcard(_activity);
-
-var _com_tab_special_bet_value = __webpack_require__(2);
-
-var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -527,7 +531,7 @@ exports = module.exports = __webpack_require__(8)();
 
 
 // module
-exports.push([module.i, ".com_tab_special_bet_value .box {\n  width: 300px;\n  height: 400px;\n  padding: 1em;\n  border: 1px solid black;\n  float: left;\n  margin-right: 1em;\n  position: relative;\n  overflow: auto; }\n", ""]);
+exports.push([module.i, ".com_tab_special_bet_value .box {\n  width: 250px;\n  height: 400px;\n  padding: 1em;\n  border: 1px solid black;\n  float: left;\n  margin-right: 1em;\n  position: relative;\n  overflow: auto; }\n", ""]);
 
 // exports
 
@@ -865,6 +869,43 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _match = __webpack_require__(5);
+
+var match = _interopRequireWildcard(_match);
+
+var _app_pkg = __webpack_require__(1);
+
+var app_pkg = _interopRequireWildcard(_app_pkg);
+
+var _help = __webpack_require__(4);
+
+var help_logic = _interopRequireWildcard(_help);
+
+var _notice = __webpack_require__(6);
+
+var notice_logic = _interopRequireWildcard(_notice);
+
+var _activity = __webpack_require__(0);
+
+var activity_logic = _interopRequireWildcard(_activity);
+
+var _banner = __webpack_require__(2);
+
+var banner_logic = _interopRequireWildcard(_banner);
+
+var _com_tab_special_bet_value = __webpack_require__(3);
+
+var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ })
 /******/ ]);

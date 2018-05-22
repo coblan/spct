@@ -34,8 +34,8 @@ class MatchsPage(TablePage):
                  'label':'盘口',
                  'com':'com-tab-special-bet-value',    
                  'ops':[
-                     {'fun':'save','label':'保存','editor':'com-field-op-btn'},
-                     {'fun':'refresh','label':'刷新','editor':'com-field-op-btn'}
+                     {'fun':'save','label':'保存','editor':'com-field-op-btn', 'icon': 'fa-save',},
+                     {'fun':'refresh','label':'刷新','editor':'com-field-op-btn', 'icon': 'fa-refresh',}
                  ]                 
                        }
                 ]

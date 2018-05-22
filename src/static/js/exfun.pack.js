@@ -156,8 +156,25 @@ var network = exports.network = {
     post: function post(url, data, callback) {
         var self = this;
         var wrap_callback = function wrap_callback(resp) {
+            var msg = [];
             if (resp.msg) {
-                self.show_msg(resp.msg);
+                if (typeof resp.msg == 'string') {
+                    msg.push(resp.msg);
+                } else {
+                    msg = msg.concat(resp.msg);
+                }
+            }
+            for (var k in resp) {
+                if (resp[k].msg) {
+                    if (typeof resp[k].msg == 'string') {
+                        msg.push(resp[k].msg);
+                    } else {
+                        msg = msg.concat(resp[k].msg);
+                    }
+                }
+            }
+            if (msg.length != 0) {
+                cfg.showMsg(msg.join('\n'));
             }
             if (resp.status && typeof resp.status == 'string' && resp.status != 'success') {
                 cfg.hide_load(); // sometime
