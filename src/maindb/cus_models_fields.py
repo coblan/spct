@@ -46,4 +46,19 @@ class CusPictureMap(BaseFieldProc):
         #}
         return head
 
+
+class CusFileField(models.CharField):
+    pass
+
+class CusFielFieldProc(CusPictureMap):
+    def dict_field_head(self,head):
+        head['editor']='com-field-plain-file'
+        #head['up_url']='/d/upload?path=public/resource'
+        head['config']={
+            'upload_url':'/d/upload?path=public/resource'
+        }
+        return head    
+
+
 field_map[CusPictureField]=CusPictureMap
+field_map[CusFileField] = CusFielFieldProc

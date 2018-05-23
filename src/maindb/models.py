@@ -11,7 +11,7 @@ from django.utils.translation import ugettext as _
 from django.db import models
 from django.contrib.auth.models import User
 from .status_code import *
-from .cus_models_fields import CusPictureField
+from .cus_models_fields import CusPictureField, CusFileField
 
 class Blackiplist(models.Model):
     blackiplistid = models.AutoField(db_column='BlackIpListID', primary_key=True)  # Field name made lowercase.
@@ -82,6 +82,20 @@ class TbAccountMatchFav(models.Model):
         db_table = 'TB_Account_Match_Fav'
         unique_together = (('accountid', 'matchid'),)
 
+
+class TbAppresource(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=255)  # Field name made lowercase.
+    url = CusFileField(db_column='Url', max_length=255)  # Field name made lowercase.
+    isexpired = models.BooleanField(db_column='IsExpired')  # Field name made lowercase.
+    md5 = models.CharField(db_column='Md5', max_length=64)  # Field name made lowercase.
+    remark = models.CharField(db_column='Remark', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    type = models.IntegerField(db_column='Type')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_AppResource'
+        
 
 class TbActivity(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
