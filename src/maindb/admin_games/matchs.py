@@ -66,7 +66,10 @@ class MatchsPage(TablePage):
                 },
                 #{'fun':'jie_suan_pai_cai','editor':'com-op-a','label':'结算派彩'},
                 {'fun':'recommendate','editor':'com-op-a','label':'推介'},
+                {'fun':'un_recommendate','editor':'com-op-a','label':'取消推介'},
+                
                 {'fun':'livebet','editor':'com-op-a','label':'滚球'},
+                {'fun':'un_livebet','editor':'com-op-a','label':'取消滚球'},
                 
             ]
             return ops

@@ -82,6 +82,21 @@ var match_logic = {
                     cfg.hide_load(2000)
                 })
             },
+            un_recommendate:function(kws){
+                if(self.selected.length==0){
+                    cfg.showMsg('请选择一些记录')
+                    return
+                }
+                ex.each(self.selected,function(row){
+                    row.isrecommend=false
+                })
+                var post_data=[{fun:'save_rows',rows:self.selected}]
+                cfg.show_load()
+                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                    cfg.hide_load(2000)
+                })
+            },
+
             livebet:function(kws){
                 if(self.selected.length==0){
                     cfg.showMsg('请选择一些记录')
@@ -89,6 +104,20 @@ var match_logic = {
                 }
                 ex.each(self.selected,function(row){
                     row.livebet=true
+                })
+                var post_data=[{fun:'save_rows',rows:self.selected}]
+                cfg.show_load()
+                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                    cfg.hide_load(2000)
+                })
+            },
+            un_livebet:function(kws){
+                if(self.selected.length==0){
+                    cfg.showMsg('请选择一些记录')
+                    return
+                }
+                ex.each(self.selected,function(row){
+                    row.livebet=false
                 })
                 var post_data=[{fun:'save_rows',rows:self.selected}]
                 cfg.show_load()
