@@ -705,10 +705,6 @@ var _expand_menu = __webpack_require__(45);
 
 var f = _interopRequireWildcard(_expand_menu);
 
-var _modal = __webpack_require__(46);
-
-var a = _interopRequireWildcard(_modal);
-
 var _page_tab = __webpack_require__(47);
 
 var page = _interopRequireWildcard(_page_tab);
@@ -716,6 +712,8 @@ var page = _interopRequireWildcard(_page_tab);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 __webpack_require__(77);
+//import * as a from './modal.js'
+
 __webpack_require__(75);
 __webpack_require__(73);
 __webpack_require__(74);
@@ -1391,7 +1389,7 @@ var field_base = exports.field_base = {
             props: ['name', 'row', 'kw'],
             template: '<logo-input :up_url="kw.up_url" :web_url.sync="row[name]" :id="\'id_\'+name"></logo-input>'
         },
-        picture: {
+        'com-field-picture': {
             props: ['row', 'head'],
             template: '<div class="picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></img-uploador></div>',
             methods: {
@@ -3464,7 +3462,7 @@ __webpack_require__(72); /**
 
 Vue.component('com-filter', {
     props: ['heads', 'search_args'],
-    template: '<div v-if=\'heads.length>0\' class="com-filter flex flex-grow flex-ac">\n                <div v-for="filter in heads" :id="\'filter-\'+filter.name" class="filter-item">\n                    <component @submit="m_submit()" :is="filter.editor" :head="filter" :search_args=\'search_args\' > </component>\n                </div>\n                <button name="go" type="button" class="btn btn-info btn-sm" @click=\'m_submit()\' >\n          <i class="fa fa-search"></i>\n          </button>\n        </div>\n    ',
+    template: '<div v-if=\'heads.length>0\' class="com-filter flex flex-grow flex-ac">\n                <div v-for="filter in heads" :id="\'filter-\'+filter.name" class="filter-item">\n                    <component @submit="m_submit()" :is="filter.editor" :head="filter" :search_args=\'search_args\' > </component>\n                </div>\n                <button name="go" type="button" class="btn btn-success btn-sm" @click=\'m_submit()\' >\n                  <i class="fa fa-search"></i>\n                  <span v-text="search_lable"></span>\n          </button>\n        </div>\n    ',
     created: function created() {
         var self = this;
         ex.each(self.heads, function (filter) {
@@ -3477,6 +3475,11 @@ Vue.component('com-filter', {
                 }
             }
         });
+    },
+    computed: {
+        search_lable: function search_lable() {
+            return cfg.tr.search;
+        }
     },
     methods: {
         m_submit: function m_submit() {
@@ -3660,13 +3663,13 @@ var table_fun = exports.table_fun = {
             }
             var del_obj = {};
             for (var j = 0; j < this.selected.length; j++) {
-                var pk = this.selected[j];
+                var pk = this.selected[j].pk;
                 for (var i = 0; i < this.rows.length; i++) {
                     if (this.rows[i].pk.toString() == pk) {
-                        if (!del_obj[this.rows[i]._class]) {
-                            del_obj[this.rows[i]._class] = [];
+                        if (!del_obj[this.rows[i]._director_name]) {
+                            del_obj[this.rows[i]._director_name] = [];
                         }
-                        del_obj[this.rows[i]._class].push(pk);
+                        del_obj[this.rows[i]._director_name].push(pk);
                     }
                 }
             }
@@ -3801,57 +3804,7 @@ Vue.component('expand_menu', {
 //})
 
 /***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var transfer = {};
-function disable_scroll() {
-	transfer.wsctop = $(window).scrollTop(); //记住滚动条的位置
-	$('body').addClass('modal-show');
-	$('body').css('top', -transfer.wsctop);
-	//        $("body").css({position:'fixed',top:-transfer.wsctop});
-}
-function enable_scroll() {
-	//        $("body").css({position:'static'});
-	$("body").removeClass('modal-show');
-	$(window).scrollTop(transfer.wsctop); //弹框关闭时，启动滚动条，并滚动到原来的位置
-}
-
-if (!window.__modal_mark) {
-	window.__modal_mark = true;
-	document.write('\n\t\t<style>\n\t\t._modal_popup{\n\t\t\tposition: fixed;\n\t\t\ttop: 0;\n\t\t\tleft: 0;\n\t\t\tright: 0;\n\t\t\tbottom: 0;\n\t\t\tbackground: rgba(0, 0, 0, 0.2);\n\t\t\tz-index:1000;\n\t\t}\n\t\t._modal_inn{\n\t\t\t/*background: rgba(88, 88, 88, 0.2);*/\n\t\t\tborder-radius: 5px;\n\t\t\tbackground:white;\n\t\t\tposition: relative;\n\n\t\n\t\t\t/*padding:30px 80px ;*/\n\t\t}\n\t\t._modal_popup>._modal_middle{\n\t\t    position: absolute;\n\t        top: 50%;\n\t        left: 50%;\n\t        transform: translate(-50%, -50%);\n\t        -ms-transform:translate(-50%, -50%); \t/* IE 9 */\n\t\t\t-moz-transform:translate(-50%, -50%); \t/* Firefox */\n\t\t\t-webkit-transform:translate(-50%, -50%); /* Safari \u548C Chrome */\n\t\t\t-o-transform:translate(-50%, -50%); \n\t        /*text-align: center;*/\n\t        /*z-index: 1000;*/\n    \t}\n\t\t</style>');
-}
-Vue.component('modal', {
-	template: '<div class="_modal_popup " v-show="is_show">\n\t<div class="flex flex-vh-center" style="width: 100%;height: 100%;">\n\t\t<div class="_modal_inn" :style=\'inn_style\'>\n\t\t\t<span v-if="with_close_btn" @click="$emit(\'close\')" style="position: absolute;right:5px;top:-2em; color: #ff9b11;">\n\t\t\t\t<i class="fa fa-times fa-2x" aria-hidden="true"></i>\n\t\t\t</span>\n\t\t<div style="overflow:auto;">\n        \t<slot></slot>\n         </div>\n\n\t\t</div>\n\t</div>\n\t</div>',
-
-	methods: function methods() {
-		//var self=this
-		//setTimeout(function(){
-		//	self.$refs.	editor_scroller.refresh()
-		//},500)
-
-	},
-	props: ['inn_style', 'with_close_btn', 'show'],
-	computed: {
-		is_show: function is_show() {
-			if (this.show) {
-				disable_scroll();
-			} else {
-				enable_scroll();
-			}
-			return this.show;
-		}
-		//methods:{
-		//	hide_me:function () {
-		//		this.$dispatch('sd_hide')
-		//	}
-		//}@click='hide_me()'
-	} });
-
-/***/ }),
+/* 46 */,
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 

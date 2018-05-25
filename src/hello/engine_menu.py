@@ -11,8 +11,10 @@ from .js_translation import get_tr
 
 class PcMenu(BaseEngine):
     url_name='sportcenter'
-    brand = 'SportsCenter'
-    mini_brand='SC'
+    #brand = 'SportsCenter'
+    #mini_brand='SC'
+    brand = '<img src="/static/images/logo.png" style="height:46px">'
+    mini_brand='<img src="/static/images/logo2.png" style="height:46px">'  
     
     @property
     def menu(self):

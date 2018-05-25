@@ -34,8 +34,8 @@ class MatchsPage(TablePage):
                  'label':'盘口',
                  'com':'com-tab-special-bet-value',    
                  'ops':[
-                     {'fun':'save','label':'保存','editor':'com-field-op-btn', 'icon': 'fa-save',},
-                     {'fun':'refresh','label':'刷新','editor':'com-field-op-btn', 'icon': 'fa-refresh',}
+                     {'fun':'save','label':'保存','editor':'com-op-btn', 'icon': 'fa-save',},
+                     {'fun':'refresh','label':'刷新','editor':'com-op-btn', 'icon': 'fa-refresh',}
                  ]                 
                        }
                 ]
@@ -48,14 +48,16 @@ class MatchsPage(TablePage):
                 
                 #{'fun':'close_match','editor':'com-op-a','label':'结束比赛'},
                 {'fun':'manual_end_money',
-                 'editor':'com-op-a',
+                 'editor':'com-op-btn',
                  'label':'产生赛果',
                  #'disabled':'!only_one_selected',
                  'fields_ctx':{
                       'heads':[{'name':'matchid','label':'比赛','editor':'com-field-label-shower','readonly':True},
                                {'name':'home_score','label':'主队分数','editor':'linetext'},
+                               {'name':'home_half_score','label':'主队半场得分','editor':'linetext'},
                                {'name':'home_corner','label':'主队角球','editor':'linetext'},
                                {'name':'away_score','label':'客队分数','editor':'linetext'},
+                               {'name':'away_half_score','label':'主队半场得分','editor':'linetext'},
                                {'name':'away_corner','label':'客队角球','editor':'linetext'},
                                #{'name':'statuscode','label':'赛事状态','editor':'linetext'},
                                #{'name':'close_time','label':'结束时间','editor':'com-field-datetime'}
@@ -65,29 +67,29 @@ class MatchsPage(TablePage):
                  }
                 },
                 #{'fun':'jie_suan_pai_cai','editor':'com-op-a','label':'结算派彩'},
-                {'fun':'recommendate','editor':'com-op-a','label':'推介'},
-                {'fun':'un_recommendate','editor':'com-op-a','label':'取消推介'},
+                {'fun':'recommendate','editor':'com-op-btn','label':'推介'},
+                {'fun':'un_recommendate','editor':'com-op-btn','label':'取消推介'},
                 
-                {'fun':'livebet','editor':'com-op-a','label':'滚球'},
-                {'fun':'un_livebet','editor':'com-op-a','label':'取消滚球'},
+                {'fun':'livebet','editor':'com-op-btn','label':'滚球'},
+                {'fun':'un_livebet','editor':'com-op-btn','label':'取消滚球'},
                 
             ]
             return ops
         
         def dict_head(self, head):
             dc={
-                'matchid':60,
-                'matchdate':120,
-                'tournamentzh':70,
-                'team1zh':60,
-                'team2zh':60,
-                'matchscore':20,
+                'matchid':100,
+                'matchdate':140,
+                'tournamentzh':120,
+                'team1zh':90,
+                'team2zh':90,
+                'matchscore':60,
                 'winner':60,
-                'statuscode':20,
-                'roundinfo':20,
-                'isrecommend':20,
-                'livebet':20,
-                'categoryid':20,
+                'statuscode':60,
+                'roundinfo':60,
+                'isrecommend':60,
+                'livebet':60,
+                'categoryid':60,
                 'currentperiodstart':120,
                  
             }
@@ -140,6 +142,9 @@ class MatchForm(ModelFields):
 
 
 def get_special_bet_value(matchid):
+    """
+    获取封盘状态数据
+    """
     match_opened=True
     oddstype=[]
     specialbetvalue=[]
@@ -149,7 +154,7 @@ def get_special_bet_value(matchid):
             {
                'name':odtp.oddstypenamezh,
                #'oddsid':odd.oddstype.oddsid,
-               'oddstypegroup':odtp.tid,
+               'oddstypegroup':odtp.oddstypegroup,
                #'oddstypeid':odd.oddstype.oddstypeid,
                'opened':True
             }            

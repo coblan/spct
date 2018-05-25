@@ -19,19 +19,16 @@ DATABASES = {
             ##'MARS_Connection': True,
               #},
        #},
-    'Betradar': {
-        'NAME': 'Betradar',
-        'ENGINE': 'sql_server.pyodbc',
-        'HOST': '192.168.40.79,1433',
-        'USER': 'sa',
-        'PASSWORD': 'cdqg@1215',
-        #'PORT': '1436',
-        'OPTIONS': {
-            #'driver': 'ODBC Driver 11 for SQL Server',
-            #'driver':'SQL Server Native Client 11.0',
-            #'MARS_Connection': True,
-              },
-       } , 
+    #'Betradar': {
+        #'NAME': 'Betradar',
+        #'ENGINE': 'sql_server.pyodbc',
+        #'HOST': '192.168.40.79,1433',
+        #'USER': 'sa',
+        #'PASSWORD': 'cdqg@1215',
+        ##'PORT': '1436',
+        #'OPTIONS': {
+              #},
+       #} , 
     'MainDB': {
         'NAME': 'MainDB',
         'ENGINE': 'sql_server.pyodbc',
@@ -44,6 +41,9 @@ DATABASES = {
             #'driver':'SQL Server Native Client 11.0',
             #'MARS_Connection': True,
               },
+        'TEST': {
+            'NAME': 'MainDB_20180522',
+            },        
        } ,     
 }
 

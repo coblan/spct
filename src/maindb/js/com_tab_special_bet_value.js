@@ -12,10 +12,7 @@ var com_tab_special_bet_value={
         }
     },
     mixins:[mix_fields_data],
-    template:`<div class="com_tab_special_bet_value">
-    <span class="oprations">
-            <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="'op_'+op.fun" :head="op" @operation="on_operation(op)"></component>
-    </span>
+    template:`<div class="com_tab_special_bet_value" style="position: absolute;top:0;right:0;left:0;bottom: 0;overflow: auto">
     <div style="text-align: center;">
         <span v-text="par_row.matchdate"></span>/
         <span v-text="par_row.matchid"></span>/
@@ -58,7 +55,12 @@ var com_tab_special_bet_value={
                      <!--<span v-text="spbet.oddsid"></span>-->
                 </div>
             </div>
+
+             <div class="oprations">
+                <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="'op_'+op.fun" :head="op" @operation="on_operation(op)"></component>
+            </div>
     </div>
+
 
     </div>`,
     mounted:function(){

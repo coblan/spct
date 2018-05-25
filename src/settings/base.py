@@ -45,9 +45,10 @@ INSTALLED_APPS = [
     'helpers.authuser',
     
     #'orgmodel',
-    'betradar',
+    #'betradar',
     'maindb',
-    'hello'
+    'hello', 
+    'testservice'
 ]
 
 MIDDLEWARE_CLASSES = [

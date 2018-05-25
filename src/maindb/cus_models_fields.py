@@ -36,11 +36,13 @@ class CusPictureMap(BaseFieldProc):
     
     def dict_table_head(self,head): 
         head['editor']='com-table-picture'
+        head['show_tooltip'] = False
         return head
     
     def dict_field_head(self,head):
-        head['editor']='picture'
+        head['editor']='com-field-picture'
         head['up_url']='/d/upload?path=public/images'
+        
         #head['config']={
             #'up_url':'/d/upload?path=public/images'
         #}

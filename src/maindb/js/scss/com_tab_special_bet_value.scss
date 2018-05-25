@@ -4,9 +4,10 @@
     height: 400px;
     padding: 1em;
     border: 1px solid black;
-    float: left;
+    //float: left;
     margin-right: 1em;
     position: relative;
     overflow: auto;
+    display: inline-block;
   }
 }

@@ -8,7 +8,7 @@ from django.db.models import F
 from helpers.director.base_data import director
 
 class TicketSingleByMatchPage(TablePage):
-    template = 'jb_admin/table_with_foot.html'
+    template = 'jb_admin/table.html'
     def get_label(self):
         return '赛事投注状况'
     
