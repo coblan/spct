@@ -2915,9 +2915,10 @@ var mix_ele_table_adapter = {
                 } else if (params.order == 'descending') {
                     self.search_args._sort = '-' + params.prop;
                 }
-                //                        return 'break'
-                this.search();
+            } else {
+                self.search_args._sort = '';
             }
+            this.search();
             //                })
         },
 
