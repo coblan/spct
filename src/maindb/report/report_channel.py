@@ -32,7 +32,7 @@ class ReportChnnel(TablePage):
                 heads.append({
                     'name':channel.channel,
                     'label':channel.channelname,
-                    'width':60,
+                    'width':80,
                 })
             return heads
         

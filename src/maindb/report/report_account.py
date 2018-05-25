@@ -30,16 +30,16 @@ class ReportAccout(TablePage):
         def get_heads(self):
             heads= [
                 {'name':'accountid__username','label':'用户','width':80},
-                {'name':'accountid__amount','label':'用户余额','width':60},
-                {'name':'accountid__tbwithdrawlimit__amount','label':'提款限额','width':30},
+                {'name':'accountid__amount','label':'用户余额','width':100},
+                {'name':'accountid__tbwithdrawlimit__amount','label':'提款限额','width':80},
                 {'name':'num_ticket','label':'投注数','width':60},
-                {'name':'num_win','label':'中注数','width':60},
-                {'name':'ratio','label':'中注比','width':60},
-                {'name':'sum_money','label':'投注金额','width':60},
-                {'name':'sum_outcome','label':'派彩金额','width':60},
+                {'name':'num_win','label':'中注数','width':80},
+                {'name':'ratio','label':'中注比','width':100},
+                {'name':'sum_money','label':'投注金额','width':80},
+                {'name':'sum_outcome','label':'派彩金额','width':80},
                 {'name':'sum_bonus','label':'红利','width':60},
                 {'name':'sum_turnover','label':'流水','width':60},
-                {'name':'profit','label':'平台盈亏','width':60},
+                {'name':'profit','label':'平台盈亏','width':120},
             ]
             return heads
         
