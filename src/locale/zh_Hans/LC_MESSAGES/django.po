@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-21 20:58+0800\n"
+"POT-Creation-Date: 2018-05-28 11:36+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,133 +18,137 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\hello\engine_menu.py:20
+#: .\hello\engine_menu.py:22
 msgid "DashBoard"
 msgstr "控制面板"
 
-#: .\hello\engine_menu.py:22
+#: .\hello\engine_menu.py:24
 msgid "Marketing"
 msgstr "市场"
 
-#: .\hello\engine_menu.py:24
+#: .\hello\engine_menu.py:26
 msgid "Banner"
 msgstr "广告"
 
-#: .\hello\engine_menu.py:25
+#: .\hello\engine_menu.py:27
 msgid "App Package"
 msgstr "程序包"
 
-#: .\hello\engine_menu.py:26
+#: .\hello\engine_menu.py:28
 msgid "Notice"
 msgstr "公告"
 
-#: .\hello\engine_menu.py:27 .\maindb\models.py:410
+#: .\hello\engine_menu.py:29 .\maindb\models.py:424
 msgid "Currency"
 msgstr "金币"
 
-#: .\hello\engine_menu.py:28
+#: .\hello\engine_menu.py:30
 msgid "Help"
 msgstr "帮助"
 
-#: .\hello\engine_menu.py:29
+#: .\hello\engine_menu.py:31
 msgid "Activity"
 msgstr "活动"
 
-#: .\hello\engine_menu.py:36
+#: .\hello\engine_menu.py:32
+msgid "AppResource"
+msgstr ""
+
+#: .\hello\engine_menu.py:39
 msgid "Member"
 msgstr "会员管理"
 
-#: .\hello\engine_menu.py:38
+#: .\hello\engine_menu.py:41
 msgid "Tb Account"
 msgstr "会员列表"
 
-#: .\hello\engine_menu.py:39 .\maindb\account_admin.py:213
+#: .\hello\engine_menu.py:42 .\maindb\account_admin.py:222
 msgid "Tb Login Log"
 msgstr "登录日志"
 
-#: .\hello\engine_menu.py:43
+#: .\hello\engine_menu.py:46
 msgid "MoneyFlow"
 msgstr "金流管理"
 
-#: .\hello\engine_menu.py:45
+#: .\hello\engine_menu.py:48
 msgid "Tb Balance Log"
 msgstr "账目记录"
 
-#: .\hello\engine_menu.py:46
+#: .\hello\engine_menu.py:49
 msgid "Charge Flow"
 msgstr "金流日志"
 
-#: .\hello\engine_menu.py:48
+#: .\hello\engine_menu.py:51
 msgid "Tb Channel"
 msgstr "金流渠道"
 
-#: .\hello\engine_menu.py:51
+#: .\hello\engine_menu.py:54
 msgid "Games"
 msgstr "赛事及赔率"
 
-#: .\hello\engine_menu.py:53
+#: .\hello\engine_menu.py:56
 msgid "Tb TicketMaster"
 msgstr "注单"
 
-#: .\hello\engine_menu.py:54
+#: .\hello\engine_menu.py:57
 msgid "Tb Match"
 msgstr "比赛"
 
-#: .\hello\engine_menu.py:55
+#: .\hello\engine_menu.py:58
 msgid "View TicketSingleByMatch"
 msgstr "赛事统计"
 
-#: .\hello\engine_menu.py:59
+#: .\hello\engine_menu.py:62
 msgid "RiskControl"
 msgstr "风险控制"
 
-#: .\hello\engine_menu.py:61
+#: .\hello\engine_menu.py:64
 msgid "Tb RC Filter"
 msgstr "风控条件"
 
-#: .\hello\engine_menu.py:62
+#: .\hello\engine_menu.py:65
 msgid "Tb RC Level"
 msgstr "风控等级"
 
-#: .\hello\engine_menu.py:63
+#: .\hello\engine_menu.py:66
 msgid "Tb RC User"
 msgstr "风控用户"
 
-#: .\hello\engine_menu.py:64
+#: .\hello\engine_menu.py:67
 msgid "Tb Blankuserlist"
 msgstr "黑名单"
 
-#: .\hello\engine_menu.py:65
+#: .\hello\engine_menu.py:68
 msgid "Tb BlackuserlistLog"
 msgstr "黑名单日志"
 
-#: .\hello\engine_menu.py:67
+#: .\hello\engine_menu.py:70
 msgid "Black IP Range"
 msgstr "IP黑名单(范围)"
 
-#: .\hello\engine_menu.py:68
+#: .\hello\engine_menu.py:71
 msgid "White IP"
 msgstr "IP白名单"
 
-#: .\hello\engine_menu.py:69
+#: .\hello\engine_menu.py:72
 msgid "White User"
 msgstr "白名单"
 
-#: .\hello\engine_menu.py:71
+#: .\hello\engine_menu.py:74
 msgid "Tb Withdraw Limit Log"
 msgstr "提款限额日志"
 
-#: .\hello\engine_menu.py:75
+#: .\hello\engine_menu.py:78
 msgid "Report"
 msgstr "报表"
 
-#: .\hello\engine_menu.py:77 .\maindb\models.py:249 .\maindb\models.py:398
+#: .\hello\engine_menu.py:80 .\maindb\models.py:263 .\maindb\models.py:412
 msgid "Channel"
 msgstr "金流渠道"
 
-#: .\hello\engine_menu.py:78 .\maindb\models.py:49 .\maindb\models.py:154
-#: .\maindb\models.py:403 .\maindb\models.py:957 .\maindb\models.py:1071
-#: .\maindb\models.py:1380
+#: .\hello\engine_menu.py:81 .\maindb\models.py:49 .\maindb\models.py:168
+#: .\maindb\models.py:417 .\maindb\models.py:971 .\maindb\models.py:1085
+#: .\maindb\models.py:1394
 msgid "Account"
 msgstr "账号"
 
@@ -221,10 +225,6 @@ msgstr "基本信息"
 msgid "Balance Log"
 msgstr "余额记录"
 
-#: .\maindb\account_admin.py:51
-msgid "Transaction Log"
-msgstr "交易日志"
-
 #: .\maindb\account_admin.py:63
 msgid "Ticket"
 msgstr "注单"
@@ -232,10 +232,6 @@ msgstr "注单"
 #: .\maindb\account_admin.py:75
 msgid "Login Log"
 msgstr "登录日志"
-
-#: .\maindb\account_admin.py:86
-msgid "Withdraw Log"
-msgstr "提现日志"
 
 #: .\maindb\admin_games\ViewTicketSingleByMatch.py:27
 msgid "Team Zh"
@@ -269,11 +265,11 @@ msgstr "存款记录"
 msgid "Main.TbBlackuserlist"
 msgstr "黑名单"
 
-#: .\maindb\admin_riskcontrol\blanklist.py:20
+#: .\maindb\admin_riskcontrol\blanklist.py:32
 msgid "Main.TbBlackuserlistLog"
 msgstr "黑名单日志"
 
-#: .\maindb\admin_riskcontrol\rc_filter.py:10
+#: .\maindb\admin_riskcontrol\rc_filter.py:11
 msgid "Main.TbRcFilter"
 msgstr "风控"
 
@@ -289,7 +285,7 @@ msgstr "风控用户"
 msgid "Main.TbWithdrawlimitlog"
 msgstr "提款限额日志"
 
-#: .\maindb\models.py:30 .\maindb\models.py:397
+#: .\maindb\models.py:30 .\maindb\models.py:411
 msgid "ID"
 msgstr "序号"
 
@@ -309,11 +305,11 @@ msgstr "结束IP"
 msgid "EndIpNum"
 msgstr ""
 
-#: .\maindb\models.py:35 .\maindb\models.py:411 .\maindb\models.py:1367
+#: .\maindb\models.py:35 .\maindb\models.py:425 .\maindb\models.py:1381
 msgid "Remark"
 msgstr "备注"
 
-#: .\maindb\models.py:36 .\maindb\models.py:1368 .\maindb\models.py:1384
+#: .\maindb\models.py:36 .\maindb\models.py:1382 .\maindb\models.py:1398
 msgid "IsWork"
 msgstr "是否有效"
 
@@ -337,7 +333,7 @@ msgstr "用户名"
 msgid "VIP Level"
 msgstr "VIP等级"
 
-#: .\maindb\models.py:57 .\maindb\models.py:578
+#: .\maindb\models.py:57 .\maindb\models.py:592
 msgid "Create Time"
 msgstr "创建时间"
 
@@ -345,264 +341,282 @@ msgstr "创建时间"
 msgid "Account Balance"
 msgstr "账号余额"
 
-#: .\maindb\models.py:127
+#: .\maindb\models.py:141
 msgid "Force Update"
 msgstr "强制更新"
 
-#: .\maindb\models.py:157
-msgid "Original Amount"
-msgstr "原始数量"
+#: .\maindb\models.py:171
+msgid "BeforeAmount"
+msgstr "变动前金额"
 
-#: .\maindb\models.py:158
-msgid "Changed Amount"
-msgstr "变化数量"
+#: .\maindb\models.py:172
+msgid "ChangedAmount"
+msgstr "变动金额"
 
-#: .\maindb\models.py:159
-msgid "Amount after change"
-msgstr "变化后数量"
+#: .\maindb\models.py:173
+msgid "AfterAmount"
+msgstr "变动后金额"
 
-#: .\maindb\models.py:161
+#: .\maindb\models.py:175
 msgid "Change Time"
 msgstr "变更时间"
 
-#: .\maindb\models.py:162
+#: .\maindb\models.py:176
 msgid "Operator"
 msgstr "操作员"
 
-#: .\maindb\models.py:250
+#: .\maindb\models.py:264
 msgid "Channel Name"
 msgstr "渠道名称"
 
-#: .\maindb\models.py:254
+#: .\maindb\models.py:268
 msgid "Max Limit Amount"
 msgstr "最大限额"
 
-#: .\maindb\models.py:255
+#: .\maindb\models.py:269
 msgid "Min Limit Amount"
 msgstr "最小限额"
 
-#: .\maindb\models.py:256
+#: .\maindb\models.py:270
 msgid "Group Title"
 msgstr "组名"
 
-#: .\maindb\models.py:258 .\maindb\models.py:574 .\maindb\models.py:1076
+#: .\maindb\models.py:272 .\maindb\models.py:588 .\maindb\models.py:1090
 msgid "Status"
 msgstr "状态"
 
-#: .\maindb\models.py:400
+#: .\maindb\models.py:414
 msgid "ProductId"
 msgstr "产品序号"
 
-#: .\maindb\models.py:401 .\maindb\models.py:1078
+#: .\maindb\models.py:415 .\maindb\models.py:1092
 msgid "CreateTime"
 msgstr "创建时间"
 
-#: .\maindb\models.py:402
+#: .\maindb\models.py:416
 msgid "CallbackTime"
 msgstr "回调时间"
 
-#: .\maindb\models.py:405
+#: .\maindb\models.py:419
 msgid "Amount"
 msgstr "数量"
 
-#: .\maindb\models.py:406
+#: .\maindb\models.py:420
 msgid "Success"
 msgstr "成功"
 
-#: .\maindb\models.py:407
+#: .\maindb\models.py:421
 msgid "Credential"
 msgstr ""
 
-#: .\maindb\models.py:506
+#: .\maindb\models.py:520
 msgid "Device Code"
 msgstr "设备码"
 
-#: .\maindb\models.py:507
+#: .\maindb\models.py:521
 msgid "Device Ip"
 msgstr "设备IP"
 
-#: .\maindb\models.py:510
+#: .\maindb\models.py:524
 msgid "Terminal"
 msgstr "平台"
 
-#: .\maindb\models.py:511
+#: .\maindb\models.py:525
 msgid "Login Time"
 msgstr "登录时间"
 
-#: .\maindb\models.py:512
+#: .\maindb\models.py:526
 msgid "Device Version"
 msgstr "设备版本"
 
-#: .\maindb\models.py:559
+#: .\maindb\models.py:573
 msgid "Match Category"
 msgstr "比赛种类"
 
-#: .\maindb\models.py:561
+#: .\maindb\models.py:575
 msgid "Tournament"
 msgstr "联赛名"
 
-#: .\maindb\models.py:564
+#: .\maindb\models.py:578
 msgid "Match Date"
 msgstr "比赛日期"
 
-#: .\maindb\models.py:565
+#: .\maindb\models.py:579
 msgid "CurrentPeriodStart"
 msgstr ""
 
-#: .\maindb\models.py:568
+#: .\maindb\models.py:582
 msgid "Home Team"
 msgstr "主队"
 
-#: .\maindb\models.py:571
+#: .\maindb\models.py:585
 msgid "Away Team"
 msgstr "客队"
 
-#: .\maindb\models.py:572
+#: .\maindb\models.py:586
 msgid "Match Score"
 msgstr "比分"
 
-#: .\maindb\models.py:573
+#: .\maindb\models.py:587
 msgid "Winner"
 msgstr "获胜者"
 
-#: .\maindb\models.py:575
+#: .\maindb\models.py:589
 msgid "Round"
 msgstr "轮"
 
-#: .\maindb\models.py:576
+#: .\maindb\models.py:590
 msgid "IsRecommend"
 msgstr "推介"
 
-#: .\maindb\models.py:577
+#: .\maindb\models.py:591
 msgid "LiveBet"
 msgstr "滚球"
 
-#: .\maindb\models.py:912
+#: .\maindb\models.py:926
 msgid "Belong To"
 msgstr "从属于"
 
-#: .\maindb\models.py:928
+#: .\maindb\models.py:942
 msgid "Level"
 msgstr "风控等级"
 
-#: .\maindb\models.py:929
+#: .\maindb\models.py:943
 msgid "Rule"
 msgstr "规则"
 
-#: .\maindb\models.py:930
+#: .\maindb\models.py:944
 msgid "Rule Level"
 msgstr "风控等级"
 
-#: .\maindb\models.py:931
+#: .\maindb\models.py:945
 msgid "Filter"
 msgstr "风控条件"
 
-#: .\maindb\models.py:932
+#: .\maindb\models.py:946
 msgid "Active"
 msgstr "激活"
 
-#: .\maindb\models.py:933
+#: .\maindb\models.py:947
 msgid "Days"
 msgstr "天数"
 
-#: .\maindb\models.py:934
+#: .\maindb\models.py:948
 msgid "Description"
 msgstr "描述"
 
-#: .\maindb\models.py:942
+#: .\maindb\models.py:956
 msgid "RcLevelID"
 msgstr "风控等级ID"
 
-#: .\maindb\models.py:943 .\maindb\models.py:958
+#: .\maindb\models.py:957 .\maindb\models.py:972
 msgid "RcLevel"
 msgstr "风控等级"
 
-#: .\maindb\models.py:944
+#: .\maindb\models.py:958
 msgid "RcLevelType"
 msgstr "风控等级类型"
 
-#: .\maindb\models.py:945
+#: .\maindb\models.py:959
 msgid "RcLevelName"
 msgstr "风控等级名称"
 
-#: .\maindb\models.py:946
+#: .\maindb\models.py:960
 msgid "RcLevelFilter"
 msgstr "风控条件"
 
-#: .\maindb\models.py:954
+#: .\maindb\models.py:968
 msgid "AccountID"
 msgstr "账号ID"
 
-#: .\maindb\models.py:956
+#: .\maindb\models.py:970
 msgid "AccountType"
 msgstr "账号类型"
 
-#: .\maindb\models.py:1070
+#: .\maindb\models.py:1084
 msgid "Ticket ID"
 msgstr "注单ID"
 
-#: .\maindb\models.py:1072
+#: .\maindb\models.py:1086
 msgid "StakeAmount"
 msgstr "单注金额"
 
-#: .\maindb\models.py:1073
+#: .\maindb\models.py:1087
 msgid "BetAmount"
 msgstr "注单金额"
 
-#: .\maindb\models.py:1074
+#: .\maindb\models.py:1088
 msgid "ParlayRule"
 msgstr "串关规则"
 
-#: .\maindb\models.py:1075
+#: .\maindb\models.py:1089
 msgid "AllowAuto"
 msgstr "允许自动"
 
-#: .\maindb\models.py:1077
+#: .\maindb\models.py:1091
 msgid "WinBet"
 msgstr "是否中注"
 
-#: .\maindb\models.py:1126
+#: .\maindb\models.py:1093
+#, fuzzy
+#| msgid "Total Bet Outcome"
+msgid "BetOutcome"
+msgstr "总派彩金额"
+
+#: .\maindb\models.py:1140
 msgid "ticket master"
 msgstr "注单"
 
-#: .\maindb\models.py:1321
+#: .\maindb\models.py:1335
 msgid "Picture Name"
 msgstr "图片名称"
 
-#: .\maindb\models.py:1323
+#: .\maindb\models.py:1337
 msgid "Priority"
 msgstr "优先级"
 
-#: .\maindb\models.py:1327
+#: .\maindb\models.py:1341
 msgid "status"
 msgstr "状态"
 
-#: .\maindb\models.py:1328
+#: .\maindb\models.py:1342
 msgid "Navigate Url"
 msgstr "导航地址"
 
-#: .\maindb\models.py:1365
+#: .\maindb\models.py:1379
 #, fuzzy
 #| msgid "WhiteUserListID"
 msgid "WhiteIpListID"
 msgstr "白名单ID"
 
-#: .\maindb\models.py:1377
+#: .\maindb\models.py:1391
 msgid "WhiteUserListID"
 msgstr "白名单ID"
 
-#: .\maindb\models.py:1378
+#: .\maindb\models.py:1392
 msgid "UserName"
 msgstr "用户名"
 
-#: .\maindb\models.py:1381
+#: .\maindb\models.py:1395
 msgid "Itype"
 msgstr ""
 
-#: .\maindb\models.py:1382
+#: .\maindb\models.py:1396
 msgid "Memo"
 msgstr "备注"
 
-#: .\maindb\models.py:1383
+#: .\maindb\models.py:1397
 msgid "AddTime"
 msgstr "添加时间"
+
+#~ msgid "Transaction Log"
+#~ msgstr "交易日志"
+
+#~ msgid "Withdraw Log"
+#~ msgstr "提现日志"
+
+#~ msgid "Original Amount"
+#~ msgstr "原始数量"
+
+#~ msgid "Amount after change"
+#~ msgstr "变化后数量"

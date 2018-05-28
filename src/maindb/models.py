@@ -168,9 +168,9 @@ class TbBalancelog(models.Model):
     account = models.CharField(db_column='Account',verbose_name=_('Account'), max_length=20)  # Field name made lowercase.
     categoryid = models.IntegerField(verbose_name='类型',db_column='CategoryID',choices=BALANCE_CAT)  # Field name made lowercase.
     cashflow = models.SmallIntegerField(db_column='CashFlow')  # Field name made lowercase.
-    beforeamount = models.DecimalField(db_column='BeforeAmount',verbose_name=_('Original Amount'), max_digits=18, decimal_places=4)  # Field name made lowercase.
-    amount = models.DecimalField(db_column='Amount',verbose_name=_('Changed Amount'), max_digits=18, decimal_places=4)  # Field name made lowercase.
-    afteramount = models.DecimalField(db_column='AfterAmount',verbose_name=_('Amount after change'), max_digits=18, decimal_places=4)  # Field name made lowercase.
+    beforeamount = models.DecimalField(db_column='BeforeAmount',verbose_name=_('BeforeAmount'), max_digits=18, decimal_places=4)  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount',verbose_name=_('ChangedAmount'), max_digits=18, decimal_places=4)  # Field name made lowercase.
+    afteramount = models.DecimalField(db_column='AfterAmount',verbose_name=_('AfterAmount'), max_digits=18, decimal_places=4)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo',verbose_name='备注', max_length=50, blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(verbose_name=_('Change Time'),db_column='CreateTime')  # Field name made lowercase.
     creater = models.CharField(db_column='Creater',verbose_name=_('Operator'), max_length=20, blank=True, null=True)  # Field name made lowercase.
