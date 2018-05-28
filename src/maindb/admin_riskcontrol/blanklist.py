@@ -154,14 +154,22 @@ class WhiteuserlistForm(ModelFields):
 
 class AccountSelect(ModelTable):
     model = TbAccount
-    include=['accountid','account']
+    include=['accountid','username']
     def dict_head(self, head):
+        dc={
+               'accountid':100,
+               'username': 150,
+      
+           }
+        if dc.get(head['name']):
+            head['width'] =dc.get(head['name'])
+            
         if head['name']=='accountid':
             head['editor']='com-table-foreign-click-select'
         return head
     
     class search(RowSearch):
-        names=['account']
+        names=['accountid', 'username']
 
 def ip2num(ip):
     arr=ip.split('.')

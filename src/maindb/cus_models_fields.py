@@ -28,9 +28,10 @@ class CusPictureMap(BaseFieldProc):
         """
         """
         value = dc.get(name)
-        mt = re.search('/media/public(/.*)',value)
-        if mt:
-            return mt.group(1)
+        if value:
+            mt = re.search('/media/public(/.*)',value)
+            if mt:
+                return mt.group(1)
         else:
             return value
     

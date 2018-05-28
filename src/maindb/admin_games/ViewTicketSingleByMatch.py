@@ -50,6 +50,7 @@ class TicketSingleByMatchPage(TablePage):
                 dc[k] = str(dc[k])
             footer = [dc.get( mapper.get( name) ,'') for name in self.fields_sort]
             self.footer = footer
+            self.footer[0] = _('Total')
             return query
         
         def dict_head(self, head):
