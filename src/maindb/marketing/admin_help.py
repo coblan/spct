@@ -49,8 +49,16 @@ class HelpPage(TablePage):
         model = TbQa
         exclude=[]
         #pop_edit_field='title'
-        fields_sort=['title','mtype','status','description']
+        fields_sort=['title','mtype','status']
+        
         def dict_head(self, head):
+            dc={
+                'title':250,
+        
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+                
             if head['name'] =='title':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'help_form'
@@ -67,7 +75,7 @@ class HelpPage(TablePage):
         
         def get_operation(self):
             operations= ModelTable.get_operation(self)
-            operations.append({'fun':'update_help_file','label':'更新静态帮助文件','editor':'com-op-a',})
+            operations.append({'fun':'update_help_file','label':'更新帮助文件','editor':'com-op-btn',})
             return operations
         
         class filters(RowFilter):

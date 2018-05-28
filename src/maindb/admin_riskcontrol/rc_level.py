@@ -14,6 +14,14 @@ class RcLevelPage(TablePage):
         exclude=['rc_level_id']
 
         def dict_head(self, head):
+            dc={
+                'rc_level_name':160,
+                'rc_level_type': 120,
+             
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])   
+                
             if head['name'] in ['rc_level_filter']:
                 head['editor'] = 'com-table-linetext'
 

@@ -27,14 +27,14 @@ class BalancelogPage(TablePage):
             #}
         def dict_head(self, head):
             dc={
-                'account':80,
+                'account':120,
                 'categoryid':60,
                 'beforeamount':120,
                 'amount':120,
                 'afteramount':120,
                 'memo':250,
-                'createtime':160,
-                'creater':150
+                'createtime':150,
+                'creater':120
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])

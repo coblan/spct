@@ -47,12 +47,20 @@ class NoticePage(TablePage):
     class tableCls(ModelTable):
         model=TbNotice
         exclude=['id','url']
-
+        hide_fields = ['content']
         def dict_row(self, inst):
             return {
                 '_createuser_label':str( User.objects.get(pk = inst.createuser) )
             }
         def dict_head(self, head):
+            dc={
+                'title':180,
+                'createtime':100,
+                'createuser':100,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            
             if head['name']=='createuser':
                 head['editor']='com-table-label-shower'
             elif head['name'] =='title':
@@ -62,7 +70,7 @@ class NoticePage(TablePage):
         
         def get_operation(self):
             operations= ModelTable.get_operation(self)
-            operations.append({'fun':'update_notice_file','label':'更新通知文件','editor':'com-op-a',})
+            operations.append({'fun':'update_notice_file','label':'更新通知文件','editor':'com-op-btn',})
             return operations        
         
         def get_context(self):

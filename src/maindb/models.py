@@ -1090,7 +1090,7 @@ class TbTicketmaster(models.Model):
     status = models.IntegerField(db_column='Status',verbose_name=_('Status'))  # Field name made lowercase.
     winbet = models.SmallIntegerField(db_column='WinBet',verbose_name=_('WinBet'))  # 是否中注
     createtime = models.DateTimeField(verbose_name=_('CreateTime'),db_column='CreateTime')  # Field name made lowercase.
-    betoutcome = models.DecimalField(db_column='BetOutcome',verbose_name='', max_digits=18, decimal_places=4)  # 派彩金额
+    betoutcome = models.DecimalField(db_column='BetOutcome',verbose_name= _('BetOutcome'), max_digits=18, decimal_places=4)  # 派彩金额
     turnover = models.DecimalField(db_column='Turnover', verbose_name='流水',max_digits=18, decimal_places=4)  # Field name made lowercase.
     bonuspa = models.DecimalField(db_column='BonusPa',verbose_name='反水比例', max_digits=18, decimal_places=4)  # Field name made lowercase.
     bonus = models.DecimalField(db_column='Bonus',verbose_name='反水/红利', max_digits=18, decimal_places=4)  # Field name made lowercase.

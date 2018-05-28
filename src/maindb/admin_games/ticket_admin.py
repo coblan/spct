@@ -62,7 +62,7 @@ class TicketMasterPage(TablePage):
                      'settletime']
         
         def dict_head(self, head):
-            if head['name'] in [ 'createtime','settletime']:
+            if head['name'] in [ 'account', 'createtime','settletime']:
                 head['width'] = 150
             else:
                 head['width'] =80

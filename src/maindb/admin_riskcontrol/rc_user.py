@@ -14,11 +14,18 @@ class RcUserPage(TablePage):
         exclude=[]
         fields_sort=['accounttype','account','rc_level']
 
-        #def dict_head(self, head):
+        def dict_head(self, head):
+            dc={
+                'account':160,
+             
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])  
+                
             #if head['name'] in ['rc_level_filter']:
                 #head['editor'] = 'com-table-linetext'
 
-            #return head
+            return head
         
         class filters(RowFilter):
             names=['rc_level']

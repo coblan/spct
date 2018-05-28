@@ -13,6 +13,16 @@ class ChargeFlowPage(TablePage):
         model = TbChargeflow
         exclude=[]
         
+        def dict_head(self, head): 
+            dc={
+                'id':120,
+                'createtime':150,
+                'callbacktime':150,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head
+        
         def inn_filter(self, query):
             return query.select_related('channel','accountid')
         

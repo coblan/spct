@@ -80,17 +80,17 @@ class MatchsPage(TablePage):
             dc={
                 'matchid':100,
                 'matchdate':140,
-                'tournamentzh':120,
-                'team1zh':90,
-                'team2zh':90,
+                'tournamentzh':160,
+                'team1zh':120,
+                'team2zh':120,
                 'matchscore':60,
                 'winner':60,
                 'statuscode':60,
                 'roundinfo':60,
                 'isrecommend':60,
                 'livebet':60,
-                'categoryid':60,
-                'currentperiodstart':120,
+                'categoryid':80,
+                'currentperiodstart':150,
                  
             }
             if dc.get(head['name']):

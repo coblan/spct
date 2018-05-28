@@ -5,6 +5,7 @@ from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFi
 from ..models import TbRcFilter
 
 class RcFilterPage(TablePage):
+    """风控条件"""
     template='jb_admin/table.html'
     def get_label(self):
         return _('Main.TbRcFilter')
@@ -22,10 +23,10 @@ class RcFilterPage(TablePage):
                 head['editor'] = 'com-table-checkbox'
                 
             dc={
-                'rc_level':60,
+                'rc_level':120,
                 'rc_rule':80,
-                'rc_rule_name':70,
-                'rc_filter':60,
+                'rc_rule_name':100,
+                'rc_filter':80,
                 'rc_active':60,
                 'rc_days':80,
                 'description': 200,

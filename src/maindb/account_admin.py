@@ -112,12 +112,12 @@ class AccountPage(TablePage):
         
         def dict_head(self, head):
             dc={
-                'accountid':40,
-                'account':120,
-                'accounttype':60,
-                'username':80,
-                'viplv':40,
-                'createtime':100
+                'accountid':80,
+                'account':150,
+                'accounttype':80,
+                'username':120,
+                'viplv':100,
+                'createtime':120
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])
@@ -191,6 +191,15 @@ class AccountTicketTable(WithAccoutInnFilter):
 class AccountLoginTable(WithAccoutInnFilter):
     model=TbLoginlog
     exclude=[]
+    
+    def dict_head(self, head): 
+        dc={
+            'deviceversion':120,
+            'devicename':120,
+        }
+        if dc.get(head['name']):
+            head['width'] =dc.get(head['name'])
+        return head
   
 
 class AccoutWithdrawLimitLogTable(WithAccoutInnFilter):
@@ -217,6 +226,20 @@ class LoginLogPage(TablePage):
         exclude=[]
         fields_sort=['accountid__username','devicecode','deviceip','appversion','devicename','deviceversion',
                      'logintype','createtime']
+        
+        def dict_head(self, head): 
+            dc={
+                'accountid':100,
+                'devicecode':120,
+                'deviceip':120,
+                'appversion':100,
+                'devicename':120,
+                'deviceversion':120,
+                'createtime':150
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head
         
         def get_heads(self):
             heads=[{

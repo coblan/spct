@@ -4,8 +4,8 @@ from django.utils.translation import ugettext as _
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
      TabPage,RowSearch,RowSort,RowFilter,model_to_name,field_map,director
-from .models import TbAppversion
-from .status_code import *
+from ..models import TbAppversion
+from ..status_code import *
 from django.core.urlresolvers import reverse
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from django.conf import settings
@@ -24,14 +24,14 @@ class AppPackage(TablePage):
         fields_sort=['versionid','versionname','md5','terminal','required','size','valid','description']
         def dict_head(self, head):
             dc={
-                'valid':40,
+                'valid':80,
                 'terminal':80,
                 'packageurl':180,
                 'md5':160,
                 'versionid':80,
-                'versionname':80,
+                'versionname':120,
                 'description':250,
-                'required':60,
+                'required':100,
                 'size':60                
             }
             if dc.get(head['name']):

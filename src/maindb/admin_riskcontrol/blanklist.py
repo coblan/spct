@@ -13,6 +13,18 @@ class TbBlackuserlistPage(TablePage):
     class tableCls(ModelTable):
         model = TbBlackuserlist
         exclude=[]
+        
+        def dict_head(self, head): 
+            dc={
+                'blackuserlistid':120,
+                'accounttype':100,
+                'ban_status':100,
+         
+              
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head
 
 class TbBlackuserlistLogPage(TablePage):
     template='jb_admin/table.html'
@@ -22,6 +34,19 @@ class TbBlackuserlistLogPage(TablePage):
     class tableCls(ModelTable):
         model = TbBlackuserlistLog
         exclude=[]
+        
+        def dict_head(self, head): 
+            dc={
+                'blacklogid':100,
+                'before_ban_status':130,
+                'alter_ban_status':120,
+                'modify_user': 120,
+         
+              
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head        
         
 #class BlankiplistPage(TablePage):
     #template='jb_admin/table.html'
@@ -39,7 +64,15 @@ class BlankipRangeListPage(TablePage):
         exclude=[]
         hide_fields = ['startipnum', 'endipnum']
         pop_edit_field='blackiprangelistid'
-        
+    
+        def dict_head(self, head): 
+            dc={
+                'startip':100,
+                'endip':100,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head          
 
 class WhiteIpListPage(TablePage):
     template='jb_admin/table.html'
@@ -50,6 +83,16 @@ class WhiteIpListPage(TablePage):
         model = Whiteiplist
         exclude=['itype']
         pop_edit_field='whiteiplistid'
+
+        def dict_head(self, head): 
+            dc={
+                'whiteiplistid':120,
+                'ip': 120,
+                'remark': 150,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head 
 
 class WhiteuserlistPage(TablePage):
     template='jb_admin/table.html'

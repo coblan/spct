@@ -14,7 +14,7 @@ from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 
 class ActivityPage(TablePage):
-    template='jb_admin/table_with_height.html'
+    template='jb_admin/table.html'
     extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
     
     def get_label(self):
@@ -26,6 +26,16 @@ class ActivityPage(TablePage):
         exclude=[]
         
         def dict_head(self, head):
+            dc={
+                'cover':190,
+                'zip':160,
+                'createuser':80,
+                'createtime':150,
+            
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+                
             if head['name'] =='createuser':
                 head['editor']='com-table-label-shower'   
             return head
@@ -40,8 +50,8 @@ class ActivityPage(TablePage):
             operations = ModelTable.get_operation(self)
             operations.append({
                 'fun':'update_activity_file',
-                'label':'生成活动页面',
-                'editor':'com-op-a'
+                'label':'更新活动页面',
+                'editor':'com-op-btn'
             })
             return operations
         

@@ -13,7 +13,7 @@ from django.conf import settings
 from helpers.director.base_data import director
 
 class CurrencyPage(TablePage):
-    template='jb_admin/table_with_height.html'
+    template='jb_admin/table.html'
     def get_label(self):
         return '金币管理'
     
@@ -25,10 +25,15 @@ class CurrencyPage(TablePage):
             #return {
                 #'_createuser_label':unicode( User.objects.get(pk = inst.createuser) )
             #}
-        #def dict_head(self, head):
-            #if head['name']=='createuser':
-                #head['editor']='com-table-label-shower'
-            #return head
+        def dict_head(self, head):
+            dc={
+                'description':150,
+                'icon':160,
+        
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head
 
 class CurrencyForm(ModelFields):
     class Meta:

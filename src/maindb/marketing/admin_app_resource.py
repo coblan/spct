@@ -13,6 +13,14 @@ class AppResource(TablePage):
         hide_fields = ['url']
         model = TbAppresource
         exclude = []
+        
+        def dict_head(self, head): 
+            dc={
+                'md5':150,
+            }
+            if dc.get(head['name']):
+                head['width'] =dc.get(head['name'])
+            return head
 
 class AppResourceForm(ModelFields):
     class Meta:
