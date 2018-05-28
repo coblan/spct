@@ -30,9 +30,6 @@ class PcMenu(BaseEngine):
                 {'label':_('Help'),'url':page('maindb.TbQa')},
                 {'label':_('Activity'),'url':page('maindb.TBActive')},
                 {'label':_('AppResource'),'url':page('AppResource')},
-                
-                 
-                
                 ]},  
             
             
@@ -82,11 +79,11 @@ class PcMenu(BaseEngine):
                 ]},            
             
             
-            {'label':'Betradar','icon':fa('fa-users'),'visible':can_list((User,Group)),
-            'submenu':[
-                {'label':'Alltournamentsidcn','url':page('betradar.Alltournamentsidcn'),'icon':fa('fa-home')},
-                {'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
-                ]},
+            #{'label':'Betradar','icon':fa('fa-users'),'visible':can_list((User,Group)),
+            #'submenu':[
+                #{'label':'Alltournamentsidcn','url':page('betradar.Alltournamentsidcn'),'icon':fa('fa-home')},
+                #{'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
+                #]},
                 
            
             
@@ -138,3 +135,29 @@ class PcMenu(BaseEngine):
         return ctx      
 
 PcMenu.add_pages(page_dc)
+
+class ProgramerAdmin(BaseEngine):
+    url_name='ProgramerAdmin'
+    brand = 'ProgramerAdmin'
+    mini_brand='PA'
+ 
+    @property
+    def menu(self):
+        menu=[
+            {'label':_('DashBoard'),'url':page('home'),'icon':fa('fa-home')},
+            {'label':'账号','url':page('user'),'icon':fa('fa-users'),'visible':can_list((User,Group)),
+                 'submenu':[
+                     {'label':'账号管理','url':page('jb_user'),'visible':can_touch(User)},
+                     {'label':'角色管理','url':page('jb_group'),'visible':can_touch(Group)},
+                     {'label':'权限分组','url':page('group_human'),'visible':can_touch(Group)},
+                ]},   
+            ]
+        return menu
+    
+    def custome_ctx(self, ctx):
+        ctx['js_stamp']=js_stamp
+        ctx['fast_config_panel']=True
+        return ctx    
+    
+ProgramerAdmin.add_pages(page_dc)
+    

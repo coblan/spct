@@ -259,7 +259,7 @@ msgstr "总红利"
 
 #: .\maindb\admin_games\ticket_admin.py:14
 msgid "Tb Trans"
-msgstr "存款记录"
+msgstr "注单列表"
 
 #: .\maindb\admin_riskcontrol\blanklist.py:11
 msgid "Main.TbBlackuserlist"

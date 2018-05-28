@@ -117,7 +117,7 @@ class AccountPage(TablePage):
                 'accounttype':80,
                 'username':120,
                 'viplv':100,
-                'createtime':120
+                'createtime':150
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])

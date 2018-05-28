@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from helpers.authuser import urls as authuser_urls
-from hello.engine_menu import PcMenu
+from hello.engine_menu import PcMenu, ProgramerAdmin
 from django.views.generic import RedirectView 
 from maindb.views import test
 urlpatterns = [
@@ -29,6 +29,10 @@ urlpatterns = [
     url(r'^main/',include('maindb.urls')),
     
     url(r'^d/',include('helpers.director.urls'),name='director'),
+    
+    url(r'^pa/([\w\.]+)/?$', ProgramerAdmin.as_view(), name= ProgramerAdmin.url_name), 
+    url(r'^pa/?$', RedirectView.as_view(url='/pa/group_human')), 
+    
     url(r'^$',RedirectView.as_view(url='/pc/maindb.account')) ,
     url(r'test',test)
 ]
