@@ -134,10 +134,10 @@ class AccountPage(TablePage):
 
 class AccoutBaseinfo(ModelFields):
         field_sort=['accounttype','account','username','status','agent','verify','viplv','createtime']
-        readonly=['account','createtime']
+        readonly=['createtime']
         class Meta:
             model=TbAccount
-            exclude =[]
+            exclude =['password', 'account', 'amount']
 
 class AccountTabBase(ModelTable):
     def __init__(self, *args,**kws):
