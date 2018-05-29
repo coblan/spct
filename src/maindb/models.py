@@ -1110,12 +1110,18 @@ class TbTicketmaster(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_TicketMaster'
+    
+    def __str__(self): 
+        return str(self.ticketid)
 
 
 class TbTicketparlay(models.Model):
     """串关规则"""
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    ticketid = models.CharField(db_column='TicketID', max_length=20)  # Field name made lowercase.
+    #ticketid = models.BigIntegerField(db_column='TicketID')
+    ticket_master = models.ForeignKey(TbTicketmaster,db_column='TicketID', db_constraint=False,verbose_name=_(
+        'ticket master'))    
+    #ticketid = models.CharField(db_column='TicketID', max_length=20)  # Field name made lowercase.
     parlay1tid = models.BigIntegerField(db_column='Parlay1Tid',verbose_name='子注单ID1')  # Field name made lowercase.
     parlay2tid = models.BigIntegerField(db_column='Parlay2Tid',verbose_name='子注单ID2')  # Field name made lowercase.
     parlay3tid = models.BigIntegerField(db_column='Parlay3Tid',verbose_name='子注单ID3')  # Field name made lowercase.

@@ -8,6 +8,10 @@ from helpers.maintenance.update_static_timestamp import js_stamp
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from .js_translation import get_tr
+from maindb.models import TbBanner, TbAppversion, TbNotice, TbCurrency, TbQa, TbActivity, TbAppresource, TbAccount, TbLoginlog, \
+     TbBalancelog, TbChargeflow, TbChannel, TbTicketmaster, TbMatches, TbRcFilter, TbRcLevel, TbRcUser, TbBlackuserlist, TbBlackuserlistLog, \
+     Blackiprangelist, Whiteiplist, Whiteuserlist, TbWithdrawlimitlog
+from . import permit
 
 class PcMenu(BaseEngine):
     url_name='sportcenter'
@@ -18,104 +22,90 @@ class PcMenu(BaseEngine):
     
     @property
     def menu(self):
+        crt_user = self.request.user
         menu=[
-            {'label':_('DashBoard'),'url':page('home'),'icon':fa('fa-home')},
+            {'label':_('DashBoard'),'url':page('home'),'icon':fa('fa-home'), 'visible':True}, 
             
-            {'label':_('Marketing'),'icon':fa('fa-image'),'visible':can_list((User,Group)),
+            {'label':_('Marketing'),'icon':fa('fa-image'), 'visible': True,
             'submenu':[
-                {'label':_('Banner'),'url':page('TbBanner')},
-                {'label':_('App Package'),'url':page('maindb.TbAppversion')},
-                {'label':_('Notice'),'url':page('maindb.TbNotice')},
-                {'label':_('Currency'),'url':page('maindb.TbCurrency')},
-                {'label':_('Help'),'url':page('maindb.TbQa')},
-                {'label':_('Activity'),'url':page('maindb.TBActive')},
-                {'label':_('AppResource'),'url':page('AppResource')},
+                {'label':_('Banner'),'url':page('TbBanner'), 'visible': can_touch(TbBanner, crt_user) },
+                {'label':_('App Package'),'url':page('maindb.TbAppversion'), 'visible': can_touch(TbAppversion, crt_user),},
+                {'label':_('Notice'),'url':page('maindb.TbNotice'), 'visible': can_touch(TbNotice, crt_user),},
+                {'label':_('Currency'),'url':page('maindb.TbCurrency'), 'visible': can_touch(TbCurrency, crt_user)},
+                {'label':_('Help'),'url':page('maindb.TbQa'), 'visible': can_touch(TbQa, crt_user),},
+                {'label':_('Activity'),'url':page('maindb.TBActive'), 'visible': can_touch(TbActivity, crt_user),},
+                {'label':_('AppResource'),'url':page('AppResource'), 'visible': can_touch(TbAppresource, crt_user),},
                 ]},  
             
             
-            {'label':_('Member'),'icon':fa('fa-users'),'visible':can_list((User,Group)),
+            {'label':_('Member'),'icon':fa('fa-users'),'visible':True,
             'submenu':[
-                {'label':_('Tb Account'),'url':page('maindb.account'),'icon':fa('fa-home')},
-                {'label':_('Tb Login Log'),'url':page('maindb.loginlog'),'icon':fa('fa-home')},
+                {'label':_('Tb Account'),'url':page('maindb.account'), 'visible': can_touch(TbAccount, crt_user),},
+                {'label':_('Tb Login Log'),'url':page('maindb.loginlog'), 'visible': can_touch(TbLoginlog, crt_user),},
                 
                 ]},   
             
-            {'label':_('MoneyFlow'),'icon':fa('fa-dollar'),'visible':can_list((User,Group)),
+            {'label':_('MoneyFlow'),'icon':fa('fa-dollar'),'visible':True,
             'submenu':[
-                {'label':_('Tb Balance Log'),'url':page('maindb.balancelog')},
-                {'label':_('Charge Flow'),'url':page('ChargeFlow'),},
+                {'label':_('Tb Balance Log'),'url':page('maindb.balancelog'), 'visible': can_touch(TbBalancelog, crt_user),},
+                {'label':_('Charge Flow'),'url':page('ChargeFlow'), 'visible': can_touch(TbChargeflow, crt_user),},
                 #{'label':_('Tb Trans'),'url':page('maindb.trans'),'icon':fa('fa-home')},
-                {'label':_('Tb Channel'),'url':page('maindb.channel')},
+                {'label':_('Tb Channel'),'url':page('maindb.channel'), 'visible': can_touch(TbChannel, crt_user),},
                              ]}, 
             
-            {'label':_('Games'),'icon':fa('fa-globe'),'visible':can_list((User,Group)),
+            {'label':_('Games'),'icon':fa('fa-globe'),'visible':True,
             'submenu':[
-                {'label':_('Tb TicketMaster'),'url':page('maindb.ticketmaster'),'icon':fa('fa-home')},
-                {'label':_('Tb Match'),'url':page('maindb.Matches')},
-                {'label':_('View TicketSingleByMatch'),'url':page('maindb.TicketSingleByMatch')},
+                {'label':_('Tb TicketMaster'),'url':page('maindb.ticketmaster'), 'visible': can_touch(TbTicketmaster, crt_user),},
+                {'label':_('Tb Match'),'url':page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user),},
+                {'label':_('View TicketSingleByMatch'),'url':page('maindb.TicketSingleByMatch'), 'visible': can_touch(TbMatches, crt_user),},
                 #{'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
                         ]}, 
             
-            {'label':_('RiskControl'),'icon':fa('fa-globe'),'visible':can_list((User,Group)),
+            {'label':_('RiskControl'),'icon':fa('fa-globe'),'visible':True,
             'submenu':[
-                {'label':_('Tb RC Filter'),'url':page('maindb.TbRcFilter'),'icon':fa('fa-home')},
-                {'label':_('Tb RC Level'),'url':page('maindb.TbRcLevel')},
-                {'label':_('Tb RC User'),'url':page('maindb.TbRcUser')},
-                {'label':_('Tb Blankuserlist'),'url':page('maindb.TbBlackuserlist')},
-                {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog')},
+                {'label':_('Tb RC Filter'),'url':page('maindb.TbRcFilter'), 'visible': can_touch(TbRcFilter, crt_user),},
+                {'label':_('Tb RC Level'),'url':page('maindb.TbRcLevel'), 'visible': can_touch(TbRcLevel, crt_user),},
+                {'label':_('Tb RC User'),'url':page('maindb.TbRcUser'), 'visible': can_touch(TbRcUser, crt_user),},
+                {'label':_('Tb Blankuserlist'),'url':page('maindb.TbBlackuserlist'), 'visible': can_touch(TbBlackuserlist, crt_user),},
+                {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
                 
-                {'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList')},
-                {'label':_('White IP'),'url':page('maindb.WhiteIpList')},
-                {'label':_('White User'),'url':page('maindb.Whiteuserlist')},
+                {'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList'), 'visible': can_touch(Blackiprangelist, crt_user),},
+                {'label':_('White IP'),'url':page('maindb.WhiteIpList'), 'visible': can_touch(Whiteiplist, crt_user),},
+                {'label':_('White User'),'url':page('maindb.Whiteuserlist'), 'visible': can_touch(Whiteuserlist, crt_user),},
                 
-                {'label':_('Tb Withdraw Limit Log'),'url':page('maindb.TbWithdrawlimitlog')}
+                {'label':_('Tb Withdraw Limit Log'),'url':page('maindb.TbWithdrawlimitlog'), 'visible': can_touch(TbWithdrawlimitlog, crt_user)}
                         ]},             
             
             
-            {'label':_('Report'),'icon':fa('fa-users'),'visible':can_list((User,Group)),
+            {'label':_('Report'),'icon':fa('fa-users'),'visible':True,
             'submenu':[
-                {'label':_('Channel'),'url':page('maindb.report.channel')},
-                {'label':_('Account'),'url':page('maindb.report.account')},
+                {'label':_('Channel'),'url':page('maindb.report.channel'), 'visible': can_touch(TbChannel, crt_user),},
+                {'label':_('Account'),'url':page('maindb.report.account'), 'visible': can_touch(TbAccount, crt_user),},
                 ]},            
             
-            
-            #{'label':'Betradar','icon':fa('fa-users'),'visible':can_list((User,Group)),
-            #'submenu':[
-                #{'label':'Alltournamentsidcn','url':page('betradar.Alltournamentsidcn'),'icon':fa('fa-home')},
-                #{'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
-                #]},
-                
-           
-            
-            #{'label':_('学校管理'),'icon':fa('fa-users'),'visible':can_list((User,Group)),
-            #'submenu':[
-                #{'label':'学校管理','url':page('school.school'),'visible':can_touch(User)},
-                #{'label':'学生管理','url':page('school.student'),'visible':can_touch(Group)},
-                #]},
         
-            #{'label':'首页','url':page('home'),'icon':fa('fa-home')},
-            # {'label':'政策','icon':fa('fa-sitemap'),'submenu':[
-                # {'label':'政策协议','url':page('liantang.policy')},
-                # {'label':'申请表格','url':page('liantang.applytable')}
-                # ]},
-            
-            #{'label':'政策协议','url':page('liantang.policy'),'icon':fa('fa-sitemap')},
-            #{'label':'申请表格','url':page('liantang.applytable'),'icon':fa('fa-life-ring')},
-            #{'label':'建房信息','url':page('liantang.jianfanginfo'),'icon':fa('fa-building')},
-            ## {'label':'GIS区域','url':page('geoinfo.blockpolygon'),'icon':fa('fa-map-o')},
-            ## {'label':'区域组','url':page('geoinfo.blockgroup'),'icon':fa('fa-map-o')}
-            #{'label':'村委信息','url':page('liantang.cunwei'),'icon':fa('fa-life-ring')},
-            
-            ##{'label':'账号管理','url':page('user'),'icon':fa('fa-users')},
-             {'label':'账号','url':page('user'),'icon':fa('fa-users'),'visible':can_list((User,Group)),
+             {'label':'账号','url':page('user'),'icon':fa('fa-users'),'visible':True,
                   'submenu':[
-                      {'label':'账号管理','url':page('jb_user'),'visible':can_touch(User)},
-                      {'label':'角色管理','url':page('jb_group'),'visible':can_touch(Group)},
+                      {'label':'账号管理','url':page('jb_user'),'visible':can_touch(User, crt_user)},
+                      {'label':'角色管理','url':page('jb_group'),'visible':can_touch(Group, crt_user)},
                       #{'label':'权限分组','url':page('group_human'),'visible':can_touch(Group)},
                 ]},        
             
         ]
-        return menu
+        menu2 = []
+        for act in menu:
+            if not act.get('visible'):
+                continue
+            
+            if act.get('submenu'):
+                out_submenu = []
+                for sub_act in  act.get('submenu'):
+                    if sub_act.get('visible'):
+                        out_submenu.append(sub_act)
+                if out_submenu:
+                    act['submenu'] = out_submenu
+                    menu2.append(act)
+        return menu2
     
     def custome_ctx(self, ctx):
         ctx['js_stamp']=js_stamp

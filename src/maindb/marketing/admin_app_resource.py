@@ -2,7 +2,7 @@
 
 from ..models import TbAppresource
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, ModelFields
-
+import re
 class AppResource(TablePage):
     template = 'jb_admin/table.html'
     def get_label(self): 
@@ -23,9 +23,26 @@ class AppResource(TablePage):
             return head
 
 class AppResourceForm(ModelFields):
+    hide_fields = ['md5']
     class Meta:
         model = TbAppresource
         exclude = []
+    
+    def clean_dict(self, dc): 
+        url =  dc.get('url')
+        if url:
+            ls = url.split('/')
+            name = ls[-1]
+            md5 = name[:32]
+            dc['md5'] = md5
+        return dc
+        
+    #def save_form(self): 
+        #super().save_form()
+        #if self.kw.url:
+            #pass
+        
+        
         
 director.update({
     'AppResource': AppResource.tableCls,

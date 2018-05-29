@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^pa/([\w\.]+)/?$', ProgramerAdmin.as_view(), name= ProgramerAdmin.url_name), 
     url(r'^pa/?$', RedirectView.as_view(url='/pa/group_human')), 
     
-    url(r'^$',RedirectView.as_view(url='/pc/maindb.account')) ,
+    url(r'^$',RedirectView.as_view(url='/pc/home')) ,
     url(r'test',test)
 ]
 

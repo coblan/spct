@@ -7,6 +7,9 @@ from helpers.director.model_func.dictfy import model_to_name
 from ..models import TbBalancelog,TbTrans,TbChannel
 from ..status_code import *
 from .admin_chargeflow import *
+from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
+import json
+
 
 class BalancelogPage(TablePage):
     template='jb_admin/table.html'
@@ -115,7 +118,7 @@ class ChannelPage(TablePage):
         
         def dict_head(self, head):
             dc={
-                'channel':80,
+                'channel':120,
                 'channelname':80,
                 'channelgroup':80,
                 'cashflow':80,
@@ -171,4 +174,10 @@ page_dc.update({
     #'TbBanner':BannerPage
 })
 #model_dc[TbChannel]={'fields':ChannelPage.fieldsCls}
-                    
+
+permits = [ 
+           ('TbChannel', model_full_permit(TbChannel), model_to_name(TbChannel) , 'model'), 
+           ('TbChargeflow', model_full_permit(TbChargeflow), model_to_name(TbChargeflow), 'model'), 
+           ]
+
+add_permits(permits)                    

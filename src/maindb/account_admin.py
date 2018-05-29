@@ -6,7 +6,10 @@ from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,Mode
      TabPage,RowSearch,RowSort,RowFilter,model_to_name,director
 from .models import TbAccount,TbBalancelog,TbLoginlog,TbTrans,TbTicketmaster,TbWithdrawlimitlog
 from .status_code import *
-
+from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
+import json
+from helpers.func.collection.container import evalue_container
+from helpers.director.access.permit import can_touch
 # Register your models here.
 
 class AccountPage(TablePage):
@@ -45,7 +48,8 @@ class AccountPage(TablePage):
                  }
                  
              },
-             'table_ctx':AccountBalanceTable(crt_user=self.crt_user).get_head_context()
+             'table_ctx':AccountBalanceTable(crt_user=self.crt_user).get_head_context(), 
+             'visible': can_touch(TbBalancelog, self.crt_user),
              },
             #{'name':'account_trans',
              #'label':_('Transaction Log'),
@@ -69,7 +73,8 @@ class AccountPage(TablePage):
                      'relat_field':'accountid',
                  }
              },
-             'table_ctx':AccountTicketTable(crt_user=self.crt_user).get_head_context()
+             'table_ctx':AccountTicketTable(crt_user=self.crt_user).get_head_context(), 
+              'visible': can_touch(TbTicketmaster, self.crt_user),
              },
             {'name':'account_login',
             'label':_('Login Log'),
@@ -81,7 +86,9 @@ class AccountPage(TablePage):
                     'relat_field':'accountid',                    
                 }
             },
-            'table_ctx':AccountLoginTable(crt_user=self.crt_user).get_head_context()},
+            'table_ctx':AccountLoginTable(crt_user=self.crt_user).get_head_context(), 
+            'visible': can_touch(TbLoginlog, self.crt_user),},
+            
             #{'name':'account_withdrawlimitlog',
             #'label':_('Withdraw Log'),
             #'com':'com_tab_table',
@@ -95,7 +102,7 @@ class AccountPage(TablePage):
             #'table_ctx':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()}, 
                        
             ]
-        ctx['tabs']=ls
+        ctx['tabs']= evalue_container( ls )
         return ctx
     
     class tableCls(ModelTable):
@@ -162,7 +169,18 @@ class WithAccoutInnFilter(ModelTable):
 class AccountBalanceTable(WithAccoutInnFilter):
     model = TbBalancelog
     exclude = []
-     
+    
+    def dict_head(self, head): 
+        dc={
+            'beforeamount':110,
+            'afteramount': 110,
+            'createtime': 110,
+      
+           }
+        if dc.get(head['name']):
+            head['width'] =dc.get(head['name'])        
+        return head
+    
     def dict_row(self, inst):
         ba_cat = dict(BALANCE_CAT)
         return {
@@ -186,6 +204,18 @@ class AccountTicketTable(WithAccoutInnFilter):
     """投注记录"""
     model=TbTicketmaster
     exclude=[]  
+    def dict_head(self, head): 
+        dc={
+            'betoutcome':110,
+            'stakecount': 110,
+            'parlaycount': 110,
+            'reststakecount': 110,
+            'possibleturnover': 160,
+      
+           }
+        if dc.get(head['name']):
+            head['width'] =dc.get(head['name'])         
+        return head
   
 
 class AccountLoginTable(WithAccoutInnFilter):
@@ -285,5 +315,17 @@ director.update({
 page_dc.update({
     'maindb.loginlog':LoginLogPage
 })
+
+
+
+
+permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model' ), 
+           ('TbLoginlog', model_full_permit(TbLoginlog), model_to_name(TbLoginlog),'model' ), 
+           ('TbBalancelog', model_full_permit(TbBalancelog), model_to_name(TbBalancelog), 'model'), 
+           ('TbTicketmaster', model_full_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'), 
+           ('TbAccount.all', 'TbAccount;TbLoginlog;TbBalancelog;TbTicketmaster', '', 'set'), 
+           ]
+
+add_permits(permits)
 
     

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter,field_map,model_to_name
+     TabPage,RowSearch,RowSort,RowFilter,field_map,model_to_name, permit_list
 from helpers.director.model_func.dictfy import model_to_name
 from ..models import TbBanner
 from ..status_code import *
@@ -158,7 +158,8 @@ class BannerForm(ModelFields):
             ##return mt.group(0) 
             #else:
                 #return value
-    
+
+permit_list.append(TbBanner)
 
 director.update({
     'banner.table':BannerPage.tableCls,
@@ -171,3 +172,4 @@ director.update({
 page_dc.update({
     'TbBanner':BannerPage
 })
+

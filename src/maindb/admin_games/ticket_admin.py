@@ -93,7 +93,7 @@ class TicketTabBase(ModelTable):
         
     def inn_filter(self, query):
         if self.ticketid:
-            return query.filter(ticketid=self.ticketid) 
+            return query.filter(ticket_master_id=self.ticketid) 
         else:
             return query
 
