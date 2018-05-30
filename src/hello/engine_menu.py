@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from helpers.director.shortcut import page_dc
 from helpers.director.engine import BaseEngine,page,fa,can_list,can_touch
 from django.contrib.auth.models import User,Group
+from helpers.func.collection.container import evalue_container
 from helpers.maintenance.update_static_timestamp import js_stamp
 from django.utils.translation import ugettext as _
 from django.conf import settings
@@ -58,6 +59,7 @@ class PcMenu(BaseEngine):
                 {'label':_('Tb TicketMaster'),'url':page('maindb.ticketmaster'), 'visible': can_touch(TbTicketmaster, crt_user),},
                 {'label':_('Tb Match'),'url':page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user),},
                 {'label':_('View TicketSingleByMatch'),'url':page('maindb.TicketSingleByMatch'), 'visible': can_touch(TbMatches, crt_user),},
+                {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
                 #{'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
                         ]}, 
             
@@ -84,7 +86,7 @@ class PcMenu(BaseEngine):
                 ]},            
             
         
-             {'label':_('User'),'url':page('user'),'icon':fa('fa-user'),'visible':True,
+             {'label':_('User'),'icon':fa('fa-user'),'visible':True,
                   'submenu':[
                       {'label':_('User'),'url':page('jb_user'),'visible':can_touch(User, crt_user)},
                       {'label':_('Role'),'url':page('jb_group'),'visible':can_touch(Group, crt_user)},
@@ -92,20 +94,9 @@ class PcMenu(BaseEngine):
                 ]},        
             
         ]
-        menu2 = []
-        for act in menu:
-            if not act.get('visible'):
-                continue
-            
-            if act.get('submenu'):
-                out_submenu = []
-                for sub_act in  act.get('submenu'):
-                    if sub_act.get('visible'):
-                        out_submenu.append(sub_act)
-                if out_submenu:
-                    act['submenu'] = out_submenu
-                    menu2.append(act)
-        return menu2
+        
+        return menu
+
     
     def custome_ctx(self, ctx):
         ctx['js_stamp']=js_stamp

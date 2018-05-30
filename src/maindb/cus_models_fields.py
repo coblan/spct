@@ -58,7 +58,8 @@ class CusFielFieldProc(CusPictureMap):
         head['editor']='com-field-plain-file'
         #head['up_url']='/d/upload?path=public/resource'
         head['config']={
-            'upload_url':'/d/upload?path=public/resource'
+            'upload_url':'/d/upload?path=public/resource', 
+            'accept': '*',
         }
         return head    
 

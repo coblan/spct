@@ -322,7 +322,7 @@ page_dc.update({
 permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model' ), 
            ('TbLoginlog', model_full_permit(TbLoginlog), model_to_name(TbLoginlog),'model' ), 
            ('TbBalancelog', model_full_permit(TbBalancelog), model_to_name(TbBalancelog), 'model'), 
-           ('TbTicketmaster', model_full_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'), 
+           #('TbTicketmaster', model_full_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'), 
            ('TbAccount.all', 'TbAccount;TbLoginlog;TbBalancelog;TbTicketmaster', '', 'set'), 
            ]
 

@@ -1,0 +1,200 @@
+{% extends "jb_admin/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+<script src='{% static "js/jb_admin.pack.js" %}?t={{ js_stamp.jb_admin_pack_js }}'></script>
+
+<script type="text/javascript">
+
+    extra_table_logic='{{ extra_table_logic }}'
+
+    tabs={{ tabs | jsonify | default:'[]' }}
+    crt_tab= '{{ crt_tab }}'
+    table_logic={
+        el:'#there',
+        data:{
+            page_label:page_label,
+            tabs:tabs,
+            crt_tab:crt_tab,
+            tr:cfg.tr
+
+        },
+
+        mounted:function(){
+//            var self=this
+//            ex.assign(this.op_funs,{
+//                row_changed:function(kws){
+//                    var row= kws.row
+//                    if(!ex.isin(row,self.changed_rows)){
+//                        self.changed_rows.push(row)
+//                    }
+//                },
+//                row_changed_undo_act:function(kws){
+//                    var md5= ex.hashDict(kws.row)
+//                    if(md5 == kws.row._hash){
+//                        ex.remove(self.changed_rows,{pk:kws.row.pk})
+//                    }
+//                },
+//                switch_to_tab:function(kws){
+//                    self.show_tab(kws.tab_name)
+//                    self.crt_row= kws.row
+//                },
+//                update_or_insert:function(kws){
+//                    var new_row = kws.new_row
+//                    var old_row= kws.old_row
+//                    self.update_or_insert(new_row,old_row)
+//                },
+//
+//            })
+
+        },
+        methods:{
+
+            on_tab_event:function(e){
+                this.op_funs[e.name](e)
+            },
+
+//            back_to_main_page:function(){
+//                this.tabgroup.crt='main'
+//            },
+            show_tab:function(name){
+                this.crt_tab = name
+                var self =this
+
+                Vue.nextTick(function(){
+                    self.$refs['_tab_'+name][0].on_show()
+                })
+
+            },
+            get_attr:function(name){
+                if(name == undefined){
+                    return false
+                }
+                if(name.startsWith('!')){
+                    name=name.slice(1)
+                    name= name.trim()
+                    return !this[name]
+                }else{
+                    name= name.trim()
+                    return this[name]
+                }
+            },
+            handleClick(tab, event) {
+                this.show_tab(tab.name)
+
+            }
+        }
+
+    }
+
+    function update_cnt_size(){
+        var cnt_ht =  window.innerHeight
+        $('#there').height(cnt_ht -80)
+    }
+    $(function () {
+        update_cnt_size()
+//        $('.main-tab-content').height(window.innerHeight -230)
+        $(window).resize(function(){
+            update_cnt_size()
+        });
+//        $(document).resize(update_cnt_size)
+
+        if(extra_table_logic){
+            table_logic.mixins.push(window[extra_table_logic])
+        }
+        table=new Vue(table_logic)
+
+    })
+
+</script>
+
+{% block extra_head %}
+{% endblock %}
+<style>
+    a[disabled] {
+        color: gray;
+        pointer-events: none;
+    }
+</style>
+<div id='there' class="flex-v">
+
+    {% block flag %}
+    <div v-if="page_label" style="border-left: 3px solid #3e8ebd;padding-left: 1em;margin-bottom: 5px;">
+        <b v-text="page_label"></b>
+        <!--<span style="display: inline-block;width: 2em;"></span>-->
+        <!--<button type="button"-->
+                <!--class="btn btn-warning btn-xs"-->
+                <!--v-show="tabgroup.crt != 'main'"-->
+                <!--@click="back_to_main_page()">-->
+            <!--<i class="fa fa-arrow-circle-o-left fa-lg"></i><span v-text="tr.back"></span></button>-->
+    </div>
+
+
+    {% endblock %}
+
+    {% block tab-content %}
+    <div id="tab-wrap"  class="flex-grow" style="position: relative">
+        <div  style="position: absolute;bottom: 0;top: 0;left: 0;right: 0;">
+            <el-tabs v-if="tabs.length >1" type="border-card"
+                     @tab-click="handleClick"
+                     style="width: 100%;"
+                     :value="crt_tab" >
+                <el-tab-pane v-for="tab in tabs" :name="tab.name">
+                    <span slot="label" v-text="tab.label"></span>
+
+                    <component :is="tab.com" :tab_head="tab"
+                               :ref="'_tab_'+tab.name" @tab-event="on_tab_event($event)"></component>
+
+                </el-tab-pane>
+            </el-tabs>
+
+
+            <component v-else v-for="tab in tabs"  :is="tab.com" :tab_head="tab"
+                       :ref="'_tab_'+tab.name" @tab-event="on_tab_event($event)"></component>
+        </div>
+        <!--</div>-->
+
+
+
+        <!--</div>-->
+
+        <!--<component v-for="tab in tabgroup.tabs"-->
+        <!--v-show="tabgroup.crt==tab.name"-->
+        <!--:is="tab.com" :tab_head="tab"-->
+        <!--:par_row="crt_row"-->
+        <!--:ref="'_tab_'+tab.name" @tab-event="on_tab_event($event)"></component>-->
+
+    </div>
+
+    {% endblock %}
+
+</div>
+<style>
+    .main-tab-content{
+
+    }
+
+    .fake-suit th{
+        white-space: nowrap;
+    }
+
+    /*.table thead tr {*/
+    /*display:block;*/
+    /*}*/
+    /*.table tbody {*/
+    /*display: block;*/
+    /*height: 300px;*/
+    /*overflow: auto;*/
+    /*}*/
+    /*.table th {*/
+    /*width:20%;*/
+    /*}*/
+    /*.table td {*/
+    /*width:20%;*/
+    /*}*/
+
+</style>
+{% block extra %}
+{% endblock %}
+{% endblock %}

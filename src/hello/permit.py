@@ -18,7 +18,7 @@ def get_permit():
              {'label': _('Tb Account'), 'value': 'TbAccount',}, 
              {'label': _('Tb Login Log'), 'value': 'TbLoginlog',}, 
              {'label': _('Tb Balance Log'), 'value': 'TbBalancelog', }, 
-             {'label': _('Tb TicketMaster'), 'value': 'TbTicketmaster',}
+          
              ],
          }, 
         {'label': _('MoneyFlow'),
@@ -28,7 +28,13 @@ def get_permit():
              {'label': '金流日志', 'value': 'TbChargeflow',}
              ],
         }, 
-        {'label': _('Tb Match'), 'value': 'TbMatches',}, 
+        {'label': _('Tb Match'), 
+         'children': [
+             {'label': _('Tb Match'), 'value': 'TbMatches',}, 
+             {'label': _('Tb TicketMaster'), 'value': 'TbTicketmaster.all',},              
+             ],
+        }, 
+       
         {'label': _('RiskControl'),
          'children': [
             {'label': _('Tb RC Filter'), 'value': 'TbRcFilter',}, 
