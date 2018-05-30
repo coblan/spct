@@ -558,18 +558,26 @@ window.notice_logic = notice_logic;
 "use strict";
 
 
+var _turnover = __webpack_require__(13);
+
+var turnover = _interopRequireWildcard(_turnover);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 var ajax_table = {
-    props: ['tab_head', 'par_row'], //['heads','row_filters','kw'],
+    props: ['tab_head'], //['heads','row_filters','kw'],
     data: function data() {
         var heads_ctx = this.tab_head.table_ctx;
+        var rows = heads_ctx.rows ? heads_ctx.rows : [];
+        var row_pages = heads_ctx.row_pages || {};
         return {
             heads: heads_ctx.heads,
             row_filters: heads_ctx.row_filters,
             row_sort: heads_ctx.row_sort,
             director_name: heads_ctx.director_name,
             footer: [],
-            rows: [],
-            row_pages: {},
+            rows: rows,
+            row_pages: row_pages,
             //search_tip:this.kw.search_tip,
 
             selected: [],
@@ -595,30 +603,14 @@ var ajax_table = {
                 this.fetched = true;
             }
         },
-        getRows: function getRows() {
-            // 这里clear，数据被清空，造成table的pagenator上下抖动
-            //                       com.clear()
-
-            //                        var getter_name = 'get_'+tab.name
-            var self = this;
-            var fun = get_data[this.tab_head.get_data.fun];
-            fun(function (rows, row_pages) {
-                self.rows = rows;
-                self.row_pages = row_pages;
-            }, this.par_row, this.tab_head.get_data.kws, this.search_args);
-
-            //            var self=this
-            //            var relat_pk = this.par_row[this.relat_field]
-            //        var relat_field = this.relat_field
-            //        this.search_args[relat_field] = relat_pk
-            //        var post_data=[{fun:'get_rows',search_args:this.search_args,model_name:this.model_name}]
-            //            cfg.show_load()
-            //        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //            cfg.hide_load()
-            //            self.rows = resp.get_rows.rows
-            //            self.row_pages =resp.get_rows.row_pages
-            //        })
-        },
+        //getRows:function(){
+        //    var self=this
+        //    var fun = get_data[this.tab_head.get_data.fun ]
+        //    fun(function(rows,row_pages){
+        //        self.rows = rows
+        //        self.row_pages =row_pages
+        //    },this.par_row,this.tab_head.get_data.kws,this.search_args)
+        //},
         del_item: function del_item() {
             if (this.selected.length == 0) {
                 return;
@@ -1068,6 +1060,22 @@ var _com_tab_special_bet_value = __webpack_require__(3);
 var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bool_shower = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span >\n        <span v-text="rowData.FavTurnover"> </span>\n        <span v-text="rowData.UnderTurnover"></span>\n    </span>',
+    computed: {}
+
+};
+
+Vue.component('com-odds-turnover', bool_shower);
 
 /***/ })
 /******/ ]);

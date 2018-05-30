@@ -1,16 +1,21 @@
+import * as turnover from  './coms_odds/turnover.js'
+
+
 
 var ajax_table={
-    props:['tab_head','par_row'],//['heads','row_filters','kw'],
+    props:['tab_head'],//['heads','row_filters','kw'],
     data:function(){
         var heads_ctx = this.tab_head.table_ctx
+        var rows = heads_ctx.rows?heads_ctx.rows:[]
+        var row_pages = heads_ctx.row_pages || {}
         return {
             heads:heads_ctx.heads,
             row_filters:heads_ctx.row_filters,
             row_sort:heads_ctx.row_sort,
             director_name:heads_ctx.director_name,
             footer:[],
-            rows:[],
-            row_pages:{},
+            rows: rows,
+            row_pages:row_pages,
             //search_tip:this.kw.search_tip,
 
             selected:[],
@@ -103,30 +108,14 @@ var ajax_table={
                 this.fetched = true
             }
         },
-        getRows:function(){
-            // 这里clear，数据被清空，造成table的pagenator上下抖动
-//                       com.clear()
-
-//                        var getter_name = 'get_'+tab.name
-            var self=this
-            var fun = get_data[this.tab_head.get_data.fun ]
-            fun(function(rows,row_pages){
-                self.rows = rows
-                self.row_pages =row_pages
-            },this.par_row,this.tab_head.get_data.kws,this.search_args)
-
-//            var self=this
-//            var relat_pk = this.par_row[this.relat_field]
-//        var relat_field = this.relat_field
-//        this.search_args[relat_field] = relat_pk
-//        var post_data=[{fun:'get_rows',search_args:this.search_args,model_name:this.model_name}]
-//            cfg.show_load()
-//        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
-//            cfg.hide_load()
-//            self.rows = resp.get_rows.rows
-//            self.row_pages =resp.get_rows.row_pages
-//        })
-        },
+        //getRows:function(){
+        //    var self=this
+        //    var fun = get_data[this.tab_head.get_data.fun ]
+        //    fun(function(rows,row_pages){
+        //        self.rows = rows
+        //        self.row_pages =row_pages
+        //    },this.par_row,this.tab_head.get_data.kws,this.search_args)
+        //},
         del_item:function () {
             if (this.selected.length==0){
                 return

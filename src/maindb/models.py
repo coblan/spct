@@ -629,6 +629,18 @@ class TbMatchesoddsswitch(models.Model):
         #managed = False
         #db_table = 'TB_MatchesOddsSwitch'
 
+class TbMatchesturnover(models.Model):
+    tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    match = models.ForeignKey(TbMatches, db_column='MatchID', db_constraint= False, to_field= 'matchid')
+    #matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
+    oddsid = models.BigIntegerField(db_column='OddsID')  # Field name made lowercase.
+    specialbetvalue = models.CharField(db_column='SpecialBetValue', max_length=20)  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=4)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_MatchesTurnover'
 
 class TbMatchesBetstatus(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
