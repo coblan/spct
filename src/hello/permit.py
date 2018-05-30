@@ -1,51 +1,60 @@
-from helpers.director.base_data import permit_dc
+from helpers.director.base_data import site_cfg
 from django.utils.translation import ugettext as _
 
-permit = [
-    {'name': 'xxx', 'label': '市场',
-     'children': [
-         {'name': 'xbb', 'label': '广告', 'value': 'TbBanner',}, 
-         {'name': 'xbb', 'label': 'APP版本', 'value': 'TbAppversion',}, 
-         {'name': 'xbb', 'label': '公告', 'value': 'TbNotice',}, 
-         {'name': 'xbb', 'label': '帮助管理', 'value': 'TbQa',}, 
-         {'name': 'xbb', 'label': '活动管理', 'value': 'TbActivity',}, 
-         {'name': 'xbb', 'label': 'APP资源管理', 'value': 'TbAppresource',}, 
-         ]
-     }, 
-    {'name': 'xxx', 'label': '会员管理',
-     'children': [
-         {'label': '会员管理', 'value': 'TbAccount',}, 
-         {'label': '登录日志', 'value': 'TbLoginlog',}, 
-         {'label': '账目记录', 'value': 'TbBalancelog', }, 
-         {'label': 'TbTicketmaster', 'value': 'TbTicketmaster',}
-         ],
-     }, 
-    {'label': '金流管理',
-     'children': [
-         #{'label': '账目记录', 'value': 'TbBalancelog', }, 
-         {'label': '金流渠道', 'value': 'TbChannel',}, 
-         {'label': '金流日志', 'value': 'TbChargeflow',}
-         ],
-    }, 
-    {'label': '比赛管理', 'value': 'TbMatches',}, 
-    {'label': _('RC Control'),
-     'children': [
-         {'label': _('TbBlackuserlist'), 'value': 'TbBlackuserlist',}, 
-         {'label': _('TbBlackuserlistLog'), 'value': 'TbBlackuserlistLog',}, 
-         {'label': _('Blackiplist'), 'value': 'Blackiplist',}, 
-         {'label': _('Blackiprangelist'), 'value': 'Blackiprangelist',}, 
-         {'label': _('Whiteiplist'), 'value': 'Whiteiplist',}, 
-         {'label': _('Whiteuserlist'), 'value': 'Whiteuserlist',}
-         ],}, 
-    {'label': _('User'),
-     'children': [
-        {'label': '查看用户', 'value': 'User.read',}, 
-         {'label': '编辑用户', 'value': 'User.write',}, 
-         {'label': _('Group'), 'value': 'Group',}
-         ],
-     }
-    
-    
-]
+def get_permit(): 
+    permit = [
+        { 'label': _('Marketing'),
+         'children': [
+             { 'label': _('Banner'), 'value': 'TbBanner',}, 
+             { 'label': _('App Package'), 'value': 'TbAppversion',}, 
+             { 'label': _('Notice'), 'value': 'TbNotice',}, 
+             { 'label': _('Help'), 'value': 'TbQa',}, 
+             { 'label': _('Activity'), 'value': 'TbActivity',}, 
+             { 'label': _('AppResource'), 'value': 'TbAppresource',}, 
+             ]
+         }, 
+        { 'label': _('Member'),
+         'children': [
+             {'label': _('Tb Account'), 'value': 'TbAccount',}, 
+             {'label': _('Tb Login Log'), 'value': 'TbLoginlog',}, 
+             {'label': _('Tb Balance Log'), 'value': 'TbBalancelog', }, 
+             {'label': _('Tb TicketMaster'), 'value': 'TbTicketmaster',}
+             ],
+         }, 
+        {'label': _('MoneyFlow'),
+         'children': [
+             #{'label': '账目记录', 'value': 'TbBalancelog', }, 
+             {'label': '金流渠道', 'value': 'TbChannel',}, 
+             {'label': '金流日志', 'value': 'TbChargeflow',}
+             ],
+        }, 
+        {'label': _('Tb Match'), 'value': 'TbMatches',}, 
+        {'label': _('RiskControl'),
+         'children': [
+            {'label': _('Tb RC Filter'), 'value': 'TbRcFilter',}, 
+            {'label': _('Tb RC Level'), 'value': 'TbRcLevel',}, 
+            {'label': _('Tb RC User'), 'value': 'TbRcUser',}, 
+            {'label': _('Tb Withdraw Limit Log'), 'value': 'TbWithdrawlimitlog',}, 
+                 
+                 
+             {'label': _('Tb Blankuserlist'), 'value': 'TbBlackuserlist',}, 
+             {'label': _('Tb BlackuserlistLog'), 'value': 'TbBlackuserlistLog',}, 
+             {'label': _('Blackiplist'), 'value': 'Blackiplist',}, 
+             {'label': _('Black IP Range'), 'value': 'Blackiprangelist',}, 
+             {'label': _('White IP'), 'value': 'Whiteiplist',}, 
+             {'label': _('White User'), 'value': 'Whiteuserlist',}
+             ],}, 
+        {'label': _('User'),
+         'children': [
+            #{'label': _('查看用户'), 'value': 'User.read',}, 
+             {'label': _('User'), 'value': 'User.write',}, 
+             {'label': _('Role'), 'value': 'Group',}
+             ],
+         }
+        
+        
+    ]
+    return permit
 
-permit_dc['__root__'] = permit
+site_cfg['permit.options'] = get_permit
+#permit_dc['__root__'] = permit

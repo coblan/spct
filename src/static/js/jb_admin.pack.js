@@ -460,92 +460,7 @@ var ele_transfer = {
 Vue.component('com-field-ele-transfer', ele_transfer);
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var label_shower = {
-    props: ['row', 'head'],
-    methods: {
-        handleCheckChange: function handleCheckChange(data, checked, indeterminate) {
-            console.log(data, checked, indeterminate);
-            var ls = this.$refs.et.getCheckedKeys();
-            ls = ex.filter(ls, function (itm) {
-                return itm != undefined;
-            });
-            this.row[this.head.name] = ls;
-        },
-        handleNodeClick: function handleNodeClick(data) {
-            console.log(data);
-        }
-    },
-    data: function data() {
-        return {
-            selected: [1, 2],
-            data: [{
-                label: '一级 1',
-                children: [{
-                    label: '二级 1-1',
-                    children: [{
-                        label: '三级 1-1-1',
-                        pk: 1
-                    }]
-                }]
-            }, {
-                label: '一级 2',
-                children: [{
-                    label: '二级 2-1',
-                    children: [{
-                        label: '三级 2-1-1',
-                        pk: 3
-                    }]
-                }, {
-                    label: '二级 2-2',
-                    children: [{
-                        label: '三级 2-2-1'
-                    }]
-                }]
-            }, {
-                label: '一级 3',
-                children: [{
-                    label: '二级 3-1',
-                    children: [{
-                        label: '三级 3-1-1',
-                        pk: 2
-                    }]
-                }, {
-                    label: '二级 3-2',
-                    children: [{
-                        label: '三级 3-2-1'
-                    }]
-                }]
-            }],
-            defaultProps: {
-                children: 'children',
-                label: 'label'
-            }
-        };
-    },
-    template: '<div>\n        <el-tree ref="et" :data="head.options" :props="defaultProps"\n             @node-click="handleNodeClick"\n             show-checkbox\n             @check-change="handleCheckChange"\n\n             :default-checked-keys="row[head.name]"\n             node-key="value"\n    ></el-tree>\n    </div>',
-    //default-expand-all
-    computed: {
-        label: function label() {
-            return this.row['_' + this.head.name + '_label'];
-        }
-    }
-};
-
-Vue.component('com-field-ele-tree-name-layer', label_shower);
-//Vue.component('com-field-ele-tree-name-layer',function(resolve,reject){
-//ex.load_css('https://unpkg.com/element-ui/lib/theme-chalk/index.css')
-//ex.load_js('https://unpkg.com/element-ui/lib/index.js',function(){
-//resolve(label_shower)
-//})
-//})
-
-/***/ }),
+/* 5 */,
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2491,7 +2406,7 @@ var com_pop_field = exports.com_pop_field = {
         }
 
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;padding-bottom: 15em;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div class="field-panel msg-hide" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {
@@ -2743,9 +2658,9 @@ var _ajax_table = __webpack_require__(34);
 
 var ajax_table = _interopRequireWildcard(_ajax_table);
 
-var _ele_tree_name_layer = __webpack_require__(5);
+var _ele_tree = __webpack_require__(57);
 
-var ele_tree = _interopRequireWildcard(_ele_tree_name_layer);
+var ele_tree = _interopRequireWildcard(_ele_tree);
 
 var _picture = __webpack_require__(26);
 
@@ -2975,6 +2890,134 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-field-ele-tree-name-layer {\n  min-width: 20em;\n  border: 1px solid #b1b1b1; }\n  .com-field-ele-tree-name-layer .el-tree {\n    min-height: 20em; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(55);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./ele_tree_name_layer.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./ele_tree_name_layer.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(56);
+var label_shower = {
+    props: ['row', 'head'],
+    methods: {
+        handleCheckChange: function handleCheckChange(data, checked, indeterminate) {
+            console.log(data, checked, indeterminate);
+            var ls = this.$refs.et.getCheckedKeys();
+            ls = ex.filter(ls, function (itm) {
+                return itm != undefined;
+            });
+            this.row[this.head.name] = ls;
+        },
+        handleNodeClick: function handleNodeClick(data) {
+            console.log(data);
+        }
+    },
+    data: function data() {
+        return {
+            selected: [1, 2],
+            // demon 数据
+            data: [{
+                label: '一级 1',
+                children: [{
+                    label: '二级 1-1',
+                    children: [{
+                        label: '三级 1-1-1',
+                        pk: 1
+                    }]
+                }]
+            }, {
+                label: '一级 2',
+                children: [{
+                    label: '二级 2-1',
+                    children: [{
+                        label: '三级 2-1-1',
+                        pk: 3
+                    }]
+                }, {
+                    label: '二级 2-2',
+                    children: [{
+                        label: '三级 2-2-1'
+                    }]
+                }]
+            }, {
+                label: '一级 3',
+                children: [{
+                    label: '二级 3-1',
+                    children: [{
+                        label: '三级 3-1-1',
+                        pk: 2
+                    }]
+                }, {
+                    label: '二级 3-2',
+                    children: [{
+                        label: '三级 3-2-1'
+                    }]
+                }]
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'label'
+            }
+        };
+    },
+    template: '<div class="com-field-ele-tree-name-layer">\n        <el-tree ref="et" :data="head.options" :props="defaultProps"\n             @node-click="handleNodeClick"\n             show-checkbox\n             @check-change="handleCheckChange"\n\n             :default-checked-keys="row[head.name]"\n             node-key="value"\n    ></el-tree>\n    </div>',
+    //default-expand-all
+    computed: {
+        label: function label() {
+            return this.row['_' + this.head.name + '_label'];
+        }
+    }
+};
+
+Vue.component('com-field-ele-tree', label_shower);
+//Vue.component('com-field-ele-tree-name-layer',function(resolve,reject){
+//ex.load_css('https://unpkg.com/element-ui/lib/theme-chalk/index.css')
+//ex.load_js('https://unpkg.com/element-ui/lib/index.js',function(){
+//resolve(label_shower)
+//})
+//})
 
 /***/ })
 /******/ ]);

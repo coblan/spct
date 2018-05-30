@@ -61,7 +61,7 @@ class PcMenu(BaseEngine):
                 #{'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
                         ]}, 
             
-            {'label':_('RiskControl'),'icon':fa('fa-globe'),'visible':True,
+            {'label':_('RiskControl'),'icon':fa('fa-lock'),'visible':True,
             'submenu':[
                 {'label':_('Tb RC Filter'),'url':page('maindb.TbRcFilter'), 'visible': can_touch(TbRcFilter, crt_user),},
                 {'label':_('Tb RC Level'),'url':page('maindb.TbRcLevel'), 'visible': can_touch(TbRcLevel, crt_user),},
@@ -77,17 +77,17 @@ class PcMenu(BaseEngine):
                         ]},             
             
             
-            {'label':_('Report'),'icon':fa('fa-users'),'visible':True,
+            {'label':_('Report'),'icon':fa('fa-bar-chart'),'visible':True,
             'submenu':[
                 {'label':_('Channel'),'url':page('maindb.report.channel'), 'visible': can_touch(TbChannel, crt_user),},
                 {'label':_('Account'),'url':page('maindb.report.account'), 'visible': can_touch(TbAccount, crt_user),},
                 ]},            
             
         
-             {'label':'账号','url':page('user'),'icon':fa('fa-users'),'visible':True,
+             {'label':_('User'),'url':page('user'),'icon':fa('fa-user'),'visible':True,
                   'submenu':[
-                      {'label':'账号管理','url':page('jb_user'),'visible':can_touch(User, crt_user)},
-                      {'label':'角色管理','url':page('jb_group'),'visible':can_touch(Group, crt_user)},
+                      {'label':_('User'),'url':page('jb_user'),'visible':can_touch(User, crt_user)},
+                      {'label':_('Role'),'url':page('jb_group'),'visible':can_touch(Group, crt_user)},
                       #{'label':'权限分组','url':page('group_human'),'visible':can_touch(Group)},
                 ]},        
             
