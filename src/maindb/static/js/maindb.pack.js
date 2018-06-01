@@ -562,7 +562,41 @@ var _turnover = __webpack_require__(13);
 
 var turnover = _interopRequireWildcard(_turnover);
 
+var _multi_line = __webpack_require__(14);
+
+var multi_line = _interopRequireWildcard(_multi_line);
+
+var _multi_line_edit = __webpack_require__(22);
+
+var multi_line_edit = _interopRequireWildcard(_multi_line_edit);
+
+var _switch_checkbox = __webpack_require__(15);
+
+var switch_checkbox = _interopRequireWildcard(_switch_checkbox);
+
+var _plus = __webpack_require__(16);
+
+var plus_editor = _interopRequireWildcard(_plus);
+
+var _status = __webpack_require__(19);
+
+var status_editor = _interopRequireWildcard(_status);
+
+var _specialvalue_turnover = __webpack_require__(20);
+
+var specialvalue_turnover = _interopRequireWildcard(_specialvalue_turnover);
+
+var _favorite = __webpack_require__(25);
+
+var com_favorite = _interopRequireWildcard(_favorite);
+
+var _balance = __webpack_require__(23);
+
+var com_balance = _interopRequireWildcard(_balance);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+__webpack_require__(18);
 
 var ajax_table = {
     props: ['tab_head'], //['heads','row_filters','kw'],
@@ -572,7 +606,7 @@ var ajax_table = {
         var row_pages = heads_ctx.row_pages || {};
         return {
             heads: heads_ctx.heads,
-            row_filters: heads_ctx.row_filters,
+            row_filters: [], // heads_ctx.row_filters,
             row_sort: heads_ctx.row_sort,
             director_name: heads_ctx.director_name,
             footer: [],
@@ -594,15 +628,18 @@ var ajax_table = {
     //        this.get_data()
     //    }
     //},
-    template: '<div class="rows-block flex-v" style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 3em;" >\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success flex-grow">\n            <div class="table-wraper" style="position: absolute;top:0;left:0;bottom: 0;right:0;">\n               <el-table class="table" ref="e_table"\n                              :data="rows"\n                              border\n                              show-summary\n                              :fit="false"\n                              :stripe="true"\n                              size="mini"\n                              @sort-change="sortChange($event)"\n                              @selection-change="handleSelectionChange"\n                              :summary-method="getSum"\n                              height="100%"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="head in heads">\n\n                            <el-table-column v-if="head.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                                <template slot-scope="scope">\n                                    <component :is="head.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :prop="head.name"\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                            </el-table-column>\n\n                        </template>\n\n                    </el-table>\n            </div>\n\n        </div>\n          <div>\n                    <el-pagination\n                        @size-change="on_perpage_change"\n                        @current-change="get_page"\n                        :current-page="row_pages.crt_page"\n                        :page-sizes="[20, 50, 100, 500]"\n                        :page-size="row_pages.perpage"\n                        layout="total, sizes, prev, pager, next, jumper"\n                        :total="row_pages.total">\n                </el-pagination>\n            </div>\n    </div>',
+    template: '<div class="odds rows-block flex-v" style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 1em;" >\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success flex-grow">\n            <div class="table-wraper" style="position: absolute;top:0;left:0;bottom: 0;right:0;">\n               <el-table class="table" ref="e_table"\n                              :data="rows"\n                              border\n                              show-summary\n                              :fit="false"\n                              :stripe="true"\n                              size="mini"\n                              @sort-change="sortChange($event)"\n                              @selection-change="handleSelectionChange"\n                              :summary-method="getSum"\n                              height="100%"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="head in heads">\n\n                            <el-table-column v-if="head.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                                <template slot-scope="scope">\n                                    <component :is="head.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :prop="head.name"\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                            </el-table-column>\n\n                        </template>\n\n                    </el-table>\n            </div>\n\n        </div>\n          <div>\n                    <el-pagination\n                        @size-change="on_perpage_change"\n                        @current-change="get_page"\n                        :current-page="row_pages.crt_page"\n                        :page-sizes="[20, 50, 100, 500]"\n                        :page-size="row_pages.perpage"\n                        layout="total, sizes, prev, pager, next, jumper"\n                        :total="row_pages.total">\n                </el-pagination>\n            </div>\n    </div>',
 
     methods: {
-        on_show: function on_show() {
-            if (!this.fetched) {
-                this.get_data();
-                this.fetched = true;
-            }
+        is_show_tooltip: function is_show_tooltip(head) {
+            return false;
         },
+        //on_show:function(){
+        //    if(! this.fetched){
+        //        this.get_data()
+        //        this.fetched = true
+        //    }
+        //},
         //getRows:function(){
         //    var self=this
         //    var fun = get_data[this.tab_head.get_data.fun ]
@@ -611,42 +648,19 @@ var ajax_table = {
         //        self.row_pages =row_pages
         //    },this.par_row,this.tab_head.get_data.kws,this.search_args)
         //},
-        del_item: function del_item() {
-            if (this.selected.length == 0) {
-                return;
-            }
-            var del_obj = {};
-            for (var j = 0; j < this.selected.length; j++) {
-                var pk = this.selected[j];
-                for (var i = 0; i < this.rows.length; i++) {
-                    if (this.rows[i].pk.toString() == pk) {
-                        if (!del_obj[this.rows[i]._class]) {
-                            del_obj[this.rows[i]._class] = [];
-                        }
-                        del_obj[this.rows[i]._class].push(pk);
-                    }
-                }
-            }
-            var out_str = '';
-            for (var key in del_obj) {
-                out_str += key + ':' + del_obj[key].join(':') + ',';
-            }
-            location = ex.template("{engine_url}/del_rows?rows={rows}&next={next}", { engine_url: engine_url,
-                rows: encodeURI(out_str),
-                next: encodeURIComponent(location.href) });
-        },
+
         goto_page: function goto_page(page) {
             this.search_args._page = page;
             this.search();
-        },
-        add_new: function add_new() {
-            var url = ex.template('{engine_url}/{page}.edit/?next={next}', {
-                engine_url: engine_url,
-                page: page_name,
-                next: encodeURIComponent(ex.appendSearch(location.pathname, search_args))
-            });
-            location = url;
         }
+        //add_new:function () {
+        //    var  url = ex.template('{engine_url}/{page}.edit/?next={next}',{
+        //        engine_url:engine_url,
+        //        page:page_name,
+        //        next:encodeURIComponent(ex.appendSearch(location.pathname,search_args))
+        //    })
+        //    location = url
+        //},
     }
 };
 
@@ -1070,12 +1084,295 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var bool_shower = {
     props: ['rowData', 'field', 'index'],
-    template: '<span >\n        <span v-text="rowData.FavTurnover"> </span>\n        <span v-text="rowData.UnderTurnover"></span>\n    </span>',
+    template: '<div style="position: absolute;top:0;left:0;right:0;bottom:0;overflow: hidden">\n        <table width= "100% " height= "100% " >\n        <tr style="height: 1em;background-color: transparent;"><td width="50%">Home</td><td>Away</td></tr>\n        <tr style="background-color: transparent;"><td><span v-text="rowData.FavTurnover"></span></td><td><span v-text="rowData.UnderTurnover"></span></td></tr>\n        </table>\n    </div>\n    ',
     computed: {}
 
 };
 
 Vue.component('com-odds-turnover', bool_shower);
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div >\n        <div v-for="row in rows" style="position: relative" >\n        <div v-text="row[field]"></div>\n         </div>\n    </div>',
+
+    methods: {},
+    computed: {
+
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+    }
+
+};
+
+Vue.component('com-odds-multi-line', odds_multi_line);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div >\n        <div v-for="row in rows" >\n        <input type="checkbox">\n        </div>\n    </div>',
+
+    computed: {
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+    }
+
+};
+
+Vue.component('com-odds-switch-checkbox', odds_multi_line);
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    data: function data() {
+        return {
+            plus_value: 0.01
+        };
+    },
+    template: '<div >\n        <div v-for="row in rows" >\n        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-plus"></i></button>\n        <input  type="number" step="0.01" v-model="plus_value" style="width: 40px;height: 20px">\n        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-minus"></i></button>\n        </div>\n    </div>',
+
+    computed: {
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+    }
+
+};
+
+Vue.component('com-odds-plus', odds_multi_line);
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(9)();
+// imports
+
+
+// module
+exports.push([module.i, ".odds input::-webkit-outer-spin-button,\n.odds input::-webkit-inner-spin-button {\n  -webkit-appearance: none !important;\n  margin: 0; }\n\n.odds .td-btn {\n  padding: 5px; }\n\n.odds td .cell, .odds th {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  padding: 0; }\n\n.odds td, .odds th {\n  text-align: center; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(17);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(10)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./odds.scss", function() {
+			var newContent = require("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./odds.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div >\n        <div v-for="row in rows" >\n<com-odds-status-check-btn :row="row"></com-odds-status-check-btn>\n\n        </div>\n    </div>',
+
+    computed: {
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+
+    }
+
+};
+
+Vue.component('com-odds-status', odds_multi_line);
+
+Vue.component('com-odds-status-check-btn', {
+    props: ['row'],
+    template: '<el-switch\n              v-model="is_true"\n              active-color="#13ce66"\n              inactive-color="#ff4949">\n        </el-switch>',
+    computed: {
+        is_true: {
+            get: function get() {
+                return this.row.LineStatus == 1;
+            },
+            set: function set(newValue) {
+                if (newValue) {
+                    this.row.LineStatus = 1;
+                } else {
+                    this.row.LineStatus = 0;
+                }
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    data: function data() {
+        return {
+            crt_row: {}
+        };
+    },
+    template: '<div >\n        <div v-for="row in rows" style="position: relative" @click="show_editor(row)">\n        <div v-text="show_turnover(row)"></div>\n        <!--<input ref="editor" v-show="is_show_editor(row)" v-model="row[field]" type="text" style="position: absolute;top:0;left:0;right:0;bottom: 0">-->\n        </div>\n        <!--<span v-text="rowData.FavTurnover"> </span>-->\n        <!--<span v-text="rowData.UnderTurnover"></span>-->\n    </div>',
+    //
+
+    methods: {
+        show_editor: function show_editor(row) {
+            this.crt_row = row;
+            var self = this;
+            Vue.nextTick(function () {
+                $(self.$el).find('input').focus();
+            });
+        },
+        is_show_editor: function is_show_editor(row) {
+            return this.crt_row == row;
+        },
+        show_turnover: function show_turnover(row) {
+            return row.FavTurnover - row.UnderTurnover;
+        }
+    },
+    computed: {
+
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+    }
+
+};
+
+Vue.component('com-odds-special-turnover', odds_multi_line);
+
+/***/ }),
+/* 21 */,
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    data: function data() {
+        return {
+            crt_row: {}
+        };
+    },
+    template: '<div >\n        <div v-for="row in rows" style="position: relative" @click="show_editor(row)">\n        <div v-text="row[field]" ></div>\n        <div style="position: absolute;top:0;left:0;right:0;bottom: 0">\n            <input v-show="is_show_editor(row)" v-model="row[field]" @blur="on_blur(row)"  type="number" step="0.01"  style="width: 100%;text-align:center; height: 95%;">\n        </div>\n       </div>\n    </div>',
+    methods: {
+        show_editor: function show_editor(row) {
+            this.crt_row = row;
+            var self = this;
+            Vue.nextTick(function () {
+                $(self.$el).find('input').focus();
+            });
+        },
+        is_show_editor: function is_show_editor(row) {
+            return this.crt_row == row;
+        },
+        on_blur: function on_blur(row) {
+            if (this.crt_row == row) {
+                this.crt_row = {};
+            }
+        }
+    },
+    computed: {
+
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+    }
+
+};
+
+Vue.component('com-odds-multi-line-edit', odds_multi_line);
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bool_shower = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div >\n        <span v-text="minus_value"></span>\n    </div>',
+    computed: {
+        minus_value: function minus_value() {
+            return (this.rowData.FavTurnover - this.rowData.UnderTurnover).toFixed(2);
+        }
+    }
+
+};
+
+Vue.component('com-odds-balance', bool_shower);
+
+/***/ }),
+/* 24 */,
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bool_shower = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div >\n        <span v-text="label"></span>\n    </div>',
+    computed: {
+        label: function label() {
+            if (this.rowData.FavTurnover > this.rowData.UnderTurnover) {
+                return this.rowData.Team2ZH;
+            } else {
+                return this.rowData.Team1ZH;
+            }
+        }
+    }
+
+};
+
+Vue.component('com-odds-favorite', bool_shower);
 
 /***/ })
 /******/ ]);

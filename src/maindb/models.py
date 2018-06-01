@@ -734,7 +734,8 @@ class TbNotice(models.Model):
 
 class TbOdds(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
+    #matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
+    match = models.ForeignKey(to= TbMatches, db_constraint= False, to_field= 'matchid', db_column='MatchID')
     msgnr = models.BigIntegerField(db_column='MsgNr')  # Field name made lowercase.
     #oddsid = models.BigIntegerField(db_column='OddsID')  # Field name made lowercase.
     oddstype = models.ForeignKey(to='TbOddstypes',db_column='OddsID',db_constraint=False,to_field='oddsid')  # Field name made lowercase.

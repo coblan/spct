@@ -1,6 +1,14 @@
 import * as turnover from  './coms_odds/turnover.js'
+import * as multi_line from  './coms_odds/multi_line.js'
+import * as multi_line_edit from  './coms_odds/multi_line_edit.js'
+import * as switch_checkbox from  './coms_odds/switch_checkbox.js'
+import * as plus_editor from  './coms_odds/plus.js'
+import * as status_editor from  './coms_odds/status.js'
+import * as specialvalue_turnover from  './coms_odds/specialvalue_turnover.js'
+import * as com_favorite from  './coms_odds/favorite.js'
+import * as com_balance from  './coms_odds/balance.js'
 
-
+require('./scss/odds.scss')
 
 var ajax_table={
     props:['tab_head'],//['heads','row_filters','kw'],
@@ -10,7 +18,7 @@ var ajax_table={
         var row_pages = heads_ctx.row_pages || {}
         return {
             heads:heads_ctx.heads,
-            row_filters:heads_ctx.row_filters,
+            row_filters:[],// heads_ctx.row_filters,
             row_sort:heads_ctx.row_sort,
             director_name:heads_ctx.director_name,
             footer:[],
@@ -32,7 +40,7 @@ var ajax_table={
     //        this.get_data()
     //    }
     //},
-    template:`<div class="rows-block flex-v" style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 3em;" >
+    template:`<div class="odds rows-block flex-v" style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 1em;" >
         <div class='flex' style="min-height: 3em;" v-if="row_filters.length > 0">
             <com-filter class="flex" :heads="row_filters" :search_args="search_args"
                         @submit="search()"></com-filter>
@@ -102,12 +110,15 @@ var ajax_table={
     </div>`,
 
     methods:{
-        on_show:function(){
-            if(! this.fetched){
-                this.get_data()
-                this.fetched = true
-            }
+        is_show_tooltip:function(head){
+            return false
         },
+        //on_show:function(){
+        //    if(! this.fetched){
+        //        this.get_data()
+        //        this.fetched = true
+        //    }
+        //},
         //getRows:function(){
         //    var self=this
         //    var fun = get_data[this.tab_head.get_data.fun ]
@@ -116,42 +127,19 @@ var ajax_table={
         //        self.row_pages =row_pages
         //    },this.par_row,this.tab_head.get_data.kws,this.search_args)
         //},
-        del_item:function () {
-            if (this.selected.length==0){
-                return
-            }
-            var del_obj={}
-            for(var j=0;j<this.selected.length;j++){
-                var pk = this.selected[j]
-                for(var i=0;i<this.rows.length;i++){
-                    if(this.rows[i].pk.toString()==pk){
-                        if(!del_obj[this.rows[i]._class]){
-                            del_obj[this.rows[i]._class]=[]
-                        }
-                        del_obj[this.rows[i]._class].push(pk)
-                    }
-                }
-            }
-            var out_str=''
-            for(var key in del_obj){
-                out_str += (key+':'+ del_obj[key].join(':')+',')
-            }
-            location=ex.template("{engine_url}/del_rows?rows={rows}&next={next}",{engine_url:engine_url,
-                rows:encodeURI(out_str),
-                next:encodeURIComponent(location.href)})
-        },
+
         goto_page:function (page) {
             this.search_args._page=page
             this.search()
         },
-        add_new:function () {
-            var  url = ex.template('{engine_url}/{page}.edit/?next={next}',{
-                engine_url:engine_url,
-                page:page_name,
-                next:encodeURIComponent(ex.appendSearch(location.pathname,search_args))
-            })
-            location = url
-        },
+        //add_new:function () {
+        //    var  url = ex.template('{engine_url}/{page}.edit/?next={next}',{
+        //        engine_url:engine_url,
+        //        page:page_name,
+        //        next:encodeURIComponent(ex.appendSearch(location.pathname,search_args))
+        //    })
+        //    location = url
+        //},
     }
 }
 

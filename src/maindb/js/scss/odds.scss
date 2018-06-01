@@ -1,0 +1,19 @@
+
+.odds{
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+  }
+  .td-btn{
+    padding: 5px;
+
+  }
+  td .cell,th{
+    white-space: nowrap;text-overflow:ellipsis; overflow:hidden;
+    padding: 0;
+  }
+  td,th{
+    text-align:center;
+  }
+}
