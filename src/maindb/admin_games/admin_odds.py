@@ -167,6 +167,7 @@ class OddsTypeGroup4Table(ModelTable):
     def get_query(self): 
         sql = """
 --查询比赛信息
+SET NOCOUNT ON
 declare @OddsTypeGroup int
 declare @PageIndex int
 declare @PageSize int
@@ -266,8 +267,7 @@ on w.MatchID = x.MatchID
         #where_filter = 'and matchid in(14574778,14520592,14561132)'
         
         sql = sql % dict(pageindex = pageindex, pagesize = pagesize, where_filter = where_filter)
-        print(sql)
-        
+
         cursor = connections['MainDB'].cursor()
         cursor.execute(sql)
         ls = []
