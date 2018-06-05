@@ -51,9 +51,9 @@ DATABASES = {
             
             #'AUTOCOMMIT': True,
             'host_is_server': True,
-            #'unicode_results': True,
+            'unicode_results': True,
             #'driver': 'FreeTDS',
-            #'extra_params': 'TDS_VERSION=8.0',    
+            'extra_params': 'TDS_VERSION=8.0;Trusted_Connection=yes',    
             #'Trusted_Connection': True,
               },
        } ,     
