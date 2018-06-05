@@ -177,6 +177,7 @@ declare @tb_matches table(
 	MatchID bigint
 )
 --返回总记录数
+
 select count(1) as TotalCount from dbo.TB_Matches with(nolock)
 where 1=1 %(where_filter)s
 --#Where#
@@ -262,7 +263,7 @@ on w.MatchID = x.MatchID
             where_filter = 'AND'.join(ls)
         else:
             where_filter = ''
-        
+        print(where_filter)
         #where_filter = 'and matchid in(14574778,14520592,14561132)'
         
         sql = sql % dict(pageindex = pageindex, pagesize = pagesize, where_filter = where_filter)
