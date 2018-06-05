@@ -177,78 +177,10 @@ declare @tb_matches table(
 	MatchID bigint
 )
 
-SET NOCOUNT ON
-
 --返回总记录数
 select count(1) as TotalCount from dbo.TB_Matches with(nolock)
 where 1=1 %(where_filter)s
 --#Where#
-
-insert into @tb_matches
-select top (@PageSize) MatchID from (
-	select ROW_NUMBER() over(order by Tid) as RowNumber, matchid from dbo.tb_matches with(nolock)
-	where 1=1 %(where_filter)s ) a
-where RowNumber between (@PageIndex-1)*@PageSize and @PageIndex*@PageSize
---#Where#
-
-select 
-	a.SportID,
-	a.CategoryID,
-	a.TournamentID,
-	a.TournamentZH,
-	a.MatchID,
-	a.PreMatchDate,
-	a.MatchDate,
-	a.Team1ZH,
-	a.SuperTeam1Id,
-	a.Team2ZH,
-	a.SuperTeam2Id,
-	a.StatusCode,
-	a.RoundInfo,
-	a.LiveBet
-from dbo.TB_Matches a with(nolock)
-inner join @tb_matches b
-on a.MatchID=b.MatchID
-
---查询玩法Turnover和Liability
-select 
-	a.MatchID,
-	a.OddsTypeGroup,
-	a.OddsID,
-	--SUM(a.Amount) as Amount,
-	SUM(a.Turnover) as Turnover
-from dbo.TB_MatchesTurnover a with(nolock)
-inner join @tb_matches b
-on a.MatchID=b.MatchID
-group by a.MatchID,a.OddsTypeGroup,a.OddsID
-having a.OddsTypeGroup = @OddsTypeGroup
-
---查询所有的Line和Odds,MaxPayout,Turnover
-SELECT
-	w.MatchID,
-	w.OddsID,
-	w.SpecialBetValue,
-	y.Odds,
-	y.OddsTypeGroup,
-	isnull(z.MaxPayout,0) as MaxPayout,
-	isnull(x.Turnover,0) as Turnover,
-	isnull(z.[Status],1) as LineStatus--未设置默认有效
-FROM (SELECT a.SpecialBetValue,MAX(a.Tid) AS Tid,a.OddsID,a.MatchID
-	FROM [dbo].[TB_Odds] a with(nolock)
-	INNER JOIN @tb_matches b ON a.MatchID=b.MatchID
-	WHERE a.OddsTypeGroup=@OddsTypeGroup
-	AND a.[Status]=1
-	GROUP BY a.SpecialBetValue,a.OddsID,a.MatchID) w
-LEFT JOIN [dbo].[TB_Odds] y with(nolock)
-ON w.Tid=y.Tid
-left join dbo.TB_MatchesLineSettings z with(nolock)
-on y.MatchID=z.MatchID
-	and y.OddsTypeGroup=z.OddsTypeGroup
-	and y.SpecialBetValue=z.SpecialBetValue
-left join dbo.[TB_MatchesTurnover] x with(nolock)
-on w.MatchID = x.MatchID
-	and w.OddsID = x.OddsID
-	and w.SpecialBetValue=x.SpecialBetValue
 
 
 """
