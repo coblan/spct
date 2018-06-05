@@ -166,7 +166,6 @@ class OddsTypeGroup4Table(ModelTable):
 
     def get_query(self): 
         sql = """
-
 --查询比赛信息
 declare @OddsTypeGroup int
 declare @PageIndex int
