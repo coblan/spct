@@ -167,9 +167,8 @@ class OddsTypeGroup4Table(ModelTable):
     def get_query(self): 
         sql = """
 
-select * from dbo.TB_Matches
---#Where#
-
+select count(1) as TotalCount from dbo.TB_Matches with(nolock)
+where 1=1 %(where_filter)s
 """
         pageindex = self.pagenum.pageNumber
         pagesize = self.pagenum.perPage
