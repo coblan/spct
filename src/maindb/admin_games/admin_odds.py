@@ -167,7 +167,6 @@ class OddsTypeGroup4Table(ModelTable):
     def get_query(self): 
         sql = """
 --查询比赛信息
-SET NOCOUNT ON
 declare @OddsTypeGroup int
 declare @PageIndex int
 declare @PageSize int
@@ -271,9 +270,9 @@ on w.MatchID = x.MatchID
         cursor = connections['MainDB'].cursor()
         cursor.execute(sql)
         ls = []
-
+        cout_query =  cursor.fetchall()
         dc = {
-            'count': list(cursor)[0][0],
+            'count': cout_query[0][0],
         }
         cursor.nextset()
         cursor.nextset()
