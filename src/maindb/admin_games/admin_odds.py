@@ -179,10 +179,10 @@ select count(1) as TotalCount from dbo.TB_Matches with(nolock)
 where 1=1 %(where_filter)s
 
 insert into @tb_matches
-select top (%(PageSize)s) MatchID from (
+select top (%(pagesize)s) MatchID from (
 	select ROW_NUMBER() over(order by Tid) as RowNumber, matchid from dbo.tb_matches with(nolock)
 	where 1=1 %(where_filter)s ) a
-where RowNumber between (%(PageIndex)s-1)*%(PageSize)s and %(PageIndex)s*%(PageSize)s
+where RowNumber between (%(pageindex)s-1)*%(pagesize)s and %(pageindex)s*%(pagesize)s
 --#Where#
 
 select 
