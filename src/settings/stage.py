@@ -53,7 +53,7 @@ DATABASES = {
             'host_is_server': True,
             'unicode_results': True,
             'driver': 'FreeTDS',
-            'extra_params': 'tds_version=7.4',
+            'extra_params': 'tds_version=8.0',
             },
        } ,     
 }
