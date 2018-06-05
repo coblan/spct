@@ -178,8 +178,7 @@ declare @tb_matches table(
 )
 
 --返回总记录数
-select count(*) from dbo.TB_Matches with(nolock)
-where 1=1 %(where_filter)s
+select count(*) from dbo.TB_Matches
 --#Where#
 
 insert into @tb_matches
