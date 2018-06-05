@@ -49,11 +49,11 @@ DATABASES = {
             #'MARS_Connection': True,
             
             
-            #'AUTOCOMMIT': True,
+            'autocommit': True,
             'host_is_server': True,
-            #'unicode_results': True,
+            'unicode_results': True,
             #'driver': 'FreeTDS',
-            'extra_params': 'TDS_VERSION=7.4',
+            'extra_params': 'tds_version=8.0',
             },
        } ,     
 }
