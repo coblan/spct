@@ -52,7 +52,7 @@ DATABASES = {
             'autocommit': True,
             'host_is_server': True,
             'unicode_results': True,
-            #'driver': 'FreeTDS',
+            'driver': 'FreeTDS',
             'extra_params': 'tds_version=7.4',
             },
        } ,     
