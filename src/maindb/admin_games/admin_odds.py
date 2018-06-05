@@ -170,15 +170,40 @@ class OddsTypeGroup4Table(ModelTable):
 declare @OddsTypeGroup int
 declare @PageIndex int
 declare @PageSize int
-set @PageIndex='%(pageindex)s'
-set @PageSize = '%(pagesize)s'
-set @OddsTypeGroup='4'
+
 declare @tb_matches table(
 	MatchID bigint
 )
 
 select count(1) as TotalCount from dbo.TB_Matches with(nolock)
 where 1=1 %(where_filter)s
+
+insert into @tb_matches
+select top (%(PageSize)s) MatchID from (
+	select ROW_NUMBER() over(order by Tid) as RowNumber, matchid from dbo.tb_matches with(nolock)
+	where 1=1 %(where_filter)s ) a
+where RowNumber between (%(PageIndex)s-1)*%(PageSize)s and %(PageIndex)s*%(PageSize)s
+--#Where#
+
+select 
+	a.SportID,
+	a.CategoryID,
+	a.TournamentID,
+	a.TournamentZH,
+	a.MatchID,
+	a.PreMatchDate,
+	a.MatchDate,
+	a.Team1ZH,
+	a.SuperTeam1Id,
+	a.Team2ZH,
+	a.SuperTeam2Id,
+	a.StatusCode,
+	a.RoundInfo,
+	a.LiveBet
+from dbo.TB_Matches a with(nolock)
+inner join @tb_matches b
+on a.MatchID=b.MatchID
+
 """
         pageindex = self.pagenum.pageNumber
         pagesize = self.pagenum.perPage
