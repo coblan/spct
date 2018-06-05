@@ -176,8 +176,10 @@ set @OddsTypeGroup=4
 declare @tb_matches table(
 	MatchID bigint
 )
---返回总记录数
 
+SET NOCOUNT ON
+
+--返回总记录数
 select count(1) as TotalCount from dbo.TB_Matches with(nolock)
 where 1=1 %(where_filter)s
 --#Where#
