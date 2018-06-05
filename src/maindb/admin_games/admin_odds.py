@@ -170,6 +170,12 @@ class OddsTypeGroup4Table(ModelTable):
 declare @OddsTypeGroup int
 declare @PageIndex int
 declare @PageSize int
+set @PageIndex='%(pageindex)s'
+set @PageSize = '%(pagesize)s'
+set @OddsTypeGroup='4'
+declare @tb_matches table(
+	MatchID bigint
+)
 
 select count(1) as TotalCount from dbo.TB_Matches with(nolock)
 where 1=1 %(where_filter)s
