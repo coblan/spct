@@ -263,10 +263,11 @@ on w.MatchID = x.MatchID
             where_filter = 'AND'.join(ls)
         else:
             where_filter = ''
-        print(where_filter)
         #where_filter = 'and matchid in(14574778,14520592,14561132)'
         
         sql = sql % dict(pageindex = pageindex, pagesize = pagesize, where_filter = where_filter)
+        print(sql)
+        
         cursor = connections['MainDB'].cursor()
         cursor.execute(sql)
         ls = []
