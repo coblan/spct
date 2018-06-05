@@ -18,7 +18,7 @@ var ajax_table={
         var row_pages = heads_ctx.row_pages || {}
         return {
             heads:heads_ctx.heads,
-            row_filters:[],// heads_ctx.row_filters,
+            row_filters: heads_ctx.row_filters,
             row_sort:heads_ctx.row_sort,
             director_name:heads_ctx.director_name,
             footer:[],
@@ -113,12 +113,15 @@ var ajax_table={
         is_show_tooltip:function(head){
             return false
         },
-        //on_show:function(){
-        //    if(! this.fetched){
-        //        this.get_data()
-        //        this.fetched = true
-        //    }
-        //},
+        on_show:function(){
+            if(this.tab_head.first_page){
+                return
+            }
+            if(! this.fetched){
+                this.getRows()
+                this.fetched = true
+            }
+        },
         //getRows:function(){
         //    var self=this
         //    var fun = get_data[this.tab_head.get_data.fun ]

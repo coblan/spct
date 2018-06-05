@@ -8,7 +8,10 @@ var odds_multi_line = {
     },
     template:`<div >
         <div v-for="row in rows" style="position: relative" @click="show_editor(row)">
-        <div v-text="show_turnover(row)"></div>
+        <div style="text-align: left">
+        <span v-text="show_label(row)" style="width: 2.5em;display: inline-block"></span>
+        <span v-text="show_turnover(row)" style="display: inline-block"></span>
+        </div>
         <!--<input ref="editor" v-show="is_show_editor(row)" v-model="row[field]" type="text" style="position: absolute;top:0;left:0;right:0;bottom: 0">-->
         </div>
         <!--<span v-text="rowData.FavTurnover"> </span>-->
@@ -26,6 +29,13 @@ var odds_multi_line = {
         },
         is_show_editor:function(row){
             return this.crt_row == row
+        },
+        show_label:function(row){
+            if(row.FavTurnover - row.UnderTurnover >0){
+                return '下盘'
+            }else{
+                return '上盘'
+            }
         },
         show_turnover:function(row){
             return row.FavTurnover - row.UnderTurnover

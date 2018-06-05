@@ -1,6 +1,6 @@
 # encoding:utf-8
 
-from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, PageNum
+from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, PageNum, RowSearch, RowFilter
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from ..models import TbMatches, TbOdds
 from django.db.models.aggregates import Count,Sum
@@ -8,7 +8,7 @@ from django.db.models import Q, F, Case, When, Sum, DecimalField, Max
 from django.db.models.expressions import Subquery, OuterRef
 from django.db import connections
 import math
-
+import re
 
 class OddsPage(object):
     template = 'maindb/tabs.html'
@@ -24,16 +24,18 @@ class OddsPage(object):
     def get_context(self):
         #ctx = TablePage.get_context(self)
         ctx = {
-            'crt_tab': 'balance_log',
+            'crt_tab': 'typegroup_4',
             'extra_js': self.extra_js,
         }
 
-        base_table = OddsTable(crt_user= self.crt_user)
+        base_table = OddsTypeGroup4Table(crt_user= self.crt_user)
+        typegroup_2 =  OddsTypeGroup2Table(crt_user= self.crt_user)
         ls = [
-            {'name':'balance_log',
-             'label':'Balance Log',
+            {'name':'typegroup_4',
+             'label':'全场让分',
              'com':'com_odds_editor',
              'director_name': base_table.get_director_name(),
+             'first_page': True,
              #'rows': base_table.get_rows(),
              'get_data':{
                  'fun': 'do_not',
@@ -46,9 +48,10 @@ class OddsPage(object):
                     },
              'table_ctx':base_table.get_context()  #AccountBalanceTable(crt_user=self.crt_user).get_head_context(), 
              },  
-            {'name':'ss',
-             'label':'ss Log',
+            {'name':'typegroup_2',
+             'label':'全场大小',
              'com':'com_odds_editor',
+             'director_name': typegroup_2.get_director_name(),
              'get_data':{
                  'fun': 'do_not',
                  #'fun':'get_rows',
@@ -58,7 +61,7 @@ class OddsPage(object):
                     #}
 
                     },
-             'table_ctx':{}  #AccountBalanceTable(crt_user=self.crt_user).get_head_context(), 
+             'table_ctx':typegroup_2.get_context()  #AccountBalanceTable(crt_user=self.crt_user).get_head_context(), 
              },              
         ]
         ctx['tabs']=  ls 
@@ -86,14 +89,53 @@ class CusPagenator(PageNum):
             'crt_page':self.pageNumber,
             'total':self.count,
             'perpage':self.perPage
-        }
+            }
 
-class OddsTable(ModelTable):
+#"""
+#['亚洲让分 4', '大小 -', '']
+#"""      
+
+class OddsTypeGroup4Table(ModelTable):
     model = TbMatches
     exclude = []
     fields_sort = ['matchid', 'matchdate', 'event', 'turnover', 'balance', 'favorite', 'betradar','sw', 'SpecialBetValue', 'FavOdds', 'UnderOdds', 
                    'plus', 'MaxPayout','status_odds', 'special_turnover']
     pagenator = CusPagenator
+    
+    class search(RowSearch):
+        names = ['matchid'] 
+        
+        def get_where_str(self): 
+            if not self.q:
+                return ''
+            
+            ls = []
+            for name in self.valid_name:
+                ls.append('%s like %s' % (name, self.q))
+                            
+            return 'AND ' + ' AND '.join(ls) 
+    
+    class filters(RowFilter):
+        range_fields = ['matchdate']
+        
+        def get_where_str(self): 
+            if not self.filter_args:
+                return ''
+            ls = []
+            for k, v in self.filter_args.items():
+                mt = re.search('(\w+)__gte', k)
+                if mt:
+                    ls.append("%s>='%s'"% (mt.group(1), v) )
+                    continue
+                
+                mt = re.search('(\w+)__lte', k)
+                if mt:
+                    ls.append("%s<='%s'" % (mt.group(1), v))
+                    continue
+                ls.append('%s EQ %s' % (k, v))
+                    
+            return 'AND ' + ' AND '.join(ls) 
+    
     def getExtraHead(self): 
         return [{'name': 'event','label': 'Event', 'editor': 'com-table-html-shower',}, 
                 {'name': 'turnover','label': 'Turnover','editor': 'com-odds-turnover','width': 120,}, 
@@ -136,6 +178,7 @@ declare @tb_matches table(
 )
 --返回总记录数
 select count(1) as TotalCount from dbo.TB_Matches with(nolock)
+where 1=1 %(where_filter)s
 --#Where#
 
 insert into @tb_matches
@@ -208,9 +251,20 @@ on w.MatchID = x.MatchID
 """
         pageindex = self.pagenum.pageNumber
         pagesize = self.pagenum.perPage
-
-        where_filter = 'and matchid in(14574778,14520592,14561132)'
-
+        
+        search_str = self.row_search.get_where_str()
+        filter_str = self.row_filter.get_where_str()
+        
+        
+        ls = [x for x in [search_str, filter_str] if x]
+        
+        if ls:
+            where_filter = 'AND'.join(ls)
+        else:
+            where_filter = ''
+        
+        #where_filter = 'and matchid in(14574778,14520592,14561132)'
+        
         sql = sql % dict(pageindex = pageindex, pagesize = pagesize, where_filter = where_filter)
         cursor = connections['MainDB'].cursor()
         cursor.execute(sql)
@@ -346,12 +400,12 @@ on w.MatchID = x.MatchID
                                                                             ##UnderTurnover = Sum(Case(When(tbodds__oddstype_id = 151001, then= F('tbodds__odds')), default = 0, output_field = DecimalField()))        
         #print(query)
 
-def rang_fen_proc(rt): 
+class  OddsTypeGroup2Table(OddsTypeGroup4Table):
     pass
 
-
 director.update({
-    'maindb.TbOdds': OddsTable,
+    'maindb.OddsTypeGroup4Table': OddsTypeGroup4Table,
+    'maindb.typegroup_2': OddsTypeGroup2Table,
 })
 
 page_dc.update({

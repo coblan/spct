@@ -815,6 +815,8 @@ class TbOddstypes(models.Model):
 
     
 class TbOddstypegroup(models.Model):
+    """
+    """
     tid = models.IntegerField(db_column='TID', primary_key=True)  # Field name made lowercase.
     sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
     oddstypegroup = models.IntegerField(db_column='OddsTypeGroup',unique=True)  # Field name made lowercase.

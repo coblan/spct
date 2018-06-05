@@ -63,645 +63,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var activity_logic = {
-    mounted: function mounted() {
-        var self = this;
-        ex.assign(this.op_funs, {
-            update_activity_file: function update_activity_file() {
-                cfg.show_load();
-                var post_data = [{ fun: 'update_activity_file' }];
-                ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
-                    if (resp.update_activity_file.status == 'success') {
-                        cfg.hide_load(500);
-                    } else {
-                        cfg.warning(resp);
-                        cfg.hide_load();
-                    }
-                });
-            }
-        });
-    }
-};
-
-window.activity_logic = activity_logic;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var field_file_uploader = exports.field_file_uploader = {
-    props: ['row', 'head'],
-    template: '<div><com-file-uploader-tmp v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader-tmp></div>',
-    computed: {
-        url: function url() {
-            return this.row[this.head.name];
-        }
-    },
-    watch: {
-        url: function url(v) {
-            var mt = /([^\?]+)\?([^\?]+)/.exec(v);
-            if (mt) {
-                var args = ex.parseSearch(mt[2]);
-                if (args.version_code) {
-                    this.row.versionid = args.version_code;
-                }
-                if (args.version_name) {
-                    this.row.versionname = args.version_name;
-                }
-                if (args.size) {
-                    this.row.size = args.size;
-                }
-                if (args.md5) {
-                    this.row.md5 = args.md5;
-                }
-
-                this.row[this.head.name] = mt[1];
-            }
-        }
-    }
-};
-
-Vue.component('com-field-app-pkg-uploader', field_file_uploader);
-
-var app_pkg = {
-    mounted: function mounted() {
-        this.updateReadonly();
-    },
-    watch: {
-        'row.terminal': function rowTerminal() {
-            this.updateReadonly();
-        }
-    },
-    methods: {
-        updateReadonly: function updateReadonly() {
-            var self = this;
-            ex.each(self.heads, function (head) {
-                if (ex.isin(head.name, ['versionid', 'versionname'])) {
-                    // 2 == android
-                    if (self.row.terminal == 2) {
-                        head.readonly = true;
-                    } else {
-                        head.readonly = false;
-                    }
-                }
-            });
-        }
-    }
-};
-window.app_pkg = app_pkg;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var banner_logic = {
-    mounted: function mounted() {
-        var self = this;
-        ex.assign(this.op_funs, {
-            online: function online() {
-                self.set_banner_state(1);
-            },
-            offline: function offline() {
-                self.set_banner_state(0);
-            }
-        });
-    },
-
-    methods: {
-        set_banner_state: function set_banner_state(state) {
-            var self = this;
-            var post_data = [{ fun: 'set_banner_status', rows: this.selected, status: state }];
-            cfg.show_load();
-            ex.post('/d/ajax/' + app, JSON.stringify(post_data), function (resp) {
-                cfg.hide_load(2000);
-                ex.each(self.selected, function (item) {
-                    item.status = state;
-                });
-            });
-        }
-    }
-};
-
-window.banner_logic = banner_logic;
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(11);
-
-var com_tab_special_bet_value = {
-    props: ['tab_head', 'par_row'],
-    data: function data() {
-        return {
-            match_opened: true,
-            oddstype: [],
-            specialbetvalue: [],
-
-            ops: this.tab_head.ops
-        };
-    },
-    mixins: [mix_fields_data],
-    template: '<div class="com_tab_special_bet_value" style="position: absolute;top:0;right:0;left:0;bottom: 0;overflow: auto">\n    <div style="text-align: center;">\n        <span v-text="par_row.matchdate"></span>/\n        <span v-text="par_row.matchid"></span>/\n        <span v-text="par_row.team1zh"></span>\n        <span>VS</span>\n        <span v-text="par_row.team2zh"></span>\n\n    </div>\n    <div>\n           <div class="box">\n\n                <el-switch\n                      v-model="match_opened"\n                      active-color="#13ce66"\n                      inactive-color="#ff4949">\n                </el-switch>\n                <span>\u6574\u573A\u6BD4\u8D5B</span>\n            </div>\n            <div class="box">\n                <div v-for="odtp in normed_oddstype">\n                    <el-switch\n                          v-model="odtp.opened"\n                          active-color="#13ce66"\n                          inactive-color="#ff4949">\n                    </el-switch>\n                    <span v-text="odtp.name"></span>\n                     <!--<span v-text="odtp.oddstypeid"></span>-->\n                      <!--<span v-text="odtp.oddstypegroup"></span>-->\n                </div>\n            </div>\n            <div class="box">\n                <div v-for="spbet in normed_specailbetvalue">\n                    <el-switch\n                          v-model="spbet.opened"\n                          active-color="#13ce66"\n                          inactive-color="#ff4949">\n                    </el-switch>\n                    <span v-text="spbet.name"></span>\n                    <!--<span v-text="spbet.specialbetvalue"></span>-->\n                     <!--<span v-text="spbet.oddsid"></span>-->\n                </div>\n            </div>\n\n             <div class="oprations">\n                <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.fun" :head="op" @operation="on_operation(op)"></component>\n            </div>\n    </div>\n\n\n    </div>',
-    mounted: function mounted() {
-        this.getRowData();
-
-        var self = this;
-        ex.assign(this.op_funs, {
-            refresh: function refresh() {
-                self.getRowData();
-            }
-        });
-    },
-    computed: {
-        normed_oddstype: function normed_oddstype() {
-            if (!this.match_opened) {
-                return [];
-            } else {
-                return ex.sortOrder(this.oddstype, 'name');
-            }
-        },
-        normed_specailbetvalue: function normed_specailbetvalue() {
-            if (!this.match_opened) {
-                return [];
-            }
-            var self = this;
-            var ss = ex.filter(this.specialbetvalue, function (bet) {
-                var oddtyps = ex.findone(self.oddstype, { oddstypegroup: bet.oddstypegroup });
-                return oddtyps.opened;
-            });
-
-            return ex.sortOrder(ss, 'name');
-        }
-    },
-    methods: {
-        save: function save() {
-            var post_data = [{ fun: 'save_special_bet_value',
-                matchid: this.par_row.matchid,
-                match_opened: this.match_opened,
-                oddstype: this.oddstype,
-                specialbetvalue: this.specialbetvalue
-            }];
-            cfg.show_load();
-            ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
-                if (resp.save_special_bet_value.status == 'success') {
-                    cfg.hide_load(500);
-                } else {
-                    cfg.showMsg('error');
-                }
-            });
-        },
-        on_show: function on_show() {},
-        getRowData: function getRowData() {
-            var self = this;
-            var post_data = [{ fun: 'update_special_bet_value', matchid: this.par_row.matchid }];
-            cfg.show_load();
-            ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
-                self.match_opened = resp.update_special_bet_value.match_opened;
-                self.oddstype = resp.update_special_bet_value.oddstype, self.specialbetvalue = resp.update_special_bet_value.specialbetvalue, cfg.hide_load();
-            });
-        }
-    }
-};
-Vue.component('com-tab-special-bet-value', com_tab_special_bet_value);
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var help_logic = {
-
-    mounted: function mounted() {
-
-        var self = this;
-        ex.assign(this.op_funs, {
-            update_help_file: function update_help_file() {
-                cfg.show_load();
-                var post_data = [{ fun: 'update_help_file' }];
-                ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
-                    if (resp.update_help_file.status == 'success') {
-                        cfg.hide_load(500);
-                    } else {
-                        cfg.warning(resp);
-                        cfg.hide_load();
-                    }
-                });
-            }
-        });
-    },
-
-    computed: {
-        row_count: function row_count() {
-            return this.rows.length;
-        }
-    },
-    watch: {
-        row_count: function row_count(v) {
-            var post_data = [{ fun: 'get_help_options' }];
-            ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
-                var mtype_filter = ex.findone(row_filters, { name: 'mtype' });
-                mtype_filter.options = resp.get_help_options;
-            });
-        }
-    }
-};
-window.help_logic = help_logic;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var match_logic = {
-    mounted: function mounted() {
-        var self = this;
-        ex.assign(this.op_funs, {
-            close_match: function close_match(kws) {
-                if (self.selected.length != 1) {
-                    cfg.showMsg('请选择一条记录');
-                    return;
-                }
-                var crt_row = self.selected[0];
-                if (crt_row.statuscode == 100) {
-                    cfg.showMsg('比赛状态已经为结束，不需要手动结束！');
-                    return;
-                }
-
-                var index = layer.confirm('结束比赛?', function (index) {
-                    layer.close(index);
-                    crt_row.statuscode = 100;
-                    var post_data = [{ fun: 'save_row', row: crt_row }];
-                    cfg.show_load();
-                    ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-
-                        if (resp.save_row.errors) {
-                            cfg.warning(JSON.stringify(resp.save_row.errors));
-                        } else {
-                            cfg.hide_load(2000);
-                        }
-                    });
-                });
-            },
-            manual_end_money: function manual_end_money(kws) {
-                if (self.selected.length != 1) {
-                    cfg.showMsg('请选择一条记录');
-                    return;
-                }
-
-                var crt_row = self.selected[0];
-                //if(crt_row.statuscode !=100){
-                //    cfg.showMsg('请先结束比赛')
-                //    return
-                //}
-
-                var mt = /(\d+):(\d+)/.exec(crt_row.matchscore);
-                if (mt) {
-                    var home_score = mt[1];
-                    var away_score = mt[2];
-                } else {
-                    var home_score = 0;
-                    var away_score = 0;
-                }
-
-                var row = {
-                    matchid: crt_row.matchid,
-                    _matchid_label: crt_row._matchid_label,
-                    home_score: home_score,
-                    away_score: away_score
-                    //statuscode:crt_row.statuscode
-                };
-                pop_fields_layer(row, kws.fields_ctx, function (e) {
-                    alert(e.new_row);
-                });
-            },
-            jie_suan_pai_cai: function jie_suan_pai_cai(kws) {
-                if (self.selected.length != 1) {
-                    cfg.showMsg('请选择一条记录');
-                    return;
-                }
-            },
-            recommendate: function recommendate(kws) {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.isrecommend = true;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-            un_recommendate: function un_recommendate(kws) {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.isrecommend = false;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-
-            livebet: function livebet(kws) {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.livebet = true;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-            un_livebet: function un_livebet(kws) {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.livebet = false;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            }
-        });
-    },
-    computed: {
-        only_one_selected: function only_one_selected() {
-            return this.selected.length == 1;
-        },
-        status_is_not_100: function status_is_not_100() {
-            if (this.selected.length == 1) {
-                var row = this.selected[0];
-                if (row.statuscode != 100) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-};
-
-var produce_match_outcome = {
-    mounted: function mounted() {
-        var self = this;
-        ex.assign(this.op_funs, {
-            produce_match_outcome: function produce_match_outcome(kws) {
-
-                var index = layer.confirm('确认手动结算?', function (index) {
-                    layer.close(index);
-
-                    var post_data = [{ fun: 'produce_match_outcome', row: self.row }];
-                    cfg.show_load();
-                    ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
-                        cfg.hide_load();
-                        cfg.showMsg(resp.produce_match_outcome.Message);
-                    });
-                });
-            }
-        });
-    }
-};
-
-window.match_logic = match_logic;
-window.produce_match_outcome = produce_match_outcome;
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var notice_logic = {
-
-    mounted: function mounted() {
-
-        var self = this;
-        ex.assign(this.op_funs, {
-            update_notice_file: function update_notice_file() {
-                cfg.show_load();
-                var post_data = [{ fun: 'update_notice_file' }];
-                ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
-                    if (resp.update_notice_file.status == 'success') {
-                        cfg.hide_load(500);
-                    } else {
-                        cfg.warning(resp);
-                        cfg.hide_load();
-                    }
-                });
-            }
-        });
-    }
-
-    //computed:{
-    //    row_count:function(){
-    //        return this.rows.length
-    //    }
-    //},
-    //watch:{
-    //    row_count:function(v){
-    //        var post_data=[{fun:'get_help_options'}]
-    //        ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
-    //            var mtype_filter = ex.findone(row_filters,{name:'mtype'})
-    //            mtype_filter.options = resp.get_help_options
-    //        })
-    //    }
-    //},
-};
-window.notice_logic = notice_logic;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _turnover = __webpack_require__(13);
-
-var turnover = _interopRequireWildcard(_turnover);
-
-var _multi_line = __webpack_require__(14);
-
-var multi_line = _interopRequireWildcard(_multi_line);
-
-var _multi_line_edit = __webpack_require__(22);
-
-var multi_line_edit = _interopRequireWildcard(_multi_line_edit);
-
-var _switch_checkbox = __webpack_require__(15);
-
-var switch_checkbox = _interopRequireWildcard(_switch_checkbox);
-
-var _plus = __webpack_require__(16);
-
-var plus_editor = _interopRequireWildcard(_plus);
-
-var _status = __webpack_require__(19);
-
-var status_editor = _interopRequireWildcard(_status);
-
-var _specialvalue_turnover = __webpack_require__(20);
-
-var specialvalue_turnover = _interopRequireWildcard(_specialvalue_turnover);
-
-var _favorite = __webpack_require__(25);
-
-var com_favorite = _interopRequireWildcard(_favorite);
-
-var _balance = __webpack_require__(23);
-
-var com_balance = _interopRequireWildcard(_balance);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-__webpack_require__(18);
-
-var ajax_table = {
-    props: ['tab_head'], //['heads','row_filters','kw'],
-    data: function data() {
-        var heads_ctx = this.tab_head.table_ctx;
-        var rows = heads_ctx.rows ? heads_ctx.rows : [];
-        var row_pages = heads_ctx.row_pages || {};
-        return {
-            heads: heads_ctx.heads,
-            row_filters: [], // heads_ctx.row_filters,
-            row_sort: heads_ctx.row_sort,
-            director_name: heads_ctx.director_name,
-            footer: [],
-            rows: rows,
-            row_pages: row_pages,
-            //search_tip:this.kw.search_tip,
-
-            selected: [],
-            del_info: [],
-
-            search_args: {}
-        };
-    },
-    mixins: [mix_table_data, mix_ele_table_adapter],
-    //watch:{
-    //    // 排序变换，获取数据
-    //    'row_sort.sort_str':function(v){
-    //        this.search_args._sort=v
-    //        this.get_data()
-    //    }
-    //},
-    template: '<div class="odds rows-block flex-v" style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 1em;" >\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success flex-grow">\n            <div class="table-wraper" style="position: absolute;top:0;left:0;bottom: 0;right:0;">\n               <el-table class="table" ref="e_table"\n                              :data="rows"\n                              border\n                              show-summary\n                              :fit="false"\n                              :stripe="true"\n                              size="mini"\n                              @sort-change="sortChange($event)"\n                              @selection-change="handleSelectionChange"\n                              :summary-method="getSum"\n                              height="100%"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="head in heads">\n\n                            <el-table-column v-if="head.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                                <template slot-scope="scope">\n                                    <component :is="head.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :prop="head.name"\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                            </el-table-column>\n\n                        </template>\n\n                    </el-table>\n            </div>\n\n        </div>\n          <div>\n                    <el-pagination\n                        @size-change="on_perpage_change"\n                        @current-change="get_page"\n                        :current-page="row_pages.crt_page"\n                        :page-sizes="[20, 50, 100, 500]"\n                        :page-size="row_pages.perpage"\n                        layout="total, sizes, prev, pager, next, jumper"\n                        :total="row_pages.total">\n                </el-pagination>\n            </div>\n    </div>',
-
-    methods: {
-        is_show_tooltip: function is_show_tooltip(head) {
-            return false;
-        },
-        //on_show:function(){
-        //    if(! this.fetched){
-        //        this.get_data()
-        //        this.fetched = true
-        //    }
-        //},
-        //getRows:function(){
-        //    var self=this
-        //    var fun = get_data[this.tab_head.get_data.fun ]
-        //    fun(function(rows,row_pages){
-        //        self.rows = rows
-        //        self.row_pages =row_pages
-        //    },this.par_row,this.tab_head.get_data.kws,this.search_args)
-        //},
-
-        goto_page: function goto_page(page) {
-            this.search_args._page = page;
-            this.search();
-        }
-        //add_new:function () {
-        //    var  url = ex.template('{engine_url}/{page}.edit/?next={next}',{
-        //        engine_url:engine_url,
-        //        page:page_name,
-        //        next:encodeURIComponent(ex.appendSearch(location.pathname,search_args))
-        //    })
-        //    location = url
-        //},
-    }
-};
-
-Vue.component('com_odds_editor', ajax_table);
-
-var get_data = {
-    get_rows: function get_rows(callback, row, kws, search_args) {
-        var relat_field = kws.relat_field;
-        var director_name = kws.director_name;
-
-        var self = this;
-        var relat_pk = row[kws.relat_field];
-        var relat_field = kws.relat_field;
-        search_args[relat_field] = relat_pk;
-        var post_data = [{ fun: 'get_rows', search_args: search_args, director_name: director_name }];
-        cfg.show_load();
-        $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-            cfg.hide_load();
-            callback(resp.get_rows.rows, resp.get_rows.row_pages);
-            //self.rows = resp.get_rows.rows
-            //self.row_pages =resp.get_rows.row_pages
-        });
-    }
-};
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(9)();
-// imports
-
-
-// module
-exports.push([module.i, ".com_tab_special_bet_value .box {\n  width: 250px;\n  height: 400px;\n  padding: 1em;\n  border: 1px solid black;\n  margin-right: 1em;\n  position: relative;\n  overflow: auto;\n  display: inline-block; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 9 */
 /***/ (function(module, exports) {
 
 /*
@@ -757,7 +123,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 10 */
+/* 1 */
 /***/ (function(module, exports) {
 
 /*
@@ -1009,74 +375,630 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(8);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(10)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_tab_special_bet_value.scss", function() {
-			var newContent = require("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_tab_special_bet_value.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 12 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _match = __webpack_require__(5);
+var activity_logic = {
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            update_activity_file: function update_activity_file() {
+                cfg.show_load();
+                var post_data = [{ fun: 'update_activity_file' }];
+                ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                    if (resp.update_activity_file.status == 'success') {
+                        cfg.hide_load(500);
+                    } else {
+                        cfg.warning(resp);
+                        cfg.hide_load();
+                    }
+                });
+            }
+        });
+    }
+};
 
-var match = _interopRequireWildcard(_match);
+window.activity_logic = activity_logic;
 
-var _app_pkg = __webpack_require__(1);
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
 
-var app_pkg = _interopRequireWildcard(_app_pkg);
+"use strict";
 
-var _help = __webpack_require__(4);
 
-var help_logic = _interopRequireWildcard(_help);
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var field_file_uploader = exports.field_file_uploader = {
+    props: ['row', 'head'],
+    template: '<div><com-file-uploader-tmp v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader-tmp></div>',
+    computed: {
+        url: function url() {
+            return this.row[this.head.name];
+        }
+    },
+    watch: {
+        url: function url(v) {
+            var mt = /([^\?]+)\?([^\?]+)/.exec(v);
+            if (mt) {
+                var args = ex.parseSearch(mt[2]);
+                if (args.version_code) {
+                    this.row.versionid = args.version_code;
+                }
+                if (args.version_name) {
+                    this.row.versionname = args.version_name;
+                }
+                if (args.size) {
+                    this.row.size = args.size;
+                }
+                if (args.md5) {
+                    this.row.md5 = args.md5;
+                }
 
-var _notice = __webpack_require__(6);
+                this.row[this.head.name] = mt[1];
+            }
+        }
+    }
+};
 
-var notice_logic = _interopRequireWildcard(_notice);
+Vue.component('com-field-app-pkg-uploader', field_file_uploader);
 
-var _activity = __webpack_require__(0);
+var app_pkg = {
+    mounted: function mounted() {
+        this.updateReadonly();
+    },
+    watch: {
+        'row.terminal': function rowTerminal() {
+            this.updateReadonly();
+        }
+    },
+    methods: {
+        updateReadonly: function updateReadonly() {
+            var self = this;
+            ex.each(self.heads, function (head) {
+                if (ex.isin(head.name, ['versionid', 'versionname'])) {
+                    // 2 == android
+                    if (self.row.terminal == 2) {
+                        head.readonly = true;
+                    } else {
+                        head.readonly = false;
+                    }
+                }
+            });
+        }
+    }
+};
+window.app_pkg = app_pkg;
 
-var activity_logic = _interopRequireWildcard(_activity);
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
 
-var _banner = __webpack_require__(2);
+"use strict";
 
-var banner_logic = _interopRequireWildcard(_banner);
 
-var _odds = __webpack_require__(7);
+var banner_logic = {
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            online: function online() {
+                self.set_banner_state(1);
+            },
+            offline: function offline() {
+                self.set_banner_state(0);
+            }
+        });
+    },
 
-var odds_editor = _interopRequireWildcard(_odds);
+    methods: {
+        set_banner_state: function set_banner_state(state) {
+            var self = this;
+            var post_data = [{ fun: 'set_banner_status', rows: this.selected, status: state }];
+            cfg.show_load();
+            ex.post('/d/ajax/' + app, JSON.stringify(post_data), function (resp) {
+                cfg.hide_load(2000);
+                ex.each(self.selected, function (item) {
+                    item.status = state;
+                });
+            });
+        }
+    }
+};
 
-var _com_tab_special_bet_value = __webpack_require__(3);
+window.banner_logic = banner_logic;
 
-var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(21);
+
+var com_tab_special_bet_value = {
+    props: ['tab_head', 'par_row'],
+    data: function data() {
+        return {
+            match_opened: true,
+            oddstype: [],
+            specialbetvalue: [],
+
+            ops: this.tab_head.ops
+        };
+    },
+    mixins: [mix_fields_data],
+    template: '<div class="com_tab_special_bet_value" style="position: absolute;top:0;right:0;left:0;bottom: 0;overflow: auto">\n    <div style="text-align: center;">\n        <span v-text="par_row.matchdate"></span>/\n        <span v-text="par_row.matchid"></span>/\n        <span v-text="par_row.team1zh"></span>\n        <span>VS</span>\n        <span v-text="par_row.team2zh"></span>\n\n    </div>\n    <div>\n           <div class="box">\n\n                <el-switch\n                      v-model="match_opened"\n                      active-color="#13ce66"\n                      inactive-color="#ff4949">\n                </el-switch>\n                <span>\u6574\u573A\u6BD4\u8D5B</span>\n            </div>\n            <div class="box">\n                <div v-for="odtp in normed_oddstype">\n                    <el-switch\n                          v-model="odtp.opened"\n                          active-color="#13ce66"\n                          inactive-color="#ff4949">\n                    </el-switch>\n                    <span v-text="odtp.name"></span>\n                     <!--<span v-text="odtp.oddstypeid"></span>-->\n                      <!--<span v-text="odtp.oddstypegroup"></span>-->\n                </div>\n            </div>\n            <div class="box">\n                <div v-for="spbet in normed_specailbetvalue">\n                    <el-switch\n                          v-model="spbet.opened"\n                          active-color="#13ce66"\n                          inactive-color="#ff4949">\n                    </el-switch>\n                    <span v-text="spbet.name"></span>\n                    <!--<span v-text="spbet.specialbetvalue"></span>-->\n                     <!--<span v-text="spbet.oddsid"></span>-->\n                </div>\n            </div>\n\n             <div class="oprations">\n                <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.fun" :head="op" @operation="on_operation(op)"></component>\n            </div>\n    </div>\n\n\n    </div>',
+    mounted: function mounted() {
+        this.getRowData();
+
+        var self = this;
+        ex.assign(this.op_funs, {
+            refresh: function refresh() {
+                self.getRowData();
+            }
+        });
+    },
+    computed: {
+        normed_oddstype: function normed_oddstype() {
+            if (!this.match_opened) {
+                return [];
+            } else {
+                return ex.sortOrder(this.oddstype, 'name');
+            }
+        },
+        normed_specailbetvalue: function normed_specailbetvalue() {
+            if (!this.match_opened) {
+                return [];
+            }
+            var self = this;
+            var ss = ex.filter(this.specialbetvalue, function (bet) {
+                var oddtyps = ex.findone(self.oddstype, { oddstypegroup: bet.oddstypegroup });
+                return oddtyps.opened;
+            });
+
+            return ex.sortOrder(ss, 'name');
+        }
+    },
+    methods: {
+        save: function save() {
+            var post_data = [{ fun: 'save_special_bet_value',
+                matchid: this.par_row.matchid,
+                match_opened: this.match_opened,
+                oddstype: this.oddstype,
+                specialbetvalue: this.specialbetvalue
+            }];
+            cfg.show_load();
+            ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                if (resp.save_special_bet_value.status == 'success') {
+                    cfg.hide_load(500);
+                } else {
+                    cfg.showMsg('error');
+                }
+            });
+        },
+        on_show: function on_show() {},
+        getRowData: function getRowData() {
+            var self = this;
+            var post_data = [{ fun: 'update_special_bet_value', matchid: this.par_row.matchid }];
+            cfg.show_load();
+            ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                self.match_opened = resp.update_special_bet_value.match_opened;
+                self.oddstype = resp.update_special_bet_value.oddstype, self.specialbetvalue = resp.update_special_bet_value.specialbetvalue, cfg.hide_load();
+            });
+        }
+    }
+};
+Vue.component('com-tab-special-bet-value', com_tab_special_bet_value);
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var help_logic = {
+
+    mounted: function mounted() {
+
+        var self = this;
+        ex.assign(this.op_funs, {
+            update_help_file: function update_help_file() {
+                cfg.show_load();
+                var post_data = [{ fun: 'update_help_file' }];
+                ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                    if (resp.update_help_file.status == 'success') {
+                        cfg.hide_load(500);
+                    } else {
+                        cfg.warning(resp);
+                        cfg.hide_load();
+                    }
+                });
+            }
+        });
+    },
+
+    computed: {
+        row_count: function row_count() {
+            return this.rows.length;
+        }
+    },
+    watch: {
+        row_count: function row_count(v) {
+            var post_data = [{ fun: 'get_help_options' }];
+            ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                var mtype_filter = ex.findone(row_filters, { name: 'mtype' });
+                mtype_filter.options = resp.get_help_options;
+            });
+        }
+    }
+};
+window.help_logic = help_logic;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var match_logic = {
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            close_match: function close_match(kws) {
+                if (self.selected.length != 1) {
+                    cfg.showMsg('请选择一条记录');
+                    return;
+                }
+                var crt_row = self.selected[0];
+                if (crt_row.statuscode == 100) {
+                    cfg.showMsg('比赛状态已经为结束，不需要手动结束！');
+                    return;
+                }
+
+                var index = layer.confirm('结束比赛?', function (index) {
+                    layer.close(index);
+                    crt_row.statuscode = 100;
+                    var post_data = [{ fun: 'save_row', row: crt_row }];
+                    cfg.show_load();
+                    ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+
+                        if (resp.save_row.errors) {
+                            cfg.warning(JSON.stringify(resp.save_row.errors));
+                        } else {
+                            cfg.hide_load(2000);
+                        }
+                    });
+                });
+            },
+            manual_end_money: function manual_end_money(kws) {
+                if (self.selected.length != 1) {
+                    cfg.showMsg('请选择一条记录');
+                    return;
+                }
+
+                var crt_row = self.selected[0];
+                //if(crt_row.statuscode !=100){
+                //    cfg.showMsg('请先结束比赛')
+                //    return
+                //}
+
+                var mt = /(\d+):(\d+)/.exec(crt_row.matchscore);
+                if (mt) {
+                    var home_score = mt[1];
+                    var away_score = mt[2];
+                } else {
+                    var home_score = 0;
+                    var away_score = 0;
+                }
+
+                var row = {
+                    matchid: crt_row.matchid,
+                    _matchid_label: crt_row._matchid_label,
+                    home_score: home_score,
+                    away_score: away_score
+                    //statuscode:crt_row.statuscode
+                };
+                pop_fields_layer(row, kws.fields_ctx, function (e) {
+                    alert(e.new_row);
+                });
+            },
+            jie_suan_pai_cai: function jie_suan_pai_cai(kws) {
+                if (self.selected.length != 1) {
+                    cfg.showMsg('请选择一条记录');
+                    return;
+                }
+            },
+            recommendate: function recommendate(kws) {
+                if (self.selected.length == 0) {
+                    cfg.showMsg('请选择一些记录');
+                    return;
+                }
+                ex.each(self.selected, function (row) {
+                    row.isrecommend = true;
+                });
+                var post_data = [{ fun: 'save_rows', rows: self.selected }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    cfg.hide_load(2000);
+                });
+            },
+            un_recommendate: function un_recommendate(kws) {
+                if (self.selected.length == 0) {
+                    cfg.showMsg('请选择一些记录');
+                    return;
+                }
+                ex.each(self.selected, function (row) {
+                    row.isrecommend = false;
+                });
+                var post_data = [{ fun: 'save_rows', rows: self.selected }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    cfg.hide_load(2000);
+                });
+            },
+
+            livebet: function livebet(kws) {
+                if (self.selected.length == 0) {
+                    cfg.showMsg('请选择一些记录');
+                    return;
+                }
+                ex.each(self.selected, function (row) {
+                    row.livebet = true;
+                });
+                var post_data = [{ fun: 'save_rows', rows: self.selected }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    cfg.hide_load(2000);
+                });
+            },
+            un_livebet: function un_livebet(kws) {
+                if (self.selected.length == 0) {
+                    cfg.showMsg('请选择一些记录');
+                    return;
+                }
+                ex.each(self.selected, function (row) {
+                    row.livebet = false;
+                });
+                var post_data = [{ fun: 'save_rows', rows: self.selected }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    cfg.hide_load(2000);
+                });
+            }
+        });
+    },
+    computed: {
+        only_one_selected: function only_one_selected() {
+            return this.selected.length == 1;
+        },
+        status_is_not_100: function status_is_not_100() {
+            if (this.selected.length == 1) {
+                var row = this.selected[0];
+                if (row.statuscode != 100) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+};
+
+var produce_match_outcome = {
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            produce_match_outcome: function produce_match_outcome(kws) {
+
+                var index = layer.confirm('确认手动结算?', function (index) {
+                    layer.close(index);
+
+                    var post_data = [{ fun: 'produce_match_outcome', row: self.row }];
+                    cfg.show_load();
+                    ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                        cfg.hide_load();
+                        cfg.showMsg(resp.produce_match_outcome.Message);
+                    });
+                });
+            }
+        });
+    }
+};
+
+window.match_logic = match_logic;
+window.produce_match_outcome = produce_match_outcome;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var notice_logic = {
+
+    mounted: function mounted() {
+
+        var self = this;
+        ex.assign(this.op_funs, {
+            update_notice_file: function update_notice_file() {
+                cfg.show_load();
+                var post_data = [{ fun: 'update_notice_file' }];
+                ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                    if (resp.update_notice_file.status == 'success') {
+                        cfg.hide_load(500);
+                    } else {
+                        cfg.warning(resp);
+                        cfg.hide_load();
+                    }
+                });
+            }
+        });
+    }
+
+    //computed:{
+    //    row_count:function(){
+    //        return this.rows.length
+    //    }
+    //},
+    //watch:{
+    //    row_count:function(v){
+    //        var post_data=[{fun:'get_help_options'}]
+    //        ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+    //            var mtype_filter = ex.findone(row_filters,{name:'mtype'})
+    //            mtype_filter.options = resp.get_help_options
+    //        })
+    //    }
+    //},
+};
+window.notice_logic = notice_logic;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _turnover = __webpack_require__(18);
+
+var turnover = _interopRequireWildcard(_turnover);
+
+var _multi_line = __webpack_require__(12);
+
+var multi_line = _interopRequireWildcard(_multi_line);
+
+var _multi_line_edit = __webpack_require__(13);
+
+var multi_line_edit = _interopRequireWildcard(_multi_line_edit);
+
+var _switch_checkbox = __webpack_require__(17);
+
+var switch_checkbox = _interopRequireWildcard(_switch_checkbox);
+
+var _plus = __webpack_require__(14);
+
+var plus_editor = _interopRequireWildcard(_plus);
+
+var _status = __webpack_require__(16);
+
+var status_editor = _interopRequireWildcard(_status);
+
+var _specialvalue_turnover = __webpack_require__(15);
+
+var specialvalue_turnover = _interopRequireWildcard(_specialvalue_turnover);
+
+var _favorite = __webpack_require__(11);
+
+var com_favorite = _interopRequireWildcard(_favorite);
+
+var _balance = __webpack_require__(10);
+
+var com_balance = _interopRequireWildcard(_balance);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+__webpack_require__(22);
+
+var ajax_table = {
+    props: ['tab_head'], //['heads','row_filters','kw'],
+    data: function data() {
+        var heads_ctx = this.tab_head.table_ctx;
+        var rows = heads_ctx.rows ? heads_ctx.rows : [];
+        var row_pages = heads_ctx.row_pages || {};
+        return {
+            heads: heads_ctx.heads,
+            row_filters: heads_ctx.row_filters,
+            row_sort: heads_ctx.row_sort,
+            director_name: heads_ctx.director_name,
+            footer: [],
+            rows: rows,
+            row_pages: row_pages,
+            //search_tip:this.kw.search_tip,
+
+            selected: [],
+            del_info: [],
+
+            search_args: {}
+        };
+    },
+    mixins: [mix_table_data, mix_ele_table_adapter],
+    //watch:{
+    //    // 排序变换，获取数据
+    //    'row_sort.sort_str':function(v){
+    //        this.search_args._sort=v
+    //        this.get_data()
+    //    }
+    //},
+    template: '<div class="odds rows-block flex-v" style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 1em;" >\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success flex-grow">\n            <div class="table-wraper" style="position: absolute;top:0;left:0;bottom: 0;right:0;">\n               <el-table class="table" ref="e_table"\n                              :data="rows"\n                              border\n                              show-summary\n                              :fit="false"\n                              :stripe="true"\n                              size="mini"\n                              @sort-change="sortChange($event)"\n                              @selection-change="handleSelectionChange"\n                              :summary-method="getSum"\n                              height="100%"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="head in heads">\n\n                            <el-table-column v-if="head.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                                <template slot-scope="scope">\n                                    <component :is="head.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :prop="head.name"\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                            </el-table-column>\n\n                        </template>\n\n                    </el-table>\n            </div>\n\n        </div>\n          <div>\n                    <el-pagination\n                        @size-change="on_perpage_change"\n                        @current-change="get_page"\n                        :current-page="row_pages.crt_page"\n                        :page-sizes="[20, 50, 100, 500]"\n                        :page-size="row_pages.perpage"\n                        layout="total, sizes, prev, pager, next, jumper"\n                        :total="row_pages.total">\n                </el-pagination>\n            </div>\n    </div>',
+
+    methods: {
+        is_show_tooltip: function is_show_tooltip(head) {
+            return false;
+        },
+        on_show: function on_show() {
+            if (this.tab_head.first_page) {
+                return;
+            }
+            if (!this.fetched) {
+                this.getRows();
+                this.fetched = true;
+            }
+        },
+        //getRows:function(){
+        //    var self=this
+        //    var fun = get_data[this.tab_head.get_data.fun ]
+        //    fun(function(rows,row_pages){
+        //        self.rows = rows
+        //        self.row_pages =row_pages
+        //    },this.par_row,this.tab_head.get_data.kws,this.search_args)
+        //},
+
+        goto_page: function goto_page(page) {
+            this.search_args._page = page;
+            this.search();
+        }
+        //add_new:function () {
+        //    var  url = ex.template('{engine_url}/{page}.edit/?next={next}',{
+        //        engine_url:engine_url,
+        //        page:page_name,
+        //        next:encodeURIComponent(ex.appendSearch(location.pathname,search_args))
+        //    })
+        //    location = url
+        //},
+    }
+};
+
+Vue.component('com_odds_editor', ajax_table);
+
+var get_data = {
+    get_rows: function get_rows(callback, row, kws, search_args) {
+        var relat_field = kws.relat_field;
+        var director_name = kws.director_name;
+
+        var self = this;
+        var relat_pk = row[kws.relat_field];
+        var relat_field = kws.relat_field;
+        search_args[relat_field] = relat_pk;
+        var post_data = [{ fun: 'get_rows', search_args: search_args, director_name: director_name }];
+        cfg.show_load();
+        $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+            cfg.hide_load();
+            callback(resp.get_rows.rows, resp.get_rows.row_pages);
+            //self.rows = resp.get_rows.rows
+            //self.row_pages =resp.get_rows.row_pages
+        });
+    }
+};
+
 /***/ }),
-/* 13 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1084,15 +1006,43 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var bool_shower = {
     props: ['rowData', 'field', 'index'],
-    template: '<div style="position: absolute;top:0;left:0;right:0;bottom:0;overflow: hidden">\n        <table width= "100% " height= "100% " >\n        <tr style="height: 1em;background-color: transparent;"><td width="50%">Home</td><td>Away</td></tr>\n        <tr style="background-color: transparent;"><td><span v-text="rowData.FavTurnover"></span></td><td><span v-text="rowData.UnderTurnover"></span></td></tr>\n        </table>\n    </div>\n    ',
-    computed: {}
+    template: '<div >\n        <span v-text="minus_value"></span>\n    </div>',
+    computed: {
+        minus_value: function minus_value() {
+            return (this.rowData.FavTurnover - this.rowData.UnderTurnover).toFixed(2);
+        }
+    }
 
 };
 
-Vue.component('com-odds-turnover', bool_shower);
+Vue.component('com-odds-balance', bool_shower);
 
 /***/ }),
-/* 14 */
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bool_shower = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div >\n        <span v-text="label"></span>\n    </div>',
+    computed: {
+        label: function label() {
+            if (this.rowData.FavTurnover > this.rowData.UnderTurnover) {
+                return this.rowData.Team2ZH;
+            } else {
+                return this.rowData.Team1ZH;
+            }
+        }
+    }
+
+};
+
+Vue.component('com-odds-favorite', bool_shower);
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1115,179 +1065,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line', odds_multi_line);
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var odds_multi_line = {
-    props: ['rowData', 'field', 'index'],
-    template: '<div >\n        <div v-for="row in rows" >\n        <input type="checkbox">\n        </div>\n    </div>',
-
-    computed: {
-        rows: function rows() {
-            return this.rowData.odds;
-        }
-    }
-
-};
-
-Vue.component('com-odds-switch-checkbox', odds_multi_line);
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var odds_multi_line = {
-    props: ['rowData', 'field', 'index'],
-    data: function data() {
-        return {
-            plus_value: 0.01
-        };
-    },
-    template: '<div >\n        <div v-for="row in rows" >\n        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-plus"></i></button>\n        <input  type="number" step="0.01" v-model="plus_value" style="width: 40px;height: 20px">\n        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-minus"></i></button>\n        </div>\n    </div>',
-
-    computed: {
-        rows: function rows() {
-            return this.rowData.odds;
-        }
-    }
-
-};
-
-Vue.component('com-odds-plus', odds_multi_line);
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(9)();
-// imports
-
-
-// module
-exports.push([module.i, ".odds input::-webkit-outer-spin-button,\n.odds input::-webkit-inner-spin-button {\n  -webkit-appearance: none !important;\n  margin: 0; }\n\n.odds .td-btn {\n  padding: 5px; }\n\n.odds td .cell, .odds th {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  padding: 0; }\n\n.odds td, .odds th {\n  text-align: center; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(17);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(10)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./odds.scss", function() {
-			var newContent = require("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./odds.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var odds_multi_line = {
-    props: ['rowData', 'field', 'index'],
-    template: '<div >\n        <div v-for="row in rows" >\n<com-odds-status-check-btn :row="row"></com-odds-status-check-btn>\n\n        </div>\n    </div>',
-
-    computed: {
-        rows: function rows() {
-            return this.rowData.odds;
-        }
-
-    }
-
-};
-
-Vue.component('com-odds-status', odds_multi_line);
-
-Vue.component('com-odds-status-check-btn', {
-    props: ['row'],
-    template: '<el-switch\n              v-model="is_true"\n              active-color="#13ce66"\n              inactive-color="#ff4949">\n        </el-switch>',
-    computed: {
-        is_true: {
-            get: function get() {
-                return this.row.LineStatus == 1;
-            },
-            set: function set(newValue) {
-                if (newValue) {
-                    this.row.LineStatus = 1;
-                } else {
-                    this.row.LineStatus = 0;
-                }
-            }
-        }
-    }
-});
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var odds_multi_line = {
-    props: ['rowData', 'field', 'index'],
-    data: function data() {
-        return {
-            crt_row: {}
-        };
-    },
-    template: '<div >\n        <div v-for="row in rows" style="position: relative" @click="show_editor(row)">\n        <div v-text="show_turnover(row)"></div>\n        <!--<input ref="editor" v-show="is_show_editor(row)" v-model="row[field]" type="text" style="position: absolute;top:0;left:0;right:0;bottom: 0">-->\n        </div>\n        <!--<span v-text="rowData.FavTurnover"> </span>-->\n        <!--<span v-text="rowData.UnderTurnover"></span>-->\n    </div>',
-    //
-
-    methods: {
-        show_editor: function show_editor(row) {
-            this.crt_row = row;
-            var self = this;
-            Vue.nextTick(function () {
-                $(self.$el).find('input').focus();
-            });
-        },
-        is_show_editor: function is_show_editor(row) {
-            return this.crt_row == row;
-        },
-        show_turnover: function show_turnover(row) {
-            return row.FavTurnover - row.UnderTurnover;
-        }
-    },
-    computed: {
-
-        rows: function rows() {
-            return this.rowData.odds;
-        }
-    }
-
-};
-
-Vue.component('com-odds-special-turnover', odds_multi_line);
-
-/***/ }),
-/* 21 */,
-/* 22 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1330,49 +1108,279 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line-edit', odds_multi_line);
 
 /***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    data: function data() {
+        return {
+            plus_value: 0.01
+        };
+    },
+    template: '<div >\n        <div v-for="row in rows" >\n        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-plus"></i></button>\n        <input  type="number" step="0.01" v-model="plus_value" style="width: 40px;height: 20px">\n        <button type="button" class="btn btn-default btn-xs"><i class="fa fa-minus"></i></button>\n        </div>\n    </div>',
+
+    computed: {
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+    }
+
+};
+
+Vue.component('com-odds-plus', odds_multi_line);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    data: function data() {
+        return {
+            crt_row: {}
+        };
+    },
+    template: '<div >\n        <div v-for="row in rows" style="position: relative" @click="show_editor(row)">\n        <div style="text-align: left">\n        <span v-text="show_label(row)" style="width: 2.5em;display: inline-block"></span>\n        <span v-text="show_turnover(row)" style="display: inline-block"></span>\n        </div>\n        <!--<input ref="editor" v-show="is_show_editor(row)" v-model="row[field]" type="text" style="position: absolute;top:0;left:0;right:0;bottom: 0">-->\n        </div>\n        <!--<span v-text="rowData.FavTurnover"> </span>-->\n        <!--<span v-text="rowData.UnderTurnover"></span>-->\n    </div>',
+    //
+
+    methods: {
+        show_editor: function show_editor(row) {
+            this.crt_row = row;
+            var self = this;
+            Vue.nextTick(function () {
+                $(self.$el).find('input').focus();
+            });
+        },
+        is_show_editor: function is_show_editor(row) {
+            return this.crt_row == row;
+        },
+        show_label: function show_label(row) {
+            if (row.FavTurnover - row.UnderTurnover > 0) {
+                return '下盘';
+            } else {
+                return '上盘';
+            }
+        },
+        show_turnover: function show_turnover(row) {
+            return row.FavTurnover - row.UnderTurnover;
+        }
+    },
+    computed: {
+
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+    }
+
+};
+
+Vue.component('com-odds-special-turnover', odds_multi_line);
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div >\n        <div v-for="row in rows" >\n<com-odds-status-check-btn :row="row"></com-odds-status-check-btn>\n\n        </div>\n    </div>',
+
+    computed: {
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+
+    }
+
+};
+
+Vue.component('com-odds-status', odds_multi_line);
+
+Vue.component('com-odds-status-check-btn', {
+    props: ['row'],
+    template: '<el-switch\n              v-model="is_true"\n              active-color="#13ce66"\n              inactive-color="#ff4949">\n        </el-switch>',
+    computed: {
+        is_true: {
+            get: function get() {
+                return this.row.LineStatus == 1;
+            },
+            set: function set(newValue) {
+                if (newValue) {
+                    this.row.LineStatus = 1;
+                } else {
+                    this.row.LineStatus = 0;
+                }
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var odds_multi_line = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div >\n        <div v-for="row in rows" >\n        <input type="checkbox">\n        </div>\n    </div>',
+
+    computed: {
+        rows: function rows() {
+            return this.rowData.odds;
+        }
+    }
+
+};
+
+Vue.component('com-odds-switch-checkbox', odds_multi_line);
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bool_shower = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div style="position: absolute;top:0;left:0;right:0;bottom:0;overflow: hidden">\n        <table width= "100% " height= "100% " >\n        <tr style="height: 1em;background-color: transparent;"><td width="50%">Home</td><td>Away</td></tr>\n        <tr style="background-color: transparent;"><td><span v-text="rowData.FavTurnover"></span></td><td><span v-text="rowData.UnderTurnover"></span></td></tr>\n        </table>\n    </div>\n    ',
+    computed: {}
+
+};
+
+Vue.component('com-odds-turnover', bool_shower);
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com_tab_special_bet_value .box {\n  width: 250px;\n  height: 400px;\n  padding: 1em;\n  border: 1px solid black;\n  margin-right: 1em;\n  position: relative;\n  overflow: auto;\n  display: inline-block; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".odds input::-webkit-outer-spin-button,\n.odds input::-webkit-inner-spin-button {\n  -webkit-appearance: none !important;\n  margin: 0; }\n\n.odds .td-btn {\n  padding: 5px; }\n\n.odds td .cell, .odds th {\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n  padding: 0; }\n\n.odds td, .odds th {\n  text-align: center; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(19);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_tab_special_bet_value.scss", function() {
+			var newContent = require("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_tab_special_bet_value.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(20);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./odds.scss", function() {
+			var newContent = require("!!../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./odds.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var bool_shower = {
-    props: ['rowData', 'field', 'index'],
-    template: '<div >\n        <span v-text="minus_value"></span>\n    </div>',
-    computed: {
-        minus_value: function minus_value() {
-            return (this.rowData.FavTurnover - this.rowData.UnderTurnover).toFixed(2);
-        }
-    }
+var _match = __webpack_require__(7);
 
-};
+var match = _interopRequireWildcard(_match);
 
-Vue.component('com-odds-balance', bool_shower);
+var _app_pkg = __webpack_require__(3);
 
-/***/ }),
-/* 24 */,
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
+var app_pkg = _interopRequireWildcard(_app_pkg);
 
-"use strict";
+var _help = __webpack_require__(6);
 
+var help_logic = _interopRequireWildcard(_help);
 
-var bool_shower = {
-    props: ['rowData', 'field', 'index'],
-    template: '<div >\n        <span v-text="label"></span>\n    </div>',
-    computed: {
-        label: function label() {
-            if (this.rowData.FavTurnover > this.rowData.UnderTurnover) {
-                return this.rowData.Team2ZH;
-            } else {
-                return this.rowData.Team1ZH;
-            }
-        }
-    }
+var _notice = __webpack_require__(8);
 
-};
+var notice_logic = _interopRequireWildcard(_notice);
 
-Vue.component('com-odds-favorite', bool_shower);
+var _activity = __webpack_require__(2);
+
+var activity_logic = _interopRequireWildcard(_activity);
+
+var _banner = __webpack_require__(4);
+
+var banner_logic = _interopRequireWildcard(_banner);
+
+var _odds = __webpack_require__(9);
+
+var odds_editor = _interopRequireWildcard(_odds);
+
+var _com_tab_special_bet_value = __webpack_require__(5);
+
+var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ })
 /******/ ]);
