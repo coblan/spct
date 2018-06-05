@@ -166,6 +166,8 @@ class OddsTypeGroup4Table(ModelTable):
 
     def get_query(self): 
         sql = """
+
+--查询比赛信息
 declare @OddsTypeGroup int
 declare @PageIndex int
 declare @PageSize int
@@ -175,7 +177,7 @@ set @OddsTypeGroup=4
 declare @tb_matches table(
 	MatchID bigint
 )
-
+--返回总记录数
 
 select count(1) as TotalCount from dbo.TB_Matches with(nolock)
 where 1=1 %(where_filter)s
@@ -207,7 +209,7 @@ from dbo.TB_Matches a with(nolock)
 inner join @tb_matches b
 on a.MatchID=b.MatchID
 
-
+--查询玩法Turnover和Liability
 select 
 	a.MatchID,
 	a.OddsTypeGroup,
@@ -220,6 +222,7 @@ on a.MatchID=b.MatchID
 group by a.MatchID,a.OddsTypeGroup,a.OddsID
 having a.OddsTypeGroup = @OddsTypeGroup
 
+--查询所有的Line和Odds,MaxPayout,Turnover
 SELECT
 	w.MatchID,
 	w.OddsID,
@@ -228,7 +231,7 @@ SELECT
 	y.OddsTypeGroup,
 	isnull(z.MaxPayout,0) as MaxPayout,
 	isnull(x.Turnover,0) as Turnover,
-	isnull(z.[Status],1) as LineStatus
+	isnull(z.[Status],1) as LineStatus--未设置默认有效
 FROM (SELECT a.SpecialBetValue,MAX(a.Tid) AS Tid,a.OddsID,a.MatchID
 	FROM [dbo].[TB_Odds] a with(nolock)
 	INNER JOIN @tb_matches b ON a.MatchID=b.MatchID
