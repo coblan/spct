@@ -182,6 +182,12 @@ select count(1) as TotalCount from dbo.TB_Matches with(nolock)
 where 1=1 %(where_filter)s
 --#Where#
 
+insert into @tb_matches
+select top (@PageSize) MatchID from (
+	select ROW_NUMBER() over(order by Tid) as RowNumber, matchid from dbo.tb_matches with(nolock)
+	where 1=1 %(where_filter)s ) a
+where RowNumber between (@PageIndex-1)*@PageSize and @PageIndex*@PageSize
+--#Where#
 
 """
         pageindex = self.pagenum.pageNumber
