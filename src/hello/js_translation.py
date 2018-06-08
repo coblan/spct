@@ -1,3 +1,5 @@
+# this file maybe not use
+
 from django.utils.translation import ugettext as _
 
 def get_tr():
