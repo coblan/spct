@@ -57,7 +57,7 @@ class MatchsPage(TablePage):
                                {'name':'home_half_score','label':'主队半场得分','editor':'linetext'},
                                {'name':'home_corner','label':'主队角球','editor':'linetext'},
                                {'name':'away_score','label':'客队分数','editor':'linetext'},
-                               {'name':'away_half_score','label':'主队半场得分','editor':'linetext'},
+                               {'name':'away_half_score','label':'客队半场得分','editor':'linetext'},
                                {'name':'away_corner','label':'客队角球','editor':'linetext'},
                                #{'name':'statuscode','label':'赛事状态','editor':'linetext'},
                                #{'name':'close_time','label':'结束时间','editor':'com-field-datetime'}
