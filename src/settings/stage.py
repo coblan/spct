@@ -55,7 +55,24 @@ DATABASES = {
             'driver': 'FreeTDS',
             'extra_params': 'tds_version=8.0',
             },
-       } ,     
+       } , 
+    'Sports': {
+        'NAME': 'Sports',
+        'ENGINE': 'sql_server.pyodbc',
+        'HOST': '192.168.40.79,1433',
+        'USER': 'sa',
+        'PASSWORD': 'cdqg@1215',
+        #'PORT': '1436',
+        'OPTIONS': {
+             
+            'autocommit': True,
+            'host_is_server': True,
+            'unicode_results': True,
+            'driver': 'FreeTDS',
+            'extra_params': 'tds_version=8.0',
+              },
+               
+       } ,       
 }
 
 ALLOWED_HOSTS=['103.246.219.202', '192.168.40.116', '103.242.109.37']
