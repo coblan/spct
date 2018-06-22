@@ -5,7 +5,7 @@ class DbRouter:
     """
     DB_MAP={
         'betradar':'Betradar',
-        'maindb':'MainDB'
+        'maindb':'Sports'
     }
     def db_for_read(self, model, **hints):
         """

@@ -1066,20 +1066,7 @@ class TbStatuscode(models.Model):
         managed = False
         db_table = 'TB_StatusCode'
 
-class TbTeams(models.Model):
-    tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    zhname = models.CharField(db_column='ZHName', max_length=50, blank = True)  # Field name made lowercase.
-    enname = models.CharField(db_column='ENName', max_length=50)  # Field name made lowercase.
-    icon = models.CharField(db_column='Icon', max_length=200, blank=True, null=True)  # Field name made lowercase.
-    country = models.CharField(db_column='Country', max_length=20, blank = True)  # Field name made lowercase.
-    leaguename = models.CharField(db_column='LeagueName', max_length=30, blank = True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', blank=True, choices= TEAM_STATUS, default= 0)  # Field name made lowercase.
-    saenname = models.CharField(db_column='SAEnName', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
-    class Meta:
-        managed = False
-        db_table = 'TB_Teams'
-        
 #class TbTicketmaster(models.Model):
     #ticketid = models.BigIntegerField(db_column='TicketID', primary_key=True)  # Field name made lowercase.
     #account = models.CharField(db_column='Account', max_length=200)  # Field name made lowercase.

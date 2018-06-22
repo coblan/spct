@@ -11,7 +11,7 @@ from django.conf import settings
 from .js_translation import get_tr
 from maindb.models import TbBanner, TbAppversion, TbNotice, TbCurrency, TbQa, TbActivity, TbAppresource, TbAccount, TbLoginlog, \
      TbBalancelog, TbChargeflow, TbChannel, TbTicketmaster, TbMatches, TbRcFilter, TbRcLevel, TbRcUser, TbBlackuserlist, TbBlackuserlistLog, \
-     Blackiprangelist, Whiteiplist, Whiteuserlist, TbWithdrawlimitlog
+     Blackiprangelist, Whiteiplist, Whiteuserlist, TbWithdrawlimitlog, TbTeams
 from . import permit
 
 class PcMenu(BaseEngine):
@@ -36,6 +36,7 @@ class PcMenu(BaseEngine):
                 {'label':_('Help'),'url':page('maindb.TbQa'), 'visible': can_touch(TbQa, crt_user),},
                 {'label':_('Activity'),'url':page('maindb.TBActive'), 'visible': can_touch(TbActivity, crt_user),},
                 {'label':_('AppResource'),'url':page('AppResource'), 'visible': can_touch(TbAppresource, crt_user),},
+                 {'label':_('Teams'),'url':page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user),},
                 ]},  
             
             

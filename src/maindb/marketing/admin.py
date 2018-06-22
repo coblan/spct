@@ -5,7 +5,7 @@ from .admin_help import *
 from .admin_activity import *
 from .admin_app_resource import *
 from .admin_app_package import *
-
+from . import admin_teams
 
 from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
 
