@@ -13,6 +13,8 @@ from django.conf import settings
 from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.model_func.cus_fields.cus_picture import PictureProc
+import os
+from .proc_image import procImage
 
 class TeamsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -51,7 +53,7 @@ class TeamsPage(TablePage):
                 return options
             
         class search(RowSearch):
-            names = ['enname', 'saenname']
+            names = ['enname', 'saenname', 'icon']
         class sort(RowSort):
             names = ['enname', 'icon', 'saenname']
         
@@ -73,8 +75,10 @@ class TeamsFields(ModelFields):
     
     def save_form(self): 
         super().save_form()
-        if 'icon' is self.changed_data:
-            pass
+        if 'icon' in self.changed_data and  self.cleaned_data.get('icon'):
+            flPath = os.path.join(settings.MEDIA_ROOT, 'public' , 'team_icon', self.cleaned_data.get('icon'))
+            procImage(flPath)
+            
         
         
 
