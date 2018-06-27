@@ -40,7 +40,7 @@ def produce_match_outcome(row):
     }    
     
     rt = requests.post(url,data=data)
-    return json.loads( rt.content )
+    return json.loads( rt.text )
     
 def update_activity_file():
     gen_activity_file()
