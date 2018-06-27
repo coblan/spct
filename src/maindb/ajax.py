@@ -24,6 +24,9 @@ def update_notice_file():
     return {'status':'success'}
 
 def produce_match_outcome(row):
+    """
+    手动结算
+    """
     url = 'http://192.168.40.103:9001/Match/ManualResulting'
     data ={
         'MatchID':row.get('matchid'),
