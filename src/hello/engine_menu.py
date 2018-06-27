@@ -8,7 +8,7 @@ from helpers.func.collection.container import evalue_container
 from helpers.maintenance.update_static_timestamp import js_stamp
 from django.utils.translation import ugettext as _
 from django.conf import settings
-from .js_translation import get_tr
+#from .js_translation import get_tr
 from maindb.models import TbBanner, TbAppversion, TbNotice, TbCurrency, TbQa, TbActivity, TbAppresource, TbAccount, TbLoginlog, \
      TbBalancelog, TbChargeflow, TbChannel, TbTicketmaster, TbMatches, TbRcFilter, TbRcLevel, TbRcUser, TbBlackuserlist, TbBlackuserlistLog, \
      Blackiprangelist, Whiteiplist, Whiteuserlist, TbWithdrawlimitlog, TbTeams
