@@ -70,6 +70,12 @@ class TeamsFields(ModelFields):
     class Meta:
         model = TbTeams
         exclude = []
+    
+    def save_form(self): 
+        super().save_form()
+        if 'icon' is self.changed_data:
+            pass
+        
         
 
 class TeamIconProc(PictureProc):

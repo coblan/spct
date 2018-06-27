@@ -27,7 +27,8 @@ def produce_match_outcome(row):
     """
     手动结算
     """
-    url = 'http://192.168.40.103:9001/Match/ManualResulting'
+    #url = 'http://192.168.40.103:9001/Match/ManualResulting'
+    url = 'http://192.168.40.103:9022/Match/ManualResulting'
     data ={
         'MatchID':row.get('matchid'),
         'Team1Score':row.get('home_score', ''),
