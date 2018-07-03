@@ -1,6 +1,6 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,ModelFields,model_dc,RowFilter,RowSort
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,ModelFields,model_dc,RowFilter,RowSort, RowSearch
 from ..models import TbMatches,TbOdds,TbMatchesoddsswitch,TbOddstypegroup
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
@@ -22,7 +22,8 @@ class MatchsPage(TablePage):
         class filters(RowFilter):
             range_fields=['matchdate']
             names=['isrecommend','livebet']
-        
+        class search(RowSearch):
+            names = ['matchid', 'team1zh', 'team2zh']
         class sort(RowSort):
             names=['matchdate']
             
