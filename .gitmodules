@@ -3,4 +3,5 @@
 	url = git@github.com:coblan/helpers.git
 
 [submodule "src/static/lib"]
-	path = src/static/lib	 url = https://github.com/coblan/lib.git
+	path = src/static/lib
+	url = https://github.com/coblan/lib.git
