@@ -64,7 +64,8 @@ class MatchsPage(TablePage):
                                #{'name':'close_time','label':'结束时间','editor':'com-field-datetime'}
                                ],
                       'ops':[{"fun":'produce_match_outcome','label':'请求Service','editor':'com-field-op-btn'},],
-                      'extra_mixins':['produce_match_outcome']
+                      'extra_mixins':['produce_match_outcome'], 
+                      'fieldsPanel': 'produceMatchOutcomePanel',
                  }
                 },
                 #{'fun':'jie_suan_pai_cai','editor':'com-op-a','label':'结算派彩'},

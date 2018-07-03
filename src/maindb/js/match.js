@@ -166,5 +166,72 @@ var produce_match_outcome={
     }
 }
 
+var produceMatchOutcomePanel={
+        props:['row','heads','ops'],
+        mixins:[mix_fields_data,mix_nice_validator],
+
+        methods:{
+            after_save:function(new_row){
+                this.$emit('sub_success',{new_row:new_row,old_row:this.row})
+                ex.assign(this.row,new_row)
+            },
+            del_row:function(){
+                var self=this
+                layer.confirm('真的删除吗?', {icon: 3, title:'确认'}, function(index){
+                    layer.close(index);
+                    var ss = layer.load(2);
+                    var post_data = [{fun:'del_rows',rows:[self.row]}]
+                    $.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                        layer.close(ss)
+                        self.$emit('del_success',self.row)
+                    })
+                });
+            }
+
+        },
+        template:`<div class="flex-v" style="margin: 0;height: 100%;">
+    <div class = "flex-grow" style="overflow: auto;margin: 0;">
+
+
+        <div style="width: 40em;margin: auto;">
+        <div style="text-align: center;margin:1em;">
+            <span v-text="row._matchid_label"></span>
+        </div>
+          <table style="display: inline-block;">
+            <tr><td></td> <td >主队</td><td>客队</td></tr>
+
+             <tr><td>半场得分</td><td><input type="text" v-model="row.home_half_score"></td><td><input type="text" v-model="row.away_half_score"></td></tr>
+
+            <tr><td>全场得分</td><td><input type="text" v-model="row.home_score"></td><td><input type="text" v-model="row.away_score"></td></tr>
+
+            <tr><td>角球</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>
+            </table>
+        </div>
+
+
+        <!--<div class="field-panel msg-hide" >-->
+            <!--<field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>-->
+        <!--</div>-->
+      <div style="height: 15em;">
+      </div>
+    </div>
+     <div style="text-align: right;padding: 8px 3em;">
+        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>
+    </div>
+     </div>`,
+        data:function(){
+            return {
+                fields_kw:{
+                    heads:this.heads,
+                    row:this.row,
+                    errors:{},
+                },
+            }
+        }
+ }
+
+
+
 window.match_logic = match_logic
 window.produce_match_outcome = produce_match_outcome
+window.produceMatchOutcomePanel=produceMatchOutcomePanel
