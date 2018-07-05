@@ -124,6 +124,34 @@ var match_logic = {
                 ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
                     cfg.hide_load(2000)
                 })
+            },
+            show_match:function(kws){
+                if(self.selected.length==0){
+                    cfg.showMsg('请选择一些记录')
+                    return
+                }
+                ex.each(self.selected,function(row){
+                    row.ishidden=false
+                })
+                var post_data=[{fun:'save_rows',rows:self.selected}]
+                cfg.show_load()
+                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                    cfg.hide_load(2000)
+                })
+            },
+            hide_match:function(){
+                if(self.selected.length==0){
+                    cfg.showMsg('请选择一些记录')
+                    return
+                }
+                ex.each(self.selected,function(row){
+                    row.ishidden=true
+                })
+                var post_data=[{fun:'save_rows',rows:self.selected}]
+                cfg.show_load()
+                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                    cfg.hide_load(2000)
+                })
             }
         })
     },

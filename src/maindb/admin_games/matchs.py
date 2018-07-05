@@ -7,6 +7,7 @@ from helpers.director.base_data import director
 from django.utils.timezone import datetime
 import time
 import requests
+from maindb.mongoInstance import updateMatch
 
 class MatchsPage(TablePage):
     template='jb_admin/table.html'
@@ -18,7 +19,7 @@ class MatchsPage(TablePage):
         model = TbMatches
         exclude=[]
         fields_sort=['matchid','matchdate','tournamentzh','team1zh','team2zh','matchscore','winner','statuscode','roundinfo',
-                     'isrecommend','livebet','categoryid','currentperiodstart']
+                     'isrecommend','livebet', 'ishidden','categoryid','currentperiodstart']
         class filters(RowFilter):
             range_fields=['matchdate']
             names=['isrecommend','livebet']
@@ -74,6 +75,9 @@ class MatchsPage(TablePage):
                 
                 {'fun':'livebet','editor':'com-op-btn','label':'滚球'},
                 {'fun':'un_livebet','editor':'com-op-btn','label':'取消滚球'},
+                
+                {'fun':'show_match','editor':'com-op-btn','label':'显示'},
+                {'fun':'hide_match','editor':'com-op-btn','label':'隐藏'},
                 
             ]
             return ops
@@ -135,6 +139,17 @@ class MatchForm(ModelFields):
         model=TbMatches
         exclude=[]
  
+    def save_form(self): 
+        super().save_form()
+        inst = self.instance
+        dc = {
+           'MatchID': inst.matchid,
+           'IsRecommend': inst.isrecommend,
+           'IsHidden': inst.ishidden,
+           'LiveBet': inst.livebet,
+        }
+        updateMatch(dc)
+    
     
     #def clean(self):
         #if 'statuscode' in self.changed_data:

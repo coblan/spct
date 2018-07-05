@@ -89,6 +89,8 @@ BANNER_ACCESS_URL='http://103.246.219.202:9004/static'
 APP_PKG_UPLOAD_URL='http://192.168.40.103:9004/api/upload?folder=package'
 APP_PKG_ACCESS_URL='http://103.246.219.202:9004/static' 
 
+MONGO_SERVER = "mongodb://192.168.40.104:27017"
 
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
+

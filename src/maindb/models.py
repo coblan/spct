@@ -595,7 +595,19 @@ class TbMatches(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
     weights = CusDecimalField(db_column='Weights', max_digits=18, decimal_places=2)  # Field name made lowercase.
     uniquetournamentid = models.BigIntegerField(db_column='UniqueTournamentId')  # Field name made lowercase.
-
+    
+    period1score = models.CharField(db_column='Period1Score', max_length=20, blank = True)  # Field name made lowercase.
+    eventid = models.CharField(db_column='EventID', unique=True, max_length=50, blank=True, null=True)  # Field name made lowercase.
+    tournamenten = models.CharField(db_column='TournamentEN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    team1en = models.CharField(db_column='Team1EN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    team2en = models.CharField(db_column='Team2EN', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    homescore = models.IntegerField(db_column='HomeScore')  # Field name made lowercase.
+    awayscore = models.IntegerField(db_column='AwayScore')  # Field name made lowercase.
+    team1icon = models.CharField(db_column='Team1Icon', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    team2icon = models.CharField(db_column='Team2Icon', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    terminator = models.CharField(db_column='Terminator', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    ishidden = models.BooleanField(db_column='IsHidden', default = False)  # Field name made lowercase.    
+    
     class Meta:
         managed = False
         db_table = 'TB_Matches'
