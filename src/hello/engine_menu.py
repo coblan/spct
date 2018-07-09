@@ -9,9 +9,10 @@ from helpers.maintenance.update_static_timestamp import js_stamp
 from django.utils.translation import ugettext as _
 from django.conf import settings
 #from .js_translation import get_tr
-from maindb.models import TbBanner, TbAppversion, TbNotice, TbCurrency, TbQa, TbActivity, TbAppresource, TbAccount, TbLoginlog, \
-     TbBalancelog, TbChargeflow, TbChannel, TbTicketmaster, TbMatches, TbRcFilter, TbRcLevel, TbRcUser, TbBlackuserlist, TbBlackuserlistLog, \
-     Blackiprangelist, Whiteiplist, Whiteuserlist, TbWithdrawlimitlog, TbTeams
+#from maindb.models import TbBanner, TbAppversion, TbNotice, TbCurrency, TbQa, TbActivity, TbAppresource, TbAccount, TbLoginlog, \
+     #TbBalancelog, TbChargeflow, TbChannel, TbTicketmaster, TbMatches, TbRcFilter, TbRcLevel, TbRcUser, TbBlackuserlist, TbBlackuserlistLog, \
+     #Blackiprangelist, Whiteiplist, Whiteuserlist, TbWithdrawlimitlog, TbTeams,
+from maindb.models import * 
 from . import permit
 
 class PcMenu(BaseEngine):
@@ -61,6 +62,7 @@ class PcMenu(BaseEngine):
                 {'label':_('Tb Match'),'url':page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user),},
                 {'label':_('View TicketSingleByMatch'),'url':page('maindb.TicketSingleByMatch'), 'visible': can_touch(TbMatches, crt_user),},
                 {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
+                {'label':_('联赛'),'url':page('match.league'), 'visible': can_touch(TbTournament, crt_user)},
                 #{'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
                         ]}, 
             

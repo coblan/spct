@@ -1257,6 +1257,8 @@ class TbTournament(models.Model):
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID')  # Field name made lowercase.
+    issubscribe = models.IntegerField(db_column='IsSubscribe')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort', blank=True, null=True)  # Field name made lowercase.    
 
     class Meta:
         managed = False
