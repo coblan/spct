@@ -8,8 +8,8 @@ class League(TablePage):
     
     class tableCls(ModelTable):
         model = TbTournament
-        exclude = ['tournamentid']
-        pop_edit_field = 'tournamentname'
+        exclude = ['categoryid', 'uniquetournamentid', 'issubscribe', 'createtime']
+        pop_edit_field = 'tournamentid'
         #hide_fields = ['tournamentid']
     
         def inn_filter(self, query): 
@@ -19,25 +19,28 @@ class League(TablePage):
             dc = {
                 'tournamentid': 120,
                 'categoryid': 100,
-                'tournamentname': 140,
+                'tournamentname': 250,
                'createtime': 120,
             }
             if head['name'] in dc:
                 head['width'] = dc.get(head['name'])
             return head
         
+        def get_operation(self): 
+            return []
+        
         class sort(RowSort):
-            names = ['createtime', 'sort']
+            names = [ 'sort']
         
         class search(RowSearch):
-            names = ['tournamentname']
+            names = ['tournamentname', 'tournamentid']
             
 
 class LeagueForm(ModelFields):
-    readonly = ['createtime']
+    readonly = [ 'tournamentid']
     class Meta:
         model = TbTournament
-        exclude = ['tournamentid']
+        exclude = ['categoryid', 'uniquetournamentid', 'issubscribe', 'createtime']
     
     
 
