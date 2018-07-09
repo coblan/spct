@@ -606,7 +606,7 @@ class TbMatches(models.Model):
     team1icon = models.CharField(db_column='Team1Icon', max_length=255, blank=True, null=True)  # Field name made lowercase.
     team2icon = models.CharField(db_column='Team2Icon', max_length=255, blank=True, null=True)  # Field name made lowercase.
     terminator = models.CharField(db_column='Terminator', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    ishidden = models.BooleanField(db_column='IsHidden', default = False)  # Field name made lowercase.    
+    ishidden = models.BooleanField(db_column='IsHidden', default = False, verbose_name = '关闭')  # Field name made lowercase.    
     
     class Meta:
         managed = False

@@ -76,8 +76,8 @@ class MatchsPage(TablePage):
                 {'fun':'livebet','editor':'com-op-btn','label':'滚球'},
                 {'fun':'un_livebet','editor':'com-op-btn','label':'取消滚球'},
                 
-                {'fun':'show_match','editor':'com-op-btn','label':'显示'},
-                {'fun':'hide_match','editor':'com-op-btn','label':'隐藏'},
+                {'fun':'show_match','editor':'com-op-btn','label':'开启'},
+                {'fun':'hide_match','editor':'com-op-btn','label':'关闭'},
                 
             ]
             return ops
