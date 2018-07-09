@@ -31,12 +31,15 @@ def produce_match_outcome(row):
     url = 'http://192.168.40.103:9022/Match/ManualResulting'
     data ={
         'MatchID':row.get('matchid'),
-        'Team1Score':row.get('home_score', ''),
-        'Team2Score':row.get('away_score', ''),
-        'Team1HalfScore':row.get('home_half_score', ''),
-        'Team2HalfScore':row.get('away_half_score', ''),        
-        'Team1Corner':row.get('home_corner', ''),
-        'Team2Corner':row.get('away_corner', ''),
+        'Team1Score':row.get('home_score', 0),
+        'Team2Score':row.get('away_score', 0),
+        'Team1HalfScore':row.get('home_half_score', 0),
+        'Team2HalfScore':row.get('away_half_score', 0),        
+        'Team1Corner':row.get('home_corner', 0),
+        'Team2Corner':row.get('away_corner', 0),
+        'Terminator': 'adminSys',
+        'PeriodType': 2,
+        
     }    
     
     rt = requests.post(url,data=data)
