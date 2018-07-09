@@ -116,6 +116,9 @@
         color: gray;
         pointer-events: none;
     }
+    .main-table .el-tabs__content{
+        height: 95%
+    }
 </style>
 <div id='there' class="flex-v">
 
@@ -138,9 +141,10 @@
         <div  style="position: absolute;bottom: 0;top: 0;left: 0;right: 0;">
             <el-tabs v-if="tabs.length >1" type="border-card"
                      @tab-click="handleClick"
-                     style="width: 100%;"
+                     style="width: 100%;height: 100%"
+                     class="main-table"
                      :value="crt_tab" >
-                <el-tab-pane v-for="tab in tabs" :name="tab.name">
+                <el-tab-pane v-for="tab in tabs" :name="tab.name" >
                     <span slot="label" v-text="tab.label"></span>
 
                     <component :is="tab.com" :tab_head="tab"
@@ -178,22 +182,6 @@
     .fake-suit th{
         white-space: nowrap;
     }
-
-    /*.table thead tr {*/
-    /*display:block;*/
-    /*}*/
-    /*.table tbody {*/
-    /*display: block;*/
-    /*height: 300px;*/
-    /*overflow: auto;*/
-    /*}*/
-    /*.table th {*/
-    /*width:20%;*/
-    /*}*/
-    /*.table td {*/
-    /*width:20%;*/
-    /*}*/
-
 </style>
 {% block extra %}
 {% endblock %}

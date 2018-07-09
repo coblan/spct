@@ -1162,12 +1162,19 @@ var mix_fields_data = {
             ex.assign(this.row, new_row);
         },
         showErrors: function showErrors(errors) {
-            var str = "";
             for (var k in errors) {
-                var head = ex.findone(this.heads, { name: k });
-                str += head.label + ':' + errors[k] + '<br>';
+                //var head = ex.findone(this.heads,{name:k})
+                $(this.$el).find('#id_' + k).trigger("showmsg", ["error", errors[k].join(';')]);
+                //str += head.label + ':' + errors[k] +'<br>'
             }
-            layer.confirm(str, { title: ['错误', 'color:white;background-color:red'] });
+
+            //var str = ""
+            //for(var k in errors){
+            //    var head = ex.findone(this.heads,{name:k})
+            //    str += head.label + ':' + errors[k] +'<br>'
+            //}
+            //
+            //layer.confirm(str,{title:['错误','color:white;background-color:red']})
         },
         clear: function clear() {
             this.row = {};
@@ -1241,7 +1248,6 @@ var nice_validator = {
         },
         before_save: function before_save() {
             ex.vueSuper(this, { mixin: nice_validator, fun: 'before_save' });
-
             if (this.isValid()) {
                 return 'continue';
             } else {
@@ -2005,9 +2011,10 @@ Vue.component('com-table-operations', operations);
 "use strict";
 
 
+//
 var picture = {
     props: ['rowData', 'field', 'index'],
-    template: '<span>\n        <img @load=\'loaded=true\' v-show=\'loaded\' @click="open()" :src="src" alt="" height="96px" style="cursor: pointer;">\n        </span>',
+    template: '<span>\n        <img @load=\'loaded=true\' :style="cusStyle"  @click="open()" :src="src" alt="" height="96px" style="cursor: pointer;">\n        </span>',
     data: function data() {
         return {
             loaded: false
@@ -2021,6 +2028,17 @@ var picture = {
     computed: {
         src: function src() {
             return this.rowData[this.field];
+        },
+        cusStyle: function cusStyle() {
+            if (!this.loaded) {
+                return {
+                    visibility: 'hidden'
+                };
+            } else {
+                return {
+                    visibility: 'visible'
+                };
+            }
         }
     },
     methods: {
