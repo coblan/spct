@@ -37,7 +37,7 @@ class PcMenu(BaseEngine):
                 {'label':_('Help'),'url':page('maindb.TbQa'), 'visible': can_touch(TbQa, crt_user),},
                 {'label':_('Activity'),'url':page('maindb.TBActive'), 'visible': can_touch(TbActivity, crt_user),},
                 {'label':_('AppResource'),'url':page('AppResource'), 'visible': can_touch(TbAppresource, crt_user),},
-                 {'label':_('Teams'),'url':page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user),},
+                 
                 ]},  
             
             
@@ -64,6 +64,7 @@ class PcMenu(BaseEngine):
                 {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
                 {'label':_('联赛'),'url':page('match.league'), 'visible': can_touch(TbTournament, crt_user)},
                 #{'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
+                {'label':_('Teams'),'url':page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user),},
                         ]}, 
             
             {'label':_('RiskControl'),'icon':fa('fa-lock'),'visible':True,
