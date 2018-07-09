@@ -177,7 +177,7 @@ def get_special_bet_value(matchid):
             }            
         )
 
-    for odd in TbOdds.objects.filter(match_id=matchid,status=1,oddstype__enabled=1,oddstype__oddstypegroup__enabled=1)\
+    for odd in TbOdds.objects.filter(match_id=matchid,status=1,oddstype__status=1,oddstype__oddstypegroup__enabled=1)\
         .values('oddstype__oddstypenamezh','oddstype__oddstypegroup','specialbetvalue'):
         #print(odd.specialbetvalue)
         if odd['specialbetvalue'] !='':

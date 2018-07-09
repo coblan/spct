@@ -799,8 +799,9 @@ class TbOddstypes(models.Model):
     outcomedesc = models.CharField(db_column='OutcomeDesc', max_length=200)  # Field name made lowercase.
     status = models.IntegerField(db_column='Status')  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort', blank=True, null=True)  # Field name made lowercase.
-    enabled = models.IntegerField(db_column='Enabled', blank=True, null=True)  # Field name made lowercase.
-
+    #enabled = models.IntegerField(db_column='Enabled', blank=True, null=True)  # Field name made lowercase.
+    source = models.IntegerField(db_column='Source')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_OddsTypes'
