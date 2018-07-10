@@ -8,6 +8,8 @@ from django.utils.timezone import datetime
 import time
 import requests
 from maindb.mongoInstance import updateMatch
+from maindb.rabbitmq_instance import closeHandicap
+import json
 
 class MatchsPage(TablePage):
     template='jb_admin/table.html'
@@ -178,7 +180,8 @@ def get_special_bet_value(matchid):
         )
 
     for odd in TbOdds.objects.filter(match_id=matchid,status=1,oddstype__status=1,oddstype__oddstypegroup__enabled=1)\
-        .values('oddstype__oddstypenamezh','oddstype__oddstypegroup','specialbetvalue'):
+        .values('oddstype__oddstypenamezh','oddstype__oddstypegroup','specialbetvalue',
+                'handicapkey', 'oddstype__oddstypeid', 'oddstype__oddstypegroup__periodtype'):
         #print(odd.specialbetvalue)
         if odd['specialbetvalue'] !='':
             name = "%s %s"%(odd['oddstype__oddstypenamezh'] ,odd['specialbetvalue'])
@@ -187,10 +190,28 @@ def get_special_bet_value(matchid):
                    'name':name,
                    'oddstypegroup':odd['oddstype__oddstypegroup'],
                    'specialbetvalue':odd['specialbetvalue'],
-                   'opened':True
+                   'opened':True, 
+                   'Handicapkey': odd['handicapkey'],
+                   'BetTypeId': odd['oddstype__oddstypeid'],
+                   'PeriodType': odd['oddstype__oddstypegroup__periodtype'],
                 }            
             )  
-
+    
+    # 把 以前操作过的 spvalue 加进来。因为这时通过tbOdds 已经查不到这些 sp value了
+    for switch in TbMatchesoddsswitch.objects.filter(matchid = matchid, types = 3):
+        name = "%s_%s"%(switch.oddstypegroup.oddstypenamezh, switch.specialbetvalue )
+        specialbetvalue.append(
+            {
+               'name':name,
+               'oddstypegroup': switch.oddstypegroup_id,
+               'specialbetvalue':switch.specialbetvalue,
+               'opened':switch.status == 0, 
+               'Handicapkey': switch.handicapkey,
+               'BetTypeId': switch.bettypeid,
+               'PeriodType': switch.periodtype,
+            }            
+        )         
+    
     # 去重
     tmp_dc ={}
     tmp_ls=[]    
@@ -224,34 +245,93 @@ def get_special_bet_value(matchid):
 
 
 def save_special_bet_value_proc(matchid, match_opened,oddstype,specialbetvalue):
-    TbMatchesoddsswitch.objects.filter(matchid=matchid,status=1).delete()
-  
+    """
+    存储封盘操作
+    """
+    #TbMatchesoddsswitch.objects.filter(matchid=matchid,status=1).delete()
+    batchOperationSwitch = []
+    
+    matchSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid,types=1,  defaults = { 'status': 0})
+
     if not match_opened:
-        TbMatchesoddsswitch.objects.create(matchid=matchid,types=1,status=1)
+        if matchSwitch.status == 0:
+            matchSwitch.status = 1
+            matchSwitch.save()
+            batchOperationSwitch.append(matchSwitch)
+        #obj, created = TbMatchesoddsswitch.objects.update_or_create(matchid=matchid,types=1, defaults = { 'status': 1})
     else:
+        if matchSwitch.status == 1:
+            matchSwitch.status = 0
+            matchSwitch.save()  
+            batchOperationSwitch.append(matchSwitch)
+            
         for odtp in oddstype:
+            playMethod, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid,types=2,oddstypegroup_id=odtp['oddstypegroup'], defaults = { 'status': 0})
+            
             if not odtp['opened']:
-                TbMatchesoddsswitch.objects.create(matchid=matchid,types=2,status=1,oddstypegroup_id=odtp['oddstypegroup'])
-        
+
+                if playMethod.status == 0:
+                    playMethod.status = 1
+                    playMethod.save()
+                    batchOperationSwitch.append(playMethod)
+            else:
+                if playMethod.status == 1:
+                    playMethod.status = 0
+                    playMethod.save()
+                    batchOperationSwitch.append(playMethod)                    
+   
+                
         for spbt in specialbetvalue:
-            if not spbt['opened']:
-                oddstypegroup = spbt['oddstypegroup']
-                par_odd=None
-                for i in oddstype:
-                    if oddstypegroup == i['oddstypegroup']:
-                        par_odd= i
-                        break
-                if par_odd['opened']:
-                    TbMatchesoddsswitch.objects.create(matchid=matchid,types=3,status=1,
-                                                       oddstypegroup_id=par_odd['oddstypegroup'],
-                                                       specialbetvalue=spbt['specialbetvalue'])
+            oddstypegroup = spbt['oddstypegroup']
+            par_odd=None
+            for i in oddstype:
+                if oddstypegroup == i['oddstypegroup']:
+                    par_odd= i
+                    break            
+            spSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid,types=3,
+                                               oddstypegroup_id=par_odd['oddstypegroup'],
+                                               bettypeid = spbt['BetTypeId'], 
+                                               periodtype = spbt['PeriodType'], 
+                                               handicapkey = spbt['Handicapkey'], 
+                                               specialbetvalue=spbt['specialbetvalue'], defaults = { 'status': 0}) 
+            if par_odd['opened']:
+                if not spbt['opened'] :
+                    if spSwitch.status == 0:
+                        spSwitch.status = 1
+                        spSwitch.save()
+                        batchOperationSwitch.append(spSwitch)
+                else:
+                    if spSwitch.status == 1:
+                        spSwitch.status = 0
+                        spSwitch.save()
+                        batchOperationSwitch.append(spSwitch)                        
+                    #TbMatchesoddsswitch.objects.create(matchid=matchid,types=3,status=1,
+                                                       #oddstypegroup_id=par_odd['oddstypegroup'],
+                                                       #specialbetvalue=spbt['specialbetvalue'])
+    ls = []
+    for switch in batchOperationSwitch:
+        ls.append({
+            'MatchID': switch.matchid,
+            'Types': switch.types,
+            'OddsTypeGroup': switch.oddstypegroup_id,
+            'SpecialBetValue': switch.specialbetvalue,
+            'Status': switch.status,
+            'BetTypeId': switch.bettypeid,
+            'PeriodType': switch.periodtype,
+            'Handicapkey': switch.handicapkey,
+        })
+    closeHandicap(json.dumps(ls))
+    
     # 请求service，关闭盘口
     match = TbMatches.objects.get(matchid=matchid)
     msg = ['TbMatchesoddsswitch操作成功']
-    if match.livebet==1:
-        url = 'http://192.168.40.103:9001/Match/Messages'
-        rt = requests.post(url,data={'EventName':'oddtypesChanged','MatchID':matchid})
-        msg.append('已经滚球，请求service封盘，返回结果为:%s'%rt.content.decode('utf-8'))
+    
+    
+    
+    #if match.livebet == 1:
+        #url = 'http://192.168.40.103:9001/Match/Messages'
+        #rt = requests.post(url,data={'EventName':'oddtypesChanged','MatchID':matchid})
+        #msg.append('已经滚球，请求service封盘，返回结果为:%s'%rt.text)
     
     return {'status':'success','msg':msg}
 

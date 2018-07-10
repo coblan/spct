@@ -43,7 +43,7 @@ def produce_match_outcome(row):
     }    
     
     rt = requests.post(url,data=data)
-    print(rt.text)
+    #print(rt.text)
     return json.loads( rt.text )
     
 def update_activity_file():

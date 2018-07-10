@@ -1,0 +1,51 @@
+from elasticsearch import Elasticsearch
+import logging
+import socket
+import datetime
+
+hostName = socket.gethostname()
+
+es = Elasticsearch('http://192.168.40.137:9200')
+
+_index_mappings = {
+  "mappings": {
+    "user": { 
+      "properties": { 
+        "@timestamp":    { "type": "date"  }, 
+        "level":     { "type": "text"  }, 
+        "host": {"type": "text"},
+        "content":      { "type": "text" }, 
+      }
+    }
+
+  }
+}
+
+if es.indices.exists(index='adminbackend') is not True:
+    res = es.indices.create(index='adminbackend', body=_index_mappings) 
+    print(res)
+
+#res = es.index('adminBackend', 'user', body = {'title': 'jjj', 'name': 'ppp', 'age': 18,})
+#print(res)
+
+class EsHandler(logging.Handler):
+    #def __init__(self, level=NOTSET): 
+        #self.
+    
+    def emit(self, record): 
+        dc = {
+            '@timestamp': datetime.datetime.now(),
+            'level': record.levelname,
+            'host': hostName,
+            'content': record.message,
+        }
+        try:
+            res = es.index('adminbackend', 'user', body = dc)
+            #print(res)
+        except Exception as e:
+            pass
+        
+        #print(record)
+    
+
+
