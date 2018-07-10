@@ -91,7 +91,7 @@ APP_PKG_ACCESS_URL='http://103.246.219.202:9004/static'
 
 MONGO_SERVER ="mongodb://192.168.40.104:27017,192.168.40.104:27018,192.168.40.104:27019/?replicaSet=jingbo;slaveok=true"
 
-RABBITMQ = '192.168.40.116:5672'
+RABBITMQ = '192.168.40.116'
 
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
