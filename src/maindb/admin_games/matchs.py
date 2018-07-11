@@ -184,16 +184,17 @@ def get_special_bet_value(matchid):
                #'oddsid':odd.oddstype.oddsid,
                'oddstypegroup':odtp.oddstypegroup,
                #'oddstypeid':odd.oddstype.oddstypeid,
-               'opened':True
+               'opened':True, 
+               'sort': odtp.sort,
             }            
         )
 
     for odd in TbOdds.objects.filter(match_id=matchid,status=1,oddstype__status=1,oddstype__oddstypegroup__enabled=1)\
-        .values('oddstype__oddstypenamezh','oddstype__oddstypegroup','specialbetvalue',
+        .values('oddstype__oddstypegroup__oddstypenamezh','oddstype__oddstypegroup','specialbetvalue',
                 'handicapkey', 'oddstype__oddstypeid', 'oddstype__oddstypegroup__periodtype'):
         #print(odd.specialbetvalue)
         if odd['specialbetvalue'] !='':
-            name = "%s %s"%(odd['oddstype__oddstypenamezh'] ,odd['specialbetvalue'])
+            name = "%s %s"%(odd['oddstype__oddstypegroup__oddstypenamezh'] ,odd['specialbetvalue'])
             specialbetvalue.append(
                 {
                    'name':name,
@@ -208,7 +209,7 @@ def get_special_bet_value(matchid):
     
     # 把 以前操作过的 spvalue 加进来。因为这时通过tbOdds 已经查不到这些 sp value了
     for switch in TbMatchesoddsswitch.objects.filter(matchid = matchid, types = 3):
-        name = "%s_%s"%(switch.oddstypegroup.oddstypenamezh, switch.specialbetvalue )
+        name = "%s %s"%(switch.oddstypegroup.oddstypenamezh, switch.specialbetvalue )
         specialbetvalue.append(
             {
                'name':name,

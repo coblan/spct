@@ -44,7 +44,7 @@ var com_tab_special_bet_value={
                 </div>
             </div>
             <div class="box">
-                <div v-for="spbet in normed_specailbetvalue">
+                <div v-for="spbet in normed_specailbetvalue" :class="spbet.cls">
                     <el-switch
                           v-model="spbet.opened"
                           active-color="#13ce66"
@@ -78,7 +78,7 @@ var com_tab_special_bet_value={
             if(!this.match_opened){
                 return []
             }else{
-                return ex.sortOrder(this.oddstype,'name')
+                return ex.sortOrder(this.oddstype,'sort')
             }
         },
         normed_specailbetvalue:function(){
@@ -88,10 +88,24 @@ var com_tab_special_bet_value={
             var self=this
             var ss = ex.filter(this.specialbetvalue,function(bet){
                 var oddtyps = ex.findone(self.oddstype,{oddstypegroup:bet.oddstypegroup})
+                bet.sort=oddtyps.sort
                 return oddtyps.opened
             })
+            var ss = ex.sortOrder(ss,'name')
+            var ss = ex.sortOrder(ss,'sort')
 
-            return ex.sortOrder(ss,'name')
+            var crt=''
+            var cls='oven'
+            ex.each(ss,function(bet){
+                var name =bet.name.split(' ')[0]
+                if(name !=crt){
+                    crt=name
+                    cls = cls=='oven'?'even':'oven'
+                }
+                bet.cls=cls
+            })
+
+            return ss
         }
     },
     methods:{
