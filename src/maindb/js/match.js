@@ -152,6 +152,14 @@ var match_logic = {
                 ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
                     cfg.hide_load(2000)
                 })
+            },
+            closeHandicap:function(){
+                if(self.selected.length !=1){
+                    cfg.showMsg('请选择一条记录')
+                    return
+                }
+                self.op_funs.switch_to_tab({tab_name:'special_bet_value',row:self.selected[0]})
+
             }
         })
     },

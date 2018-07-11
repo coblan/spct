@@ -7,7 +7,7 @@ from helpers.director.base_data import director
 from django.utils.timezone import datetime
 import time
 import requests
-from maindb.mongoInstance import updateMatch
+from maindb.mongoInstance import updateMatchMongo
 from maindb.rabbitmq_instance import closeHandicap
 import json
 
@@ -20,11 +20,12 @@ class MatchsPage(TablePage):
     class tableCls(ModelTable):
         model = TbMatches
         exclude=[]
-        fields_sort=['matchid','matchdate','tournamentzh','team1zh','team2zh','matchscore','winner','statuscode','roundinfo',
-                     'isrecommend','livebet', 'ishidden','categoryid','currentperiodstart']
+        fields_sort=['matchid','matchdate','tournamentzh','team1zh','team2zh','matchscore','winner','statuscode',
+                     'isrecommend','livebet', 'ishidden',]
+        pop_edit_field = 'matchid'
         class filters(RowFilter):
             range_fields=['matchdate']
-            names=['isrecommend','livebet']
+            names=['isrecommend','livebet', 'statuscode']
         class search(RowSearch):
             names = ['matchid', 'team1zh', 'team2zh']
         class sort(RowSort):
@@ -81,6 +82,8 @@ class MatchsPage(TablePage):
                 {'fun':'show_match','editor':'com-op-btn','label':'开启'},
                 {'fun':'hide_match','editor':'com-op-btn','label':'关闭'},
                 
+                {'fun':'closeHandicap','editor':'com-op-btn','label':'封盘'},
+                
             ]
             return ops
         
@@ -103,9 +106,9 @@ class MatchsPage(TablePage):
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])  
-            if head['name'] == 'matchid':
-                head['editor'] = 'com-table-switch-to-tab'
-                head['tab_name']='special_bet_value' 
+            #if head['name'] == 'matchid':
+                #head['editor'] = 'com-table-switch-to-tab'
+                #head['tab_name']='special_bet_value' 
                
             return head
         
@@ -140,7 +143,13 @@ class MatchForm(ModelFields):
     class Meta:
         model=TbMatches
         exclude=[]
- 
+    field_sort = ['matchid','team1zh', 'team2zh']
+    
+    def dict_head(self, head): 
+        if head['name'] == 'matchid':
+            head['readonly'] = True
+        return head
+    
     def save_form(self): 
         super().save_form()
         inst = self.instance
@@ -150,7 +159,7 @@ class MatchForm(ModelFields):
            'IsHidden': inst.ishidden,
            'LiveBet': inst.livebet,
         }
-        updateMatch(dc)
+        updateMatchMongo(dc)
     
     
     #def clean(self):
