@@ -173,7 +173,12 @@ def get_special_bet_value(matchid):
     """
     获取封盘状态数据
     """
-    match_opened=True
+    try:
+        TbMatchesoddsswitch.objects.get(matchid=matchid,status=1,oddstypegroup_id = 0)
+        match_opened= False
+    except:
+        match_opened=True
+        
     oddstype=[]
     specialbetvalue=[]
     
@@ -233,11 +238,11 @@ def get_special_bet_value(matchid):
     specialbetvalue=tmp_ls 
     
     for oddsswitch in TbMatchesoddsswitch.objects.select_related('oddstypegroup').filter(matchid=matchid,status=1,oddstypegroup__enabled=1):
-        # 1 封盘 比赛
-        if oddsswitch.types==1:
-            match_opened =False
+        # 1 封盘 比赛 这个 OddsTypeGroup =0 所以这里筛选条件里面没有它
+        #if oddsswitch.types==1:
+            #match_opened =False
         # 2 封盘 玩法
-        elif oddsswitch.types ==2:
+        if oddsswitch.types ==2:
             for i in oddstype:
                 if i['oddstypegroup'] == oddsswitch.oddstypegroup_id:
                     i['opened']=False
