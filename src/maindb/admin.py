@@ -12,6 +12,7 @@ from .admin_games import admin
 from .money import admin
 from .marketing import admin
 from .report import admin
+from .admin_basic_data import admin_oddtypegroup
 
 
 #from .banner_admin import BannerPage

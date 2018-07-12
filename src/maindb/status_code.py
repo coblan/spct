@@ -37,4 +37,9 @@ TEAM_STATUS = (
     (1, '人工')
 )
 
+periodtype_CHOICE = (
+    (0, '全场'), 
+    (1, '半场')
+)
+
 

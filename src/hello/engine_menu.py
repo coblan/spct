@@ -40,6 +40,11 @@ class PcMenu(BaseEngine):
                  
                 ]},  
             
+            {'label':'基础资料','icon':fa('fa-book'),'visible':True,
+            'submenu':[
+                {'label':_('oddtypegroup'),'url':page('maindb.TbOddstypeGroupPage'), 'visible': can_touch(TbOddstypegroup, crt_user),},
+    
+                ]}, 
             
             {'label':_('Member'),'icon':fa('fa-users'),'visible':True,
             'submenu':[

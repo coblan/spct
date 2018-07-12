@@ -848,8 +848,9 @@ class TbOddstypegroup(models.Model):
     oddstypenamezh = models.CharField(db_column='OddsTypeNameZH', max_length=100, blank=True, null=True)  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
     enabled = models.IntegerField(db_column='Enabled')  # Field name made lowercase.
-    periodtype = models.IntegerField(db_column='PeriodType', blank=True, null=True)  # Field name made lowercase.
-    
+    periodtype = models.IntegerField(db_column='PeriodType', blank=True, null=True, verbose_name= '半/全场', choices= periodtype_CHOICE)  # Field name made lowercase.
+    bettype = models.IntegerField(db_column='BetType')  # Field name made lowercase.
+    spread = models.DecimalField(db_column='Spread', max_digits=18, decimal_places=4)  # Field name made lowercase.    
 
     class Meta:
         managed = False
