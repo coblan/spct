@@ -596,7 +596,7 @@ class TbMatches(models.Model):
     weights = CusDecimalField(db_column='Weights', max_digits=18, decimal_places=2)  # Field name made lowercase.
     uniquetournamentid = models.BigIntegerField(db_column='UniqueTournamentId')  # Field name made lowercase.
     
-    period1score = models.CharField(db_column='Period1Score', max_length=20, blank = True)  # Field name made lowercase.
+    period1score = models.CharField(db_column='Period1Score', max_length=20, blank = True, verbose_name = '半场比分')  # Field name made lowercase.
     eventid = models.CharField(db_column='EventID', unique=True, max_length=50, blank=True, null=True)  # Field name made lowercase.
     tournamenten = models.CharField(db_column='TournamentEN', max_length=100, blank=True, null=True)  # Field name made lowercase.
     team1en = models.CharField(db_column='Team1EN', max_length=100, blank=True, null=True)  # Field name made lowercase.
