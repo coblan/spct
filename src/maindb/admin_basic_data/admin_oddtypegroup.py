@@ -14,7 +14,7 @@ class TbOddstypeGroupPage(TablePage):
     class tableCls(ModelTable):
         model = TbOddstypegroup
         exclude = []
-        fields_sort = ['oddstypenamezh', 'periodtype', 'spread']
+        fields_sort = ['bettype','oddstypenamezh', 'periodtype',  'spread']
         pop_edit_field = 'oddstypenamezh'
         
         def inn_filter(self, query): 
@@ -35,8 +35,8 @@ class TbOddstypeGroupForm(ModelFields):
     class Meta:
         model = TbOddstypegroup
         exclude = []
-    readonly = ['oddstypenamezh', 'periodtype']
-    field_sort = ['oddstypenamezh', 'periodtype', 'spread']
+    readonly = ['bettype','oddstypenamezh', 'periodtype']
+    field_sort = ['bettype','oddstypenamezh', 'periodtype', 'spread']
     
     def dict_head(self, head): 
         if head['name'] == 'spread':

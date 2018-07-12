@@ -56,6 +56,8 @@ class AppPackageForm(ModelFields):
                 'accept':'.apk,.ipa',
                 'upload_url':reverse('app_pkg_upload')
             }
+        if head['name'] == 'description':
+            head['editor'] = 'blocktext'
             
         return head
 
