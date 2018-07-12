@@ -33,7 +33,7 @@ class PcMenu(BaseEngine):
                 {'label':_('Banner'),'url':page('TbBanner'), 'visible': can_touch(TbBanner, crt_user) },
                 {'label':_('App Package'),'url':page('maindb.TbAppversion'), 'visible': can_touch(TbAppversion, crt_user),},
                 {'label':_('Notice'),'url':page('maindb.TbNotice'), 'visible': can_touch(TbNotice, crt_user),},
-                {'label':_('Currency'),'url':page('maindb.TbCurrency'), 'visible': can_touch(TbCurrency, crt_user)},
+                
                 {'label':_('Help'),'url':page('maindb.TbQa'), 'visible': can_touch(TbQa, crt_user),},
                 {'label':_('Activity'),'url':page('maindb.TBActive'), 'visible': can_touch(TbActivity, crt_user),},
                 {'label':_('AppResource'),'url':page('AppResource'), 'visible': can_touch(TbAppresource, crt_user),},
@@ -42,8 +42,10 @@ class PcMenu(BaseEngine):
             
             {'label':'基础资料','icon':fa('fa-book'),'visible':True,
             'submenu':[
-                {'label':_('oddtypegroup'),'url':page('maindb.TbOddstypeGroupPage'), 'visible': can_touch(TbOddstypegroup, crt_user),},
-    
+                {'label':_('水位设置'),'url':page('maindb.TbOddstypeGroupPage'), 'visible': can_touch(TbOddstypegroup, crt_user),},
+                {'label':_('Currency'),'url':page('maindb.TbCurrency'), 'visible': can_touch(TbCurrency, crt_user)},
+                {'label':_('联赛'),'url':page('match.league'), 'visible': can_touch(TbTournament, crt_user)},
+                {'label':_('Teams'),'url':page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user),},
                 ]}, 
             
             {'label':_('Member'),'icon':fa('fa-users'),'visible':True,
@@ -67,9 +69,7 @@ class PcMenu(BaseEngine):
                 {'label':_('Tb Match'),'url':page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user),},
                 {'label':_('View TicketSingleByMatch'),'url':page('maindb.TicketSingleByMatch'), 'visible': can_touch(TbMatches, crt_user),},
                 {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
-                {'label':_('联赛'),'url':page('match.league'), 'visible': can_touch(TbTournament, crt_user)},
-                #{'label':'Players','url':page('betradar.Players'),'icon':fa('fa-home')},
-                {'label':_('Teams'),'url':page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user),},
+              
                         ]}, 
             
             {'label':_('RiskControl'),'icon':fa('fa-lock'),'visible':True,
