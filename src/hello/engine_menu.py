@@ -40,11 +40,11 @@ class PcMenu(BaseEngine):
                  
                 ]},  
             
-            {'label':'基础资料','icon':fa('fa-book'),'visible':True,
+            {'label':_('Basic Info'),'icon':fa('fa-book'),'visible':True,
             'submenu':[
-                {'label':_('水位设置'),'url':page('maindb.TbOddstypeGroupPage'), 'visible': can_touch(TbOddstypegroup, crt_user),},
+                {'label':_('OddstypeGroup'),'url':page('maindb.TbOddstypeGroupPage'), 'visible': can_touch(TbOddstypegroup, crt_user),},
                 {'label':_('Currency'),'url':page('maindb.TbCurrency'), 'visible': can_touch(TbCurrency, crt_user)},
-                {'label':_('联赛'),'url':page('match.league'), 'visible': can_touch(TbTournament, crt_user)},
+                {'label':_('league '),'url':page('match.league'), 'visible': can_touch(TbTournament, crt_user)},
                 {'label':_('Teams'),'url':page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user),},
                 ]}, 
             

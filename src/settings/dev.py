@@ -101,17 +101,21 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
             'formatter':'standard',
         },
-        'elk':{
-            'level': 'DEBUG',
+        'elk_warning':{
+            'level': 'ERROR',
             'class': 'hello.log_to_elastic.EsHandler',         
             }, 
+        'elk_info':{
+            'level': 'DEBUG',
+            'class': 'hello.log_to_elastic.EsHandler',         
+            },         
         'console': {
             'level':'DEBUG',
             'class': 'logging.StreamHandler',
             'stream': sys.stdout
             },  
-        'djangoout':{
-            'level': 'DEBUG',
+        'djangoout_warning':{
+            'level': 'ERROR',
             'class': 'logging.handlers.RotatingFileHandler',
             'maxBytes': 1024*1024*5,
             'backupCount':3,
@@ -121,9 +125,19 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'djangoout', 'mail_admins', 'elk'],
+            'handlers': ['console', 'djangoout_warning', 'mail_admins', ],
             'level': 'INFO',
-            },        
+            },
+        'director.sql_op': {
+            'handlers': ['console', ],
+            'level': 'DEBUG',
+            'propagate': True,
+            },
+        'extra.error': {
+            'handlers': ['console', 'djangoout_warning'],
+            'level': 'DEBUG',
+            'propagate': True,            
+            },
         #'django.request': {
             #'handlers': ['rotfile'],
             #'level': 'ERROR',

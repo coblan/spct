@@ -28,7 +28,7 @@ class BannerPage(TablePage):
         
         def dict_head(self, head):
             dc={
-                'title':80,
+                'title':180,
                 'picturename':160,
                 'order':100,
                 'createtime':160,

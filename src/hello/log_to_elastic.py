@@ -3,6 +3,10 @@ import logging
 import socket
 import datetime
 
+import logging
+log = logging.getLogger('extra.error')
+
+
 hostName = socket.gethostname()
 
 es = Elasticsearch('http://192.168.40.137:9200')
@@ -14,7 +18,7 @@ _index_mappings = {
         "@timestamp":    { "type": "date"  }, 
         "level":     { "type": "text"  }, 
         "host": {"type": "text"},
-        "content":      { "type": "text" }, 
+        "message":      { "type": "text" }, 
       }
     }
 
@@ -34,16 +38,16 @@ class EsHandler(logging.Handler):
     
     def emit(self, record): 
         dc = {
-            '@timestamp': datetime.datetime.now(),
+            '@timestamp': datetime.datetime.utcnow(),
             'level': record.levelname,
             'host': hostName,
-            'content': record.message,
+            'message': record.message,
         }
         try:
             res = es.index('adminbackend', 'user', body = dc)
             #print(res)
         except Exception as e:
-            pass
+            log.error('请求adminbackend出现了问题,%s' % s)
         
         #print(record)
     

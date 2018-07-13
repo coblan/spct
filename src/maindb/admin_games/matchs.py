@@ -114,7 +114,8 @@ class MatchsPage(TablePage):
         
         def dict_row(self, inst):
             return {
-                '_matchid_label': '%(home)s VS %(away)s'%{'home':inst.team1zh,'away':inst.team2zh}
+                '_matchid_label': '%(home)s VS %(away)s'%{'home':inst.team1zh,'away':inst.team2zh}, 
+                'matchdate': str(inst.matchdate)[: -3],
             }
         #def get_heads(self):
             #heads = [{'name':'operations',

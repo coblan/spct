@@ -116,9 +116,6 @@
         color: gray;
         pointer-events: none;
     }
-    .main-table .el-tabs__content{
-        height: 95%
-    }
 </style>
 <div id='there' class="flex-v">
 
@@ -138,7 +135,7 @@
 
     {% block tab-content %}
     <div id="tab-wrap"  class="flex-grow" style="position: relative">
-        <div  style="position: absolute;bottom: 0;top: 0;left: 0;right: 0;">
+        <div class="tab-full abs-full" >
             <el-tabs v-if="tabs.length >1" type="border-card"
                      @tab-click="handleClick"
                      style="width: 100%;height: 100%"
