@@ -17,8 +17,7 @@ from . import permit
 
 class PcMenu(BaseEngine):
     url_name='sportcenter'
-    #brand = 'SportsCenter'
-    #mini_brand='SC'
+    title = 'SportsCenter'
     brand = '<img src="/static/images/logo.png" style="height:46px">'
     mini_brand='<img src="/static/images/logo2.png" style="height:46px">'  
     

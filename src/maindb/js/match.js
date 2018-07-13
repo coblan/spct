@@ -159,6 +159,12 @@ var match_logic = {
                     return
                 }
                 self.op_funs.switch_to_tab({tab_name:'special_bet_value',row:self.selected[0]})
+            },
+            change_maxsinglepayout:function(){
+                if(self.selected.length !=1){
+                    cfg.showMsg('请选择一条记录')
+                    return
+                }
 
             }
         })
