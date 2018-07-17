@@ -107,6 +107,8 @@ class MatchsPage(TablePage):
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])  
+            if head['name'] == 'matchdate':
+                head['editor'] = 'com-table-label-shower'
             #if head['name'] == 'matchid':
                 #head['editor'] = 'com-table-switch-to-tab'
                 #head['tab_name']='special_bet_value' 
@@ -116,7 +118,7 @@ class MatchsPage(TablePage):
         def dict_row(self, inst):
             return {
                 '_matchid_label': '%(home)s VS %(away)s'%{'home':inst.team1zh,'away':inst.team2zh}, 
-                'matchdate': str(inst.matchdate)[: -3],
+                '_matchdate_label': str(inst.matchdate)[: -3],
             }
         #def get_heads(self):
             #heads = [{'name':'operations',
