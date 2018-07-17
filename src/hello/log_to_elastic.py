@@ -37,11 +37,14 @@ class EsHandler(logging.Handler):
         #self.
     
     def emit(self, record): 
+        msg =   record.getMessage()
+        if record.levelname == 'ERROR':
+            msg += '\n' + record.exc_text
         dc = {
             '@timestamp': datetime.datetime.utcnow(),
             'level': record.levelname,
             'host': hostName,
-            'message': json.dumps(record.message),
+            'message': msg
         }
         try:
             res = es.index('adminbackend', 'user', body = dc)
