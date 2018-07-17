@@ -89,7 +89,8 @@ BANNER_ACCESS_URL='http://103.246.219.202:9004/static'
 APP_PKG_UPLOAD_URL='http://192.168.40.103:9004/api/upload?folder=package'
 APP_PKG_ACCESS_URL='http://103.246.219.202:9004/static' 
 
-MONGO_SERVER ="mongodb://192.168.40.104:27017,192.168.40.104:27018,192.168.40.104:27019/?replicaSet=jingbo;slaveok=true"
+#MONGO_SERVER ="mongodb://192.168.40.104:27017,192.168.40.104:27018,192.168.40.104:27019/?replicaSet=jingbo;slaveok=true"
+MONGO_SERVER ="mongodb://admin:lishen123@192.168.40.210:27017,192.168.40.211:27017,192.168.40.212:27017/?replicaSet=testrs;slaveok=true"
 
 RABBITMQ = '192.168.40.116'
 
