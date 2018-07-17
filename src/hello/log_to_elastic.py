@@ -2,7 +2,7 @@ from elasticsearch import Elasticsearch
 import logging
 import socket
 import datetime
-
+import json
 import logging
 log = logging.getLogger('extra.error')
 
@@ -41,13 +41,13 @@ class EsHandler(logging.Handler):
             '@timestamp': datetime.datetime.utcnow(),
             'level': record.levelname,
             'host': hostName,
-            'message': record.message,
+            'message': json.dumps(record.message),
         }
         try:
             res = es.index('adminbackend', 'user', body = dc)
             #print(res)
         except Exception as e:
-            log.error('请求adminbackend出现了问题,%s' % s)
+            log.error('请求adminbackend出现了问题,%s' % e)
         
         #print(record)
     
