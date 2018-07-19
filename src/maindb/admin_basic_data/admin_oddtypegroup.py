@@ -10,18 +10,27 @@ class TbOddstypeGroupPage(TablePage):
     
     def get_label(self): 
         return '水位设置'
+    def get_context(self): 
+        ctx = super().get_context()
+        ctx.update({
+            'extra_table_logic': 'oddstypegroup_logic',
+        })
+        return ctx
     
     class tableCls(ModelTable):
         model = TbOddstypegroup
         exclude = []
-        fields_sort = ['bettype','oddstypenamezh', 'periodtype',  'spread']
+        fields_sort = ['bettype','oddstypenamezh', 'periodtype',  'spread', 'enabled']
         pop_edit_field = 'oddstypenamezh'
         
-        def inn_filter(self, query): 
-            return query.filter(enabled = 1)
+        #def inn_filter(self, query): 
+            #return query.filter(enabled = 1)
         
         def get_operation(self): 
-            return []
+            return [
+                {'fun': 'set_enable','label': '启用','editor': 'com-op-btn',}, 
+                {'fun': 'set_disable','label': '禁用','editor': 'com-op-btn',}
+            ]
         
         def dict_head(self, head): 
             dc = {
@@ -30,6 +39,7 @@ class TbOddstypeGroupPage(TablePage):
             if dc.get( head['name'] ):
                 head['width'] = dc.get( head['name'] )
             return head
+    
 
 class TbOddstypeGroupForm(ModelFields):
     class Meta:

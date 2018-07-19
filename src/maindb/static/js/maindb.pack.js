@@ -1484,11 +1484,61 @@ var _com_tab_special_bet_value = __webpack_require__(5);
 
 var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
 
+var _oddstypegroup_logic = __webpack_require__(25);
+
+var oddstypegroup_logic = _interopRequireWildcard(_oddstypegroup_logic);
+
 var _validator_rule = __webpack_require__(10);
 
 var validator = _interopRequireWildcard(_validator_rule);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var oddstypegroup_logic = {
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            set_enable: function set_enable() {
+                if (self.selected.length == 0) {
+                    cfg.showMsg('请选择【一些】记录');
+                    return;
+                }
+                ex.each(self.selected, function (row) {
+                    row.enabled = 1;
+                });
+                var post_data = [{ fun: 'save_rows', rows: self.selected }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    cfg.hide_load(2000);
+                });
+            },
+            set_disable: function set_disable() {
+                if (self.selected.length == 0) {
+                    cfg.showMsg('请选择【一些】记录');
+                    return;
+                }
+                ex.each(self.selected, function (row) {
+                    row.enabled = 0;
+                });
+                var post_data = [{ fun: 'save_rows', rows: self.selected }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    cfg.hide_load(2000);
+                });
+            }
+        });
+    }
+
+};
+
+window.oddstypegroup_logic = oddstypegroup_logic;
 
 /***/ })
 /******/ ]);

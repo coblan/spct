@@ -8,8 +8,9 @@ import * as activity_logic from  './activity.js'
 import * as banner_logic from  './banner.js'
 import * as odds_editor from  './odds.js'
 
-
+//logic
 import * as com_tab_special_bet_value from  './com_tab_special_bet_value.js'
+import * as oddstypegroup_logic from  './oddstypegroup_logic.js'
 
 import * as validator from  './validator_rule.js'
 
