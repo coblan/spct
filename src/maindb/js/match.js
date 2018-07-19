@@ -246,7 +246,7 @@ var produceMatchOutcomePanel={
 
             <tr><td>全场得分</td><td><input type="text" v-model="row.home_score"></td><td><input type="text" v-model="row.away_score"></td></tr>
 
-            <tr><td>角球</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>
+            <!--<tr><td>角球</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>-->
             </table>
         </div>
 

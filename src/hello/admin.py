@@ -24,7 +24,7 @@ from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,Mo
 
 class Home(object):
     template='hello/home.html'
-    def __init__(self,request):
+    def __init__(self,request, engin):
         pass
     def get_context(self):
         return {}

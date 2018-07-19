@@ -820,6 +820,12 @@ var match_logic = {
                     return;
                 }
                 self.op_funs.switch_to_tab({ tab_name: 'special_bet_value', row: self.selected[0] });
+            },
+            change_maxsinglepayout: function change_maxsinglepayout() {
+                if (self.selected.length != 1) {
+                    cfg.showMsg('请选择一条记录');
+                    return;
+                }
             }
         });
     },
@@ -883,7 +889,7 @@ var produceMatchOutcomePanel = {
         }
 
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n\n\n        <div style="width: 40em;margin: auto;">\n        <div style="text-align: center;margin:1em;">\n            <span v-text="row._matchid_label"></span>\n        </div>\n          <table style="display: inline-block;">\n            <tr><td></td> <td >\u4E3B\u961F</td><td>\u5BA2\u961F</td></tr>\n\n             <tr><td>\u534A\u573A\u5F97\u5206</td><td><input type="text" v-model="row.home_half_score"></td><td><input type="text" v-model="row.away_half_score"></td></tr>\n\n            <tr><td>\u5168\u573A\u5F97\u5206</td><td><input type="text" v-model="row.home_score"></td><td><input type="text" v-model="row.away_score"></td></tr>\n\n            <tr><td>\u89D2\u7403</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>\n            </table>\n        </div>\n\n\n        <!--<div class="field-panel msg-hide" >-->\n            <!--<field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>-->\n        <!--</div>-->\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n\n\n        <div style="width: 40em;margin: auto;">\n        <div style="text-align: center;margin:1em;">\n            <span v-text="row._matchid_label"></span>\n        </div>\n          <table style="display: inline-block;">\n            <tr><td></td> <td >\u4E3B\u961F</td><td>\u5BA2\u961F</td></tr>\n\n             <tr><td>\u534A\u573A\u5F97\u5206</td><td><input type="text" v-model="row.home_half_score"></td><td><input type="text" v-model="row.away_half_score"></td></tr>\n\n            <tr><td>\u5168\u573A\u5F97\u5206</td><td><input type="text" v-model="row.home_score"></td><td><input type="text" v-model="row.away_score"></td></tr>\n\n            <!--<tr><td>\u89D2\u7403</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>-->\n            </table>\n        </div>\n\n\n        <!--<div class="field-panel msg-hide" >-->\n            <!--<field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>-->\n        <!--</div>-->\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {

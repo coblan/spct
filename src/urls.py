@@ -21,10 +21,13 @@ from helpers.authuser import urls as authuser_urls
 from hello.engine_menu import PcMenu, ProgramerAdmin
 from django.views.generic import RedirectView 
 from maindb.views import test
+from helpers.authuser.engin_view import AuthEngine
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/',include(authuser_urls)),
-    
+    #url(r'^accounts/',include(authuser_urls)),
+     url(r'^accounts/([\w\.]+)/?$',AuthEngine.as_view(),name=AuthEngine.url_name),
+     
     url(r'^pc/([\w\.]+)/?$',PcMenu.as_view(),name=PcMenu.url_name),
     url(r'^main/',include('maindb.urls')),
     

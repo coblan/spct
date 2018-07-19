@@ -54,7 +54,7 @@ class MatchsPage(TablePage):
                 #{'fun':'close_match','editor':'com-op-a','label':'结束比赛'},
                 {'fun':'manual_end_money',
                  'editor':'com-op-btn',
-                 'label':'产生赛果',
+                 'label':'手动结算',
                  #'disabled':'!only_one_selected',
                  'fields_ctx':{
                       'heads':[{'name':'matchid','label':'比赛','editor':'com-field-label-shower','readonly':True},
@@ -64,10 +64,9 @@ class MatchsPage(TablePage):
                                {'name':'away_score','label':'客队分数','editor':'linetext'},
                                {'name':'away_half_score','label':'客队半场得分','editor':'linetext'},
                                {'name':'away_corner','label':'客队角球','editor':'linetext'},
-                               #{'name':'statuscode','label':'赛事状态','editor':'linetext'},
-                               #{'name':'close_time','label':'结束时间','editor':'com-field-datetime'}
+                       
                                ],
-                      'ops':[{"fun":'produce_match_outcome','label':'请求Service','editor':'com-field-op-btn'},],
+                      'ops':[{"fun":'produce_match_outcome','label':'保存','editor':'com-field-op-btn'},],
                       'extra_mixins':['produce_match_outcome'], 
                       'fieldsPanel': 'produceMatchOutcomePanel',
                  }
