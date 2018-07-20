@@ -14,7 +14,7 @@ class OddsPage(object):
     template = 'maindb/tabs.html'
     extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
 
-    def __init__(self, request): 
+    def __init__(self, request, engin): 
         self.request = request
         self.crt_user = request.user
 

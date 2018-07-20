@@ -1180,12 +1180,19 @@ class TbTicketparlay(models.Model):
     ticket_master = models.ForeignKey(TbTicketmaster,db_column='TicketID', db_constraint=False,verbose_name=_(
         'ticket master'))    
     #ticketid = models.CharField(db_column='TicketID', max_length=20)  # Field name made lowercase.
-    parlay1tid = models.BigIntegerField(db_column='Parlay1Tid',verbose_name='子注单ID1')  # Field name made lowercase.
-    parlay2tid = models.BigIntegerField(db_column='Parlay2Tid',verbose_name='子注单ID2')  # Field name made lowercase.
-    parlay3tid = models.BigIntegerField(db_column='Parlay3Tid',verbose_name='子注单ID3')  # Field name made lowercase.
-    parlay4tid = models.BigIntegerField(db_column='Parlay4Tid',verbose_name='子注单ID4')  # Field name made lowercase.
-    parlay5tid = models.BigIntegerField(db_column='Parlay5Tid',verbose_name='子注单ID5')  # Field name made lowercase.
-    parlay6tid = models.BigIntegerField(db_column='Parlay6Tid',verbose_name='子注单ID6')  # Field name made lowercase.
+    parlay1tid = models.ForeignKey(to= 'TbTicketstake', db_constraint= False, db_column='Parlay1Tid',verbose_name='子注单ID1', related_name= 'Ticketparlay1') 
+    parlay2tid = models.ForeignKey(to= 'TbTicketstake', db_constraint= False, db_column='Parlay2Tid',verbose_name='子注单ID2', related_name= 'Ticketparlay2') 
+    parlay3tid = models.ForeignKey(to= 'TbTicketstake', db_constraint= False, db_column='Parlay3Tid',verbose_name='子注单ID3', related_name= 'Ticketparlay3') 
+    parlay4tid = models.ForeignKey(to= 'TbTicketstake', db_constraint= False, db_column='Parlay4Tid',verbose_name='子注单ID4', related_name= 'Ticketparlay4') 
+    parlay5tid = models.ForeignKey(to= 'TbTicketstake', db_constraint= False, db_column='Parlay5Tid',verbose_name='子注单ID5', related_name= 'Ticketparlay5') 
+    parlay6tid = models.ForeignKey(to= 'TbTicketstake', db_constraint= False, db_column='Parlay6Tid',verbose_name='子注单ID6', related_name= 'Ticketparlay6') 
+    
+    #parlay1tid = models.BigIntegerField(db_column='Parlay1Tid',verbose_name='子注单ID1')  # Field name made lowercase.
+    #parlay2tid = models.BigIntegerField(db_column='Parlay2Tid',verbose_name='子注单ID2')  # Field name made lowercase.
+    #parlay3tid = models.BigIntegerField(db_column='Parlay3Tid',verbose_name='子注单ID3')  # Field name made lowercase.
+    #parlay4tid = models.BigIntegerField(db_column='Parlay4Tid',verbose_name='子注单ID4')  # Field name made lowercase.
+    #parlay5tid = models.BigIntegerField(db_column='Parlay5Tid',verbose_name='子注单ID5')  # Field name made lowercase.
+    #parlay6tid = models.BigIntegerField(db_column='Parlay6Tid',verbose_name='子注单ID6')  # Field name made lowercase.
     odds = CusDecimalField(db_column='Odds',verbose_name='赔率', max_digits=18, decimal_places=2)  # Field name made lowercase.
     stakeamount = CusDecimalField(db_column='StakeAmount',verbose_name='每注金额', max_digits=18, decimal_places=4)  # Field name made lowercase.
     betoutcome = CusDecimalField(db_column='BetOutcome',verbose_name='派彩金额', max_digits=18, decimal_places=4)  # Field name made lowercase.
@@ -1210,7 +1217,7 @@ class TbTicketstake(models.Model):
     #matchid = models.IntegerField(db_column='MatchID',verbose_name='比赛')  # Field name made lowercase.
     dangeroustid = models.BigIntegerField(db_column='DangerousTid')  # Field name made lowercase.
     oddsid = models.BigIntegerField(db_column='OddsID')  # Field name made lowercase.
-    specialbetvalue = models.CharField(db_column='SpecialBetValue',verbose_name='让分', max_length=12)  # Field name made lowercase.
+    specialbetvalue = models.CharField(db_column='SpecialBetValue',verbose_name='盘口', max_length=12)  # Field name made lowercase.
     odds = CusDecimalField(db_column='Odds',verbose_name='赔率', max_digits=18, decimal_places=2)  # Field name made lowercase.
     confirmodds = CusDecimalField(db_column='ConfirmOdds',verbose_name='确认赔率', max_digits=18, decimal_places=2)  # Field name made lowercase.
     realodds = CusDecimalField(db_column='RealOdds',verbose_name='真实赔率', max_digits=18, decimal_places=2)  # Field name made lowercase.

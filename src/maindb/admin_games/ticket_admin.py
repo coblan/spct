@@ -94,7 +94,7 @@ class TicketMasterPage(TablePage):
             def get_query(self,query):
                 if self.q:
                     return query.filter(Q(ticketid__icontains = self.q) | Q(account__icontains = self.q) | \
-                                        Q(tbticketstake__match_id = self.q))
+                                        Q(tbticketstake__match_id = self.q)).distinct()
 
                 else:
                     return query            
@@ -121,19 +121,19 @@ class TicketstakeTable(TicketTabBase):
     """ 子注单 """
     model = TbTicketstake
     exclude=[]
-    fields_sort=['tid', 'matchid', 'match','specialbetvalue','odds','confirmodds','realodds','confirmoddsid_ori',
+    fields_sort=['tournament', 'matchid', 'match','specialbetvalue','odds','confirmodds','realodds','confirmoddsid_ori',
                  'status','createtime','updatetime']
     def getExtraHead(self): 
         return [
-            {'name': 'matchid','label': 'matchid',}
+            {'name': 'matchid','label': 'matchid',}, 
+            {'name': 'tournament','label': 'tournament','width': 120,}
         ]
     def dict_row(self, inst):
         match = inst.match # TbMatches.objects.get(matchid =  inst.matchid)
         return {
             'matchid': match.matchid,
-            'match': '{tournamentzh} {team1zh}VS{team2zh}'.format(tournamentzh=match.tournamentzh,
-                                                                   team1zh=match.team1zh,
-                                                                   team2zh=match.team2zh)
+            'tournament': match.tournamentzh,
+            'match': '{team1zh}VS{team2zh}'.format(team1zh=match.team1zh, team2zh=match.team2zh)
         }
         #return {
             #'matchid':{'label':'{tournamentzh} {team1zh}VS{team2zh}'.format(tournamentzh=match.tournamentzh,
@@ -192,6 +192,29 @@ class TicketparlayTable(TicketTabBase):
             head['width'] =80
     
         return head    
+    
+    def inn_filter(self, query): 
+        return query.filter(ticket_master_id=self.ticketid)  #.select_related('parlay1tid__match', 'parlay2tid__match', 'parlay3tid__match', 'parlay4tid__match', 'parlay5tid__match',  'parlay6tid__match')
+    
+    def dict_row(self, inst): 
+        dc = {}
+        for i in range(1, 7):
+            field_name =  'parlay%stid'%i
+            if getattr(inst, field_name + '_id', 0) != 0:   
+                parlay =  getattr(inst, field_name)
+                dc[field_name] = '{team1zh}VS{team2zh}'.format(team1zh=parlay.match.team1zh, team2zh=parlay.match.team2zh) 
+            else:
+                dc[field_name] = ''
+        return dc
+        #return {
+            #'parlay1tid': '{team1zh}VS{team2zh}'.format(team1zh=inst.parlay1tid.match.team1zh, team2zh=inst.parlay1tid.match.team2zh) ,
+            #'parlay2tid': '{team1zh}VS{team2zh}'.format(team1zh=inst.parlay2tid.match.team1zh, team2zh=inst.parlay2tid.match.team2zh) ,
+            #'parlay3tid': '{team1zh}VS{team2zh}'.format(team1zh=inst.parlay3tid.match.team1zh, team2zh=inst.parlay3tid.match.team2zh) ,
+            #'parlay4tid': '{team1zh}VS{team2zh}'.format(team1zh=inst.parlay1tid.match.team1zh, team2zh=inst.parlay1tid.match.team2zh) ,
+            #'parlay1tid': '{team1zh}VS{team2zh}'.format(team1zh=inst.parlay1tid.match.team1zh, team2zh=inst.parlay1tid.match.team2zh) ,
+            #'parlay1tid': '{team1zh}VS{team2zh}'.format(team1zh=inst.parlay1tid.match.team1zh, team2zh=inst.parlay1tid.match.team2zh) ,
+            #'parlay1tid': '{team1zh}VS{team2zh}'.format(team1zh=inst.parlay1tid.match.team1zh, team2zh=inst.parlay1tid.match.team2zh) ,
+        #}
 
     
 
@@ -225,6 +248,7 @@ director.update({
     'games.TicketparlayTable':TicketparlayTable, 
     
     'games.ticketstake.matchform': MatchForm,
+
     
 })
 
