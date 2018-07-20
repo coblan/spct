@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 24);
+/******/ 	return __webpack_require__(__webpack_require__.s = 25);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -518,7 +518,7 @@ window.banner_logic = banner_logic;
 "use strict";
 
 
-__webpack_require__(22);
+__webpack_require__(23);
 
 var com_tab_special_bet_value = {
     props: ['tab_head', 'par_row'],
@@ -957,45 +957,45 @@ window.notice_logic = notice_logic;
 "use strict";
 
 
-var _turnover = __webpack_require__(19);
+var _turnover = __webpack_require__(20);
 
 var turnover = _interopRequireWildcard(_turnover);
 
-var _multi_line = __webpack_require__(13);
+var _multi_line = __webpack_require__(14);
 
 var multi_line = _interopRequireWildcard(_multi_line);
 
-var _multi_line_edit = __webpack_require__(14);
+var _multi_line_edit = __webpack_require__(15);
 
 var multi_line_edit = _interopRequireWildcard(_multi_line_edit);
 
-var _switch_checkbox = __webpack_require__(18);
+var _switch_checkbox = __webpack_require__(19);
 
 var switch_checkbox = _interopRequireWildcard(_switch_checkbox);
 
-var _plus = __webpack_require__(15);
+var _plus = __webpack_require__(16);
 
 var plus_editor = _interopRequireWildcard(_plus);
 
-var _status = __webpack_require__(17);
+var _status = __webpack_require__(18);
 
 var status_editor = _interopRequireWildcard(_status);
 
-var _specialvalue_turnover = __webpack_require__(16);
+var _specialvalue_turnover = __webpack_require__(17);
 
 var specialvalue_turnover = _interopRequireWildcard(_specialvalue_turnover);
 
-var _favorite = __webpack_require__(12);
+var _favorite = __webpack_require__(13);
 
 var com_favorite = _interopRequireWildcard(_favorite);
 
-var _balance = __webpack_require__(11);
+var _balance = __webpack_require__(12);
 
 var com_balance = _interopRequireWildcard(_balance);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(23);
+__webpack_require__(24);
 
 var ajax_table = {
     props: ['tab_head'], //['heads','row_filters','kw'],
@@ -1095,6 +1095,52 @@ var get_data = {
 "use strict";
 
 
+var oddstypegroup_logic = {
+    mounted: function mounted() {
+        var self = this;
+        ex.assign(this.op_funs, {
+            set_enable: function set_enable() {
+                if (self.selected.length == 0) {
+                    cfg.showMsg('请选择【一些】记录');
+                    return;
+                }
+                ex.each(self.selected, function (row) {
+                    row.enabled = 1;
+                });
+                var post_data = [{ fun: 'save_rows', rows: self.selected }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    cfg.hide_load(2000);
+                });
+            },
+            set_disable: function set_disable() {
+                if (self.selected.length == 0) {
+                    cfg.showMsg('请选择【一些】记录');
+                    return;
+                }
+                ex.each(self.selected, function (row) {
+                    row.enabled = 0;
+                });
+                var post_data = [{ fun: 'save_rows', rows: self.selected }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    cfg.hide_load(2000);
+                });
+            }
+        });
+    }
+
+};
+
+window.oddstypegroup_logic = oddstypegroup_logic;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 $.validator.config({
     rules: {
         two_valid_digit: [/^1$|^0$|^0\.[0-9]{0,2}$/, "请输入两位有效数字"]
@@ -1102,7 +1148,7 @@ $.validator.config({
 });
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1122,7 +1168,7 @@ var bool_shower = {
 Vue.component('com-odds-balance', bool_shower);
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1146,7 +1192,7 @@ var bool_shower = {
 Vue.component('com-odds-favorite', bool_shower);
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1169,7 +1215,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line', odds_multi_line);
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1212,7 +1258,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line-edit', odds_multi_line);
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1238,7 +1284,7 @@ var odds_multi_line = {
 Vue.component('com-odds-plus', odds_multi_line);
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1288,7 +1334,7 @@ var odds_multi_line = {
 Vue.component('com-odds-special-turnover', odds_multi_line);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1329,7 +1375,7 @@ Vue.component('com-odds-status-check-btn', {
 });
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1350,7 +1396,7 @@ var odds_multi_line = {
 Vue.component('com-odds-switch-checkbox', odds_multi_line);
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1366,7 +1412,7 @@ var bool_shower = {
 Vue.component('com-odds-turnover', bool_shower);
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1380,7 +1426,7 @@ exports.push([module.i, ".com_tab_special_bet_value .box {\n  width: 250px;\n  h
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1394,13 +1440,13 @@ exports.push([module.i, ".odds input::-webkit-outer-spin-button,\n.odds input::-
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(20);
+var content = __webpack_require__(21);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1420,13 +1466,13 @@ if(false) {
 }
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(21);
+var content = __webpack_require__(22);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1446,7 +1492,7 @@ if(false) {
 }
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1484,61 +1530,15 @@ var _com_tab_special_bet_value = __webpack_require__(5);
 
 var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
 
-var _oddstypegroup_logic = __webpack_require__(25);
+var _oddstypegroup_logic = __webpack_require__(10);
 
 var oddstypegroup_logic = _interopRequireWildcard(_oddstypegroup_logic);
 
-var _validator_rule = __webpack_require__(10);
+var _validator_rule = __webpack_require__(11);
 
 var validator = _interopRequireWildcard(_validator_rule);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var oddstypegroup_logic = {
-    mounted: function mounted() {
-        var self = this;
-        ex.assign(this.op_funs, {
-            set_enable: function set_enable() {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择【一些】记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.enabled = 1;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-            set_disable: function set_disable() {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择【一些】记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.enabled = 0;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            }
-        });
-    }
-
-};
-
-window.oddstypegroup_logic = oddstypegroup_logic;
 
 /***/ })
 /******/ ]);

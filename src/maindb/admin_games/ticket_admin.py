@@ -6,7 +6,7 @@ from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,Mode
      TabPage,RowSearch,RowSort,RowFilter,model_to_name,director
 from ..models import TbTicketmaster,TbTicketstake,TbTicketparlay,TbMatches
 from ..status_code import *
-
+from django.db.models import Q,fields
 
 class TicketMasterPage(TablePage):
     template='jb_admin/table.html' #'maindb/table_ajax_tab.html'
@@ -67,7 +67,7 @@ class TicketMasterPage(TablePage):
             else:
                 head['width'] =80
                 
-            if head['name'] == 'account':
+            if head['name'] == 'ticketid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name']='ticketstake'  
                 
@@ -79,10 +79,30 @@ class TicketMasterPage(TablePage):
                 #'amount':unicode(inst.amount),
                 #'accounttype': account_type.get(inst.accounttype)
             #}
+        class search(RowSearch):
+            names = ['ticketid', 'account']
+            def get_context(self): 
+                ls=[]
+                for name in self.valid_name:
+                    ls.append(_(self.model._meta.get_field(name).verbose_name) )                
+                dc = {
+                    'search_tip':','.join(ls) + ',matchid',
+                    'editor':'com-search-filter',
+                    'name':'_q'
+                }
+                return dc    
+            def get_query(self,query):
+                if self.q:
+                    return query.filter(Q(ticketid__icontains = self.q) | Q(account__icontains = self.q) | \
+                                        Q(tbticketstake__match_id = self.q))
 
+                else:
+                    return query            
+        
         class filters(RowFilter):
-            range_fields=[{'name':'createtime','type':'date'},
-                          {'name':'settletime','type':'date'}]
+            range_fields = ['createtime']
+            #range_fields=[{'name':'createtime','type':'date'},
+                          #{'name':'settletime','type':'date'}]
             
 
     
@@ -101,22 +121,32 @@ class TicketstakeTable(TicketTabBase):
     """ 子注单 """
     model = TbTicketstake
     exclude=[]
-    fields_sort=['tid','matchid','specialbetvalue','odds','confirmodds','realodds','confirmoddsid_ori',
+    fields_sort=['tid', 'matchid', 'match','specialbetvalue','odds','confirmodds','realodds','confirmoddsid_ori',
                  'status','createtime','updatetime']
+    def getExtraHead(self): 
+        return [
+            {'name': 'matchid','label': 'matchid',}
+        ]
     def dict_row(self, inst):
         match = inst.match # TbMatches.objects.get(matchid =  inst.matchid)
         return {
-            'matchid':{'label':'{tournamentzh} {team1zh}VS{team2zh}'.format(tournamentzh=match.tournamentzh,
+            'matchid': match.matchid,
+            'match': '{tournamentzh} {team1zh}VS{team2zh}'.format(tournamentzh=match.tournamentzh,
                                                                    team1zh=match.team1zh,
-                                                                   team2zh=match.team2zh),
-                       'pk':match.pk
-                    
-                       }
+                                                                   team2zh=match.team2zh)
         }
+        #return {
+            #'matchid':{'label':'{tournamentzh} {team1zh}VS{team2zh}'.format(tournamentzh=match.tournamentzh,
+                                                                   #team1zh=match.team1zh,
+                                                                   #team2zh=match.team2zh),
+                       #'pk':match.pk
+                    
+                       #}
+        #}
     def dict_head(self, head):
         dc={
             'tid':80,
-            'matchid':250,
+            'match':250,
             'specialbetvalue':80,
             'odds':80,
             'confirmodds':80,
@@ -130,11 +160,23 @@ class TicketstakeTable(TicketTabBase):
         if dc.get(head['name']):
             head['width'] =dc.get(head['name'])        
         
-        if head['name']=='matchid':
+        if head['name']=='match':
+            head['label'] = '比赛'
+        if head['name'] == 'matchid':
             head['editor']='com-table-pop-fields'
-            head['fields_heads']= MatchForm(crt_user=self.crt_user).get_heads()
-            head['model_name']=model_to_name(TbMatches)
-            head['ops']=[] #MatchForm(crt_user=self.crt_user).get_operations()
+            head['fields_ctx']=MatchForm(crt_user=self.crt_user).get_head_context()
+            head['after_save']={
+                'fun':'do_nothing'
+                #'fun':'update_or_insert'
+            }              
+            #head['fields_heads']= MatchForm(crt_user=self.crt_user).get_heads()
+            #head['model_name']=model_to_name(TbMatches)
+            head['get_row']={
+                "fun":'get_with_relat_field', 
+                'director_name': 'games.ticketstake.matchform',
+                'relat_field': 'matchid',
+            }            
+            #head['ops']=[] #MatchForm(crt_user=self.crt_user).get_operations()
         return head
     
       
@@ -161,6 +203,9 @@ class MatchForm(ModelFields):
     class Meta:
         model=TbMatches
         exclude=[]
+    def get_operations(self): 
+        return []
+    
     def dict_row(self, inst):
         winner = inst.winner
         if inst.winner==1:
@@ -177,7 +222,9 @@ class MatchForm(ModelFields):
 director.update({
     'games.ticketmaster':TicketMasterPage.tableCls,
     'games.TicketstakeTable':TicketstakeTable,
-    'games.TicketparlayTable':TicketparlayTable
+    'games.TicketparlayTable':TicketparlayTable, 
+    
+    'games.ticketstake.matchform': MatchForm,
     
 })
 

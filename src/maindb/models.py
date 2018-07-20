@@ -1270,13 +1270,14 @@ class TbTickets(models.Model):
 
 
 class TbTournament(models.Model):
-    tournamentid = models.IntegerField(db_column='TournamentID', primary_key=True)  # Field name made lowercase.
+    tournamentid = models.IntegerField(db_column='TournamentID', primary_key=True, verbose_name= '联赛ID')  # Field name made lowercase.
     tournamentname = models.CharField(db_column='TournamentName', max_length=200, verbose_name = '联赛名')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID', verbose_name= '联赛ID')  # Field name made lowercase.
-    issubscribe = models.IntegerField(db_column='IsSubscribe', )  # Field name made lowercase.
-    sort = models.IntegerField(db_column='Sort', blank=True, null=True)  # Field name made lowercase.    
+    issubscribe = models.IntegerField(db_column='IsSubscribe', verbose_name= '已订阅')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort', blank=True, null=True)  # Field name made lowercase. 
+    typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True, verbose_name = '已关闭玩法')  # Field name made lowercase.
 
     class Meta:
         managed = False

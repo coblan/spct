@@ -21,7 +21,7 @@ class MatchsPage(TablePage):
         model = TbMatches
         exclude=[]
         fields_sort=['matchid','tournamentzh','team1zh','team2zh','matchdate','period1score', 'matchscore', 'winner','statuscode',
-                     'isrecommend','livebet', 'ishidden', 'maxsinglepayout']
+                     'isrecommend','livebet', 'ishidden', 'marketstatus']
         pop_edit_field = 'matchid'
         class filters(RowFilter):
             range_fields=['matchdate']
@@ -82,7 +82,7 @@ class MatchsPage(TablePage):
                 {'fun':'hide_match','editor':'com-op-btn','label':'关闭'},
                 
                 {'fun':'closeHandicap','editor':'com-op-btn','label':'封盘'},
-                {'fun': 'change_maxsinglepayout', 'editor': 'com-op-btn','label':'maxsinglepayout'}
+                #{'fun': 'change_maxsinglepayout', 'editor': 'com-op-btn','label':'maxsinglepayout'}
                 
             ]
             return ops
@@ -103,6 +103,7 @@ class MatchsPage(TablePage):
                 'categoryid':80,
                 'currentperiodstart':150,
                 'maxsinglepayout': 120,
+                'marketstatus': 100,
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])  

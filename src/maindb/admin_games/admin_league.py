@@ -1,5 +1,9 @@
-from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, ModelFields, RowSort, RowSearch
-from ..models import TbTournament
+from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, ModelFields, \
+     RowSort, RowSearch, field_map, model_to_name
+from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
+from helpers.director.model_func.field_procs.dotStrArray import DotStrArrayProc
+
+from ..models import TbTournament, TbOddstypegroup
 
 class League(TablePage):
     template = 'jb_admin/table.html'
@@ -8,7 +12,7 @@ class League(TablePage):
     
     class tableCls(ModelTable):
         model = TbTournament
-        exclude = ['categoryid', 'uniquetournamentid', 'issubscribe', 'createtime']
+        exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
         #hide_fields = ['tournamentid']
     
@@ -21,9 +25,14 @@ class League(TablePage):
                 'categoryid': 100,
                 'tournamentname': 250,
                'createtime': 120,
+               'typegroupswitch': 300,
             }
             if head['name'] in dc:
                 head['width'] = dc.get(head['name'])
+                
+            if head['name'] == 'typegroupswitch':
+                
+                head['options'] = [{'value': str(x.oddstypegroup), 'label': x.oddstypenamezh,} for x in TbOddstypegroup.objects.all()]
             return head
         
         def get_operation(self): 
@@ -38,11 +47,21 @@ class League(TablePage):
 
 class LeagueForm(ModelFields):
     readonly = [ 'tournamentid']
+    def dict_head(self, head): 
+        if head['name'] == 'typegroupswitch':
+            head['options'] = [{'value': str(x.oddstypegroup), 'label': x.oddstypenamezh,} for x in TbOddstypegroup.objects.all()]
+        return head
+    
     class Meta:
         model = TbTournament
-        exclude = ['categoryid', 'uniquetournamentid', 'issubscribe', 'createtime']
+        exclude = ['categoryid', 'uniquetournamentid', 'createtime']
     
-    
+
+field_map.update({
+    'maindb.tbtournament.issubscribe': IntBoolProc,
+    'maindb.tbtournament.typegroupswitch': DotStrArrayProc,
+})
+
 
 director.update({
     'match.league': League.tableCls,

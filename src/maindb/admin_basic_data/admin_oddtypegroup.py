@@ -9,7 +9,7 @@ class TbOddstypeGroupPage(TablePage):
     extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
     
     def get_label(self): 
-        return '水位设置'
+        return '玩法设置'
     def get_context(self): 
         ctx = super().get_context()
         ctx.update({
