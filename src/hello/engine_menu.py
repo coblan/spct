@@ -73,6 +73,7 @@ class PcMenu(BaseEngine):
             
             {'label':_('RiskControl'),'icon':fa('fa-lock'),'visible':True,
             'submenu':[
+                {'label':_('最大赔付'),'url':page('sports.limit'), 'visible': can_touch(TbLimit, crt_user),},
                 {'label':_('Tb RC Filter'),'url':page('maindb.TbRcFilter'), 'visible': can_touch(TbRcFilter, crt_user),},
                 {'label':_('Tb RC Level'),'url':page('maindb.TbRcLevel'), 'visible': can_touch(TbRcLevel, crt_user),},
                 {'label':_('Tb RC User'),'url':page('maindb.TbRcUser'), 'visible': can_touch(TbRcUser, crt_user),},

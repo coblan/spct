@@ -535,6 +535,25 @@ class TbLoginlog(models.Model):
         db_table = 'TB_LoginLog'
 
 
+class TbLimit(models.Model):
+    tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    #matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
+    matchid = models.ForeignKey(to= 'TbMatches', db_constraint= False, to_field= 'matchid', db_column='MatchID')  # Field name made lowercase.
+    limittype = models.IntegerField(db_column='LimitType', choices= LIMIT_TYPE)  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
+    accountid = models.ForeignKey(to = 'TbAccount', db_constraint= True, to_field= 'accountid', db_column='AccountID', blank=True, null=True)  # 
+    relationno = models.IntegerField(db_column='RelationNo')  # Field name made lowercase.
+    maxsinglepayout = models.DecimalField(db_column='MaxSinglePayout', max_digits=18, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', blank=True, null=True)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now_add= True, editable=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True, auto_now= True, editable=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Limit'
+
+
 #class TbLoginlog(models.Model):
     #tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     #accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
@@ -608,11 +627,14 @@ class TbMatches(models.Model):
     terminator = models.CharField(db_column='Terminator', max_length=20, blank=True, null=True)  # Field name made lowercase.
     ishidden = models.BooleanField(db_column='IsHidden', default = False, verbose_name = '关闭')  # Field name made lowercase.    
     marketstatus = models.IntegerField(db_column='MarketStatus')  # Field name made lowercase.
-    maxsinglepayout = models.IntegerField(db_column='MaxSinglePayout', blank=True, null=True)  # Field name made lowercase.    
+    #maxsinglepayout = models.IntegerField(db_column='MaxSinglePayout', blank=True, null=True)  # Field name made lowercase.    
     
     class Meta:
         managed = False
         db_table = 'TB_Matches'
+    
+    def __str__(self): 
+        return '[%(matchid)s]%(home)s vs %(away)s' % {'matchid': self.matchid, 'home': self.team1zh, 'away': self.team2zh,}
     
 class TbMatchesoddsswitch(models.Model):
     matchesoddsswitchid = models.AutoField(db_column='MatchesOddsSwitchID', primary_key=True)  # Field name made lowercase.

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 25);
+/******/ 	return __webpack_require__(__webpack_require__.s = 26);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -518,7 +518,7 @@ window.banner_logic = banner_logic;
 "use strict";
 
 
-__webpack_require__(23);
+__webpack_require__(24);
 
 var com_tab_special_bet_value = {
     props: ['tab_head', 'par_row'],
@@ -912,6 +912,26 @@ window.produceMatchOutcomePanel = produceMatchOutcomePanel;
 "use strict";
 
 
+var maxpayout = {
+    mounted: function mounted() {
+        this.heads_cach = this.fields_heads;
+    },
+    computed: {
+        fields_heads: function fields_heads() {
+            return this.heads;
+        }
+    }
+};
+
+window.maxpayout_form_logic = maxpayout;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var notice_logic = {
 
     mounted: function mounted() {
@@ -951,51 +971,51 @@ var notice_logic = {
 window.notice_logic = notice_logic;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _turnover = __webpack_require__(20);
+var _turnover = __webpack_require__(21);
 
 var turnover = _interopRequireWildcard(_turnover);
 
-var _multi_line = __webpack_require__(14);
+var _multi_line = __webpack_require__(15);
 
 var multi_line = _interopRequireWildcard(_multi_line);
 
-var _multi_line_edit = __webpack_require__(15);
+var _multi_line_edit = __webpack_require__(16);
 
 var multi_line_edit = _interopRequireWildcard(_multi_line_edit);
 
-var _switch_checkbox = __webpack_require__(19);
+var _switch_checkbox = __webpack_require__(20);
 
 var switch_checkbox = _interopRequireWildcard(_switch_checkbox);
 
-var _plus = __webpack_require__(16);
+var _plus = __webpack_require__(17);
 
 var plus_editor = _interopRequireWildcard(_plus);
 
-var _status = __webpack_require__(18);
+var _status = __webpack_require__(19);
 
 var status_editor = _interopRequireWildcard(_status);
 
-var _specialvalue_turnover = __webpack_require__(17);
+var _specialvalue_turnover = __webpack_require__(18);
 
 var specialvalue_turnover = _interopRequireWildcard(_specialvalue_turnover);
 
-var _favorite = __webpack_require__(13);
+var _favorite = __webpack_require__(14);
 
 var com_favorite = _interopRequireWildcard(_favorite);
 
-var _balance = __webpack_require__(12);
+var _balance = __webpack_require__(13);
 
 var com_balance = _interopRequireWildcard(_balance);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(24);
+__webpack_require__(25);
 
 var ajax_table = {
     props: ['tab_head'], //['heads','row_filters','kw'],
@@ -1089,7 +1109,7 @@ var get_data = {
 };
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1135,7 +1155,7 @@ var oddstypegroup_logic = {
 window.oddstypegroup_logic = oddstypegroup_logic;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1148,7 +1168,7 @@ $.validator.config({
 });
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1168,7 +1188,7 @@ var bool_shower = {
 Vue.component('com-odds-balance', bool_shower);
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1192,7 +1212,7 @@ var bool_shower = {
 Vue.component('com-odds-favorite', bool_shower);
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1215,7 +1235,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line', odds_multi_line);
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1258,7 +1278,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line-edit', odds_multi_line);
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1284,7 +1304,7 @@ var odds_multi_line = {
 Vue.component('com-odds-plus', odds_multi_line);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1334,7 +1354,7 @@ var odds_multi_line = {
 Vue.component('com-odds-special-turnover', odds_multi_line);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1375,7 +1395,7 @@ Vue.component('com-odds-status-check-btn', {
 });
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1396,7 +1416,7 @@ var odds_multi_line = {
 Vue.component('com-odds-switch-checkbox', odds_multi_line);
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1412,7 +1432,7 @@ var bool_shower = {
 Vue.component('com-odds-turnover', bool_shower);
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1426,7 +1446,7 @@ exports.push([module.i, ".com_tab_special_bet_value .box {\n  width: 250px;\n  h
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1440,13 +1460,13 @@ exports.push([module.i, ".odds input::-webkit-outer-spin-button,\n.odds input::-
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(21);
+var content = __webpack_require__(22);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1466,13 +1486,13 @@ if(false) {
 }
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(22);
+var content = __webpack_require__(23);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1492,7 +1512,7 @@ if(false) {
 }
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1510,7 +1530,7 @@ var _help = __webpack_require__(6);
 
 var help_logic = _interopRequireWildcard(_help);
 
-var _notice = __webpack_require__(8);
+var _notice = __webpack_require__(9);
 
 var notice_logic = _interopRequireWildcard(_notice);
 
@@ -1522,7 +1542,7 @@ var _banner = __webpack_require__(4);
 
 var banner_logic = _interopRequireWildcard(_banner);
 
-var _odds = __webpack_require__(9);
+var _odds = __webpack_require__(10);
 
 var odds_editor = _interopRequireWildcard(_odds);
 
@@ -1530,11 +1550,15 @@ var _com_tab_special_bet_value = __webpack_require__(5);
 
 var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
 
-var _oddstypegroup_logic = __webpack_require__(10);
+var _oddstypegroup_logic = __webpack_require__(11);
 
 var oddstypegroup_logic = _interopRequireWildcard(_oddstypegroup_logic);
 
-var _validator_rule = __webpack_require__(11);
+var _maxpayout = __webpack_require__(8);
+
+var maxpayout = _interopRequireWildcard(_maxpayout);
+
+var _validator_rule = __webpack_require__(12);
 
 var validator = _interopRequireWildcard(_validator_rule);
 

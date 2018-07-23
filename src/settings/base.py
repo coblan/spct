@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     #'betradar',
     'maindb',
     'hello', 
-    'testservice'
+    'testservice', 
 ]
 
 MIDDLEWARE_CLASSES = [

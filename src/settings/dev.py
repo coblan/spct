@@ -127,7 +127,7 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'djangoout_warning', 'mail_admins','elk_info' ],
+            'handlers': ['console', 'djangoout_warning', 'mail_admins' ],
             'level': 'INFO',
             },
         'director.sql_op': {
