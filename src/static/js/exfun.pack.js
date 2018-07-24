@@ -1199,8 +1199,9 @@ var vuetool = exports.vuetool = {
         }
         for (var i = index - 1; i > -1; i--) {
             var mix = self.$options.mixins[i];
-            if (mix[name]) {
-                return mix.apply(self, args);
+            var methods = mix.methods[name];
+            if (methods) {
+                return methods.apply(self, args);
             }
         }
     },
@@ -1208,6 +1209,21 @@ var vuetool = exports.vuetool = {
         var rt = [];
         cusBroadCall(self, fun, kws, rt);
         return rt;
+    },
+    vueExtend: function vueExtend(par, mixins) {
+        var real_par = $.extend({}, par);
+        var orgin_mixins = real_par.mixins;
+        delete real_par.mixins;
+        if (orgin_mixins) {
+            var list = orgin_mixins;
+        } else {
+            var list = [];
+        }
+        list.push(real_par);
+        list = list.concat(mixins);
+        var final_obj = list[list.length - 1];
+        final_obj.mixins = list.slice(0, list.length - 1);
+        return final_obj;
     }
 };
 

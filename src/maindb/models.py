@@ -539,12 +539,12 @@ class TbLimit(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     #matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
     matchid = models.ForeignKey(to= 'TbMatches', db_constraint= False, to_field= 'matchid', db_column='MatchID')  # Field name made lowercase.
-    limittype = models.IntegerField(db_column='LimitType', choices= LIMIT_TYPE)  # Field name made lowercase.
+    limittype = models.IntegerField(db_column='LimitType', choices= LIMIT_TYPE, default= 11)  # Field name made lowercase.
     #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
     accountid = models.ForeignKey(to = 'TbAccount', db_constraint= True, to_field= 'accountid', db_column='AccountID', blank=True, null=True)  # 
-    relationno = models.IntegerField(db_column='RelationNo')  # Field name made lowercase.
-    maxsinglepayout = models.DecimalField(db_column='MaxSinglePayout', max_digits=18, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', blank=True, null=True)  # Field name made lowercase.
+    relationno = models.IntegerField(db_column='RelationNo', verbose_name= '玩法/等级', blank= True, default= 0)  # Field name made lowercase.
+    maxsinglepayout = models.DecimalField(db_column='MaxSinglePayout', max_digits=18, decimal_places=2, null=True, default = 0)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', blank=True, null=True, default= 1, verbose_name= '启用')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now_add= True, editable=True)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True, auto_now= True, editable=True)  # Field name made lowercase.

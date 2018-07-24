@@ -759,21 +759,34 @@ Vue.component('com-field-plain-file', field_file_uploader);
 
 var pop_table_select = {
     props: ['row', 'head'],
-    template: '<div>\n        <span  v-text="label"></span>\n        <span v-if="!head.readonly" class="clickable" @click="open_win"><i class="fa fa-search"></i></span>\n    </div>',
+    template: '<div>\n        <span  v-text="label"></span>\n        <input type="text" v-model="row[head.name]" style="display: none;" :id="\'id_\'+head.name" :name="head.name">\n        <span v-if="!head.readonly" class="clickable" @click="open_win"><i class="fa fa-search"></i></span>\n    </div>',
     computed: {
         label: function label() {
             return this.row['_' + this.head.name + '_label'];
         }
     },
+    mounted: function mounted() {
+        var self = this;
+        var name = this.head.name;
+        //this.validator=$(this.$el).validator({
+        //    fields: {
+        //        name:'required;'
+        //    }
+        //})
+    },
     methods: {
         open_win: function open_win() {
             var self = this;
             pop_table_layer(this.row, this.head.table_ctx, function (foreign_row) {
-
-                self.row[self.head.name] = foreign_row.pk;
-                self.row['_' + self.head.name + '_label'] = foreign_row._label;
+                Vue.set(self.row, self.head.name, foreign_row[self.head.name]);
+                Vue.set(self.row, '_' + self.head.name + '_label', foreign_row._label);
+                //self.row[self.head.name]=foreign_row.pk
+                //self.row['_'+self.head.name+'_label'] = foreign_row._label
             });
         }
+        //isValid:function(){
+        //    return this.validator.isValid()
+        //}
     }
 };
 
@@ -885,8 +898,9 @@ function pop_fields_layer(row, fields_ctx, callback) {
         extra_mixins = ex.map(extra_mixins, function (name) {
             return window[name];
         });
-        var com_pop_field_real = $.extend({}, com_fields);
-        com_pop_field_real.mixins = com_fields.mixins.concat(extra_mixins);
+        //var com_pop_field_real = $.extend({}, com_fields);
+        //com_pop_field_real.mixins = com_fields.mixins.concat(extra_mixins)
+        var com_pop_field_real = ex.vueExtend(com_fields, extra_mixins);
         Vue.component('com-pop-fields-' + com_id, com_pop_field_real);
         window['_vue_com_' + com_id] = true;
     }
@@ -910,52 +924,65 @@ function pop_fields_layer(row, fields_ctx, callback) {
         }
     });
 
-    new Vue({
-        el: '#fields-pop-' + pop_id,
-        data: {
-            row: row,
-            fields_heads: heads,
-            ops: ops,
-            com_id: com_id
-        },
-        mounted: function mounted() {
-            //if(! trigger.head.use_table_row){
-            //    var self=this
-            //    cfg.show_load()
-            //    var dc ={fun:'get_row',model_name:model_name}
-            //    dc[relat_field] = trigger.rowData[relat_field]
-            //    var post_data=[dc]
-            //    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //        self.row = resp.get_row
-            //        cfg.hide_load()
-            //    })
-            //}
+    Vue.nextTick(function () {
 
-        },
-        methods: {
-            on_sub_success: function on_sub_success(event) {
-                // 将新建的row 插入到表格中
-                //if(! old_row.pk) {
-                //    self.rows.splice(0, 0, new_row)
-                //}
-                //if(this.head.use_table_row){
-                //    var old_row = event.old_row
-                //    var new_row=event.new_row
-                //    ex.assign(self.row,new_row)
-                //}else{
-                //    trigger.update_row()
-                //}
-                callback({ name: 'after_save', new_row: event.new_row, old_row: event.old_row });
-                //eventBus.$emit('pop-win-'+pop_id,{name:'after_save',new_row:event.new_row,old_row:event.old_row})
-            }
-            //on_del:function(){
-            //    ex.remove(self.rows,row)
-            //    layer.close(self.opened_layer_indx)
+        new Vue({
+            el: '#fields-pop-' + pop_id,
+            data: {
+                has_heads_adaptor: false,
+                row: row,
+                fields_heads: heads,
+                ops: ops,
+                com_id: com_id
+            },
+            //computed:{
+            //    fields_heads:function(){
+            //        if(this.has_heads_adaptor){
+            //            return this.heads_adaptor(this.heads)
+            //        } else{
+            //            return this.heads
+            //        }
+            //    }
             //},
-        }
-    });
+            mounted: function mounted() {
+                //if(! trigger.head.use_table_row){
+                //    var self=this
+                //    cfg.show_load()
+                //    var dc ={fun:'get_row',model_name:model_name}
+                //    dc[relat_field] = trigger.rowData[relat_field]
+                //    var post_data=[dc]
+                //    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+                //        self.row = resp.get_row
+                //        cfg.hide_load()
+                //    })
+                //}
 
-    eventBus.$emit('openlayer_changed');
+            },
+            methods: {
+                on_sub_success: function on_sub_success(event) {
+                    // 将新建的row 插入到表格中
+                    //if(! old_row.pk) {
+                    //    self.rows.splice(0, 0, new_row)
+                    //}
+                    //if(this.head.use_table_row){
+                    //    var old_row = event.old_row
+                    //    var new_row=event.new_row
+                    //    ex.assign(self.row,new_row)
+                    //}else{
+                    //    trigger.update_row()
+                    //}
+                    callback({ name: 'after_save', new_row: event.new_row, old_row: event.old_row });
+                    //eventBus.$emit('pop-win-'+pop_id,{name:'after_save',new_row:event.new_row,old_row:event.old_row})
+                }
+                //on_del:function(){
+                //    ex.remove(self.rows,row)
+                //    layer.close(self.opened_layer_indx)
+                //},
+            }
+        });
+
+        eventBus.$emit('openlayer_changed');
+    });
 } /*
   * root 层面创建Vue组件，形成弹出框
   * */
@@ -2813,7 +2840,15 @@ Object.defineProperty(exports, "__esModule", {
 var com_pop_field = exports.com_pop_field = {
     props: ['row', 'heads', 'ops'],
     mixins: [mix_fields_data, mix_nice_validator],
-
+    computed: {
+        real_heads: function real_heads() {
+            if (this.dict_heads) {
+                return this.dict_heads;
+            } else {
+                return this.heads;
+            }
+        }
+    },
     methods: {
         after_save: function after_save(new_row) {
             this.$emit('sub_success', { new_row: new_row, old_row: this.row });
@@ -2831,9 +2866,8 @@ var com_pop_field = exports.com_pop_field = {
                 });
             });
         }
-
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div class="field-panel suit" >\n            <field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n        <!--<button @click="save()">\u4FDD\u5B58</button>-->\n        <!--<button @click="del_row()" v-if="row.pk">\u5220\u9664</button>-->\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div class="field-panel suit" >\n            <field  v-for="head in real_heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {
