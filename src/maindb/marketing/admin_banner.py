@@ -12,6 +12,7 @@ import re
 from django.conf import settings
 from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
+from ..redisInstance import redisInst
 #from helpers.director.model_func.field_proc import BaseFieldProc
 
 class BannerPage(TablePage):
@@ -129,6 +130,7 @@ class BannerForm(ModelFields):
         if not self.instance.createuser:
             self.instance.createuser=self.crt_user.pk
             self.instance.save()
+        redisInst.delete('App:Cache:index:banners')
         return self.instance
 
 #class PicturenameProc(BaseFieldProc):

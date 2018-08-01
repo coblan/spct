@@ -59,7 +59,7 @@ var match_logic = {
                     //statuscode:crt_row.statuscode
                 }
                 pop_fields_layer(row,kws.fields_ctx,function(e){
-                    alert(e.new_row)
+                    alert(new_row)
                 })
             },
             jie_suan_pai_cai:function(kws){
@@ -214,7 +214,7 @@ var produceMatchOutcomePanel={
 
         methods:{
             after_save:function(new_row){
-                this.$emit('sub_success',{new_row:new_row,old_row:this.row})
+                this.$emit('submit-success',new_row) //{new_row:new_row,old_row:this.row})
                 ex.assign(this.row,new_row)
             },
             del_row:function(){

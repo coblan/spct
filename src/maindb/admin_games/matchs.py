@@ -10,6 +10,7 @@ import requests
 from maindb.mongoInstance import updateMatchMongo
 from maindb.rabbitmq_instance import closeHandicap
 import json
+from ..redisInstance import redisInst
 
 class MatchsPage(TablePage):
     template='jb_admin/table.html'
@@ -164,6 +165,9 @@ class MatchForm(ModelFields):
            'LiveBet': inst.livebet,
         }
         updateMatchMongo(dc)
+        
+        if 'isrecommend' in self.changed_data:
+            redisInst.delete('App:Cache:index:matches')
     
     
     #def clean(self):

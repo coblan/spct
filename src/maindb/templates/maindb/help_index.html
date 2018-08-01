@@ -40,21 +40,24 @@
 
 <style>
     body{
-        background-color: #27282c;
+        background-color: #ededed;
         /*font-size: 1.5em;*/
     }
     .section-title{
-        color: #72727e;
+        color: #333;
         /*border-left: 2px solid #72727e;*/
-        margin: 0.9em;
-        font-size: 1.2em;
+        margin: 0.7em 10px;
+        font-size: 1.4em;
     }
     .section-content{
-        background-color: #2b2e37;
+        font-size: 1.1em;
+        background-color: #fefefe;
         padding-left: 0;
         margin-left: 1em;
         margin: 0;
-        padding-left: 20px;
+        /*padding-left: 5px;*/
+        margin: 0 10px;
+        border-radius: 0.5em;
     }
 
     .section-content li{
@@ -63,9 +66,10 @@
         padding-bottom: 0.7em;
     }
     .itm-title{
-        color: #dee0ed;
-        margin-left: 5px;
-        border-bottom: 2px solid #34343e;
+        color: #333;
+        /*margin-left: 5px;*/
+        padding-left: 10px;
+        border-bottom: 1px solid #f8f8f8;
         position: relative;
         display: flex;
         align-items:center;
@@ -76,7 +80,7 @@
     .right-arrow{
         padding-right: 1em;
         font-size: 1em;
-        color: #72727e;
+        color: #ebebeb;
     }
 
 
@@ -109,13 +113,13 @@
     <div v-for="sec in section_list">
 
         <div class="section-title">
-            <span style="border-left: 3px solid #72727e;margin-right: 0.7em;"> </span>
+            <span style="margin-right: 0.2em;"> </span>
             <span  v-text="sec.title"></span>
         </div>
 
         <ul class="section-content">
             <li class="itm-title" v-for="itm in sec.items" @click="goto(itm.url)">
-                <div style="flex-grow:10;font-size: 1em;color: #e6e8f6">
+                <div style="flex-grow:10;font-size: 1em;">
                     <span v-text="itm.title"></span>
                 </div>
 

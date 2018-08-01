@@ -29,39 +29,38 @@
 
 <style>
     body{
-        background-color: #27282c;
+        background-color: #fefefe;
         /*font-size: 1.5em;*/
     }
     .section-title{
-        color: #72727e;
+        color: #333;
         /*border-left: 2px solid #72727e;*/
         margin: 0.9em;
         font-size: 1.2em;
     }
     .section-content{
-        background-color: #2b2e37;
+        /*background-color: #fefefe;*/
         padding-left: 0;
-        margin-left: 1em;
-        margin: 0;
-        padding-left: 20px;
+        margin-left: 0.4em;
+        /*padding-left: 20px;*/
     }
 
     .section-content li{
         list-style-type:none;
-        padding-top: 0.7em;
+        padding-top: 0.9em;
         padding-bottom: 0.7em;
     }
     .itm-title{
-        color: #dee0ed;
+        color: #333;
         margin-left: 5px;
-        border-bottom: 2px solid #34343e;
+        border-bottom: 1px solid #f8f8f8;
         position: relative;
         /*display: flex;*/
         /*align-items:center;*/
     }
-    .section-content>li:last-child{
-        border-bottom: none;
-    }
+    /*.section-content>li:last-child{*/
+        /*border-bottom: none;*/
+    /*}*/
     .right-arrow{
         padding-right: 1em;
         font-size: 1em;
@@ -104,16 +103,16 @@
     <ul class="section-content">
         <li v-for="itm in notice_list" class="itm-title"  @click="goto(itm.url)">
             <div>
-                <div style="width: 2em;float: left;padding-top: 0.3em">
-                    <img style="width: 1.2em" src="/static/images/home_ic_gonggao.png" alt="">
+                <div style="width: 2em;float: left;padding-top: 0.7em">
+                    <img style="width: 1.9em" src="/static/images/home_ic_gonggao2.png" alt="">
                 </div>
 
-                <div style="margin-left: 2.5em;padding-right: 2em;">
+                <div style="margin-left: 3.3em;padding-right: 2em;">
                     <div >
-                        <div style="color: #e6e8f6" class="ellipsis">
+                        <div class="ellipsis" style="font-size: 1.3em">
                             <span v-text="itm.title"></span>
                         </div>
-                        <div style="color: #7d7f8c;font-size: 80%">
+                        <div style="color: #bdbdbd;font-size: 1.2em;position: relative;top:-0.1em;">
                             <span v-text="itm.update_date"></span>
                         </div>
                     </div>

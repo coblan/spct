@@ -12,6 +12,7 @@ import re
 from django.conf import settings
 from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
+from ..redisInstance import redisInst
 
 class NoticePage(TablePage):
     template='jb_admin/table.html'
@@ -97,6 +98,9 @@ class NoticeForm(ModelFields):
         if not self.instance.createuser:
             self.instance.createuser=self.crt_user.pk
             self.instance.save()
+        redisInst.delete('App:Cache:index:notices')
+        
+
         return self.instance
     
     def dict_row(self, row):

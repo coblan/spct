@@ -8,6 +8,7 @@ from .marketing.gen_activity_file import gen_activity_file
 from .admin_games.matchs import get_special_bet_value,save_special_bet_value_proc
 import requests
 import json
+from .redisInstance import redisInst
 
 def get_global():
     return globals()
@@ -21,6 +22,8 @@ def update_help_file():
 
 def update_notice_file():
     gen_notice_file()
+    #redisInst.delete('App:Cache:index:notices')
+    
     return {'status':'success'}
 
 def produce_match_outcome(row):
