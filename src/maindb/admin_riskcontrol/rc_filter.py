@@ -49,6 +49,7 @@ class RcFilterForm(ModelFields):
         exclude = []
         
     def clean_dict(self, dc):
+        super().clean_dict(dc)
         if dc.get('rc_active'):
             dc['rc_active']=1
         else:

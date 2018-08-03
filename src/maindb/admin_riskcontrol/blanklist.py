@@ -119,6 +119,7 @@ class BlankipRangeListForm(ModelFields):
         return head
     
     def clean_dict(self, dc):
+        super().clean_dict(dc)
         if dc.get('startip'):
             dc['startipnum']=ip2num(dc.get('startip'))
         else:

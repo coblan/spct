@@ -94,6 +94,7 @@ class HelpForm(ModelFields):
         model=TbQa
         exclude=[]
     def clean_dict(self, dc):
+        super().clean_dict(dc)
         if not dc.get('pk',None):
             if dc.get('mtype')==0:
                 dc['type'] = len(TbQa.objects.values('mtype').distinct())

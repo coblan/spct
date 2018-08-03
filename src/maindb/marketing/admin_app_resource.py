@@ -29,12 +29,14 @@ class AppResourceForm(ModelFields):
         exclude = []
     
     def clean_dict(self, dc): 
+        super().clean_dict(dc)
         url =  dc.get('url')
         if url:
             ls = url.split('/')
             name = ls[-1]
             md5 = name[:32]
             dc['md5'] = md5
+        
         return dc
         
     #def save_form(self): 
