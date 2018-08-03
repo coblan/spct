@@ -717,7 +717,7 @@ var com_file_uploader = exports.com_file_uploader = {
             var def_config = {
                 upload_url: '/d/upload',
                 accept: 'image/*',
-                multiple: true,
+                multiple: false,
                 sortable: true,
                 on_click: function on_click(url) {
                     window.open(url, '_blank' // <- This is what makes it open in a new window.
