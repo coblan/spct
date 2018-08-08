@@ -85,7 +85,7 @@ class PcMenu(BaseEngine):
                 {'label':_('White User'),'url':page('maindb.Whiteuserlist'), 'visible': can_touch(Whiteuserlist, crt_user),},
                 
                 #{'label':_('Tb Withdraw Limit Log'),'url':page('maindb.TbWithdrawlimitlog'), 'visible': can_touch(TbWithdrawlimitlog, crt_user)}
-                        #]},             
+                        ]},             
             
             
             {'label':_('Report'),'icon':fa('fa-bar-chart'),'visible':True,
