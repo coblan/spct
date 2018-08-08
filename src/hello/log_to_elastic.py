@@ -2,14 +2,15 @@ from elasticsearch import Elasticsearch
 import logging
 import socket
 import datetime
-import json
+from django.conf import settings
+
 import logging
 log = logging.getLogger('extra.error')
 
 
 hostName = socket.gethostname()
 
-es = Elasticsearch('http://192.168.40.137:9200')
+es = Elasticsearch(settings.ELASTIC)
 
 _index_mappings = {
   "mappings": {
@@ -29,8 +30,26 @@ if es.indices.exists(index='adminbackend') is not True:
     res = es.indices.create(index='adminbackend', body=_index_mappings) 
     print(res)
 
-#res = es.index('adminBackend', 'user', body = {'title': 'jjj', 'name': 'ppp', 'age': 18,})
-#print(res)
+
+#######################################################
+# 异步代码
+import asyncio
+from elasticsearch_async import AsyncElasticsearch
+
+client = AsyncElasticsearch(hosts=[settings.ELASTIC])
+
+async def es_save(dc):
+    try:
+        info = await client.index('adminbackend', 'user', body = dc)
+        print(info)
+    except Exception as e:
+        log.error('[异步]请求adminbackend出现了问题,%s' % e)
+    
+
+loop = asyncio.get_event_loop()
+#loop.run_until_complete(print_info())
+
+###############################################################
 
 class EsHandler(logging.Handler):
     #def __init__(self, level=NOTSET): 
@@ -47,12 +66,13 @@ class EsHandler(logging.Handler):
             'message': msg
         }
         try:
-            res = es.index('adminbackend', 'user', body = dc)
+            #res = es.index('adminbackend', 'user', body = dc)
             #print(res)
+            loop.run_until_complete(es_save(dc))
         except Exception as e:
             log.error('请求adminbackend出现了问题,%s' % e)
-        
-        #print(record)
     
+
+
 
 

@@ -80,6 +80,7 @@ MONGO_SERVER ="mongodb://admin:lishen123@192.168.40.210:27017,192.168.40.211:270
 
 RABBITMQ = '192.168.40.116'
 REDIS_SERVER = '192.168.40.222'
+ELASTIC = 'http://192.168.40.217:9200'
 
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
@@ -104,14 +105,14 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
             'formatter':'standard',
         },
-        'elk_warning':{
-            'level': 'ERROR',
-            'class': 'hello.log_to_elastic.EsHandler',         
-            }, 
-        'elk_info':{
-            'level': 'DEBUG',
-            'class': 'hello.log_to_elastic.EsHandler',         
-            },         
+        #'elk_warning':{
+            #'level': 'ERROR',
+            #'class': 'hello.log_to_elastic.EsHandler',         
+            #}, 
+        #'elk_info':{
+            #'level': 'DEBUG',
+            #'class': 'hello.log_to_elastic.EsHandler',         
+            #},         
         'console': {
             'level':'DEBUG',
             'class': 'logging.StreamHandler',
