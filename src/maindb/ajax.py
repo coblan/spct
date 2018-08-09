@@ -109,4 +109,5 @@ def set_banner_status(rows,status):
         banner = TbBanner.objects.get(pk= row['pk'])
         banner.status = status
         banner.save()
+    redisInst.delete('App:Cache:index:banners')
     return {'status':'success'}
