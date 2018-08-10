@@ -10,6 +10,8 @@ from helpers.director.shortcut import model_to_name, model_full_permit, add_perm
 import json
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
+import re
+from django.db.models import Q
 # Register your models here.
 
 class AccountPage(TablePage):
@@ -107,21 +109,21 @@ class AccountPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbAccount
-        include = ['accountid','account','accounttype','username','viplv','createtime']
+        include = ['accountid','account','username','viplv','createtime']
         #fields_sort=['accountid','account','accounttype','username']
 
         def dict_row(self, inst):
             account_type = dict(ACCOUNT_TYPE)
             return {
                 'amount':str(inst.amount),
-                'accounttype': account_type.get(inst.accounttype)
+                #'accounttype': account_type.get(inst.accounttype)
             }
         
         def dict_head(self, head):
             dc={
                 'accountid':80,
                 'account':150,
-                'accounttype':80,
+                #'accounttype':80,
                 'username':120,
                 'viplv':100,
                 'createtime':150
@@ -144,7 +146,7 @@ class AccoutBaseinfo(ModelFields):
         readonly=['createtime']
         class Meta:
             model=TbAccount
-            exclude =['password', 'account', 'amount']
+            exclude =['password', 'account', 'amount', 'actimestamp']
 
 class AccountTabBase(ModelTable):
     def __init__(self, *args,**kws):
@@ -254,12 +256,12 @@ class LoginLogPage(TablePage):
     class tableCls(ModelTable):
         model=TbLoginlog
         exclude=[]
-        fields_sort=['accountid__username','devicecode','deviceip','appversion','devicename','deviceversion',
+        fields_sort=['accountid_id', 'accountid__nickname','devicecode','deviceip','appversion','devicename','deviceversion',
                      'logintype','createtime']
         
         def dict_head(self, head): 
             dc={
-                'accountid':100,
+                'accountid_id':80,
                 'devicecode':120,
                 'deviceip':120,
                 'appversion':100,
@@ -271,25 +273,64 @@ class LoginLogPage(TablePage):
                 head['width'] =dc.get(head['name'])
             return head
         
-        def get_heads(self):
-            heads=[{
-                'name':'accountid__username',
-                'label':'用户'
-            }]
-            heads2 = ModelTable.get_heads(self)
-            heads.extend(heads2)
-            return heads
+        def getExtraHead(self): 
+            return [
+                { 'name':'accountid__nickname', 'label':'用户昵称'} ,
+                { 'name':'accountid_id', 'label':'用户ID'}          
+            ]
+        #def get_heads(self):
+            #heads=[{
+                #'name':'accountid__nickname',
+                #'label':'用户昵称'
+            #}]
+            #heads2 = ModelTable.get_heads(self)
+            #heads.extend(heads2)
+            #return heads
         
-        def permited_fields(self):
-            fields = ModelTable.permited_fields(self)
-            fields.append('accountid__username')
-            return fields
+        #def permited_fields(self):
+            #fields = ModelTable.permited_fields(self)
+            #fields.append('accountid__nickname')
+            #return fields
         
         def inn_filter(self, query):
             return query.values(*self.fields_sort).order_by('-createtime')
         
         class search(RowSearch):
-            names=['account','deviceip']
+            names=['accountid', 'deviceip', 'accountid__nickname']
+            
+            #def getNames(self): 
+                #return [ 'deviceip', 'accountid__nickname']
+            
+            #def getTip(self): 
+                #return '设备ip,用户昵称,用户ID'
+        
+            def get_context(self):
+                """
+                """
+                dc = {
+                    'search_tip':'设备ip,用户昵称,用户ID',
+                    'editor':'com-search-filter',
+                    'name':'_q'
+                }
+                return dc            
+            
+            def get_query(self,query):
+                names =  [ 'deviceip', 'accountid__nickname']
+                if self.q:
+                    exp=None
+                    for name in names:
+                        kw ={}
+                        kw['%s__icontains'%name] =self.q    
+                        if exp is None:
+                            exp = Q(**kw)
+                        else:
+                            exp = exp | Q(**kw)
+                    if re.search('^\d+$', self.q):
+                        exp = exp | Q(accountid_id = self.q)
+                    return query.filter(exp)
+                else:
+                    return query            
+            
         
         class filters(RowFilter):
             range_fields=['createtime']

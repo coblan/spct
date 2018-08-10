@@ -43,35 +43,65 @@ class Blackiprangelist(models.Model):
         db_table = 'BlackIpRangeList'
 
 
+
 class TbAccount(models.Model):
-    accountid = models.AutoField(db_column='AccountID',verbose_name=_('accountID'), primary_key=True)  # Field name made lowercase.
- 
-    accounttype = models.SmallIntegerField(db_column='AccountType',verbose_name=_('Account Type'),choices=ACCOUNT_TYPE)  # Field name made lowercase.
+    accountid = models.IntegerField(db_column='AccountID', primary_key=True)  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.
-    password = models.CharField(db_column='Password', max_length=32)  # Field name made lowercase.
-    username = models.CharField(db_column='UserName',verbose_name=_('User Name'), max_length=100, blank=True, null=True)  # Field name made lowercase.
-    userrealname = models.CharField(db_column='UserRealName', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    password = models.CharField(db_column='Password', max_length=255)  # Field name made lowercase.
+    nickname = models.CharField(db_column='NickName', max_length=100, blank=True, null=True)  # Field name made lowercase.
     status = models.SmallIntegerField(db_column='Status')  # Field name made lowercase.
-    verify = models.SmallIntegerField(db_column='Verify')  # Field name made lowercase.
-    agent = models.CharField(db_column='Agent', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    viplv = models.SmallIntegerField(db_column='VIPLv',verbose_name=_('VIP Level'))  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime',verbose_name=_('Create Time'))  # Field name made lowercase.
+    agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
+    viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'))  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
     pwupdatetime = models.DateTimeField(db_column='PWUpdateTime')  # Field name made lowercase.
-    amount = CusDecimalField(db_column='Amount', max_digits=18, decimal_places=4, verbose_name=_('Account Balance') )  # Field name made lowercase.
-    #amount = CusDecimalField(db_column='Amount',verbose_name=_('Account Balance'), max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4, verbose_name=_('Account Balance'))  # Field name made lowercase.
     phone = models.CharField(db_column='Phone', max_length=64, blank=True, null=True)  # Field name made lowercase.
-    #currency = models.IntegerField(db_column='Currency', blank=True, null=True)  # Field name made lowercase.
     avatar = models.CharField(db_column='Avatar', max_length=255)  # Field name made lowercase.
     gender = models.IntegerField(db_column='Gender')  # Field name made lowercase.
-    birthday = models.CharField(db_column='Birthday', max_length=10, blank=True, null=True)  # Field name 
+    birthday = models.CharField(db_column='Birthday', max_length=10, blank=True, null=True)  # Field name made lowercase.
     points = models.IntegerField(db_column='Points', blank=True, null=True)  # Field name made lowercase.
+    actimestamp = models.TextField(db_column='AcTimestamp')  # Field name made lowercase. This field type is a guess.
+    codeid = models.IntegerField(db_column='CodeID')  # Field name made lowercase.
+    bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    agentamount = models.DecimalField(db_column='AgentAmount', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    parentid = models.IntegerField(db_column='ParentID')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'TB_Account'
     
     def __str__(self):
-        return self.username or ''
+        return self.nickname or ''    
+
+#class TbAccount(models.Model):
+    #accountid = models.AutoField(db_column='AccountID',verbose_name=_('accountID'), primary_key=True)  # Field name made lowercase.
+ 
+    #accounttype = models.SmallIntegerField(db_column='AccountType',verbose_name=_('Account Type'),choices=ACCOUNT_TYPE)  # Field name made lowercase.
+    #account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.
+    #password = models.CharField(db_column='Password', max_length=32)  # Field name made lowercase.
+    #username = models.CharField(db_column='UserName',verbose_name=_('User Name'), max_length=100, blank=True, null=True)  # Field name made lowercase.
+    #userrealname = models.CharField(db_column='UserRealName', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    #status = models.SmallIntegerField(db_column='Status')  # Field name made lowercase.
+    #verify = models.SmallIntegerField(db_column='Verify')  # Field name made lowercase.
+    #agent = models.CharField(db_column='Agent', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    #viplv = models.SmallIntegerField(db_column='VIPLv',verbose_name=_('VIP Level'))  # Field name made lowercase.
+    #createtime = models.DateTimeField(db_column='CreateTime',verbose_name=_('Create Time'))  # Field name made lowercase.
+    #pwupdatetime = models.DateTimeField(db_column='PWUpdateTime')  # Field name made lowercase.
+    #amount = CusDecimalField(db_column='Amount', max_digits=18, decimal_places=4, verbose_name=_('Account Balance') )  # Field name made lowercase.
+    ##amount = CusDecimalField(db_column='Amount',verbose_name=_('Account Balance'), max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    #phone = models.CharField(db_column='Phone', max_length=64, blank=True, null=True)  # Field name made lowercase.
+    ##currency = models.IntegerField(db_column='Currency', blank=True, null=True)  # Field name made lowercase.
+    #avatar = models.CharField(db_column='Avatar', max_length=255)  # Field name made lowercase.
+    #gender = models.IntegerField(db_column='Gender')  # Field name made lowercase.
+    #birthday = models.CharField(db_column='Birthday', max_length=10, blank=True, null=True)  # Field name 
+    #points = models.IntegerField(db_column='Points', blank=True, null=True)  # Field name made lowercase.
+
+    #class Meta:
+        #managed = False
+        #db_table = 'TB_Account'
+    
+    #def __str__(self):
+        #return self.username or ''
 
 
 class TbAccountMatchFav(models.Model):
@@ -538,12 +568,12 @@ class TbLoginlog(models.Model):
 class TbLimit(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     #matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
-    matchid = models.ForeignKey(to= 'TbMatches', db_constraint= False, to_field= 'matchid', db_column='MatchID')  # Field name made lowercase.
-    limittype = models.IntegerField(db_column='LimitType', choices= LIMIT_TYPE, default= 11)  # Field name made lowercase.
+    matchid = models.ForeignKey(to= 'TbMatches', db_constraint= False, to_field= 'matchid', db_column='MatchID', verbose_name = '比赛')  # Field name made lowercase.
+    limittype = models.IntegerField(db_column='LimitType', choices= LIMIT_TYPE, default= 11, verbose_name= '玩法控制')  # Field name made lowercase.
     #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
-    accountid = models.ForeignKey(to = 'TbAccount', db_constraint= True, to_field= 'accountid', db_column='AccountID', blank=True, null=True)  # 
+    accountid = models.ForeignKey(to = 'TbAccount', verbose_name = '账号', db_constraint= True, to_field= 'accountid', db_column='AccountID', blank=True, null=True)  # 
     relationno = models.IntegerField(db_column='RelationNo', verbose_name= '玩法/等级', blank= True, default= 0)  # Field name made lowercase.
-    maxsinglepayout = models.DecimalField(db_column='MaxSinglePayout', max_digits=18, decimal_places=2, null=True, default = 0)  # Field name made lowercase.
+    maxsinglepayout = models.DecimalField(verbose_name= '最大赔付值', db_column='MaxSinglePayout', max_digits=18, decimal_places=2, null=True, default = 0)  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', blank=True, null=True, default= 1, verbose_name= '启用')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now_add= True, editable=True)  # Field name made lowercase.

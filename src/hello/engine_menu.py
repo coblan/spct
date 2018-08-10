@@ -35,7 +35,6 @@ class PcMenu(BaseEngine):
                 
                 {'label':_('Help'),'url':page('maindb.TbQa'), 'visible': can_touch(TbQa, crt_user),},
                 {'label':_('Activity'),'url':page('maindb.TBActive'), 'visible': can_touch(TbActivity, crt_user),},
-                {'label':_('AppResource'),'url':page('AppResource'), 'visible': can_touch(TbAppresource, crt_user),},
                  
                 ]},  
             
@@ -45,6 +44,8 @@ class PcMenu(BaseEngine):
                 {'label':_('Currency'),'url':page('maindb.TbCurrency'), 'visible': can_touch(TbCurrency, crt_user)},
                 {'label':_('league '),'url':page('match.league'), 'visible': can_touch(TbTournament, crt_user)},
                 {'label':_('Teams'),'url':page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user),},
+                {'label':_('AppResource'),'url':page('AppResource'), 'visible': can_touch(TbAppresource, crt_user),},
+                 
                 ]}, 
             
             {'label':_('Member'),'icon':fa('fa-users'),'visible':True,
@@ -67,7 +68,7 @@ class PcMenu(BaseEngine):
                 {'label':_('Tb TicketMaster'),'url':page('maindb.ticketmaster'), 'visible': can_touch(TbTicketmaster, crt_user),},
                 {'label':_('Tb Match'),'url':page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user),},
                 {'label':_('View TicketSingleByMatch'),'url':page('maindb.TicketSingleByMatch'), 'visible': can_touch(TbMatches, crt_user),},
-                {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
+                #{'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
               
                         ]}, 
             
@@ -78,11 +79,11 @@ class PcMenu(BaseEngine):
                 #{'label':_('Tb RC Level'),'url':page('maindb.TbRcLevel'), 'visible': can_touch(TbRcLevel, crt_user),},
                 #{'label':_('Tb RC User'),'url':page('maindb.TbRcUser'), 'visible': can_touch(TbRcUser, crt_user),},
                 {'label':_('Tb Blankuserlist'),'url':page('maindb.TbBlackuserlist'), 'visible': can_touch(TbBlackuserlist, crt_user),},
-                {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
+                #{'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
                 
-                {'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList'), 'visible': can_touch(Blackiprangelist, crt_user),},
-                {'label':_('White IP'),'url':page('maindb.WhiteIpList'), 'visible': can_touch(Whiteiplist, crt_user),},
-                {'label':_('White User'),'url':page('maindb.Whiteuserlist'), 'visible': can_touch(Whiteuserlist, crt_user),},
+                #{'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList'), 'visible': can_touch(Blackiprangelist, crt_user),},
+                #{'label':_('White IP'),'url':page('maindb.WhiteIpList'), 'visible': can_touch(Whiteiplist, crt_user),},
+                #{'label':_('White User'),'url':page('maindb.Whiteuserlist'), 'visible': can_touch(Whiteuserlist, crt_user),},
                 
                 #{'label':_('Tb Withdraw Limit Log'),'url':page('maindb.TbWithdrawlimitlog'), 'visible': can_touch(TbWithdrawlimitlog, crt_user)}
                         ]},             
