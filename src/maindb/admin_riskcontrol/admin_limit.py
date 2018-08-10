@@ -88,11 +88,13 @@ class TbLimitForm(ModelFields):
             table_obj = MatchSelect(crt_user=self.crt_user)
             head['editor'] = 'com-field-pop-table-select'
             head['table_ctx'] = table_obj.get_head_context()
-            
+            head['options'] = []
         if head['name'] =='accountid':
             table_obj = AccountSelect(crt_user=self.crt_user)
             head['editor'] = 'com-field-pop-table-select'
             head['table_ctx'] = table_obj.get_head_context()  
+            head['options'] = []
+            
         if head['name'] == 'relationno':
             head['user_options'] = self.user_options
             head['oddstype_options'] = self.oddstype_options

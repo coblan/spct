@@ -155,11 +155,11 @@ class WhiteuserlistForm(ModelFields):
 
 class AccountSelect(ModelTable):
     model = TbAccount
-    include=['accountid','username']
+    include=['accountid','nickname']
     def dict_head(self, head):
         dc={
                'accountid':100,
-               'username': 150,
+               'nickname': 150,
       
            }
         if dc.get(head['name']):
@@ -170,7 +170,7 @@ class AccountSelect(ModelTable):
         return head
     
     class search(RowSearch):
-        names=['accountid', 'username']
+        names=['accountid', 'nickname']
 
 def ip2num(ip):
     arr=ip.split('.')

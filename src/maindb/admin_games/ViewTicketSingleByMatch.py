@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
-from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter
+from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter, RowSearch
 from ..models import TbMatches,TbTickets,TbTicketstake
 from django.db.models.aggregates import Count,Sum
 from django.db.models import F
@@ -81,9 +81,9 @@ class TicketSingleByMatchPage(TablePage):
             ctx['footer'] = self.footer
             return ctx
         
-        def inn_filter(self, query):
+        def inn_filter(self, query): #__accountid_id
             return query.annotate(nums_stake = Count('tbticketstake'))\
-                   .annotate(nums_account = Count('tbticketstake__ticket_master__accountid'))\
+                   .annotate(nums_account = Count('tbticketstake__ticket_master__accountid', distinct= True))\
                    .annotate(sum_betamount = Sum('tbticketstake__ticket_master__betamount'))\
                    .annotate(sum_betoutcome = Sum('tbticketstake__ticket_master__betoutcome'))\
                    .annotate( sum_profit=F('sum_betamount') - F('sum_betoutcome'))                
@@ -106,8 +106,11 @@ class TicketSingleByMatchPage(TablePage):
         class sort(RowSort):
             names=['nums_stake','nums_account','sum_betamount','sum_betoutcome','sum_profit']
         
+        class search(RowSearch):
+            names = ['matchid']
+        
         class filters(RowFilter):
-            names=['tournamentzh','statuscode']
+            names=['statuscode']
             range_fields=['matchdate']
 
 director.update({

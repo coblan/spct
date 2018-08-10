@@ -29,9 +29,9 @@ class ReportAccout(TablePage):
         
         def get_heads(self):
             heads= [
-                {'name':'accountid__username','label':'用户','width':120},
+                {'name':'accountid__nickname','label':'用户','width':120},
                 {'name':'accountid__amount','label':'用户余额','width':100},
-                {'name':'accountid__tbwithdrawlimit__amount','label':'提款限额','width':80},
+                #{'name':'accountid__tbwithdrawlimit__amount','label':'提款限额','width':80},
                 {'name':'num_ticket','label':'投注数','width':60},
                 {'name':'num_win','label':'中注数','width':80},
                 {'name':'ratio','label':'中注比','width':100},
@@ -44,7 +44,7 @@ class ReportAccout(TablePage):
             return heads
         
         def statistics(self, query): # tbwithdrawlimit  
-            ss = query.defer("ticketid").values('accountid','accountid__tbwithdrawlimit__amount','accountid__username','accountid__amount')\
+            ss = query.defer("ticketid").values('accountid','accountid__nickname','accountid__amount')\
                 .distinct()\
                 .annotate(num_ticket=Count('ticketid'),num_win=Sum('winbet'),
                         sum_money=Sum('betamount'),sum_outcome=Sum('betoutcome'),
@@ -52,7 +52,7 @@ class ReportAccout(TablePage):
                 .annotate(profit=F('sum_money')-F('sum_outcome'),
                           ratio=  ExpressionWrapper(F('num_win')*1.0 / F('num_ticket') , 
                                                    output_field=FloatField() ) )\
-                .order_by('accountid__username')
+                .order_by('accountid__nickname')
             return ss
         
         def get_rows(self):

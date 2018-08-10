@@ -683,10 +683,11 @@ window.cfg = {
     show_load: function show_load() {
         this._loader_index = layer.load(1);
     },
-    hide_load: function hide_load(delay) {
+    hide_load: function hide_load(delay, msg) {
         layer.close(this._loader_index);
         if (delay) {
-            layer.msg('操作成功', { time: delay });
+            var realMsg = msg || '操作成功';
+            layer.msg(realMsg, { time: delay });
         }
     }
 };
@@ -3182,8 +3183,14 @@ Vue.component('com-date-range-filter', com_date_range);
 
 
 var com_search = {
-         props: ['head', 'search_args'],
-         template: '<div>\n    <input style="max-width: 20em;min-width: 10em;"\n             type="text"\n             name="_q"\n             v-model=\'search_args._q\'\n             :placeholder=\'head.search_tip\'\n             @keyup.13="$emit(\'submit\')"\n             class=\'form-control input-sm\'/>\n    </div> '
+    props: ['head', 'search_args'],
+    data: function data() {
+        if (!this.search_args._q) {
+            Vue.set(this.search_args, '_q', '');
+        }
+        return {};
+    },
+    template: '<div>\n    <input style="max-width: 20em;min-width: 10em;"\n             type="text"\n             name="_q"\n             v-model=\'search_args._q\'\n             :placeholder=\'head.search_tip\'\n             @keyup.13="$emit(\'submit\')"\n             class=\'form-control input-sm\'/>\n    </div> '
 };
 Vue.component('com-search-filter', com_search);
 

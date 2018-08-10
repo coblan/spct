@@ -45,10 +45,10 @@ class Blackiprangelist(models.Model):
 
 
 class TbAccount(models.Model):
-    accountid = models.IntegerField(db_column='AccountID', primary_key=True)  # Field name made lowercase.
+    accountid = models.IntegerField(db_column='AccountID', primary_key=True, verbose_name= '账号ID')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.
     password = models.CharField(db_column='Password', max_length=255)  # Field name made lowercase.
-    nickname = models.CharField(db_column='NickName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    nickname = models.CharField(db_column='NickName', verbose_name = '昵称', max_length=100, blank=True, null=True)  # Field name made lowercase.
     status = models.SmallIntegerField(db_column='Status')  # Field name made lowercase.
     agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
     viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'))  # Field name made lowercase.
@@ -1473,16 +1473,16 @@ class TbBanner(models.Model):
         managed = False
         db_table = 'TB_Banner'
 
-class TbWithdrawlimit(models.Model):
-    #accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
-    account = models.CharField(db_column='Account', max_length=20)  # Field name made lowercase.
-    amount = CusDecimalField(db_column='Amount',verbose_name='提款限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',primary_key=True, db_constraint=False)  # Field name made lowercase.
-    #accountid = models.IntegerField(db_column='AccountID', primary_key=True)  # Field name made lowercase.
+#class TbWithdrawlimit(models.Model):
+    ##accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
+    #account = models.CharField(db_column='Account', max_length=20)  # Field name made lowercase.
+    #amount = CusDecimalField(db_column='Amount',verbose_name='提款限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    #accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',primary_key=True, db_constraint=False)  # Field name made lowercase.
+    ##accountid = models.IntegerField(db_column='AccountID', primary_key=True)  # Field name made lowercase.
 
-    class Meta:
-        managed = False
-        db_table = 'TB_WithdrawLimit'
+    #class Meta:
+        #managed = False
+        #db_table = 'TB_WithdrawLimit'
 
 
 class TbWithdrawlimitlog(models.Model):
