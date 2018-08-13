@@ -53,17 +53,17 @@ class TbAccount(models.Model):
     agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
     viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'))  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
-    pwupdatetime = models.DateTimeField(db_column='PWUpdateTime')  # Field name made lowercase.
+    pwupdatetime = models.DateTimeField(db_column='PWUpdateTime', auto_now= True)  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4, verbose_name=_('Account Balance'))  # Field name made lowercase.
     phone = models.CharField(db_column='Phone', max_length=64, blank=True, null=True)  # Field name made lowercase.
-    avatar = models.CharField(db_column='Avatar', max_length=255)  # Field name made lowercase.
+    avatar = models.CharField(db_column='Avatar', max_length=255, blank = True)  # Field name made lowercase.
     gender = models.IntegerField(db_column='Gender')  # Field name made lowercase.
     birthday = models.CharField(db_column='Birthday', max_length=10, blank=True, null=True)  # Field name made lowercase.
     points = models.IntegerField(db_column='Points', blank=True, null=True)  # Field name made lowercase.
-    actimestamp = models.TextField(db_column='AcTimestamp')  # Field name made lowercase. This field type is a guess.
+    #actimestamp = models.TextField(db_column='AcTimestamp')  # Field name made lowercase. This field type is a guess.
     codeid = models.IntegerField(db_column='CodeID')  # Field name made lowercase.
-    bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    agentamount = models.DecimalField(db_column='AgentAmount', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4, verbose_name= '反水比例')  # Field name made lowercase.
+    agentamount = models.DecimalField(db_column='AgentAmount', max_digits=18, decimal_places=4, blank=True, null=True, verbose_name= '代理余额')  # Field name made lowercase.
     parentid = models.IntegerField(db_column='ParentID')  # Field name made lowercase.
 
     class Meta:
@@ -1199,8 +1199,8 @@ class TbTicketmaster(models.Model):
     betamount = CusDecimalField(db_column='BetAmount',verbose_name=_('BetAmount'), max_digits=18, decimal_places=4)  # 总金额 Field name made lowercase.
     parlayrule = models.IntegerField(db_column='ParlayRule',verbose_name=_('ParlayRule'))  # 串关规则
     allowauto = models.SmallIntegerField(db_column='AllowAuto',verbose_name=_('AllowAuto'))  # 自动接收最新赔率
-    status = models.IntegerField(db_column='Status',verbose_name=_('Status'))  # Field name made lowercase.
-    winbet = models.SmallIntegerField(db_column='WinBet',verbose_name=_('WinBet'))  # 是否中注
+    status = models.IntegerField(db_column='Status',verbose_name=_('Status'), choices= TbTicketmaster_STATUS)  # Field name made lowercase.
+    winbet = models.SmallIntegerField(db_column='WinBet',verbose_name= '胜平负', choices= TbTicketmaster_WINBET)  # 是否中注
     createtime = models.DateTimeField(verbose_name=_('CreateTime'),db_column='CreateTime')  # Field name made lowercase.
     betoutcome = CusDecimalField(db_column='BetOutcome',verbose_name= _('BetOutcome'), max_digits=18, decimal_places=4)  # 派彩金额
     turnover = CusDecimalField(db_column='Turnover', verbose_name='流水',max_digits=18, decimal_places=4)  # Field name made lowercase.

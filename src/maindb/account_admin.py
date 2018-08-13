@@ -109,7 +109,7 @@ class AccountPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbAccount
-        include = ['accountid','account','username','viplv','createtime']
+        include = ['accountid','account','nickname','viplv', 'status', 'amount', 'bonusrate', 'agentamount','createtime']
         #fields_sort=['accountid','account','accounttype','username']
 
         def dict_row(self, inst):
@@ -124,7 +124,7 @@ class AccountPage(TablePage):
                 'accountid':80,
                 'account':150,
                 #'accounttype':80,
-                'username':120,
+                'nickname':120,
                 'viplv':100,
                 'createtime':150
             }
@@ -133,20 +133,31 @@ class AccountPage(TablePage):
             if head['name'] == 'accountid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name']='baseinfo'
+            
+            if head['name'] in ['agentamount', 'amount']:
+                head['editor'] = 'com-table-digit-shower'
+                head['digit'] = 2
+            
             return head
     
         class search(RowSearch):
-            names=['account']
+            names=['accountid', 'account', 'nickname']
 
         class sort(RowSort):
-            names=['account']
+            names=['account', 'amount', 'bonusrate', 'agentamount','createtime']
+        
+        def get_operation(self): 
+            return [
+                {'fun': 'selected_set_and_save','editor': 'com-op-btn','label': '启用','field': 'status','value': 1,}, 
+                 {'fun': 'selected_set_and_save','editor': 'com-op-btn','label': '禁用','field': 'status','value': 0,}
+            ]
 
 class AccoutBaseinfo(ModelFields):
-        field_sort=['accounttype','account','username','status','agent','verify','viplv','createtime']
+        field_sort=['account','nickname','status','agent','verify','viplv','createtime']
         readonly=['createtime']
         class Meta:
             model=TbAccount
-            exclude =['password', 'account', 'amount', 'actimestamp']
+            exclude =['password',  'amount', 'actimestamp', 'agent', 'phone', 'gender', 'points', 'codeid', 'parentid']
 
 class AccountTabBase(ModelTable):
     def __init__(self, *args,**kws):
@@ -337,7 +348,9 @@ class LoginLogPage(TablePage):
 
 director.update({
     'account':AccountPage.tableCls,
+    'account.edit': AccoutBaseinfo,
     'account.base.edit':AccoutBaseinfo,
+    
     'account.log':AccountLoginTable,
     'account.ticketmaster':AccountTicketTable,
     'account.trans':AccountTransTable,
