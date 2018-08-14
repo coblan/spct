@@ -98,7 +98,7 @@ class NoticeForm(ModelFields):
         if not self.instance.createuser:
             self.instance.createuser=self.crt_user.pk
             self.instance.save()
-        redisInst.delete('App:Cache:index:notices')
+        #redisInst.delete('App:Cache:index:notices')
         
 
         return self.instance

@@ -19,6 +19,7 @@ from .admin_basic_data import admin_oddtypegroup
 #from .admin_games import ViewTicketSingleByMatch,matchs
 
 from .admin_riskcontrol import admin
+from . import update_cache
 
 
 # Register your models here.

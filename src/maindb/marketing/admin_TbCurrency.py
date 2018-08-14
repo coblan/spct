@@ -44,6 +44,15 @@ class CurrencyForm(ModelFields):
             head['up_url']='/d/upload?path=public/currency'  
         return head
     
+    #def save_form(self): 
+        #rt = super().save_form()
+        #redisInst.delete('App:Static:Currency')
+        #return rt
+    
+    #def del_form(self): 
+        #super().del_form()
+        #redisInst.delete('App:Static:Currency')    
+        
     #def save_form(self):
         #ModelFields.save_form(self)
         #if not self.instance.createuser:

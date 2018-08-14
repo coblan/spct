@@ -82,6 +82,9 @@ RABBITMQ = '192.168.40.116'
 REDIS_SERVER = '192.168.40.222'
 ELASTIC = 'http://192.168.40.217:9200'
 
+RAB_USER = 'stageuser'
+RAB_PSWD = 'YXNkZmFmc2RmbAo'
+
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
 

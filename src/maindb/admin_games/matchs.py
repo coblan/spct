@@ -166,8 +166,8 @@ class MatchForm(ModelFields):
         }
         updateMatchMongo(dc)
         
-        if 'isrecommend' in self.changed_data:
-            redisInst.delete('App:Cache:index:matches')
+        #if 'isrecommend' in self.changed_data:
+            #redisInst.delete('App:Cache:index:matches')
     
     
     #def clean(self):

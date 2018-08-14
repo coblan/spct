@@ -130,8 +130,12 @@ class BannerForm(ModelFields):
         if not self.instance.createuser:
             self.instance.createuser=self.crt_user.pk
             self.instance.save()
-        redisInst.delete('App:Cache:index:banners')
+        #redisInst.delete('App:Cache:index:banners')
         return self.instance
+    
+    #def del_form(self): 
+        #super().del_form()
+        #redisInst.delete('App:Cache:index:banners')
 
 #class PicturenameProc(BaseFieldProc):
     #def to_dict(self,inst,name):
