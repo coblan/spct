@@ -93,6 +93,9 @@ APP_PKG_ACCESS_URL='http://103.246.219.202:9004/static'
 MONGO_SERVER ="mongodb://admin:lishen123@192.168.40.210:27017,192.168.40.211:27017,192.168.40.212:27017/?replicaSet=testrs;slaveok=true"
 
 RABBITMQ = '192.168.40.209'
+RAB_USER = 'stageuser'
+RAB_PSWD = 'YXNkZmFmc2RmbAo'
+
 REDIS_SERVER = '192.168.40.222'
 ELASTIC = 'http://192.168.40.217:9200'
 

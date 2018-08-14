@@ -2,7 +2,7 @@ import pika
 from django.conf import settings
 rabbitHost = settings.RABBITMQ
 
-credentials = pika.PlainCredentials('publisher', 'publisher')
+credentials = pika.PlainCredentials(settings.RAB_USER, settings.RAB_PSWD)
 
 
 def closeHandicap(msg): 
