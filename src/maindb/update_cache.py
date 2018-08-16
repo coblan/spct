@@ -15,8 +15,11 @@ from . import models as sports_model
 
 def update_redis_cache(sender, **kws): 
     if sender.__module__ == 'maindb.models' :  #in sports_model:
-        redisInst.delete('App:Cache:index:*')
-        redisInst.delete('App:Static:*')
+        redisInst.delete(*redisInst.keys(pattern='App:Cache:index:*'))
+        redisInst.delete(*redisInst.keys(pattern='App:Static:*'))
+        
+        #redisInst.delete('App:Cache:index:*')
+        #redisInst.delete('App:Static:*')
     #if sender in dc:
         #redisInst.delete(dc.get(sender))  
         

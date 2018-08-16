@@ -45,7 +45,8 @@ class BannerPage(TablePage):
             
             if head['name'] in ['status']:
                 head['editor'] = 'com-table-mapper'  
-                head['options'] = dict( ONLINE_STATUS )
+                
+                head['options'] = [{'value': x[0], 'label': x[1],} for x in ONLINE_STATUS]  #dict( ONLINE_STATUS )
             
             if head['name'] =='title':
                 head['editor'] = 'com-table-pop-fields'

@@ -970,6 +970,8 @@ window.pop_edit_local = pop_edit_local;
 "use strict";
 
 
+__webpack_require__(77);
+
 var com_sim_fields = {
     props: {
         heads: '',
@@ -979,7 +981,11 @@ var com_sim_fields = {
                 return '确定';
             }
         },
-        exClass: ''
+        btnCls: {
+            default: function _default() {
+                return 'btn-primary btn-sm';
+            }
+        }
     },
     data: function data() {
         return {};
@@ -990,7 +996,7 @@ var com_sim_fields = {
         }
     },
     mixins: [mix_fields_data, mix_nice_validator],
-    template: ' <div class="field-panel" style="text-align:center;">\n                <com-table-fields :heads="heads" :row="row"\n                    input-width="23em" label-width="8em"\n                    style="width: 30em;text-align: left;display: inline-block;">\n                    <slot>\n                    <tr>\n                    <td></td>\n                    <td>\n                    <button @click="submit"\n                        style="width: 100%;position: relative;" type="btn"\n                            class="btn btn-primary btn-sm"><span v-text="okBtn"></span></button></td>\n                    </tr>\n                    </slot>\n           </com-table-fields>\n        </div>',
+    template: ' <div class="field-panel sim-fields" style="text-align:center;">\n                <com-table-fields :heads="heads" :row="row">\n                    <slot>\n                    <tr>\n                    <td colspan="2">\n                        <div class="submit-block">\n                            <button @click="submit" type="btn"\n                                :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                        </div>\n                     </td>\n                    </tr>\n                    </slot>\n           </com-table-fields>\n        </div>',
     methods: {
         submit: function submit() {
             if (this.isValid()) {
@@ -1198,7 +1204,7 @@ function pop_table_layer(row, table_ctx, callback) {
             footer: [],
             selected: [],
             del_info: [],
-            search_args: {},
+            search_args: table_ctx.search_args || {},
 
             height: 350
         },
@@ -3062,8 +3068,8 @@ var ele_table = {
             heads: this.bus.heads,
             //rows:this.bus.rows,
             search_args: this.bus.search_args,
-            row_sort: this.bus.row_sort,
-            footer: this.bus.footer
+            row_sort: this.bus.row_sort
+            //footer:this.bus.footer
         };
     },
     mounted: function mounted() {
@@ -3094,16 +3100,23 @@ var ele_table = {
             set: function set(v) {
                 this.bus.rows = v;
             }
-        }
-        //search_args:{
-        //    get:function(){
-        //        return this.bus.search_args
-        //    },
-        //    set:function(v){
-        //        this.bus.search_args=v
-        //    }
-        //}
-    },
+        },
+        footer: {
+            get: function get() {
+                return this.bus.footer;
+            },
+            set: function set(v) {
+                this.bus.footer = v;
+            }
+            //search_args:{
+            //    get:function(){
+            //        return this.bus.search_args
+            //    },
+            //    set:function(v){
+            //        this.bus.search_args=v
+            //    }
+            //}
+        } },
     // height="100%"
     //style="width: 100%"
     mixins: [mix_table_data, mix_ele_table_adapter],
@@ -3168,6 +3181,9 @@ Vue.component('com-table-bus-page', ele_page);
 
 window.init_table_ctx = init_table_ctx;
 window.init_table_bus = init_table_bus;
+
+window.bus_ele_table_logic = ele_table;
+
 window.ele_table_logic = ele_table;
 window.ele_table_page_logic = ele_page;
 
@@ -4156,6 +4172,46 @@ __webpack_require__(54);
 
 
 //fields_panels
+
+/***/ }),
+/* 76 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".sim-fields .table-fields {\n  margin: auto; }\n\n.sim-fields .field-label {\n  min-width: 5em;\n  text-align: left; }\n\n.sim-fields .field-input {\n  width: 23em;\n  text-align: left; }\n\n.sim-fields .submit-block {\n  margin-top: 1em;\n  text-align: center; }\n  .sim-fields .submit-block button {\n    width: 100%; }\n\n.sim-fields.field-panel.pop {\n  padding-top: 8px; }\n  .sim-fields.field-panel.pop .field-input {\n    width: 20em; }\n  .sim-fields.field-panel.pop .submit-block {\n    margin-top: 10px; }\n    .sim-fields.field-panel.pop .submit-block button {\n      width: 100%; }\n\n.sim-fields.field-panel.mb {\n  padding: 1em; }\n  .sim-fields.field-panel.mb .field-label {\n    min-width: 5em;\n    text-align: right; }\n  .sim-fields.field-panel.mb .field-input {\n    width: auto; }\n  .sim-fields.field-panel.mb .submit-block {\n    margin-top: 10px; }\n    .sim-fields.field-panel.mb .submit-block button {\n      width: 100%; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(76);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./sim_fields.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./sim_fields.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);
