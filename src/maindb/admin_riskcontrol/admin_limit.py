@@ -79,7 +79,7 @@ class TbLimitForm(ModelFields):
             {'value': 2, 'label': '等级二',}, 
             {'value': 3, 'label': '等级三',}, 
             {'value': 4, 'label': '等级四',}, 
-            {'value': 5, 'label':     '等级五',}, 
+            {'value': 5, 'label': '等级五',}, 
             ]
         
     def dict_head(self, head):
@@ -119,6 +119,9 @@ class TbLimitForm(ModelFields):
             
         return {
             '_relationno_label': relationno_label,
+            'relationno': inst.relationno or 1,
+            'createtime': inst.createtime.strftime('%Y-%m-%d %H:%M:%S'),
+            'updatetime': inst.updatetime.strftime('%Y-%m-%d %H:%M:%S'),
         }
     def clean_accountid(self): 
         data = self.cleaned_data['accountid']

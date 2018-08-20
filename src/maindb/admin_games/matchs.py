@@ -356,7 +356,7 @@ def save_special_bet_value_proc(matchid, match_opened,oddstype,specialbetvalue):
         #rt = requests.post(url,data={'EventName':'oddtypesChanged','MatchID':matchid})
         #msg.append('已经滚球，请求service封盘，返回结果为:%s'%rt.text)
     
-    return {'status':'success','msg':msg}
+    return {'status':'success'}  #,'msg':msg}
 
 director.update({
     'match.table':MatchsPage.tableCls,

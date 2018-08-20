@@ -83,6 +83,7 @@ class NoticeForm(ModelFields):
     class Meta:
         model = TbNotice
         exclude=[]
+        
     def dict_head(self, head):
         if head['name'] =='createuser':
             head['editor']='com-field-label-shower'  

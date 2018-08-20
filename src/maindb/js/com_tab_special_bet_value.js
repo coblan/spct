@@ -118,12 +118,12 @@ var com_tab_special_bet_value={
             }]
             cfg.show_load()
             ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+                //cfg.hide_load(2000,'封盘成功')
                 if(resp.save_special_bet_value.status=='success'){
-                    cfg.hide_load(500)
+                    cfg.hide_load(2000,'封盘成功')
                 }else{
                     cfg.showMsg('error')
                 }
-
             })
         },
         on_show:function(){

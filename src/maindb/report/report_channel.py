@@ -1,6 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import TablePage,ModelTable,page_dc,RowSort,director,RowFilter,field_map,BaseFieldProc,model_to_name
+from helpers.director.shortcut import TablePage,ModelTable,page_dc,RowSort,director,RowFilter,field_map, \
+     BaseFieldProc,model_to_name, PageNum
 from ..models import TbChannel,TbChargeflow
 from django.db.models.aggregates import Count,Sum
 from django.utils import timezone
@@ -64,13 +65,24 @@ class ReportChnnel(TablePage):
         
         def statistics(self, query):
             ss = query.values('channel','createdate').annotate(money=Sum('amount'))
-            return ss
+            return ss.distinct()
         
         class filters(RowFilter):
             range_fields=['createtime']
         
         class sort(RowSort):
             names = ['createdate']
+        
+        class pagenator(PageNum):
+            def get_query(self, query): 
+                self.count = query.count()
+                return query
+            def get_context(self): 
+                return {
+                    'crt_page': 1,
+                    'count': self.count,
+                    
+                }
           
 
 class ReportCreatedateProc(BaseFieldProc):

@@ -51,10 +51,11 @@ class AppPackageForm(ModelFields):
             head['readonly']=True
         if head['name'] == 'packageurl':
             head['editor']= 'com-field-app-pkg-uploader' #'com-field-plain-file'
+            head['required'] = True
             head['config']={
                 'multiple':False,
                 'accept':'.apk,.ipa',
-                'upload_url':reverse('app_pkg_upload')
+                'upload_url':reverse('app_pkg_upload'), 
             }
         if head['name'] == 'description':
             head['editor'] = 'blocktext'

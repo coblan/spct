@@ -41,7 +41,11 @@ class CurrencyForm(ModelFields):
         exclude=[]
     def dict_head(self, head):
         if head['name'] =='icon':
-            head['up_url']='/d/upload?path=public/currency'  
+            head['up_url']='/d/upload?path=public/currency'
+        if head['name'] == 'price':
+            head['fv_rule'] = 'integer(+);range(-2147483648~2147483647)'
+        if head['name'] == 'value':
+            head['fv_rule'] ='range(0~)'
         return head
     
     #def save_form(self): 

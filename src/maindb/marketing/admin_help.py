@@ -73,10 +73,10 @@ class HelpPage(TablePage):
             ctx['extra_table_logic'] = 'help_logic'
             return ctx
         
-        def get_operation(self):
-            operations= ModelTable.get_operation(self)
-            operations.append({'fun':'update_help_file','label':'更新帮助文件','editor':'com-op-btn',})
-            return operations
+        #def get_operation(self):
+            #operations= ModelTable.get_operation(self)
+            #operations.append({'fun':'update_help_file','label':'更新帮助文件','editor':'com-op-btn',})
+            #return operations
         
         class filters(RowFilter):
             names=['mtype']

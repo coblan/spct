@@ -7,6 +7,7 @@ from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,Mode
 from ..models import TbTicketmaster,TbTicketstake,TbTicketparlay,TbMatches
 from ..status_code import *
 from django.db.models import Q,fields
+import re
 
 class TicketMasterPage(TablePage):
     template='jb_admin/table.html' #'maindb/table_ajax_tab.html'
@@ -86,15 +87,19 @@ class TicketMasterPage(TablePage):
                 for name in self.valid_name:
                     ls.append(_(self.model._meta.get_field(name).verbose_name) )                
                 dc = {
-                    'search_tip':','.join(ls) + ',matchid',
+                    'search_tip':','.join(ls) + ',matchid' + '(精确值)',
                     'editor':'com-search-filter',
                     'name':'_q'
                 }
                 return dc    
             def get_query(self,query):
                 if self.q:
-                    return query.filter(Q(ticketid__icontains = self.q) | Q(account__icontains = self.q) | \
-                                        Q(tbticketstake__match_id = self.q)).distinct()
+                    exp = Q(account = self.q)
+                    if re.search('^\d+$', self.q):
+                        exp = exp | Q(ticketid = self.q) |   Q(tbticketstake__match_id = self.q)
+                    #return query.filter(Q(ticketid__icontains = self.q) | Q(account__icontains = self.q) | \
+                                        #Q(tbticketstake__match_id = self.q)).distinct()
+                    return query.filter(exp).distinct()
 
                 else:
                     return query            

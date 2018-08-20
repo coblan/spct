@@ -1,6 +1,6 @@
 export var field_file_uploader={
     props:['row','head'],
-    template:`<div><com-file-uploader-tmp v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader-tmp></div>`,
+    template:`<div><com-file-uploader-tmp :name='head.name' v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader-tmp></div>`,
     computed:{
         url:function(){
             return this.row[this.head.name]

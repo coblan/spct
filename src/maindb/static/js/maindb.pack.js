@@ -415,7 +415,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var field_file_uploader = exports.field_file_uploader = {
     props: ['row', 'head'],
-    template: '<div><com-file-uploader-tmp v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader-tmp></div>',
+    template: '<div><com-file-uploader-tmp :name=\'head.name\' v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader-tmp></div>',
     computed: {
         url: function url() {
             return this.row[this.head.name];
@@ -588,8 +588,9 @@ var com_tab_special_bet_value = {
             }];
             cfg.show_load();
             ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                //cfg.hide_load(2000,'封盘成功')
                 if (resp.save_special_bet_value.status == 'success') {
-                    cfg.hide_load(500);
+                    cfg.hide_load(2000, '封盘成功');
                 } else {
                     cfg.showMsg('error');
                 }
@@ -720,7 +721,7 @@ var match_logic = {
                     //statuscode:crt_row.statuscode
                 };
                 pop_fields_layer(row, kws.fields_ctx, function (e) {
-                    alert(e.new_row);
+                    alert(new_row);
                 });
             },
             jie_suan_pai_cai: function jie_suan_pai_cai(kws) {
@@ -872,7 +873,7 @@ var produceMatchOutcomePanel = {
 
     methods: {
         after_save: function after_save(new_row) {
-            this.$emit('sub_success', { new_row: new_row, old_row: this.row });
+            this.$emit('submit-success', new_row); //{new_row:new_row,old_row:this.row})
             ex.assign(this.row, new_row);
         },
         del_row: function del_row() {
