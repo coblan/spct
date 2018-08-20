@@ -1720,7 +1720,7 @@ class TbBankcard(models.Model):
     bankprovince = models.CharField(db_column='BankProvince', max_length=150)  # Field name made lowercase.
     banksitename = models.CharField(db_column='BankSiteName', max_length=250)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now=True)  # Field name made lowercase.
-    active = models.BooleanField(db_column='Active')  # Field name made lowercase.
+    active = models.BooleanField(db_column='Active',verbose_name='状态')  # Field name made lowercase.
 
     class Meta:
         managed = False
