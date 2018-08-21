@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter,field_map,model_to_name
+     TabPage,RowSearch,RowSort,RowFilter,field_map,model_to_name, request_cache
 from helpers.director.model_func.dictfy import model_to_name
 from ..models import TbQa
 from ..status_code import *
@@ -81,11 +81,15 @@ class HelpPage(TablePage):
         class filters(RowFilter):
             names=['mtype']
             
-            def get_options(self,name):
-                if name =='mtype':
-                    return get_mtype_options()
-                else:
-                    return RowFilter.get_options(self,name)
+            def dict_head(self, head): 
+                if head['name'] == 'mtype':
+                    head['options'] = get_mtype_options()
+                return head
+            #def get_options(self,name):
+                #if name =='mtype':
+                    #return get_mtype_options()
+                #else:
+                    #return RowFilter.get_options(self,name)
             
 
 class HelpForm(ModelFields):
@@ -116,6 +120,7 @@ class HelpForm(ModelFields):
 
         return head 
 
+@request_cache
 def get_mtype_options():
     ls =[{'value':0,'label':'顶层'}]
     for i in TbQa.objects.filter(mtype=0).order_by('-priority'):

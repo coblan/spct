@@ -5,6 +5,7 @@ from ..admin_riskcontrol.blanklist import AccountSelect
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from django import forms
+import re
 
 class TbLimitPage(TablePage):
     template = 'jb_admin/table.html'
@@ -64,6 +65,25 @@ class TbLimitPage(TablePage):
         class search(RowSearch):
             names = ['matchid']
             
+            def get_query(self,query):
+                if self.q:
+                    if re.search('^\d+$', self.q):
+                        
+                        return query.filter(matchid_id = self.q)
+                    else:
+                        return query.filter(pk = -1)
+                    #exp=None
+                    #for name in self.valid_name:
+                        #kw ={}
+                        #kw['%s__icontains'%name] =self.q    
+                        #if exp is None:
+                            #exp = Q(**kw)
+                        #else:
+                            #exp = exp | Q(**kw) 
+                    #return query.filter(exp)
+                else:
+                    return query            
+            
 class TbLimitForm(ModelFields):
     readonly = ['createtime', 'updatetime']
     class Meta:
@@ -120,8 +140,8 @@ class TbLimitForm(ModelFields):
         return {
             '_relationno_label': relationno_label,
             'relationno': inst.relationno or 1,
-            'createtime': inst.createtime.strftime('%Y-%m-%d %H:%M:%S'),
-            'updatetime': inst.updatetime.strftime('%Y-%m-%d %H:%M:%S'),
+            'createtime': inst.createtime.strftime('%Y-%m-%d %H:%M:%S') if inst.createtime else '',
+            'updatetime': inst.updatetime.strftime('%Y-%m-%d %H:%M:%S') if inst.updatetime else '',
         }
     def clean_accountid(self): 
         data = self.cleaned_data['accountid']

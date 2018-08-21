@@ -14,13 +14,27 @@ from . import models as sports_model
 
 
 def update_redis_cache(sender, **kws): 
-    if sender.__module__ == 'maindb.models' :  #in sports_model:
-        ls1 = redisInst.keys(pattern='App:Cache:index:*')
-        if ls1:
-            redisInst.delete(*ls1)
-        ls2 = redisInst.keys(pattern='App:Static:*')
-        if ls2:
-            redisInst.delete(*ls2)
+    
+    if sender == sports_model.TbBanner:
+        redisInst.delete('App:Cache:index:banners')
+    elif sender == sports_model.TbMatches:
+        redisInst.delete('App:Cache:index:matches')
+    elif sender == sports_model.TbNotice:
+        redisInst.delete('App:Cache:index:notices')
+    elif sender == sports_model.TbLimit:
+        redisInst.delete('App:Static:Limit')
+    elif sender == sports_model.TbOddstypes:
+        redisInst.delete('App:Static:OddsType')
+    elif sender == sports_model.TbOddstypegroup:
+        redisInst.delete('App:Static:TypeGroup')
+    
+    #if sender.__module__ == 'maindb.models' :  #in sports_model:
+        #ls1 = redisInst.keys(pattern='App:Cache:index:*')
+        #if ls1:
+            #redisInst.delete(*ls1)
+        #ls2 = redisInst.keys(pattern='App:Static:*')
+        #if ls2:
+            #redisInst.delete(*ls2)
         
         #redisInst.delete('App:Cache:index:*')
         #redisInst.delete('App:Static:*')

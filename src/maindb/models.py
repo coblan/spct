@@ -604,7 +604,7 @@ class TbIpdata(models.Model):
 class TbLoginlog(models.Model):
     id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_constraint=False,
-                                  db_column='AccountId')  # Field name made lowercase.
+                                  db_column='AccountId', verbose_name = '账号')  # Field name made lowercase.
     # accountid = models.IntegerField(db_column='AccountId')  # Field name made lowercase.
     devicecode = models.CharField(db_column='DeviceCode', verbose_name=_('Device Code'),
                                   max_length=40)  # Field name made lowercase.
@@ -714,7 +714,7 @@ class TbMatches(models.Model):
     matchscore = models.CharField(db_column='MatchScore', max_length=8, verbose_name=_('Match Score'),
                                   blank=True)  # Field name made lowercase.
     winner = models.IntegerField(db_column='Winner', verbose_name=_('Winner'))  # Field name made lowercase.
-    statuscode = models.IntegerField(db_column='StatusCode', verbose_name=_('Status'))  # Field name made lowercase.
+    statuscode = models.IntegerField(db_column='StatusCode', verbose_name=_('Status'), choices= MATCH_STATUS)  # Field name made lowercase.
     roundinfo = models.IntegerField(db_column='RoundInfo', verbose_name=_('Round'))  # 轮数 Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',
                                       verbose_name=_('IsRecommend'))  # 推介 Field name made lowercase.

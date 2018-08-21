@@ -205,7 +205,8 @@ class AccountBalanceTable(WithAccoutInnFilter):
     
     class filters(RowFilter):
         names=['categoryid']
-        range_fields = [{'name':'createtime','type':'date'}]
+        range_fields = ['createtime']
+        #range_fields = [{'name':'createtime','type':'date'}]
 
 
 class AccountTransTable(WithAccoutInnFilter):
@@ -229,6 +230,9 @@ class AccountTicketTable(WithAccoutInnFilter):
         if dc.get(head['name']):
             head['width'] =dc.get(head['name'])         
         return head
+    
+    class filters(RowFilter):
+        range_fields = ['createtime']
   
 
 class AccountLoginTable(WithAccoutInnFilter):
@@ -243,6 +247,10 @@ class AccountLoginTable(WithAccoutInnFilter):
         if dc.get(head['name']):
             head['width'] =dc.get(head['name'])
         return head
+    
+    class filters(RowFilter):
+        range_fields = ['createtime']        
+
   
 
 class AccoutWithdrawLimitLogTable(WithAccoutInnFilter):
