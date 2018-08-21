@@ -40,10 +40,10 @@ class BankCard(TablePage):
             }
 
         class search(RowSearch):
-            names = ['cardno', 'accountid__nickname']
+            names = ['cardno', 'bankaccountname', 'accountid__nickname']
 
             def get_context(self):
-                return {'search_tip': '卡号，昵称',
+                return {'search_tip': '卡号,开户人,用户昵称',
                         'editor': 'com-search-filter',
                         'name': '_q'
                         }
