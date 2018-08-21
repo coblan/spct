@@ -9,7 +9,7 @@ class ChargeTypePage(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return '充值方式'
+        return '充值渠道'
 
     class tableCls(ModelTable):
         model = TbPaychanneljoinlevel

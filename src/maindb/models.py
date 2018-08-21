@@ -1730,7 +1730,7 @@ class TbBankcard(models.Model):
 class TbPaychanneljoinlevel(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     paychannelid = models.ForeignKey(to='TbPaychannel', db_column='PayChannelId',
-                                     db_constraint=False)  # Field name made lowercase.
+                                     db_constraint=False,verbose_name='渠道')  # Field name made lowercase.
     accountlevel = models.IntegerField(db_column='AccountLevel', verbose_name='用户等级')  # Field name made lowercase.
 
     class Meta:
@@ -1764,8 +1764,8 @@ class TbPaychannel(models.Model):
 
 
 class TbWithdraw(models.Model):
-    withdrawid = models.AutoField(db_column='WithdrawId', primary_key=True)  # Field name made lowercase.
-    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    withdrawid = models.AutoField(db_column='WithdrawId', primary_key=True,verbose_name='序号')  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,verbose_name='金额')  # Field name made lowercase.
     orderid = models.CharField(db_column='OrderID', max_length=50)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount,db_constraint=False, db_column='AccountID',verbose_name='昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=50)  # Field name made lowercase.
@@ -1777,7 +1777,7 @@ class TbWithdraw(models.Model):
                                  null=True)  # Field name made lowercase.
     apollocode = models.CharField(db_column='ApolloCode', max_length=100, blank=True,
                                   null=True)  # Field name made lowercase.
-    amounttype = models.IntegerField(db_column='AmountType')  # Field name made lowercase.
+    amounttype = models.IntegerField(db_column='AmountType',verbose_name='类型')  # Field name made lowercase.
 
     class Meta:
         managed = False

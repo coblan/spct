@@ -64,12 +64,12 @@ class PcMenu(BaseEngine):
              'submenu': [
                  {'label': _('Tb Balance Log'), 'url': page('maindb.balancelog'),
                   'visible': can_touch(TbBalancelog, crt_user), },
-                 {'label': _('Charge Flow'), 'url': page('ChargeFlow'), 'visible': can_touch(TbChargeflow, crt_user), },
-                 {'label': '充值方式', 'url': page('ChargeType'), 'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
+                 # {'label': _('Charge Flow'), 'url': page('ChargeFlow'), 'visible': can_touch(TbChargeflow, crt_user), },
+                 {'label': '充值渠道', 'url': page('ChargeType'), 'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
                  {'label': '充值记录', 'url': page('Recharge'), 'visible': can_touch(TbRecharge, crt_user), },
                  {'label': '提现记录', 'url': page('Withdraw'), 'visible': can_touch(TbWithdraw, crt_user), },
                  # {'label':_('Tb Trans'),'url':page('maindb.trans'),'icon':fa('fa-home')},
-                 {'label': _('Tb Channel'), 'url': page('maindb.channel'), 'visible': can_touch(TbChannel, crt_user), },
+                 # {'label': _('Tb Channel'), 'url': page('maindb.channel'), 'visible': can_touch(TbChannel, crt_user), },
              ]},
 
             {'label': _('Games'), 'icon': fa('fa-globe'), 'visible': True,

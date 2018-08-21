@@ -22,7 +22,9 @@ class WithdrawPage(TablePage):
             dc = {
                 'accountid': 120,
                 'createtime': 150,
-                'apollomsg': 200
+                'apollomsg': 200,
+                'memo':120,
+                'apollocode':150
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])

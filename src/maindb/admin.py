@@ -22,7 +22,7 @@ from .admin_basic_data import admin_oddtypegroup
 from .admin_riskcontrol import admin
 from . import update_cache
 
-from .money import admin_chargetype
+from .money import chargetype
 from .money import admin
 from .money import recharge
 from .money import withdraw
