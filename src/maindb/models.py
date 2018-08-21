@@ -1731,7 +1731,7 @@ class TbPaychanneljoinlevel(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     paychannelid = models.ForeignKey(to='TbPaychannel', db_column='PayChannelId',
                                      db_constraint=False)  # Field name made lowercase.
-    accountlevel = models.IntegerField(db_column='AccountLevel')  # Field name made lowercase.
+    accountlevel = models.IntegerField(db_column='AccountLevel',verbose_name='用户等级')  # Field name made lowercase.
 
     class Meta:
         managed = False

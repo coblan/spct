@@ -45,6 +45,14 @@ class ChargeTypePage(TablePage):
             dc['channelid'] = inst.paychannelid.paychannelid
             return dc
 
+        class filters(RowFilter):
+            names = ['accountlevel']
+
+            def dict_head(self, head):
+                if head['name']=='accountlevel':
+                    head['options']=getVipOptions()
+                return head
+
 
 class ChargeTypeForm(ModelFields):
     field_sort = ['accountlevel', 'paychannel']
@@ -70,13 +78,9 @@ class ChargeTypeForm(ModelFields):
 
     def dict_head(self, head):
         if head['name'] == 'accountlevel':
-            level = TbSetting.objects.get(settingname='Static:VIPTOTier')
-            level_dc = json.loads(level.settingvalue)
-            # print(level_dc)
-            options = [{'value': x['VipLv'], 'label': x['Memo']} for x in level_dc]
             head['editor'] = 'sim_select'
             head['placeholder'] = '请选择'
-            head['options'] = options
+            head['options'] = getVipOptions()
 
         return head
 
@@ -85,6 +89,11 @@ class ChargeTypeForm(ModelFields):
             TbPaychanneljoinlevel.objects.update_or_create(accountlevel=self.kw['accountlevel'], paychannelid_id=i)
         return self.instance
 
+def getVipOptions():
+    level = TbSetting.objects.get(settingname='Static:VIPTOTier')
+    level_dc = json.loads(level.settingvalue)
+    options = [{'value': x['VipLv'], 'label': x['Memo']} for x in level_dc]
+    return options
 
 director.update({
     'ChargeType': ChargeTypePage.tableCls,
