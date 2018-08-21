@@ -7,11 +7,11 @@ from .models import TbAccount, TbBalancelog, TbLoginlog, TbTrans, TbTicketmaster
 from .status_code import *
 from .account_admin import AccountPage
 from .member import admin_bankcard
-from .money import admin_chargetype
+
 from .admin_games import admin
 # from .ticket_admin import TicketMasterPage
 # from .money_admin import BalancelogPage,TransPage,ChannelPage
-from .money import admin
+
 from .marketing import admin
 from .report import admin
 from .admin_basic_data import admin_oddtypegroup
@@ -21,6 +21,11 @@ from .admin_basic_data import admin_oddtypegroup
 
 from .admin_riskcontrol import admin
 from . import update_cache
+
+from .money import admin_chargetype
+from .money import admin
+from .money import recharge
+from .money import withdraw
 
 
 # Register your models here.
