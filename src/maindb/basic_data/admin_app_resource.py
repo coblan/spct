@@ -1,6 +1,6 @@
 # encoding:utf-8
 
-from ..models import TbAppresource
+from maindb.models import TbAppresource
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, ModelFields
 import re
 class AppResource(TablePage):
@@ -16,7 +16,8 @@ class AppResource(TablePage):
         
         def dict_head(self, head): 
             dc={
-                'md5':150,
+                'name':150,
+                'md5':240,
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])

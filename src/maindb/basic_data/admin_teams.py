@@ -4,8 +4,8 @@ from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
      TabPage,RowSearch,RowSort,RowFilter,field_map,model_to_name
 from helpers.director.model_func.dictfy import model_to_name
-from ..models import TbTeams
-from ..status_code import *
+from maindb.models import TbTeams
+from maindb.status_code import *
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import re
@@ -14,7 +14,7 @@ from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.model_func.cus_fields.cus_picture import PictureProc
 import os
-from .proc_image import procImage
+from maindb.marketing.proc_image import procImage
 
 class TeamsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -59,9 +59,9 @@ class TeamsPage(TablePage):
         
         def dict_head(self, head): 
             dc = {
-                'enname': 100,
-                'saenname': 120,
-                'leaguename': 100,
+                'enname': 160,
+                'saenname': 160,
+                'leaguename': 150,
                 'icon': 280,
             }
             if dc.get(head['name']):

@@ -2,12 +2,12 @@
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import ModelTable,TablePage,page_dc,RowSort,RowFilter, RowSearch
-from ..models import TbMatches,TbTickets,TbTicketstake
+from ..models import TbMatches
 from django.db.models.aggregates import Count,Sum
 from django.db.models import F
 from helpers.director.base_data import director
 
-class TicketSingleByMatchPage(TablePage):
+class MatchesSummaryPage(TablePage):
     template = 'jb_admin/table.html'
     def get_label(self):
         return '赛事投注状况'
@@ -62,13 +62,12 @@ class TicketSingleByMatchPage(TablePage):
                 'team_zh':160,
                 'statuscode':60,
                 'nums_stake':120,
-                
+                'matchdate':150,
+                'statuscode':80,
                 'nums_account':120,
                 'sum_betamount':120,
                 'sum_betoutcome':120,
-                'sum_profit':120,
-
-                
+                'sum_profit':120
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])     
@@ -114,9 +113,9 @@ class TicketSingleByMatchPage(TablePage):
             range_fields=['matchdate']
 
 director.update({
-    'match.viewbymatch':TicketSingleByMatchPage.tableCls
+    'match.viewbymatch':MatchesSummaryPage.tableCls
 })
 
 page_dc.update({
-    'maindb.TicketSingleByMatch':TicketSingleByMatchPage
+    'maindb.MatchesSummary':MatchesSummaryPage
 })

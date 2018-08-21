@@ -8,18 +8,18 @@ from .status_code import *
 from .member.account_admin import AccountPage
 from .member import admin_bankcard
 
-from .admin_games import admin
+from .matches import admin,matches,ticket_admin,matches_summary
 # from .ticket_admin import TicketMasterPage
 # from .money_admin import BalancelogPage,TransPage,ChannelPage
 
 from .marketing import admin
 from .report import admin
-from .admin_basic_data import admin_oddtypegroup
+from .basic_data import admin_oddtypegroup,admin_league,admin_teams,admin_app_resource,admin_TbCurrency
 
 # from .banner_admin import BannerPage
-# from .admin_games import ViewTicketSingleByMatch,matchs
+# from .matches import ViewTicketSingleByMatch,matchs
 
-from .admin_riskcontrol import admin
+from .riskcontrol import admin
 from . import update_cache
 
 from .money import chargetype

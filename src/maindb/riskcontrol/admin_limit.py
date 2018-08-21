@@ -1,7 +1,7 @@
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowSearch, ModelFields, RowFilter, field_map, \
      model_to_name
 from ..models import TbLimit, TbMatches, TbOddstypegroup
-from ..admin_riskcontrol.blanklist import AccountSelect
+from ..riskcontrol.blanklist import AccountSelect
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from django import forms

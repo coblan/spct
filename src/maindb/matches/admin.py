@@ -1,8 +1,5 @@
 from .ticket_admin import *
-from .ViewTicketSingleByMatch import *
-from .matches import *
-from .admin_odds import * 
-from . import admin_league
+from .admin_odds import *
 
 from helpers.director.access.permit_data import model_full_permit, model_to_name, add_permits
 permits = [ 

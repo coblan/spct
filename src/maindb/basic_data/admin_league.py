@@ -3,7 +3,7 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, 
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from helpers.director.model_func.field_procs.dotStrArray import DotStrArrayProc
 
-from ..models import TbTournament, TbOddstypegroup
+from maindb.models import TbTournament, TbOddstypegroup
 
 class League(TablePage):
     template = 'jb_admin/table.html'

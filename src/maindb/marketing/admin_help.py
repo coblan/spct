@@ -61,7 +61,7 @@ class HelpPage(TablePage):
         def dict_head(self, head):
             dc={
                 'title':250,
-        
+                'mtype':300
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])

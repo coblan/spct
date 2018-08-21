@@ -5,7 +5,7 @@ from .marketing.admin_help import get_mtype_options
 from .marketing.gen_help_file import gen_help_file
 from .marketing.gen_notice import gen_notice_file
 from .marketing.gen_activity_file import gen_activity_file
-from .admin_games.matches import get_special_bet_value,save_special_bet_value_proc
+from .matches.matches import get_special_bet_value,save_special_bet_value_proc
 import requests
 import json
 from .redisInstance import redisInst
