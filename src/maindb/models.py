@@ -1772,12 +1772,12 @@ class TbWithdraw(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
     bankcardid = models.IntegerField(db_column='BankCardId')  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=500, blank=True, null=True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',choices=WITHDRAW_STATUS)  # Field name made lowercase.
     apollomsg = models.CharField(db_column='ApolloMsg', max_length=100, blank=True,
                                  null=True)  # Field name made lowercase.
     apollocode = models.CharField(db_column='ApolloCode', max_length=100, blank=True,
                                   null=True)  # Field name made lowercase.
-    amounttype = models.IntegerField(db_column='AmountType',verbose_name='类型')  # Field name made lowercase.
+    amounttype = models.IntegerField(db_column='AmountType',verbose_name='类型',choices=AMOUNT_TYPE)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1793,12 +1793,12 @@ class TbRecharge(models.Model):
     account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
     channelname = models.CharField(db_column='ChannelName', max_length=50)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',choices=RECHARGE_STATUS)  # Field name made lowercase.
     # channelid = models.IntegerField(db_column='ChannelID')  # Field name made lowercase.
     channelid = models.ForeignKey(to=TbPaychannel,db_constraint=False, db_column='ChannelID',verbose_name='充值渠道')  # Field name made lowercase.
     apollomsg = models.CharField(db_column='ApolloMsg', max_length=500)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=150)  # Field name made lowercase.
-    amounttype = models.IntegerField(db_column='AmountType')  # Field name made lowercase.
+    amounttype = models.IntegerField(db_column='AmountType',choices=AMOUNT_TYPE)  # Field name made lowercase.
     apolloinfo = models.CharField(db_column='ApolloInfo', max_length=800, blank=True,
                                   null=True)  # Field name made lowercase.
 
