@@ -102,8 +102,8 @@ class PcMenu(BaseEngine):
 
             {'label': _('Report'), 'icon': fa('fa-bar-chart'), 'visible': True,
              'submenu': [
-                 {'label': _('Channel'), 'url': page('maindb.report.channel'),
-                  'visible': can_touch(TbChannel, crt_user), },
+                 #{'label': _('Channel'), 'url': page('maindb.report.channel'),
+                  #'visible': can_touch(TbChannel, crt_user), },
                  {'label': _('Account'), 'url': page('maindb.report.account'),
                   'visible': can_touch(TbAccount, crt_user), },
              ]},

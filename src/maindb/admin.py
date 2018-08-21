@@ -111,7 +111,7 @@ class AccountLoginPage(TablePage):
 
 page_dc.update({
     'maindb.account': AccountPage,
-    'maindb.account.edit': AccountEditGroup,
+    #'maindb.account.edit': AccountEditGroup,
     # 'maindb.ticketmaster':TicketMasterPage,
     # 'maindb.balancelog':BalancelogPage,
     # 'maindb.trans':TransPage,

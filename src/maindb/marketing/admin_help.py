@@ -51,6 +51,13 @@ class HelpPage(TablePage):
         #pop_edit_field='title'
         fields_sort=['title','mtype','status']
         
+        def get_operation(self): 
+            ops = super().get_operation()
+            for op in ops:
+                if op['name'] == 'add_new':
+                    op['tab_name'] = 'help_form'
+            return ops
+        
         def dict_head(self, head):
             dc={
                 'title':250,
