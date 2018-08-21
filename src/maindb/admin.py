@@ -14,12 +14,12 @@ from .matches import admin,matches,ticket_admin,matches_summary
 
 from .marketing import admin
 from .report import admin
-from .admin_basic_data import admin_oddtypegroup
+from .basic_data import admin_oddtypegroup,admin_league,admin_teams,admin_app_resource,admin_TbCurrency
 
 # from .banner_admin import BannerPage
 # from .matches import ViewTicketSingleByMatch,matchs
 
-from .admin_riskcontrol import admin
+from .riskcontrol import admin
 from . import update_cache
 
 from .money import chargetype
