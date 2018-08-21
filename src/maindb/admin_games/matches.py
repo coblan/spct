@@ -26,7 +26,7 @@ class MatchsPage(TablePage):
         exclude = []
         fields_sort = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate', 'period1score', 'matchscore',
                        'winner', 'statuscode',
-                       'isrecommend', 'livebet', 'ishidden', 'marketstatus']
+                       'isrecommend', 'livebet', 'ishidden', 'marketstatus','closelivebet']
         pop_edit_field = 'matchid'
 
         class filters(RowFilter):
@@ -83,8 +83,13 @@ class MatchsPage(TablePage):
                 {'fun': 'recommendate', 'editor': 'com-op-btn', 'label': '推介'},
                 {'fun': 'un_recommendate', 'editor': 'com-op-btn', 'label': '取消推介'},
 
-                {'fun': 'livebet', 'editor': 'com-op-btn', 'label': '滚球'},
-                {'fun': 'un_livebet', 'editor': 'com-op-btn', 'label': '取消滚球'},
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '滚球', 'field': 'closelivebet',
+                 'value': 0 },
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消滚球', 'field': 'closelivebet', 'value': 1 },
+
+
+                # {'fun': 'livebet', 'editor': 'com-op-btn', 'label': '滚球'},
+                # {'fun': 'un_livebet', 'editor': 'com-op-btn', 'label': '取消滚球'},
 
                 {'fun': 'show_match', 'editor': 'com-op-btn', 'label': '开启'},
                 {'fun': 'hide_match', 'editor': 'com-op-btn', 'label': '关闭'},
@@ -97,7 +102,7 @@ class MatchsPage(TablePage):
 
         def dict_head(self, head):
             dc = {
-                'matchid': 100,
+                'matchid': 70,
                 'matchdate': 140,
                 'tournamentzh': 160,
                 'team1zh': 120,

@@ -1,6 +1,6 @@
 from .ticket_admin import *
 from .ViewTicketSingleByMatch import *
-from .matchs import *
+from .matches import *
 from .admin_odds import * 
 from . import admin_league
 

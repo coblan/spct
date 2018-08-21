@@ -743,9 +743,9 @@ class TbMatches(models.Model):
                                   null=True)  # Field name made lowercase.
     ishidden = models.BooleanField(db_column='IsHidden', default=False,
                                    verbose_name='关闭')  # Field name made lowercase.
-    marketstatus = models.IntegerField(db_column='MarketStatus')  # Field name made lowercase.
-
-    # maxsinglepayout = models.IntegerField(db_column='MaxSinglePayout', blank=True, null=True)  # Field name made lowercase.
+    marketstatus = models.IntegerField(db_column='MarketStatus',choices=MATCH_MARKETSTATUS)  # Field name made lowercase.
+    satimestam = models.DateTimeField(db_column='SaTimestam')  # Field name made lowercase.
+    closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True,choices=MATCH_CLOSELIVEBET)  # Field name made lowercase.
 
     class Meta:
         managed = False
