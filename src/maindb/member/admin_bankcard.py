@@ -13,9 +13,6 @@ class BankCard(TablePage):
     class tableCls(ModelTable):
         model = TbBankcard
         exclude = ['account','banktypeid']
-        pop_edit_field = 'bankcardid'
-
-        # filters=['active']
 
         def getExtraHead(self):
             return [
