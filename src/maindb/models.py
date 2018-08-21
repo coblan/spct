@@ -1769,7 +1769,7 @@ class TbWithdraw(models.Model):
     orderid = models.CharField(db_column='OrderID', max_length=50)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount,db_constraint=False, db_column='AccountID',verbose_name='昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=50)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
     bankcardid = models.IntegerField(db_column='BankCardId')  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=500, blank=True, null=True)  # Field name made lowercase.
     status = models.IntegerField(db_column='Status')  # Field name made lowercase.
@@ -1791,7 +1791,7 @@ class TbRecharge(models.Model):
     # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',db_constraint=False,verbose_name='昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
     channelname = models.CharField(db_column='ChannelName', max_length=50)  # Field name made lowercase.
     status = models.IntegerField(db_column='Status')  # Field name made lowercase.
     # channelid = models.IntegerField(db_column='ChannelID')  # Field name made lowercase.
