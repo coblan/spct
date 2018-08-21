@@ -4,8 +4,8 @@ from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
      TabPage,RowSearch,RowSort,RowFilter,field_map,model_to_name
 from helpers.director.model_func.dictfy import model_to_name
-from ..models import TbCurrency
-from ..status_code import *
+from maindb.models import TbCurrency
+from maindb.status_code import *
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import re

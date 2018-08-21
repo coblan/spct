@@ -7,7 +7,7 @@ from django.db.models.aggregates import Count,Sum
 from django.db.models import F
 from helpers.director.base_data import director
 
-class TicketSingleByMatchPage(TablePage):
+class MatchesSummaryPage(TablePage):
     template = 'jb_admin/table.html'
     def get_label(self):
         return '赛事投注状况'
@@ -113,9 +113,9 @@ class TicketSingleByMatchPage(TablePage):
             range_fields=['matchdate']
 
 director.update({
-    'match.viewbymatch':TicketSingleByMatchPage.tableCls
+    'match.viewbymatch':MatchesSummaryPage.tableCls
 })
 
 page_dc.update({
-    'maindb.TicketSingleByMatch':TicketSingleByMatchPage
+    'maindb.MatchesSummary':MatchesSummaryPage
 })

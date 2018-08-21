@@ -82,7 +82,7 @@ class NoticePage(TablePage):
 class NoticeForm(ModelFields):
     class Meta:
         model = TbNotice
-        exclude=[]
+        exclude=['createuser']
         
     def dict_head(self, head):
         if head['name'] =='createuser':

@@ -1,6 +1,6 @@
 # encoding:utf-8
 
-from ..models import TbAppresource
+from maindb.models import TbAppresource
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, ModelFields
 import re
 class AppResource(TablePage):
