@@ -7,6 +7,7 @@ from .models import TbAccount, TbBalancelog, TbLoginlog, TbTrans, TbTicketmaster
 from .status_code import *
 from .account_admin import AccountPage
 from .member import admin_bankcard
+from .money import admin_chargetype
 from .admin_games import admin
 # from .ticket_admin import TicketMasterPage
 # from .money_admin import BalancelogPage,TransPage,ChannelPage

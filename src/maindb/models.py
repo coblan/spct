@@ -1719,9 +1719,45 @@ class TbBankcard(models.Model):
     banktypename = models.CharField(db_column='BankTypeName', max_length=150)  # Field name made lowercase.
     bankprovince = models.CharField(db_column='BankProvince', max_length=150)  # Field name made lowercase.
     banksitename = models.CharField(db_column='BankSiteName', max_length=250)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime',auto_now=True)  # Field name made lowercase.
-    active = models.BooleanField(db_column='Active',verbose_name='状态')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now=True)  # Field name made lowercase.
+    active = models.BooleanField(db_column='Active', verbose_name='状态')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'TB_BankCard'
+
+
+class TbPaychanneljoinlevel(models.Model):
+    tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    paychannelid = models.ForeignKey(to='TbPaychannel', db_column='PayChannelId',
+                                     db_constraint=False)  # Field name made lowercase.
+    accountlevel = models.IntegerField(db_column='AccountLevel')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_PayChannelJoinLevel'
+
+
+class TbSetting(models.Model):
+    settingname = models.CharField(db_column='settingName', primary_key=True,
+                                   max_length=200)  # Field name made lowercase.
+    settingvalue = models.TextField(db_column='settingValue')  # Field name made lowercase. This field type is a guess.
+    memo = models.CharField(max_length=500, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Setting'
+
+
+class TbPaychannel(models.Model):
+    paychannelid = models.AutoField(db_column='PayChannelId', primary_key=True)  # Field name made lowercase.
+    channelname = models.CharField(db_column='ChannelName', max_length=50)  # Field name made lowercase.
+    channeltype = models.CharField(db_column='ChannelType', max_length=50)  # Field name made lowercase.
+    active = models.BooleanField(db_column='Active')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_PayChannel'
+
+    def __str__(self):
+        return self.channeltype
