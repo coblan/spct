@@ -1709,16 +1709,16 @@ class Whiteuserlist(models.Model):
 class TbBankcard(models.Model):
     bankcardid = models.AutoField(db_column='BankCardId', primary_key=True)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountId',
-                                  db_constraint=False)  # Field name made lowercase.
+                                  db_constraint=False,verbose_name='用户昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=50)  # Field name made lowercase.
     banktypeid = models.IntegerField(db_column='BankTypeID')  # Field name made lowercase.
     cardno = models.CharField(db_column='CardNo', max_length=50)  # Field name made lowercase.
     bankaccountname = models.CharField(db_column='BankAccountName', max_length=50)  # Field name made lowercase.
-    bankaccountmobil = models.CharField(db_column='BankAccountMobil', max_length=50)  # Field name made lowercase.
+    bankaccountmobil = models.CharField(db_column='BankAccountMobil', max_length=50,verbose_name='银行预留手机号')  # Field name made lowercase.
     bankcity = models.CharField(db_column='BankCity', max_length=50)  # Field name made lowercase.
     banktypename = models.CharField(db_column='BankTypeName', max_length=150)  # Field name made lowercase.
     bankprovince = models.CharField(db_column='BankProvince', max_length=150)  # Field name made lowercase.
-    banksitename = models.CharField(db_column='BankSiteName', max_length=250)  # Field name made lowercase.
+    banksitename = models.CharField(db_column='BankSiteName', max_length=250,verbose_name='支行名称')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True)  # Field name made lowercase.
     active = models.BooleanField(db_column='Active', verbose_name='状态')  # Field name made lowercase.
 

@@ -56,7 +56,7 @@ class NoticePage(TablePage):
         def dict_head(self, head):
             dc={
                 'title':180,
-                'createtime':100,
+                'createtime':150,
                 'createuser':100,
             }
             if dc.get(head['name']):
@@ -71,7 +71,7 @@ class NoticePage(TablePage):
         
         def get_operation(self):
             operations= ModelTable.get_operation(self)
-            operations.append({'fun':'update_notice_file','label':'更新通知文件','editor':'com-op-btn',})
+            operations.append({'fun':'update_notice_file','label':'更新缓存','editor':'com-op-btn',})
             return operations        
         
         def get_context(self):

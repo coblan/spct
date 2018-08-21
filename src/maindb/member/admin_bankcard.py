@@ -12,7 +12,7 @@ class BankCard(TablePage):
 
     class tableCls(ModelTable):
         model = TbBankcard
-        exclude = ['account']
+        exclude = ['account','banktypeid']
         pop_edit_field = 'bankcardid'
 
         # filters=['active']
@@ -24,8 +24,13 @@ class BankCard(TablePage):
 
         def dict_head(self, head):
             dc = {
+                'accountid':150,
                 'cardno': 200,
-                'bankaccountname': 140
+                'bankaccountname': 140,
+                'createtime':150,
+                'bankaccountmobil':120,
+                'banktypename': 120,
+                'banksitename':150
             }
             if head['name'] in dc:
                 head['width'] = dc.get(head['name'])

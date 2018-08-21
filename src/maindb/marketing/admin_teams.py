@@ -59,9 +59,9 @@ class TeamsPage(TablePage):
         
         def dict_head(self, head): 
             dc = {
-                'enname': 100,
-                'saenname': 120,
-                'leaguename': 100,
+                'enname': 160,
+                'saenname': 160,
+                'leaguename': 150,
                 'icon': 280,
             }
             if dc.get(head['name']):

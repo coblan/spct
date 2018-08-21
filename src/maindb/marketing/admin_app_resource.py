@@ -16,7 +16,8 @@ class AppResource(TablePage):
         
         def dict_head(self, head): 
             dc={
-                'md5':150,
+                'name':150,
+                'md5':240,
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])
