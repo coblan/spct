@@ -60,14 +60,14 @@ class TicketMasterPage(TablePage):
     class tableCls(ModelTable):
         model = TbTicketmaster
         exclude = []
-        fields_sort = ['ticketid', 'account', 'stakeamount', 'betamount', 'parlayrule', 'status',
+        fields_sort = ['ticketid', 'accountid', 'stakeamount', 'betamount', 'parlayrule', 'status',
                        'winbet', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus',
                        'settletime']
 
         def dict_head(self, head):
-            if head['name'] in ['account', 'createtime', 'settletime']:
+            if head['name'] in ['createtime', 'settletime']:
                 head['width'] = 150
-            elif head['name'] in ['betamount', 'betoutcome', 'turnover', 'bonus']:
+            elif head['name'] in ['status','accountid','betamount', 'betoutcome', 'turnover', 'bonus']:
                 head['width'] = 100
             else:
                 head['width'] = 80
@@ -164,12 +164,13 @@ class TicketstakeTable(TicketTabBase):
     """ 子注单 """
     model = TbTicketstake
     exclude = []
-    fields_sort = ['tournament', 'matchid', 'match', 'specialbetvalue', 'odds', 'confirmodds', 'realodds',
+    fields_sort = ['tournament', 'matchid', 'matchname', 'specialbetvalue', 'odds', 'confirmodds', 'realodds',
                    'status', 'createtime', 'updatetime']
 
     def getExtraHead(self):
         return [
             {'name': 'matchid', 'label': 'matchid', },
+            {'name': 'matchname', 'label': '比赛','width': 200,  },
             {'name': 'tournament', 'label': 'tournament', 'width': 120, }
         ]
 
@@ -178,7 +179,7 @@ class TicketstakeTable(TicketTabBase):
         return {
             'matchid': match.matchid,
             'tournament': match.tournamentzh,
-            'match': '{team1zh} VS {team2zh}'.format(team1zh=match.team1zh, team2zh=match.team2zh)
+            'matchname': '{team1zh} VS {team2zh}'.format(team1zh=match.team1zh, team2zh=match.team2zh)
         }
         # return {
         # 'matchid':{'label':'{tournamentzh} {team1zh}VS{team2zh}'.format(tournamentzh=match.tournamentzh,
