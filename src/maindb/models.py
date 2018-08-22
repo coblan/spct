@@ -328,7 +328,7 @@ class TbCategory(models.Model):
 class TbChannel(models.Model):
     channelid = models.IntegerField(db_column='ChannelID', verbose_name='渠道ID',
                                     primary_key=True)  # Field name made lowercase.
-    channel = models.IntegerField(db_column='Channel', verbose_name=_('Channel'), max_length=40,
+    channel = models.IntegerField(db_column='Channel', verbose_name=_('Channel'),
                                   unique=True)  # Field name made lowercase.
     channelname = models.CharField(db_column='ChannelName', verbose_name=_('Channel Name'),
                                    max_length=30)  # Field name made lowercase.
@@ -717,7 +717,7 @@ class TbMatches(models.Model):
                                max_length=20)  # Field name made lowercase.
     matchscore = models.CharField(db_column='MatchScore', max_length=8, verbose_name=_('Match Score'),
                                   blank=True)  # Field name made lowercase.
-    winner = models.IntegerField(db_column='Winner', verbose_name=_('Winner'))  # Field name made lowercase.
+    winner = models.IntegerField(db_column='Winner', verbose_name=_('Winner'),choices=WINNER)  # Field name made lowercase.
     statuscode = models.IntegerField(db_column='StatusCode', verbose_name=_('Status'), choices= MATCH_STATUS)  # Field name made lowercase.
     roundinfo = models.IntegerField(db_column='RoundInfo', verbose_name=_('Round'))  # 轮数 Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',
@@ -747,9 +747,9 @@ class TbMatches(models.Model):
                                   null=True)  # Field name made lowercase.
     ishidden = models.BooleanField(db_column='IsHidden', default=False,
                                    verbose_name='关闭')  # Field name made lowercase.
-    marketstatus = models.IntegerField(db_column='MarketStatus',choices=MATCH_MARKETSTATUS)  # Field name made lowercase.
+    marketstatus = models.IntegerField(db_column='MarketStatus',choices=MATCH_MARKETSTATUS,verbose_name='市场状态')  # Field name made lowercase.
     satimestam = models.DateTimeField(db_column='SaTimestam')  # Field name made lowercase.
-    closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True,choices=MATCH_CLOSELIVEBET)  # Field name made lowercase.
+    closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True,choices=MATCH_CLOSELIVEBET,verbose_name='关闭滚球')  # Field name made lowercase.
 
     class Meta:
         managed = False

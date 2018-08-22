@@ -40,7 +40,6 @@ class RechargePage(TablePage):
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = ['合计'] + self.footer
-            # self.footer = [dc.get('total_amount')]
             return query
 
         def get_context(self):
