@@ -79,8 +79,8 @@ class TbAccount(models.Model):
                                       verbose_name='代理余额')  # Field name made lowercase.
     parentid = models.IntegerField(db_column='ParentID')  # Field name made lowercase.
 
-    isenablewithdraw = models.BooleanField(db_column='IsEnableWithdraw')  # Field name made lowercase.
-    sumrechargecount = models.IntegerField(db_column='SumRechargeCount')  # Field name made lowercase.
+    isenablewithdraw = models.BooleanField(db_column='IsEnableWithdraw',verbose_name='允许提现')  # Field name made lowercase.
+    sumrechargecount = models.IntegerField(db_column='SumRechargeCount',verbose_name='充值次数')  # Field name made lowercase.
     fundspassword = models.CharField(db_column='FundsPassword', max_length=255, blank=True, null=True)  # Field name made lowercase.    
 
     class Meta:
