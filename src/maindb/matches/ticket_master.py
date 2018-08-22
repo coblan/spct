@@ -8,6 +8,7 @@ from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatches
 from ..status_code import *
 from django.db.models import Q, fields, Sum
 import re
+from django.db import connections
 
 
 class TicketMasterPage(TablePage):
@@ -101,16 +102,10 @@ class TicketMasterPage(TablePage):
         
         def get_operation(self): 
             return [
-                {'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '作废', 'field': 'password','value': 30,'one_row': True, },
+                {'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '作废', 'field': 'status','value': 30,'one_row': True, },
             ]
         
-        
-        # def dict_row(self, inst):
-        # account_type = dict(ACCOUNT_TYPE)
-        # return {
-        # 'amount':unicode(inst.amount),
-        # 'accounttype': account_type.get(inst.accounttype)
-        # }
+
         class search(RowSearch):
             names = ['ticketid', 'account']
 
@@ -147,6 +142,22 @@ class TicketMasterPage(TablePage):
             names = ['stakeamount', 'betamount', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus',
                      'settletime']
 
+
+class TicketMasterForm(ModelFields):
+    class Meta:
+        model = TbTicketmaster
+        fields = ['status']
+    
+    def save_form(self): 
+        if 'status' in self.changed_data and self.cleaned_data['status'] == 30:
+            sql = 'exec [dbo].[SP_CancelTicket] %(ticketid)s,30' % {'ticketid': self.instance.ticketid}
+            cursor = connections['Sports'].cursor()
+            cursor.execute(sql)
+            cursor.commit()
+        else:
+            super().save_form()
+        return self.instance
+        
 
 class TicketTabBase(ModelTable):
     def __init__(self, *args, **kws):
@@ -293,6 +304,8 @@ class MatchForm(ModelFields):
 # model_dc[TbMatches] = {'fields':MatchForm}
 director.update({
     'games.ticketmaster': TicketMasterPage.tableCls,
+    'games.ticketmaster.edit': TicketMasterForm,
+    
     'games.TicketstakeTable': TicketstakeTable,
     'games.TicketparlayTable': TicketparlayTable,
 

@@ -219,8 +219,19 @@ class AccoutModifyAmount(ModelFields):
     def clean_dict(self, dc):
         if dc.get('add_amount'):
             add_amount = Decimal(dc.get('add_amount', 0))
+            self.before_amount =  Decimal(dc['amount'])
+            self.changed_amount =  add_amount
             dc['amount'] = Decimal(dc['amount']) + add_amount
         return dc
+    
+    def save_form(self): 
+        
+        super().save_form()
+        if 'amount' in self.changed_data:
+            cashflow = 1 if self.changed_amount > 0 else 0
+            TbBalancelog.objects.create(account = self.instance.account, beforeamount = self.before_amount, 
+                                        amount =self.changed_amount, afteramount = self.instance.amount, creater = 'system', 
+                                        memo = '调账', accountid = self.instance.accountid, categoryid = 4, cashflow = cashflow)
 
 
 class AccountTabBase(ModelTable):

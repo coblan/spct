@@ -1555,17 +1555,18 @@ var mix_table_data = {
                 }
 
                 //var rows =[]
-                ex.each(self.selected, function (row) {
+                var cache_rows = ex.copy(self.selected);
+                ex.each(cache_rows, function (row) {
                     row[kws.field] = kws.value;
-
-                    //rows.push({pk:row.pk,
-                    //    _director_name:row._director_name,
-                    //    kws.field:kws.value}
-                    //)
                 });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
+                var post_data = [{ fun: 'save_rows', rows: cache_rows }];
                 cfg.show_load();
                 ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+
+                    ex.each(self.selected, function (row) {
+                        row[kws.field] = kws.value;
+                    });
+
                     cfg.hide_load(2000);
                 });
             },
@@ -1584,13 +1585,14 @@ var mix_table_data = {
                 });
             },
             ajax_row: function ajax_row(kws) {
-                // kws 是head : {app:'maindb',ajax_fun:"get_money'}
+                // kws 是head : {'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_money_pswd', 'editor': 'com-op-btn', 'label': '重置资金密码', },
                 if (self.selected.length == 0) {
                     cfg.showMsg('请选择一行数据');
                     return;
                 }
                 var row = self.selected[0];
                 var post_data = [{ fun: kws.ajax_fun, row: row }];
+
                 cfg.show_load();
                 ex.post('/d/ajax/' + kws.app, JSON.stringify(post_data), function (resp) {
                     cfg.hide_load(2000);

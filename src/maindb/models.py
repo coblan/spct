@@ -235,7 +235,7 @@ class TbBalancelog(models.Model):
     memo = models.CharField(db_column='Memo', verbose_name='备注', max_length=50, blank=True,
                             null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(verbose_name=_('Change Time'),
-                                      db_column='CreateTime')  # Field name made lowercase.
+                                      db_column='CreateTime', auto_now= True)  # Field name made lowercase.
     creater = models.CharField(db_column='Creater', verbose_name=_('Operator'), max_length=20, blank=True,
                                null=True)  # Field name made lowercase.
     accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
