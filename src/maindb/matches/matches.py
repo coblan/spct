@@ -112,12 +112,13 @@ class MatchsPage(TablePage):
                 'statuscode': 60,
                 'roundinfo': 60,
                 'isrecommend': 50,
-                'livebet': 50,
+                'livebet': 80,
+                'ishidden':50,
                 'categoryid': 80,
                 'currentperiodstart': 150,
                 'maxsinglepayout': 120,
                 'marketstatus': 100,
-                'closelivebet':80
+                'closelivebet':70
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
