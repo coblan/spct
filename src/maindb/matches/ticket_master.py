@@ -60,14 +60,14 @@ class TicketMasterPage(TablePage):
     class tableCls(ModelTable):
         model = TbTicketmaster
         exclude = []
-        fields_sort = ['ticketid', 'account', 'stakeamount', 'betamount', 'parlayrule', 'status',
+        fields_sort = ['ticketid', 'accountid', 'stakeamount', 'betamount', 'parlayrule', 'status',
                        'winbet', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus',
                        'settletime']
 
         def dict_head(self, head):
-            if head['name'] in ['account', 'createtime', 'settletime']:
+            if head['name'] in ['createtime', 'settletime']:
                 head['width'] = 150
-            elif head['name'] in ['betamount', 'betoutcome', 'turnover', 'bonus']:
+            elif head['name'] in ['status','accountid','betamount', 'betoutcome', 'turnover', 'bonus']:
                 head['width'] = 100
             else:
                 head['width'] = 80
