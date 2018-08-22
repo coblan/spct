@@ -1440,7 +1440,7 @@ class TbTicketstake(models.Model):
     confirmoddsid_ori = models.BigIntegerField(db_column='ConfirmOddsID_ori',
                                                verbose_name='结算值')  # Field name made lowercase.
     voidfactor = models.CharField(db_column='VoidFactor', max_length=10)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', verbose_name='状态')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', verbose_name='状态',choices=TicketStake_STATUS)  # Field name made lowercase.
     rawdata = models.CharField(db_column='RawData', max_length=3000)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', verbose_name='建立时间')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', verbose_name='更新时间')  # Field name made lowercase.
