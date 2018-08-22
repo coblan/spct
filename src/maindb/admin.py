@@ -8,7 +8,7 @@ from .status_code import *
 from .member.account_admin import AccountPage
 from .member import admin_bankcard
 
-from .matches import admin,matches,ticket_admin,matches_summary
+from .matches import admin,matches,ticket_master,matches_summary
 # from .ticket_admin import TicketMasterPage
 # from .money_admin import BalancelogPage,TransPage,ChannelPage
 

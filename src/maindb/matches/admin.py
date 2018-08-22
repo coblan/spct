@@ -1,4 +1,4 @@
-from .ticket_admin import *
+from .ticket_master import *
 from .admin_odds import *
 
 from helpers.director.access.permit_data import model_full_permit, model_to_name, add_permits
