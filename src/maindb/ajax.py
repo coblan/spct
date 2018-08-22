@@ -11,6 +11,7 @@ import json
 from .redisInstance import redisInst
 from helpers.func.random_str import get_str
 import hashlib
+from django.db import connections
 
 def get_global():
     return globals()
@@ -102,7 +103,14 @@ def modify_money_pswd(row):
     pswd_db_str = m2.hexdigest().upper()
     account.fundspassword = pswd_db_str
     account.save()
+
+def invalid_odds(row): 
+    sql = 'exec [dbo].[SP_CancelTicket] %(ticketid)s,30;' % row
+    cursor = connections['Sports'].cursor()
+    cursor.execute(sql)
     
+    
+
 
 
 

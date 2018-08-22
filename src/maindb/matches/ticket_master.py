@@ -98,7 +98,13 @@ class TicketMasterPage(TablePage):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
             return ctx
-
+        
+        def get_operation(self): 
+            return [
+                {'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '作废', 'field': 'password','value': 30,'one_row': True, },
+            ]
+        
+        
         # def dict_row(self, inst):
         # account_type = dict(ACCOUNT_TYPE)
         # return {
