@@ -31,7 +31,7 @@ class BalancelogPage(TablePage):
         def dict_head(self, head):
             dc={
                 'account':120,
-                'categoryid':60,
+                'categoryid':100,
                 'beforeamount':120,
                 'amount':120,
                 'afteramount':120,

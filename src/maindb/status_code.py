@@ -6,10 +6,6 @@ ACCOUNT_TYPE = (
     (2, '代理')
 )
 
-BALANCE_CAT = (
-    (20002, '派彩'),
-)
-
 ONLINE_STATUS = (
     (1, '启用'),
     (0, '离线')

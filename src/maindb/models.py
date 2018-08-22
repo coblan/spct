@@ -10,6 +10,7 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from django.db import models
 from django.contrib.auth.models import User
+
 from .status_code import *
 from .cus_models_fields import CusPictureField, CusFileField
 from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
@@ -223,8 +224,8 @@ class TbBalancelog(models.Model):
     # accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
     account = models.CharField(db_column='Account', verbose_name=_('Account'),
                                max_length=20)  # Field name made lowercase.
-    categoryid = models.IntegerField(verbose_name='类型', db_column='CategoryID',
-                                     choices=BALANCE_CAT)  # Field name made lowercase.
+    categoryid = models.ForeignKey(to='TbMoneyCategories', verbose_name='类型', db_column='CategoryID',
+                                   db_constraint=False)  # Field name made lowercase.
     cashflow = models.SmallIntegerField(db_column='CashFlow')  # Field name made lowercase.
     beforeamount = CusDecimalField(db_column='BeforeAmount', verbose_name=_('BeforeAmount'), max_digits=18,
                                    decimal_places=4)  # Field name made lowercase.
@@ -869,16 +870,15 @@ class TbMessages(models.Model):
 
 
 class TbMoneyCategories(models.Model):
-    balancecategoriesid = models.AutoField(db_column='BalanceCategoriesId',
-                                           primary_key=True)  # Field name made lowercase.
-    categoryid = models.IntegerField(db_column='CategoryID')  # Field name made lowercase.
+    categoryid = models.IntegerField(db_column='CategoryID', primary_key=True)  # Field name made lowercase.
     cashflow = models.SmallIntegerField(db_column='CashFlow')  # Field name made lowercase.
     categoryname = models.CharField(db_column='CategoryName', max_length=20)  # Field name made lowercase.
-    categorytype = models.SmallIntegerField(db_column='CategoryType')  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'TB_Money_Categories'
+    def __str__(self):
+        return self.categoryname
 
 
 class TbNetworkerror(models.Model):
@@ -1440,7 +1440,8 @@ class TbTicketstake(models.Model):
     confirmoddsid_ori = models.BigIntegerField(db_column='ConfirmOddsID_ori',
                                                verbose_name='结算值')  # Field name made lowercase.
     voidfactor = models.CharField(db_column='VoidFactor', max_length=10)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', verbose_name='状态',choices=TicketStake_STATUS)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', verbose_name='状态',
+                                 choices=TicketStake_STATUS)  # Field name made lowercase.
     rawdata = models.CharField(db_column='RawData', max_length=3000)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', verbose_name='建立时间')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', verbose_name='更新时间')  # Field name made lowercase.

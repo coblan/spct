@@ -251,17 +251,11 @@ class AccountBalanceTable(WithAccoutInnFilter):
             'beforeamount': 110,
             'afteramount': 110,
             'createtime': 110,
-
+            'categoryid':120
         }
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])
         return head
-
-    def dict_row(self, inst):
-        ba_cat = dict(BALANCE_CAT)
-        return {
-            'categoryid': ba_cat.get(inst.categoryid)
-        }
 
     class sort(RowSort):
         names = ['createtime']
