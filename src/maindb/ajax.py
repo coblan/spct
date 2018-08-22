@@ -1,6 +1,6 @@
 from .member.account_admin import AccountBalanceTable,AccountTransTable,AccountTicketTable,AccountLoginTable,\
      AccoutWithdrawLimitLogTable
-from .models import TbBanner
+from .models import TbBanner, TbAccount
 from .marketing.admin_help import get_mtype_options
 from .marketing.gen_help_file import gen_help_file
 from .marketing.gen_notice import gen_notice_file
@@ -9,6 +9,8 @@ from .matches.matches import get_special_bet_value,save_special_bet_value_proc
 import requests
 import json
 from .redisInstance import redisInst
+from helpers.func.random_str import get_str
+import hashlib
 
 def get_global():
     return globals()
@@ -61,49 +63,6 @@ def save_special_bet_value(matchid, match_opened,oddstype,specialbetvalue):
     return save_special_bet_value_proc(matchid,match_opened, oddstype,
                                        specialbetvalue)
 
-
-#def get_balance_log(account_pk,user,searchargs={}):
-    #dc={'account_pk':account_pk}
-    #dc.update(searchargs)
-    #actable = AccountBalanceTable.gen_from_search_args(dc, user)
-    #return actable.get_data_context()
-
-#def get_account_trans(account_pk,user,searchargs={}):
-    #dc={'account_pk':account_pk}
-    #dc.update(searchargs)
-    #actable = AccountTransTable.gen_from_search_args(dc, user)
-    ##(pk=account_pk,row_filter=searchargs,crt_user=user)
-    #return actable.get_data_context()
-
-
-#def get_account_ticket(account_pk,user,searchargs={}):
-    #dc={'account_pk':account_pk}
-    #dc.update(searchargs)
-    #actable = AccountTicketTable.gen_from_search_args(dc, user)
-    ##(pk=account_pk,row_filter=searchargs,crt_user=user)
-    #return actable.get_data_context()
-
-#def get_account_login(account_pk,user,searchargs={}):
-    #dc={'account_pk':account_pk}
-    #dc.update(searchargs)
-    #actable = AccountLoginTable.gen_from_search_args(dc, user)
-    ##(pk=account_pk,row_filter=searchargs,crt_user=user)
-    #return actable.get_data_context()
-
-#def get_account_withdrawlimitlog(account_pk,user,searchargs={}):
-    #dc={'account_pk':account_pk}
-    #dc.update(searchargs)
-    #actable = AccoutWithdrawLimitLogTable.gen_from_search_args(dc, user)
-    ##(pk=account_pk,row_filter=searchargs,crt_user=user)
-    #return actable.get_data_context()
-
-#def get_account_tokencode(account_pk,user,searchargs={}):
-    #dc={'account_pk':account_pk}
-    #dc.update(searchargs)
-    #actable = AccountTokenCodeTable.gen_from_search_args(dc, user)
-    ##(pk=account_pk,row_filter=searchargs,crt_user=user)
-    #return actable.get_data_context()
-
 def set_banner_status(rows,status):
     for row in rows:
         banner = TbBanner.objects.get(pk= row['pk'])
@@ -111,3 +70,40 @@ def set_banner_status(rows,status):
         banner.save()
     #redisInst.delete('App:Cache:index:banners')
     return {'status':'success'}
+
+def modify_pswd(row): 
+    "*废弃* 修改用户密码"
+    account = TbAccount.objects.get(pk = row.get('pk'))
+    pswd = get_str(length= 6)
+    m1 =  hashlib.md5()
+    m1.update(pswd.encode("utf-8"))
+    pswd = m1.hexdigest()
+    salt = ':69257765ACB34A08A6D0D978E9CF39ED'
+    pswd_str = pswd + salt
+    m2 = hashlib.md5()
+    m2.update(pswd_str.encode("utf-8"))#参数必须是byte类型，否则报Unicode-objects must be encoded before 
+    pswd_db_str = m2.hexdigest().upper()
+    account.password = pswd_db_str
+    account.save()
+    
+
+def modify_money_pswd(row): 
+    "*废弃* 修改用户金融密码"
+    account = TbAccount.objects.get(pk = row.get('pk'))
+    pswd = get_str(length= 6)  
+    m1 =  hashlib.md5()
+    m1.update(pswd.encode("utf-8"))
+    pswd = m1.hexdigest()
+    
+    salt = ':69257765ACB34A08A6D0D978E9CF39ED'
+    pswd_str = pswd + salt
+    m2 = hashlib.md5()
+    m2.update(pswd_str.encode("utf-8"))#参数必须是byte类型，否则报Unicode-objects must be encoded before 
+    pswd_db_str = m2.hexdigest().upper()
+    account.fundspassword = pswd_db_str
+    account.save()
+    
+
+
+
+    

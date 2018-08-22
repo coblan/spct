@@ -12,7 +12,9 @@ from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
 import re
 from django.db.models import Q
-
+from helpers.func.random_str import get_str
+import hashlib
+from decimal import Decimal
 
 # Register your models here.
 
@@ -156,10 +158,17 @@ class AccountPage(TablePage):
             names = ['account', 'amount', 'bonusrate', 'agentamount', 'createtime']
 
         def get_operation(self):
+            modifyer = AccoutModifyAmount(crt_user= self.crt_user)
             return [
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '启用', 'field': 'status',
                  'value': 1, },
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'field': 'status', 'value': 0, }
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'field': 'status', 'value': 0, }, 
+                #{'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_pswd', 'editor': 'com-op-btn', 'label': '重置密码',  },
+                #{'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_money_pswd', 'editor': 'com-op-btn', 'label': '重置资金密码', },
+                {'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '重置密码', 'field': 'password','value': 1,'one_row': True, },
+                {'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword', 'value': 1,'one_row': True,},
+                
+                {'fun': 'selected_pop_set_and_save',  'editor': 'com-op-btn', 'label': '加减余额', 'fields_ctx': modifyer.get_head_context()},
             ]
 
 
@@ -167,9 +176,38 @@ class AccoutBaseinfo(ModelFields):
     field_sort = ['account', 'nickname', 'status', 'agent', 'verify', 'viplv', 'createtime']
     readonly = ['createtime']
 
+    def clean_dict(self, dc): 
+        if dc.get('password') == 1:
+            dc['password'] = gen_pwsd()
+   
+        if dc.get('fundspassword') == 1:
+            dc['fundspassword'] = gen_pwsd()
+     
+        super().clean_dict(dc)
+        return dc
+    
+
+    
     class Meta:
         model = TbAccount
-        exclude = ['password', 'amount', 'actimestamp', 'agent', 'phone', 'gender', 'points', 'codeid', 'parentid']
+        exclude = ['amount', 'actimestamp', 'agent', 'phone', 'gender', 'points', 'codeid', 'parentid', 'sumrechargecount']
+
+class AccoutModifyAmount(ModelFields):
+    field_sort = ['accountid', 'nickname', 'amount','add_amount']
+    readonly = ['accountid', 'nickname', 'amount']
+    class Meta:
+        model = TbAccount
+        fields = ['amount', 'nickname', 'accountid', 'amount', 'agentamount']
+    def getExtraHeads(self): 
+        return [
+            {'name': 'add_amount','label': '调整金额','editor': 'number','fv_rule': 'range(-50000~50000)',}
+        ]
+    
+    def clean_dict(self, dc): 
+        if dc.get('add_amount'):
+            add_amount = Decimal(dc.get('add_amount', 0))
+            dc['amount'] = Decimal(dc['amount']) + add_amount
+        return dc
 
 
 class AccountTabBase(ModelTable):
@@ -177,9 +215,6 @@ class AccountTabBase(ModelTable):
         ModelTable.__init__(self, *args, **kws)
         accountid = self.kw.get('accountid')
         self.accountid = accountid
-        # if accountid:
-        # account = TbAccount.objects.get(accountid=accountid)
-        # self.accountid = account.accountid
 
     def inn_filter(self, query):
         return query.filter(accountid=self.accountid)
@@ -369,6 +404,7 @@ director.update({
     'account': AccountPage.tableCls,
     'account.edit': AccoutBaseinfo,
     'account.base.edit': AccoutBaseinfo,
+    'account.amount.edit': AccoutModifyAmount,
 
     'account.log': AccountLoginTable,
     'account.ticketmaster': AccountTicketTable,
@@ -397,3 +433,20 @@ permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount),
            ]
 
 add_permits(permits)
+
+
+
+def gen_pwsd(): 
+    pswd = get_str(length= 6)
+    print(pswd)
+    
+    m1 =  hashlib.md5()
+    m1.update(pswd.encode("utf-8"))
+    pswd = m1.hexdigest()
+    
+    salt = ':69257765ACB34A08A6D0D978E9CF39ED'
+    pswd_str = pswd + salt
+    m2 = hashlib.md5()
+    m2.update(pswd_str.encode("utf-8"))#参数必须是byte类型，否则报Unicode-objects must be encoded before 
+    pswd_db_str = m2.hexdigest().upper()
+    return pswd_db_str    

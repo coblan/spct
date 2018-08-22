@@ -53,7 +53,7 @@ class TbAccount(models.Model):
     accountid = models.IntegerField(db_column='AccountID', primary_key=True,
                                     verbose_name='账号ID')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.
-    password = models.CharField(db_column='Password', max_length=255)  # Field name made lowercase.
+    password = models.CharField(db_column='Password', max_length=255, blank = True)  # Field name made lowercase.
     nickname = models.CharField(db_column='NickName', verbose_name='昵称', max_length=100, blank=True,
                                 null=True)  # Field name made lowercase.
     status = models.SmallIntegerField(db_column='Status', choices=ACCOUNT_STATUS, null=False,
@@ -78,6 +78,10 @@ class TbAccount(models.Model):
     agentamount = models.DecimalField(db_column='AgentAmount', max_digits=18, decimal_places=4, blank=True, null=True,
                                       verbose_name='代理余额')  # Field name made lowercase.
     parentid = models.IntegerField(db_column='ParentID')  # Field name made lowercase.
+
+    isenablewithdraw = models.BooleanField(db_column='IsEnableWithdraw')  # Field name made lowercase.
+    sumrechargecount = models.IntegerField(db_column='SumRechargeCount')  # Field name made lowercase.
+    fundspassword = models.CharField(db_column='FundsPassword', max_length=255, blank=True, null=True)  # Field name made lowercase.    
 
     class Meta:
         managed = False

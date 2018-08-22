@@ -179,6 +179,7 @@ class MatchForm(ModelFields):
             'LiveBet': inst.livebet,
         }
         updateMatchMongo(dc)
+        
 
         # if 'isrecommend' in self.changed_data:
         # redisInst.delete('App:Cache:index:matches')
