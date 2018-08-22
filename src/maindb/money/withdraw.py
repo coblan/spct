@@ -22,8 +22,8 @@ class WithdrawPage(TablePage):
                 'accountid': 120,
                 'createtime': 150,
                 'apollomsg': 200,
-                'memo':120,
-                'apollocode':150
+                'memo': 120,
+                'apollocode': 150
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -47,7 +47,7 @@ class WithdrawPage(TablePage):
             return ctx
 
         class sort(RowSort):
-            names = ['amount','createtime']
+            names = ['amount', 'createtime']
 
         class search(RowSearch):
             def get_context(self):

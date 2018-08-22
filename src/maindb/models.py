@@ -324,7 +324,7 @@ class TbCategory(models.Model):
 class TbChannel(models.Model):
     channelid = models.IntegerField(db_column='ChannelID', verbose_name='渠道ID',
                                     primary_key=True)  # Field name made lowercase.
-    channel = models.IntegerField(db_column='Channel', verbose_name=_('Channel'), max_length=40,
+    channel = models.IntegerField(db_column='Channel', verbose_name=_('Channel'),
                                   unique=True)  # Field name made lowercase.
     channelname = models.CharField(db_column='ChannelName', verbose_name=_('Channel Name'),
                                    max_length=30)  # Field name made lowercase.
