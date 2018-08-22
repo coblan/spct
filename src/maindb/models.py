@@ -713,7 +713,7 @@ class TbMatches(models.Model):
                                max_length=20)  # Field name made lowercase.
     matchscore = models.CharField(db_column='MatchScore', max_length=8, verbose_name=_('Match Score'),
                                   blank=True)  # Field name made lowercase.
-    winner = models.IntegerField(db_column='Winner', verbose_name=_('Winner'))  # Field name made lowercase.
+    winner = models.IntegerField(db_column='Winner', verbose_name=_('Winner'),choices=WINNER)  # Field name made lowercase.
     statuscode = models.IntegerField(db_column='StatusCode', verbose_name=_('Status'), choices= MATCH_STATUS)  # Field name made lowercase.
     roundinfo = models.IntegerField(db_column='RoundInfo', verbose_name=_('Round'))  # 轮数 Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',
@@ -745,7 +745,7 @@ class TbMatches(models.Model):
                                    verbose_name='关闭')  # Field name made lowercase.
     marketstatus = models.IntegerField(db_column='MarketStatus',choices=MATCH_MARKETSTATUS)  # Field name made lowercase.
     satimestam = models.DateTimeField(db_column='SaTimestam')  # Field name made lowercase.
-    closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True,choices=MATCH_CLOSELIVEBET)  # Field name made lowercase.
+    closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True,choices=MATCH_CLOSELIVEBET,verbose_name='关闭滚球')  # Field name made lowercase.
 
     class Meta:
         managed = False

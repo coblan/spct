@@ -26,7 +26,7 @@ class MatchsPage(TablePage):
         exclude = []
         fields_sort = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate', 'period1score', 'matchscore',
                        'winner', 'statuscode',
-                       'isrecommend', 'livebet', 'ishidden', 'marketstatus','closelivebet']
+                       'isrecommend', 'livebet', 'ishidden','closelivebet','marketstatus']
         pop_edit_field = 'matchid'
 
         class filters(RowFilter):
@@ -103,7 +103,7 @@ class MatchsPage(TablePage):
         def dict_head(self, head):
             dc = {
                 'matchid': 70,
-                'matchdate': 140,
+                'matchdate': 120,
                 'tournamentzh': 160,
                 'team1zh': 120,
                 'team2zh': 120,
@@ -111,17 +111,20 @@ class MatchsPage(TablePage):
                 'winner': 60,
                 'statuscode': 60,
                 'roundinfo': 60,
-                'isrecommend': 60,
-                'livebet': 60,
+                'isrecommend': 50,
+                'livebet': 50,
                 'categoryid': 80,
                 'currentperiodstart': 150,
                 'maxsinglepayout': 120,
                 'marketstatus': 100,
+                'closelivebet':80
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             if head['name'] == 'matchdate':
                 head['editor'] = 'com-table-label-shower'
+            if head['name']=='closelivebet':
+                head['editor']='com-table-bool-shower'
             # if head['name'] == 'matchid':
             # head['editor'] = 'com-table-switch-to-tab'
             # head['tab_name']='special_bet_value'
