@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from helpers.director.shortcut import RowSearch, RowSort, RowFilter, director
 from ..models import TbBalancelog
-from .admin_chargeflow import *
+from .chargeflow import *
 
 
 class BalancelogPage(TablePage):

@@ -1746,8 +1746,8 @@ class TbBankcard(models.Model):
 class TbPaychanneljoinlevel(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     paychannelid = models.ForeignKey(to='TbPaychannel', db_column='PayChannelId',
-                                     db_constraint=False, verbose_name='渠道')  # Field name made lowercase.
-    accountlevel = models.IntegerField(db_column='AccountLevel', verbose_name='用户等级')  # Field name made lowercase.
+                                     db_constraint=False, verbose_name='渠道', )  # Field name made lowercase.
+    accountlevel = models.IntegerField(db_column='AccountLevel', verbose_name='用户等级', )  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1790,7 +1790,7 @@ class TbWithdraw(models.Model):
     account = models.CharField(db_column='Account', max_length=50)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', verbose_name='创建时间')  # Field name made lowercase.
     bankcardid = models.IntegerField(db_column='BankCardId')  # Field name made lowercase.
-    memo = models.CharField(db_column='Memo', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=500, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', choices=WITHDRAW_STATUS)  # Field name made lowercase.
     apollomsg = models.CharField(db_column='ApolloMsg', max_length=100, blank=True,
                                  null=True)  # Field name made lowercase.
@@ -1805,8 +1805,8 @@ class TbWithdraw(models.Model):
 
 
 class TbRecharge(models.Model):
-    rechargeid = models.AutoField(db_column='RechargeId', primary_key=True)  # Field name made lowercase.
-    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    rechargeid = models.AutoField(db_column='RechargeId', primary_key=True,verbose_name='序号')  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,verbose_name='金额')  # Field name made lowercase.
     orderid = models.CharField(db_column='OrderID', max_length=50)  # Field name made lowercase.
     # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID', db_constraint=False,
@@ -1819,8 +1819,8 @@ class TbRecharge(models.Model):
     channelid = models.ForeignKey(to=TbPaychannel, db_constraint=False, db_column='ChannelID',
                                   verbose_name='充值渠道')  # Field name made lowercase.
     apollomsg = models.CharField(db_column='ApolloMsg', max_length=500)  # Field name made lowercase.
-    memo = models.CharField(db_column='Memo', max_length=150)  # Field name made lowercase.
-    amounttype = models.IntegerField(db_column='AmountType', choices=AMOUNT_TYPE)  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=150,verbose_name='备注')  # Field name made lowercase.
+    amounttype = models.IntegerField(db_column='AmountType', choices=AMOUNT_TYPE,verbose_name='类型')  # Field name made lowercase.
     apolloinfo = models.CharField(db_column='ApolloInfo', max_length=800, blank=True,
                                   null=True)  # Field name made lowercase.
 

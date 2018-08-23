@@ -1,7 +1,7 @@
-from .member.account_admin import AccountBalanceTable,AccountTransTable,AccountTicketTable,AccountLoginTable,\
+from .member.account import AccountBalanceTable,AccountTransTable,AccountTicketTable,AccountLoginTable,\
      AccoutWithdrawLimitLogTable
 from .models import TbBanner, TbAccount
-from .marketing.admin_help import get_mtype_options
+from .marketing.help_center import get_mtype_options
 from .marketing.gen_help_file import gen_help_file
 from .marketing.gen_notice import gen_notice_file
 from .marketing.gen_activity_file import gen_activity_file

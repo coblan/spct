@@ -4,6 +4,7 @@ from django.utils.translation import ugettext as _
 from django.contrib import admin
 from helpers.director.shortcut import TablePage, ModelTable, model_dc, page_dc, ModelFields, FieldsPage, \
     TabPage, RowSearch, RowSort, RowFilter, model_to_name, director
+from maindb.money.balancelog import BalancelogPage
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTrans, TbTicketmaster, TbWithdrawlimitlog
 from ..status_code import *
 from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
@@ -137,8 +138,8 @@ class AccountPage(TablePage):
                 'account': 100,
                 'nickname': 100,
                 'viplv': 80,
-                'amount':100,
-                'agentamount':100,
+                'amount': 100,
+                'agentamount': 100,
                 'status': 60,
                 'createtime': 150
             }
@@ -162,7 +163,7 @@ class AccountPage(TablePage):
             names = ['accountid', 'account', 'nickname']
 
         class sort(RowSort):
-            names = ['account', 'amount', 'bonusrate', 'agentamount', 'createtime','sumrechargecount']
+            names = ['account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount']
 
         def get_operation(self):
             modifyer = AccoutModifyAmount(crt_user=self.crt_user)
@@ -185,7 +186,7 @@ class AccountPage(TablePage):
 
 class AccoutBaseinfo(ModelFields):
     field_sort = ['account', 'nickname', 'status', 'agent', 'verify', 'viplv', 'createtime']
-    readonly = ['createtime']
+    readonly = ['createtime', 'account', 'nickname']
 
     def clean_dict(self, dc):
         if dc.get('password') == 1:
@@ -219,19 +220,19 @@ class AccoutModifyAmount(ModelFields):
     def clean_dict(self, dc):
         if dc.get('add_amount'):
             add_amount = Decimal(dc.get('add_amount', 0))
-            self.before_amount =  Decimal(dc['amount'])
-            self.changed_amount =  add_amount
+            self.before_amount = Decimal(dc['amount'])
+            self.changed_amount = add_amount
             dc['amount'] = Decimal(dc['amount']) + add_amount
         return dc
-    
-    def save_form(self): 
-        
+
+    def save_form(self):
+
         super().save_form()
         if 'amount' in self.changed_data:
             cashflow = 1 if self.changed_amount > 0 else 0
-            TbBalancelog.objects.create(account = self.instance.account, beforeamount = self.before_amount, 
-                                        amount =self.changed_amount, afteramount = self.instance.amount, creater = 'system', 
-                                        memo = '调账', accountid = self.instance.accountid, categoryid = 4, cashflow = cashflow)
+            TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
+                                        amount=self.changed_amount, afteramount=self.instance.amount, creater='system',
+                                        memo='调账', accountid=self.instance.accountid, categoryid=4, cashflow=cashflow)
 
 
 class AccountTabBase(ModelTable):
@@ -253,27 +254,20 @@ class WithAccoutInnFilter(ModelTable):
             return query
 
 
-class AccountBalanceTable(WithAccoutInnFilter):
-    model = TbBalancelog
-    exclude = []
-
-    def dict_head(self, head):
-        dc = {
-            'beforeamount': 110,
-            'afteramount': 110,
-            'createtime': 110,
-            'categoryid':120
-        }
-        if dc.get(head['name']):
-            head['width'] = dc.get(head['name'])
-        return head
-
-    class sort(RowSort):
-        names = ['createtime']
+class AccountBalanceTable(BalancelogPage.tableCls):
+    def inn_filter(self, query):
+        query = ModelTable.inn_filter(self, query)
+        if self.kw.get('accountid'):
+            return query.filter(accountid=self.kw.get('accountid'))
+        else:
+            return query
 
     class filters(RowFilter):
-        names = ['categoryid']
-        range_fields = [{'name': 'createtime', 'type': 'date'}]
+        names = []
+        range_fields = ['createtime']
+
+    class search(RowSearch):
+        names = []
 
 
 class AccountTransTable(WithAccoutInnFilter):
@@ -284,7 +278,7 @@ class AccountTransTable(WithAccoutInnFilter):
 class AccountTicketTable(WithAccoutInnFilter):
     """投注记录"""
     model = TbTicketmaster
-    exclude = []
+    exclude = ['rawdata']
 
     def dict_head(self, head):
         dc = {
@@ -293,7 +287,9 @@ class AccountTicketTable(WithAccoutInnFilter):
             'parlaycount': 110,
             'reststakecount': 110,
             'possibleturnover': 160,
-
+            'createtime': 150,
+            'settletime': 150,
+            'orderid': 120
         }
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])
@@ -308,6 +304,9 @@ class AccountLoginTable(WithAccoutInnFilter):
         dc = {
             'deviceversion': 120,
             'devicename': 120,
+            'devicecode':200,
+            'deviceip':100,
+            'createtime':150
         }
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])

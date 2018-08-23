@@ -567,7 +567,7 @@ msgstr "串关规则"
 
 #: .\maindb\models.py:1091
 msgid "AllowAuto"
-msgstr "允许自动"
+msgstr "接收最优赔率"
 
 #: .\maindb\models.py:1093
 msgid "WinBet"

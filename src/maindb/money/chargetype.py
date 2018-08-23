@@ -79,7 +79,8 @@ class ChargeTypeForm(ModelFields):
     def dict_head(self, head):
         if head['name'] == 'accountlevel':
             head['editor'] = 'sim_select'
-            head['placeholder'] = '请选择'
+            head['fv_rule'] = ''
+            head['placeholder'] = '请选择' 
             head['options'] = getVipOptions()
 
         return head
