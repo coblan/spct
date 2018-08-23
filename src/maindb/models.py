@@ -1827,3 +1827,15 @@ class TbRecharge(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Recharge'
+
+
+class TbParameterinfo(models.Model):
+    tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    tag = models.CharField(db_column='Tag', max_length=50)  # Field name made lowercase.
+    value = models.CharField(db_column='Value', max_length=50)  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    isactive = models.BooleanField(db_column='IsActive')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_ParameterInfo'

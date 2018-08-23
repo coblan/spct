@@ -49,6 +49,8 @@ class PcMenu(BaseEngine):
                  {'label': _('Teams'), 'url': page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user), },
                  {'label': _('AppResource'), 'url': page('AppResource'),
                   'visible': can_touch(TbAppresource, crt_user), },
+                  {'label': '系统参数', 'url': page('Parameter'), 'visible': can_touch(TbTeams, crt_user), },
+                 
 
              ]},
 

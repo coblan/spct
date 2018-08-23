@@ -15,6 +15,10 @@ import * as maxpayout from  './maxpayout.js'
 
 import * as validator from  './validator_rule.js'
 
+// field input
+
+import * as parameter from  './parameter.js'
+
 
 
 

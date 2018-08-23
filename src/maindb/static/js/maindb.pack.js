@@ -1615,7 +1615,52 @@ var _validator_rule = __webpack_require__(12);
 
 var validator = _interopRequireWildcard(_validator_rule);
 
+var _parameter = __webpack_require__(27);
+
+var parameter = _interopRequireWildcard(_parameter);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var parameter = {
+    props: ['row', 'head'],
+    template: '<div style="position: relative">\n            <component :is="head.subhead.editor" :head="head.subhead" :row="row"></component>\n            <div style="position: absolute;left: 26em;top:0;width: 4em">\n                <input type="checkbox" :id="\'id_wrap_\'+head.name" v-model=\'is_active\'>\n\t\t\t    <label :for="\'id_wrap_\'+head.name"><span>\u6FC0\u6D3B</span></label>\n\t\t\t </div>\n\t\t\t</div>',
+
+    computed: {
+        is_active: {
+            set: function set(v) {
+                var self = this;
+                if (v) {
+                    if (!ex.isin(this.head.name, this.row.active_names)) {
+                        this.row.active_names.push(this.head.name);
+                    }
+                } else {
+                    ex.remove(this.row.active_names, function (name) {
+                        return name == self.head.name;
+                    });
+                }
+            },
+            get: function get() {
+                return ex.isin(this.head.name, this.row.active_names);
+            }
+        }
+    }
+
+};
+
+Vue.component('com-field-parameter', parameter);
+
+var ping_lue = {
+    props: ['row', 'head'],
+    template: '<div style="position: relative">\n               <input type="number" v-model="row.WithdrawIntervalMinutes" style="width: 6em">\n               <span>\u5206 </span>\n               <input type="number" v-model="row.WithdrawIntervalCount" style="width: 4em">\n               <span>\u6B21</span>\n\t\t\t</div>'
+};
+Vue.component('com-field-pinglue', ping_lue);
 
 /***/ })
 /******/ ]);

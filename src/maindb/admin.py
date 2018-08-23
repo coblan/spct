@@ -15,7 +15,7 @@ from .matches import admin,matches,ticket_master,matches_summary
 from .marketing import admin
 from .report import admin
 from .basic_data import admin_oddtypegroup,admin_league,admin_teams,admin_app_resource,admin_TbCurrency
-
+from .basic_data import admin_parameter
 # from .banner_admin import BannerPage
 # from .matches import ViewTicketSingleByMatch,matchs
 
