@@ -186,7 +186,7 @@ class AccountPage(TablePage):
 
 class AccoutBaseinfo(ModelFields):
     field_sort = ['account', 'nickname', 'status', 'agent', 'verify', 'viplv', 'createtime']
-    readonly = ['createtime']
+    readonly = ['createtime', 'account', 'nickname']
 
     def clean_dict(self, dc):
         if dc.get('password') == 1:
@@ -261,13 +261,13 @@ class AccountBalanceTable(BalancelogPage.tableCls):
             return query.filter(accountid=self.kw.get('accountid'))
         else:
             return query
+
     class filters(RowFilter):
-        names=[]
+        names = []
         range_fields = ['createtime']
 
     class search(RowSearch):
-        names=[]
-
+        names = []
 
 
 class AccountTransTable(WithAccoutInnFilter):
@@ -278,7 +278,7 @@ class AccountTransTable(WithAccoutInnFilter):
 class AccountTicketTable(WithAccoutInnFilter):
     """投注记录"""
     model = TbTicketmaster
-    exclude = []
+    exclude = ['rawdata']
 
     def dict_head(self, head):
         dc = {
@@ -287,7 +287,9 @@ class AccountTicketTable(WithAccoutInnFilter):
             'parlaycount': 110,
             'reststakecount': 110,
             'possibleturnover': 160,
-
+            'createtime': 150,
+            'settletime': 150,
+            'orderid': 120
         }
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])
@@ -302,6 +304,9 @@ class AccountLoginTable(WithAccoutInnFilter):
         dc = {
             'deviceversion': 120,
             'devicename': 120,
+            'devicecode':200,
+            'deviceip':100,
+            'createtime':150
         }
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])
