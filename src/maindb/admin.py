@@ -5,8 +5,8 @@ from helpers.director.shortcut import TablePage, ModelTable, model_dc, page_dc, 
     TabPage, RowSearch, RowSort, RowFilter, director
 from .models import TbAccount, TbBalancelog, TbLoginlog, TbTrans, TbTicketmaster
 from .status_code import *
-from .member.account_admin import AccountPage
-from .member import admin_bankcard
+from .member.account import AccountPage
+from .member import bankcard
 
 from .matches import admin,matches,ticket_master,matches_summary
 # from .ticket_admin import TicketMasterPage
@@ -14,7 +14,7 @@ from .matches import admin,matches,ticket_master,matches_summary
 
 from .marketing import admin
 from .report import admin
-from .basic_data import admin_oddtypegroup,admin_league,admin_teams,admin_app_resource,admin_TbCurrency
+from .basic_data import odds_typegroup,league,teams,app_resource,currency
 
 # from .banner_admin import BannerPage
 # from .matches import ViewTicketSingleByMatch,matchs
