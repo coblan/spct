@@ -66,7 +66,7 @@ class RechargePage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime']
-            names = ['status']
+            names = ['channelid','status']
 
 
 director.update({
