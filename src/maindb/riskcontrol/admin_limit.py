@@ -16,7 +16,7 @@ class MaxPayoutPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbMaxpayout
-        exclude = ['issingle']
+        exclude = []
         pop_edit_field = 'tid'
         def __init__(self, *args, **kw): 
             super().__init__(*args, **kw)
@@ -29,10 +29,10 @@ class MaxPayoutPage(TablePage):
                 {'value': 5, 'label': '等级五',}, 
             ]
         
-        def getExtraHead(self): 
-            return [
-                {'name': 'match','label': '比赛',}
-            ]
+        #def getExtraHead(self): 
+            #return [
+                #{'name': 'match','label': '比赛',}
+            #]
             
         def dict_head(self, head): 
             if head['name'] == 'relationno':
@@ -86,10 +86,9 @@ class MaxPayoutPage(TablePage):
                     return query            
             
 class MaxPayoutForm(ModelFields):
-    readonly = ['createtime', 'updatetime']
     class Meta:
         model = TbMaxpayout
-        exclude = ['issingle']
+        exclude = ['createtime', 'updatetime']
     
     extra_mixins = ['maxpayout_form_logic']
     def __init__(self, *args, **kw): 
@@ -152,6 +151,7 @@ class MaxPayoutForm(ModelFields):
             head['var_fields'] = self.var_fields
             head['keywords'] = self.keywords
             head['order'] = True
+            head['placeholder'] = '请选择'
         
         if head['name'] == 'status':
             head['check_label'] = '启用'

@@ -1,3 +1,19 @@
+var parameter_form_logic={
+    methods:{
+        save:function(){
+            var self=this
+            layer.confirm('确认要保存修改吗？', {icon: 3, title:'提示'}, function(index){
+                layer.close(index)
+
+                ex.vueSuper(self,{fun:'save'})
+
+            })
+        }
+    }
+}
+
+window.parameter_form_logic =parameter_form_logic
+
 var parameter ={
     props:['row','head'],
         template:`<div style="position: relative">

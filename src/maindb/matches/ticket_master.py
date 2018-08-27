@@ -104,7 +104,7 @@ class TicketMasterPage(TablePage):
             return [
                 {'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '作废', 'field': 'status','value': 30,
                  'row_match': 'many_row_match','match_field': 'status','match_values': [1],'match_msg': '只能选择未结算的订单',
-                 'confirm_msg': '真的作废这些注单吗?',},
+                 'confirm_msg': '确认作废这些注单吗?',},
                 ]
             #return [
                 #{'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '作废', 'field': 'status','value': 30,'one_row': True, },

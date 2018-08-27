@@ -1237,6 +1237,21 @@ window.oddstypegroup_logic = oddstypegroup_logic;
 "use strict";
 
 
+var parameter_form_logic = {
+    methods: {
+        save: function save() {
+            var self = this;
+            layer.confirm('确认要保存修改吗？', { icon: 3, title: '提示' }, function (index) {
+                layer.close(index);
+
+                ex.vueSuper(self, { fun: 'save' });
+            });
+        }
+    }
+};
+
+window.parameter_form_logic = parameter_form_logic;
+
 var parameter = {
     props: ['row', 'head'],
     template: '<div style="position: relative">\n            <component :is="head.subhead.editor" :head="head.subhead" :row="row"></component>\n            <div style="position: absolute;left: 26em;top:0;width: 4em">\n                <input type="checkbox" :id="\'id_wrap_\'+head.name" v-model=\'is_active\'>\n\t\t\t    <label :for="\'id_wrap_\'+head.name"><span>\u6FC0\u6D3B</span></label>\n\t\t\t </div>\n\t\t\t</div>',

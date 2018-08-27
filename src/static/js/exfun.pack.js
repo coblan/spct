@@ -1216,6 +1216,14 @@ var vuetool = exports.vuetool = {
         return rt;
     },
     vueExtend: function vueExtend(par, mixins) {
+        var mixins = ex.map(mixins, function (item) {
+            if (typeof item == 'string') {
+                return window[item];
+            } else {
+                return item;
+            }
+        });
+
         var real_par = $.extend({}, par);
         var orgin_mixins = real_par.mixins;
         delete real_par.mixins;

@@ -8,6 +8,7 @@ class Parameter(FieldsPage):
     
     
     class fieldsCls(Fields):
+        extra_mixins = ['parameter_form_logic']
         def get_heads(self): 
             heads =   [
                 {'name': 'IsEnableWithdraw','label': '平台提现总开关','editor': 'com-field-int-bool', 'check_label': '开启',}, 
