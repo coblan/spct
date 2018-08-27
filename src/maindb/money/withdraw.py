@@ -1,5 +1,5 @@
 # encoding:utf-8
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter
 from helpers.director.table.table import RowSearch, RowSort
 from ..models import TbWithdraw
@@ -14,7 +14,7 @@ class WithdrawPage(TablePage):
     class tableCls(ModelTable):
         model = TbWithdraw
         exclude = []
-        fields_sort = ['withdrawid', 'accountid', 'amount', 'status', 'createtime', 'amounttype', 'memo',
+        fields_sort = ['withdrawid', 'accountid', 'orderid','amount', 'status', 'createtime', 'amounttype', 'memo',
                        'apollocode', 'apollomsg']
 
         def dict_head(self, head):
@@ -51,14 +51,14 @@ class WithdrawPage(TablePage):
 
         class search(RowSearch):
             def get_context(self):
-                return {'search_tip': '昵称',
+                return {'search_tip': '昵称,订单号',
                         'editor': 'com-search-filter',
                         'name': '_q'
                         }
 
             def get_query(self, query):
                 if self.q:
-                    return query.filter(accountid__nickname__icontains=self.q)
+                    return query.filter(Q(accountid__nickname__icontains=self.q) | Q(orderid=self.q))
                 else:
                     return query
 

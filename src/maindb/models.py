@@ -1832,7 +1832,7 @@ class TbWithdraw(models.Model):
                                   verbose_name='序号')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,
                                  verbose_name='金额')  # Field name made lowercase.
-    orderid = models.CharField(db_column='OrderID', max_length=50)  # Field name made lowercase.
+    orderid = models.CharField(db_column='OrderID', max_length=50,verbose_name='订单号')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_constraint=False, db_column='AccountID',
                                   verbose_name='昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=50)  # Field name made lowercase.
@@ -1855,7 +1855,7 @@ class TbWithdraw(models.Model):
 class TbRecharge(models.Model):
     rechargeid = models.AutoField(db_column='RechargeId', primary_key=True,verbose_name='序号')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,verbose_name='金额')  # Field name made lowercase.
-    orderid = models.CharField(db_column='OrderID', max_length=50)  # Field name made lowercase.
+    orderid = models.CharField(db_column='OrderID', max_length=50,verbose_name='订单号')  # Field name made lowercase.
     # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID', db_constraint=False,
                                   verbose_name='昵称')  # Field name made lowercase.
