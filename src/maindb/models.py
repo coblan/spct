@@ -1846,6 +1846,7 @@ class TbWithdraw(models.Model):
                                   null=True)  # Field name made lowercase.
     amounttype = models.IntegerField(db_column='AmountType', verbose_name='类型',
                                      choices=AMOUNT_TYPE)  # Field name made lowercase.
+    confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,verbose_name='处理时间')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1871,6 +1872,7 @@ class TbRecharge(models.Model):
     amounttype = models.IntegerField(db_column='AmountType', choices=AMOUNT_TYPE,verbose_name='类型')  # Field name made lowercase.
     apolloinfo = models.CharField(db_column='ApolloInfo', max_length=800, blank=True,
                                   null=True)  # Field name made lowercase.
+    confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,verbose_name='处理时间')  # Field name made lowercase.
 
     class Meta:
         managed = False

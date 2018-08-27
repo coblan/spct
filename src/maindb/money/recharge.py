@@ -16,7 +16,7 @@ class RechargePage(TablePage):
         model = TbRecharge
         sort = ['createtime']
         exclude = ['account']
-        fields_sort = ['rechargeid', 'accountid','orderid', 'amount', 'status', 'createtime', 'channelid', 'amounttype', 'memo',
+        fields_sort = ['rechargeid', 'accountid','orderid', 'amount', 'status', 'createtime','confirmtime', 'channelid', 'amounttype', 'memo',
                        'apolloinfo', 'apollomsg']
 
         def dict_head(self, head):
@@ -24,6 +24,7 @@ class RechargePage(TablePage):
                 'accountid': 120,
                 'channelid': 120,
                 'createtime': 150,
+                'confirmtime': 150,
                 'apollomsg': 200
             }
             if dc.get(head['name']):
@@ -49,7 +50,7 @@ class RechargePage(TablePage):
 
 
         class sort(RowSort):
-            names = ['amount', 'createtime']
+            names = ['amount', 'createtime','confirmtime']
 
         class search(RowSearch):
             def get_context(self):
@@ -65,7 +66,7 @@ class RechargePage(TablePage):
                     return query
 
         class filters(RowFilter):
-            range_fields = ['createtime']
+            range_fields = ['createtime','confirmtime']
             names = ['channelid','status']
 
 

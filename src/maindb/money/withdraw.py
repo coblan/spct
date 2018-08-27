@@ -14,13 +14,14 @@ class WithdrawPage(TablePage):
     class tableCls(ModelTable):
         model = TbWithdraw
         exclude = []
-        fields_sort = ['withdrawid', 'accountid', 'orderid','amount', 'status', 'createtime', 'amounttype', 'memo',
+        fields_sort = ['withdrawid', 'accountid', 'orderid','amount', 'status', 'createtime','confirmtime', 'amounttype', 'memo',
                        'apollocode', 'apollomsg']
 
         def dict_head(self, head):
             dc = {
                 'accountid': 120,
                 'createtime': 150,
+                'confirmtime': 150,
                 'apollomsg': 200,
                 'memo': 120,
                 'apollocode': 150
@@ -47,7 +48,7 @@ class WithdrawPage(TablePage):
             return ctx
 
         class sort(RowSort):
-            names = ['amount', 'createtime']
+            names = ['amount', 'createtime','confirmtime']
 
         class search(RowSearch):
             def get_context(self):
@@ -63,7 +64,7 @@ class WithdrawPage(TablePage):
                     return query
 
         class filters(RowFilter):
-            range_fields = ['createtime']
+            range_fields = ['createtime','confirmtime']
             names = ['status']
 
 
