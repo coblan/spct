@@ -16,6 +16,7 @@ from django.db.models import Q
 from helpers.func.random_str import get_str
 import hashlib
 from decimal import Decimal
+from ..matches.ticket_master import TicketMasterPage
 
 
 # Register your models here.
@@ -262,9 +263,9 @@ class AccountBalanceTable(BalancelogPage.tableCls):
         else:
             return query
 
-    class filters(RowFilter):
-        names = []
-        range_fields = ['createtime']
+    #class filters(RowFilter):
+        #names = []
+        #range_fields = ['createtime']
 
     class search(RowSearch):
         names = []
@@ -275,7 +276,7 @@ class AccountTransTable(WithAccoutInnFilter):
     exclude = []
 
 
-class AccountTicketTable(WithAccoutInnFilter):
+class AccountTicketTable( WithAccoutInnFilter):
     """投注记录"""
     model = TbTicketmaster
     exclude = ['rawdata']
@@ -294,6 +295,10 @@ class AccountTicketTable(WithAccoutInnFilter):
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])
         return head
+    
+    class filters(RowFilter):
+        range_fields = ['createtime']
+        names = ['status', 'winbet']    
 
 
 class AccountLoginTable(WithAccoutInnFilter):
