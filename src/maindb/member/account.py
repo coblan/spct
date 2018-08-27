@@ -5,7 +5,7 @@ from django.contrib import admin
 from helpers.director.shortcut import TablePage, ModelTable, model_dc, page_dc, ModelFields, FieldsPage, \
     TabPage, RowSearch, RowSort, RowFilter, model_to_name, director
 from maindb.money.balancelog import BalancelogPage
-from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTrans, TbTicketmaster, TbWithdrawlimitlog
+from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTrans, TbTicketmaster, TbWithdrawlimitlog, TbBankcard
 from ..status_code import *
 from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
 import json
@@ -17,6 +17,9 @@ from helpers.func.random_str import get_str
 import hashlib
 from decimal import Decimal
 from ..matches.ticket_master import TicketMasterPage
+from ..member.bankcard import BankCard
+from ..money.recharge import  RechargePage
+from ..money.withdraw import WithdrawPage
 
 
 # Register your models here.
@@ -61,6 +64,48 @@ class AccountPage(TablePage):
              'table_ctx': AccountBalanceTable(crt_user=self.crt_user).get_head_context(),
              'visible': can_touch(TbBalancelog, self.crt_user),
              },
+            {'name': 'backcard',
+             'label': '银行卡',
+             'com': 'com_tab_table',
+             'get_data': {
+                 'fun': 'get_rows',
+                 'kws': {
+                     'director_name': UserBankCard.get_director_name(),  # model_to_name(TbBalancelog),
+                     'relat_field': 'accountid',
+                 }
+
+             },
+             'table_ctx': UserBankCard(crt_user=self.crt_user).get_head_context(),
+             'visible': True,
+             },    
+            {'name': 'UserRecharge',
+             'label': '充值记录',
+             'com': 'com_tab_table',
+             'get_data': {
+                 'fun': 'get_rows',
+                 'kws': {
+                     'director_name': UserRecharge.get_director_name(),  # model_to_name(TbBalancelog),
+                     'relat_field': 'accountid',
+                 }
+             },
+             'table_ctx': UserRecharge(crt_user=self.crt_user).get_head_context(),
+             'visible': True,
+                 }, 
+            {'name': 'UserWithdraw',
+             'label': '提现记录',
+             'com': 'com_tab_table',
+             'get_data': {
+                 'fun': 'get_rows',
+                 'kws': {
+                     'director_name': UserWithdraw.get_director_name(),  # model_to_name(TbBalancelog),
+                     'relat_field': 'accountid',
+                 }
+             },
+             'table_ctx': UserWithdraw(crt_user=self.crt_user).get_head_context(),
+             'visible': True,
+                   },
+            
+            
             # {'name':'account_trans',
             # 'label':_('Transaction Log'),
             # 'com':'com_tab_table',
@@ -271,9 +316,17 @@ class AccountBalanceTable(BalancelogPage.tableCls):
         names = []
 
 
-class AccountTransTable(WithAccoutInnFilter):
-    model = TbTrans
-    exclude = []
+class UserBankCard(BankCard.tableCls, WithAccoutInnFilter):
+    class search(RowSearch):
+        names = []
+
+class UserRecharge(RechargePage.tableCls, WithAccoutInnFilter):
+    class search(RowSearch):
+        names = []
+
+class UserWithdraw(WithdrawPage.tableCls, WithAccoutInnFilter):
+    class search(RowSearch):
+        names = []    
 
 
 class AccountTicketTable( WithAccoutInnFilter):
@@ -323,6 +376,7 @@ class AccoutWithdrawLimitLogTable(WithAccoutInnFilter):
     exclude = []
 
 
+
 # class AccountTokenCodeTable(AccountTabBase):
 ## 去掉了。
 # model=TbTokencode
@@ -364,20 +418,6 @@ class LoginLogPage(TablePage):
                 {'name': 'accountid__nickname', 'label': '用户昵称'},
                 {'name': 'accountid_id', 'label': '用户ID'}
             ]
-
-        # def get_heads(self):
-        # heads=[{
-        # 'name':'accountid__nickname',
-        # 'label':'用户昵称'
-        # }]
-        # heads2 = ModelTable.get_heads(self)
-        # heads.extend(heads2)
-        # return heads
-
-        # def permited_fields(self):
-        # fields = ModelTable.permited_fields(self)
-        # fields.append('accountid__nickname')
-        # return fields
 
         def inn_filter(self, query):
             return query.values(*self.fields_sort).order_by('-createtime')
@@ -427,10 +467,12 @@ director.update({
     'account.edit': AccoutBaseinfo,
     'account.base.edit': AccoutBaseinfo,
     'account.amount.edit': AccoutModifyAmount,
-
+    'account.backcard': UserBankCard,
+    'account.UserRecharge': UserRecharge,
+    'account.UserWithdraw': UserWithdraw,
     'account.log': AccountLoginTable,
     'account.ticketmaster': AccountTicketTable,
-    'account.trans': AccountTransTable,
+    #'account.trans': AccountTransTable,
     'account.balancelog': AccountBalanceTable,
     'account.withdrawlimitlog': AccoutWithdrawLimitLogTable,
 
