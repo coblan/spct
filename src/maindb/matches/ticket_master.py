@@ -89,7 +89,7 @@ class TicketMasterPage(TablePage):
                 'bonus': 'total_bonus'
             }
             for k in dc:
-                dc[k] = str(round(dc[k], 2))
+                dc[k] = str(round(dc.get(k, 0) or 0, 2))
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = ['合计'] + self.footer

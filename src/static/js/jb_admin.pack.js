@@ -1550,26 +1550,30 @@ var mix_table_data = {
                 if (!row_match[row_match_fun](self, kws)) {
                     return;
                 }
-                if (kws.confirm_msg) {
-                    layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
+                function bb() {
+                    var cache_rows = ex.copy(self.selected);
+                    ex.each(cache_rows, function (row) {
+                        row[kws.field] = kws.value;
+                    });
+                    var post_data = [{ fun: 'save_rows', rows: cache_rows }];
+                    cfg.show_load();
+                    ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
 
-                        var cache_rows = ex.copy(self.selected);
-                        ex.each(cache_rows, function (row) {
+                        ex.each(self.selected, function (row) {
                             row[kws.field] = kws.value;
                         });
-                        var post_data = [{ fun: 'save_rows', rows: cache_rows }];
-                        cfg.show_load();
-                        ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
 
-                            ex.each(self.selected, function (row) {
-                                row[kws.field] = kws.value;
-                            });
-
-                            cfg.hide_load(2000);
-                        });
-
-                        layer.close(index);
+                        cfg.hide_load(2000);
                     });
+                }
+
+                if (kws.confirm_msg) {
+                    layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
+                        layer.close(index);
+                        bb();
+                    });
+                } else {
+                    bb();
                 }
             },
             selected_pop_set_and_save: function selected_pop_set_and_save(kws) {

@@ -21,7 +21,6 @@ from ..member.bankcard import BankCard
 from ..money.recharge import  RechargePage
 from ..money.withdraw import WithdrawPage
 
-
 # Register your models here.
 
 class AccountPage(TablePage):
@@ -106,18 +105,6 @@ class AccountPage(TablePage):
                    },
             
             
-            # {'name':'account_trans',
-            # 'label':_('Transaction Log'),
-            # 'com':'com_tab_table',
-            # 'get_data':{
-            # 'fun':'get_rows',
-            # 'kws':{
-            # 'director_name':AccountTransTable.get_director_name(),# model_to_name(TbTrans),
-            # 'relat_field':'account',
-            # }
-            # },
-            # 'table_ctx':AccountTransTable(crt_user=self.crt_user).get_head_context()
-            # },
             {'name': 'account_ticket',
              'label': _('Ticket'),
              'com': 'com_tab_table',
@@ -329,29 +316,37 @@ class UserWithdraw(WithdrawPage.tableCls, WithAccoutInnFilter):
         names = []    
 
 
-class AccountTicketTable( WithAccoutInnFilter):
+class AccountTicketTable(TicketMasterPage.tableCls, WithAccoutInnFilter):
     """投注记录"""
-    model = TbTicketmaster
-    exclude = ['rawdata']
-
     def dict_head(self, head):
-        dc = {
-            'betoutcome': 110,
-            'stakecount': 110,
-            'parlaycount': 110,
-            'reststakecount': 110,
-            'possibleturnover': 160,
-            'createtime': 150,
-            'settletime': 150,
-            'orderid': 120
-        }
-        if dc.get(head['name']):
-            head['width'] = dc.get(head['name'])
+        head = super().dict_head(head)
+
+        if head['name'] == 'ticketid':
+            head['editor'] = ''
         return head
+    class search(RowSearch):
+        names = []      
+    #model = TbTicketmaster
+    #exclude = ['rawdata']
+
+    #def dict_head(self, head):
+        #dc = {
+            #'betoutcome': 110,
+            #'stakecount': 110,
+            #'parlaycount': 110,
+            #'reststakecount': 110,
+            #'possibleturnover': 160,
+            #'createtime': 150,
+            #'settletime': 150,
+            #'orderid': 120
+        #}
+        #if dc.get(head['name']):
+            #head['width'] = dc.get(head['name'])
+        #return head
     
-    class filters(RowFilter):
-        range_fields = ['createtime']
-        names = ['status', 'winbet']    
+    #class filters(RowFilter):
+        #range_fields = ['createtime']
+        #names = ['status', 'winbet']    
 
 
 class AccountLoginTable(WithAccoutInnFilter):
@@ -377,14 +372,6 @@ class AccoutWithdrawLimitLogTable(WithAccoutInnFilter):
 
 
 
-# class AccountTokenCodeTable(AccountTabBase):
-## 去掉了。
-# model=TbTokencode
-# exclude=[]
-# class sort(RowSort):
-# names=['tokentypeid']
-# class filters(RowFilter):
-# names=['tokentypeid']
 
 class LoginLogPage(TablePage):
     template = 'jb_admin/table.html'
