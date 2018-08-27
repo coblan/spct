@@ -37,8 +37,13 @@ class BankCard(TablePage):
             tmp = list(inst.cardno)
             tmp[0:-4] = '*' * (len(tmp) - 4)
             out_str = ''.join(tmp)
+
+            mobile = list(inst.bankaccountmobil)
+            mobile[0:-4] = '*' * (len(mobile) - 4)
+            mobile_str = ''.join(mobile)
             return {
-                'cardno': out_str
+                'cardno': out_str,
+                'bankaccountmobil':mobile_str
             }
 
         class search(RowSearch):

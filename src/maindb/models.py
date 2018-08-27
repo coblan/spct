@@ -1832,7 +1832,7 @@ class TbWithdraw(models.Model):
                                   verbose_name='序号')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,
                                  verbose_name='金额')  # Field name made lowercase.
-    orderid = models.CharField(db_column='OrderID', max_length=50)  # Field name made lowercase.
+    orderid = models.CharField(db_column='OrderID', max_length=50,verbose_name='订单号')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_constraint=False, db_column='AccountID',
                                   verbose_name='昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=50)  # Field name made lowercase.
@@ -1846,6 +1846,7 @@ class TbWithdraw(models.Model):
                                   null=True)  # Field name made lowercase.
     amounttype = models.IntegerField(db_column='AmountType', verbose_name='类型',
                                      choices=AMOUNT_TYPE)  # Field name made lowercase.
+    confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,verbose_name='处理时间')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1855,7 +1856,7 @@ class TbWithdraw(models.Model):
 class TbRecharge(models.Model):
     rechargeid = models.AutoField(db_column='RechargeId', primary_key=True,verbose_name='序号')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,verbose_name='金额')  # Field name made lowercase.
-    orderid = models.CharField(db_column='OrderID', max_length=50)  # Field name made lowercase.
+    orderid = models.CharField(db_column='OrderID', max_length=50,verbose_name='订单号')  # Field name made lowercase.
     # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID', db_constraint=False,
                                   verbose_name='昵称')  # Field name made lowercase.
@@ -1871,6 +1872,7 @@ class TbRecharge(models.Model):
     amounttype = models.IntegerField(db_column='AmountType', choices=AMOUNT_TYPE,verbose_name='类型')  # Field name made lowercase.
     apolloinfo = models.CharField(db_column='ApolloInfo', max_length=800, blank=True,
                                   null=True)  # Field name made lowercase.
+    confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,verbose_name='处理时间')  # Field name made lowercase.
 
     class Meta:
         managed = False
