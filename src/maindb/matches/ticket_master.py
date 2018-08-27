@@ -138,7 +138,7 @@ class TicketMasterPage(TablePage):
                     return query
 
         class filters(RowFilter):
-            range_fields = ['createtime']
+            range_fields = ['createtime','settletime']
             names = ['status', 'winbet']
             # range_fields=[{'name':'createtime','type':'date'},
             # {'name':'settletime','type':'date'}]
