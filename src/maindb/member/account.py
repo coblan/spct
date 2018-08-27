@@ -174,7 +174,7 @@ class AccountPage(TablePage):
                  'value': 0, },
                 # {'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_pswd', 'editor': 'com-op-btn', 'label': '重置密码',  },
                 # {'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_money_pswd', 'editor': 'com-op-btn', 'label': '重置资金密码', },
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置密码', 'field': 'password',
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置登录密码', 'field': 'password',
                  'value': 1, 'row_match': 'one_row' },
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
                  'value': 1, 'row_match': 'one_row', },
