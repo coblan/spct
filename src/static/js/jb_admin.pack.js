@@ -1418,33 +1418,36 @@ window.mix_fields_data = mix_fields_data;
 
 var nice_validator = {
     mounted: function mounted() {
-        var self = this;
-        var validator = {};
-        ex.each(this.heads, function (head) {
-            var ls = [];
-
-            if (head.fv_rule) {
-                ls.push(head.fv_rule);
-            }
-            if (head.required) {
-                if (!head.fv_rule || head.fv_rule.search('required') == -1) {
-                    // 规则不包含 required的时候，再添加上去
-                    ls.push('required');
-                }
-            }
-            validator[head.name] = ls.join(';');
-        });
-        if ($(this.$el).hasClass('field-panel')) {
-            this.nice_validator = $(this.$el).validator({
-                fields: validator
-            });
-        } else {
-            this.nice_validator = $(this.$el).find('.field-panel').validator({
-                fields: validator
-            });
-        }
+        this.update_nice();
     },
     methods: {
+        update_nice: function update_nice() {
+            var self = this;
+            var validator = {};
+            ex.each(this.heads, function (head) {
+                var ls = [];
+
+                if (head.fv_rule) {
+                    ls.push(head.fv_rule);
+                }
+                if (head.required) {
+                    if (!head.fv_rule || head.fv_rule.search('required') == -1) {
+                        // 规则不包含 required的时候，再添加上去
+                        ls.push('required');
+                    }
+                }
+                validator[head.name] = ls.join(';');
+            });
+            if ($(this.$el).hasClass('field-panel')) {
+                this.nice_validator = $(this.$el).validator({
+                    fields: validator
+                });
+            } else {
+                this.nice_validator = $(this.$el).find('.field-panel').validator({
+                    fields: validator
+                });
+            }
+        },
         isValid: function isValid() {
             var nice_rt = this.nice_validator.isValid();
             //var totalValid=[nice_rt]
@@ -1542,33 +1545,32 @@ var mix_table_data = {
                 });
             },
             selected_set_and_save: function selected_set_and_save(kws) {
-                if (kws.one_row) {
-                    if (self.selected.length != 1) {
-                        cfg.showMsg('请选择一行数据！');
-                        return;
-                    }
-                } else {
-                    if (self.selected.length == 0) {
-                        cfg.showMsg('请至少选择一行数据！');
-                        return;
-                    }
+                // head: row_match:many_row ,
+                var row_match_fun = kws.row_match || 'many_row';
+                if (!row_match[row_match_fun](self, kws)) {
+                    return;
                 }
+                if (kws.confirm_msg) {
+                    layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
 
-                //var rows =[]
-                var cache_rows = ex.copy(self.selected);
-                ex.each(cache_rows, function (row) {
-                    row[kws.field] = kws.value;
-                });
-                var post_data = [{ fun: 'save_rows', rows: cache_rows }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                        var cache_rows = ex.copy(self.selected);
+                        ex.each(cache_rows, function (row) {
+                            row[kws.field] = kws.value;
+                        });
+                        var post_data = [{ fun: 'save_rows', rows: cache_rows }];
+                        cfg.show_load();
+                        ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
 
-                    ex.each(self.selected, function (row) {
-                        row[kws.field] = kws.value;
+                            ex.each(self.selected, function (row) {
+                                row[kws.field] = kws.value;
+                            });
+
+                            cfg.hide_load(2000);
+                        });
+
+                        layer.close(index);
                     });
-
-                    cfg.hide_load(2000);
-                });
+                }
             },
             selected_pop_set_and_save: function selected_pop_set_and_save(kws) {
                 if (self.selected.length != 1) {
@@ -1775,6 +1777,46 @@ var mix_table_data = {
             });
         }
 
+    }
+};
+
+var row_match = {
+    one_row: function one_row(self, head) {
+        if (self.selected.length != 1) {
+            cfg.showMsg('请选择一行数据！');
+            return false;
+        } else {
+            return true;
+        }
+    },
+    many_row: function many_row(self, head) {
+        if (self.selected.length == 0) {
+            cfg.showMsg('请至少选择一行数据！');
+            return false;
+        } else {
+            return true;
+        }
+    },
+    one_row_match: function one_row_match(self, head) {},
+    many_row_match: function many_row_match(self, head) {
+        // head : @match_field , @match_values ,@match_msg
+        if (self.selected.length == 0) {
+            cfg.showMsg('请至少选择一行数据！');
+            return false;
+        } else {
+            var field = head.match_field;
+            var values = head.match_values;
+            var msg = head.match_msg;
+
+            for (var i = 0; i < self.selected.length; i++) {
+                var row = self.selected[i];
+                if (!ex.isin(row[field], values)) {
+                    cfg.showMsg(msg);
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 };
 

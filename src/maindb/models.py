@@ -837,6 +837,48 @@ class TbMatchesBetstatus(models.Model):
         db_table = 'TB_Matches_BetStatus'
 
 
+
+class TbMaxpayout(models.Model):
+    tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    limittype = models.ForeignKey(to = 'TbMaxpayouttype', db_constraint= False, db_column='LimitType')  # Field name made lowercase.
+    #tournamentid = models.IntegerField(db_column='TournamentID', blank=True, null=True)  # Field name made lowercase.
+    tournamentid = models.ForeignKey(to= 'TbTournament', db_constraint= False, db_column='TournamentID', blank = True, default = 0, null=True)  # Field name made lowercase.
+    #matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
+    matchid = models.ForeignKey(to= TbMatches, db_constraint= False, to_field= 'matchid', db_column='MatchID',blank = True, default = 0,  null = True)  # Field name made lowercase.
+    #limittype = models.IntegerField(db_column='LimitType')  # Field name made lowercase.
+   
+    #accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
+    accountid = models.ForeignKey(to= TbAccount, db_constraint= False, db_column='AccountID', blank = True, null = True,)  # Field name made lowercase.
+    #oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
+    oddstypegroup = models.ForeignKey(to= 'TbOddstypegroup', db_constraint= False, db_column='OddsTypeGroup', blank = True, null = True,) 
+    viplv = models.IntegerField(db_column='VIPLv', blank = True, null = True,)  # Field name made lowercase.
+    maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    issingle = models.BooleanField(db_column='IsSingle')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', default= 0, blank= True)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_MaxPayout'
+        
+class TbMaxpayouttype(models.Model):
+    limittype = models.IntegerField(db_column='LimitType', primary_key=True)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    level = models.IntegerField(db_column='Level')  # Field name made lowercase.
+    defaultmaxpayout = models.DecimalField(db_column='DefaultMaxPayout', max_digits=18, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    isenable = models.BooleanField(db_column='IsEnable')  # Field name made lowercase.
+    enum = models.CharField(db_column='Enum', max_length=50, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_MaxPayoutType'
+    
+    def __str__(self): 
+        return self.description
+    
+
 class TbMessageUnsend(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     # toaccountsn = models.CharField(db_column='ToAccountSN', max_length=36)  # Field name made lowercase.
@@ -1026,6 +1068,9 @@ class TbOddstypegroup(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_OddsTypeGroup'
+    
+    def __str__(self): 
+        return self.oddstypenamezh
 
 
 class TbOddsHistory(models.Model):
@@ -1513,6 +1558,9 @@ class TbTournament(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Tournament'
+    
+    def __str__(self): 
+        return self.tournamentname
 
 
 class TbTournamentcup(models.Model):

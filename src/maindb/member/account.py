@@ -169,15 +169,15 @@ class AccountPage(TablePage):
             modifyer = AccoutModifyAmount(crt_user=self.crt_user)
             return [
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '启用', 'field': 'status',
-                 'value': 1, },
+                 'value': 1,},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'field': 'status',
                  'value': 0, },
                 # {'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_pswd', 'editor': 'com-op-btn', 'label': '重置密码',  },
                 # {'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_money_pswd', 'editor': 'com-op-btn', 'label': '重置资金密码', },
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置密码', 'field': 'password',
-                 'value': 1, 'one_row': True, },
+                 'value': 1, 'row_match': 'one_row' },
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
-                 'value': 1, 'one_row': True, },
+                 'value': 1, 'row_match': 'one_row', },
 
                 {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '加减余额',
                  'fields_ctx': modifyer.get_head_context()},

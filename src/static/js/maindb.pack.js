@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 26);
+/******/ 	return __webpack_require__(__webpack_require__.s = 27);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -518,7 +518,7 @@ window.banner_logic = banner_logic;
 "use strict";
 
 
-__webpack_require__(24);
+__webpack_require__(25);
 
 var com_tab_special_bet_value = {
     props: ['tab_head', 'par_row'],
@@ -917,53 +917,76 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var maxpayout = exports.maxpayout = {
+    watch: {
+        dict_heads: function dict_heads() {
+            this.update_nice();
+        }
+    },
     computed: {
         dict_heads: function dict_heads() {
-            var this_head = ex.findone(this.heads, { name: 'relationno' });
-            if (this.row.limittype == 11) {
-                var heads = ex.filter(this.heads, function (head) {
-                    if (head.name == 'accountid' || head.name == 'relationno') {
-                        return false;
-                    } else {
-                        return true;
+            var type_head = ex.findone(this.heads, { name: 'limittype' });
+            var crt_type = this.row.limittype;
+            var keywords = crt_type ? type_head.keywords[crt_type] : [];
+            var var_fields = type_head.var_fields;
+            var heads = ex.filter(this.heads, function (head) {
+                if (ex.isin(head.name, var_fields) && !ex.isin(head.name, keywords)) {
+                    head.required = false;
+                    return false;
+                } else {
+                    if (ex.isin(head.name, var_fields)) {
+                        head.required = true;
                     }
-                });
-            } else if (ex.isin(this.row.limittype, [12, 13])) {
-                var heads = ex.filter(this.heads, function (head) {
-                    if (head.name == 'accountid') {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                });
-            } else if (this.row.limittype == 21) {
-                var heads = ex.filter(this.heads, function (head) {
-                    if (head.name == 'relationno') {
-                        return false;
-                    } else {
-                        return true;
-                    }
-                });
-            } else {
-                var heads = this.heads;
-            }
 
-            if (ex.isin(this.row.limittype, [12, 22])) {
-                var options = this_head.oddstype_options;
-            } else {
-                var options = this_head.user_options;
-            }
-
-            var relationno_head = ex.findone(heads, { name: 'relationno' });
-            if (relationno_head) {
-                relationno_head.editor = 'sim_select';
-                Vue.set(relationno_head, 'options', options);
-            }
+                    return true;
+                }
+            });
+            //var  this_head=ex.findone(this.heads,{name:'relationno'})
+            //if(this.row.limittype == 11 ){
+            //    var heads =ex.filter(this.heads,function(head){
+            //        if(head.name =='accountid'|| head.name == 'relationno'){
+            //            return false
+            //        }else{
+            //            return true
+            //        }
+            //    })
+            //} else if(ex.isin(this.row.limittype,[12,13]) ){
+            //    var heads =ex.filter(this.heads,function(head){
+            //            if(head.name=='accountid'){
+            //                return false
+            //            }else{
+            //                return true
+            //            }
+            //    })
+            //}
+            //else if(this.row.limittype == 21) {
+            //    var heads =ex.filter(this.heads,function(head){
+            //        if(head.name=='relationno'){
+            //            return false
+            //        }else{
+            //            return true
+            //        }
+            //    })
+            //}else{
+            //    var heads=this.heads
+            //}
+            //
+            //if(ex.isin(this.row.limittype,[12,22])){
+            //    var options=this_head.oddstype_options
+            //}else{
+            //    var options=this_head.user_options
+            //}
+            //
+            //var relationno_head=ex.findone(heads,{name:'relationno'})
+            //if(relationno_head){
+            //    relationno_head.editor='sim_select'
+            //    Vue.set(relationno_head,'options',options)
+            //}
             return heads;
         }
     },
 
     methods: {
+
         //after_save:function(){
         //    var relationno_head=ex.findone(this.dict_heads,{name:'relationno'})
         //    if(relationno_head){
@@ -1030,45 +1053,45 @@ window.notice_logic = notice_logic;
 "use strict";
 
 
-var _turnover = __webpack_require__(21);
+var _turnover = __webpack_require__(22);
 
 var turnover = _interopRequireWildcard(_turnover);
 
-var _multi_line = __webpack_require__(15);
+var _multi_line = __webpack_require__(16);
 
 var multi_line = _interopRequireWildcard(_multi_line);
 
-var _multi_line_edit = __webpack_require__(16);
+var _multi_line_edit = __webpack_require__(17);
 
 var multi_line_edit = _interopRequireWildcard(_multi_line_edit);
 
-var _switch_checkbox = __webpack_require__(20);
+var _switch_checkbox = __webpack_require__(21);
 
 var switch_checkbox = _interopRequireWildcard(_switch_checkbox);
 
-var _plus = __webpack_require__(17);
+var _plus = __webpack_require__(18);
 
 var plus_editor = _interopRequireWildcard(_plus);
 
-var _status = __webpack_require__(19);
+var _status = __webpack_require__(20);
 
 var status_editor = _interopRequireWildcard(_status);
 
-var _specialvalue_turnover = __webpack_require__(18);
+var _specialvalue_turnover = __webpack_require__(19);
 
 var specialvalue_turnover = _interopRequireWildcard(_specialvalue_turnover);
 
-var _favorite = __webpack_require__(14);
+var _favorite = __webpack_require__(15);
 
 var com_favorite = _interopRequireWildcard(_favorite);
 
-var _balance = __webpack_require__(13);
+var _balance = __webpack_require__(14);
 
 var com_balance = _interopRequireWildcard(_balance);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(25);
+__webpack_require__(26);
 
 var ajax_table = {
     props: ['tab_head'], //['heads','row_filters','kw'],
@@ -1214,6 +1237,47 @@ window.oddstypegroup_logic = oddstypegroup_logic;
 "use strict";
 
 
+var parameter = {
+    props: ['row', 'head'],
+    template: '<div style="position: relative">\n            <component :is="head.subhead.editor" :head="head.subhead" :row="row"></component>\n            <div style="position: absolute;left: 26em;top:0;width: 4em">\n                <input type="checkbox" :id="\'id_wrap_\'+head.name" v-model=\'is_active\'>\n\t\t\t    <label :for="\'id_wrap_\'+head.name"><span>\u6FC0\u6D3B</span></label>\n\t\t\t </div>\n\t\t\t</div>',
+
+    computed: {
+        is_active: {
+            set: function set(v) {
+                var self = this;
+                if (v) {
+                    if (!ex.isin(this.head.name, this.row.active_names)) {
+                        this.row.active_names.push(this.head.name);
+                    }
+                } else {
+                    ex.remove(this.row.active_names, function (name) {
+                        return name == self.head.name;
+                    });
+                }
+            },
+            get: function get() {
+                return ex.isin(this.head.name, this.row.active_names);
+            }
+        }
+    }
+
+};
+
+Vue.component('com-field-parameter', parameter);
+
+var ping_lue = {
+    props: ['row', 'head'],
+    template: '<div style="position: relative">\n               <input type="number" v-model="row.WithdrawIntervalMinutes" style="width: 6em">\n               <span>\u5206 </span>\n               <input type="number" v-model="row.WithdrawIntervalCount" style="width: 4em">\n               <span>\u6B21</span>\n\t\t\t</div>'
+};
+Vue.component('com-field-pinglue', ping_lue);
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 $.validator.config({
     rules: {
         two_valid_digit: [/^1$|^0$|^0\.[0-9]{0,2}$/, "请输入两位有效数字"]
@@ -1221,7 +1285,7 @@ $.validator.config({
 });
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1241,7 +1305,7 @@ var bool_shower = {
 Vue.component('com-odds-balance', bool_shower);
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1265,7 +1329,7 @@ var bool_shower = {
 Vue.component('com-odds-favorite', bool_shower);
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1288,7 +1352,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line', odds_multi_line);
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1331,7 +1395,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line-edit', odds_multi_line);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1357,7 +1421,7 @@ var odds_multi_line = {
 Vue.component('com-odds-plus', odds_multi_line);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1407,7 +1471,7 @@ var odds_multi_line = {
 Vue.component('com-odds-special-turnover', odds_multi_line);
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1448,7 +1512,7 @@ Vue.component('com-odds-status-check-btn', {
 });
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1469,7 +1533,7 @@ var odds_multi_line = {
 Vue.component('com-odds-switch-checkbox', odds_multi_line);
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1485,7 +1549,7 @@ var bool_shower = {
 Vue.component('com-odds-turnover', bool_shower);
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1499,7 +1563,7 @@ exports.push([module.i, ".com_tab_special_bet_value .box {\n  width: 250px;\n  h
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1513,13 +1577,13 @@ exports.push([module.i, ".odds input::-webkit-outer-spin-button,\n.odds input::-
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(22);
+var content = __webpack_require__(23);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1539,13 +1603,13 @@ if(false) {
 }
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(23);
+var content = __webpack_require__(24);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1565,7 +1629,7 @@ if(false) {
 }
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1611,9 +1675,13 @@ var _maxpayout = __webpack_require__(8);
 
 var maxpayout = _interopRequireWildcard(_maxpayout);
 
-var _validator_rule = __webpack_require__(12);
+var _validator_rule = __webpack_require__(13);
 
 var validator = _interopRequireWildcard(_validator_rule);
+
+var _parameter = __webpack_require__(12);
+
+var parameter = _interopRequireWildcard(_parameter);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 

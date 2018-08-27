@@ -49,7 +49,7 @@ class PcMenu(BaseEngine):
                  {'label': _('Teams'), 'url': page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user), },
                  {'label': _('AppResource'), 'url': page('AppResource'),
                   'visible': can_touch(TbAppresource, crt_user), },
-                  {'label': '系统参数', 'url': page('Parameter'), 'visible': can_touch(TbTeams, crt_user), },
+                 
                  
 
              ]},
@@ -87,12 +87,13 @@ class PcMenu(BaseEngine):
 
             {'label': _('RiskControl'), 'icon': fa('fa-lock'), 'visible': True,
              'submenu': [
-                 {'label': _('最大赔付'), 'url': page('sports.limit'), 'visible': can_touch(TbLimit, crt_user), },
+                 {'label': _('最大赔付'), 'url': page('sports.maxpayout'), 'visible': can_touch(TbLimit, crt_user), },
                  # {'label':_('Tb RC Filter'),'url':page('maindb.TbRcFilter'), 'visible': can_touch(TbRcFilter, crt_user),},
                  # {'label':_('Tb RC Level'),'url':page('maindb.TbRcLevel'), 'visible': can_touch(TbRcLevel, crt_user),},
                  # {'label':_('Tb RC User'),'url':page('maindb.TbRcUser'), 'visible': can_touch(TbRcUser, crt_user),},
                  {'label': _('Tb Blankuserlist'), 'url': page('maindb.TbBlackuserlist'),
                   'visible': can_touch(TbBlackuserlist, crt_user), },
+                  {'label': '提现控制', 'url': page('Parameter'), 'visible': can_touch(TbTeams, crt_user), },
                  # {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
 
                  # {'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList'), 'visible': can_touch(Blackiprangelist, crt_user),},
