@@ -855,7 +855,8 @@ class TbMaxpayout(models.Model):
     # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
     oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, db_column='OddsTypeGroup', blank=True,
                                       null=True, )
-    viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True, choices= VIP_LEVEL)  # Field name made lowercase.
+    viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True,
+                                choices=VIP_LEVEL)  # Field name made lowercase.
     maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18,
                                     decimal_places=2)  # Field name made lowercase.
     # issingle = models.BooleanField(db_column='IsSingle')  # Field name made lowercase.
@@ -1714,18 +1715,6 @@ class TbBanner(models.Model):
         db_table = 'TB_Banner'
 
 
-# class TbWithdrawlimit(models.Model):
-##accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
-# account = models.CharField(db_column='Account', max_length=20)  # Field name made lowercase.
-# amount = CusDecimalField(db_column='Amount',verbose_name='提款限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
-# accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',primary_key=True, db_constraint=False)  # Field name made lowercase.
-##accountid = models.IntegerField(db_column='AccountID', primary_key=True)  # Field name made lowercase.
-
-# class Meta:
-# managed = False
-# db_table = 'TB_WithdrawLimit'
-
-
 class TbWithdrawlimitlog(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     # accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
@@ -1826,20 +1815,23 @@ class TbSetting(models.Model):
 
 
 class TbPaychannel(models.Model):
-    paychannelid = models.AutoField(db_column='PayChannelId', primary_key=True,verbose_name='序号')  # Field name made lowercase.
-    channelname = models.CharField(db_column='ChannelName', max_length=50,verbose_name='Apolo渠道名称')  # Field name made lowercase.
-    channeltype = models.CharField(db_column='ChannelType', max_length=50,verbose_name='渠道名称')  # Field name made lowercase.
-    active = models.BooleanField(db_column='Active',default=True)  # Field name made lowercase.
+    paychannelid = models.AutoField(db_column='PayChannelId', primary_key=True,
+                                    verbose_name='序号')  # Field name made lowercase.
+    channelname = models.CharField(db_column='ChannelName', max_length=50,
+                                   verbose_name='Apolo渠道名称')  # Field name made lowercase.
+    channeltype = models.CharField(db_column='ChannelType', max_length=50,
+                                   verbose_name='渠道名称')  # Field name made lowercase.
+    active = models.BooleanField(db_column='Active', default=True)  # Field name made lowercase.
     minamount = models.DecimalField(db_column='MinAmount', max_digits=18,
                                     decimal_places=2, verbose_name='最小金额')  # Field name made lowercase.
     maxamount = models.DecimalField(db_column='MaxAmount', max_digits=18,
                                     decimal_places=2, verbose_name='最大金额')  # Field name made lowercase.
-    optionalamount = models.CharField(db_column='OptionalAmount', max_length=500,verbose_name='快捷金额',help_text='多个金额以,分割')  # Field name made lowercase.
-    groupway = models.CharField(db_column='GroupWay', max_length=50,verbose_name= '分组')  # Field name made lowercase.
+    optionalamount = models.CharField(db_column='OptionalAmount', max_length=500, verbose_name='快捷金额',
+                                      help_text='多个金额以,分割')  # Field name made lowercase.
+    groupway = models.CharField(db_column='GroupWay', max_length=50, verbose_name='分组')  # Field name made lowercase.
     groupicon = models.CharField(db_column='GroupIcon', max_length=150)  # Field name made lowercase.
     channelicon = models.CharField(db_column='ChannelIcon', max_length=150)  # Field name made lowercase.
-    memo = models.CharField(db_column='Memo', max_length=150,verbose_name='备注')  # Field name made lowercase.
-
+    memo = models.CharField(db_column='Memo', max_length=150, verbose_name='备注')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1883,7 +1875,7 @@ class TbRecharge(models.Model):
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,
                                  verbose_name='金额')  # Field name made lowercase.
     orderid = models.CharField(db_column='OrderID', max_length=50, verbose_name='订单号')  # Field name made lowercase.
-    isauto = models.IntegerField(db_column='IsAuto',verbose_name='自动')  # Field name made lowercase.
+    isauto = models.IntegerField(db_column='IsAuto', verbose_name='自动')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID', db_constraint=False,
                                   verbose_name='昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.
@@ -1930,3 +1922,35 @@ class TbBanktypes(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_BankTypes'
+
+
+class TbAgentcommission(models.Model):
+    commid = models.BigAutoField(db_column='CommID', primary_key=True,verbose_name='序号')  # Field name made lowercase.
+    accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',
+                                  db_constraint=False,verbose_name='用户昵称')  # Field name made lowercase.
+    agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4, blank=True,
+                                 null=True,verbose_name='佣金')  # Field name made lowercase.
+    daus = models.IntegerField(db_column='DAUs', blank=True, null=True,verbose_name='日活跃用户数')  # Field name made lowercase.
+    lostamount = models.DecimalField(db_column='LostAmount', max_digits=18, decimal_places=4, blank=True,
+                                     null=True,verbose_name='本月净盈利')  # Field name made lowercase.
+    balancelostamount = models.DecimalField(db_column='BalanceLostAmount', max_digits=18, decimal_places=4, blank=True,
+                                            null=True,verbose_name='累计净盈利')  # Field name made lowercase.
+    percentage = models.DecimalField(db_column='Percentage', max_digits=18, decimal_places=2, blank=True,
+                                     null=True,verbose_name='佣金比例')  # Field name made lowercase.
+    settleyear = models.IntegerField(db_column='SettleYear', blank=True, null=True,verbose_name='结算年')  # Field name made lowercase.
+    settlemonth = models.IntegerField(db_column='SettleMonth', blank=True, null=True,verbose_name='结算月')  # Field name made lowercase.
+    settledate = models.CharField(db_column='SettleDate', max_length=10, blank=True,
+                                  null=True,verbose_name='结算日期')  # Field name made lowercase.
+    creater = models.CharField(db_column='Creater', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True,verbose_name='创建时间')  # Field name made lowercase.
+    updater = models.CharField(db_column='Updater', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+    applytime = models.DateTimeField(db_column='ApplyTime', blank=True, null=True,verbose_name='审核时间')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', blank=True, null=True)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=500, blank=True,
+                                   null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_AgentCommission'
