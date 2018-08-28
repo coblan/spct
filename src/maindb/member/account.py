@@ -52,54 +52,58 @@ class AccountPage(TablePage):
             {'name': 'balance_log',
              'label': _('Balance Log'),
              'com': 'com_tab_table',
-             'get_data': {
-                 'fun': 'get_rows',
-                 'kws': {
-                     'director_name': AccountBalanceTable.get_director_name(),  # model_to_name(TbBalancelog),
-                     'relat_field': 'accountid',
-                 }
+             'par_field': 'accountid',
+             #'get_data': {
+                 #'fun': 'get_rows',
+                 #'kws': {
+                     #'director_name': AccountBalanceTable.get_director_name(),  # model_to_name(TbBalancelog),
+                     #'relat_field': 'accountid',
+                 #}
 
-             },
+             #},
              'table_ctx': AccountBalanceTable(crt_user=self.crt_user).get_head_context(),
              'visible': can_touch(TbBalancelog, self.crt_user),
              },
             {'name': 'backcard',
              'label': '银行卡',
              'com': 'com_tab_table',
-             'get_data': {
-                 'fun': 'get_rows',
-                 'kws': {
-                     'director_name': UserBankCard.get_director_name(),  # model_to_name(TbBalancelog),
-                     'relat_field': 'accountid',
-                 }
+             'par_field': 'accountid',
+             #'get_data': {
+                 #'fun': 'get_rows',
+                 #'kws': {
+                     #'director_name': UserBankCard.get_director_name(),  # model_to_name(TbBalancelog),
+                     #'relat_field': 'accountid',
+                 #}
 
-             },
+             #},
              'table_ctx': UserBankCard(crt_user=self.crt_user).get_head_context(),
              'visible': True,
              },    
             {'name': 'UserRecharge',
              'label': '充值记录',
              'com': 'com_tab_table',
-             'get_data': {
-                 'fun': 'get_rows',
-                 'kws': {
-                     'director_name': UserRecharge.get_director_name(),  # model_to_name(TbBalancelog),
-                     'relat_field': 'accountid',
-                 }
-             },
+             'par_field': 'accountid',
+             #'get_data': {
+                 #'fun': 'get_rows',
+                 #'kws': {
+                     #'director_name': UserRecharge.get_director_name(),  # model_to_name(TbBalancelog),
+                     #'relat_field': 'accountid',
+                 #}
+             #},
              'table_ctx': UserRecharge(crt_user=self.crt_user).get_head_context(),
              'visible': True,
                  }, 
             {'name': 'UserWithdraw',
              'label': '提现记录',
              'com': 'com_tab_table',
-             'get_data': {
-                 'fun': 'get_rows',
-                 'kws': {
-                     'director_name': UserWithdraw.get_director_name(),  # model_to_name(TbBalancelog),
-                     'relat_field': 'accountid',
-                 }
-             },
+             'par_field': 'accountid',    
+             #'get_data': {
+                 #'fun': 'get_rows',
+                 #'kws': {
+                     #'director_name': UserWithdraw.get_director_name(),  # model_to_name(TbBalancelog),
+                     #'relat_field': 'accountid',
+                 #}
+             #},
              'table_ctx': UserWithdraw(crt_user=self.crt_user).get_head_context(),
              'visible': True,
                    },
@@ -108,40 +112,31 @@ class AccountPage(TablePage):
             {'name': 'account_ticket',
              'label': _('Ticket'),
              'com': 'com_tab_table',
-             'get_data': {
-                 'fun': 'get_rows',
-                 'kws': {
-                     'director_name': AccountTicketTable.get_director_name(),  # model_to_name(TbTicketmaster),
-                     'relat_field': 'accountid',
-                 }
-             },
+             'par_field': 'accountid',
+        
+             #'get_data': {
+                 #'fun': 'get_rows',
+                 #'kws': {
+                     #'director_name': AccountTicketTable.get_director_name(),  # model_to_name(TbTicketmaster),
+                     #'relat_field': 'accountid',
+                 #}
+             #},
              'table_ctx': AccountTicketTable(crt_user=self.crt_user).get_head_context(),
              'visible': can_touch(TbTicketmaster, self.crt_user),
              },
             {'name': 'account_login',
              'label': _('Login Log'),
              'com': 'com_tab_table',
-             'get_data': {
-                 'fun': 'get_rows',
-                 'kws': {
-                     'director_name': AccountLoginTable.get_director_name(),  # model_to_name(TbLoginlog),
-                     'relat_field': 'accountid',
-                 }
-             },
+             'par_field': 'accountid',
+             #'get_data': {
+                 #'fun': 'get_rows',
+                 #'kws': {
+                     #'director_name': AccountLoginTable.get_director_name(),  # model_to_name(TbLoginlog),
+                     #'relat_field': 'accountid',
+                 #}
+             #},
              'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
              'visible': can_touch(TbLoginlog, self.crt_user), },
-
-            # {'name':'account_withdrawlimitlog',
-            # 'label':_('Withdraw Log'),
-            # 'com':'com_tab_table',
-            # 'get_data':{
-            # 'fun':'get_rows',
-            # 'kws':{
-            # 'director_name': AccoutWithdrawLimitLogTable.get_director_name(),#model_to_name(TbWithdrawlimitlog),
-            # 'relat_field':'accountid',
-            # }
-            # },
-            # 'table_ctx':AccoutWithdrawLimitLogTable(crt_user=self.crt_user).get_head_context()},
 
         ]
         ctx['tabs'] = evalue_container(ls)
@@ -202,15 +197,15 @@ class AccountPage(TablePage):
             modifyer = AccoutModifyAmount(crt_user=self.crt_user)
             return [
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '启用', 'field': 'status',
-                 'value': 1,},
+                 'value': 1,'confirm_msg': '确认启用？',},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'field': 'status',
-                 'value': 0, },
+                 'value': 0, 'confirm_msg': '确认禁用？'},
                 # {'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_pswd', 'editor': 'com-op-btn', 'label': '重置密码',  },
                 # {'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_money_pswd', 'editor': 'com-op-btn', 'label': '重置资金密码', },
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置登录密码', 'field': 'password',
-                 'value': 1, 'row_match': 'one_row' },
+                 'value': 1, 'row_match': 'one_row','confirm_msg': '确认重置登录密码？' },
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
-                 'value': 1, 'row_match': 'one_row', },
+                 'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置资金密码？'},
 
                 {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '加减余额',
                  'fields_ctx': modifyer.get_head_context()},
@@ -280,7 +275,7 @@ class AccountTabBase(ModelTable):
 
 class WithAccoutInnFilter(ModelTable):
     def inn_filter(self, query):
-        query = ModelTable.inn_filter(self, query)
+        query = super().inn_filter( query)
         if self.kw.get('accountid'):
             return query.filter(accountid=self.kw.get('accountid'))
         else:
