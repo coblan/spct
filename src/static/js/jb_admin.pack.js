@@ -1717,12 +1717,9 @@ var mix_table_data = {
                 self.rows = resp.get_rows.rows;
                 self.row_pages = resp.get_rows.row_pages;
                 self.search_args = resp.get_rows.search_args;
+                self.footer = resp.get_rows.footer;
                 cfg.hide_load();
             });
-        },
-        get_data: function get_data() {
-            this.getRows();
-            //this.data_getter(this)
         },
         get_page: function get_page(page_number) {
             this.search_args._page = page_number;
@@ -3405,7 +3402,7 @@ var ajax_table = {
             row_filters: heads_ctx.row_filters,
             row_sort: heads_ctx.row_sort,
             director_name: heads_ctx.director_name,
-            footer: [],
+            footer: heads_ctx.footer || [],
             rows: [],
             row_pages: {},
             //search_tip:this.kw.search_tip,
@@ -3429,33 +3426,22 @@ var ajax_table = {
     methods: {
         on_show: function on_show() {
             if (!this.fetched) {
-                this.get_data();
+                this.search();
                 this.fetched = true;
             }
         },
         getRows: function getRows() {
-            // 这里clear，数据被清空，造成table的pagenator上下抖动
-            //                       com.clear()
-
-            //                        var getter_name = 'get_'+tab.name
+            //
             var self = this;
-            var fun = get_data[this.tab_head.get_data.fun];
-            fun(function (rows, row_pages) {
-                self.rows = rows;
-                self.row_pages = row_pages;
-            }, this.par_row, this.tab_head.get_data.kws, this.search_args);
-
-            //            var self=this
-            //            var relat_pk = this.par_row[this.relat_field]
-            //        var relat_field = this.relat_field
-            //        this.search_args[relat_field] = relat_pk
-            //        var post_data=[{fun:'get_rows',search_args:this.search_args,model_name:this.model_name}]
-            //            cfg.show_load()
-            //        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //            cfg.hide_load()
-            //            self.rows = resp.get_rows.rows
-            //            self.row_pages =resp.get_rows.row_pages
-            //        })
+            self.search_args[self.tab_head.par_field] = self.par_row[self.tab_head.par_field];
+            ex.vueSuper(self, { fun: 'getRows' });
+            //var fun = get_data[this.tab_head.get_data.fun ]
+            //fun(function(rows,row_pages,footer){
+            //    self.rows = rows
+            //    self.row_pages =row_pages
+            //    self.footer = footer
+            //
+            //},this.par_row,this.tab_head.get_data.kws,this.search_args)
         },
         del_item: function del_item() {
             if (this.selected.length == 0) {
@@ -3498,25 +3484,25 @@ var ajax_table = {
 
 Vue.component('com_tab_table', ajax_table);
 
-var get_data = {
-    get_rows: function get_rows(callback, row, kws, search_args) {
-        var relat_field = kws.relat_field;
-        var director_name = kws.director_name;
-
-        var self = this;
-        var relat_pk = row[kws.relat_field];
-        var relat_field = kws.relat_field;
-        search_args[relat_field] = relat_pk;
-        var post_data = [{ fun: 'get_rows', search_args: search_args, director_name: director_name }];
-        cfg.show_load();
-        $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-            cfg.hide_load();
-            callback(resp.get_rows.rows, resp.get_rows.row_pages);
-            //self.rows = resp.get_rows.rows
-            //self.row_pages =resp.get_rows.row_pages
-        });
-    }
-};
+//var get_data={
+//    get_rows:function(callback,row,kws,search_args){
+//        var relat_field = kws.relat_field
+//        var director_name = kws.director_name
+//
+//        var self=this
+//        var relat_pk = row[kws.relat_field]
+//        var relat_field = kws.relat_field
+//        search_args[relat_field] = relat_pk
+//        var post_data=[{fun:'get_rows',search_args:search_args,director_name:director_name}]
+//        cfg.show_load()
+//        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
+//            cfg.hide_load()
+//            callback(resp.get_rows.rows,resp.get_rows.row_pages,resp.get_rows.footer)
+//            //self.rows = resp.get_rows.rows
+//            //self.row_pages =resp.get_rows.row_pages
+//        })
+//    }
+//}
 
 /***/ }),
 /* 51 */
