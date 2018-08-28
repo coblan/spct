@@ -16,11 +16,12 @@ class RechargePage(TablePage):
         model = TbRecharge
         sort = ['createtime']
         exclude = ['account']
-        fields_sort = ['rechargeid', 'accountid','orderid', 'amount', 'status', 'createtime','confirmtime', 'channelid', 'amounttype', 'memo',
+        fields_sort = ['rechargeid', 'accountid','orderid', 'amount', 'status', 'createtime','confirmtime', 'channelid', 'amounttype','isauto', 'memo',
                        'apolloinfo', 'apollomsg']
 
         def dict_head(self, head):
             dc = {
+                'rechargeid':60,
                 'accountid': 120,
                 'channelid': 120,
                 'createtime': 150,
