@@ -240,7 +240,7 @@ class TbBalancelog(models.Model):
     creater = models.CharField(db_column='Creater', verbose_name=_('Operator'), max_length=20, blank=True,
                                null=True)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',
-                                  db_constraint=False,verbose_name='用户昵称')  # Field name made lowercase.
+                                  db_constraint=False, verbose_name='用户昵称')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -837,47 +837,56 @@ class TbMatchesBetstatus(models.Model):
         db_table = 'TB_Matches_BetStatus'
 
 
-
 class TbMaxpayout(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    limittype = models.ForeignKey(to = 'TbMaxpayouttype', db_constraint= False, db_column='LimitType')  # Field name made lowercase.
-    #tournamentid = models.IntegerField(db_column='TournamentID', blank=True, null=True)  # Field name made lowercase.
-    tournamentid = models.ForeignKey(to= 'TbTournament', db_constraint= False, db_column='TournamentID', blank = True, default = 0, null=True)  # Field name made lowercase.
-    #matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
-    matchid = models.ForeignKey(to= TbMatches, db_constraint= False, to_field= 'matchid', db_column='MatchID',blank = True, default = 0,  null = True)  # Field name made lowercase.
-    #limittype = models.IntegerField(db_column='LimitType')  # Field name made lowercase.
-   
-    #accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
-    accountid = models.ForeignKey(to= TbAccount, db_constraint= False, db_column='AccountID', blank = True, null = True,)  # Field name made lowercase.
-    #oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
-    oddstypegroup = models.ForeignKey(to= 'TbOddstypegroup', db_constraint= False, db_column='OddsTypeGroup', blank = True, null = True,) 
-    viplv = models.IntegerField(db_column='VIPLv', blank = True, null = True,)  # Field name made lowercase.
-    maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18, decimal_places=2)  # Field name made lowercase.
-    #issingle = models.BooleanField(db_column='IsSingle')  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', default= 1, blank= True)  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    limittype = models.ForeignKey(to='TbMaxpayouttype', db_constraint=False,
+                                  db_column='LimitType')  # Field name made lowercase.
+    # tournamentid = models.IntegerField(db_column='TournamentID', blank=True, null=True)  # Field name made lowercase.
+    tournamentid = models.ForeignKey(to='TbTournament', db_constraint=False, db_column='TournamentID', blank=True,
+                                     default=0, null=True)  # Field name made lowercase.
+    # matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
+    matchid = models.ForeignKey(to=TbMatches, db_constraint=False, to_field='matchid', db_column='MatchID', blank=True,
+                                default=0, null=True)  # Field name made lowercase.
+    # limittype = models.IntegerField(db_column='LimitType')  # Field name made lowercase.
+
+    # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
+    accountid = models.ForeignKey(to=TbAccount, db_constraint=False, db_column='AccountID', blank=True,
+                                  null=True, )  # Field name made lowercase.
+    # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
+    oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, db_column='OddsTypeGroup', blank=True,
+                                      null=True, )
+    viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True, )  # Field name made lowercase.
+    maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18,
+                                    decimal_places=2)  # Field name made lowercase.
+    # issingle = models.BooleanField(db_column='IsSingle')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', default=1, blank=True)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=500, blank=True,
+                                   null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'TB_MaxPayout'
-        
+
+
 class TbMaxpayouttype(models.Model):
     limittype = models.IntegerField(db_column='LimitType', primary_key=True)  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=200, blank=True,
+                                   null=True)  # Field name made lowercase.
     level = models.IntegerField(db_column='Level')  # Field name made lowercase.
-    defaultmaxpayout = models.DecimalField(db_column='DefaultMaxPayout', max_digits=18, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    defaultmaxpayout = models.DecimalField(db_column='DefaultMaxPayout', max_digits=18, decimal_places=2, blank=True,
+                                           null=True)  # Field name made lowercase.
     isenable = models.BooleanField(db_column='IsEnable')  # Field name made lowercase.
     enum = models.CharField(db_column='Enum', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'TB_MaxPayoutType'
-    
-    def __str__(self): 
+
+    def __str__(self):
         return self.description
-    
+
 
 class TbMessageUnsend(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
@@ -1068,8 +1077,8 @@ class TbOddstypegroup(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_OddsTypeGroup'
-    
-    def __str__(self): 
+
+    def __str__(self):
         return self.oddstypenamezh
 
 
@@ -1558,8 +1567,8 @@ class TbTournament(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Tournament'
-    
-    def __str__(self): 
+
+    def __str__(self):
         return self.tournamentname
 
 
@@ -1814,17 +1823,27 @@ class TbSetting(models.Model):
 
 
 class TbPaychannel(models.Model):
-    paychannelid = models.AutoField(db_column='PayChannelId', primary_key=True)  # Field name made lowercase.
-    channelname = models.CharField(db_column='ChannelName', max_length=50)  # Field name made lowercase.
-    channeltype = models.CharField(db_column='ChannelType', max_length=50)  # Field name made lowercase.
-    active = models.BooleanField(db_column='Active')  # Field name made lowercase.
+    paychannelid = models.AutoField(db_column='PayChannelId', primary_key=True,verbose_name='序号')  # Field name made lowercase.
+    channelname = models.CharField(db_column='ChannelName', max_length=50,verbose_name='Apolo渠道名称')  # Field name made lowercase.
+    channeltype = models.CharField(db_column='ChannelType', max_length=50,verbose_name='渠道名称')  # Field name made lowercase.
+    active = models.BooleanField(db_column='Active',default=True)  # Field name made lowercase.
+    minamount = models.DecimalField(db_column='MinAmount', max_digits=18,
+                                    decimal_places=2, verbose_name='最小金额')  # Field name made lowercase.
+    maxamount = models.DecimalField(db_column='MaxAmount', max_digits=18,
+                                    decimal_places=2, verbose_name='最大金额')  # Field name made lowercase.
+    optionalamount = models.CharField(db_column='OptionalAmount', max_length=500,verbose_name='快捷金额',help_text='多个金额以,分割')  # Field name made lowercase.
+    groupway = models.CharField(db_column='GroupWay', max_length=50,verbose_name= '分组')  # Field name made lowercase.
+    groupicon = models.CharField(db_column='GroupIcon', max_length=150)  # Field name made lowercase.
+    channelicon = models.CharField(db_column='ChannelIcon', max_length=150)  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=150,verbose_name='备注')  # Field name made lowercase.
+
 
     class Meta:
         managed = False
         db_table = 'TB_PayChannel'
 
-    def __str__(self):
-        return self.channeltype
+        def __str__(self):
+            return self.channeltype
 
 
 class TbWithdraw(models.Model):
@@ -1832,13 +1851,14 @@ class TbWithdraw(models.Model):
                                   verbose_name='序号')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,
                                  verbose_name='金额')  # Field name made lowercase.
-    orderid = models.CharField(db_column='OrderID', max_length=50,verbose_name='订单号')  # Field name made lowercase.
+    orderid = models.CharField(db_column='OrderID', max_length=50, verbose_name='订单号')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_constraint=False, db_column='AccountID',
                                   verbose_name='昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=50)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', verbose_name='创建时间')  # Field name made lowercase.
     bankcardid = models.IntegerField(db_column='BankCardId')  # Field name made lowercase.
-    memo = models.CharField(db_column='Memo', max_length=500, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=500, blank=True, null=True,
+                            verbose_name='备注')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', choices=WITHDRAW_STATUS)  # Field name made lowercase.
     apollomsg = models.CharField(db_column='ApolloMsg', max_length=100, blank=True,
                                  null=True)  # Field name made lowercase.
@@ -1846,7 +1866,8 @@ class TbWithdraw(models.Model):
                                   null=True)  # Field name made lowercase.
     amounttype = models.IntegerField(db_column='AmountType', verbose_name='类型',
                                      choices=AMOUNT_TYPE)  # Field name made lowercase.
-    confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,verbose_name='处理时间')  # Field name made lowercase.
+    confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,
+                                       verbose_name='处理时间')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1854,9 +1875,11 @@ class TbWithdraw(models.Model):
 
 
 class TbRecharge(models.Model):
-    rechargeid = models.AutoField(db_column='RechargeId', primary_key=True,verbose_name='序号')  # Field name made lowercase.
-    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,verbose_name='金额')  # Field name made lowercase.
-    orderid = models.CharField(db_column='OrderID', max_length=50,verbose_name='订单号')  # Field name made lowercase.
+    rechargeid = models.AutoField(db_column='RechargeId', primary_key=True,
+                                  verbose_name='序号')  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,
+                                 verbose_name='金额')  # Field name made lowercase.
+    orderid = models.CharField(db_column='OrderID', max_length=50, verbose_name='订单号')  # Field name made lowercase.
     # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID', db_constraint=False,
                                   verbose_name='昵称')  # Field name made lowercase.
@@ -1868,11 +1891,13 @@ class TbRecharge(models.Model):
     channelid = models.ForeignKey(to=TbPaychannel, db_constraint=False, db_column='ChannelID',
                                   verbose_name='充值渠道')  # Field name made lowercase.
     apollomsg = models.CharField(db_column='ApolloMsg', max_length=500)  # Field name made lowercase.
-    memo = models.CharField(db_column='Memo', max_length=150,verbose_name='备注')  # Field name made lowercase.
-    amounttype = models.IntegerField(db_column='AmountType', choices=AMOUNT_TYPE,verbose_name='类型')  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=150, verbose_name='备注')  # Field name made lowercase.
+    amounttype = models.IntegerField(db_column='AmountType', choices=AMOUNT_TYPE,
+                                     verbose_name='类型')  # Field name made lowercase.
     apolloinfo = models.CharField(db_column='ApolloInfo', max_length=800, blank=True,
                                   null=True)  # Field name made lowercase.
-    confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,verbose_name='处理时间')  # Field name made lowercase.
+    confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,
+                                       verbose_name='处理时间')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1889,3 +1914,16 @@ class TbParameterinfo(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_ParameterInfo'
+
+
+class TbBanktypes(models.Model):
+    banktypeid = models.AutoField(db_column='BankTypeID', primary_key=True,
+                                  verbose_name='编号')  # Field name made lowercase.
+    banktypename = models.CharField(db_column='BankTypeName', max_length=50, verbose_name='银行卡类型',
+                                    unique=True)  # Field name made lowercase.
+    active = models.BooleanField(db_column='Active', default=True)  # Field name made lowercase.
+    img = models.CharField(db_column='Img', max_length=200, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_BankTypes'
