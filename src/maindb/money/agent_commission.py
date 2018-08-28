@@ -14,33 +14,39 @@ class AgentCommissionPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbAgentcommission
-        sort = ['Amount']
-        exclude = ['creater','updater','updatetime','description','agent']
-        # fields_sort = ['rechargeid', 'accountid','orderid', 'amount', 'status', 'createtime','confirmtime', 'channelid', 'amounttype','isauto', 'memo',
-        #                'apolloinfo', 'apollomsg']
+        sort = ['amount']
+        exclude = ['creater', 'updater', 'updatetime', 'description', 'agent']
+        fields_sort = ['commid', 'accountid', 'accountid', 'amount', 'daus', 'lostamount', 'balancelostamount',
+                       'percentage', 'settleyear', 'settlemonth', 'settledate',
+                       'status', 'applytime']
 
         def dict_head(self, head):
             dc = {
-                'accountid':100,
-                'amount':120,
+                'accountid': 100,
+                'amount': 120,
                 'daus': 100,
                 'lostamount': 120,
                 'balancelostamount': 120,
                 'createtime': 140,
                 'applytime': 140,
-                'settledate':120
+                'settledate': 120
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
+
             return head
 
         def statistics(self, query):
-            dc = query.aggregate(total_amount=Sum('amount'))
+            dc = query.aggregate(total_amount=Sum('amount'), total_daus=Sum('daus'),
+                                 total_lostamount=Sum('lostamount'), total_balancelostamount=Sum('balancelostamount'))
             mapper = {
-                'amount': 'total_amount'
+                'amount': 'total_amount',
+                'daus': 'total_daus',
+                'lostamount': 'total_lostamount',
+                'balancelostamount': 'total_balancelostamount'
             }
             for k in dc:
-                dc[k] = str(dc[k])
+                dc[k] = str(round(dc[k] or 0, 2))
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = ['合计'] + self.footer
@@ -51,9 +57,8 @@ class AgentCommissionPage(TablePage):
             ctx['footer'] = self.footer
             return ctx
 
-
         class sort(RowSort):
-            names = ['amount', 'daus','lostamount','balancelostamount']
+            names = ['amount', 'daus', 'lostamount', 'balancelostamount']
 
         class search(RowSearch):
             def get_context(self):

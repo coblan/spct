@@ -1929,12 +1929,12 @@ class TbAgentcommission(models.Model):
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',
                                   db_constraint=False,verbose_name='用户昵称')  # Field name made lowercase.
     agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
-    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4, blank=True,
+    amount = CusDecimalField(db_column='Amount', max_digits=18, decimal_places=4, blank=True,
                                  null=True,verbose_name='佣金')  # Field name made lowercase.
     daus = models.IntegerField(db_column='DAUs', blank=True, null=True,verbose_name='日活跃用户数')  # Field name made lowercase.
-    lostamount = models.DecimalField(db_column='LostAmount', max_digits=18, decimal_places=4, blank=True,
+    lostamount =CusDecimalField(db_column='LostAmount', max_digits=18, decimal_places=4, blank=True,
                                      null=True,verbose_name='本月净盈利')  # Field name made lowercase.
-    balancelostamount = models.DecimalField(db_column='BalanceLostAmount', max_digits=18, decimal_places=4, blank=True,
+    balancelostamount = CusDecimalField(db_column='BalanceLostAmount', max_digits=18, decimal_places=4, blank=True,
                                             null=True,verbose_name='累计净盈利')  # Field name made lowercase.
     percentage = models.DecimalField(db_column='Percentage', max_digits=18, decimal_places=2, blank=True,
                                      null=True,verbose_name='佣金比例')  # Field name made lowercase.
