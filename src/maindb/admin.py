@@ -18,6 +18,8 @@ from .report import admin
 from .basic_data import odds_typegroup, league, teams, app_resource, currency
 from .basic_data import admin_parameter
 from .basic_data import banktypes
+from .basic_data import paychannel
+
 
 from .riskcontrol import admin
 from . import update_cache

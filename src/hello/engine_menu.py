@@ -34,7 +34,6 @@ class PcMenu(BaseEngine):
                  {'label': _('App Package'), 'url': page('maindb.TbAppversion'),
                   'visible': can_touch(TbAppversion, crt_user), },
                  {'label': _('Notice'), 'url': page('maindb.TbNotice'), 'visible': can_touch(TbNotice, crt_user), },
-
                  {'label': _('Help'), 'url': page('maindb.TbQa'), 'visible': can_touch(TbQa, crt_user), },
                  {'label': _('Activity'), 'url': page('maindb.TBActive'), 'visible': can_touch(TbActivity, crt_user), },
 
@@ -48,16 +47,17 @@ class PcMenu(BaseEngine):
                  {'label': _('league '), 'url': page('match.league'), 'visible': can_touch(TbTournament, crt_user)},
                  {'label': _('Teams'), 'url': page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user), },
                  {'label': '银行卡类型', 'url': page('banktypes'), 'visible': can_touch(TbBanktypes, crt_user), },
+                 {'label': '充值渠道', 'url': page('paychannel'), 'visible': can_touch(TbPaychannel, crt_user), },
                  {'label': _('AppResource'), 'url': page('AppResource'),
                   'visible': can_touch(TbAppresource, crt_user), },
-                 
-                 
 
              ]},
 
             {'label': _('Member'), 'icon': fa('fa-users'), 'visible': True,
              'submenu': [
                  {'label': _('Tb Account'), 'url': page('maindb.account'), 'visible': can_touch(TbAccount, crt_user), },
+                 {'label': _('Tb Balance Log'), 'url': page('maindb.balancelog'),
+                  'visible': can_touch(TbBalancelog, crt_user), },
                  {'label': _('Tb Login Log'), 'url': page('maindb.loginlog'),
                   'visible': can_touch(TbLoginlog, crt_user), },
                  {'label': _('银行卡管理'), 'url': page('BankCards'), 'visible': can_touch(TbAccount, crt_user), },
@@ -65,10 +65,8 @@ class PcMenu(BaseEngine):
 
             {'label': _('MoneyFlow'), 'icon': fa('fa-dollar'), 'visible': True,
              'submenu': [
-                 {'label': _('Tb Balance Log'), 'url': page('maindb.balancelog'),
-                  'visible': can_touch(TbBalancelog, crt_user), },
                  # {'label': _('Charge Flow'), 'url': page('ChargeFlow'), 'visible': can_touch(TbChargeflow, crt_user), },
-                 {'label': '充值渠道', 'url': page('ChargeType'), 'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
+                 {'label': 'VIP充值渠道', 'url': page('ChargeType'), 'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
                  {'label': '充值记录', 'url': page('Recharge'), 'visible': can_touch(TbRecharge, crt_user), },
                  {'label': '提现记录', 'url': page('Withdraw'), 'visible': can_touch(TbWithdraw, crt_user), },
                  # {'label':_('Tb Trans'),'url':page('maindb.trans'),'icon':fa('fa-home')},
@@ -94,7 +92,7 @@ class PcMenu(BaseEngine):
                  # {'label':_('Tb RC User'),'url':page('maindb.TbRcUser'), 'visible': can_touch(TbRcUser, crt_user),},
                  {'label': _('Tb Blankuserlist'), 'url': page('maindb.TbBlackuserlist'),
                   'visible': can_touch(TbBlackuserlist, crt_user), },
-                  {'label': '提现控制', 'url': page('Parameter'), 'visible': can_touch(TbTeams, crt_user), },
+                 {'label': '提现控制', 'url': page('Parameter'), 'visible': can_touch(TbTeams, crt_user), },
                  # {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
 
                  # {'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList'), 'visible': can_touch(Blackiprangelist, crt_user),},
@@ -106,8 +104,8 @@ class PcMenu(BaseEngine):
 
             {'label': _('Report'), 'icon': fa('fa-bar-chart'), 'visible': True,
              'submenu': [
-                 #{'label': _('Channel'), 'url': page('maindb.report.channel'),
-                  #'visible': can_touch(TbChannel, crt_user), },
+                 # {'label': _('Channel'), 'url': page('maindb.report.channel'),
+                 # 'visible': can_touch(TbChannel, crt_user), },
                  {'label': _('Account'), 'url': page('maindb.report.account'),
                   'visible': can_touch(TbAccount, crt_user), },
              ]},

@@ -1823,17 +1823,27 @@ class TbSetting(models.Model):
 
 
 class TbPaychannel(models.Model):
-    paychannelid = models.AutoField(db_column='PayChannelId', primary_key=True)  # Field name made lowercase.
-    channelname = models.CharField(db_column='ChannelName', max_length=50)  # Field name made lowercase.
-    channeltype = models.CharField(db_column='ChannelType', max_length=50)  # Field name made lowercase.
-    active = models.BooleanField(db_column='Active')  # Field name made lowercase.
+    paychannelid = models.AutoField(db_column='PayChannelId', primary_key=True,verbose_name='序号')  # Field name made lowercase.
+    channelname = models.CharField(db_column='ChannelName', max_length=50,verbose_name='Apolo渠道名称')  # Field name made lowercase.
+    channeltype = models.CharField(db_column='ChannelType', max_length=50,verbose_name='渠道名称')  # Field name made lowercase.
+    active = models.BooleanField(db_column='Active',default=True)  # Field name made lowercase.
+    minamount = models.DecimalField(db_column='MinAmount', max_digits=18,
+                                    decimal_places=2, verbose_name='最小金额')  # Field name made lowercase.
+    maxamount = models.DecimalField(db_column='MaxAmount', max_digits=18,
+                                    decimal_places=2, verbose_name='最大金额')  # Field name made lowercase.
+    optionalamount = models.CharField(db_column='OptionalAmount', max_length=500,verbose_name='快捷金额',help_text='多个金额以,分割')  # Field name made lowercase.
+    groupway = models.CharField(db_column='GroupWay', max_length=50,verbose_name= '分组')  # Field name made lowercase.
+    groupicon = models.CharField(db_column='GroupIcon', max_length=150)  # Field name made lowercase.
+    channelicon = models.CharField(db_column='ChannelIcon', max_length=150)  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=150,verbose_name='备注')  # Field name made lowercase.
+
 
     class Meta:
         managed = False
         db_table = 'TB_PayChannel'
 
-    def __str__(self):
-        return self.channeltype
+        def __str__(self):
+            return self.channeltype
 
 
 class TbWithdraw(models.Model):
@@ -1907,9 +1917,11 @@ class TbParameterinfo(models.Model):
 
 
 class TbBanktypes(models.Model):
-    banktypeid = models.AutoField(db_column='BankTypeID', primary_key=True,verbose_name='编号')  # Field name made lowercase.
-    banktypename = models.CharField(db_column='BankTypeName', max_length=50,verbose_name='银行卡类型')  # Field name made lowercase.
-    active = models.BooleanField(db_column='Active',default=True)  # Field name made lowercase.
+    banktypeid = models.AutoField(db_column='BankTypeID', primary_key=True,
+                                  verbose_name='编号')  # Field name made lowercase.
+    banktypename = models.CharField(db_column='BankTypeName', max_length=50, verbose_name='银行卡类型',
+                                    unique=True)  # Field name made lowercase.
+    active = models.BooleanField(db_column='Active', default=True)  # Field name made lowercase.
     img = models.CharField(db_column='Img', max_length=200, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
