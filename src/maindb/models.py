@@ -1560,7 +1560,8 @@ class TbTournament(models.Model):
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID',
                                              verbose_name='联赛ID')  # Field name made lowercase.
     issubscribe = models.IntegerField(db_column='IsSubscribe', verbose_name='已订阅')  # Field name made lowercase.
-    sort = models.IntegerField(db_column='Sort', blank=True, null=True)  # Field name made lowercase. 
+    closelivebet = models.IntegerField(db_column='CloseLiveBet', verbose_name='关闭滚球')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort', blank=True, null=True)  # Field name made lowercase.
     typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True,
                                        verbose_name='已关闭玩法')  # Field name made lowercase.
 
@@ -1842,8 +1843,8 @@ class TbPaychannel(models.Model):
         managed = False
         db_table = 'TB_PayChannel'
 
-        def __str__(self):
-            return self.channeltype
+    def __str__(self):
+        return self.channeltype
 
 
 class TbWithdraw(models.Model):
@@ -1880,7 +1881,7 @@ class TbRecharge(models.Model):
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,
                                  verbose_name='金额')  # Field name made lowercase.
     orderid = models.CharField(db_column='OrderID', max_length=50, verbose_name='订单号')  # Field name made lowercase.
-    # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
+    isauto = models.IntegerField(db_column='IsAuto',verbose_name='自动')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID', db_constraint=False,
                                   verbose_name='昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.

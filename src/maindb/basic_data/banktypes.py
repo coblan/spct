@@ -1,5 +1,8 @@
 # encoding:utf-8
 from __future__ import unicode_literals
+
+from django.core.exceptions import ValidationError
+
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter
 from maindb.models import TbBanktypes
@@ -46,6 +49,14 @@ class BankTypesForm(ModelFields):
 
     def save_form(self):
         super().save_form()
+
+    def clean_banktypename(self):
+        name = self.cleaned_data['banktypename']
+        if 'banktypename' not in self.changed_data:
+            return name
+        if TbBanktypes.objects.filter(banktypename=name).exists():
+            raise ValidationError("相同的银行卡类型已存在！")
+        return name
 
 
 director.update({
