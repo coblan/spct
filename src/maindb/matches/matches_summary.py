@@ -17,7 +17,7 @@ class MatchesSummaryPage(TablePage):
     class tableCls(ModelTable):
         model = TbMatches
         exclude = []
-        fields_sort = ['tournamentzh', 'matchid', 'matchdate', 'matchscore', 'team_zh', 'statuscode', 'nums_stake',
+        fields_sort = ['tournamentzh', 'matchid', 'team_zh', 'matchdate', 'matchscore', 'statuscode', 'nums_stake',
                        'nums_account', 'sum_betamount', 'sum_betoutcome', 'sum_grossprofit', 'sum_bonus', 'sum_profit']
 
         def permited_fields(self):
@@ -68,10 +68,9 @@ class MatchesSummaryPage(TablePage):
                 'matchid': 80,
                 'matchdate': 120,
                 'matchscore': 60,
-                'team_zh': 160,
+                'team_zh': 180,
                 'statuscode': 60,
                 'nums_stake': 120,
-                'matchdate': 150,
                 'statuscode': 80,
                 'nums_account': 120,
                 'sum_betamount': 120,
@@ -113,11 +112,12 @@ class MatchesSummaryPage(TablePage):
                 'sum_grossprofit': str(inst.sum_grossprofit) if inst.sum_grossprofit else '',
                 'sum_bonus': str(inst.sum_bonus) if inst.sum_bonus else '',
                 'sum_profit': str(inst.sum_profit) if inst.sum_profit else '',
-                # 'team':inst.team1zh +' vs '+ inst.team2zh
+                'matchdate': str(inst.matchdate)[: -3]
             }
 
         class sort(RowSort):
-            names = ['nums_stake', 'nums_account', 'sum_betamount', 'sum_betoutcome', 'sum_grossprofit', 'sum_bonus','sum_profit',]
+            names = ['nums_stake', 'nums_account', 'sum_betamount', 'sum_betoutcome', 'sum_grossprofit', 'sum_bonus',
+                     'sum_profit', ]
 
         class search(RowSearch):
             names = ['matchid']

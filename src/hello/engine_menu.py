@@ -75,11 +75,11 @@ class PcMenu(BaseEngine):
 
             {'label': _('Games'), 'icon': fa('fa-globe'), 'visible': True,
              'submenu': [
-                 {'label': _('Tb TicketMaster'), 'url': page('maindb.ticketmaster'),
-                  'visible': can_touch(TbTicketmaster, crt_user), },
                  {'label': _('Tb Match'), 'url': page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user), },
                  {'label': _('View TicketSingleByMatch'), 'url': page('maindb.MatchesSummary'),
                   'visible': can_touch(TbMatches, crt_user), },
+                 {'label': _('Tb TicketMaster'), 'url': page('maindb.ticketmaster'),
+                  'visible': can_touch(TbTicketmaster, crt_user), },
                  # {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
 
              ]},
