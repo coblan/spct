@@ -9,16 +9,15 @@ from .status_code import *
 from .member.account import AccountPage
 from .member import bankcard
 
-from .matches import admin,matches,ticket_master,matches_summary
+from .matches import admin, matches, ticket_master, matches_summary
 # from .ticket_admin import TicketMasterPage
 # from .money_admin import BalancelogPage,TransPage,ChannelPage
 
 from .marketing import admin
 from .report import admin
-from .basic_data import odds_typegroup,league,teams,app_resource,currency
+from .basic_data import odds_typegroup, league, teams, app_resource, currency
 from .basic_data import admin_parameter
-# from .banner_admin import BannerPage
-# from .matches import ViewTicketSingleByMatch,matchs
+from .basic_data import banktypes
 
 from .riskcontrol import admin
 from . import update_cache
@@ -27,7 +26,6 @@ from .money import chargetype
 from .money import recharge
 from .money import withdraw
 from .money import balancelog
-
 
 
 # Register your models here.
@@ -113,7 +111,7 @@ class AccountLoginPage(TablePage):
 
 page_dc.update({
     'maindb.account': AccountPage,
-    #'maindb.account.edit': AccountEditGroup,
+    # 'maindb.account.edit': AccountEditGroup,
     # 'maindb.ticketmaster':TicketMasterPage,
     # 'maindb.balancelog':BalancelogPage,
     # 'maindb.trans':TransPage,

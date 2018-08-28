@@ -47,6 +47,7 @@ class PcMenu(BaseEngine):
                  {'label': _('Currency'), 'url': page('maindb.TbCurrency'), 'visible': can_touch(TbCurrency, crt_user)},
                  {'label': _('league '), 'url': page('match.league'), 'visible': can_touch(TbTournament, crt_user)},
                  {'label': _('Teams'), 'url': page('maindb.teams'), 'visible': can_touch(TbTeams, crt_user), },
+                 {'label': '银行卡类型', 'url': page('banktypes'), 'visible': can_touch(TbBanktypes, crt_user), },
                  {'label': _('AppResource'), 'url': page('AppResource'),
                   'visible': can_touch(TbAppresource, crt_user), },
                  
