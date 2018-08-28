@@ -1550,10 +1550,13 @@ var mix_table_data = {
                 if (!row_match[row_match_fun](self, kws)) {
                     return;
                 }
-                function bb() {
+
+                function bb(all_set_dict) {
                     var cache_rows = ex.copy(self.selected);
+
                     ex.each(cache_rows, function (row) {
                         row[kws.field] = kws.value;
+                        ex.assign(row, all_set_dict);
                     });
                     var post_data = [{ fun: 'save_rows', rows: cache_rows }];
                     cfg.show_load();
@@ -1561,6 +1564,7 @@ var mix_table_data = {
 
                         ex.each(self.selected, function (row) {
                             row[kws.field] = kws.value;
+                            ex.assign(row, all_set_dict);
                         });
 
                         cfg.hide_load(2000);
@@ -1570,7 +1574,13 @@ var mix_table_data = {
                 if (kws.confirm_msg) {
                     layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
                         layer.close(index);
-                        bb();
+                        if (kws.fields_ctx) {
+                            pop_edit_local({}, kws.fields_ctx, function (new_row) {
+                                bb(new_row);
+                            });
+                        } else {
+                            bb({});
+                        }
                     });
                 } else {
                     bb();

@@ -63,7 +63,7 @@ class TicketMasterPage(TablePage):
         exclude = []
         fields_sort = ['ticketid', 'accountid', 'stakeamount', 'betamount', 'parlayrule', 'status',
                        'winbet', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus',
-                       'settletime']
+                       'settletime', 'memo']
 
         def dict_head(self, head):
             if head['name'] in ['createtime', 'settletime']:
@@ -104,7 +104,10 @@ class TicketMasterPage(TablePage):
             return [
                 {'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '作废', 'field': 'status','value': 30,
                  'row_match': 'many_row_match','match_field': 'status','match_values': [1],'match_msg': '只能选择未结算的订单',
-                 'confirm_msg': '确认作废这些注单吗?',},
+                 'confirm_msg': '确认作废这些注单吗?','fields_ctx': {
+                     'heads': [{'name': 'memo', 'label': '备注', 'editor': 'blocktext',}], 
+                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn',}],
+                     },},
                 ]
             #return [
                 #{'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '作废', 'field': 'status','value': 30,'one_row': True, },
@@ -151,7 +154,7 @@ class TicketMasterPage(TablePage):
 class TicketMasterForm(ModelFields):
     class Meta:
         model = TbTicketmaster
-        fields = ['status']
+        fields = ['status', 'memo']
     
     def save_form(self): 
         if 'status' in self.changed_data and self.cleaned_data['status'] == 30:
@@ -159,6 +162,8 @@ class TicketMasterForm(ModelFields):
             cursor = connections['Sports'].cursor()
             cursor.execute(sql)
             cursor.commit()
+            self.instance.memo = self.kw.get('memo')
+            self.instance.save()
         else:
             super().save_form()
         return self.instance
