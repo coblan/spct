@@ -855,7 +855,7 @@ class TbMaxpayout(models.Model):
     # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
     oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, db_column='OddsTypeGroup', blank=True,
                                       null=True, )
-    viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True, )  # Field name made lowercase.
+    viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True, choices= VIP_LEVEL)  # Field name made lowercase.
     maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18,
                                     decimal_places=2)  # Field name made lowercase.
     # issingle = models.BooleanField(db_column='IsSingle')  # Field name made lowercase.
