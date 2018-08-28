@@ -56,7 +56,7 @@ class MatchesSummaryPage(TablePage):
                 'sum_profit': 'total_profit'
             }
             for k in dc:
-                dc[k] = str(dc[k])
+                dc[k] = str(round(dc[k] or 0, 2))
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = [_('Total')] + self.footer
