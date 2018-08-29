@@ -5,7 +5,6 @@ from helpers.director.fields.fields import ModelFields
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter
 from helpers.director.table.table import RowSearch, RowSort
 from ..models import TbRecharge
-from django.utils.timezone import datetime
 
 
 class RechargePage(TablePage):
@@ -54,14 +53,9 @@ class RechargePage(TablePage):
 
         def get_operation(self):
             return [
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '手动确认', 'field': 'status',
-                 'value': 2,
+                {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '手动确认',
                  'row_match': 'many_row_match', 'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择未确认的订单',
-                 'confirm_msg': '确认这些订单吗?', 'fields_ctx': {
-                    'heads': [{'name': 'amount', 'label': '实际金额', 'editor': 'number', 'required': True},
-                              {'name': 'memo', 'label': '备注', 'editor': 'blocktext', 'required': True}],
-                    'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
-                }, },
+                 'fields_ctx': ConfirmRechargeForm(crt_user=self.crt_user).get_head_context()},
             ]
 
         class sort(RowSort):
@@ -88,7 +82,12 @@ class RechargePage(TablePage):
 class ConfirmRechargeForm(ModelFields):
     class Meta:
         model = TbRecharge
-        exclude = ['isauto', 'account']
+        fields = ['amount', 'memo']
+
+    def dict_head(self, head):
+        if head['name'] == 'memo':
+            head['editor'] = 'blocktext'
+        return head
 
     def save_form(self):
         inst = self.instance
@@ -97,7 +96,7 @@ class ConfirmRechargeForm(ModelFields):
             'AccountID': inst.accountid_id,
             'Amount': inst.amount,
             'ChannelType': '',
-            'OrderTime': inst.createtime,
+            'OrderTime': inst.createtime.strftime('%Y-%m-%d %H:%M:%S'),
             'Code': '',
             'CallBackInfo': '手动确认'
         }
@@ -106,8 +105,8 @@ class ConfirmRechargeForm(ModelFields):
         cursor.execute(sql)
         result = cursor.fetchone()
         cursor.commit()
-        if 'ok' not in result:
-            result = str(cursor)
+        if '@ok' not in str(result):
+            raise UserWarning(str(result))
 
 
 director.update({
