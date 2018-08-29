@@ -12,22 +12,26 @@ class BankCard(TablePage):
 
     class tableCls(ModelTable):
         model = TbBankcard
-        exclude = ['account','banktypeid']
+        exclude = ['account', 'banktypeid']
+        pop_edit_field = 'bankcardid'
 
         def getExtraHead(self):
             return [
                 # {'name': 'nickname', 'label': "昵称"}
             ]
 
+        def get_operation(self):
+            return []
+
         def dict_head(self, head):
             dc = {
-                'accountid':150,
+                'accountid': 150,
                 'cardno': 200,
                 'bankaccountname': 140,
-                'createtime':150,
-                'bankaccountmobil':120,
+                'createtime': 150,
+                'bankaccountmobil': 120,
                 'banktypename': 120,
-                'banksitename':150
+                'banksitename': 150
             }
             if head['name'] in dc:
                 head['width'] = dc.get(head['name'])
@@ -43,14 +47,14 @@ class BankCard(TablePage):
             mobile_str = ''.join(mobile)
             return {
                 'cardno': out_str,
-                'bankaccountmobil':mobile_str
+                'bankaccountmobil': mobile_str
             }
 
         class search(RowSearch):
             names = ['cardno', 'bankaccountname', 'accountid__nickname']
 
             def get_context(self):
-                return {'search_tip': '卡号,开户人,用户昵称',
+                return {'search_tip': '用户昵称,卡号,开户人',
                         'editor': 'com-search-filter',
                         'name': '_q'
                         }
@@ -77,7 +81,12 @@ class BankCard(TablePage):
 class BankCardForm(ModelFields):
     class Meta:
         model = TbBankcard
-        exclude = []
+        exclude = ['account', 'banktypeid']
+
+    def dict_head(self, head):
+        if head['name'] not in ['active']:
+            head['readonly'] = True
+        return head
 
 
 director.update({
