@@ -59,8 +59,9 @@ class TicketMasterPage(TablePage):
     class tableCls(ModelTable):
         model = TbTicketmaster
         exclude = []
-        fields_sort = ['ticketid', 'accountid', 'stakeamount', 'betamount', 'parlayrule', 'status',
-                       'winbet', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit', 'createtime',
+        fields_sort = ['ticketid', 'accountid', 'parlayrule', 'status',
+                       'winbet', 'stakeamount', 'betamount', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
+                       'createtime',
                        'settletime', 'memo']
 
         def dict_head(self, head):
@@ -126,7 +127,7 @@ class TicketMasterPage(TablePage):
                 for name in self.valid_name:
                     ls.append(_(self.model._meta.get_field(name).verbose_name))
                 dc = {
-                    'search_tip': ','.join(ls) + ',matchid' + '(精确值)',
+                    'search_tip': ','.join(ls) + ',matchid',
                     'editor': 'com-search-filter',
                     'name': '_q'
                 }
@@ -151,15 +152,6 @@ class TicketMasterPage(TablePage):
         class sort(RowSort):
             names = ['stakeamount', 'betamount', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
                      'settletime']
-
-            def get_context(self):
-                return {'sortable': self.valid_name + ['profit'], 'sort_str': self.sort_str}
-
-            def get_query(self, query):
-                if self.sort_str:
-                    ls = self.sort_str.split(',')
-                    # if 'profit' in ls:
-                    #     return query.OrderBy
 
 
 class TicketMasterForm(ModelFields):
