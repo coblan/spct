@@ -1,9 +1,11 @@
 # encoding:utf-8
 from django.db.models import Sum, Q
-
+from django.db import connections
+from helpers.director.fields.fields import ModelFields
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter
 from helpers.director.table.table import RowSearch, RowSort
 from ..models import TbRecharge
+from django.utils.timezone import datetime
 
 
 class RechargePage(TablePage):
@@ -53,11 +55,11 @@ class RechargePage(TablePage):
         def get_operation(self):
             return [
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '手动确认', 'field': 'status',
-                 'value': 30,
+                 'value': 2,
                  'row_match': 'many_row_match', 'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择未确认的订单',
                  'confirm_msg': '确认这些订单吗?', 'fields_ctx': {
-                    'heads': [{'name': 'amount', 'label': '实际金额', 'editor': 'number','required':True},
-                              {'name': 'memo', 'label': '备注', 'editor': 'blocktext','required':True }],
+                    'heads': [{'name': 'amount', 'label': '实际金额', 'editor': 'number', 'required': True},
+                              {'name': 'memo', 'label': '备注', 'editor': 'blocktext', 'required': True}],
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
                 }, },
             ]
@@ -83,10 +85,36 @@ class RechargePage(TablePage):
             names = ['channelid', 'status']
 
 
+class ConfirmRechargeForm(ModelFields):
+    class Meta:
+        model = TbRecharge
+        exclude = ['isauto', 'account']
+
+    def save_form(self):
+        inst = self.instance
+        dc = {
+            'OrderID': inst.orderid,
+            'AccountID': inst.accountid_id,
+            'Amount': inst.amount,
+            'ChannelType': '',
+            'OrderTime': inst.createtime,
+            'Code': '',
+            'CallBackInfo': '手动确认'
+        }
+        sql = "exec [dbo].[SP_RechargeCallBack] '%(OrderID)s','%(AccountID)s',%(Amount)s,1,'%(ChannelType)s','%(OrderTime)s','%(Code)s','%(CallBackInfo)s',0" % dc
+        cursor = connections['Sports'].cursor()
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        cursor.commit()
+        if 'ok' not in result:
+            result = str(cursor)
+
+
 director.update({
-    'Recharge': RechargePage.tableCls
+    'Recharge': RechargePage.tableCls,
+    'Recharge.edit': ConfirmRechargeForm
 })
 
 page_dc.update({
-    'Recharge': RechargePage,
+    'Recharge': RechargePage
 })
