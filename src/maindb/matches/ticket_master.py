@@ -1,12 +1,10 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from django.contrib import admin
 from django.utils.translation import gettext as _
-from helpers.director.shortcut import TablePage, ModelTable, model_dc, page_dc, ModelFields, FieldsPage, \
-    TabPage, RowSearch, RowSort, RowFilter, model_to_name, director
+from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
+    RowSearch, RowSort, RowFilter, director
 from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatches
-from ..status_code import *
-from django.db.models import Q, fields, Sum
+from django.db.models import Q, Sum, F
 import re
 from django.db import connections
 
@@ -62,31 +60,41 @@ class TicketMasterPage(TablePage):
         model = TbTicketmaster
         exclude = []
         fields_sort = ['ticketid', 'accountid', 'stakeamount', 'betamount', 'parlayrule', 'status',
-                       'winbet', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus',
+                       'winbet', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit', 'createtime',
                        'settletime', 'memo']
 
         def dict_head(self, head):
             if head['name'] in ['createtime', 'settletime']:
-                head['width'] = 150
-            elif head['name'] in ['status','accountid','betamount', 'betoutcome', 'turnover', 'bonus']:
-                head['width'] = 100
+                head['width'] = 140
+            elif head['name'] in ['status', 'accountid', 'betamount', 'betoutcome', 'turnover', 'bonus', 'profit']:
+                head['width'] = 120
             else:
                 head['width'] = 80
-
             if head['name'] == 'ticketid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'ticketstake'
 
             return head
 
+        def getExtraHead(self):
+            return [{'name': 'profit', 'label': '亏盈'}]
+
+        def dict_row(self, inst):
+            return {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)}
+
+        def inn_filter(self, query):
+            return query.annotate(profit=F('betoutcome') - F('betamount') + F('bonus'))
+
         def statistics(self, query):
             dc = query.aggregate(total_betamount=Sum('betamount'), total_betoutcome=Sum('betoutcome'),
                                  total_turnover=Sum('turnover'), total_bonus=Sum('bonus'))
+            dc['total_profit'] = dc['total_betoutcome'] - dc['total_betamount'] + dc['total_bonus']
             mapper = {
                 'betamount': 'total_betamount',
                 'betoutcome': 'total_betoutcome',
                 'turnover': 'total_turnover',
-                'bonus': 'total_bonus'
+                'bonus': 'total_bonus',
+                'profit': 'total_profit'
             }
             for k in dc:
                 dc[k] = str(round(dc.get(k, 0) or 0, 2))
@@ -99,20 +107,16 @@ class TicketMasterPage(TablePage):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
             return ctx
-        
-        def get_operation(self): 
+
+        def get_operation(self):
             return [
-                {'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '作废', 'field': 'status','value': 30,
-                 'row_match': 'many_row_match','match_field': 'status','match_values': [1],'match_msg': '只能选择未结算的订单',
-                 'confirm_msg': '确认作废这些注单吗?','fields_ctx': {
-                     'heads': [{'name': 'memo', 'label': '备注', 'editor': 'blocktext',}], 
-                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn',}],
-                     },},
-                ]
-            #return [
-                #{'fun': 'selected_set_and_save',  'editor': 'com-op-btn', 'label': '作废', 'field': 'status','value': 30,'one_row': True, },
-            #]
-        
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废', 'field': 'status', 'value': 30,
+                 'row_match': 'many_row_match', 'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择未结算的订单',
+                 'confirm_msg': '确认作废这些注单吗?', 'fields_ctx': {
+                    'heads': [{'name': 'memo', 'label': '备注', 'editor': 'blocktext', }],
+                    'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
+                }, },
+            ]
 
         class search(RowSearch):
             names = ['ticketid', 'account']
@@ -141,20 +145,29 @@ class TicketMasterPage(TablePage):
                     return query
 
         class filters(RowFilter):
-            range_fields = ['createtime','settletime']
+            range_fields = ['createtime', 'settletime']
             names = ['status', 'winbet']
 
         class sort(RowSort):
-            names = ['stakeamount', 'betamount', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus',
+            names = ['stakeamount', 'betamount', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
                      'settletime']
+
+            def get_context(self):
+                return {'sortable': self.valid_name + ['profit'], 'sort_str': self.sort_str}
+
+            def get_query(self, query):
+                if self.sort_str:
+                    ls = self.sort_str.split(',')
+                    # if 'profit' in ls:
+                    #     return query.OrderBy
 
 
 class TicketMasterForm(ModelFields):
     class Meta:
         model = TbTicketmaster
         fields = ['status', 'memo']
-    
-    def save_form(self): 
+
+    def save_form(self):
         if 'status' in self.changed_data and self.cleaned_data['status'] == 30:
             sql = 'exec [dbo].[SP_CancelTicket] %(ticketid)s,30' % {'ticketid': self.instance.ticketid}
             cursor = connections['Sports'].cursor()
@@ -165,7 +178,7 @@ class TicketMasterForm(ModelFields):
         else:
             super().save_form()
         return self.instance
-        
+
 
 class TicketTabBase(ModelTable):
     def __init__(self, *args, **kws):
@@ -189,7 +202,7 @@ class TicketstakeTable(TicketTabBase):
     def getExtraHead(self):
         return [
             {'name': 'matchid', 'label': 'matchid', },
-            {'name': 'matchname', 'label': '比赛','width': 200,  },
+            {'name': 'matchname', 'label': '比赛', 'width': 200, },
             {'name': 'tournament', 'label': 'tournament', 'width': 120, }
         ]
 
@@ -313,7 +326,7 @@ class MatchForm(ModelFields):
 director.update({
     'games.ticketmaster': TicketMasterPage.tableCls,
     'games.ticketmaster.edit': TicketMasterForm,
-    
+
     'games.TicketstakeTable': TicketstakeTable,
     'games.TicketparlayTable': TicketparlayTable,
 
