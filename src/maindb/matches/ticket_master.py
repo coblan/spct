@@ -162,7 +162,6 @@ class TicketMasterForm(ModelFields):
             cursor.commit()
             self.instance.memo = self.kw.get('memo')
             self.instance.save()
-            raise UserWarning('hello world')
         else:
             super().save_form()
         return self.instance

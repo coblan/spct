@@ -658,7 +658,7 @@ window.cfg = {
         layer.alert(msg);
     },
     warning: function warning(msg) {
-        layer.confirm(msg, { title: ['提示', 'color:white;background-color:#f0ad4e'] });
+        layer.alert(msg, { title: ['提示', 'color:white;background-color:#f0ad4e'], icon: 5 });
     },
     tr: {
         'picture_size_excceed': '图片尺寸不能超过{maxsize}'
