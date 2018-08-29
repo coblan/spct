@@ -28,6 +28,8 @@ from .money import chargetype
 from .money import recharge
 from .money import withdraw
 from .money import balancelog
+from .money import agent_commission
+
 
 
 # Register your models here.
