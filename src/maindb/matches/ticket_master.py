@@ -143,8 +143,6 @@ class TicketMasterPage(TablePage):
         class filters(RowFilter):
             range_fields = ['createtime','settletime']
             names = ['status', 'winbet']
-            # range_fields=[{'name':'createtime','type':'date'},
-            # {'name':'settletime','type':'date'}]
 
         class sort(RowSort):
             names = ['stakeamount', 'betamount', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus',

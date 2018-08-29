@@ -61,7 +61,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'helpers.director.middleware.global_cache.GlobalCacheMiddleware'
+    'helpers.director.middleware.request_cache.RequestCacheMiddleware'
 ]
 
 ROOT_URLCONF = 'urls'
