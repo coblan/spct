@@ -704,7 +704,8 @@ class TbMatches(models.Model):
     sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID',
                                      verbose_name=_('Match Category'))  # Field name made lowercase.
-    tournamentid = models.IntegerField(db_column='TournamentID')  # Field name made lowercase.
+    #tournamentid = models.IntegerField(db_column='TournamentID')  # Field name made lowercase.
+    tournamentid = models.ForeignKey(to= 'TbTournament', db_constraint= False, db_column='TournamentID')
     tournamentzh = models.CharField(db_column='TournamentZH', verbose_name=_('Tournament'),
                                     max_length=50)  # Field name made lowercase.
     matchid = models.IntegerField(db_column='MatchID', unique=True)  # Field name made lowercase.

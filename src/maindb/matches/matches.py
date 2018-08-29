@@ -31,7 +31,12 @@ class MatchsPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['isrecommend', 'livebet', 'statuscode']
+            names = ['isrecommend', 'livebet', 'statuscode', 'tournamentid']
+            
+            def dict_head(self, head): 
+                if head['name'] == 'tournamentid':
+                    head['editor'] = 'com-filter-search-select'
+                return head
 
         class search(RowSearch):
             names = ['matchid', 'team1zh', 'team2zh']
