@@ -1582,7 +1582,7 @@ var mix_table_data = {
                                 bb(new_row, function () {
                                     setTimeout(function () {
                                         layer.close(win_index);
-                                    }, 2000);
+                                    }, 1500);
                                 });
                             });
                         } else {
@@ -1594,17 +1594,20 @@ var mix_table_data = {
                 }
             },
             selected_pop_set_and_save: function selected_pop_set_and_save(kws) {
-                if (self.selected.length != 1) {
-                    cfg.showMsg('请选择一行数据！');
+                var row_match_fun = kws.row_match || 'one_row';
+                if (!row_match[row_match_fun](self, kws)) {
                     return;
                 }
+
                 var crt_row = self.selected[0];
                 var cache_director_name = crt_row._director_name;
                 crt_row._director_name = kws.fields_ctx.director_name;
                 var win_index = pop_fields_layer(crt_row, kws.fields_ctx, function (new_row) {
                     ex.assign(crt_row, new_row);
                     crt_row._director_name = cache_director_name;
-                    layer.close(win_index);
+                    setTimeout(function () {
+                        layer.close(win_index);
+                    }, 1500);
                 });
             },
             ajax_row: function ajax_row(kws) {
@@ -1815,7 +1818,25 @@ var row_match = {
             return true;
         }
     },
-    one_row_match: function one_row_match(self, head) {},
+    one_row_match: function one_row_match(self, head) {
+        if (self.selected.length != 1) {
+            cfg.showMsg('请选择一行数据！');
+            return false;
+        } else {
+            var field = head.match_field;
+            var values = head.match_values;
+            var msg = head.match_msg;
+
+            var row = self.selected[0];
+
+            if (!ex.isin(row[field], values)) {
+                cfg.showMsg(msg);
+                return false;
+            } else {
+                return true;
+            }
+        }
+    },
     many_row_match: function many_row_match(self, head) {
         // head : @match_field , @match_values ,@match_msg
         if (self.selected.length == 0) {

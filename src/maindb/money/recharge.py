@@ -54,7 +54,8 @@ class RechargePage(TablePage):
         def get_operation(self):
             return [
                 {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '手动确认',
-                 'row_match': 'many_row_match', 'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择未确认的订单',
+                 'row_match': 'one_row_match',
+                'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择状态为未充值的',
                  'fields_ctx': ConfirmRechargeForm(crt_user=self.crt_user).get_head_context()},
             ]
 
@@ -80,9 +81,10 @@ class RechargePage(TablePage):
 
 
 class ConfirmRechargeForm(ModelFields):
+    hide_fields = ['status']
     class Meta:
         model = TbRecharge
-        fields = ['amount', 'memo']
+        fields = ['amount', 'memo', 'status']
 
     def dict_head(self, head):
         if head['name'] == 'memo':
@@ -107,6 +109,7 @@ class ConfirmRechargeForm(ModelFields):
         cursor.commit()
         if '@ok' not in str(result):
             raise UserWarning(str(result))
+        self.instance = self.instance.__class__.objects.get(pk = self.instance.pk)
 
 
 director.update({
