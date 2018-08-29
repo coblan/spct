@@ -29,6 +29,9 @@ class PayChannelPage(TablePage):
         class sort(RowSort):
             names = []
 
+        def get_operation(self):
+            return []
+
         def dict_head(self, head):
             dc = {
                 'channelname':120,
@@ -42,6 +45,8 @@ class PayChannelPage(TablePage):
 
 
 class PayChannelForm(ModelFields):
+    readonly = ['channelname','channeltype','groupway','memo']
+
     class Meta:
         model = TbPaychannel
         exclude = ['groupicon','channelicon']

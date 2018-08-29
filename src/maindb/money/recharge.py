@@ -100,7 +100,7 @@ class ConfirmRechargeForm(ModelFields):
             'ChannelType': '',
             'OrderTime': inst.createtime.strftime('%Y-%m-%d %H:%M:%S'),
             'Code': '',
-            'CallBackInfo': '手动确认'
+            'CallBackInfo': inst.memo
         }
         sql = "exec [dbo].[SP_RechargeCallBack] '%(OrderID)s','%(AccountID)s',%(Amount)s,1,'%(ChannelType)s','%(OrderTime)s','%(Code)s','%(CallBackInfo)s',0" % dc
         cursor = connections['Sports'].cursor()

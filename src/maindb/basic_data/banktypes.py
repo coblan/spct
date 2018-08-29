@@ -21,6 +21,10 @@ class BankTypesPage(TablePage):
         pop_edit_field = 'banktypename'
         fields_sort = ['banktypeid', 'banktypename', 'active']
 
+        def get_operation(self):
+            ops = super().get_operation()
+            return [ops[0]]
+
         class filters(RowFilter):
             names = ['active']
 
