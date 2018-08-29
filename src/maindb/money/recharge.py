@@ -16,12 +16,13 @@ class RechargePage(TablePage):
         model = TbRecharge
         sort = ['createtime']
         exclude = ['account']
-        fields_sort = ['rechargeid', 'accountid','orderid', 'amount', 'status', 'createtime','confirmtime', 'channelid', 'amounttype','isauto', 'memo',
+        fields_sort = ['rechargeid', 'accountid', 'orderid', 'amount', 'status', 'createtime', 'confirmtime',
+                       'channelid', 'amounttype', 'isauto', 'memo',
                        'apolloinfo', 'apollomsg']
 
         def dict_head(self, head):
             dc = {
-                'rechargeid':60,
+                'rechargeid': 60,
                 'accountid': 120,
                 'channelid': 120,
                 'createtime': 150,
@@ -49,9 +50,20 @@ class RechargePage(TablePage):
             ctx['footer'] = self.footer
             return ctx
 
+        def get_operation(self):
+            return [
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '手动确认', 'field': 'status',
+                 'value': 30,
+                 'row_match': 'many_row_match', 'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择未确认的订单',
+                 'confirm_msg': '确认这些订单吗?', 'fields_ctx': {
+                    'heads': [{'name': 'amount', 'label': '实际金额', 'editor': 'number','required':True},
+                              {'name': 'memo', 'label': '备注', 'editor': 'blocktext','required':True }],
+                    'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
+                }, },
+            ]
 
         class sort(RowSort):
-            names = ['amount', 'createtime','confirmtime']
+            names = ['amount', 'createtime', 'confirmtime']
 
         class search(RowSearch):
             def get_context(self):
@@ -67,8 +79,8 @@ class RechargePage(TablePage):
                     return query
 
         class filters(RowFilter):
-            range_fields = ['createtime','confirmtime']
-            names = ['channelid','status']
+            range_fields = ['createtime', 'confirmtime']
+            names = ['channelid', 'status']
 
 
 director.update({
