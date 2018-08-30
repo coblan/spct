@@ -12,7 +12,7 @@ from maindb.mongoInstance import updateMatchMongo
 from maindb.rabbitmq_instance import closeHandicap
 import json
 from ..redisInstance import redisInst
-
+from django.db.models import Q
 
 class MatchsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -42,7 +42,19 @@ class MatchsPage(TablePage):
                 return head
 
         class search(SelectSearch):
-            names = ['matchid', 'team1zh', 'team2zh']
+            names = ['team1zh']
+            exact_names = ['matchid']
+            def get_option(self, name): 
+                if name == 'team1zh':
+                    return {'value': 'team1zh', 'label': '球队名称',}
+                else:
+                    return super().get_option(name)
+            
+            def get_express(self, q_str): 
+                if self.qf == 'team1zh':
+                    return Q(team1zh__icontains = q_str) | Q(team2zh__icontains = q_str)
+                else:
+                    return super().get_express(q_str)
             
 
         class sort(RowSort):

@@ -1784,7 +1784,7 @@ var mix_table_data = {
                 //var ss = layer.load(2);
                 cfg.show_load();
                 var post_data = [{ fun: 'del_rows', rows: self.selected }];
-                $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
                     //layer.close(ss)
                     self.row_pages.total -= self.selected.length;
                     ex.each(self.selected, function (item) {
