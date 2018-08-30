@@ -103,15 +103,15 @@ class PcMenu(BaseEngine):
                  # {'label':_('Tb Withdraw Limit Log'),'url':page('maindb.TbWithdrawlimitlog'), 'visible': can_touch(TbWithdrawlimitlog, crt_user)}
              ]},
 
-            {'label': _('Report'), 'icon': fa('fa-bar-chart'), 'visible': True,
+            {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,
              'submenu': [
                  # {'label': _('Channel'), 'url': page('maindb.report.channel'),
                  # 'visible': can_touch(TbChannel, crt_user), },
-                 {'label': _('Account'), 'url': page('maindb.report.account'),
+                 {'label': '会员亏盈', 'url': page('maindb.report.account'),
                   'visible': can_touch(TbAccount, crt_user), },
              ]},
 
-            {'label': _('User'), 'icon': fa('fa-user'), 'visible': True,
+            {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
                  {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user)},
                  {'label': _('Role'), 'url': page('jb_group'), 'visible': can_touch(Group, crt_user)},

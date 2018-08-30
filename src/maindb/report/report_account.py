@@ -1,10 +1,11 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowSort, RowFilter
+from helpers.director.table.table import RowSearch
 from maindb.money import balancelog
 from ..models import TbTicketmaster, TbAccount
 from django.db.models.aggregates import Count, Sum
-from django.db.models import F, ExpressionWrapper, FloatField
+from django.db.models import F, ExpressionWrapper, FloatField, Q
 import decimal
 from django.utils import timezone
 
@@ -13,7 +14,7 @@ class ReportAccout(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return '账号统计'
+        return '会员亏盈'
 
     class tableCls(ModelTable):
         model = TbTicketmaster
@@ -76,6 +77,19 @@ class ReportAccout(TablePage):
             fields = ModelTable.permited_fields(self)
             fields.extend(['ratio', 'profit'])
             return fields
+
+        class search(RowSearch):
+            def get_context(self):
+                return {'search_tip': '用户昵称',
+                        'editor': 'com-search-filter',
+                        'name': '_q'
+                        }
+
+            def get_query(self, query):
+                if self.q:
+                    return query.filter(Q(accountid__nickname__icontains=self.q) | Q(orderid=self.q))
+                else:
+                    return query
 
         class filters(RowFilter):
             range_fields = ['createtime']
