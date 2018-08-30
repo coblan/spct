@@ -123,8 +123,15 @@ class MatchesSummaryPage(TablePage):
             names = ['matchid']
 
         class filters(RowFilter):
-            names = ['statuscode']
+            names = ['statuscode', 'tournamentid']
             range_fields = ['matchdate']
+            def dict_head(self, head): 
+                if head['name'] == 'tournamentid':
+                    head['editor'] = 'com-filter-search-select'
+                    head['order'] = True
+                    head['placeholder'] = '请选择联赛'
+                    head['style'] = 'width:300px'
+                return head
 
 
 director.update({
