@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter
-from maindb.models import TbBanktypes
+from maindb.models import TbBanktypes, TbBankcard
 from helpers.director.base_data import director
 
 
@@ -21,9 +21,9 @@ class BankTypesPage(TablePage):
         pop_edit_field = 'banktypename'
         fields_sort = ['banktypeid', 'banktypename', 'active']
 
-        def get_operation(self):
-            ops = super().get_operation()
-            return [ops[0]]
+        # def get_operation(self):
+        #     ops = super().get_operation()
+        #     return [ops[0]]
 
         class filters(RowFilter):
             names = ['active']
@@ -50,6 +50,12 @@ class BankTypesForm(ModelFields):
     class Meta:
         model = TbBanktypes
         exclude = ['img']
+
+    def del_form(self):
+        if TbBankcard.objects.filter(banktypeid=self.instance.banktypeid).exists():
+            raise UserWarning('已有用户绑定该银行类型，不能删除')
+        else:
+            super().del_form()
 
     def save_form(self):
         super().save_form()
