@@ -1,6 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowSort, RowFilter
+from maindb.money import balancelog
 from ..models import TbTicketmaster, TbAccount
 from django.db.models.aggregates import Count, Sum
 from django.db.models import F, ExpressionWrapper, FloatField
@@ -35,11 +36,16 @@ class ReportAccout(TablePage):
                 {'name': 'accountid__amount', 'label': '余额', 'width': 100},
                 {'name': 'num_ticket', 'label': '投注数', 'width': 60},
                 {'name': 'num_win', 'label': '中注数', 'width': 80},
-                {'name': 'ratio', 'label': '中注比', 'width': 100},
+                {'name': 'ratio', 'label': '中注比%', 'width': 100},
                 {'name': 'sum_money', 'label': '投注金额', 'width': 120},
                 {'name': 'sum_outcome', 'label': '派彩金额', 'width': 120},
                 {'name': 'sum_bonus', 'label': '返水', 'width': 100},
                 {'name': 'sum_turnover', 'label': '流水', 'width': 100},
+                {'name': 'recharge_first_bonus', 'label': '首存红利', 'width': 120},
+                {'name': 'recharge_second_bonus', 'label': '再存红利', 'width': 120},
+                {'name': 'birthday_bonus', 'label': '生日礼金', 'width': 120},
+                {'name': 'birthday_bonus', 'label': '生日礼金', 'width': 120},
+                {'name': 'adjust_amount', 'label': '调账', 'width': 120},
                 {'name': 'profit', 'label': '平台亏盈', 'width': 120},
             ]
             return heads

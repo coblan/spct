@@ -1410,7 +1410,7 @@ class TbTicketmaster(models.Model):
                                decimal_places=4)  # Field name made lowercase.
     bonuspa = CusDecimalField(db_column='BonusPa', verbose_name='反水比例', max_digits=18,
                               decimal_places=4, digits=3)  # Field name made lowercase.
-    bonus = CusDecimalField(db_column='Bonus', verbose_name='反水/红利', max_digits=18,
+    bonus = CusDecimalField(db_column='Bonus', verbose_name='反水', max_digits=18,
                             decimal_places=4)  # Field name made lowercase.
     rawdata = models.CharField(db_column='RawData', verbose_name='原始数据', max_length=4000)  # Field name made lowercase.
     settletime = models.DateTimeField(verbose_name='结算时间', db_column='SettleTime')  # Field name made lowercase.
