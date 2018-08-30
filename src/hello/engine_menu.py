@@ -28,7 +28,7 @@ class PcMenu(BaseEngine):
         menu = [
             {'label': _('DashBoard'), 'url': page('home'), 'icon': fa('fa-home'), 'visible': True},
 
-            {'label': _('Marketing'), 'icon': fa('fa-image'), 'visible': True,
+            {'label': '市场活动', 'icon': fa('fa-image'), 'visible': True,
              'submenu': [
                  {'label': _('Banner'), 'url': page('TbBanner'), 'visible': can_touch(TbBanner, crt_user)},
                  {'label': _('App Package'), 'url': page('maindb.TbAppversion'),
@@ -76,31 +76,24 @@ class PcMenu(BaseEngine):
 
             {'label': _('Games'), 'icon': fa('fa-globe'), 'visible': True,
              'submenu': [
-                 {'label': _('Tb Match'), 'url': page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user), },
+                 {'label': '赛事列表', 'url': page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user), },
                  {'label': _('View TicketSingleByMatch'), 'url': page('maindb.MatchesSummary'),
                   'visible': can_touch(TbMatches, crt_user), },
-                 {'label': _('Tb TicketMaster'), 'url': page('maindb.ticketmaster'),
+                 {'label': '注单列表', 'url': page('maindb.ticketmaster'),
                   'visible': can_touch(TbTicketmaster, crt_user), },
                  # {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
-
              ]},
 
             {'label': _('RiskControl'), 'icon': fa('fa-lock'), 'visible': True,
              'submenu': [
                  {'label': _('最大赔付'), 'url': page('sports.maxpayout'), 'visible': can_touch(TbLimit, crt_user), },
-                 # {'label':_('Tb RC Filter'),'url':page('maindb.TbRcFilter'), 'visible': can_touch(TbRcFilter, crt_user),},
-                 # {'label':_('Tb RC Level'),'url':page('maindb.TbRcLevel'), 'visible': can_touch(TbRcLevel, crt_user),},
-                 # {'label':_('Tb RC User'),'url':page('maindb.TbRcUser'), 'visible': can_touch(TbRcUser, crt_user),},
                  {'label': _('Tb Blankuserlist'), 'url': page('maindb.TbBlackuserlist'),
                   'visible': can_touch(TbBlackuserlist, crt_user), },
                  {'label': '提现控制', 'url': page('Parameter'), 'visible': can_touch(TbTeams, crt_user), },
                  # {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
-
                  # {'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList'), 'visible': can_touch(Blackiprangelist, crt_user),},
                  # {'label':_('White IP'),'url':page('maindb.WhiteIpList'), 'visible': can_touch(Whiteiplist, crt_user),},
                  # {'label':_('White User'),'url':page('maindb.Whiteuserlist'), 'visible': can_touch(Whiteuserlist, crt_user),},
-
-                 # {'label':_('Tb Withdraw Limit Log'),'url':page('maindb.TbWithdrawlimitlog'), 'visible': can_touch(TbWithdrawlimitlog, crt_user)}
              ]},
 
             {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,
@@ -109,6 +102,8 @@ class PcMenu(BaseEngine):
                  # 'visible': can_touch(TbChannel, crt_user), },
                  {'label': '会员亏盈', 'url': page('maindb.report.account'),
                   'visible': can_touch(TbAccount, crt_user), },
+                 {'label': '平台亏盈', 'url': page('PlatformProfit'),
+                  'visible': True, },
              ]},
 
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
