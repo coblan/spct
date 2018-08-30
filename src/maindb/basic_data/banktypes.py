@@ -1,8 +1,6 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-
 from django.core.exceptions import ValidationError
-
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter
 from maindb.models import TbBanktypes, TbBankcard
@@ -17,7 +15,6 @@ class BankTypesPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbBanktypes
-        exclue = []
         pop_edit_field = 'banktypename'
         fields_sort = ['banktypeid', 'banktypename', 'active']
 
@@ -25,10 +22,15 @@ class BankTypesPage(TablePage):
             create = super().get_operation()[0]
 
             return [create,
-                    {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '删除', 'field': 'active',
-                     'value': False,
-                     'row_match': 'one_row',
-                     'confirm_msg': '确认删除该银行卡类型吗?'}
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '删除',
+                        'field': 'active',
+                        'value': False,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认删除该银行卡类型吗?'
+                    }
                     ]
 
         class filters(RowFilter):
@@ -55,7 +57,9 @@ class BankTypesPage(TablePage):
 class BankTypesForm(ModelFields):
     class Meta:
         model = TbBanktypes
-        exclude = ['img', 'active']
+        exclude = ['img']
+
+    hide_fields = ['active']
 
     # def del_form(self):
     #     if TbBankcard.objects.filter(banktypeid=self.instance.banktypeid).exists():
@@ -66,7 +70,7 @@ class BankTypesForm(ModelFields):
     def save_form(self):
         if 'active' in self.changed_data:
             if TbBankcard.objects.filter(banktypeid=self.instance.banktypeid).exists():
-                raise UserWarning('已有用户绑定该银行类型，不能删除')
+                raise UserWarning('已有用户绑定该银行卡类型，不能删除')
         super().save_form()
 
     def clean_banktypename(self):
