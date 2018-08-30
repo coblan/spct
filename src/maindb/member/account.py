@@ -17,7 +17,7 @@ from helpers.func.random_str import get_str
 import hashlib
 from decimal import Decimal
 from ..matches.ticket_master import TicketMasterPage
-from ..member.bankcard import BankCard
+from ..member.bankcard import BankCard, BankCardForm
 from ..money.recharge import RechargePage
 from ..money.withdraw import WithdrawPage
 
@@ -214,8 +214,8 @@ class AccountPage(TablePage):
 
 
 class AccoutBaseinfo(ModelFields):
-    field_sort = ['account', 'nickname', 'status', 'agent', 'verify', 'viplv', 'createtime']
-    readonly = ['createtime', 'account', 'nickname']
+    field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'createtime']
+    readonly = ['createtime', 'account', 'nickname','amount']
 
     def clean_dict(self, dc):
         if dc.get('password') == 1:
@@ -229,7 +229,7 @@ class AccoutBaseinfo(ModelFields):
 
     class Meta:
         model = TbAccount
-        exclude = ['amount', 'actimestamp', 'agent', 'phone', 'gender', 'points', 'codeid', 'parentid',
+        exclude = ['actimestamp', 'agent', 'phone', 'gender', 'points', 'codeid', 'parentid',
                    'sumrechargecount']
 
 
@@ -452,23 +452,16 @@ director.update({
     'account.edit': AccoutBaseinfo,
     'account.base.edit': AccoutBaseinfo,
     'account.amount.edit': AccoutModifyAmount,
-    'account.backcard': UserBankCard,
+    'account.bankcard': UserBankCard,
+    'account.bankcard.edit': BankCardForm,
     'account.UserRecharge': UserRecharge,
     'account.UserWithdraw': UserWithdraw,
     'account.log': AccountLoginTable,
     'account.ticketmaster': AccountTicketTable,
-    # 'account.trans': AccountTransTable,
     'account.balancelog': AccountBalanceTable,
     'account.withdrawlimitlog': AccoutWithdrawLimitLogTable,
-
     'account.loginpage': LoginLogPage.tableCls,
 })
-# model_dc[TbAccount]={'fields':AccoutBaseinfo,'table':AccountPage.tableCls}
-# model_dc[TbTicketmaster]={'table':AccountTicketTable}
-# model_dc[TbLoginlog]={'table':AccountLoginTable}
-# model_dc[TbTrans]={'table':AccountTransTable}
-# model_dc[TbBalancelog]={'table':AccountBalanceTable}
-# model_dc[TbWithdrawlimitlog]={'table':AccoutWithdrawLimitLogTable}
 
 page_dc.update({
     'maindb.loginlog': LoginLogPage
@@ -477,7 +470,6 @@ page_dc.update({
 permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
            ('TbLoginlog', model_full_permit(TbLoginlog), model_to_name(TbLoginlog), 'model'),
            ('TbBalancelog', model_full_permit(TbBalancelog), model_to_name(TbBalancelog), 'model'),
-           # ('TbTicketmaster', model_full_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'),
            ('TbAccount.all', 'TbAccount;TbLoginlog;TbBalancelog;TbTicketmaster', '', 'set'),
            ]
 
