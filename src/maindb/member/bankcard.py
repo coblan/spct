@@ -16,13 +16,6 @@ class BankCard(TablePage):
         fields_sort = ['bankcardid', 'accountid', 'cardno', 'bankaccountname', 'bankaccountmobil', 'banktypename',
                        'bankprovince', 'bankcity', 'banksitename', 'creattime', 'active']
 
-        # pop_edit_field = 'bankcardid'
-
-        def getExtraHead(self):
-            return [
-                # {'name': 'nickname', 'label': "昵称"}
-            ]
-
         def get_operation(self):
             return [
                 {

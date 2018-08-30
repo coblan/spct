@@ -1,18 +1,14 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
-from django.contrib import admin
-from helpers.director.shortcut import TablePage, ModelTable, model_dc, page_dc, ModelFields, FieldsPage, \
-    TabPage, RowSearch, RowSort, RowFilter, model_to_name, director
+from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
+    RowSearch, RowSort, RowFilter, director
 from maindb.money.balancelog import BalancelogPage
-from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTrans, TbTicketmaster, TbWithdrawlimitlog, TbBankcard
-from ..status_code import *
+from maindb.report.report_account import ReportAccout
+from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster
 from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
-import json
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
-import re
-from django.db.models import Q
 from helpers.func.random_str import get_str
 import hashlib
 from decimal import Decimal
@@ -20,6 +16,7 @@ from ..matches.ticket_master import TicketMasterPage
 from ..member.bankcard import BankCard, BankCardForm
 from ..money.recharge import RechargePage
 from ..money.withdraw import WithdrawPage
+from .loginlog import LoginLogPage
 
 
 # Register your models here.
@@ -54,14 +51,6 @@ class AccountPage(TablePage):
              'label': '账目记录',
              'com': 'com_tab_table',
              'par_field': 'accountid',
-             # 'get_data': {
-             # 'fun': 'get_rows',
-             # 'kws': {
-             # 'director_name': AccountBalanceTable.get_director_name(),  # model_to_name(TbBalancelog),
-             # 'relat_field': 'accountid',
-             # }
-
-             # },
              'table_ctx': AccountBalanceTable(crt_user=self.crt_user).get_head_context(),
              'visible': can_touch(TbBalancelog, self.crt_user),
              },
@@ -69,14 +58,6 @@ class AccountPage(TablePage):
              'label': '银行卡',
              'com': 'com_tab_table',
              'par_field': 'accountid',
-             # 'get_data': {
-             # 'fun': 'get_rows',
-             # 'kws': {
-             # 'director_name': UserBankCard.get_director_name(),  # model_to_name(TbBalancelog),
-             # 'relat_field': 'accountid',
-             # }
-
-             # },
              'table_ctx': UserBankCard(crt_user=self.crt_user).get_head_context(),
              'visible': True,
              },
@@ -84,13 +65,6 @@ class AccountPage(TablePage):
              'label': '充值记录',
              'com': 'com_tab_table',
              'par_field': 'accountid',
-             # 'get_data': {
-             # 'fun': 'get_rows',
-             # 'kws': {
-             # 'director_name': UserRecharge.get_director_name(),  # model_to_name(TbBalancelog),
-             # 'relat_field': 'accountid',
-             # }
-             # },
              'table_ctx': UserRecharge(crt_user=self.crt_user).get_head_context(),
              'visible': True,
              },
@@ -98,13 +72,6 @@ class AccountPage(TablePage):
              'label': '提现记录',
              'com': 'com_tab_table',
              'par_field': 'accountid',
-             # 'get_data': {
-             # 'fun': 'get_rows',
-             # 'kws': {
-             # 'director_name': UserWithdraw.get_director_name(),  # model_to_name(TbBalancelog),
-             # 'relat_field': 'accountid',
-             # }
-             # },
              'table_ctx': UserWithdraw(crt_user=self.crt_user).get_head_context(),
              'visible': True,
              },
@@ -113,31 +80,21 @@ class AccountPage(TablePage):
              'label': _('Ticket'),
              'com': 'com_tab_table',
              'par_field': 'accountid',
-
-             # 'get_data': {
-             # 'fun': 'get_rows',
-             # 'kws': {
-             # 'director_name': AccountTicketTable.get_director_name(),  # model_to_name(TbTicketmaster),
-             # 'relat_field': 'accountid',
-             # }
-             # },
              'table_ctx': AccountTicketTable(crt_user=self.crt_user).get_head_context(),
              'visible': can_touch(TbTicketmaster, self.crt_user),
              },
+            {'name': 'account_profit',
+             'label': '亏盈统计',
+             'com': 'com_tab_table',
+             'par_field': 'accountid',
+             'table_ctx': AccountProfitTable(crt_user=self.crt_user).get_head_context(),
+             'visible': True},
             {'name': 'account_login',
              'label': _('Login Log'),
              'com': 'com_tab_table',
              'par_field': 'accountid',
-             # 'get_data': {
-             # 'fun': 'get_rows',
-             # 'kws': {
-             # 'director_name': AccountLoginTable.get_director_name(),  # model_to_name(TbLoginlog),
-             # 'relat_field': 'accountid',
-             # }
-             # },
              'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
-             'visible': can_touch(TbLoginlog, self.crt_user), },
-
+             'visible': can_touch(TbLoginlog, self.crt_user), }
         ]
         ctx['tabs'] = evalue_container(ls)
         return ctx
@@ -148,7 +105,6 @@ class AccountPage(TablePage):
                    'isenablewithdraw', 'sumrechargecount',
                    'createtime']
 
-        # fields_sort=['accountid','account','accounttype','username']
         class filters(RowFilter):
             range_fields = ['createtime']
 
@@ -202,8 +158,6 @@ class AccountPage(TablePage):
                  'value': 1, 'confirm_msg': '确认启用？', },
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'field': 'status',
                  'value': 0, 'confirm_msg': '确认禁用？'},
-                # {'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_pswd', 'editor': 'com-op-btn', 'label': '重置密码',  },
-                # {'fun': 'ajax_row', 'app': 'maindb', 'ajax_fun': 'modify_money_pswd', 'editor': 'com-op-btn', 'label': '重置资金密码', },
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置登录密码', 'field': 'password',
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？'},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
@@ -215,15 +169,13 @@ class AccountPage(TablePage):
 
 class AccoutBaseinfo(ModelFields):
     field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'createtime']
-    readonly = ['createtime', 'account', 'nickname','amount']
+    readonly = ['createtime', 'account', 'nickname', 'amount']
 
     def clean_dict(self, dc):
         if dc.get('password') == 1:
             dc['password'] = gen_pwsd()
-
         if dc.get('fundspassword') == 1:
             dc['fundspassword'] = gen_pwsd()
-
         super().clean_dict(dc)
         return dc
 
@@ -255,7 +207,6 @@ class AccoutModifyAmount(ModelFields):
         return dc
 
     def save_form(self):
-
         super().save_form()
         if 'amount' in self.changed_data:
             cashflow = 1 if self.changed_amount > 0 else 0
@@ -283,38 +234,27 @@ class WithAccoutInnFilter(ModelTable):
             return query
 
 
-class AccountBalanceTable(BalancelogPage.tableCls):
-    def inn_filter(self, query):
-        query = ModelTable.inn_filter(self, query)
-        if self.kw.get('accountid'):
-            return query.filter(accountid=self.kw.get('accountid'))
-        else:
-            return query
-
-    # class filters(RowFilter):
-    # names = []
-    # range_fields = ['createtime']
-
+class AccountBalanceTable(WithAccoutInnFilter, BalancelogPage.tableCls):
     class search(RowSearch):
         names = []
 
 
-class UserBankCard(BankCard.tableCls, WithAccoutInnFilter):
+class UserBankCard(WithAccoutInnFilter, BankCard.tableCls):
     class search(RowSearch):
         names = []
 
 
-class UserRecharge(RechargePage.tableCls, WithAccoutInnFilter):
+class UserRecharge(WithAccoutInnFilter, RechargePage.tableCls):
     class search(RowSearch):
         names = []
 
 
-class UserWithdraw(WithdrawPage.tableCls, WithAccoutInnFilter):
+class UserWithdraw(WithAccoutInnFilter, WithdrawPage.tableCls):
     class search(RowSearch):
         names = []
 
 
-class AccountTicketTable(TicketMasterPage.tableCls, WithAccoutInnFilter):
+class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
     """投注记录"""
 
     def dict_head(self, head):
@@ -324,127 +264,15 @@ class AccountTicketTable(TicketMasterPage.tableCls, WithAccoutInnFilter):
             head['editor'] = ''
         return head
 
+
+class AccountLoginTable(WithAccoutInnFilter, LoginLogPage.tableCls):
     class search(RowSearch):
         names = []
-        # model = TbTicketmaster
-    # exclude = ['rawdata']
-
-    # def dict_head(self, head):
-    # dc = {
-    # 'betoutcome': 110,
-    # 'stakecount': 110,
-    # 'parlaycount': 110,
-    # 'reststakecount': 110,
-    # 'possibleturnover': 160,
-    # 'createtime': 150,
-    # 'settletime': 150,
-    # 'orderid': 120
-    # }
-    # if dc.get(head['name']):
-    # head['width'] = dc.get(head['name'])
-    # return head
-
-    # class filters(RowFilter):
-    # range_fields = ['createtime']
-    # names = ['status', 'winbet']
 
 
-class AccountLoginTable(WithAccoutInnFilter):
-    model = TbLoginlog
-    exclude = []
-
-    def dict_head(self, head):
-        dc = {
-            'deviceversion': 120,
-            'devicename': 120,
-            'devicecode': 200,
-            'deviceip': 100,
-            'createtime': 150
-        }
-        if dc.get(head['name']):
-            head['width'] = dc.get(head['name'])
-        return head
-
-
-class AccoutWithdrawLimitLogTable(WithAccoutInnFilter):
-    model = TbWithdrawlimitlog
-    exclude = []
-
-
-class LoginLogPage(TablePage):
-    template = 'jb_admin/table.html'
-
-    def get_label(self):
-        return _('Tb Login Log')
-
-    class tableCls(ModelTable):
-        model = TbLoginlog
-        exclude = []
-        fields_sort = ['accountid_id', 'accountid__nickname', 'devicecode', 'deviceip', 'appversion', 'devicename',
-                       'deviceversion',
-                       'logintype', 'createtime']
-
-        def dict_head(self, head):
-            dc = {
-                'accountid_id': 80,
-                'devicecode': 120,
-                'deviceip': 120,
-                'appversion': 100,
-                'devicename': 120,
-                'deviceversion': 120,
-                'createtime': 150
-            }
-            if dc.get(head['name']):
-                head['width'] = dc.get(head['name'])
-            return head
-
-        def getExtraHead(self):
-            return [
-                {'name': 'accountid__nickname', 'label': '用户昵称'},
-                {'name': 'accountid_id', 'label': '用户ID'}
-            ]
-
-        def inn_filter(self, query):
-            return query.values(*self.fields_sort).order_by('-createtime')
-
-        class search(RowSearch):
-            names = ['accountid', 'deviceip', 'accountid__nickname']
-
-            # def getNames(self):
-            # return [ 'deviceip', 'accountid__nickname']
-
-            # def getTip(self):
-            # return '设备ip,用户昵称,用户ID'
-
-            def get_context(self):
-                """
-                """
-                dc = {
-                    'search_tip': '设备ip,用户昵称,用户ID',
-                    'editor': 'com-search-filter',
-                    'name': '_q'
-                }
-                return dc
-
-            def get_query(self, query):
-                names = ['deviceip', 'accountid__nickname']
-                if self.q:
-                    exp = None
-                    for name in names:
-                        kw = {}
-                        kw['%s__icontains' % name] = self.q
-                        if exp is None:
-                            exp = Q(**kw)
-                        else:
-                            exp = exp | Q(**kw)
-                    if re.search('^\d+$', self.q):
-                        exp = exp | Q(accountid_id=self.q)
-                    return query.filter(exp)
-                else:
-                    return query
-
-        class filters(RowFilter):
-            range_fields = ['createtime']
+class AccountProfitTable(WithAccoutInnFilter, ReportAccout.tableCls):
+    class search(RowSearch):
+        names = []
 
 
 director.update({
@@ -459,12 +287,7 @@ director.update({
     'account.log': AccountLoginTable,
     'account.ticketmaster': AccountTicketTable,
     'account.balancelog': AccountBalanceTable,
-    'account.withdrawlimitlog': AccoutWithdrawLimitLogTable,
-    'account.loginpage': LoginLogPage.tableCls,
-})
-
-page_dc.update({
-    'maindb.loginlog': LoginLogPage
+    'account.profit': AccountProfitTable
 })
 
 permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
@@ -474,6 +297,10 @@ permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount),
            ]
 
 add_permits(permits)
+
+page_dc.update({
+    'maindb.account': AccountPage
+})
 
 
 def gen_pwsd():

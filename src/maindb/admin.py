@@ -8,6 +8,7 @@ from .status_code import *
 
 from .member.account import AccountPage
 from .member import bankcard
+from .member import loginlog
 
 from .matches import admin, matches, ticket_master, matches_summary
 # from .ticket_admin import TicketMasterPage
@@ -113,14 +114,6 @@ class AccountLoginPage(TablePage):
             range_fields = [{'name': 'createtime', 'type': 'date'}]
 
 
-page_dc.update({
-    'maindb.account': AccountPage,
-    # 'maindb.account.edit': AccountEditGroup,
-    # 'maindb.ticketmaster':TicketMasterPage,
-    # 'maindb.balancelog':BalancelogPage,
-    # 'maindb.trans':TransPage,
-    # 'maindb.channel':ChannelPage,
-    # 'TbBanner':BannerPage
-})
+
 
 # admin.site.register(TbAccount)
