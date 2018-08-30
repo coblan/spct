@@ -36,6 +36,9 @@ class MatchsPage(TablePage):
             def dict_head(self, head): 
                 if head['name'] == 'tournamentid':
                     head['editor'] = 'com-filter-search-select'
+                    head['placeholder'] = '请选择联赛'
+                    head['style'] = 'width:200px;'
+                    head['order'] = True
                 return head
 
         class search(RowSearch):
