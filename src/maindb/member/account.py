@@ -214,7 +214,6 @@ class AccoutModifyAmount(ModelFields):
                                         amount=self.changed_amount, afteramount=self.instance.amount, creater='system',
                                         memo='调账', accountid=self.instance.accountid, categoryid=4, cashflow=cashflow)
 
-
 class AccountTabBase(ModelTable):
     def __init__(self, *args, **kws):
         ModelTable.__init__(self, *args, **kws)
@@ -255,8 +254,6 @@ class UserWithdraw(WithAccoutInnFilter, WithdrawPage.tableCls):
 
 
 class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
-    """投注记录"""
-
     def dict_head(self, head):
         head = super().dict_head(head)
 
@@ -306,11 +303,9 @@ page_dc.update({
 def gen_pwsd():
     pswd = get_str(length=6)
     print(pswd)
-
     m1 = hashlib.md5()
     m1.update(pswd.encode("utf-8"))
     pswd = m1.hexdigest()
-
     salt = ':69257765ACB34A08A6D0D978E9CF39ED'
     pswd_str = pswd + salt
     m2 = hashlib.md5()
