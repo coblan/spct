@@ -13,7 +13,10 @@ class BankCard(TablePage):
     class tableCls(ModelTable):
         model = TbBankcard
         exclude = ['account', 'banktypeid']
-        pop_edit_field = 'bankcardid'
+        fields_sort = ['bankcardid', 'accountid', 'cardno', 'bankaccountname', 'bankaccountmobil', 'banktypename',
+                       'bankprovince', 'bankcity', 'banksitename', 'creattime', 'active']
+
+        # pop_edit_field = 'bankcardid'
 
         def getExtraHead(self):
             return [
@@ -21,12 +24,22 @@ class BankCard(TablePage):
             ]
 
         def get_operation(self):
-            return []
+            return [
+                {
+                    'fun': 'selected_set_and_save',
+                    'editor': 'com-op-btn',
+                    'label': '删除',
+                    'field': 'active',
+                    'value': False,
+                    'row_match': 'one_row',
+                    'confirm_msg': '确认删除该银行卡吗?'
+                }
+            ]
 
         def dict_head(self, head):
             dc = {
                 'accountid': 150,
-                'cardno': 200,
+                'cardno': 160,
                 'bankaccountname': 140,
                 'createtime': 150,
                 'bankaccountmobil': 120,
