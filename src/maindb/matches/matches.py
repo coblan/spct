@@ -140,28 +140,6 @@ class MatchsPage(TablePage):
                 '_matchid_label': '%(home)s VS %(away)s' % {'home': inst.team1zh, 'away': inst.team2zh},
                 '_matchdate_label': str(inst.matchdate)[: -3],
             }
-        # def get_heads(self):
-        # heads = [{'name':'operations',
-        # 'label':'操作',
-        # 'editor':'com-table-operations',
-        # 'operations':[
-        # {'name':'manul_end','label':'手动结算'},
-        # {'name':'has_end_match','label':'已结束'} #100
-        # ],
-        # 'width':130,
-        # }]
-        # org_heads = ModelTable.get_heads(self)
-        # heads.extend(org_heads)
-        # return heads
-
-        # def dict_row(self, inst):
-        # dc={}
-        # if inst.statuscode != 100:
-        # dc['_op_has_end_match_hide']=True
-        # if inst.statuscode == 100:
-        # dc['_op_manul_end_hide']=True
-
-        # return dc
 
 
 class MatchForm(ModelFields):
@@ -186,15 +164,6 @@ class MatchForm(ModelFields):
             'LiveBet': inst.livebet,
         }
         updateMatchMongo(dc)
-
-        # if 'isrecommend' in self.changed_data:
-        # redisInst.delete('App:Cache:index:matches')
-
-    # def clean(self):
-    # if 'statuscode' in self.changed_data:
-    # self.instance.currentperiodstart = datetime.now()
-    # self.instance.save()
-    # return ModelFields.clean(self)
 
 
 def get_special_bet_value(matchid):

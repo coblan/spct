@@ -102,8 +102,7 @@ class AccountPage(TablePage):
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
-                   'isenablewithdraw', 'sumrechargecount',
-                   'createtime']
+                   'isenablewithdraw', 'sumrechargecount','createtime']
 
         class filters(RowFilter):
             range_fields = ['createtime']
