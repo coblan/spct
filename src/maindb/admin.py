@@ -15,12 +15,14 @@ from .matches import admin, matches, ticket_master, matches_summary
 # from .money_admin import BalancelogPage,TransPage,ChannelPage
 
 from .marketing import admin
-from .report import admin
+from .report import report_account
+from .report import report_channel
+from .report import platform_profit
+
 from .basic_data import odds_typegroup, league, teams, app_resource, currency
 from .basic_data import admin_parameter
 from .basic_data import banktypes
 from .basic_data import paychannel
-
 
 from .riskcontrol import admin
 from . import update_cache
@@ -33,86 +35,65 @@ from .money import agent_commission
 
 
 
-# Register your models here.
-# class AccountPage(TablePage):
-# class tableCls(ModelTable):
-# model = TbAccount
-# exclude = []
-# fields_sort=['accountid','account','accounttype','username']
-
-# def dict_row(self, inst):
-# account_type = dict(ACCOUNT_TYPE)
-# return {
-# 'amount':unicode(inst.amount),
-# 'accounttype': account_type.get(inst.accounttype)
-# }
-
-# class search(RowSearch):
-# names=['account']
-
-# class sort(RowSort):
-# names=['account']
-
-
-class AccountEditGroup(TabPage):
-    def __init__(self, request):
-        pk = request.GET.get('pk')
-        if pk:
-            self.account = TbAccount.objects.get(pk=pk)
-        else:
-            self.account = None
-        TabPage.__init__(self, request)
-
-    def get_tabs(self):
-        tabs = [{'name': 'baseinfo', 'label': '基本信息', 'page_cls': AccountBaseInfoPage},
-                {'name': 'balance_log', 'label': '账目记录', 'page_cls': AccountBalancePage},
-                {'name': 'login_log', 'label': '登录记录', 'page_cls': AccountLoginPage},
-                {'name': 'trans', 'label': '交易记录', 'page_cls': AccountTransPage},
-                {'name': 'tickmaster', 'label': '投注记录', 'page_cls': AccountTicketPage}]
-        # if self.jianfanginfo:
-        # count = self.jianfanginfo.yinjizhenggai_set.count()
-        # tabs =[{'name':'blockgroup_normal','label':'基本信息','page_cls':JianFangInfoFormPage},
-        # {'name':'blockgroup_map','label':'应急整改(%s)'%count,'page_cls':YinJiTablePage}
-        # ]
-        # else:
-        # tabs=[{'name':'blockgroup_normal','label':'基本信息','page_cls':JianFangInfoFormPage},]
-        return tabs
-
-    def get_label(self):
-        return str(self.account)
-
-
-class AccountBaseInfoPage(FieldsPage):
-    class fieldsCls(ModelFields):
-        class Meta:
-            model = TbAccount
-            exclude = []
-
-        def dict_row(self, inst):
-            return {
-                'amount': str(inst.amount)
-            }
-
-
-class AccountLoginPage(TablePage):
-    template = 'director/table_tab.html'
-
-    class tableCls(ModelTable):
-        model = TbLoginlog
-        exclude = []
-
-        def __init__(self, *args, **kws):
-            ModelTable.__init__(self, *args, **kws)
-            account_pk = self.kw.get('pk')
-            account = TbAccount.objects.get(pk=account_pk)
-            self.sn = account.accountsn
-
-        def inn_filter(self, query):
-            return query.filter(accountsn=self.sn)
-
-        class filters(RowFilter):
-            range_fields = [{'name': 'createtime', 'type': 'date'}]
-
+# class AccountEditGroup(TabPage):
+#     def __init__(self, request):
+#         pk = request.GET.get('pk')
+#         if pk:
+#             self.account = TbAccount.objects.get(pk=pk)
+#         else:
+#             self.account = None
+#         TabPage.__init__(self, request)
+#
+#     def get_tabs(self):
+#         tabs = [{'name': 'baseinfo', 'label': '基本信息', 'page_cls': AccountBaseInfoPage},
+#                 {'name': 'balance_log', 'label': '账目记录', 'page_cls': AccountBalancePage},
+#                 {'name': 'login_log', 'label': '登录记录', 'page_cls': AccountLoginPage},
+#                 {'name': 'trans', 'label': '交易记录', 'page_cls': AccountTransPage},
+#                 {'name': 'tickmaster', 'label': '投注记录', 'page_cls': AccountTicketPage}]
+#         # if self.jianfanginfo:
+#         # count = self.jianfanginfo.yinjizhenggai_set.count()
+#         # tabs =[{'name':'blockgroup_normal','label':'基本信息','page_cls':JianFangInfoFormPage},
+#         # {'name':'blockgroup_map','label':'应急整改(%s)'%count,'page_cls':YinJiTablePage}
+#         # ]
+#         # else:
+#         # tabs=[{'name':'blockgroup_normal','label':'基本信息','page_cls':JianFangInfoFormPage},]
+#         return tabs
+#
+#     def get_label(self):
+#         return str(self.account)
+#
+#
+# class AccountBaseInfoPage(FieldsPage):
+#     class fieldsCls(ModelFields):
+#         class Meta:
+#             model = TbAccount
+#             exclude = []
+#
+#         def dict_row(self, inst):
+#             return {
+#                 'amount': str(inst.amount)
+#             }
+#
+#
+# class AccountLoginPage(TablePage):
+#     template = 'director/table_tab.html'
+#
+#     class tableCls(ModelTable):
+#         model = TbLoginlog
+#         exclude = []
+#
+#         def __init__(self, *args, **kws):
+#             ModelTable.__init__(self, *args, **kws)
+#             account_pk = self.kw.get('pk')
+#             account = TbAccount.objects.get(pk=account_pk)
+#             self.sn = account.accountsn
+#
+#         def inn_filter(self, query):
+#             return query.filter(accountsn=self.sn)
+#
+#         class filters(RowFilter):
+#             range_fields = [{'name': 'createtime', 'type': 'date'}]
+#
 
 
 

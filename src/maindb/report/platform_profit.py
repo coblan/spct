@@ -10,11 +10,11 @@ import decimal
 from django.utils import timezone
 
 
-class ReportAccout(TablePage):
+class PlatformProfit(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return '会员亏盈'
+        return '平台亏盈'
 
     class tableCls(ModelTable):
         model = TbTicketmaster
@@ -64,7 +64,6 @@ class ReportAccout(TablePage):
             return ss
 
         def get_rows(self):
-            a = self.search_args
             rows = ModelTable.get_rows(self)
             for row in rows:
                 for k, v in row.items():
@@ -79,19 +78,6 @@ class ReportAccout(TablePage):
             fields.extend(['ratio', 'profit'])
             return fields
 
-        class search(RowSearch):
-            def get_context(self):
-                return {'search_tip': '用户昵称',
-                        'editor': 'com-search-filter',
-                        'name': '_q'
-                        }
-
-            def get_query(self, query):
-                if self.q:
-                    return query.filter(Q(accountid__nickname__icontains=self.q))
-                else:
-                    return query
-
         class filters(RowFilter):
             range_fields = ['createtime']
 
@@ -100,9 +86,9 @@ class ReportAccout(TablePage):
 
 
 director.update({
-    'maindb.report.account': ReportAccout.tableCls
+    'PlatformProfit': PlatformProfit.tableCls
 })
 
 page_dc.update({
-    'maindb.report.account': ReportAccout
+    'PlatformProfit': PlatformProfit
 })
