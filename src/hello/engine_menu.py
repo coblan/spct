@@ -28,7 +28,7 @@ class PcMenu(BaseEngine):
         menu = [
             {'label': _('DashBoard'), 'url': page('home'), 'icon': fa('fa-home'), 'visible': True},
 
-            {'label': _('Marketing'), 'icon': fa('fa-image'), 'visible': True,
+            {'label': '市场活动', 'icon': fa('fa-image'), 'visible': True,
              'submenu': [
                  {'label': _('Banner'), 'url': page('TbBanner'), 'visible': can_touch(TbBanner, crt_user)},
                  {'label': _('App Package'), 'url': page('maindb.TbAppversion'),
@@ -76,10 +76,10 @@ class PcMenu(BaseEngine):
 
             {'label': _('Games'), 'icon': fa('fa-globe'), 'visible': True,
              'submenu': [
-                 {'label': _('Tb Match'), 'url': page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user), },
+                 {'label': '赛事列表', 'url': page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user), },
                  {'label': _('View TicketSingleByMatch'), 'url': page('maindb.MatchesSummary'),
                   'visible': can_touch(TbMatches, crt_user), },
-                 {'label': _('Tb TicketMaster'), 'url': page('maindb.ticketmaster'),
+                 {'label': '注单列表', 'url': page('maindb.ticketmaster'),
                   'visible': can_touch(TbTicketmaster, crt_user), },
                  # {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
              ]},

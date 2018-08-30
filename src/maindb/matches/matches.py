@@ -1,17 +1,13 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, model_dc, RowFilter, RowSort, \
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
     RowSearch
 from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
-from django.utils.timezone import datetime
-import time
-import requests
 from maindb.mongoInstance import updateMatchMongo
 from maindb.rabbitmq_instance import closeHandicap
 import json
-from ..redisInstance import redisInst
 
 
 class MatchsPage(TablePage):
@@ -19,21 +15,20 @@ class MatchsPage(TablePage):
     extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self, prefer=None):
-        return '比赛信息'
+        return '赛事列表'
 
     class tableCls(ModelTable):
         model = TbMatches
         exclude = []
         fields_sort = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate', 'period1score', 'matchscore',
-                       'winner', 'statuscode',
-                       'isrecommend', 'livebet', 'ishidden','closelivebet','marketstatus']
+                       'winner', 'statuscode', 'isrecommend', 'livebet', 'ishidden', 'closelivebet', 'marketstatus']
         pop_edit_field = 'matchid'
 
         class filters(RowFilter):
             range_fields = ['matchdate']
             names = ['isrecommend', 'livebet', 'statuscode', 'tournamentid']
-            
-            def dict_head(self, head): 
+
+            def dict_head(self, head):
                 if head['name'] == 'tournamentid':
                     head['editor'] = 'com-filter-search-select'
                     head['placeholder'] = '请选择联赛'
@@ -92,9 +87,9 @@ class MatchsPage(TablePage):
                 {'fun': 'un_recommendate', 'editor': 'com-op-btn', 'label': '取消推介'},
 
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '滚球', 'field': 'closelivebet',
-                 'value': 0 },
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消滚球', 'field': 'closelivebet', 'value': 1 },
-
+                 'value': 0},
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消滚球', 'field': 'closelivebet',
+                 'value': 1},
 
                 # {'fun': 'livebet', 'editor': 'com-op-btn', 'label': '滚球'},
                 # {'fun': 'un_livebet', 'editor': 'com-op-btn', 'label': '取消滚球'},
@@ -121,19 +116,19 @@ class MatchsPage(TablePage):
                 'roundinfo': 60,
                 'isrecommend': 50,
                 'livebet': 80,
-                'ishidden':50,
+                'ishidden': 50,
                 'categoryid': 80,
                 'currentperiodstart': 150,
                 'maxsinglepayout': 120,
                 'marketstatus': 100,
-                'closelivebet':70
+                'closelivebet': 70
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             if head['name'] == 'matchdate':
                 head['editor'] = 'com-table-label-shower'
-            if head['name']=='closelivebet':
-                head['editor']='com-table-bool-shower'
+            if head['name'] == 'closelivebet':
+                head['editor'] = 'com-table-bool-shower'
             # if head['name'] == 'matchid':
             # head['editor'] = 'com-table-switch-to-tab'
             # head['tab_name']='special_bet_value'
@@ -191,7 +186,6 @@ class MatchForm(ModelFields):
             'LiveBet': inst.livebet,
         }
         updateMatchMongo(dc)
-        
 
         # if 'isrecommend' in self.changed_data:
         # redisInst.delete('App:Cache:index:matches')

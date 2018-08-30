@@ -130,7 +130,7 @@ class MatchesSummaryPage(TablePage):
                     head['editor'] = 'com-filter-search-select'
                     head['order'] = True
                     head['placeholder'] = '请选择联赛'
-                    head['style'] = 'width:300px'
+                    head['style'] = 'width:200px'
                 return head
 
 
