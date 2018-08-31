@@ -1,6 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowSort, RowFilter
+from helpers.director.table.row_search import SelectSearch
 from helpers.director.table.table import RowSearch
 from maindb.money import balancelog
 from ..models import TbTicketmaster, TbAccount
@@ -14,7 +15,7 @@ class ReportAccout(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return '会员亏盈'
+        return '会员统计'
 
     class tableCls(ModelTable):
         model = TbTicketmaster

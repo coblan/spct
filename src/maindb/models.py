@@ -1902,6 +1902,8 @@ class TbRecharge(models.Model):
                                   null=True)  # Field name made lowercase.
     confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,
                                        verbose_name='处理时间')  # Field name made lowercase.
+    confirmamount = models.DecimalField(db_column='ConfirmAmount', max_digits=18, decimal_places=2,
+                                 verbose_name='确认金额')  # Field name made lowercase.
 
     class Meta:
         managed = False
