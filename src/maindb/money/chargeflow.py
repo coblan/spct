@@ -34,8 +34,8 @@ class CreateTimeProc(BaseFieldProc):
     def filter_get_range_head(self, name, model):
         return DateTimeProc.filter_get_range_head(self,name, model)
     
-    def filter_dict_query_args(self, dc, name):
-        return DateTimeProc.filter_dict_query_args(self,dc, name)
+    def filter_clean_filter_arg(self, f_str):
+        return DateTimeProc.filter_clean_filter_arg(f_str)
 
 field_map.update({
     '%s.%s'%(model_to_name(TbChargeflow),'createtime'):CreateTimeProc
