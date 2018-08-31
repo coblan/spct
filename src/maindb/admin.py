@@ -33,7 +33,7 @@ from .money import withdraw
 from .money import balancelog
 from .money import agent_commission
 
-
+from .admin_agent import agentuser
 
 # class AccountEditGroup(TabPage):
 #     def __init__(self, request):

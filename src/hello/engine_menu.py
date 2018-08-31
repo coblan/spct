@@ -105,6 +105,12 @@ class PcMenu(BaseEngine):
                  {'label': '平台亏盈', 'url': page('PlatformProfit'),
                   'visible': True, },
              ]},
+            
+            {'label': '代理系统', 'icon': fa('fa-bar-chart'), 'visible': True,
+             'submenu': [
+                 {'label': '代理用户', 'url': page('AgentUser'),'visible': True, },
+    
+             ]},
 
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
