@@ -2,9 +2,10 @@
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter, RowSearch
+from helpers.director.table.row_search import SelectSearch
 from ..models import TbMatches
 from django.db.models.aggregates import Count, Sum
-from django.db.models import F
+from django.db.models import F, Q
 from helpers.director.base_data import director
 
 
@@ -119,11 +120,24 @@ class MatchesSummaryPage(TablePage):
             names = ['nums_stake', 'nums_account', 'sum_betamount', 'sum_betoutcome', 'sum_grossprofit', 'sum_bonus',
                      'sum_profit', ]
 
-        class search(RowSearch):
-            names = ['matchid']
+        class search(SelectSearch):
+            names = ['nickname']
+            exact_names = ['matchid']
+
+            def get_option(self, name):
+                if name == 'nickname':
+                    return {'value': 'nickname', 'label': '用户昵称', }
+                else:
+                    return super().get_option(name)
+
+            def get_express(self, q_str):
+                if self.qf == 'nickname':
+                    return Q(team1zh__icontains=q_str)
+                else:
+                    return super().get_express(q_str)
 
         class filters(RowFilter):
-            names = ['statuscode', 'tournamentid']
+            names = ['tournamentid']
             range_fields = ['matchdate']
             def dict_head(self, head): 
                 if head['name'] == 'tournamentid':

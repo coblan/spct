@@ -1,5 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
+
+from django.db.models import Sum, Case, When, F
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director
@@ -107,14 +109,20 @@ class AccountPage(TablePage):
         class filters(RowFilter):
             range_fields = ['createtime']
 
+        def inn_filter(self, query):
+            return query.annotate(rechargeamount=Sum(Case(When(tbrecharge__status = 2 , then= F('tbrecharge__confirmamount')), default=0))) \
+                .annotate(withdrawamount=Sum(Case(When(tbwithdraw__status = 2 , then= F('tbwithdraw__amount')), default=0)))
+
+
         def dict_row(self, inst):
             tmp = list(inst.account)
             tmp[0:-4] = '*' * (len(tmp) - 4)
             out_str = ''.join(tmp)
             return {
                 'amount': str(inst.amount),
-                'account': out_str
-                # 'accounttype': account_type.get(inst.accounttype)
+                'account': out_str,
+                'rechargeamount':inst.rechargeamount,
+                'withdrawamount': inst.withdrawamount
             }
 
         def dict_head(self, head):
@@ -124,6 +132,8 @@ class AccountPage(TablePage):
                 'nickname': 100,
                 'viplv': 80,
                 'amount': 100,
+                'rechargeamount': 100,
+                'withdrawamount': 100,
                 'agentamount': 100,
                 'status': 60,
                 'createtime': 150
@@ -144,11 +154,14 @@ class AccountPage(TablePage):
 
             return head
 
+        def getExtraHead(self):
+            return [{'name':'rechargeamount','label':'充值金额'},{'name':'withdrawamount','label':'提现金额'}]
+
         class search(RowSearch):
             names = ['accountid', 'nickname']
 
         class sort(RowSort):
-            names = ['account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount']
+            names = ['account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount','rechargeamount','withdrawamount']
 
         def get_operation(self):
             modifyer = AccoutModifyAmount(crt_user=self.crt_user)
