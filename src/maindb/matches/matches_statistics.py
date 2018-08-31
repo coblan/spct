@@ -36,43 +36,38 @@ class MatchesStatisticsPage(TablePage):
                 'MatchDateTo': self.search_args.get('MatchDateTo', '2018-08-31'),
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
-                'Sort': self.search_args.get('_sort', ''),
-                'Total': self.search_args.get('_sort', '')
+                'Sort': self.search_args.get('_sort', 't.MatchDate desc'),
             }
 
-            sql = "exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,'%(NickName)s','%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,'%(NickName)s','%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
                   % sql_args
-
-            cursor = connections['Sports'].cursor()
-            cursor.execute(sql)
-            self.total = cursor.fetchall()[0][0]
-            cursor.nextset()
-            self.matches=[]
-            for row in cursor:
-                dc = {}
-                for index, head in enumerate(cursor.description):
-                    dc[head[0]] = row[index]
-                self.matches.append(dc)
-
-
-
+            with connections['Sports'].cursor() as cursor:
+                cursor.execute(sql)
+                self.total = cursor.fetchall()[0][0]
+                cursor.nextset()
+                self.matches = []
+                for row in cursor:
+                    dc = {}
+                    for index, head in enumerate(cursor.description):
+                        dc[head[0]] = row[index]
+                    self.matches.append(dc)
 
         def getExtraHead(self):
             return [
-                {'name': 'TournamentName', 'label': 'TournamentName', },
+                {'name': 'TournamentName', 'label': 'TournamentName', 'width':150},
                 # {'name': 'MatchID', 'label': 'MatchID', },
-                {'name': 'Team1ZH', 'label': 'Team1ZH', },
-                {'name': 'Team2ZH', 'label': 'Team2ZH', },
-                {'name': 'MatchDate', 'label': 'MatchDate', },
-                {'name': 'MatchScore', 'label': 'MatchScore', },
-                {'name': 'StatusCode', 'label': 'StatusCode', },
-                {'name': 'TicketCount', 'label': 'TicketCount', },
-                {'name': 'UserCount', 'label': 'UserCount', },
-                {'name': 'SumBetAmount', 'label': 'SumBetAmount', },
-                {'name': 'SumBetOutcome', 'label': 'SumBetOutcome', },
-                {'name': 'SumGrossProfit', 'label': 'SumGrossProfit', },
-                {'name': 'SumBonus', 'label': 'SumBonus', },
-                {'name': 'SumProfit', 'label': 'SumProfit', },
+                {'name': 'Team1ZH', 'label': '主队', 'width':150},
+                {'name': 'Team2ZH', 'label': '客队', 'width':150},
+                {'name': 'MatchDate', 'label': '比赛日期', 'width':140},
+                {'name': 'MatchScore', 'label': '比分', 'width':80},
+                {'name': 'StatusCode', 'label': '状态', },
+                {'name': 'TicketCount', 'label': '注数', 'width':80},
+                {'name': 'UserCount', 'label': '用户数', 'width':80},
+                {'name': 'SumBetAmount', 'label': '投注金额', 'width':100},
+                {'name': 'SumBetOutcome', 'label': '派奖金额', 'width':100},
+                {'name': 'SumGrossProfit', 'label': '毛利', 'width':100},
+                {'name': 'SumBonus', 'label': '返利', 'width':100},
+                {'name': 'SumProfit', 'label': '亏盈', 'width':100},
             ]
 
         def getRowPages(self):
