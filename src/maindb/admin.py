@@ -10,7 +10,7 @@ from .member.account import AccountPage
 from .member import bankcard
 from .member import loginlog
 
-from .matches import admin, matches, ticket_master, matches_summary
+from .matches import admin, matches, ticket_master, matches_summary,matches_statistics
 # from .ticket_admin import TicketMasterPage
 # from .money_admin import BalancelogPage,TransPage,ChannelPage
 
