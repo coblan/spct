@@ -30,7 +30,7 @@ class AgentUser(TablePage):
             @NickName VARCHAR(20) =NULL --帐号查询昵称 默认全部  
             """
             sql_args = {
-                'AccountID': self.search_args.get('accountid', 0), 
+                'AccountID': self.search_args.get('accountid', 2040), 
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
                 'BeginDate': "'2018-08-01'",
@@ -41,17 +41,17 @@ class AgentUser(TablePage):
             sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,%(BeginDate)s,%(EndDate)s,'%(NickName)s'" \
                 % sql_args
             
-            cursor = connections['Sports'].cursor()
-            cursor.execute(sql)
-            cursor.commit()
-            self.set1 =  cursor.fetchall() #list(cursor)
-            cursor.nextset()
-            self.sub_level = []
-            for row in cursor.fetchall():
-                dc = {}
-                for index, head in enumerate(cursor.description):
-                    dc[head[0]] = row[index]
-                self.sub_level.append(dc)
+            with  connections['Sports'].cursor() as cursor:
+                cursor.execute(sql)
+                #cursor.commit()
+                self.set1 =  cursor.fetchall() 
+                cursor.nextset()
+                self.sub_level = []
+                for row in cursor:
+                    dc = {}
+                    for index, head in enumerate(cursor.description):
+                        dc[head[0]] = row[index]
+                    self.sub_level.append(dc)
         
         def getExtraHead(self): 
             return [
