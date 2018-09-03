@@ -16,6 +16,7 @@ from .matches import admin, matches, ticket_master, matches_summary,matches_stat
 
 from .marketing import admin
 from .report import report_account
+from .report import user_statistics
 from .report import report_channel
 from .report import platform_profit
 

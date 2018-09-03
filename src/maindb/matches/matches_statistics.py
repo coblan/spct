@@ -30,8 +30,8 @@ class MatchesStatisticsPage(TablePage):
             last = today - sp
             def_start = last.strftime('%Y-%m-%d')
             def_end = today.strftime('%Y-%m-%d')
-            search_args['_start_matchdate'] = search_args.get('_start_matchdate', def_start)
-            search_args['_end_matchdate'] = search_args.get('_end_matchdate', def_end)
+            search_args['_start_matchdate'] = search_args.get('_start_matchdate') or def_start
+            search_args['_end_matchdate'] = search_args.get('_end_matchdate') or def_end
             return search_args
 
         class search(SelectSearch):
