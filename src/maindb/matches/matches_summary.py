@@ -21,6 +21,12 @@ class MatchesSummaryPage(TablePage):
         fields_sort = ['tournamentzh', 'matchid', 'team_zh', 'matchdate', 'matchscore', 'statuscode', 'nums_stake',
                        'nums_account', 'sum_betamount', 'sum_betoutcome', 'sum_grossprofit', 'sum_bonus', 'sum_profit']
 
+        class filters(RowFilter):
+            range_fields = ['matchdate']
+
+        class sort(RowSort):
+            names = ['nums_account', 'sum_betamount', 'sum_betoutcome','sum_grossprofit','sum_bonus']
+
         def permited_fields(self):
             names = ModelTable.permited_fields(self)
             names.extend(
