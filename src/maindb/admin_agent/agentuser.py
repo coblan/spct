@@ -1,7 +1,7 @@
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, RowFilter, RowSort
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, RowFilter, RowSort, RowSearch
 from ..models import TbAccount
 from django.db import connections
-
+from django.utils import timezone
 
 class AgentUser(TablePage):
     template = 'jb_admin/table.html'
@@ -12,11 +12,32 @@ class AgentUser(TablePage):
         model = TbAccount
         include = ['accountid']
         
+        @classmethod
+        def clean_search_args(cls, search_args):
+            today = timezone.now()
+            sp = timezone.timedelta(days=30)
+            last = today - sp
+            def_start = last.strftime('%Y-%m-%d')
+            def_end = today.strftime('%Y-%m-%d')
+            search_args['_start_createtime'] = search_args.get('_start_createtime', def_start)
+            search_args['_end_createtime'] = search_args.get('_end_createtime', def_end)
+            return search_args 
+        
+        
         class filters(RowFilter):
-            range_fields = ['produce_time']
+            range_fields = ['createtime']
+            
+            def dict_head(self, head): 
+                if head['name'] == 'createtime':
+                    head['label'] = '产生时间'
+                return head
         
         class sort(RowSort):
             names = ['TotalLostAmount', 'SumLostAmount', 'SumBonusAmount']
+        
+        class search(RowSearch):
+            names = ['NickName']
+            
         
         def __init__(self, *args, **kws): 
             super().__init__(*args, **kws)
@@ -29,19 +50,20 @@ class AgentUser(TablePage):
             @EndDate DATE=NULL,   --查询结算时间 默认今天  
             @NickName VARCHAR(20) =NULL --帐号查询昵称 默认全部  
             """
+            
             sql_args = {
-                'AccountID': self.search_args.get('accountid', 2040), 
+                'AccountID': self.search_args.get('accountid', 0), 
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
-                'BeginDate': "'2018-08-01'",
-                'EndDate': "'2018-08-31'",
+                'BeginDate': self.search_args.get('_start_createtime', ''),
+                'EndDate': self.search_args.get('_end_createtime', ''),
                 'NickName': '',
             }
             
-            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,%(BeginDate)s,%(EndDate)s,'%(NickName)s'" \
+            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s','%(NickName)s'" \
                 % sql_args
             
-            with  connections['Sports'].cursor() as cursor:
+            with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql)
                 #cursor.commit()
                 self.set1 =  cursor.fetchall() 
