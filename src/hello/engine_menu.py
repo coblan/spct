@@ -111,6 +111,7 @@ class PcMenu(BaseEngine):
             {'label': '代理系统', 'icon': fa('fa-bar-chart'), 'visible': True,
              'submenu': [
                  {'label': '代理用户', 'url': page('AgentUser'),'visible': True, },
+                 {'label': '佣金审核', 'url': page('agent_commission'),'visible': True, },
     
              ]},
 

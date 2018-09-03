@@ -34,6 +34,7 @@ from .money import balancelog
 from .money import agent_commission
 
 from .admin_agent import agentuser
+from .admin_agent import AgentCommission
 
 # class AccountEditGroup(TabPage):
 #     def __init__(self, request):
