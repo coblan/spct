@@ -33,10 +33,10 @@ class AgentUser(TablePage):
                 return head
         
         class sort(RowSort):
-            names = ['TotalLostAmount', 'SumLostAmount', 'SumBonusAmount']
+            names = [ 'SumActive', 'SumLostAmount', 'SumBonusAmount']
         
         class search(RowSearch):
-            names = ['NickName']
+            names = ['nickname']
             
         
         def __init__(self, *args, **kws): 
@@ -51,55 +51,85 @@ class AgentUser(TablePage):
             @NickName VARCHAR(20) =NULL --帐号查询昵称 默认全部  
             """
             
+            par = self.search_args.get('_par', 0)
+            nickname = self.search_args.get('_q', '')
+            order_by = self.search_args.get('_sort', '')
+
+            if order_by.startswith('-'):
+                order_by = order_by[1:] + ' DESC'
+ 
             sql_args = {
-                'AccountID': self.search_args.get('accountid', 0), 
+                'AccountID': self.search_args.get('accountid', par), 
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
                 'BeginDate': self.search_args.get('_start_createtime', ''),
                 'EndDate': self.search_args.get('_end_createtime', ''),
-                'NickName': '',
+                'NickName': nickname,
+                'OrderBy': order_by,
             }
             
-            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s','%(NickName)s'" \
+            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s','%(NickName)s','%(OrderBy)s'" \
                 % sql_args
             
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql)
                 #cursor.commit()
-                self.set1 =  cursor.fetchall() 
+                self.parent_agents = []
+                for par in cursor:
+                    self.parent_agents.append({'value': par[3], 'label': par[1],})
+                self.parent_agents.append({'value': 0, 'label': '根用户',})
+                self.parent_agents.reverse()
+
                 cursor.nextset()
-                self.sub_level = []
+                self.child_agents = []
                 for row in cursor:
                     dc = {}
-                    for index, head in enumerate(cursor.description):
-                        dc[head[0]] = row[index]
-                    self.sub_level.append(dc)
+                    for index, desp_item in enumerate(cursor.description):
+                        head_name = desp_item[0]
+                        dc[head_name] = row[index]
+                    self.child_agents.append(dc)
+                if self.child_agents:
+                    row1 = self.child_agents[0]
+                    footer = {}
+                    for k, v in row1.items():
+                        if k != 'Total' and k.startswith('Total'):
+                            footer['Sum'+k[5:]] = v
+                    self.footer = ['合计'] + self.footer_by_dict(footer)
+                
+        
+        def dict_head(self, head): 
+            if head['name'] == 'accountid':
+                head['editor'] = 'com-table-call-fun'
+                head['fun'] = 'get_childs'
+                head['field'] = 'accountid'
+            return head
         
         def getExtraHead(self): 
             return [
-                {'name': 'TotalLostAmount', 'label': 'TotalLostAmount',}, 
+                #{'name': 'TotalLostAmount', 'label': 'TotalLostAmount',}, 
                 {'name': 'SumActive', 'label': 'SumActive',}, 
                 {'name': 'Phone', 'label': 'Phone',}, 
                 {'name': 'NickName', 'label': 'NickName',}, 
                 {'name': 'BonusRate', 'label': 'BonusRate',}, 
                 {'name': 'VIPLv', 'label': 'VIPLv',}, 
-                {'name': 'SumLostAmount', 'label': 'SumLostAmount',}, 
-                {'name': 'SumBonusAmount', 'label': 'SumBonusAmount',}, 
-                {'name': 'SumAmount', 'label': 'SumAmount',}, 
-                {'name': 'SumRechargeAmount', 'label': 'SumRechargeAmount',}, 
-                {'name': 'TotalActive', 'label': 'TotalActive',}, 
-                {'name': 'SumTurnover', 'label': 'SumTurnover',}, 
-                {'name': 'CreateTime', 'label': 'SumRechargeAmount',}, 
+                {'name': 'SumLostAmount', 'label': 'SumLostAmount','width': 130,}, 
+                {'name': 'SumBonusAmount', 'label': 'SumBonusAmount','width': 140,}, 
+                {'name': 'SumAmount', 'label': 'SumAmount','width': 120,}, 
+                {'name': 'SumRechargeAmount', 'label': 'SumRechargeAmount','width': 140,}, 
+                #{'name': 'TotalActive', 'label': 'TotalActive',}, 
+                {'name': 'SumTurnover', 'label': 'SumTurnover','width': 120,}, 
+                {'name': 'CreateTime', 'label': 'CreateTime','width': 100,}, 
             ]
         def get_rows(self):
-            for row in self.sub_level:
+            for row in self.child_agents:
                 row['accountid'] = row['AccountID']
                 
-            return self.sub_level
+            return self.child_agents
+        
         
         def getRowPages(self): 
-            if self.sub_level:
-                total = self.sub_level[0]['Total']
+            if self.child_agents:
+                total = self.child_agents[0]['Total']
             else:
                 total = 0
                 
@@ -108,6 +138,14 @@ class AgentUser(TablePage):
                 'total':total,
                 'perpage':self.search_args.get('_perpage', 20)
                 }
+        
+        #def get_context(self): 
+            #ctx = super().get_context()
+            #ctx['parents'] = self.parent_agents
+            #return ctx
+            
+        def getParents(self): 
+            return self.parent_agents
             
         
 

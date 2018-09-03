@@ -1,0 +1,319 @@
+{% extends "jb_admin/base.html" %}
+{% load static %}
+{% load jsonify %}
+
+{% block page_content %}
+
+<!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+<!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+<script type="text/javascript">
+
+    //	row_filters=
+    //	placeholder =
+    //	row_sort=
+    //	heads=
+    //	rows=
+    //	row_pages =
+
+    //	can_add=
+    //	can_del=
+    //	search_args=ex.parseSearch()
+    //	search字段从 search_args._q 来取值
+    extra_table_logic='{{ extra_table_logic }}'
+    footer={{ footer |jsonify }}
+    tabs={{ tabs | jsonify | default:'[]' }}
+    search_args={{ search_args | jsonify | default:'{}'  }}
+    table_logic={
+        el:'#there',
+        data:{
+            page_label:page_label,
+            heads:heads,
+            rows:rows,
+            row_filters:row_filters,
+            row_sort:row_sort,
+            row_pages:row_pages,
+            director_name:director_name,
+            footer:footer,
+//            model_name:model_name,
+            selected:[],
+            search_args:search_args, //ex.parseSearch(),
+            ops:ops,
+            crt_row:{},
+            tabgroup:{
+                crt:'main',
+                tabs:tabs
+            },
+            tr:cfg.tr
+
+
+        },
+        mixins:[mix_table_data,mix_ele_table_adapter],
+        computed:{
+            has_select:function(){
+                return this.selected.length !=0
+            },
+        },
+        mounted:function(){
+            var self=this
+            ex.assign(this.op_funs,{
+                row_changed:function(kws){
+                    var row= kws.row
+                    if(!ex.isin(row,self.changed_rows)){
+                        self.changed_rows.push(row)
+                    }
+                },
+                row_changed_undo_act:function(kws){
+                    var md5= ex.hashDict(kws.row)
+                    if(md5 == kws.row._hash){
+                        ex.remove(self.changed_rows,{pk:kws.row.pk})
+                    }
+                },
+                switch_to_tab:function(kws){
+                    self.show_tab(kws.tab_name)
+                    self.crt_row= kws.row
+                },
+                update_or_insert:function(kws){
+                    var new_row = kws.new_row
+                    var old_row= kws.old_row
+                    self.update_or_insert(new_row,old_row)
+
+                },
+
+            })
+
+        },
+        methods:{
+
+//            on_td_event:function(e){
+//                this.op_funs[e.name](e)
+//            },
+            on_tab_event:function(e){
+                this.op_funs[e.name](e)
+            },
+//            on_select_group_change:function(sel,v){
+//                this.selected= sel
+//            },
+            back_to_main_page:function(){
+                this.tabgroup.crt='main'
+                var self=this
+                Vue.nextTick(function(){
+                    self.$refs.e_table.doLayout()
+                })
+
+            },
+            show_tab:function(name){
+                this.tabgroup.crt = name
+                var self =this
+
+                Vue.nextTick(function(){
+                    self.$refs['_tab_'+name][0].on_show()
+                })
+
+            },
+            get_attr:function(name){
+                if(name == undefined){
+                    return false
+                }
+                if(name.startsWith('!')){
+                    name=name.slice(1)
+                    name= name.trim()
+                    return !this[name]
+                }else{
+                    name= name.trim()
+                    return this[name]
+                }
+            },
+            handleClick(tab, event) {
+                this.show_tab(tab.name)
+
+            }
+        }
+
+    }
+
+    function update_cnt_size(){
+//        var cnt_ht =  Math.max( $(document).height(),window.innerHeight)
+        var cnt_ht =  window.innerHeight
+        $('#there').height(cnt_ht -80)
+    }
+    $(function () {
+        update_cnt_size()
+//        $('.main-tab-content').height(window.innerHeight -230)
+        $(window).resize(function(){
+            update_cnt_size()
+        });
+//        $(document).resize(update_cnt_size)
+
+        if(extra_table_logic){
+            table_logic.mixins.push(window[extra_table_logic])
+        }
+        table=new Vue(table_logic)
+
+    })
+
+</script>
+
+{% block extra_head %}
+{% endblock %}
+<style>
+    a[disabled] {
+        color: gray;
+        pointer-events: none;
+    }
+    .table th .cell{
+        white-space:nowrap;
+    }
+</style>
+<div id='there' class="flex-v">
+
+    {% block flag %}
+    <div v-if="page_label" style="border-left: 3px solid #3e8ebd;padding-left: 1em;margin-bottom: 5px;">
+        <b v-text="page_label"></b>
+        <span style="display: inline-block;width: 2em;"></span>
+        <button type="button"
+                class="btn btn-warning btn-xs"
+                v-show="tabgroup.crt != 'main'"
+                @click="back_to_main_page()">
+            <i class="fa fa-arrow-circle-o-left fa-lg"></i><span v-text="tr.back"></span></button>
+    </div>
+
+
+    {% endblock %}
+
+    {% block tab-content %}
+    <div id="main-page" class="rows-block flex-v flex-grow" v-show="tabgroup.crt =='main'">
+
+
+        <div v-if="row_filters.length > 0" style="background-color: #fbfbf8;padding: 8px 1em;border-radius: 4px;margin-top: 8px">
+            <com-filter class="flex" :heads="row_filters" :search_args="search_args"
+                        @submit="search()"></com-filter>
+
+        </div>
+        <div  v-if="ops.length>0">
+            <div class="oprations" v-show="tabgroup.crt == 'main'" style="padding: 5px">
+                <component v-for="op in ops"
+                           :is="op.editor"
+                           :ref="'op_'+op.name"
+                           :head="op"
+                           :disabled="get_attr(op.disabled)"
+                           v-show="! get_attr(op.hide)"
+                           @operation="on_operation(op)"></component>
+            </div>
+        </div>
+
+        <ol class="breadcrumb">
+            <li><a href="#" @click="get_child_user()">我的下级</a></li>
+            <li v-for="row in user_level"><a href="#" @click="get_child_user(row)"  v-text="row.Phone"></a></li>
+        </ol>
+
+        <div class="box box-success flex-v flex-grow">
+            <div class="table-wraper flex-grow" style="position: relative;">
+                {% block table_content %}
+                <div style="position: absolute;top:0;left:0;bottom: 0;right:0;">
+                    <el-table class="table" ref="e_table"
+                              :data="rows"
+                              border
+                              show-summary
+                              :fit="false"
+                              :stripe="true"
+                              size="mini"
+                              @sort-change="sortChange($event)"
+                              @selection-change="handleSelectionChange"
+                              :summary-method="getSum"
+                              height="100%"
+                              style="width: 100%">
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+
+                        <template  v-for="head in heads">
+
+                            <el-table-column v-if="head.editor"
+                                             :show-overflow-tooltip="is_show_tooltip(head) "
+                                             :label="head.label"
+                                             :prop="head.name.toString()"
+                                             :sortable="is_sort(head)"
+                                             :width="head.width">
+                                <template slot-scope="scope">
+                                    <component :is="head.editor"
+                                               @on-custom-comp="on_td_event($event)"
+                                               :row-data="scope.row" :field="head.name" :index="scope.$index">
+                                    </component>
+
+                                </template>
+
+                            </el-table-column>
+
+                            <el-table-column v-else
+                                             :show-overflow-tooltip="is_show_tooltip(head) "
+                                             :prop="head.name.toString()"
+                                             :label="head.label"
+                                             :sortable="is_sort(head)"
+                                             :width="head.width">
+                            </el-table-column>
+
+                        </template>
+
+                    </el-table>
+
+                </div>
+
+                {% endblock %}
+            </div>
+            <div>
+
+                <el-pagination
+                        @size-change="on_perpage_change"
+                        @current-change="get_page"
+                        :current-page="row_pages.crt_page"
+                        :page-sizes="[20, 50, 100, 500]"
+                        :page-size="row_pages.perpage"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="row_pages.total">
+                </el-pagination>
+
+            </div>
+        </div>
+    </div>
+    <div id="tab-wrap" v-if="tabgroup.crt!='main'" class="flex-grow" style="position: relative">
+        <div  style="position: absolute;bottom: 0;top: 0;left: 0;right: 0;" class="tab-full">
+            <el-tabs v-if="tabgroup.tabs.length >1" type="border-card"
+                     @tab-click="handleClick"
+                     style="width: 100%;height: 100%;"
+                     :value="tabgroup.crt" >
+                <el-tab-pane v-for="tab in tabgroup.tabs" :name="tab.name">
+                    <span slot="label" v-text="tab.label"></span>
+
+                    <component :is="tab.com" :tab_head="tab"
+                               :par_row="crt_row"
+                               :ref="'_tab_'+tab.name" @tab-event="on_tab_event($event)"></component>
+
+
+                </el-tab-pane>
+            </el-tabs>
+
+            <component v-else v-for="tab in tabgroup.tabs"  :is="tab.com" :tab_head="tab"
+                       :par_row="crt_row"
+                       :ref="'_tab_'+tab.name" @tab-event="on_tab_event($event)"></component>
+        </div>
+
+    </div>
+
+    {% endblock %}
+
+</div>
+<style>
+    .main-tab-content{
+
+    }
+
+
+    .fake-suit th{
+        white-space: nowrap;
+    }
+
+</style>
+{% block extra %}
+{% endblock %}
+{% endblock %}
