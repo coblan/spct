@@ -1,12 +1,8 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowSort, RowFilter
-from helpers.director.table.table import RowSearch
-from maindb.money import balancelog
-from ..models import TbTicketmaster, TbAccount
-from django.db.models.aggregates import Count, Sum
-from django.db.models import F, ExpressionWrapper, FloatField, Q
-import decimal
+from django.db import connections
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowFilter,SimTable
+from helpers.director.base_data import director
 from django.utils import timezone
 
 
@@ -16,9 +12,9 @@ class PlatformProfit(TablePage):
     def get_label(self):
         return '平台亏盈'
 
-    class tableCls(ModelTable):
-        model = TbTicketmaster
-        exclude = []
+    class tableCls(SimTable):
+        # model = TbAccount
+        # include = ['accountid']
 
         @classmethod
         def clean_search_args(cls, search_args):
@@ -27,62 +23,69 @@ class PlatformProfit(TablePage):
             last = today - sp
             def_start = last.strftime('%Y-%m-%d')
             def_end = today.strftime('%Y-%m-%d')
-            search_args['_start_createtime'] = search_args.get('_start_createtime', def_start)
-            search_args['_end_createtime'] = search_args.get('_end_createtime', def_end)
+            search_args['_start_date'] = search_args.get('_start_date') or def_start
+            search_args['_end_date'] = search_args.get('_end_date') or def_end
             return search_args
 
-        def get_heads(self):
-            heads = [
-                {'name': 'accountid__nickname', 'label': '昵称', 'width': 120},
-                {'name': 'accountid__amount', 'label': '余额', 'width': 100},
-                {'name': 'num_ticket', 'label': '投注数', 'width': 60},
-                {'name': 'num_win', 'label': '中注数', 'width': 80},
-                {'name': 'ratio', 'label': '中注比%', 'width': 100},
-                {'name': 'sum_money', 'label': '投注金额', 'width': 120},
-                {'name': 'sum_outcome', 'label': '派彩金额', 'width': 120},
-                {'name': 'sum_bonus', 'label': '返水', 'width': 100},
-                {'name': 'sum_turnover', 'label': '流水', 'width': 100},
-                {'name': 'recharge_first_bonus', 'label': '首存红利', 'width': 120},
-                {'name': 'recharge_second_bonus', 'label': '再存红利', 'width': 120},
-                {'name': 'birthday_bonus', 'label': '生日礼金', 'width': 120},
-                {'name': 'birthday_bonus', 'label': '生日礼金', 'width': 120},
-                {'name': 'adjust_amount', 'label': '调账', 'width': 120},
-                {'name': 'profit', 'label': '平台亏盈', 'width': 120},
-            ]
-            return heads
+        class filters(RowFilter):
+            range_fields = ['date']
 
-        def statistics(self, query):  # tbwithdrawlimit
-            ss = query.defer("ticketid").values('accountid', 'accountid__nickname', 'accountid__amount') \
-                .distinct() \
-                .annotate(num_ticket=Count('ticketid'), num_win=Sum('winbet'),
-                          sum_money=Sum('betamount'), sum_outcome=Sum('betoutcome'),
-                          sum_bonus=Sum('bonus'), sum_turnover=Sum('turnover')) \
-                .annotate(profit=F('sum_money') - F('sum_outcome'),
-                          ratio=ExpressionWrapper(F('num_win') * 1.0 / F('num_ticket'),
-                                                  output_field=FloatField())) \
-                .order_by('accountid__nickname')
-            return ss
+            def dict_head(self, head):
+                if head['name'] == 'date':
+                    head['label'] = '日期'
+                return head
 
         def get_rows(self):
-            rows = ModelTable.get_rows(self)
-            for row in rows:
-                for k, v in row.items():
-                    if isinstance(v, decimal.Decimal):
-                        row[k] = str(v)
-                    elif k == 'ratio':
-                        row[k] = round(v * 100, 2)
-            return rows
+            for row in self.data:
+                row['BetAmount'] = row['BetAmount']
+                row['Turnover'] = round(row['Turnover'], 2)
+                row['BetBonus'] = round(row['BetBonus'], 2)
+                row['BetOutCome'] = round(row['BetOutCome'], 2)
+                row['RechargeBonus'] = round(row['RechargeBonus'], 2)
+                row['BirthdayBonus'] = round(row['BirthdayBonus'], 2)
+                row['RescueBonus'] = round(row['RescueBonus'], 2)
+                row['AdjustAmount'] = round(row['AdjustAmount'], 2)
+                row['Profit'] = round(row['Profit'], 2)
+            return self.data
 
-        def permited_fields(self):
-            fields = ModelTable.permited_fields(self)
-            fields.extend(['ratio', 'profit'])
-            return fields
+        def __init__(self, *args, **kws):
+            super().__init__(*args, **kws)
 
-        class filters(RowFilter):
-            range_fields = ['createtime']
+            sql_args = {
+                'StartTime': self.search_args.get('_start_date', ''),
+                'EndTime': self.search_args.get('_end_date', '')
+            }
+            sql = r"exec dbo.[SP_PlatformProfit] '%(StartTime)s','%(EndTime)s'" \
+                  % sql_args
+            with connections['Sports'].cursor() as cursor:
+                cursor.execute(sql)
+                cursor.fetchall()
+                self.data = []
+                for row in cursor:
+                    dc = {}
+                    for index, head in enumerate(cursor.description):
+                        dc[head[0]] = row[index]
+                    self.data.append(dc)
 
-        class sort(RowSort):
-            names = ['ratio', 'profit']
+        def getExtraHead(self):
+            return [
+                {'name': 'BetAmount', 'label': '投注金额 ', 'width': 150},
+                {'name': 'Turnover', 'label': '流水', 'width': 130},
+                {'name': 'BetBonus', 'label': '返水', 'width': 130},
+                {'name': 'BetOutCome', 'label': '派奖金额', 'width': 130},
+                {'name': 'RechargeBonus', 'label': '充值红利', 'width': 130},
+                {'name': 'BirthdayBonus', 'label': '生日礼金', 'width': 130},
+                {'name': 'RescueBonus', 'label': '救援金', 'width': 130},
+                {'name': 'AdjustAmount', 'label': '调账', 'width': 100},
+                {'name': 'Profit', 'label': '亏盈', 'width': 100}
+            ]
+
+        def getRowPages(self):
+            return {
+                'crt_page': self.search_args.get('_page', 1),
+                'total': self.total,
+                'perpage': self.search_args.get('_perpage', 20)
+            }
 
 
 director.update({

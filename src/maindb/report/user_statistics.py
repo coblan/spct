@@ -47,7 +47,8 @@ class UserStatisticsPage(TablePage):
                 return head
 
         class sort(RowSort):
-            names = ['Amount', 'BetAmount', 'Turnover', 'BetOutcome', 'BetBonus', 'OrderCount',
+            names = ['Amount', 'GameCoinRechargeAmount', 'CommissionRechargeAmount', 'ReservedAmount',
+                     'CommissionWithDrawAmount', 'BetAmount', 'Turnover', 'BetOutcome', 'BetBonus', 'OrderCount',
                      'WinCount', 'WinRate', 'FirstRechargeBonus', 'SecondRechargeBonus', 'RescueBonus', 'BirthdayBonus',
                      'AdjustAmount', 'Profit']
 
@@ -65,6 +66,10 @@ class UserStatisticsPage(TablePage):
                 row['BirthdayBonus'] = round(row['BirthdayBonus'], 2)
                 row['AdjustAmount'] = round(row['AdjustAmount'], 2)
                 row['Profit'] = round(row['Profit'], 2)
+                row['GameCoinRechargeAmount'] = round(row['GameCoinRechargeAmount'], 2)
+                row['CommissionRechargeAmount'] = round(row['CommissionRechargeAmount'], 2)
+                row['ReservedAmount'] = round(row['ReservedAmount'], 2)
+                row['CommissionWithDrawAmount'] = round(row['CommissionWithDrawAmount'], 2)
             return self.matches
 
         def __init__(self, *args, **kws):
@@ -80,6 +85,7 @@ class UserStatisticsPage(TablePage):
 
             sql_args = {
                 'NickName': nickname,
+                'AccountID':0,
                 'StartTime': self.search_args.get('_start_date', ''),
                 'EndTime': self.search_args.get('_end_date', ''),
                 'PageIndex': self.search_args.get('_page', 1),
@@ -87,7 +93,7 @@ class UserStatisticsPage(TablePage):
                 'Sort': sort,
                 'SortWay': sortway
             }
-            sql = r"exec dbo.SP_UserStatistics '%(NickName)s','%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s'" \
+            sql = r"exec dbo.SP_UserStatistics '%(NickName)s',%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s'" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql)
@@ -114,6 +120,10 @@ class UserStatisticsPage(TablePage):
             return [
                 {'name': 'NickName', 'label': '昵称 ', 'width': 150},
                 {'name': 'Amount', 'label': '余额', 'width': 130},
+                {'name': 'GameCoinRechargeAmount', 'label': '充值金额', 'width': 130},
+                {'name': 'CommissionRechargeAmount', 'label': '佣金充值金额', 'width': 130},
+                {'name': 'ReservedAmount', 'label': '提现金额', 'width': 130},
+                {'name': 'CommissionWithDrawAmount', 'label': '佣金提现金额', 'width': 130},
                 {'name': 'BetAmount', 'label': '投注金额', 'width': 130},
                 {'name': 'Turnover', 'label': '流水', 'width': 100},
                 {'name': 'BetOutcome', 'label': '派奖金额', 'width': 100},
