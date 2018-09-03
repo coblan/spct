@@ -102,7 +102,9 @@ class PcMenu(BaseEngine):
              'submenu': [
                  # {'label': _('Channel'), 'url': page('maindb.report.channel'),
                  # 'visible': can_touch(TbChannel, crt_user), },
-                 {'label': '会员统计', 'url': page('maindb.report.account'),
+                 # {'label': '会员统计', 'url': page('maindb.report.account'),
+                 #  'visible': can_touch(TbAccount, crt_user), },
+                 {'label': '会员统计', 'url': page('UserStatisticsPage'),
                   'visible': can_touch(TbAccount, crt_user), },
                  {'label': '平台亏盈', 'url': page('PlatformProfit'),
                   'visible': True, },
