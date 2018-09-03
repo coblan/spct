@@ -77,9 +77,9 @@ class PcMenu(BaseEngine):
             {'label': _('Games'), 'icon': fa('fa-globe'), 'visible': True,
              'submenu': [
                  {'label': '赛事列表', 'url': page('maindb.Matches'), 'visible': can_touch(TbMatches, crt_user), },
-                 {'label': _('View TicketSingleByMatch'), 'url': page('maindb.MatchesSummary'),
-                  'visible': can_touch(TbMatches, crt_user), },
-                 {'label': '赛事统计1', 'url': page('maindb.MatchesStatisticsPage'),
+                 # {'label': _('View TicketSingleByMatch'), 'url': page('maindb.MatchesSummary'),
+                 #  'visible': can_touch(TbMatches, crt_user), },
+                 {'label': '赛事统计', 'url': page('maindb.MatchesStatisticsPage'),
                   'visible': can_touch(TbMatches, crt_user), },
                  {'label': '注单列表', 'url': page('maindb.ticketmaster'),
                   'visible': can_touch(TbTicketmaster, crt_user), },
