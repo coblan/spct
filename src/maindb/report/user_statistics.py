@@ -82,10 +82,11 @@ class UserStatisticsPage(TablePage):
             if sort.startswith('-'):
                 sort = sort[1:]
                 sortway = 'desc'
-
+            
+            AccountID = self.kw.get('accountid') or 0
             sql_args = {
                 'NickName': nickname,
-                'AccountID':0,
+                'AccountID':AccountID,
                 'StartTime': self.search_args.get('_start_date', ''),
                 'EndTime': self.search_args.get('_end_date', ''),
                 'PageIndex': self.search_args.get('_page', 1),

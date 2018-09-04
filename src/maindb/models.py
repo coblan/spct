@@ -1963,7 +1963,7 @@ class TbAgentcommission(models.Model):
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
     applytime = models.DateTimeField(db_column='ApplyTime', blank=True, null=True,
                                      verbose_name='审核时间')  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', blank=True, null=True)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', blank=True, null=True, default= 0, choices= AGENT_COMMISION_STATUS)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True,
                                    null=True)  # Field name made lowercase.
 
