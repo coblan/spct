@@ -83,14 +83,27 @@ class UserStatisticsPage(TablePage):
                 sort = sort[1:]
                 sortway = 'desc'
 
+            sort_dc = {
+                'FirstRechargeBonus':'1stRCBonus',
+                'SecondRechargeBonus':'2ndRCBonus',
+                'RescueBonus':'Rescue',
+                'BirthdayBonus':'BdBonus',
+                'GameCoinRechargeAmount': 'GameRCAmt',
+                'CommissionRechargeAmount':'CommRCAmt',
+                'CommissionWithDrawAmount':'CommWDAmt',
+                'ReservedAmount':'RvAmt',
+                'AdjustAmount':'AdjAmount'
+            }
+            realsort = sort_dc.get(sort) or sort;
+
             sql_args = {
                 'NickName': nickname,
-                'AccountID':0,
+                'AccountID': 0,
                 'StartTime': self.search_args.get('_start_date', ''),
                 'EndTime': self.search_args.get('_end_date', ''),
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
-                'Sort': sort,
+                'Sort': realsort,
                 'SortWay': sortway
             }
             sql = r"exec dbo.SP_UserStatistics '%(NickName)s',%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s'" \
