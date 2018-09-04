@@ -60,6 +60,11 @@ class MatchesStatisticsPage(TablePage):
             self.getData()
             for row in self.matches:
                 row['matchid'] = row['MatchID']
+                row['SumBetAmount'] = round(row['SumBetAmount'], 2)
+                row['SumBetOutcome'] = round(row['SumBetOutcome'], 2)
+                row['SumGrossProfit'] = round(row['SumGrossProfit'], 2)
+                row['SumBonus'] = round(row['SumBonus'], 2)
+                row['SumProfit'] = round(row['SumProfit'], 2)
             return self.matches
 
         def getData(self):
@@ -99,6 +104,15 @@ class MatchesStatisticsPage(TablePage):
                     for index, head in enumerate(cursor.description):
                         dc[head[0]] = row[index]
                     self.matches.append(dc)
+                cursor.nextset()
+                for row in cursor:
+                    dc = {}
+                    for index, desp_item in enumerate(cursor.description):
+                        head_name = desp_item[0]
+                        dc[head_name] = round(row[index], 2)
+                    self.footer_dc = dc
+
+                self.footer = ['合计'] + self.footer_by_dict(self.footer_dc)
 
         def getExtraHead(self):
             return [
@@ -111,8 +125,8 @@ class MatchesStatisticsPage(TablePage):
                 {'name': 'StatusCode', 'label': '状态', },
                 {'name': 'TicketCount', 'label': '注数', 'width': 80},
                 {'name': 'UserCount', 'label': '用户数', 'width': 80},
-                {'name': 'SumBetAmount', 'label': '投注金额', 'width': 100},
-                {'name': 'SumBetOutcome', 'label': '派奖金额', 'width': 100},
+                {'name': 'SumBetAmount', 'label': '投注金额', 'width': 120},
+                {'name': 'SumBetOutcome', 'label': '派奖金额', 'width': 120},
                 {'name': 'SumGrossProfit', 'label': '毛利', 'width': 100},
                 {'name': 'SumBonus', 'label': '返水', 'width': 100},
                 {'name': 'SumProfit', 'label': '亏盈', 'width': 100},
