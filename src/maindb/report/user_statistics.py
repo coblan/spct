@@ -83,7 +83,6 @@ class UserStatisticsPage(TablePage):
                 sort = sort[1:]
                 sortway = 'desc'
 
-
             sort_dc = {
                 'FirstRechargeBonus':'1stRCBonus',
                 'SecondRechargeBonus':'2ndRCBonus',
