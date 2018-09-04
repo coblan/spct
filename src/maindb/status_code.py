@@ -130,6 +130,12 @@ WINNER = (
 )
 
 AGENT_COMMISION_STATUS = (
-    (0, '未审核'), 
+    (0, '未审核'),
     (1, '已审核')
+)
+
+Account_Source = (
+    (0, 'APP注册'),
+    (1, '推广链接'),
+    (2, '代理添加')
 )

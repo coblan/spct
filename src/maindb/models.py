@@ -86,6 +86,7 @@ class TbAccount(models.Model):
                                            verbose_name='充值次数')  # Field name made lowercase.
     fundspassword = models.CharField(db_column='FundsPassword', max_length=255, blank=True,
                                      null=True)  # Field name made lowercase.
+    source = models.IntegerField(db_column='Source',verbose_name='来源',choices=Account_Source)  # Field name made lowercase.
 
     class Meta:
         managed = False
