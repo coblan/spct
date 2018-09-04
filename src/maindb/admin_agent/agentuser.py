@@ -2,6 +2,8 @@ from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, 
 from ..models import TbAccount
 from django.db import connections
 from django.utils import timezone
+from ..member.account import account_tab
+
 
 class AgentUser(TablePage):
     template = 'jb_admin/table.html'
@@ -22,7 +24,6 @@ class AgentUser(TablePage):
             search_args['_start_createtime'] = search_args.get('_start_createtime', def_start)
             search_args['_end_createtime'] = search_args.get('_end_createtime', def_end)
             return search_args 
-        
         
         class filters(RowFilter):
             range_fields = ['createtime']
@@ -106,20 +107,25 @@ class AgentUser(TablePage):
                 
         
         def dict_head(self, head): 
-            if head['name'] == 'accountid':
+            if head['name'] == 'SumActive':
                 head['editor'] = 'com-table-call-fun'
                 head['fun'] = 'get_childs'
                 head['field'] = 'accountid'
+            if head['name'] == 'accountid':
+                head['editor'] = 'com-table-switch-to-tab'
+                head['tab_name'] = 'baseinfo'
             return head
         
         def getExtraHead(self): 
             return [
-                #{'name': 'TotalLostAmount', 'label': 'TotalLostAmount',}, 
+                #{'name': 'TotalLostAmount', 'label': 'TotalLostAmount',},
+                {'name': 'SumActive', 'label': '活跃用户',}, 
                 {'name': 'NickName', 'label': 'NickName',}, 
-                {'name': 'Phone', 'label': 'Phone',}, 
+               
+                #{'name': 'Phone', 'label': 'Phone',}, 
                 {'name': 'VIPLv', 'label': 'VIPLv',}, 
                 {'name': 'BonusRate', 'label': 'BonusRate',}, 
-                {'name': 'SumActive', 'label': '活跃用户',}, 
+                
                 {'name': 'SumLostAmount', 'label': 'SumLostAmount','width': 130,}, 
                 {'name': 'SumBonusAmount', 'label': 'SumBonusAmount','width': 140,}, 
                 {'name': 'SumBetAmount', 'label': 'SumBetAmount','width': 120,}, 
@@ -154,6 +160,11 @@ class AgentUser(TablePage):
             
         def getParents(self): 
             return self.parent_agents
+        
+        def get_context(self):
+            ctx = super().get_context()
+            ctx['tabs'] = account_tab(self) 
+            return ctx        
             
         
 

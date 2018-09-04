@@ -24,6 +24,83 @@ from ..report.user_statistics import UserStatisticsPage
 
 # Register your models here.
 
+def account_tab(self): 
+    baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
+    ls = [
+        {'name': 'baseinfo',
+         'label': _('Basic Info'),
+         'com': 'com_tab_fields',
+         'get_data': {
+             'fun': 'get_row',
+             'kws': {
+                 'director_name': AccoutBaseinfo.get_director_name(),
+                 'relat_field': 'accountid',
+             }
+         },
+         'after_save': {
+             'fun': 'update_or_insert'
+         },
+         'heads': baseinfo.get_heads(),
+         'ops': baseinfo.get_operations()
+         },
+        {'name': 'balance_log',
+         'label': '账目记录',
+         'com': 'com_tab_table',
+         'par_field': 'accountid',
+         'table_ctx': AccountBalanceTable(crt_user=self.crt_user).get_head_context(),
+         'visible': can_touch(TbBalancelog, self.crt_user),
+         },
+        {'name': 'backcard',
+         'label': '银行卡',
+         'com': 'com_tab_table',
+         'par_field': 'accountid',
+         'table_ctx': UserBankCard(crt_user=self.crt_user).get_head_context(),
+         'visible': True,
+         },
+        {'name': 'UserRecharge',
+         'label': '充值记录',
+         'com': 'com_tab_table',
+         'par_field': 'accountid',
+         'table_ctx': UserRecharge(crt_user=self.crt_user).get_head_context(),
+         'visible': True,
+         },
+        {'name': 'UserWithdraw',
+         'label': '提现记录',
+         'com': 'com_tab_table',
+         'par_field': 'accountid',
+         'table_ctx': UserWithdraw(crt_user=self.crt_user).get_head_context(),
+         'visible': True,
+         },
+    
+        {'name': 'account_ticket',
+         'label': _('Ticket'),
+         'com': 'com_tab_table',
+         'par_field': 'accountid',
+         'table_ctx': AccountTicketTable(crt_user=self.crt_user).get_head_context(),
+         'visible': can_touch(TbTicketmaster, self.crt_user),
+         },
+        {'name': 'account_profit',
+         'label': '亏盈统计',
+         'com': 'com_tab_table',
+         'par_field': 'accountid',
+         'table_ctx': AccountProfitTable(crt_user=self.crt_user).get_head_context(),
+         'visible': True},
+        {'name': 'account_login',
+         'label': _('Login Log'),
+         'com': 'com_tab_table',
+         'par_field': 'accountid',
+         'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
+         'visible': can_touch(TbLoginlog, self.crt_user), }, 
+        {'name': 'UserStatistics',
+         'label': '用户统计',
+         'com': 'com_tab_table',
+         'par_field': 'accountid',
+         'table_ctx': UserStatisticsTab(crt_user=self.crt_user).get_head_context(),
+             'visible': True},
+        
+    ]
+    return evalue_container(ls)
+
 class AccountPage(TablePage):
     template = 'jb_admin/table.html'
 
@@ -31,82 +108,8 @@ class AccountPage(TablePage):
         return '会员管理'
 
     def get_context(self):
-        ctx = TablePage.get_context(self)
-        baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
-        ls = [
-            {'name': 'baseinfo',
-             'label': _('Basic Info'),
-             'com': 'com_tab_fields',
-             'get_data': {
-                 'fun': 'get_row',
-                 'kws': {
-                     'director_name': AccoutBaseinfo.get_director_name(),
-                     'relat_field': 'accountid',
-                 }
-             },
-             'after_save': {
-                 'fun': 'update_or_insert'
-             },
-             'heads': baseinfo.get_heads(),
-             'ops': baseinfo.get_operations()
-             },
-            {'name': 'balance_log',
-             'label': '账目记录',
-             'com': 'com_tab_table',
-             'par_field': 'accountid',
-             'table_ctx': AccountBalanceTable(crt_user=self.crt_user).get_head_context(),
-             'visible': can_touch(TbBalancelog, self.crt_user),
-             },
-            {'name': 'backcard',
-             'label': '银行卡',
-             'com': 'com_tab_table',
-             'par_field': 'accountid',
-             'table_ctx': UserBankCard(crt_user=self.crt_user).get_head_context(),
-             'visible': True,
-             },
-            {'name': 'UserRecharge',
-             'label': '充值记录',
-             'com': 'com_tab_table',
-             'par_field': 'accountid',
-             'table_ctx': UserRecharge(crt_user=self.crt_user).get_head_context(),
-             'visible': True,
-             },
-            {'name': 'UserWithdraw',
-             'label': '提现记录',
-             'com': 'com_tab_table',
-             'par_field': 'accountid',
-             'table_ctx': UserWithdraw(crt_user=self.crt_user).get_head_context(),
-             'visible': True,
-             },
-
-            {'name': 'account_ticket',
-             'label': _('Ticket'),
-             'com': 'com_tab_table',
-             'par_field': 'accountid',
-             'table_ctx': AccountTicketTable(crt_user=self.crt_user).get_head_context(),
-             'visible': can_touch(TbTicketmaster, self.crt_user),
-             },
-            {'name': 'account_profit',
-             'label': '亏盈统计',
-             'com': 'com_tab_table',
-             'par_field': 'accountid',
-             'table_ctx': AccountProfitTable(crt_user=self.crt_user).get_head_context(),
-             'visible': True},
-            {'name': 'account_login',
-             'label': _('Login Log'),
-             'com': 'com_tab_table',
-             'par_field': 'accountid',
-             'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
-             'visible': can_touch(TbLoginlog, self.crt_user), }, 
-            {'name': 'UserStatistics',
-             'label': '用户统计',
-             'com': 'com_tab_table',
-             'par_field': 'accountid',
-             'table_ctx': UserStatisticsTab(crt_user=self.crt_user).get_head_context(),
-             'visible': True},
-            
-        ]
-        ctx['tabs'] = evalue_container(ls)
+        ctx = super().get_context()
+        ctx['tabs'] = account_tab(self) 
         return ctx
 
     class tableCls(ModelTable):
