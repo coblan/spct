@@ -51,20 +51,47 @@ class AgentUser(TablePage):
             @NickName VARCHAR(20) =NULL --帐号查询昵称 默认全部  
             """
 
-            nickname = self.search_args.get('_q', '')
-            par = self.search_args.get('_par', 0)
-
-            if par and nickname:
-                nickname = ''
-                self.search_args['_q'] = ''
-
             order_by = self.search_args.get('_sort', '')
+            par = self.search_args.get('_par', 0)
+            nickname = self.search_args.get('_q', '')
+            
+            cach_par = self.search_args.get('_cach_par')
+            cach_nickname = self.search_args.get('_cach_nickname')
+            cach_sort = self.search_args.get('_cach_sort')
+            
+            self.search_args['_cach_nickname'] = nickname
+            self.search_args['_cach_par'] = par
+            self.search_args['_cach_sort'] = order_by
+            if par != cach_par:
+                # 点击的par
+                nickname = ''
+                order_by = ''
+                self.search_args['_cach_op'] = 'click_par'
+
+            elif nickname and cach_nickname != nickname:
+                # 搜索昵称，第一次点击[搜索]
+                par = 0
+                order_by = ''
+                self.search_args['_cach_op'] = 'search_nickname'
+            elif order_by != cach_sort:
+                # 排序
+                cach_op = self.search_args.get('_cach_op')
+                if cach_op == 'click_par':
+                    nickname = ''
+                elif cach_op == 'search_nickname':
+                    par = 0
+            else:
+                # 点击 [搜索] 刷新
+                pass
+
 
             if order_by.startswith('-'):
                 order_by = order_by[1:] + ' DESC'
 
+            
+            
             sql_args = {
-                'AccountID': self.search_args.get('accountid', par),
+                'AccountID': par,
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
                 'BeginDate': self.search_args.get('_start_createtime', ''),
@@ -101,8 +128,8 @@ class AgentUser(TablePage):
                             footer['Sum' + k[5:]] = v
                     self.footer = ['合计'] + self.footer_by_dict(footer)
             # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
-            if nickname:
-                self.search_args['_par'] = 0
+            
+
 
         def dict_head(self, head):
             if head['name'] == 'SumActive':
@@ -171,5 +198,5 @@ director.update({
 })
 
 page_dc.update({
-    'AgentUser': AgentUser,
+    'agentUser': AgentUser,
 })
