@@ -82,6 +82,7 @@ class UserStatisticsPage(TablePage):
             if sort.startswith('-'):
                 sort = sort[1:]
                 sortway = 'desc'
+<<<<<<< HEAD
 
             sort_dc = {
                 'FirstRechargeBonus':'1stRCBonus',
@@ -99,6 +100,13 @@ class UserStatisticsPage(TablePage):
             sql_args = {
                 'NickName': nickname,
                 'AccountID': 0,
+=======
+            
+            AccountID = self.kw.get('accountid') or 0
+            sql_args = {
+                'NickName': nickname,
+                'AccountID':AccountID,
+>>>>>>> c50fa218b69bded59fbbf9363bf649191cb45dc2
                 'StartTime': self.search_args.get('_start_date', ''),
                 'EndTime': self.search_args.get('_end_date', ''),
                 'PageIndex': self.search_args.get('_page', 1),

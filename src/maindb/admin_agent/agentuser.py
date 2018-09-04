@@ -51,8 +51,14 @@ class AgentUser(TablePage):
             @NickName VARCHAR(20) =NULL --帐号查询昵称 默认全部  
             """
             
-            par = self.search_args.get('_par', 0)
+            
             nickname = self.search_args.get('_q', '')
+            par = self.search_args.get('_par', 0)
+
+            if par and nickname:
+                nickname = ''
+                self.search_args['_q'] = ''
+                
             order_by = self.search_args.get('_sort', '')
 
             if order_by.startswith('-'):
@@ -95,6 +101,8 @@ class AgentUser(TablePage):
                         if k != 'Total' and k.startswith('Total'):
                             footer['Sum'+k[5:]] = v
                     self.footer = ['合计'] + self.footer_by_dict(footer)
+            # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
+            self.search_args['_par'] =  0
                 
         
         def dict_head(self, head): 

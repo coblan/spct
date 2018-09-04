@@ -19,6 +19,7 @@ from ..member.bankcard import BankCard, BankCardForm
 from ..money.recharge import RechargePage
 from ..money.withdraw import WithdrawPage
 from .loginlog import LoginLogPage
+from ..report.user_statistics import UserStatisticsPage
 
 
 # Register your models here.
@@ -96,7 +97,14 @@ class AccountPage(TablePage):
              'com': 'com_tab_table',
              'par_field': 'accountid',
              'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
-             'visible': can_touch(TbLoginlog, self.crt_user), }
+             'visible': can_touch(TbLoginlog, self.crt_user), }, 
+            {'name': 'UserStatistics',
+             'label': '用户统计',
+             'com': 'com_tab_table',
+             'par_field': 'accountid',
+             'table_ctx': UserStatisticsTab(crt_user=self.crt_user).get_head_context(),
+             'visible': True},
+            
         ]
         ctx['tabs'] = evalue_container(ls)
         return ctx
@@ -283,6 +291,10 @@ class AccountProfitTable(WithAccoutInnFilter, ReportAccout.tableCls):
     class search(RowSearch):
         names = []
 
+class UserStatisticsTab(UserStatisticsPage.tableCls):
+    class search(RowSearch):
+        names = []
+
 
 director.update({
     'account': AccountPage.tableCls,
@@ -296,7 +308,8 @@ director.update({
     'account.log': AccountLoginTable,
     'account.ticketmaster': AccountTicketTable,
     'account.balancelog': AccountBalanceTable,
-    'account.profit': AccountProfitTable
+    'account.profit': AccountProfitTable, 
+    'account.statistc': UserStatisticsTab,
 })
 
 permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
