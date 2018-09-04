@@ -1,11 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-
 import re
-
 from django.db import connections
-from django.db.models import Q
-
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter
 from helpers.director.table.row_search import SelectSearch
 from ..models import TbMatches
@@ -83,7 +79,7 @@ class MatchesStatisticsPage(TablePage):
                 'TournamentID': self.search_args.get('tournamentid', 0),
                 'MatchID': matchid,
                 'NickName': nickname,
-                'AccountID':0,
+                'AccountID':self.search_args.get('accountid', 0),
                 'MatchDateFrom': self.search_args.get('_start_matchdate', ''),
                 'MatchDateTo': self.search_args.get('_end_matchdate', ''),
                 'PageIndex': self.search_args.get('_page', 1),

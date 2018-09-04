@@ -5,6 +5,7 @@ from django.db.models import Sum, Case, When, F
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director
+from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
 from maindb.report.report_account import ReportAccout
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster
@@ -24,7 +25,7 @@ from ..report.user_statistics import UserStatisticsPage
 
 # Register your models here.
 
-def account_tab(self): 
+def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
     ls = [
         {'name': 'baseinfo',
@@ -71,7 +72,7 @@ def account_tab(self):
          'table_ctx': UserWithdraw(crt_user=self.crt_user).get_head_context(),
          'visible': True,
          },
-    
+
         {'name': 'account_ticket',
          'label': _('Ticket'),
          'com': 'com_tab_table',
@@ -90,16 +91,22 @@ def account_tab(self):
          'com': 'com_tab_table',
          'par_field': 'accountid',
          'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbLoginlog, self.crt_user), }, 
+         'visible': can_touch(TbLoginlog, self.crt_user), },
         {'name': 'UserStatistics',
          'label': '用户统计',
          'com': 'com_tab_table',
          'par_field': 'accountid',
          'table_ctx': UserStatisticsTab(crt_user=self.crt_user).get_head_context(),
-             'visible': True},
-        
+         'visible': True},
+        {'name': 'MatchesStatistics',
+         'label': '赛事统计',
+         'com': 'com_tab_table',
+         'par_field': 'accountid',
+         'table_ctx': MatchesStatisticsTab(crt_user=self.crt_user).get_head_context(),
+         'visible': True},
     ]
     return evalue_container(ls)
+
 
 class AccountPage(TablePage):
     template = 'jb_admin/table.html'
@@ -109,21 +116,21 @@ class AccountPage(TablePage):
 
     def get_context(self):
         ctx = super().get_context()
-        ctx['tabs'] = account_tab(self) 
+        ctx['tabs'] = account_tab(self)
         return ctx
 
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
-                   'isenablewithdraw', 'sumrechargecount','createtime']
+                   'isenablewithdraw', 'sumrechargecount', 'createtime']
 
         class filters(RowFilter):
             range_fields = ['createtime']
 
         def inn_filter(self, query):
-            return query.annotate(rechargeamount=Sum(Case(When(tbrecharge__status = 2 , then= F('tbrecharge__confirmamount')), default=0))) \
-                .annotate(withdrawamount=Sum(Case(When(tbwithdraw__status = 2 , then= F('tbwithdraw__amount')), default=0)))
-
+            return query.annotate(
+                rechargeamount=Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount')), default=0))) \
+                .annotate(withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
 
         def dict_row(self, inst):
             tmp = list(inst.account)
@@ -132,7 +139,7 @@ class AccountPage(TablePage):
             return {
                 'amount': str(inst.amount),
                 'account': out_str,
-                'rechargeamount':inst.rechargeamount,
+                'rechargeamount': inst.rechargeamount,
                 'withdrawamount': inst.withdrawamount
             }
 
@@ -166,13 +173,14 @@ class AccountPage(TablePage):
             return head
 
         def getExtraHead(self):
-            return [{'name':'rechargeamount','label':'充值金额'},{'name':'withdrawamount','label':'提现金额'}]
+            return [{'name': 'rechargeamount', 'label': '充值金额'}, {'name': 'withdrawamount', 'label': '提现金额'}]
 
         class search(RowSearch):
             names = ['accountid', 'nickname']
 
         class sort(RowSort):
-            names = ['account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount','rechargeamount','withdrawamount']
+            names = ['account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount',
+                     'rechargeamount', 'withdrawamount']
 
         def get_operation(self):
             modifyer = AccoutModifyAmount(crt_user=self.crt_user)
@@ -237,6 +245,7 @@ class AccoutModifyAmount(ModelFields):
                                         amount=self.changed_amount, afteramount=self.instance.amount, creater='system',
                                         memo='调账', accountid=self.instance.accountid, categoryid=4, cashflow=cashflow)
 
+
 class AccountTabBase(ModelTable):
     def __init__(self, *args, **kws):
         ModelTable.__init__(self, *args, **kws)
@@ -294,7 +303,13 @@ class AccountProfitTable(WithAccoutInnFilter, ReportAccout.tableCls):
     class search(RowSearch):
         names = []
 
+
 class UserStatisticsTab(UserStatisticsPage.tableCls):
+    class search(RowSearch):
+        names = []
+
+
+class MatchesStatisticsTab(MatchesStatisticsPage.tableCls):
     class search(RowSearch):
         names = []
 
@@ -311,8 +326,9 @@ director.update({
     'account.log': AccountLoginTable,
     'account.ticketmaster': AccountTicketTable,
     'account.balancelog': AccountBalanceTable,
-    'account.profit': AccountProfitTable, 
+    'account.profit': AccountProfitTable,
     'account.statistc': UserStatisticsTab,
+    'account.matches_statistics': MatchesStatisticsTab
 })
 
 permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
