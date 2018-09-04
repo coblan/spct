@@ -83,6 +83,7 @@ class MatchesStatisticsPage(TablePage):
                 'TournamentID': self.search_args.get('tournamentid', 0),
                 'MatchID': matchid,
                 'NickName': nickname,
+                'AccountID':0,
                 'MatchDateFrom': self.search_args.get('_start_matchdate', ''),
                 'MatchDateTo': self.search_args.get('_end_matchdate', ''),
                 'PageIndex': self.search_args.get('_page', 1),
@@ -90,7 +91,7 @@ class MatchesStatisticsPage(TablePage):
                 'Sort': sort,
             }
 
-            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,'%(NickName)s','%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,'%(NickName)s',%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql)
