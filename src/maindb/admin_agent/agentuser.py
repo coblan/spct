@@ -21,8 +21,8 @@ class AgentUser(TablePage):
             last = today - sp
             def_start = last.strftime('%Y-%m-%d')
             def_end = today.strftime('%Y-%m-%d')
-            search_args['_start_createtime'] = search_args.get('_start_createtime', def_start)
-            search_args['_end_createtime'] = search_args.get('_end_createtime', def_end)
+            search_args['_start_createtime'] = search_args.get('_start_createtime') or  def_start
+            search_args['_end_createtime'] = search_args.get('_end_createtime') or def_end
             return search_args 
         
         class filters(RowFilter):
@@ -103,7 +103,8 @@ class AgentUser(TablePage):
                             footer['Sum'+k[5:]] = v
                     self.footer = ['合计'] + self.footer_by_dict(footer)
             # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
-            self.search_args['_par'] =  0
+            if nickname:
+                self.search_args['_par'] =  0
                 
         
         def dict_head(self, head): 
