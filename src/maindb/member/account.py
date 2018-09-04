@@ -7,7 +7,6 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelField
     RowSearch, RowSort, RowFilter, director
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
-from maindb.report.report_account import ReportAccout
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster
 from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
 from helpers.func.collection.container import evalue_container
@@ -80,12 +79,6 @@ def account_tab(self):
          'table_ctx': AccountTicketTable(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbTicketmaster, self.crt_user),
          },
-        {'name': 'account_profit',
-         'label': '亏盈统计',
-         'com': 'com_tab_table',
-         'par_field': 'accountid',
-         'table_ctx': AccountProfitTable(crt_user=self.crt_user).get_head_context(),
-         'visible': True},
         {'name': 'account_login',
          'label': _('Login Log'),
          'com': 'com_tab_table',
@@ -299,11 +292,6 @@ class AccountLoginTable(WithAccoutInnFilter, LoginLogPage.tableCls):
         names = []
 
 
-class AccountProfitTable(WithAccoutInnFilter, ReportAccout.tableCls):
-    class search(RowSearch):
-        names = []
-
-
 class UserStatisticsTab(UserStatisticsPage.tableCls):
     class search(RowSearch):
         names = []
@@ -326,7 +314,6 @@ director.update({
     'account.log': AccountLoginTable,
     'account.ticketmaster': AccountTicketTable,
     'account.balancelog': AccountBalanceTable,
-    'account.profit': AccountProfitTable,
     'account.statistc': UserStatisticsTab,
     'account.matches_statistics': MatchesStatisticsTab
 })
