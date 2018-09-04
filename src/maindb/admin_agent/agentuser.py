@@ -33,7 +33,7 @@ class AgentUser(TablePage):
                 return head
         
         class sort(RowSort):
-            names = [ 'SumActive', 'SumLostAmount', 'SumBonusAmount']
+            names = [ 'SumActive', 'SumLostAmount', 'SumBonusAmount', 'SumWithdrawalAmount', 'SumBetAmount', 'SumTurnover']
         
         class search(RowSearch):
             names = ['nickname']
@@ -115,16 +115,16 @@ class AgentUser(TablePage):
         def getExtraHead(self): 
             return [
                 #{'name': 'TotalLostAmount', 'label': 'TotalLostAmount',}, 
-                {'name': 'SumActive', 'label': 'SumActive',}, 
-                {'name': 'Phone', 'label': 'Phone',}, 
                 {'name': 'NickName', 'label': 'NickName',}, 
-                {'name': 'BonusRate', 'label': 'BonusRate',}, 
+                {'name': 'Phone', 'label': 'Phone',}, 
                 {'name': 'VIPLv', 'label': 'VIPLv',}, 
+                {'name': 'BonusRate', 'label': 'BonusRate',}, 
+                {'name': 'SumActive', 'label': '活跃用户',}, 
                 {'name': 'SumLostAmount', 'label': 'SumLostAmount','width': 130,}, 
                 {'name': 'SumBonusAmount', 'label': 'SumBonusAmount','width': 140,}, 
-                {'name': 'SumAmount', 'label': 'SumAmount','width': 120,}, 
+                {'name': 'SumBetAmount', 'label': 'SumBetAmount','width': 120,}, 
                 {'name': 'SumRechargeAmount', 'label': 'SumRechargeAmount','width': 140,}, 
-                #{'name': 'TotalActive', 'label': 'TotalActive',}, 
+                {'name': 'SumWithdrawalAmount', 'label': '充值提现','width': 100,}, 
                 {'name': 'SumTurnover', 'label': 'SumTurnover','width': 120,}, 
                 {'name': 'CreateTime', 'label': 'CreateTime','width': 100,}, 
             ]
