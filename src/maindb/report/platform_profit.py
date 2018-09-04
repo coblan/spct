@@ -1,14 +1,16 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.db import connections
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowFilter,SimTable, FieldsPage, Fields
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowFilter, SimTable, FieldsPage, Fields
 from helpers.director.base_data import director
 from django.utils import timezone
 
+
 class PlatformProfitFieldsPage(FieldsPage):
     template = 'jb_admin/fields.html'
+
     class fieldsCls(Fields):
-        def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
+        def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
             sql_args = {
                 'StartTime': self.search_args.get('_start_date', ''),
                 'EndTime': self.search_args.get('_end_date', '')
@@ -23,8 +25,8 @@ class PlatformProfitFieldsPage(FieldsPage):
                     for index, head in enumerate(cursor.description):
                         dc[head[0]] = row[index]
                     self.row = dc
-                    
-        def get_heads(self): 
+
+        def get_heads(self):
             heads = [
                 {'name': 'BetAmount', 'label': '投注金额 ', 'width': 150},
                 {'name': 'Turnover', 'label': '流水', 'width': 130},
@@ -35,13 +37,13 @@ class PlatformProfitFieldsPage(FieldsPage):
                 {'name': 'RescueBonus', 'label': '救援金', 'width': 130},
                 {'name': 'AdjustAmount', 'label': '调账', 'width': 100},
                 {'name': 'Profit', 'label': '亏盈', 'width': 100}
-           ] 
+            ]
             for head in heads:
                 head['editor'] = 'linetext'
                 head['readonly'] = True
             return heads
-        
-        def get_row(self): 
+
+        def get_row(self):
             row = self.row
             row['BetAmount'] = row['BetAmount']
             row['Turnover'] = round(row['Turnover'], 2)
@@ -51,9 +53,8 @@ class PlatformProfitFieldsPage(FieldsPage):
             row['BirthdayBonus'] = round(row['BirthdayBonus'], 2)
             row['RescueBonus'] = round(row['RescueBonus'], 2)
             row['AdjustAmount'] = round(row['AdjustAmount'], 2)
-            row['Profit'] = round(row['Profit'], 2)  
+            row['Profit'] = round(row['Profit'], 2)
             return row
-
 
 
 class PlatformProfit(TablePage):
@@ -82,10 +83,10 @@ class PlatformProfit(TablePage):
                 if head['name'] == 'date':
                     head['label'] = '日期'
                 return head
-    
+
         def get_rows(self):
             for row in self.data:
-                row['BetAmount'] = row['BetAmount']
+                row['BetAmount'] = round(row['BetAmount'], 2)
                 row['Turnover'] = round(row['Turnover'], 2)
                 row['BetBonus'] = round(row['BetBonus'], 2)
                 row['BetOutCome'] = round(row['BetOutCome'], 2)
@@ -107,7 +108,7 @@ class PlatformProfit(TablePage):
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql)
-                #cursor.fetchall()
+                # cursor.fetchall()
                 self.data = []
                 for row in cursor:
                     dc = {}
