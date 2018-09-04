@@ -82,7 +82,8 @@ class UserStatisticsPage(TablePage):
             if sort.startswith('-'):
                 sort = sort[1:]
                 sortway = 'desc'
-                
+
+
             sort_dc = {
                 'FirstRechargeBonus':'1stRCBonus',
                 'SecondRechargeBonus':'2ndRCBonus',
@@ -95,9 +96,7 @@ class UserStatisticsPage(TablePage):
                 'AdjustAmount':'AdjAmount'
             }
             realsort = sort_dc.get(sort) or sort;
-            
-            AccountID = self.search_args.get('accountid') or 0
-            
+            AccountID = self.kw.get('accountid') or 0
             sql_args = {
                 'NickName': nickname,
                 'AccountID':AccountID,
