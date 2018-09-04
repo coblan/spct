@@ -53,6 +53,7 @@ class UserStatisticsPage(TablePage):
                      'AdjustAmount', 'Profit']
 
         def get_rows(self):
+            self.getData()
             for row in self.matches:
                 row['accountid'] = row['AccountID']
                 row['Amount'] = round(row['Amount'], 2)
@@ -72,8 +73,7 @@ class UserStatisticsPage(TablePage):
                 row['CommissionWithDrawAmount'] = round(row['CommissionWithDrawAmount'], 2)
             return self.matches
 
-        def __init__(self, *args, **kws):
-            super().__init__(*args, **kws)
+        def getData(self):
             nickname = ""
             if self.search_args.get('_qf') == 'nickname':
                 nickname = self.search_args.get('_q', '')

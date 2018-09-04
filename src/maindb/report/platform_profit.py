@@ -85,6 +85,7 @@ class PlatformProfit(TablePage):
                 return head
 
         def get_rows(self):
+            self.getData()
             for row in self.data:
                 row['BetAmount'] = round(row['BetAmount'], 2)
                 row['Turnover'] = round(row['Turnover'], 2)
@@ -97,9 +98,7 @@ class PlatformProfit(TablePage):
                 row['Profit'] = round(row['Profit'], 2)
             return self.data
 
-        def __init__(self, *args, **kws):
-            super().__init__(*args, **kws)
-
+        def getData(self):
             sql_args = {
                 'StartTime': self.search_args.get('_start_date', ''),
                 'EndTime': self.search_args.get('_end_date', '')

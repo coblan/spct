@@ -57,12 +57,12 @@ class MatchesStatisticsPage(TablePage):
                      'SumProfit']
 
         def get_rows(self):
+            self.getData()
             for row in self.matches:
                 row['matchid'] = row['MatchID']
             return self.matches
 
-        def __init__(self, *args, **kws):
-            super().__init__(*args, **kws)
+        def getData(self):
             nickname = ""
             matchid = 0
             if self.search_args.get('_qf') == 'nickname':
@@ -79,7 +79,7 @@ class MatchesStatisticsPage(TablePage):
                 'TournamentID': self.search_args.get('tournamentid', 0),
                 'MatchID': matchid,
                 'NickName': nickname,
-                'AccountID':self.search_args.get('accountid', 0),
+                'AccountID': self.search_args.get('accountid', 0),
                 'MatchDateFrom': self.search_args.get('_start_matchdate', ''),
                 'MatchDateTo': self.search_args.get('_end_matchdate', ''),
                 'PageIndex': self.search_args.get('_page', 1),
