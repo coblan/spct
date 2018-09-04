@@ -1348,15 +1348,15 @@ class TbStatuscode(models.Model):
 
 class TbTeams(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    zhname = models.CharField(db_column='ZHName', max_length=50, blank=True)  # Field name made lowercase.
-    enname = models.CharField(db_column='ENName', max_length=50)  # Field name made lowercase.
-    icon = models.CharField(db_column='Icon', max_length=200, blank=True, null=True)  # Field name made lowercase.
-    country = models.CharField(db_column='Country', max_length=20, blank=True)  # Field name made lowercase.
-    leaguename = models.CharField(db_column='LeagueName', max_length=30, blank=True)  # Field name made lowercase.
+    zhname = models.CharField(db_column='ZHName', max_length=50, blank=True,verbose_name='中文名称')  # Field name made lowercase.
+    enname = models.CharField(db_column='ENName', max_length=50,verbose_name='英文名称')  # Field name made lowercase.
+    icon = models.CharField(db_column='Icon', max_length=200, blank=True, null=True,verbose_name='球队Icon')  # Field name made lowercase.
+    country = models.CharField(db_column='Country', max_length=20, blank=True,verbose_name='国家')  # Field name made lowercase.
+    leaguename = models.CharField(db_column='LeagueName', max_length=30, blank=True,verbose_name='联赛')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', blank=True, choices=TEAM_STATUS,
                                  default=0)  # Field name made lowercase.
     saenname = models.CharField(db_column='SAEnName', max_length=50, blank=True,
-                                null=True)  # Field name made lowercase.
+                                null=True,verbose_name='SA英文名称 ')  # Field name made lowercase.
 
     class Meta:
         managed = False
