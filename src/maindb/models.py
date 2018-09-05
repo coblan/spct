@@ -721,11 +721,11 @@ class TbMatches(models.Model):
     team1id = models.IntegerField(db_column='Team1ID')  # Field name made lowercase.
     superteam1id = models.BigIntegerField(db_column='SuperTeam1Id')  # Field name made lowercase.
     team1zh = models.CharField(db_column='Team1ZH', verbose_name=_('Home Team'),
-                               max_length=20)  # Field name made lowercase.
+                               max_length=100)  # Field name made lowercase.
     team2id = models.IntegerField(db_column='Team2ID')  # Field name made lowercase.
     superteam2id = models.BigIntegerField(db_column='SuperTeam2Id')  # Field name made lowercase.
     team2zh = models.CharField(db_column='Team2ZH', verbose_name=_('Away Team'),
-                               max_length=20)  # Field name made lowercase.
+                               max_length=100)  # Field name made lowercase.
     matchscore = models.CharField(db_column='MatchScore', max_length=8, verbose_name='全场比分',
                                   blank=True)  # Field name made lowercase.
     winner = models.IntegerField(db_column='Winner', verbose_name=_('Winner'),

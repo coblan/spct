@@ -1,18 +1,16 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, model_dc, RowFilter, RowSort, \
-    RowSearch, SelectSearch
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
+    SelectSearch
 from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
-from django.utils.timezone import datetime
-import time
-import requests
 from maindb.mongoInstance import updateMatchMongo
 from maindb.rabbitmq_instance import closeHandicap
 import json
 from ..redisInstance import redisInst
 from django.db.models import Q
+
 
 class MatchsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -26,14 +24,14 @@ class MatchsPage(TablePage):
         exclude = []
         fields_sort = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate', 'period1score', 'matchscore',
                        'winner', 'statuscode',
-                       'isrecommend', 'livebet', 'ishidden','closelivebet','marketstatus']
+                       'isrecommend', 'livebet', 'ishidden', 'closelivebet', 'marketstatus']
         pop_edit_field = 'matchid'
 
         class filters(RowFilter):
             range_fields = ['matchdate']
             names = ['isrecommend', 'livebet', 'statuscode', 'tournamentid']
-            
-            def dict_head(self, head): 
+
+            def dict_head(self, head):
                 if head['name'] == 'tournamentid':
                     head['editor'] = 'com-filter-search-select'
                     head['placeholder'] = '请选择联赛'
@@ -44,18 +42,18 @@ class MatchsPage(TablePage):
         class search(SelectSearch):
             names = ['team1zh']
             exact_names = ['matchid']
-            def get_option(self, name): 
+
+            def get_option(self, name):
                 if name == 'team1zh':
-                    return {'value': 'team1zh', 'label': '球队名称',}
+                    return {'value': 'team1zh', 'label': '球队名称', }
                 else:
                     return super().get_option(name)
-            
-            def get_express(self, q_str): 
+
+            def get_express(self, q_str):
                 if self.qf == 'team1zh':
-                    return Q(team1zh__icontains = q_str) | Q(team2zh__icontains = q_str)
+                    return Q(team1zh__icontains=q_str) | Q(team2zh__icontains=q_str)
                 else:
                     return super().get_express(q_str)
-            
 
         class sort(RowSort):
             names = ['matchdate']
@@ -78,9 +76,6 @@ class MatchsPage(TablePage):
 
         def get_operation(self):
             ops = [
-                # {'name':'save_changed_rows','editor':'com-op-a','label':'保存','hide':'!changed'},
-
-                # {'fun':'close_match','editor':'com-op-a','label':'结束比赛'},
                 {'fun': 'manual_end_money',
                  'editor': 'com-op-btn',
                  'label': '手动结算',
@@ -100,24 +95,15 @@ class MatchsPage(TablePage):
                      'fieldsPanel': 'produceMatchOutcomePanel',
                  }
                  },
-                # {'fun':'jie_suan_pai_cai','editor':'com-op-a','label':'结算派彩'},
                 {'fun': 'recommendate', 'editor': 'com-op-btn', 'label': '推介'},
                 {'fun': 'un_recommendate', 'editor': 'com-op-btn', 'label': '取消推介'},
-
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '滚球', 'field': 'closelivebet',
-                 'value': 0 },
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消滚球', 'field': 'closelivebet', 'value': 1 },
-
-
-                # {'fun': 'livebet', 'editor': 'com-op-btn', 'label': '滚球'},
-                # {'fun': 'un_livebet', 'editor': 'com-op-btn', 'label': '取消滚球'},
-
+                 'value': 0},
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消滚球', 'field': 'closelivebet',
+                 'value': 1},
                 {'fun': 'show_match', 'editor': 'com-op-btn', 'label': '显示'},
                 {'fun': 'hide_match', 'editor': 'com-op-btn', 'label': '隐藏'},
-
-                {'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘'},
-                # {'fun': 'change_maxsinglepayout', 'editor': 'com-op-btn','label':'maxsinglepayout'}
-
+                {'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘'}
             ]
             return ops
 
@@ -134,19 +120,19 @@ class MatchsPage(TablePage):
                 'roundinfo': 60,
                 'isrecommend': 50,
                 'livebet': 60,
-                'ishidden':50,
+                'ishidden': 50,
                 'categoryid': 80,
                 'currentperiodstart': 150,
                 'maxsinglepayout': 120,
                 'marketstatus': 70,
-                'closelivebet':70
+                'closelivebet': 70
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             if head['name'] == 'matchdate':
                 head['editor'] = 'com-table-label-shower'
-            if head['name']=='closelivebet':
-                head['editor']='com-table-bool-shower'
+            if head['name'] == 'closelivebet':
+                head['editor'] = 'com-table-bool-shower'
             # if head['name'] == 'matchid':
             # head['editor'] = 'com-table-switch-to-tab'
             # head['tab_name']='special_bet_value'
@@ -158,28 +144,6 @@ class MatchsPage(TablePage):
                 '_matchid_label': '%(home)s VS %(away)s' % {'home': inst.team1zh, 'away': inst.team2zh},
                 '_matchdate_label': str(inst.matchdate)[: -3],
             }
-        # def get_heads(self):
-        # heads = [{'name':'operations',
-        # 'label':'操作',
-        # 'editor':'com-table-operations',
-        # 'operations':[
-        # {'name':'manul_end','label':'手动结算'},
-        # {'name':'has_end_match','label':'已结束'} #100
-        # ],
-        # 'width':130,
-        # }]
-        # org_heads = ModelTable.get_heads(self)
-        # heads.extend(org_heads)
-        # return heads
-
-        # def dict_row(self, inst):
-        # dc={}
-        # if inst.statuscode != 100:
-        # dc['_op_has_end_match_hide']=True
-        # if inst.statuscode == 100:
-        # dc['_op_manul_end_hide']=True
-
-        # return dc
 
 
 class MatchForm(ModelFields):
@@ -201,19 +165,17 @@ class MatchForm(ModelFields):
             'MatchID': inst.matchid,
             'IsRecommend': inst.isrecommend,
             'IsHidden': inst.ishidden,
-            'LiveBet': inst.livebet,
+            # 'LiveBet': inst.livebet,
+            'closelivebet': inst.closelivebet
         }
         updateMatchMongo(dc)
-        
 
-        # if 'isrecommend' in self.changed_data:
-        # redisInst.delete('App:Cache:index:matches')
-
-    # def clean(self):
-    # if 'statuscode' in self.changed_data:
-    # self.instance.currentperiodstart = datetime.now()
-    # self.instance.save()
-    # return ModelFields.clean(self)
+        if 'closelivebet' in self.changed_data:
+            if self.instance.closelivebet == 0:
+                redisInst.delete('Backend:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid})
+            else:
+                redisInst.set('Backend:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
+                              60 * 1000 * 60 * 24 * 7)
 
 
 def get_special_bet_value(matchid):
