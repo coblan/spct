@@ -4,6 +4,7 @@ from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from helpers.director.model_func.field_procs.dotStrArray import DotStrArrayProc
 
 from maindb.models import TbTournament, TbOddstypegroup
+from maindb.redisInstance import redisInst
 
 
 class League(TablePage):
@@ -56,6 +57,14 @@ class LeagueForm(ModelFields):
             head['options'] = [{'value': str(x.oddstypegroup), 'label': x.oddstypenamezh, } for x in
                                TbOddstypegroup.objects.all()]
         return head
+
+    def save_form(self):
+        super().save_form()
+        if 'closelivebet' in self.changed_data:
+            if self.instance.closelivebet == 0:
+                redisInst.delete('Backend:league:closelivebet:%(tournamentid)s' % {'tournamentid': self.instance.tournamentid})
+            else:
+                redisInst.set('Backend:league:closelivebet:%s' % self.instance.tournamentid,1)
 
     class Meta:
         model = TbTournament
