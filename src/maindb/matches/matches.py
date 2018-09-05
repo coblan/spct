@@ -1,13 +1,10 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, model_dc, RowFilter, RowSort, \
-    RowSearch, SelectSearch
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
+    SelectSearch
 from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
-from django.utils.timezone import datetime
-import time
-import requests
 from maindb.mongoInstance import updateMatchMongo
 from maindb.rabbitmq_instance import closeHandicap
 import json
@@ -79,9 +76,6 @@ class MatchsPage(TablePage):
 
         def get_operation(self):
             ops = [
-                # {'name':'save_changed_rows','editor':'com-op-a','label':'保存','hide':'!changed'},
-
-                # {'fun':'close_match','editor':'com-op-a','label':'结束比赛'},
                 {'fun': 'manual_end_money',
                  'editor': 'com-op-btn',
                  'label': '手动结算',
@@ -101,24 +95,15 @@ class MatchsPage(TablePage):
                      'fieldsPanel': 'produceMatchOutcomePanel',
                  }
                  },
-                # {'fun':'jie_suan_pai_cai','editor':'com-op-a','label':'结算派彩'},
                 {'fun': 'recommendate', 'editor': 'com-op-btn', 'label': '推介'},
                 {'fun': 'un_recommendate', 'editor': 'com-op-btn', 'label': '取消推介'},
-
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '滚球', 'field': 'closelivebet',
                  'value': 0},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消滚球', 'field': 'closelivebet',
                  'value': 1},
-
-                # {'fun': 'livebet', 'editor': 'com-op-btn', 'label': '滚球'},
-                # {'fun': 'un_livebet', 'editor': 'com-op-btn', 'label': '取消滚球'},
-
                 {'fun': 'show_match', 'editor': 'com-op-btn', 'label': '显示'},
                 {'fun': 'hide_match', 'editor': 'com-op-btn', 'label': '隐藏'},
-
-                {'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘'},
-                # {'fun': 'change_maxsinglepayout', 'editor': 'com-op-btn','label':'maxsinglepayout'}
-
+                {'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘'}
             ]
             return ops
 
@@ -159,28 +144,6 @@ class MatchsPage(TablePage):
                 '_matchid_label': '%(home)s VS %(away)s' % {'home': inst.team1zh, 'away': inst.team2zh},
                 '_matchdate_label': str(inst.matchdate)[: -3],
             }
-        # def get_heads(self):
-        # heads = [{'name':'operations',
-        # 'label':'操作',
-        # 'editor':'com-table-operations',
-        # 'operations':[
-        # {'name':'manul_end','label':'手动结算'},
-        # {'name':'has_end_match','label':'已结束'} #100
-        # ],
-        # 'width':130,
-        # }]
-        # org_heads = ModelTable.get_heads(self)
-        # heads.extend(org_heads)
-        # return heads
-
-        # def dict_row(self, inst):
-        # dc={}
-        # if inst.statuscode != 100:
-        # dc['_op_has_end_match_hide']=True
-        # if inst.statuscode == 100:
-        # dc['_op_manul_end_hide']=True
-
-        # return dc
 
 
 class MatchForm(ModelFields):
@@ -213,15 +176,6 @@ class MatchForm(ModelFields):
             else:
                 redisInst.set('Backend:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
                               60 * 1000 * 60 * 24 * 7)
-
-        # if 'isrecommend' in self.changed_data:
-        # redisInst.delete('App:Cache:index:matches')
-
-    # def clean(self):
-    # if 'statuscode' in self.changed_data:
-    # self.instance.currentperiodstart = datetime.now()
-    # self.instance.save()
-    # return ModelFields.clean(self)
 
 
 def get_special_bet_value(matchid):
