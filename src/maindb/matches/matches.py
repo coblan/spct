@@ -112,8 +112,8 @@ class MatchsPage(TablePage):
                 # {'fun': 'livebet', 'editor': 'com-op-btn', 'label': '滚球'},
                 # {'fun': 'un_livebet', 'editor': 'com-op-btn', 'label': '取消滚球'},
 
-                {'fun': 'show_match', 'editor': 'com-op-btn', 'label': '开启'},
-                {'fun': 'hide_match', 'editor': 'com-op-btn', 'label': '关闭'},
+                {'fun': 'show_match', 'editor': 'com-op-btn', 'label': '显示'},
+                {'fun': 'hide_match', 'editor': 'com-op-btn', 'label': '隐藏'},
 
                 {'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘'},
                 # {'fun': 'change_maxsinglepayout', 'editor': 'com-op-btn','label':'maxsinglepayout'}
@@ -128,9 +128,9 @@ class MatchsPage(TablePage):
                 'tournamentzh': 160,
                 'team1zh': 120,
                 'team2zh': 120,
-                'matchscore': 60,
+                'matchscore': 80,
                 'winner': 60,
-                'statuscode': 60,
+                'statuscode': 70,
                 'roundinfo': 60,
                 'isrecommend': 50,
                 'livebet': 80,

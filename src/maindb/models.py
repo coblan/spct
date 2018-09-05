@@ -726,7 +726,7 @@ class TbMatches(models.Model):
     superteam2id = models.BigIntegerField(db_column='SuperTeam2Id')  # Field name made lowercase.
     team2zh = models.CharField(db_column='Team2ZH', verbose_name=_('Away Team'),
                                max_length=20)  # Field name made lowercase.
-    matchscore = models.CharField(db_column='MatchScore', max_length=8, verbose_name=_('Match Score'),
+    matchscore = models.CharField(db_column='MatchScore', max_length=8, verbose_name='全场比分',
                                   blank=True)  # Field name made lowercase.
     winner = models.IntegerField(db_column='Winner', verbose_name=_('Winner'),
                                  choices=WINNER)  # Field name made lowercase.
@@ -735,7 +735,7 @@ class TbMatches(models.Model):
     roundinfo = models.IntegerField(db_column='RoundInfo', verbose_name=_('Round'))  # 轮数 Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',
                                       verbose_name=_('IsRecommend'))  # 推介 Field name made lowercase.
-    livebet = models.BooleanField(db_column='LiveBet', verbose_name=_('LiveBet'))  # 滚球 Field name made lowercase.
+    livebet = models.BooleanField(db_column='LiveBet', verbose_name='滚球盘')  # 滚球 Field name made lowercase.
     generatedat = models.DateTimeField(db_column='GeneratedAt',
                                        verbose_name=_('Create Time'))  # 生成日期 Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
@@ -759,7 +759,7 @@ class TbMatches(models.Model):
     terminator = models.CharField(db_column='Terminator', max_length=20, blank=True,
                                   null=True)  # Field name made lowercase.
     ishidden = models.BooleanField(db_column='IsHidden', default=False,
-                                   verbose_name='关闭')  # Field name made lowercase.
+                                   verbose_name='隐藏')  # Field name made lowercase.
     marketstatus = models.IntegerField(db_column='MarketStatus', choices=MATCH_MARKETSTATUS,
                                        verbose_name='市场状态')  # Field name made lowercase.
     satimestam = models.DateTimeField(db_column='SaTimestam')  # Field name made lowercase.
