@@ -46,8 +46,8 @@ class TeamsPage(TablePage):
                 return head
             
             @staticmethod
-            def getLeagueOptions( kws): 
-                contry = kws.get('related')
+            def getLeagueOptions( related): 
+                contry = related  #kws.get('related')
                 query = TbTeams.objects.filter(country = contry).values_list('leaguename', flat = True).distinct()
                 options = [{ 'value':x,'label':str(x)} for x in query]
                 return options
