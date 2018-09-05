@@ -89,8 +89,8 @@ RAB_PSWD = 'YXNkZmFmc2RmbAo'
 AGENT_SERVICE = 'http://192.168.40.137:8001'
 
 
-from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
-SET(globals()) 
+#from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
+#SET(globals()) 
 
 import os
 LOG_PATH= os.path.join( os.path.dirname(BASE_DIR),'log')
