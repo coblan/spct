@@ -31,7 +31,7 @@ class TeamsPage(TablePage):
 
         class filters(RowFilter):
             names = ['country', 'leaguename', 'status']
-            
+
             def getExtraHead(self):
                 return [
                     {
