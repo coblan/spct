@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 98);
+/******/ 	return __webpack_require__(__webpack_require__.s = 99);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -647,46 +647,45 @@ var baseInput = exports.baseInput = {
 };
 
 /***/ }),
-/* 3 */,
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _ajax_fun = __webpack_require__(22);
+var _ajax_fun = __webpack_require__(21);
 
-var _file = __webpack_require__(27);
+var _file = __webpack_require__(26);
 
 var f = _interopRequireWildcard(_file);
 
-var _ckeditor = __webpack_require__(23);
+var _ckeditor = __webpack_require__(22);
 
 var ck = _interopRequireWildcard(_ckeditor);
 
-var _multi_sel = __webpack_require__(30);
+var _multi_sel = __webpack_require__(29);
 
 var multi = _interopRequireWildcard(_multi_sel);
 
-var _inputs = __webpack_require__(28);
+var _inputs = __webpack_require__(27);
 
 var inputs = _interopRequireWildcard(_inputs);
 
-var _link = __webpack_require__(29);
+var _link = __webpack_require__(28);
 
 var ln = _interopRequireWildcard(_link);
 
-var _com_form_btn = __webpack_require__(24);
+var _com_form_btn = __webpack_require__(23);
 
 var form_btn = _interopRequireWildcard(_com_form_btn);
 
-var _fields_base = __webpack_require__(26);
+var _fields_base = __webpack_require__(25);
 
-var _field_fun = __webpack_require__(25);
+var _field_fun = __webpack_require__(24);
 
-var _order = __webpack_require__(31);
+var _order = __webpack_require__(30);
 
-var _table_fields = __webpack_require__(32);
+var _table_fields = __webpack_require__(31);
 
 var _table_fields2 = _interopRequireDefault(_table_fields);
 
@@ -742,7 +741,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 //import {use_color} from '../dosome/color.js'
 //import {load_js,load_css} from '../dosome/pkg.js'
-__webpack_require__(79);
+__webpack_require__(80);
 //import * as fb from './field_base.js'
 //import * as js from './adapt.js'
 
@@ -775,13 +774,13 @@ window.hide_upload = _ajax_fun.hide_upload;
 window.order_by_key = _order.order_by_key;
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _date = __webpack_require__(34);
+var _date = __webpack_require__(33);
 
 var date = _interopRequireWildcard(_date);
 
@@ -793,7 +792,7 @@ var _multi_chosen = __webpack_require__(40);
 
 var multi_chosen = _interopRequireWildcard(_multi_chosen);
 
-var _bool = __webpack_require__(33);
+var _bool = __webpack_require__(32);
 
 var field_bool = _interopRequireWildcard(_bool);
 
@@ -805,11 +804,11 @@ var _number = __webpack_require__(41);
 
 var number = _interopRequireWildcard(_number);
 
-var _field_blocktext = __webpack_require__(35);
+var _field_blocktext = __webpack_require__(34);
 
 var field_blocktext = _interopRequireWildcard(_field_blocktext);
 
-var _field_search_select = __webpack_require__(36);
+var _field_search_select = __webpack_require__(35);
 
 var field_search_select = _interopRequireWildcard(_field_search_select);
 
@@ -817,14 +816,14 @@ var _field_single_chosen = __webpack_require__(37);
 
 var field_single_chosen = _interopRequireWildcard(_field_single_chosen);
 
-var _field_select = __webpack_require__(104);
+var _field_select = __webpack_require__(36);
 
 var field_select = _interopRequireWildcard(_field_select);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -834,36 +833,37 @@ var _com_table = __webpack_require__(42);
 
 var com_table = _interopRequireWildcard(_com_table);
 
-var _table_fun = __webpack_require__(54);
+var _table_fun = __webpack_require__(55);
 
 var table_fun = _interopRequireWildcard(_table_fun);
 
-var _table_filter = __webpack_require__(53);
+var _table_filter = __webpack_require__(54);
 
 var table_filter = _interopRequireWildcard(_table_filter);
 
-var _table_btn = __webpack_require__(52);
+var _table_btn = __webpack_require__(53);
 
 var table_btn = _interopRequireWildcard(_table_btn);
 
-var _pagenator = __webpack_require__(50);
+var _pagenator = __webpack_require__(51);
 
 var pagenator = _interopRequireWildcard(_pagenator);
 
-var _sort_mark = __webpack_require__(51);
+var _sort_mark = __webpack_require__(52);
 
 var sort_mark = _interopRequireWildcard(_sort_mark);
 
-var _first_col = __webpack_require__(49);
+var _first_col = __webpack_require__(50);
 
 var first_col = _interopRequireWildcard(_first_col);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(88);
-__webpack_require__(87);
+__webpack_require__(90);
+__webpack_require__(89);
 
 /***/ }),
+/* 6 */,
 /* 7 */,
 /* 8 */,
 /* 9 */,
@@ -875,14 +875,13 @@ __webpack_require__(87);
 /* 15 */,
 /* 16 */,
 /* 17 */,
-/* 18 */,
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(65);
+var content = __webpack_require__(66);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -902,13 +901,13 @@ if(false) {
 }
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(66);
+var content = __webpack_require__(67);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -928,13 +927,13 @@ if(false) {
 }
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(67);
+var content = __webpack_require__(68);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -954,7 +953,7 @@ if(false) {
 }
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1070,7 +1069,7 @@ if (!window.__uploading_mark) {
 }
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1268,7 +1267,7 @@ var edit_level = {
 };
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1298,7 +1297,7 @@ Vue.component('com-form-btn', {
 });
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1430,7 +1429,7 @@ var field_fun = exports.field_fun = {
 window.field_fun = field_fun;
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1488,7 +1487,7 @@ var field_base = exports.field_base = {
 };
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1592,7 +1591,7 @@ img-uploador
 <<<<
 */
 
-__webpack_require__(80);
+__webpack_require__(81);
 
 var fl = {
     read: function read(file, callback) {
@@ -2027,7 +2026,7 @@ Vue.component('logo-input', {
 window.fl = fl;
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2183,7 +2182,7 @@ var check_box = {
 Vue.component('com-check-box', check_box);
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2261,7 +2260,7 @@ popUrlListen:
 <-<
  */
 
-__webpack_require__(81);
+__webpack_require__(82);
 
 var ln = {
     history_handle: function history_handle(obj) {
@@ -2483,7 +2482,7 @@ var ln = {
 window.ln = ln;
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2570,7 +2569,7 @@ Vue.component('tow-col-sel', {
 });
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2608,7 +2607,7 @@ function order_by_key(array, key) {
 }
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2616,7 +2615,7 @@ function order_by_key(array, key) {
 
 var _basic = __webpack_require__(2);
 
-__webpack_require__(82);
+__webpack_require__(83);
 
 var table_fields = {
     props: ['heads', 'row', 'inputWidth', 'labelWidth'],
@@ -2631,7 +2630,7 @@ var table_fields = {
 Vue.component('com-table-fields', table_fields);
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2653,7 +2652,7 @@ var field_bool = {
 Vue.component('com-field-bool', field_bool);
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2816,16 +2815,16 @@ Vue.component('datetime', {
 });
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(83);
+__webpack_require__(84);
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2867,13 +2866,104 @@ var search_select = {
 Vue.component('com-field-search-select', search_select);
 
 /***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var sim_select = {
+    props: ['row', 'head'],
+    data: function data() {
+        var inn_config = {
+            //orgin_order:true,
+            order: false
+        };
+        if (this.head.config) {
+            ex.assign(inn_config, this.head.config);
+        }
+        return {
+            model: this.row[this.head.name],
+            cfg: inn_config
+        };
+    },
+    template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  class="form-control input-sm">\n                <option v-if="head.placeholder" :value="place_value" disabled selected style=\'display:none;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
+    mounted: function mounted() {
+        // 如果有默认值，
+        if (this.head.default && !this.row[this.head.name]) {
+            Vue.set(this.row, this.head.name, this.head.default);
+        }
+    },
+
+    watch: {
+        my_value: function my_value() {
+            if (this.head.remote_options) {
+                var self = this;
+                ex.director_call(this.head.remote_options, { row: self.row }, function (data) {
+                    Vue.set(self.head, 'options', data);
+                });
+            }
+        }
+    },
+
+    computed: {
+        my_value: function my_value() {
+            return this.row[this.head.name];
+        },
+        place_value: function place_value() {
+            var v = this.row[this.head.name];
+            if (v === undefined) {
+                return undefined;
+            } else if (v === null) {
+                return null;
+            } else {
+                return '';
+            }
+        },
+        normed_options: function normed_options() {
+            /*
+             head.hide_related_field设置 隐藏与 row.hide_related_field 相等的选项
+              * */
+            var self = this;
+            if (this.head.hide_related_field) {
+                var array = ex.filter(this.head.options, function (item) {
+                    return item.value != self.row[self.head.hide_related_field];
+                });
+            } else {
+                var array = self.head.options;
+            }
+
+            return self.orderBy(array, 'label');
+        }
+    },
+    methods: {
+        get_label: function get_label(options, value) {
+            var option = ex.findone(options, { value: value });
+            if (!option) {
+                return '---';
+            } else {
+                return option.label;
+            }
+        },
+        orderBy: function orderBy(array, key) {
+            if (this.head.order || this.cfg.order) {
+                return order_by_key(array, key);
+            } else {
+                return array;
+            }
+        }
+    }
+};
+Vue.component('com-field-select', sim_select);
+
+/***/ }),
 /* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(84);
+__webpack_require__(85);
 
 var field_sigle_chosen = {
     props: ['row', 'head'],
@@ -2926,7 +3016,7 @@ Vue.component('com-field-single-chosen', field_sigle_chosen);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-__webpack_require__(85);
+__webpack_require__(86);
 
 /*
 * config={
@@ -3138,7 +3228,7 @@ Vue.component('com-field-int-bool', field_bool);
 "use strict";
 
 
-__webpack_require__(86);
+__webpack_require__(87);
 
 var multi_chosen = {
     props: ['value', 'options'],
@@ -3349,6 +3439,47 @@ Vue.component('com-search-filter', com_search);
 "use strict";
 
 
+__webpack_require__(88);
+
+var com_search = {
+    props: ['head', 'search_args'],
+    data: function data() {
+        if (!this.search_args._q) {
+            Vue.set(this.search_args, '_q', '');
+        }
+        if (!this.search_args._qf) {
+            Vue.set(this.search_args, '_qf', this.head.options[0].value);
+        }
+        return {};
+    },
+    template: '<div class="search-select">\n    <!--<input style="max-width: 20em;min-width: 10em;"-->\n             <!--type="text"-->\n             <!--name="_q"-->\n             <!--v-model=\'search_args._q\'-->\n             <!--:placeholder=\'head.search_tip\'-->\n             <!--@keyup.13="$emit(\'submit\')"-->\n             <!--class=\'form-control input-sm\'/>-->\n             <el-input class="input-with-select"\n                :placeholder="normed_placeholder"\n                prefix-icon="el-icon-search"\n                @keyup.native.13="$emit(\'submit\')"\n                size="small"\n                v-model="search_args._q">\n                 <!--<el-select v-model="search_args.qf" slot="append" placeholder="\u8BF7\u9009\u62E9">-->\n                      <!--<el-option label="\u9910\u5385\u540D" value="1"></el-option>-->\n                      <!--<el-option label="\u8BA2\u5355\u53F7" value="2"></el-option>-->\n                      <!--<el-option label="\u7528\u6237\u7535\u8BDD" value="3"></el-option>-->\n                <!--</el-select>-->\n\n                   <el-dropdown trigger="click" slot="append" @command="handleCommand">\n                      <span class="el-dropdown-link">\n                        <i class="el-icon-arrow-down el-icon--right"></i>\n                      </span>\n                      <el-dropdown-menu slot="dropdown">\n                        <!--<el-dropdown-item command="1"><span :class="{\'active-search-item\':isActive(1)}">\u9EC4\u91D1\u7CD5</span></el-dropdown-item>-->\n                        <el-dropdown-item v-for="opt in head.options" :command="opt.value"><span :class="{\'active-search-item\':isActive(opt.value)}" v-text="opt.label"></span></el-dropdown-item>\n\n                      </el-dropdown-menu>\n                    </el-dropdown>\n              </el-input>\n    </div> ',
+    computed: {
+        normed_placeholder: function normed_placeholder() {
+            var crt = ex.findone(this.head.options, { value: this.search_args._qf });
+            return crt.label;
+        }
+    },
+    methods: {
+        handleCommand: function handleCommand(cmd) {
+            Vue.set(this.search_args, '_qf', cmd);
+        },
+        //set_value:function(v){
+        //    this.search_args._qf=v
+        //},
+        isActive: function isActive(v) {
+            return this.search_args._qf == v;
+        }
+    }
+};
+Vue.component('com-search-select', com_search);
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var com_select = {
     props: ['head', 'search_args', 'config'],
     template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm" >\n        <option :value="undefined" v-text=\'head.label\'></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy( head.options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
@@ -3402,7 +3533,7 @@ function compare(temp1, temp2) {
 }
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3451,7 +3582,7 @@ var com_date_datetimefield_range = {
 Vue.component('com-date-datetimefield-range-filter', com_date_datetimefield_range);
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3465,7 +3596,7 @@ var com_select = {
 Vue.component('com-filter-search-select', com_select);
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3536,7 +3667,7 @@ function compare(temp1, temp2) {
 }
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3567,7 +3698,7 @@ var first_col = {
 Vue.component('first-col', first_col);
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3605,7 +3736,7 @@ Vue.component('paginator', {
 });
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3685,7 +3816,7 @@ Vue.component('sort-mark', {
     } });
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3705,7 +3836,7 @@ var com_table_btn = {
 Vue.component('com-table-btn', com_table_btn);
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3715,11 +3846,11 @@ var _com_search = __webpack_require__(44);
 
 var com_search = _interopRequireWildcard(_com_search);
 
-var _com_search_select = __webpack_require__(100);
+var _com_search_select = __webpack_require__(45);
 
 var com_search_select = _interopRequireWildcard(_com_search_select);
 
-var _com_select = __webpack_require__(45);
+var _com_select = __webpack_require__(46);
 
 var com_select = _interopRequireWildcard(_com_select);
 
@@ -3727,21 +3858,21 @@ var _com_date_range = __webpack_require__(43);
 
 var com_date_range = _interopRequireWildcard(_com_date_range);
 
-var _related_select = __webpack_require__(48);
+var _related_select = __webpack_require__(49);
 
 var related_select = _interopRequireWildcard(_related_select);
 
-var _date_datetimefield_range = __webpack_require__(46);
+var _date_datetimefield_range = __webpack_require__(47);
 
 var date_datetimefield_range = _interopRequireWildcard(_date_datetimefield_range);
 
-var _filter_search_select = __webpack_require__(47);
+var _filter_search_select = __webpack_require__(48);
 
 var filter_search_select = _interopRequireWildcard(_filter_search_select);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(89); /**
+__webpack_require__(91); /**
                                       >5>front/table.rst>
                                      
                                       table的过滤器
@@ -3831,7 +3962,7 @@ var sim_filter_with_search = {
 Vue.component('sel-search-filter', sim_filter_with_search);
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3998,9 +4129,9 @@ var table_fun = exports.table_fun = {
 window.table_fun = table_fun;
 
 /***/ }),
-/* 55 */,
 /* 56 */,
-/* 57 */
+/* 57 */,
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4014,7 +4145,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n/*\r\nclass的用法：\r\n=======
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4028,7 +4159,7 @@ exports.push([module.i, ".img-uploader input {\n  display: none !important; }\n\
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4042,7 +4173,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n#_load_frame_wrap {\n  position: f
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4056,7 +4187,7 @@ exports.push([module.i, ".table-fields td.field-label {\n  padding-bottom: 1em;\
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4070,7 +4201,7 @@ exports.push([module.i, ".field_input textarea {\n  width: 400px;\n  height: 100
 
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4084,7 +4215,7 @@ exports.push([module.i, ".chosen-container-single a.chosen-single {\n  height: 3
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4098,7 +4229,7 @@ exports.push([module.i, ".file-uploader .item img {\n  max-width: 300px;\n  curs
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4112,7 +4243,7 @@ exports.push([module.i, "div.chosen-drop > ul.chosen-results > li.result-selecte
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4126,7 +4257,7 @@ exports.push([module.i, ".head-item {\n  display: inline-block; }\n  .head-item.
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4140,7 +4271,7 @@ exports.push([module.i, ".scss-comment {\n  content: 'director/scss/tab_group.sc
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -4154,20 +4285,6 @@ exports.push([module.i, "[v-cloak] {\n  display: none; }\n", ""]);
 
 
 /***/ }),
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "table.fake-suit {\n  border: 1px solid #DDD;\n  border-radius: 6px; }\n  table.fake-suit th {\n    font-weight: bold;\n    background-color: #e5e5e5;\n    background-image: linear-gradient(to bottom, #f3f3f3, #e5e5e5); }\n  table.fake-suit td {\n    border-left: 1px solid #F5F5F5; }\n  table.fake-suit tr > td:first-child {\n    border-left: none; }\n  table.fake-suit tbody tr {\n    background-color: white; }\n  table.fake-suit tbody td {\n    border-top: 1px solid #E7E7E7;\n    padding-top: 3px;\n    padding-bottom: 3px; }\n  table.fake-suit tbody tr:nth-child(even) {\n    background-color: #FAFAFA; }\n  table.fake-suit tbody tr:hover {\n    background-color: #F5F5F5; }\n\n.paginator input {\n  width: 20px; }\n\n.paginator .page-input-block {\n  display: inline-block; }\n\n.paginator button {\n  vertical-align: top; }\n\n.sort-mark img {\n  width: 10px; }\n\nul.pagination li {\n  display: inline;\n  cursor: pointer; }\n\nul.pagination li span {\n  color: black;\n  float: left;\n  padding: 4px 10px;\n  text-decoration: none;\n  border: 1px solid #ddd; }\n\nul.pagination li span.active {\n  background-color: #4CAF50;\n  color: white; }\n\nul.pagination li span:hover:not(.active) {\n  background-color: #ddd; }\n\n.com-filter .date-filter {\n  padding-left: 10px; }\n  .com-filter .date-filter span {\n    padding-left: 5px; }\n  .com-filter .date-filter .datetime-picker {\n    min-width: 10em;\n    max-width: 14em; }\n\n.sortmark {\n  color: #d9d9de; }\n  .sortmark.sort-col {\n    color: black; }\n", ""]);
-
-// exports
-
-
-/***/ }),
 /* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4176,7 +4293,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".table-btn-group {\n  min-width: 9em; }\n", ""]);
+exports.push([module.i, ".search-select {\n  width: 200px; }\n  .search-select .el-input-group__append {\n    padding-left: 1px;\n    padding-right: 4px; }\n  .search-select .input-with-select input {\n    height: 30px; }\n\n.el-dropdown-menu .active-search-item {\n  color: blue; }\n", ""]);
 
 // exports
 
@@ -4190,46 +4307,47 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
+exports.push([module.i, "table.fake-suit {\n  border: 1px solid #DDD;\n  border-radius: 6px; }\n  table.fake-suit th {\n    font-weight: bold;\n    background-color: #e5e5e5;\n    background-image: linear-gradient(to bottom, #f3f3f3, #e5e5e5); }\n  table.fake-suit td {\n    border-left: 1px solid #F5F5F5; }\n  table.fake-suit tr > td:first-child {\n    border-left: none; }\n  table.fake-suit tbody tr {\n    background-color: white; }\n  table.fake-suit tbody td {\n    border-top: 1px solid #E7E7E7;\n    padding-top: 3px;\n    padding-bottom: 3px; }\n  table.fake-suit tbody tr:nth-child(even) {\n    background-color: #FAFAFA; }\n  table.fake-suit tbody tr:hover {\n    background-color: #F5F5F5; }\n\n.paginator input {\n  width: 20px; }\n\n.paginator .page-input-block {\n  display: inline-block; }\n\n.paginator button {\n  vertical-align: top; }\n\n.sort-mark img {\n  width: 10px; }\n\nul.pagination li {\n  display: inline;\n  cursor: pointer; }\n\nul.pagination li span {\n  color: black;\n  float: left;\n  padding: 4px 10px;\n  text-decoration: none;\n  border: 1px solid #ddd; }\n\nul.pagination li span.active {\n  background-color: #4CAF50;\n  color: white; }\n\nul.pagination li span:hover:not(.active) {\n  background-color: #ddd; }\n\n.com-filter .date-filter {\n  padding-left: 10px; }\n  .com-filter .date-filter span {\n    padding-left: 5px; }\n  .com-filter .date-filter .datetime-picker {\n    min-width: 10em;\n    max-width: 14em; }\n\n.sortmark {\n  color: #d9d9de; }\n  .sortmark.sort-col {\n    color: black; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".table-btn-group {\n  min-width: 9em; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
 exports.push([module.i, ".filter-item {\n  margin-right: 0.5em; }\n\n.com-filter {\n  align-items: flex-start;\n  flex-wrap: wrap; }\n\n.row-filter .bootstrap-select {\n  min-width: 10em; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 71 */,
-/* 72 */,
 /* 73 */,
 /* 74 */,
 /* 75 */,
 /* 76 */,
 /* 77 */,
 /* 78 */,
-/* 79 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(57);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields_panel.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields_panel.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 79 */,
 /* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4245,8 +4363,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields_panel.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./fields_panel.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4271,8 +4389,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4297,8 +4415,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4323,8 +4441,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./blocktext.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./blocktext.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4349,8 +4467,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_chosen.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_chosen.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./blocktext.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./blocktext.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4375,8 +4493,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file_uploader.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file_uploader.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_chosen.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_chosen.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4401,8 +4519,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_chosen.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_chosen.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file_uploader.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./file_uploader.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4418,7 +4536,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(68);
+var content = __webpack_require__(65);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -4427,8 +4545,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_chosen.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./multi_chosen.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4453,8 +4571,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_btn_group.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_btn_group.scss");
+		module.hot.accept("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_search_select.scss", function() {
+			var newContent = require("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_search_select.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -4479,6 +4597,58 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(71);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_btn_group.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_btn_group.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(72);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
 		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_filter.scss", function() {
 			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_filter.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
@@ -4490,211 +4660,36 @@ if(false) {
 }
 
 /***/ }),
-/* 90 */,
-/* 91 */,
 /* 92 */,
 /* 93 */,
 /* 94 */,
 /* 95 */,
 /* 96 */,
 /* 97 */,
-/* 98 */
+/* 98 */,
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _main = __webpack_require__(5);
+var _main = __webpack_require__(4);
 
 var inputs = _interopRequireWildcard(_main);
 
-var _main2 = __webpack_require__(6);
+var _main2 = __webpack_require__(5);
 
 var table = _interopRequireWildcard(_main2);
 
-var _main3 = __webpack_require__(4);
+var _main3 = __webpack_require__(3);
 
 var fields = _interopRequireWildcard(_main3);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(20);
 __webpack_require__(19);
-__webpack_require__(21);
-
-/***/ }),
-/* 99 */,
-/* 100 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(102);
-
-var com_search = {
-    props: ['head', 'search_args'],
-    data: function data() {
-        if (!this.search_args._q) {
-            Vue.set(this.search_args, '_q', '');
-        }
-        if (!this.search_args._qf) {
-            Vue.set(this.search_args, '_qf', this.head.options[0].value);
-        }
-        return {};
-    },
-    template: '<div class="search-select">\n    <!--<input style="max-width: 20em;min-width: 10em;"-->\n             <!--type="text"-->\n             <!--name="_q"-->\n             <!--v-model=\'search_args._q\'-->\n             <!--:placeholder=\'head.search_tip\'-->\n             <!--@keyup.13="$emit(\'submit\')"-->\n             <!--class=\'form-control input-sm\'/>-->\n             <el-input class="input-with-select"\n                :placeholder="normed_placeholder"\n                prefix-icon="el-icon-search"\n                @keyup.native.13="$emit(\'submit\')"\n                size="small"\n                v-model="search_args._q">\n                 <!--<el-select v-model="search_args.qf" slot="append" placeholder="\u8BF7\u9009\u62E9">-->\n                      <!--<el-option label="\u9910\u5385\u540D" value="1"></el-option>-->\n                      <!--<el-option label="\u8BA2\u5355\u53F7" value="2"></el-option>-->\n                      <!--<el-option label="\u7528\u6237\u7535\u8BDD" value="3"></el-option>-->\n                <!--</el-select>-->\n\n                   <el-dropdown trigger="click" slot="append" @command="handleCommand">\n                      <span class="el-dropdown-link">\n                        <i class="el-icon-arrow-down el-icon--right"></i>\n                      </span>\n                      <el-dropdown-menu slot="dropdown">\n                        <!--<el-dropdown-item command="1"><span :class="{\'active-search-item\':isActive(1)}">\u9EC4\u91D1\u7CD5</span></el-dropdown-item>-->\n                        <el-dropdown-item v-for="opt in head.options" :command="opt.value"><span :class="{\'active-search-item\':isActive(opt.value)}" v-text="opt.label"></span></el-dropdown-item>\n\n                      </el-dropdown-menu>\n                    </el-dropdown>\n              </el-input>\n    </div> ',
-    computed: {
-        normed_placeholder: function normed_placeholder() {
-            var crt = ex.findone(this.head.options, { value: this.search_args._qf });
-            return crt.label;
-        }
-    },
-    methods: {
-        handleCommand: function handleCommand(cmd) {
-            Vue.set(this.search_args, '_qf', cmd);
-        },
-        //set_value:function(v){
-        //    this.search_args._qf=v
-        //},
-        isActive: function isActive(v) {
-            return this.search_args._qf == v;
-        }
-    }
-};
-Vue.component('com-search-select', com_search);
-
-/***/ }),
-/* 101 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".search-select {\n  width: 200px; }\n  .search-select .el-input-group__append {\n    padding-left: 1px;\n    padding-right: 4px; }\n  .search-select .input-with-select input {\n    height: 30px; }\n\n.el-dropdown-menu .active-search-item {\n  color: blue; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 102 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(101);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_search_select.scss", function() {
-			var newContent = require("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./com_search_select.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 103 */,
-/* 104 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var sim_select = {
-    props: ['row', 'head'],
-    data: function data() {
-        var inn_config = {
-            //orgin_order:true,
-            order: false
-        };
-        if (this.head.config) {
-            ex.assign(inn_config, this.head.config);
-        }
-        return {
-            model: this.row[this.head.name],
-            cfg: inn_config
-        };
-    },
-    template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  class="form-control input-sm">\n                <option v-if="head.placeholder" :value="place_value" disabled selected style=\'display:none;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
-    mounted: function mounted() {
-        // 如果有默认值，
-        if (this.head.default && !this.row[this.head.name]) {
-            Vue.set(this.row, this.head.name, this.head.default);
-        }
-    },
-
-    watch: {
-        my_value: function my_value() {
-            if (this.head.remote_options) {
-                var self = this;
-                ex.director_call(this.head.remote_options, { row: self.row }, function (data) {
-                    Vue.set(self.head, 'options', data);
-                });
-            }
-        }
-    },
-
-    computed: {
-        my_value: function my_value() {
-            return this.row[this.head.name];
-        },
-        place_value: function place_value() {
-            var v = this.row[this.head.name];
-            if (v === undefined) {
-                return undefined;
-            } else if (v === null) {
-                return null;
-            } else {
-                return '';
-            }
-        },
-        normed_options: function normed_options() {
-            /*
-             head.hide_related_field设置 隐藏与 row.hide_related_field 相等的选项
-              * */
-            var self = this;
-            if (this.head.hide_related_field) {
-                var array = ex.filter(this.head.options, function (item) {
-                    return item.value != self.row[self.head.hide_related_field];
-                });
-            } else {
-                var array = self.head.options;
-            }
-
-            return self.orderBy(array, 'label');
-        }
-    },
-    methods: {
-        get_label: function get_label(options, value) {
-            var option = ex.findone(options, { value: value });
-            if (!option) {
-                return '---';
-            } else {
-                return option.label;
-            }
-        },
-        orderBy: function orderBy(array, key) {
-            if (this.head.order || this.cfg.order) {
-                return order_by_key(array, key);
-            } else {
-                return array;
-            }
-        }
-    }
-};
-Vue.component('com-field-select', sim_select);
+__webpack_require__(18);
+__webpack_require__(20);
 
 /***/ })
 /******/ ]);

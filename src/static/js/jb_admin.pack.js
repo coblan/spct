@@ -1677,6 +1677,17 @@ var mix_table_data = {
                     self.update_or_insert(row);
                 });
             },
+            export_excel: function export_excel() {
+                var search_args = ex.copy(self.search_args);
+                search_args._perpage = 5000;
+                var post_data = [{ fun: 'get_excel', director_name: self.director_name, search_args: search_args }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    cfg.hide_load();
+                    var url = resp.get_excel.file_url;
+                    ex.download(url);
+                });
+            },
 
             // 为了刷新界面，付出了清空的代价，这两个函数小心使用，
             row_up: function row_up(kws) {
