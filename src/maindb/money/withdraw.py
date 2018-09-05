@@ -46,7 +46,12 @@ class WithdrawPage(TablePage):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
             return ctx
-
+        
+        def get_operation(self): 
+            return [
+                 {'fun': 'export_excel','editor': 'com-op-btn','label': '导出excel',}
+            ]
+        
         class sort(RowSort):
             names = ['amount', 'createtime','confirmtime']
 

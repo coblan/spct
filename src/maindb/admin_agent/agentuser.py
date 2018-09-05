@@ -129,8 +129,6 @@ class AgentUser(TablePage):
                     self.footer = ['合计'] + self.footer_by_dict(footer)
             # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
             
-
-
         def dict_head(self, head):
             if head['name'] == 'SumActive':
                 head['editor'] = 'com-table-call-fun'
@@ -146,11 +144,16 @@ class AgentUser(TablePage):
                 # {'name': 'TotalLostAmount', 'label': 'TotalLostAmount',},
                 {'name': 'SumActive', 'label': '活跃用户', },
                 {'name': 'NickName', 'label': 'NickName', },
-
+                {'name': 'BeaeAmount', 'label': '佣金计算基数',}, 
                 # {'name': 'Phone', 'label': 'Phone',},
                 {'name': 'VIPLv', 'label': 'VIPLv', },
                 {'name': 'BonusRate', 'label': 'BonusRate', },
-
+                {'name': 'Poundage','label': '佣金计算手续费',}, 
+                {'name': 'AgentRulePercentage','label': '佣金计算比例',}, 
+                {'name': 'AgentRuleAmount','label': '佣金计算金额',}, 
+                {'name': 'BalanceLostAmount','label': '上月结余',}, 
+                {'name': 'AgentAmount','label': '预估佣金',}, 
+                {'name': 'SumExpend', 'label': '红利', },
                 {'name': 'SumLostAmount', 'label': 'SumLostAmount', 'width': 130, },
                 {'name': 'SumBonusAmount', 'label': 'SumBonusAmount', 'width': 140, },
                 {'name': 'SumBetAmount', 'label': 'SumBetAmount', 'width': 120, },
