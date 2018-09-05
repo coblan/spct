@@ -43,5 +43,5 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns = urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
-#from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import AUTO_URL
-#AUTO_URL(globals())
+from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import AUTO_URL
+AUTO_URL(globals())
