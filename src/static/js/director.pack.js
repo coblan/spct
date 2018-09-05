@@ -2967,14 +2967,15 @@ __webpack_require__(85);
 
 var field_sigle_chosen = {
     props: ['row', 'head'],
-    template: '<select  class="chosen field-single-chosen form-control" :style="head.style" :data-placeholder="head.placeholder" >\n         <option  :value="null" ></option>\n        <option v-for="option in order_options" :value="option.value" v-text="option.label"></option>\n    </select>',
+    template: '<div  :style="head.style">\n    <select  class="chosen field-single-chosen form-control"\n        :data-placeholder="head.placeholder" >\n         <option  :value="null" ></option>\n        <option v-for="option in order_options" :value="option.value" v-text="option.label"></option>\n    </select>\n    </div>',
     mounted: function mounted() {
         var self = this;
         ex.load_css('https://cdn.bootcss.com/chosen/1.8.2/chosen.min.css');
         ex.load_js('https://cdn.bootcss.com/chosen/1.8.2/chosen.jquery.min.js', function () {
-            $(self.$el).chosen({
+            $(self.$el).find('select').chosen({
                 search_contains: true,
-                allow_single_deselect: true
+                allow_single_deselect: true,
+                width: '100%'
             }).change(function (event) {
                 //self.$emit('input',$(this).val())
                 self.row[self.head.name] = $(this).val();
