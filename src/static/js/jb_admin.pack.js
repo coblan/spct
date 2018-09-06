@@ -1563,7 +1563,7 @@ var mix_table_data = {
                     return;
                 }
 
-                function bb(all_set_dict) {
+                function bb(all_set_dict, after_save_callback) {
                     var cache_rows = ex.copy(self.selected);
 
                     ex.each(cache_rows, function (row) {
@@ -1578,10 +1578,9 @@ var mix_table_data = {
                             ex.assign(row, all_set_dict);
                             row[kws.field] = kws.value;
                         });
-
                         cfg.hide_load(2000);
-                        if (kws.after_call) {
-                            self.op_funs[kws.after_call](resp.save_rows);
+                        if (after_save_callback) {
+                            after_save_callback();
                         }
                     });
                 }
