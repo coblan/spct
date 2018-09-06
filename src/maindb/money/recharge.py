@@ -16,15 +16,17 @@ class RechargePage(TablePage):
     class tableCls(ModelTable):
         model = TbRecharge
         sort = ['createtime']
-        exclude = ['account','apolloinfo','apollomsg']
-        fields_sort = ['rechargeid', 'accountid', 'orderid', 'amount', 'status', 'createtime', 'confirmtime',
+        exclude = ['account', 'apolloinfo', 'apollomsg']
+        fields_sort = ['rechargeid', 'accountid', 'orderid', 'amount', 'confirmamount', 'status', 'createtime',
+                       'confirmtime',
                        'channelid', 'amounttype', 'isauto', 'memo',
                        'apolloinfo', 'apollomsg']
 
         def dict_head(self, head):
             dc = {
                 'rechargeid': 60,
-                'amount':100,
+                'amount': 100,
+                'confirmamount': 100,
                 'accountid': 120,
                 'channelid': 120,
                 'createtime': 150,
@@ -36,9 +38,10 @@ class RechargePage(TablePage):
             return head
 
         def statistics(self, query):
-            dc = query.aggregate(total_amount=Sum('amount'))
+            dc = query.aggregate(total_amount=Sum('amount'), total_confirmamount=Sum('confirmamount'))
             mapper = {
-                'amount': 'total_amount'
+                'amount': 'total_amount',
+                'confirmamount': 'total_confirmamount'
             }
             for k in dc:
                 dc[k] = str(dc[k])
@@ -56,13 +59,13 @@ class RechargePage(TablePage):
             return [
                 {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '手动确认',
                  'row_match': 'one_row_match',
-                'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择状态为未充值的',
+                 'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择状态为未充值的',
                  'fields_ctx': ConfirmRechargeForm(crt_user=self.crt_user).get_head_context()},
-                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出excel',}
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
             ]
 
         class sort(RowSort):
-            names = ['amount', 'createtime', 'confirmtime']
+            names = ['amount', 'confirmamount','createtime', 'confirmtime']
 
         class search(RowSearch):
             def get_context(self):
@@ -84,6 +87,7 @@ class RechargePage(TablePage):
 
 class ConfirmRechargeForm(ModelFields):
     hide_fields = ['status']
+
     class Meta:
         model = TbRecharge
         fields = ['amount', 'memo', 'status']
@@ -111,7 +115,7 @@ class ConfirmRechargeForm(ModelFields):
         cursor.commit()
         if '@ok' not in str(result):
             raise UserWarning(str(result))
-        self.instance = self.instance.__class__.objects.get(pk = self.instance.pk)
+        self.instance = self.instance.__class__.objects.get(pk=self.instance.pk)
 
 
 director.update({
