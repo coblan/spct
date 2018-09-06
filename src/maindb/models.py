@@ -811,7 +811,7 @@ class TbMaxpayout(models.Model):
                                   null=True, )  # Field name made lowercase.
     # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
     oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, db_column='OddsTypeGroup', blank=True,
-                                      null=True, )
+                                      null=True, to_field= 'oddstypegroup')
     viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True,
                                 choices=VIP_LEVEL)  # Field name made lowercase.
     maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18,
@@ -978,7 +978,7 @@ class TbOddstypes(models.Model):
     oddsid = models.BigIntegerField(db_column='OddsID', unique=True)  # Field name made lowercase.
     oddskind = models.IntegerField(db_column='OddsKind')  # Field name made lowercase.
     oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, to_field='oddstypegroup',
-                                      db_column='OddsTypeGroup')  # Field name made lowercase.
+                                      db_column='OddsTypeGroup', )  # Field name made lowercase.
     # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
     oddstypeid = models.IntegerField(db_column='OddsTypeID')  # Field name made lowercase.
     subtype = models.IntegerField(db_column='Subtype', blank=True, null=True)  # Field name made lowercase.

@@ -1563,46 +1563,64 @@ var mix_table_data = {
                     return;
                 }
 
-                function bb(all_set_dict, after_save_callback) {
+                function bb(all_set_dict) {
                     var cache_rows = ex.copy(self.selected);
 
                     ex.each(cache_rows, function (row) {
-                        row[kws.field] = kws.value;
                         ex.assign(row, all_set_dict);
+                        row[kws.field] = kws.value;
                     });
                     var post_data = [{ fun: 'save_rows', rows: cache_rows }];
                     cfg.show_load();
                     ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
 
                         ex.each(self.selected, function (row) {
-                            row[kws.field] = kws.value;
                             ex.assign(row, all_set_dict);
+                            row[kws.field] = kws.value;
                         });
 
                         cfg.hide_load(2000);
-                        if (after_save_callback) {
-                            after_save_callback();
+                        if (kws.after_call) {
+                            self.op_funs[kws.after_call](resp.save_rows);
                         }
                     });
+                }
+
+                function judge_pop_fun() {
+                    if (kws.fields_ctx) {
+                        var one_row = ex.copy(self.selected[0]);
+                        var win_index = pop_edit_local(one_row, kws.fields_ctx, function (new_row) {
+                            bb(new_row, function () {
+                                setTimeout(function () {
+                                    layer.close(win_index);
+                                }, 1500);
+                            });
+                        });
+                    } else {
+                        bb({});
+                    }
                 }
 
                 if (kws.confirm_msg) {
                     layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
                         layer.close(index);
-                        if (kws.fields_ctx) {
-                            var win_index = pop_edit_local({}, kws.fields_ctx, function (new_row) {
-                                bb(new_row, function () {
-                                    setTimeout(function () {
-                                        layer.close(win_index);
-                                    }, 1500);
-                                });
-                            });
-                        } else {
-                            bb({});
-                        }
+                        judge_pop_fun();
+
+                        //if(kws.fields_ctx){
+                        //   var win_index = pop_edit_local({},kws.fields_ctx,function(new_row){
+                        //        bb(new_row,function(){
+                        //            setTimeout(function(){
+                        //                layer.close(win_index)
+                        //            },1500)
+                        //        })
+                        //    })
+                        //}else{
+                        //    bb({})
+                        //}
+
                     });
                 } else {
-                    bb();
+                    judge_pop_fun();
                 }
             },
             selected_pop_set_and_save: function selected_pop_set_and_save(kws) {

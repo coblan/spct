@@ -1,4 +1,5 @@
 import pika
+import json
 from django.conf import settings
 rabbitHost = settings.RABBITMQ
 rabbitPort = settings.RABBITMA_PORT
@@ -18,3 +19,10 @@ def updateSpread(msg):
     channel.basic_publish(exchange='center.topic',
                           routing_key= 'sportative.spread',
                           body=msg)
+
+def notifyWithdraw(accountid, orderid): 
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
+    channel = connection.channel()
+    channel.basic_publish(exchange='center.topic',
+                          routing_key= 'user.withdraw',
+                          body= json.dumps({'accountid': accountid, 'orderid': orderid,}))    
