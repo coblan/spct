@@ -686,7 +686,7 @@ class TbMatches(models.Model):
     roundinfo = models.IntegerField(db_column='RoundInfo', verbose_name=_('Round'))  # 轮数 Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',
                                       verbose_name=_('IsRecommend'))  # 推介 Field name made lowercase.
-    livebet = models.BooleanField(db_column='LiveBet', verbose_name='滚球盘')  # 滚球 Field name made lowercase.
+    livebet = models.BooleanField(db_column='LiveBet', verbose_name='走地盘')  # 滚球 Field name made lowercase.
     generatedat = models.DateTimeField(db_column='GeneratedAt',
                                        verbose_name=_('Create Time'))  # 生成日期 Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
@@ -715,7 +715,7 @@ class TbMatches(models.Model):
                                        verbose_name='市场状态')  # Field name made lowercase.
     satimestam = models.DateTimeField(db_column='SaTimestam')  # Field name made lowercase.
     closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True, choices=MATCH_CLOSELIVEBET,
-                                       verbose_name='关闭滚球')  # Field name made lowercase.
+                                       verbose_name='关闭走地')  # Field name made lowercase.
 
     class Meta:
         managed = False
