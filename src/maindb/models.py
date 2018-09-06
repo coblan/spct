@@ -1736,7 +1736,7 @@ class TbAgentcommission(models.Model):
     amount = CusDecimalField(db_column='Amount', max_digits=18, decimal_places=4, blank=True,
                              null=True, verbose_name='佣金')  # Field name made lowercase.
     daus = models.IntegerField(db_column='DAUs', blank=True, null=True,
-                               verbose_name='日活跃用户数')  # Field name made lowercase.
+                               verbose_name='活跃用户数')  # Field name made lowercase.
     lostamount = CusDecimalField(db_column='LostAmount', max_digits=18, decimal_places=4, blank=True,
                                  null=True, verbose_name='本月净盈利')  # Field name made lowercase.
     balancelostamount = CusDecimalField(db_column='BalanceLostAmount', max_digits=18, decimal_places=4, blank=True,
