@@ -137,7 +137,7 @@ class PlatformProfit(TablePage):
             }
         def get_operation(self): 
             return [
-                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出excel','icon': 'fa-file-excel-o',}
+                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出Excel','icon': 'fa-file-excel-o',}
             ]
 
 
