@@ -84,7 +84,7 @@ class TicketMasterPage(TablePage):
             return {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)}
 
         def inn_filter(self, query):
-            return query.annotate(profit=F('betoutcome') - F('betamount') + F('bonus'))
+            return query.order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus'))
 
         def statistics(self, query):
             dc = query.aggregate(total_betamount=Sum('betamount'), total_betoutcome=Sum('betoutcome'),

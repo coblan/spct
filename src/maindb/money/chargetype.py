@@ -88,6 +88,7 @@ class ChargeTypeForm(ModelFields):
     def save_form(self):
         for i in self.kw['paychannel']:
             TbPaychanneljoinlevel.objects.update_or_create(accountlevel=self.kw['accountlevel'], paychannelid_id=i)
+
         return self.instance
 
 def getVipOptions():
