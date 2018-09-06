@@ -89,6 +89,7 @@ class TicketMasterPage(TablePage):
         def statistics(self, query):
             dc = query.aggregate(total_betamount=Sum('betamount'), total_betoutcome=Sum('betoutcome'),
                                  total_turnover=Sum('turnover'), total_bonus=Sum('bonus'))
+            dc = {k: v or 0 for (k, v) in dc.items()}
             dc['total_profit'] = dc['total_betoutcome'] - dc['total_betamount'] + dc['total_bonus']
             mapper = {
                 'betamount': 'total_betamount',
