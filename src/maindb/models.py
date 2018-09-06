@@ -670,27 +670,6 @@ class TbLimit(models.Model):
         db_table = 'TB_Limit'
 
 
-# class TbLoginlog(models.Model):
-# tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-# accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
-# account = models.CharField(db_column='Account',verbose_name=_('Account'), max_length=30)  # Field name made lowercase.
-
-# logintype = models.SmallIntegerField(db_column='LoginType',verbose_name=_(
-# 'Login Type'))  # Field name made lowercase.
-# createtime = models.DateTimeField(verbose_name=_('Login Time'),db_column='CreateTime')  # Field name made lowercase.
-# appversion = models.CharField(db_column='AppVersion',verbose_name=_('App Version'), max_length=20)  # Field name made lowercase.
-# devicename = models.CharField(db_column='DeviceName', verbose_name=_('Device Name'),max_length=40)  # Field name made lowercase.
-# deviceversion = models.CharField(db_column='DeviceVersion',verbose_name=_(
-# 'Device Version'), max_length=20)  # Field name made lowercase.
-# logoutreason = models.SmallIntegerField(db_column='LogoutReason')  # Field name made lowercase.
-# logouttime = models.DateTimeField(db_column='LogoutTime',verbose_name=_(
-# 'Logout Time'))  # Field name made lowercase.
-
-# class Meta:
-# managed = False
-# db_table = 'TB_LoginLog'
-
-
 class TbMaintournament(models.Model):
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID')  # Field name made lowercase.
     sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
@@ -1770,6 +1749,7 @@ class TbBanktypes(models.Model):
                                     unique=True)  # Field name made lowercase.
     active = models.BooleanField(db_column='Active', default=True)  # Field name made lowercase.
     img = models.CharField(db_column='Img', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort',verbose_name='排序')  # Field name made lowercase.
 
     class Meta:
         managed = False
