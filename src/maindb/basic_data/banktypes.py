@@ -16,7 +16,7 @@ class BankTypesPage(TablePage):
     class tableCls(ModelTable):
         model = TbBanktypes
         pop_edit_field = 'banktypename'
-        fields_sort = ['banktypeid', 'banktypename', 'active']
+        fields_sort = ['banktypeid', 'banktypename', 'active','sort']
 
         def get_operation(self):
             create = super().get_operation()[0]
@@ -60,12 +60,6 @@ class BankTypesForm(ModelFields):
         exclude = ['img']
 
     hide_fields = ['active']
-
-    # def del_form(self):
-    #     if TbBankcard.objects.filter(banktypeid=self.instance.banktypeid).exists():
-    #         raise UserWarning('已有用户绑定该银行类型，不能删除')
-    #     else:
-    #         super().del_form()
 
     def save_form(self):
         if 'active' in self.changed_data:
