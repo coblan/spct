@@ -87,9 +87,6 @@ class AgentUser(TablePage):
 
             if order_by.startswith('-'):
                 order_by = order_by[1:] + ' DESC'
-
-            
-            
             sql_args = {
                 'AccountID': par,
                 'PageIndex': self.search_args.get('_page', 1),
@@ -125,7 +122,7 @@ class AgentUser(TablePage):
                     footer = {}
                     for k, v in row1.items():
                         if k != 'Total' and k.startswith('Total'):
-                            footer['Sum' + k[5:]] = v
+                            footer['Sum' + k[5:]] = round(v,2)
                     self.footer = ['合计'] + self.footer_by_dict(footer)
             # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
             
@@ -141,32 +138,44 @@ class AgentUser(TablePage):
 
         def getExtraHead(self):
             return [
-                # {'name': 'TotalLostAmount', 'label': 'TotalLostAmount',},
-                {'name': 'SumActive', 'label': '活跃用户', },
-                {'name': 'NickName', 'label': 'NickName', },
-                {'name': 'BeaeAmount', 'label': '佣金计算基数',}, 
-                # {'name': 'Phone', 'label': 'Phone',},
-                {'name': 'VIPLv', 'label': 'VIPLv', },
-                {'name': 'BonusRate', 'label': 'BonusRate', },
-                {'name': 'Poundage','label': '佣金计算手续费',}, 
-                {'name': 'AgentRulePercentage','label': '佣金计算比例',}, 
-                {'name': 'AgentRuleAmount','label': '佣金计算金额',}, 
-                {'name': 'BalanceLostAmount','label': '上月结余',}, 
-                {'name': 'AgentAmount','label': '预估佣金',}, 
-                {'name': 'SumExpend', 'label': '红利', },
-                {'name': 'SumLostAmount', 'label': 'SumLostAmount', 'width': 130, },
-                {'name': 'SumBonusAmount', 'label': 'SumBonusAmount', 'width': 140, },
-                {'name': 'SumBetAmount', 'label': 'SumBetAmount', 'width': 120, },
-                {'name': 'SumRechargeAmount', 'label': 'SumRechargeAmount', 'width': 140, },
-                {'name': 'SumWithdrawalAmount', 'label': '充值提现', 'width': 100, },
-                {'name': 'SumTurnover', 'label': 'SumTurnover', 'width': 120, },
-                {'name': 'CreateTime', 'label': 'CreateTime', 'width': 100, },
+                {'name': 'NickName', 'label': '昵称 ', 'width': 100, },
+                # {'name': 'VIPLv', 'label': 'VIP等级', },
+                {'name': 'SumActive', 'label': '活跃用户数','width': 100, },
+                {'name': 'AgentAmount', 'label': '预估佣金', },
+                {'name': 'BeaeAmount', 'label': '佣金计算基数','width': 120,},
+                {'name': 'AgentRuleAmount','label': '佣金计算金额','width': 120,},
+                {'name': 'BalanceLostAmount', 'label': '累计净盈利', 'width': 100, },
+                {'name': 'SumLostAmount', 'label': '本月净盈利', 'width': 100, },
+                {'name': 'BonusRate', 'label': '返水比例', },
+                {'name': 'SumBonusAmount', 'label': '返水', 'width': 80, },
+                {'name': 'SumExpend', 'label': '系统红利', 'width': 80,},
+                {'name': 'SumRechargeAmount', 'label': '充值金额', 'width': 100, },
+                {'name': 'Poundage','label': '充值手续费','width': 100,},
+                {'name': 'AgentRulePercentage','label': '佣金比例',},
+                {'name': 'SumBetAmount', 'label': '投注金额', 'width': 120, },
+                {'name': 'SumWithdrawalAmount', 'label': '提现金额', 'width': 100, },
+                {'name': 'SumTurnover', 'label': '流水', 'width': 120, },
+                {'name': 'CreateTime', 'label': '创建时间', 'width': 140, },
             ]
 
         def get_rows(self):
             self.getData()
             for row in self.child_agents:
                 row['accountid'] = row['AccountID']
+                row['BeaeAmount']=round(row['BeaeAmount'],2)
+                row['BonusRate'] = round(row['BonusRate'], 3)
+                row['Poundage'] = round(row['Poundage'], 2)
+                row['AgentRuleAmount'] = round(row['AgentRuleAmount'], 2)
+                row['BalanceLostAmount'] = round(row['BalanceLostAmount'], 2)
+                row['AgentAmount'] = round(row['AgentAmount'], 2)
+                row['SumExpend'] = round(row['SumExpend'], 2)
+                row['AgentRulePercentage'] = round(row['AgentRulePercentage'], 3)
+                row['SumLostAmount'] = round(row['SumLostAmount'], 2)
+                row['SumBonusAmount'] = round(row['SumBonusAmount'], 2)
+                row['SumBetAmount'] = round(row['SumBetAmount'], 2)
+                row['SumRechargeAmount'] = round(row['SumRechargeAmount'], 2)
+                row['SumWithdrawalAmount'] = round(row['SumWithdrawalAmount'], 2)
+                row['SumTurnover'] = round(row['SumTurnover'], 2)
 
             return self.child_agents
 
