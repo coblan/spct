@@ -1,38 +1,94 @@
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, ModelFields, get_request_cache, RowFilter
+import datetime
+
+from django.db.models import Sum
+
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, get_request_cache, RowFilter
+from helpers.director.table.row_search import SelectSearch
+from helpers.director.table.table import RowSort
 from ..models import TbAgentcommission
 import requests
 import urllib
 from django.conf import settings
 import json
 
+
 class AgentCommission(TablePage):
     template = 'jb_admin/table.html'
-    def get_label(self): 
+
+    def get_label(self):
         return '代理佣金'
-    
+
     class tableCls(ModelTable):
         model = TbAgentcommission
-        exclude = []
-        
+        exclude = ['agent', 'description', 'creater', 'updater', 'updatetime']
+        sort = ['accountid', 'amount']
+        fields_sort = ['commid', 'accountid', 'amount', 'status', 'daus', 'lostamount', 'balancelostamount',
+                       'percentage', 'settleyear', 'settlemonth', 'settledate', 'createtime', 'applytime']
+
+        def dict_head(self, head):
+            dc = {
+                'commid': 80,
+                'accountid': 120,
+                'amount': 100,
+                'daus': 100,
+                'lostamount': 120,
+                'balancelostamount': 120,
+                'settledate': 100,
+                'createtime': 140,
+                'applytime': 140
+            }
+            if dc.get(head['name']):
+                head['width'] = dc.get(head['name'])
+            return head
+
+        def statistics(self, query):
+            dc = query.aggregate(total_amount=Sum('amount'), total_daus=Sum('daus'), total_lostamount=Sum('lostamount'),
+                                 total_balancelostamount=Sum('balancelostamount')
+                                 )
+            mapper = {
+                'amount': 'total_amount',
+                'daus': 'total_daus',
+                'lostamount': 'total_lostamount',
+                'balancelostamount': 'total_balancelostamount'
+            }
+            for k in dc:
+                dc[k] = str(round(dc[k],2))
+            footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
+            self.footer = footer
+            self.footer = ['合计'] + self.footer
+            return query
+
+        class sort(RowSort):
+            names = ['accountid', 'amount', 'daus', 'lostamount', 'balancelostamount']
+
+        class search(SelectSearch):
+            names = ['accountid__nickname']
+
+            def get_option(self, name):
+                if name == 'accountid__nickname':
+                    return {'value': 'accountid__nickname', 'label': '用户昵称', }
+                else:
+                    return super().get_option(name)
+
         class filters(RowFilter):
             names = ['status']
-        
-        def get_operation(self): 
+
+        def get_operation(self):
             return [
-                 {'fun': 'director_rows', 
-                  'director_name': 'agent_commission.audit', 
-                  'editor': 'com-op-btn', 
-                  'label': '审核通过', 
-                  'after_call': 'update_or_insert_rows',
-                  'row_match': 'many_row_match',
-                  'match_msg': '请全部选择未审核的数据行！',
-                  'match_field': 'status',
-                  'match_values': [0],
-                  'confirm_msg': '确认通过审核？'},
+                {'fun': 'director_rows',
+                 'director_name': 'agent_commission.audit',
+                 'editor': 'com-op-btn',
+                 'label': '审核通过',
+                 'after_call': 'update_or_insert_rows',
+                 'row_match': 'many_row_match',
+                 'match_msg': '只能选择待审核的数据！',
+                 'match_field': 'status',
+                 'match_values': [0],
+                 'confirm_msg': '确认审核通过？'},
             ]
-        
+
         @staticmethod
-        def audit(rows): 
+        def audit(rows):
             """
             {data:[{Key:'Success','Value':[]},{Key:'Fail',Value:[]}],
             error_description:'xxx',
@@ -40,13 +96,13 @@ class AgentCommission(TablePage):
             }
             
             """
-            url = urllib.parse.urljoin( settings.AGENT_SERVICE, '/comm/audit')
+            url = urllib.parse.urljoin(settings.AGENT_SERVICE, '/comm/audit')
             comids = [row['commid'] for row in rows]
             cache = get_request_cache()
             request = cache['request']
             user = request.user
-            data = json.dumps({'CommIDs': comids, 'OperatorName': user.username,})
-            rt = requests.post(url, data= data, headers = {'Content-Type': 'application/json'})
+            data = json.dumps({'CommIDs': comids, 'OperatorName': user.username, })
+            rt = requests.post(url, data=data, headers={'Content-Type': 'application/json'})
             dc = json.loads(rt.text)
             if dc.get('success'):
                 rt_data = dc.get('data')
@@ -57,31 +113,20 @@ class AgentCommission(TablePage):
                         success_rows = item['Value']
                     elif item['Key'] == 'Fail':
                         fail_rows = item['Value']
-                
-                rt_dc = {'rows': [{'pk':row['pk'], 'status': 1,} for row in rows if row['commid'] in success_rows]}
+
+                rt_dc = {
+                    'rows': [{'pk': row['pk'], 'status': 1, 'applytime': datetime.datetime.now()} for row in rows if
+                             row['commid'] in success_rows]}
                 if fail_rows:
                     rt_dc['msg'] = '这些 %s 行数据,操作不成功' % fail_rows
                 return rt_dc
             else:
-                raise UserWarning(dc.get('error_description')) 
-        
-        
+                raise UserWarning(dc.get('error_description'))
 
-#class AgentCommissionForm(ModelFields):
-    #class Meta:
-        #model = TbAgentcommission
-        #exclude = []
-    
-    #def save_form(self):
-        #if 'status'in self.changed_data and self.cleaned_data['status'] == 1:
-            #req
-        #print('hell')
-        
 
 director.update({
     'agent_commission': AgentCommission.tableCls,
-    'agent_commission.audit': AgentCommission.tableCls.audit,
-    #'agent_commission.edit': AgentCommissionForm,
+    'agent_commission.audit': AgentCommission.tableCls.audit
 })
 
 page_dc.update({
