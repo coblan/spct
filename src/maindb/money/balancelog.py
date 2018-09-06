@@ -31,7 +31,9 @@ class BalancelogPage(TablePage):
             return head
 
         def get_operation(self):
-            return []
+            return [
+                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出excel','icon': 'fa-file-excel-o',}
+            ]
 
         class filters(RowFilter):
             names = ['categoryid']
