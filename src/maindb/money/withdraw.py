@@ -3,6 +3,7 @@ from django.db.models import Sum, Q
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter, ModelFields
 from helpers.director.table.table import RowSearch, RowSort
 from ..models import TbWithdraw
+from maindb.rabbitmq_instance import notifyWithdraw
 
 
 class WithdrawPage(TablePage):
@@ -49,9 +50,13 @@ class WithdrawPage(TablePage):
         
         def get_operation(self): 
             return [
-                 {'fun': 'selected_pop_set_and_save', 
+                 {
+                    #'fun': 'selected_pop_set_and_save', 
+                'fun': 'selected_set_and_save',
                  'editor': 'com-op-btn', 
                  'label': '审核',
+                 'field': 'status',
+                 'value': 1,
                  'row_match': 'one_row_match',
                  'match_field': 'status', 
                  'match_values': [4], 
@@ -82,9 +87,25 @@ class WithdrawPage(TablePage):
             names = ['status']
 
 class WithDrawForm(ModelFields):
+    hide_fields = ['status']
     class Meta:
         model = TbWithdraw
-        exclude = []
+        fields = ['orderid', 'account', 'memo', 'status']
+    
+    def dict_head(self, head): 
+        if head['name'] == 'memo':
+            head['editor'] = 'blocktext'
+            head['required'] = True
+        else:
+            head['readonly'] = True
+        return head
+    
+    def save_form(self): 
+        super().save_form()
+        if 'status' in self.changed_data and 'memo' in self.changed_data:
+            notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
+        
+    
     
     
 
