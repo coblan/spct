@@ -35,6 +35,9 @@ class BalancelogPage(TablePage):
                 {'fun': 'export_excel','editor': 'com-op-btn','label': '导出Excel','icon': 'fa-file-excel-o',}
             ]
 
+        def inn_filter(self, query):
+            return query.order_by('-createtime')
+
         class filters(RowFilter):
             names = ['categoryid']
             range_fields = ['createtime']

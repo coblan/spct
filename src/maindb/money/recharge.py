@@ -50,6 +50,9 @@ class RechargePage(TablePage):
             self.footer = ['合计'] + self.footer
             return query
 
+        def inn_filter(self, query):
+            return query.order_by('-createtime')
+
         def get_context(self):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
