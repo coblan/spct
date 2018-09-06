@@ -165,7 +165,6 @@ class MatchForm(ModelFields):
             'MatchID': inst.matchid,
             'IsRecommend': inst.isrecommend,
             'IsHidden': inst.ishidden,
-            # 'LiveBet': inst.livebet,
             'CloseLiveBet': inst.closelivebet
         }
         updateMatchMongo(dc)

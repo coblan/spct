@@ -22,8 +22,6 @@ from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
 
 
-# Register your models here.
-
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
     ls = [
@@ -115,7 +113,10 @@ class AccountPage(TablePage):
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
-                   'isenablewithdraw', 'sumrechargecount', 'createtime','source']
+                   'isenablewithdraw', 'sumrechargecount', 'sumwithdrawcount','rechargeamount', 'withdrawamount','createtime', 'source']
+        fields_sort = ['accountid', 'account', 'nickname', 'createtime', 'source', 'viplv', 'status',
+                       'isenablewithdraw', 'amount', 'bonusrate', 'agentamount',
+                       'sumrechargecount', 'sumwithdrawcount','rechargeamount','withdrawamount']
 
         class filters(RowFilter):
             range_fields = ['createtime']
@@ -172,7 +173,7 @@ class AccountPage(TablePage):
             names = ['accountid', 'nickname']
 
         class sort(RowSort):
-            names = ['account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount',
+            names = ['nickname', 'account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount',
                      'rechargeamount', 'withdrawamount']
 
         def get_operation(self):
@@ -186,7 +187,7 @@ class AccountPage(TablePage):
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？'},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置资金密码？'},
-                {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '加减余额',
+                {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
                  'fields_ctx': modifyer.get_head_context()},
             ]
 
@@ -233,10 +234,11 @@ class AccoutModifyAmount(ModelFields):
     def save_form(self):
         super().save_form()
         if 'amount' in self.changed_data:
-            cashflow = 1 if self.changed_amount > 0 else 0
+            cashflow, moenycategory = (1, 4) if self.changed_amount > 0 else (0, 34)
             TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
                                         amount=self.changed_amount, afteramount=self.instance.amount, creater='system',
-                                        memo='调账', accountid=self.instance.accountid, categoryid=4, cashflow=cashflow)
+                                        memo='调账', accountid=self.instance, categoryid_id=moenycategory,
+                                        cashflow=cashflow)
 
 
 class AccountTabBase(ModelTable):
