@@ -21,15 +21,17 @@ class TicketMasterPage(TablePage):
             {'name': 'ticketstake',
              'label': '子注单',
              'com': 'com_tab_table',
+             'par_field': 'ticketid',
+             
+             
+             #'get_data': {
+                 #'fun': 'get_rows',
+                 #'kws': {
+                     #'director_name': TicketstakeTable.get_director_name(),  # model_to_name(TbTicketstake),
+                     #'relat_field': 'ticketid',
+                 #}
 
-             'get_data': {
-                 'fun': 'get_rows',
-                 'kws': {
-                     'director_name': TicketstakeTable.get_director_name(),  # model_to_name(TbTicketstake),
-                     'relat_field': 'ticketid',
-                 }
-
-             },
+             #},
              'table_ctx': TicketstakeTable(crt_user=self.crt_user).get_head_context()
              },
             # 'model':model_to_name(TbTicketstake),
@@ -38,14 +40,15 @@ class TicketMasterPage(TablePage):
             {'name': 'ticketparlay',
              'label': '串关规则',
              'com': 'com_tab_table',
-             'get_data': {
-                 'fun': 'get_rows',
-                 'kws': {
-                     'director_name': TicketparlayTable.get_director_name(),  # model_to_name(TbTicketparlay),
-                     'relat_field': 'ticketid',
-                 }
+             'par_field': 'ticketid',
+             #'get_data': {
+                 #'fun': 'get_rows',
+                 #'kws': {
+                     #'director_name': TicketparlayTable.get_director_name(),  # model_to_name(TbTicketparlay),
+                     #'relat_field': 'ticketid',
+                 #}
 
-             },
+             #},
              'table_ctx': TicketparlayTable(crt_user=self.crt_user).get_head_context()
              }
 
@@ -144,6 +147,8 @@ class TicketMasterPage(TablePage):
                 if self.qf in [ 'ticketid', 'tbticketstake__match_id']:
                     if not re.search('^\d*$', self.q):
                         return None
+                    else:
+                        return self.q
                 else:
                     return super().clean_search()
             
