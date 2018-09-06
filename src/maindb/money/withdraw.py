@@ -1,6 +1,6 @@
 # encoding:utf-8
 from django.db.models import Sum, Q
-from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter
+from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter, ModelFields
 from helpers.director.table.table import RowSearch, RowSort
 from ..models import TbWithdraw
 
@@ -49,6 +49,15 @@ class WithdrawPage(TablePage):
         
         def get_operation(self): 
             return [
+                 {'fun': 'selected_pop_set_and_save', 
+                 'editor': 'com-op-btn', 
+                 'label': '审核',
+                 'row_match': 'one_row_match',
+                 'match_field': 'status', 
+                 'match_values': [4], 
+                 'match_msg': '只能选择状态为失败的',
+                 'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context()},
+                 
                  {'fun': 'export_excel','editor': 'com-op-btn','label': '导出Excel','icon': 'fa-file-excel-o'}
             ]
         
@@ -72,9 +81,16 @@ class WithdrawPage(TablePage):
             range_fields = ['createtime','confirmtime']
             names = ['status']
 
+class WithDrawForm(ModelFields):
+    class Meta:
+        model = TbWithdraw
+        exclude = []
+    
+    
 
 director.update({
-    'Withdraw': WithdrawPage.tableCls
+    'Withdraw': WithdrawPage.tableCls, 
+    'Withdraw.edit': WithDrawForm,
 })
 
 page_dc.update({
