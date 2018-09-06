@@ -116,7 +116,8 @@ RECHARGE_STATUS = (
 WITHDRAW_STATUS = (
     (1, '待处理'),
     (2, '成功'),
-    (3, '失败')
+    (3, '失败'),
+    (4, '异常')
 )
 AMOUNT_TYPE = (
     (1, '余额'),
