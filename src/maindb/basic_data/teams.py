@@ -55,10 +55,10 @@ class TeamsPage(TablePage):
                 return options
 
         class search(RowSearch):
-            names = ['enname', 'saenname', 'icon']
+            names = ['enname', 'saenname', 'zhname']
 
         class sort(RowSort):
-            names = ['enname', 'icon', 'saenname']
+            names = ['enname', 'zhname', 'saenname']
 
         def dict_head(self, head):
             dc = {
