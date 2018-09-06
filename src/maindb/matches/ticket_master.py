@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSearch, RowSort, RowFilter, director
+    RowSearch, RowSort, RowFilter, director, SelectSearch
 from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatches
 from django.db.models import Q, Sum, F
 import re
@@ -118,33 +118,57 @@ class TicketMasterPage(TablePage):
                     'heads': [{'name': 'memo', 'label': '备注', 'editor': 'blocktext', }],
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
                 }, },
+                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出excel','icon': 'fa-file-excel-o',}
             ]
 
-        class search(RowSearch):
-            names = ['ticketid', 'account']
-
-            def get_context(self):
-                ls = []
-                for name in self.valid_name:
-                    ls.append(_(self.model._meta.get_field(name).verbose_name))
-                dc = {
-                    'search_tip': ','.join(ls) + ',matchid',
-                    'editor': 'com-search-filter',
-                    'name': '_q'
-                }
-                return dc
-
-            def get_query(self, query):
-                if self.q:
-                    exp = Q(account=self.q)
-                    if re.search('^\d+$', self.q):
-                        exp = exp | Q(ticketid=self.q) | Q(tbticketstake__match_id=self.q)
-                    # return query.filter(Q(ticketid__icontains = self.q) | Q(account__icontains = self.q) | \
-                    # Q(tbticketstake__match_id = self.q)).distinct()
-                    return query.filter(exp).distinct()
-
+        class search(SelectSearch):
+            names = [ 'accountid__nickname']
+            exact_names = ['ticketid', 'tbticketstake__match_id']
+            
+            def get_option(self, name):
+                
+                if name == 'ticketid':
+                    return {'value': name,
+                            'label': '注单号',}
+                elif name == 'accountid__nickname':
+                    return {
+                        'value': name,
+                        'label': '昵称',
+                        }
+                elif name == 'tbticketstake__match_id':
+                    return {
+                        'value': name,
+                        'label': '比赛ID',
+                        }
+            def clean_search(self): 
+                if self.qf in [ 'ticketid', 'tbticketstake__match_id']:
+                    if not re.search('^\d*$', self.q):
+                        return None
                 else:
-                    return query
+                    return super().clean_search()
+            
+            #def get_context(self):
+                #ls = []
+                #for name in self.valid_name:
+                    #ls.append(_(self.model._meta.get_field(name).verbose_name))
+                #dc = {
+                    #'search_tip': ','.join(ls) + ',matchid',
+                    #'editor': 'com-search-filter',
+                    #'name': '_q'
+                #}
+                #return dc
+
+            #def get_query(self, query):
+                #if self.q:
+                    #exp = Q(account=self.q)
+                    #if re.search('^\d+$', self.q):
+                        #exp = exp | Q(ticketid=self.q) | Q(tbticketstake__match_id=self.q)
+                    ## return query.filter(Q(ticketid__icontains = self.q) | Q(account__icontains = self.q) | \
+                    ## Q(tbticketstake__match_id = self.q)).distinct()
+                    #return query.filter(exp).distinct()
+
+                #else:
+                    #return query
 
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']

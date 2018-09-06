@@ -50,7 +50,7 @@ DATABASES = {
         'ENGINE': 'sql_server.pyodbc',
         'HOST': '192.168.40.79,1433',
         'USER': 'sa',
-        'PASSWORD': 'cdqg@1215',
+        'PASSWORD': 'cdqg@1216',
         #'PORT': '1436',
         'OPTIONS': {
             #'driver': 'ODBC Driver 11 for SQL Server',

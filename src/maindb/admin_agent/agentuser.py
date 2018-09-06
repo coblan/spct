@@ -194,6 +194,11 @@ class AgentUser(TablePage):
             ctx = super().get_context()
             ctx['tabs'] = account_tab(self)
             return ctx
+        
+        def get_operation(self): 
+            return [
+                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出excel','icon': 'fa-file-excel-o',}
+            ]
 
 
 director.update({

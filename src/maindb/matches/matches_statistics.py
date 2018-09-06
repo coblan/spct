@@ -138,6 +138,11 @@ class MatchesStatisticsPage(TablePage):
                 'total': self.total,
                 'perpage': self.search_args.get('_perpage', 20)
             }
+        
+        def get_operation(self): 
+            return [
+                 {'fun': 'export_excel','editor': 'com-op-btn','label': '导出excel','icon': 'fa-file-excel-o',}
+            ]
 
 
 director.update({
