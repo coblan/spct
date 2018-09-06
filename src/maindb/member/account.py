@@ -84,7 +84,7 @@ def account_tab(self):
          'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbLoginlog, self.crt_user), },
         {'name': 'UserStatistics',
-         'label': '用户统计',
+         'label': '会员统计',
          'com': 'com_tab_table',
          'par_field': 'accountid',
          'table_ctx': UserStatisticsTab(crt_user=self.crt_user).get_head_context(),
