@@ -87,9 +87,6 @@ class AgentUser(TablePage):
 
             if order_by.startswith('-'):
                 order_by = order_by[1:] + ' DESC'
-
-            
-            
             sql_args = {
                 'AccountID': par,
                 'PageIndex': self.search_args.get('_page', 1),
@@ -172,6 +169,7 @@ class AgentUser(TablePage):
                 row['BalanceLostAmount'] = round(row['BalanceLostAmount'], 2)
                 row['AgentAmount'] = round(row['AgentAmount'], 2)
                 row['SumExpend'] = round(row['SumExpend'], 2)
+                row['AgentRulePercentage'] = round(row['AgentRulePercentage'], 3)
                 row['SumLostAmount'] = round(row['SumLostAmount'], 2)
                 row['SumBonusAmount'] = round(row['SumBonusAmount'], 2)
                 row['SumBetAmount'] = round(row['SumBetAmount'], 2)
