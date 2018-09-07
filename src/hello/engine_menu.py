@@ -40,7 +40,7 @@ class PcMenu(BaseEngine):
 
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,
              'submenu': [
-                 {'label': _('玩法设置'), 'url': page('bettype'),
+                 {'label': _('玩法设置'), 'url': page('bet_type'),
                   'visible': can_touch(TbOddstypegroup, crt_user), },
                  {'label': _('Currency'), 'url': page('currency'), 'visible': can_touch(TbCurrency, crt_user)},
                  {'label': _('league '), 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},

@@ -17,7 +17,7 @@ from .report import user_statistics
 from .report import report_channel
 from .report import platform_profit
 
-from .basic_data import odds_typegroup, league, teams, app_resource, currency
+from .basic_data import bet_type, league, teams, app_resource, currency
 from .basic_data import banktypes
 from .basic_data import paychannel
 
