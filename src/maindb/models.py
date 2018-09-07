@@ -1760,6 +1760,16 @@ class TbAgentcommission(models.Model):
                                  choices=AGENT_COMMISION_STATUS)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True,
                                    null=True)  # Field name made lowercase.
+    betamount = CusDecimalField(db_column='BetAmount', max_digits=18, decimal_places=4, blank=True,
+                                    null=True,verbose_name='投注金额')  # Field name made lowercase.
+    bonusamount = CusDecimalField(db_column='BonusAmount', max_digits=18, decimal_places=4, blank=True,
+                                      null=True,verbose_name='返水')  # Field name made lowercase.
+    expendamount = CusDecimalField(db_column='ExpendAmount', max_digits=18, decimal_places=4, blank=True,
+                                       null=True,verbose_name='系统红利')  # Field name made lowercase.
+    rechargeamount = CusDecimalField(db_column='RechargeAmount', max_digits=18, decimal_places=4, blank=True,
+                                         null=True,verbose_name='充值金额')  # Field name made lowercase.
+    withdrawalamount = CusDecimalField(db_column='WithdrawalAmount', max_digits=18, decimal_places=4, blank=True,
+                                           null=True,verbose_name='提现金额')  # Field name made lowercase.
 
     class Meta:
         managed = False

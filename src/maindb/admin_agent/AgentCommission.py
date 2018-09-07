@@ -22,7 +22,8 @@ class AgentCommission(TablePage):
         model = TbAgentcommission
         exclude = ['agent', 'description', 'creater', 'updater', 'updatetime']
         sort = ['accountid', 'amount']
-        fields_sort = ['commid', 'accountid', 'amount', 'status', 'daus', 'lostamount', 'balancelostamount',
+        fields_sort = ['commid', 'accountid', 'amount', 'status', 'daus', 'betamount', 'bonusamount', 'expendamount',
+                       'rechargeamount', 'withdrawalamount', 'lostamount', 'balancelostamount',
                        'percentage', 'settleyear', 'settlemonth', 'settledate', 'createtime', 'applytime']
 
         def dict_head(self, head):
@@ -32,6 +33,11 @@ class AgentCommission(TablePage):
                 'amount': 100,
                 'daus': 100,
                 'lostamount': 120,
+                'betamount': 120,
+                'bonusamount': 120,
+                'expendamount': 120,
+                'rechargeamount': 120,
+                'withdrawalamount': 120,
                 'balancelostamount': 120,
                 'settledate': 100,
                 'createtime': 140,
@@ -43,23 +49,32 @@ class AgentCommission(TablePage):
 
         def statistics(self, query):
             dc = query.aggregate(total_amount=Sum('amount'), total_daus=Sum('daus'), total_lostamount=Sum('lostamount'),
-                                 total_balancelostamount=Sum('balancelostamount')
+                                 total_balancelostamount=Sum('balancelostamount'), total_betamount=Sum('betamount'),
+                                 total_bonusamount=Sum('bonusamount'), total_expendamount=Sum('expendamount'),
+                                 total_rechargeamount=Sum('rechargeamount'),
+                                 total_withdrawalamount=Sum('withdrawalamount')
                                  )
             mapper = {
                 'amount': 'total_amount',
                 'daus': 'total_daus',
                 'lostamount': 'total_lostamount',
-                'balancelostamount': 'total_balancelostamount'
+                'balancelostamount': 'total_balancelostamount',
+                'betamount': 'total_betamount',
+                'bonusamount': 'total_bonusamount',
+                'expendamount': 'total_expendamount',
+                'rechargeamount': 'total_rechargeamount',
+                'withdrawalamount': 'total_withdrawalamount'
             }
             for k in dc:
-                dc[k] = str(round(dc[k],2))
+                dc[k] = str(round(dc[k], 2))
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = ['合计'] + self.footer
             return query
 
         class sort(RowSort):
-            names = ['accountid', 'amount', 'daus', 'lostamount', 'balancelostamount']
+            names = ['accountid', 'amount', 'daus', 'lostamount', 'balancelostamount', 'betamount', 'bonusamount',
+                     'expendamount', 'rechargeamount', 'withdrawalamount']
 
         class search(SelectSearch):
             names = ['accountid__nickname']
