@@ -29,8 +29,7 @@ from .money import chargetype
 from .money import recharge
 from .money import withdraw
 from .money import balancelog
-from .money import agent_commission
 
 from .admin_agent import agentuser
-from .admin_agent import AgentCommission
+from .admin_agent import agent_commission
 
