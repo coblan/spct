@@ -1,5 +1,5 @@
 # encoding:utf-8
-from datetime import datetime
+from django.utils.timezone import datetime
 
 from django.db.models import Sum, Q
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter, ModelFields
@@ -120,7 +120,7 @@ class WithDrawForm(ModelFields):
 
     class Meta:
         model = TbWithdraw
-        fields = ['orderid', 'account', 'memo', 'status']
+        fields = ['orderid', 'account', 'memo', 'status', 'confirmtime']
 
     def dict_head(self, head):
         if head['name'] == 'memo':
@@ -135,7 +135,7 @@ class WithDrawForm(ModelFields):
         if 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 1:
             notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
         elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 2:
-            self.instance.confirmtime=datetime.now()
+            self.instance.confirmtime = datetime.now()
             self.save()
         elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 5:  # 退款
             beforamount = self.instance.accountid.amount
