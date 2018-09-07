@@ -177,6 +177,6 @@ director.update({
 #field_map[model_to_name(TbBanner)+'.picturename']=PicturenameProc
 
 page_dc.update({
-    'TbBanner':BannerPage
+    'banner':BannerPage
 })
 

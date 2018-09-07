@@ -274,5 +274,5 @@ director.update({
 })
 
 page_dc.update({
-    'sports.maxpayout': MaxPayoutPage,
+    'maxpayout': MaxPayoutPage,
 })

@@ -379,5 +379,5 @@ director.update({
 # model_dc[TbMatches]={'fields':MatchForm,'table':MatchsPage}
 
 page_dc.update({
-    'maindb.Matches': MatchsPage
+    'matches': MatchsPage
 })

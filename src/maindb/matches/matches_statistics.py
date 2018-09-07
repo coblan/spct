@@ -150,5 +150,5 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.MatchesStatisticsPage': MatchesStatisticsPage
+    'matches_statistics': MatchesStatisticsPage
 })

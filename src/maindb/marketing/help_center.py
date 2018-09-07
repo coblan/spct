@@ -140,5 +140,5 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.TbQa':HelpPage,
+    'help':HelpPage,
 })

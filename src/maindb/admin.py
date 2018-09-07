@@ -18,12 +18,13 @@ from .report import report_channel
 from .report import platform_profit
 
 from .basic_data import odds_typegroup, league, teams, app_resource, currency
-from .basic_data import admin_parameter
 from .basic_data import banktypes
 from .basic_data import paychannel
 
 from .riskcontrol import admin
+from .riskcontrol import max_payout
 from . import update_cache
+from .riskcontrol import withdraw_limit
 
 from .money import vip_paychannel
 from .money import recharge

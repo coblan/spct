@@ -122,5 +122,5 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.teams': TeamsPage,
+    'teams': TeamsPage,
 })

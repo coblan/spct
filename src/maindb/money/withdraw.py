@@ -167,5 +167,5 @@ director.update({
 })
 
 page_dc.update({
-    'Withdraw': WithdrawPage,
+    'withdraw': WithdrawPage,
 })

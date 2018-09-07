@@ -52,6 +52,6 @@ director.update({
     'AppResource.edit': AppResourceForm,
 })
 page_dc.update({
-    'AppResource': AppResource,
+    'app_resource': AppResource,
     
 })

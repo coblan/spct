@@ -75,5 +75,5 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.TbOddstypeGroupPage': TbOddstypeGroupPage,
+    'bettype': TbOddstypeGroupPage,
 })
