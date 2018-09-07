@@ -587,7 +587,7 @@ var baseInput = exports.baseInput = {
     },
     field_multi_chosen: {
         props: ['row', 'head'],
-        template: '<div>\n\t        \t<ul v-if=\'head.readonly\'><li v-for=\'value in row[head.name]\' v-text=\'get_label(value)\'></li></ul>\n\t        \t<multi-chosen v-else v-model=\'row[head.name]\' :id="\'id_\'+head.name" :options=\'head.options\'></multi-chosen>\n\t        \t</div>',
+        template: '<div>\n\t        \t<ul v-if=\'head.readonly\'><li v-for=\'value in row[head.name]\' v-text=\'get_label(value)\'></li></ul>\n\t        \t<div v-else>\n\t        \t<input type="text" style="display: none" v-model=\'row[head.name]\' :name="head.name">\n\t        \t<multi-chosen  v-model=\'row[head.name]\' :id="\'id_\'+head.name" :options=\'head.options\'></multi-chosen>\n\t        \t</div>\n\n\t        \t</div>',
         methods: {
             get_label: function get_label(value) {
                 for (var i = 0; i < this.head.options.length; i++) {
@@ -2892,6 +2892,12 @@ var sim_select = {
         // 如果有默认值，
         if (this.head.default && !this.row[this.head.name]) {
             Vue.set(this.row, this.head.name, this.head.default);
+        }
+        var self = this;
+        if (this.head.remote_options) {
+            ex.director_call(this.head.remote_options, { crt_value: this.row[this.head.name] }, function (resp) {
+                self.head.options = resp;
+            });
         }
     },
 

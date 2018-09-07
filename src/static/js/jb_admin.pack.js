@@ -1557,6 +1557,9 @@ var mix_table_data = {
                 });
             },
             selected_set_and_save: function selected_set_and_save(kws) {
+                /*
+                这个是主力函数
+                * */
                 // head: row_match:many_row ,
                 var row_match_fun = kws.row_match || 'many_row';
                 if (!row_match[row_match_fun](self, kws)) {
@@ -1574,10 +1577,11 @@ var mix_table_data = {
                     cfg.show_load();
                     ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
 
-                        ex.each(self.selected, function (row) {
-                            ex.assign(row, all_set_dict);
-                            row[kws.field] = kws.value;
-                        });
+                        self.op_funs.update_or_insert_rows({ rows: resp.save_rows });
+                        //ex.each(self.selected ,function(row){
+                        //    ex.assign(row,all_set_dict)
+                        //    row[kws.field]=kws.value
+                        //})
                         cfg.hide_load(2000);
                         if (after_save_callback) {
                             after_save_callback();
@@ -1623,6 +1627,7 @@ var mix_table_data = {
                 }
             },
             selected_pop_set_and_save: function selected_pop_set_and_save(kws) {
+                // 这个函数应该是没用了。注意剔除掉
                 var row_match_fun = kws.row_match || 'one_row';
                 if (!row_match[row_match_fun](self, kws)) {
                     return;
@@ -1779,8 +1784,9 @@ var mix_table_data = {
                     //self.$emit('operation',{fun:'switch_to_tab',tab_name:kws.tab_editor,row:crt_row})
                     //self.switch_to_tab(kws.tab_editor)
                 } else {
-                    pop_fields_layer(crt_row, fields_ctx, function (new_row) {
+                    var win = pop_fields_layer(crt_row, fields_ctx, function (new_row) {
                         self.update_or_insert(new_row, crt_row);
+                        layer.close(win);
                     });
                 }
             });
@@ -1799,7 +1805,10 @@ var mix_table_data = {
                 this.row_pages.total += 1;
             } else {
                 var table_row = ex.findone(this.rows, { pk: new_row.pk });
-                ex.assign(table_row, new_row);
+                //ex.assign(table_row,new_row)
+                for (var key in new_row) {
+                    Vue.set(table_row, key, new_row[key]);
+                }
             }
         },
         getRows: function getRows() {
@@ -2154,6 +2163,9 @@ Vue.component('com-table-array-mapper', array_mapper);
 
 
 /*
+
+** 这个文件应该是不用了。。
+
 映射[一个]
  options:{
  key:value
@@ -2774,7 +2786,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var pop_fields = exports.pop_fields = {
-    template: '<span v-text="show_text" @click="edit_me()" class="clickable"></span>',
+    template: '<span @click="edit_me()" class="clickable">\n        <component v-if="head.inn_editor" :is="head.inn_editor" :rowData="rowData" :field="field" :index="index"></component>\n        <span v-else v-text="show_text"  ></span>\n    </span>',
     props: ['rowData', 'field', 'index'],
     created: function created() {
         // find head from parent table
@@ -2816,6 +2828,7 @@ var pop_fields = exports.pop_fields = {
             } else {
                 var kws = this.head.get_row;
             }
+            kws.director_name = this.head.fields_ctx.director_name;
 
             fun(function (pop_row) {
                 //pop_fields_layer(pop_row,self.head.fields_heads,ops,self.head.extra_mixins,function(kws){
