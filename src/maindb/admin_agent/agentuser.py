@@ -1,4 +1,5 @@
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, RowFilter, RowSort, RowSearch
+from helpers.director.table.row_search import SelectSearch
 from ..models import TbAccount
 from django.db import connections
 from django.utils import timezone
@@ -38,8 +39,14 @@ class AgentUser(TablePage):
             names = ['SumActive', 'SumLostAmount', 'SumBonusAmount', 'SumWithdrawalAmount', 'SumBetAmount',
                      'SumTurnover']
 
-        class search(RowSearch):
+        class search(SelectSearch):
             names = ['nickname']
+
+            def get_option(self, name):
+                if name == 'nickname':
+                    return {'value': 'nickname', 'label': '用户昵称', }
+                else:
+                    return super().get_option(name)
 
         def getData(self):
             """

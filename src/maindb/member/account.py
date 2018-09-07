@@ -1,10 +1,13 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 
+import re
+
 from django.db.models import Sum, Case, When, F
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director
+from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster
@@ -169,8 +172,28 @@ class AccountPage(TablePage):
         def getExtraHead(self):
             return [{'name': 'rechargeamount', 'label': '充值金额'}, {'name': 'withdrawamount', 'label': '提现金额'}]
 
-        class search(RowSearch):
-            names = ['accountid', 'nickname']
+        class search(SelectSearch):
+            names = ['nickname']
+            exact_names = ['accountid']
+
+            def get_option(self, name):
+                if name == 'accountid':
+                    return {'value': name,
+                            'label': '账户ID', }
+                elif name == 'nickname':
+                    return {
+                        'value': name,
+                        'label': '昵称',
+                    }
+
+            def clean_search(self):
+                if self.qf in ['accountid']:
+                    if not re.search('^\d*$', self.q):
+                        return None
+                    else:
+                        return self.q
+                else:
+                    return super().clean_search()
 
         class sort(RowSort):
             names = ['nickname', 'account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount',

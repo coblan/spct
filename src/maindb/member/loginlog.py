@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, \
     RowSearch, RowFilter, director
+from helpers.director.table.row_search import SelectSearch
 from ..models import TbLoginlog
 import re
 from django.db.models import Q
@@ -45,35 +46,28 @@ class LoginLogPage(TablePage):
         def inn_filter(self, query):
             return query.values(*self.fields_sort).order_by('-createtime')
 
-        class search(RowSearch):
-            names = ['accountid', 'deviceip', 'accountid__nickname']
+        class search(SelectSearch):
+            names = ['accountid__nickname']
+            exact_names = ['accountid']
 
-            def get_context(self):
-                """
-                """
-                dc = {
-                    'search_tip': '设备ip,用户昵称,用户ID',
-                    'editor': 'com-search-filter',
-                    'name': '_q'
-                }
-                return dc
+            def get_option(self, name):
+                if name == 'accountid':
+                    return {'value': name,
+                            'label': '用户ID', }
+                elif name == 'accountid__nickname':
+                    return {
+                        'value': name,
+                        'label': '昵称',
+                    }
 
-            def get_query(self, query):
-                names = ['deviceip', 'accountid__nickname']
-                if self.q:
-                    exp = None
-                    for name in names:
-                        kw = {}
-                        kw['%s__icontains' % name] = self.q
-                        if exp is None:
-                            exp = Q(**kw)
-                        else:
-                            exp = exp | Q(**kw)
-                    if re.search('^\d+$', self.q):
-                        exp = exp | Q(accountid_id=self.q)
-                    return query.filter(exp)
+            def clean_search(self):
+                if self.qf in ['accountid']:
+                    if not re.search('^\d*$', self.q):
+                        return None
+                    else:
+                        return self.q
                 else:
-                    return query
+                    return super().clean_search()
 
         class filters(RowFilter):
             range_fields = ['createtime']

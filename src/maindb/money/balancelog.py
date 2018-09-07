@@ -1,6 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from helpers.director.shortcut import RowSearch, RowSort, RowFilter, director
+from helpers.director.table.row_search import SelectSearch
 from ..models import TbBalancelog
 from .chargeflow import *
 
@@ -42,18 +43,14 @@ class BalancelogPage(TablePage):
             names = ['categoryid']
             range_fields = ['createtime']
 
-        class search(RowSearch):
-            def get_context(self):
-                return {'search_tip': '用户昵称',
-                        'editor': 'com-search-filter',
-                        'name': '_q'
-                        }
+        class search(SelectSearch):
+            names = ['accountid__nickname']
 
-            def get_query(self, query):
-                if self.q:
-                    return query.filter(accountid__nickname__icontains=self.q)
+            def get_option(self, name):
+                if name == 'accountid__nickname':
+                    return {'value': 'accountid__nickname', 'label': '用户昵称', }
                 else:
-                    return query
+                    return super().get_option(name)
 
         class sort(RowSort):
             names = ['createtime']

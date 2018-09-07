@@ -63,19 +63,19 @@ class RechargePage(TablePage):
 
         def get_operation(self):
             return [
-                {'fun': 'selected_pop_set_and_save', 
-                 'editor': 'com-op-btn', 
+                {'fun': 'selected_pop_set_and_save',
+                 'editor': 'com-op-btn',
                  'label': '手动确认',
                  'row_match': 'one_row_match',
-                 'match_field': 'status', 
-                 'match_values': [1], 
+                 'match_field': 'status',
+                 'match_values': [1],
                  'match_msg': '只能选择状态为未充值的',
                  'fields_ctx': ConfirmRechargeForm(crt_user=self.crt_user).get_head_context()},
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
             ]
 
         class sort(RowSort):
-            names = ['amount', 'confirmamount','createtime', 'confirmtime']
+            names = ['amount', 'confirmamount', 'createtime', 'confirmtime']
 
         class search(SelectSearch):
             names = ['accountid__nickname']
@@ -99,19 +99,6 @@ class RechargePage(TablePage):
                         return self.q
                 else:
                     return super().clean_search()
-
-        # class search(RowSearch):
-        #     def get_context(self):
-        #         return {'search_tip': '昵称,订单号',
-        #                 'editor': 'com-search-filter',
-        #                 'name': '_q'
-        #                 }
-        #
-        #     def get_query(self, query):
-        #         if self.q:
-        #             return query.filter(Q(accountid__nickname__icontains=self.q) | Q(orderid=self.q))
-        #         else:
-        #             return query
 
         class filters(RowFilter):
             range_fields = ['createtime', 'confirmtime']
