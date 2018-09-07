@@ -56,7 +56,7 @@ class WithdrawPage(TablePage):
                 {
                     'fun': 'selected_set_and_save',
                     'editor': 'com-op-btn',
-                    'label': '审核',
+                    'label': '审核异常单',
                     'field': 'status',
                     'value': 1,
                     'row_match': 'one_row_match',
