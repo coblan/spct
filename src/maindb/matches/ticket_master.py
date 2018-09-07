@@ -62,7 +62,7 @@ class TicketMasterPage(TablePage):
     class tableCls(ModelTable):
         model = TbTicketmaster
         exclude = []
-        fields_sort = ['ticketid', 'accountid', 'parlayrule', 'status',
+        fields_sort = ['ticketid','orderid', 'accountid', 'parlayrule', 'status',
                        'winbet', 'stakeamount', 'betamount', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
                        'createtime',
                        'settletime', 'memo']
@@ -70,7 +70,7 @@ class TicketMasterPage(TablePage):
         def dict_head(self, head):
             if head['name'] in ['createtime', 'settletime']:
                 head['width'] = 140
-            elif head['name'] in ['status', 'accountid', 'betamount', 'betoutcome', 'turnover', 'bonus', 'profit']:
+            elif head['name'] in ['status','orderid', 'accountid', 'betamount', 'betoutcome', 'turnover', 'bonus', 'profit']:
                 head['width'] = 120
             else:
                 head['width'] = 80
@@ -126,13 +126,13 @@ class TicketMasterPage(TablePage):
 
         class search(SelectSearch):
             names = [ 'accountid__nickname']
-            exact_names = ['ticketid', 'tbticketstake__match_id']
+            exact_names = ['orderid', 'tbticketstake__match_id']
             
             def get_option(self, name):
                 
-                if name == 'ticketid':
+                if name == 'orderid':
                     return {'value': name,
-                            'label': '注单号',}
+                            'label': '订单编号',}
                 elif name == 'accountid__nickname':
                     return {
                         'value': name,

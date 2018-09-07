@@ -1350,7 +1350,7 @@ class TbTicketmaster(models.Model):
     reststakecount = models.IntegerField(db_column='RestStakeCount')  # Field name made lowercase.
     # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(TbAccount, db_column='AccountID', db_constraint=False, verbose_name='用户昵称')
-    orderid = models.BigIntegerField(db_column='OrderID', unique=True)  # Field name made lowercase.
+    orderid = models.BigIntegerField(db_column='OrderID', unique=True,verbose_name='订单号')  # Field name made lowercase.
     handicap = models.IntegerField(db_column='Handicap')  # Field name made lowercase.
     possibleturnover = CusDecimalField(db_column='PossibleTurnover', max_digits=18, decimal_places=4, blank=True,
                                        null=True)  # Field name made lowercase.
