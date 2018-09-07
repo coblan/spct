@@ -25,7 +25,7 @@ from .basic_data import paychannel
 from .riskcontrol import admin
 from . import update_cache
 
-from .money import chargetype
+from .money import vip_paychannel
 from .money import recharge
 from .money import withdraw
 from .money import balancelog
