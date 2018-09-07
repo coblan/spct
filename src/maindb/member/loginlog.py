@@ -78,5 +78,5 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.loginlog': LoginLogPage
+    'loginlog': LoginLogPage
 })

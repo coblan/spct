@@ -1,5 +1,5 @@
 from .blanklist import *
-from . import admin_limit
+from . import max_payout
 
 from helpers.director.access.permit_data import model_full_permit, model_to_name, add_permits
 

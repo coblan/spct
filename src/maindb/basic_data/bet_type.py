@@ -4,7 +4,7 @@ from ..rabbitmq_instance import updateSpread
 import json
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 
-class TbOddstypeGroupPage(TablePage):
+class BetTypePage(TablePage):
     template = 'jb_admin/table.html'
     extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
     
@@ -41,7 +41,7 @@ class TbOddstypeGroupPage(TablePage):
             return head
     
 
-class TbOddstypeGroupForm(ModelFields):
+class BetTypeForm(ModelFields):
     class Meta:
         model = TbOddstypegroup
         exclude = []
@@ -70,10 +70,10 @@ class TbOddstypeGroupForm(ModelFields):
         
 
 director.update({
-    'maindb.TbOddstypeGroupPage': TbOddstypeGroupPage.tableCls,
-    'maindb.TbOddstypeGroupPage.edit': TbOddstypeGroupForm,
+    'maindb.TbOddstypeGroupPage': BetTypePage.tableCls,
+    'maindb.TbOddstypeGroupPage.edit': BetTypeForm,
 })
 
 page_dc.update({
-    'maindb.TbOddstypeGroupPage': TbOddstypeGroupPage,
+    'bet_type': BetTypePage,
 })

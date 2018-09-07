@@ -102,6 +102,6 @@ director.update({
 
 page_dc.update(
     {
-        'BankCards': BankCard
+        'bankcards': BankCard
     }
 )

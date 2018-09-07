@@ -193,5 +193,5 @@ director.update({
 })
 
 page_dc.update({
-    'VIPPayChannel': VIPPayChannelPage,
+    'vip_paychannel': VIPPayChannelPage,
 })

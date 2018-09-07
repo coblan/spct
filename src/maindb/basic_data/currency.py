@@ -77,5 +77,5 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.TbCurrency':CurrencyPage,
+    'currency':CurrencyPage,
 })

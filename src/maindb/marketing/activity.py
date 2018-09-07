@@ -100,6 +100,6 @@ director.update({
 
 
 page_dc.update({
-    'maindb.TBActive':ActivityPage,
+    'activity':ActivityPage,
     
 })

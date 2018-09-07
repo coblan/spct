@@ -61,5 +61,5 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.balancelog': BalancelogPage
+    'balancelog': BalancelogPage
 })

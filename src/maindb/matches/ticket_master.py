@@ -341,10 +341,6 @@ class MatchForm(ModelFields):
             'winner': winner
         }
 
-
-# model_dc[TbTicketstake] = {'table':TicketstakeTable}
-# model_dc[TbTicketparlay] = {'table':TicketparlayTable}
-# model_dc[TbMatches] = {'fields':MatchForm}
 director.update({
     'games.ticketmaster': TicketMasterPage.tableCls,
     'games.ticketmaster.edit': TicketMasterForm,
@@ -357,5 +353,5 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.ticketmaster': TicketMasterPage,
+    'tickets': TicketMasterPage,
 })

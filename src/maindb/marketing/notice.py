@@ -117,5 +117,5 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.TbNotice':NoticePage,
+    'notice':NoticePage,
 })

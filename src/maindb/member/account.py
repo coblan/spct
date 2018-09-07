@@ -352,7 +352,7 @@ permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount),
 add_permits(permits)
 
 page_dc.update({
-    'maindb.account': AccountPage
+    'account': AccountPage
 })
 
 

@@ -87,6 +87,6 @@ director.update({
     'app_pkg.edit':AppPackageForm,
 })
 page_dc.update({
-    'maindb.TbAppversion':AppPackage
+    'app_package':AppPackage
 })
     

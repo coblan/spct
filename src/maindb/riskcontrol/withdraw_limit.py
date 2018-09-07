@@ -1,8 +1,8 @@
 from helpers.director.shortcut import FieldsPage, page_dc, director, ModelFields, Fields, director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
-from ..models import TbParameterinfo
+from maindb.models import TbParameterinfo
 
-class Parameter(FieldsPage):
+class WithdrawLimitPage(FieldsPage):
     template = 'jb_admin/fields.html'
     extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
     
@@ -75,11 +75,11 @@ class Parameter(FieldsPage):
 
 
 director.update(
-    {'Parameter': Parameter.fieldsCls,}
+    {'withdraw_limit': WithdrawLimitPage.fieldsCls, }
 )
 
 page_dc.update({
-    'Parameter': Parameter,
+    'withdraw_limit': WithdrawLimitPage,
 })
         
     

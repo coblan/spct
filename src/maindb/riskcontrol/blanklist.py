@@ -199,7 +199,7 @@ director.update({
 })
 
 page_dc.update({
-    'maindb.TbBlackuserlist':TbBlackuserlistPage,
+    'blackuserlist':TbBlackuserlistPage,
     'maindb.TbBlackuserlistLog':TbBlackuserlistLogPage,
     
     #'maindb.Blackiplist':BlankiplistPage,

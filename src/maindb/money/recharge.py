@@ -144,5 +144,5 @@ director.update({
 })
 
 page_dc.update({
-    'Recharge': RechargePage
+    'recharge': RechargePage
 })

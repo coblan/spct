@@ -83,5 +83,5 @@ director.update({
 })
 
 page_dc.update({
-    'match.league': League,
+    'league': League,
 })
