@@ -70,7 +70,7 @@ class PcMenu(BaseEngine):
                   'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
                  {'label': '充值记录', 'url': page('Recharge'), 'visible': can_touch(TbRecharge, crt_user), },
                  {'label': '提现记录', 'url': page('Withdraw'), 'visible': can_touch(TbWithdraw, crt_user), },
-                 {'label': '代理佣金', 'url': page('AgentCommission'), 'visible': can_touch(TbAgentcommission, crt_user), },
+                 # {'label': '代理佣金', 'url': page('AgentCommission'), 'visible': can_touch(TbAgentcommission, crt_user), },
                  # {'label': _('Tb Channel'), 'url': page('maindb.channel'), 'visible': can_touch(TbChannel, crt_user), },
              ]},
 

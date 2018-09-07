@@ -686,7 +686,7 @@ class TbMatches(models.Model):
     roundinfo = models.IntegerField(db_column='RoundInfo', verbose_name=_('Round'))  # 轮数 Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',
                                       verbose_name=_('IsRecommend'))  # 推介 Field name made lowercase.
-    livebet = models.BooleanField(db_column='LiveBet', verbose_name='滚球盘')  # 滚球 Field name made lowercase.
+    livebet = models.BooleanField(db_column='LiveBet', verbose_name='走地盘')  # 滚球 Field name made lowercase.
     generatedat = models.DateTimeField(db_column='GeneratedAt',
                                        verbose_name=_('Create Time'))  # 生成日期 Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
@@ -715,7 +715,7 @@ class TbMatches(models.Model):
                                        verbose_name='市场状态')  # Field name made lowercase.
     satimestam = models.DateTimeField(db_column='SaTimestam')  # Field name made lowercase.
     closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True, choices=MATCH_CLOSELIVEBET,
-                                       verbose_name='关闭滚球')  # Field name made lowercase.
+                                       verbose_name='关闭走地')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1350,7 +1350,7 @@ class TbTicketmaster(models.Model):
     reststakecount = models.IntegerField(db_column='RestStakeCount')  # Field name made lowercase.
     # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(TbAccount, db_column='AccountID', db_constraint=False, verbose_name='用户昵称')
-    orderid = models.BigIntegerField(db_column='OrderID', unique=True)  # Field name made lowercase.
+    orderid = models.BigIntegerField(db_column='OrderID', unique=True,verbose_name='订单号')  # Field name made lowercase.
     handicap = models.IntegerField(db_column='Handicap')  # Field name made lowercase.
     possibleturnover = CusDecimalField(db_column='PossibleTurnover', max_digits=18, decimal_places=4, blank=True,
                                        null=True)  # Field name made lowercase.
@@ -1736,7 +1736,7 @@ class TbAgentcommission(models.Model):
     amount = CusDecimalField(db_column='Amount', max_digits=18, decimal_places=4, blank=True,
                              null=True, verbose_name='佣金')  # Field name made lowercase.
     daus = models.IntegerField(db_column='DAUs', blank=True, null=True,
-                               verbose_name='日活跃用户数')  # Field name made lowercase.
+                               verbose_name='活跃用户数')  # Field name made lowercase.
     lostamount = CusDecimalField(db_column='LostAmount', max_digits=18, decimal_places=4, blank=True,
                                  null=True, verbose_name='本月净盈利')  # Field name made lowercase.
     balancelostamount = CusDecimalField(db_column='BalanceLostAmount', max_digits=18, decimal_places=4, blank=True,
@@ -1760,6 +1760,16 @@ class TbAgentcommission(models.Model):
                                  choices=AGENT_COMMISION_STATUS)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True,
                                    null=True)  # Field name made lowercase.
+    betamount = CusDecimalField(db_column='BetAmount', max_digits=18, decimal_places=4, blank=True,
+                                    null=True,verbose_name='投注金额')  # Field name made lowercase.
+    bonusamount = CusDecimalField(db_column='BonusAmount', max_digits=18, decimal_places=4, blank=True,
+                                      null=True,verbose_name='返水')  # Field name made lowercase.
+    expendamount = CusDecimalField(db_column='ExpendAmount', max_digits=18, decimal_places=4, blank=True,
+                                       null=True,verbose_name='系统红利')  # Field name made lowercase.
+    rechargeamount = CusDecimalField(db_column='RechargeAmount', max_digits=18, decimal_places=4, blank=True,
+                                         null=True,verbose_name='充值金额')  # Field name made lowercase.
+    withdrawalamount = CusDecimalField(db_column='WithdrawalAmount', max_digits=18, decimal_places=4, blank=True,
+                                           null=True,verbose_name='提现金额')  # Field name made lowercase.
 
     class Meta:
         managed = False

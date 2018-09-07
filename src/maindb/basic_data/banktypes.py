@@ -16,7 +16,7 @@ class BankTypesPage(TablePage):
     class tableCls(ModelTable):
         model = TbBanktypes
         pop_edit_field = 'banktypename'
-        fields_sort = ['banktypeid', 'banktypename', 'active','sort']
+        fields_sort = ['banktypeid', 'banktypename', 'active', 'sort']
 
         def get_operation(self):
             create = super().get_operation()[0]
@@ -25,11 +25,20 @@ class BankTypesPage(TablePage):
                     {
                         'fun': 'selected_set_and_save',
                         'editor': 'com-op-btn',
-                        'label': '删除',
+                        'label': '启用',
+                        'field': 'active',
+                        'value': True,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认启用该银行卡类型吗?'
+                    },
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '禁用',
                         'field': 'active',
                         'value': False,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认删除该银行卡类型吗?'
+                        'confirm_msg': '确认禁用该银行卡类型吗?'
                     }
                     ]
 
@@ -64,7 +73,7 @@ class BankTypesForm(ModelFields):
     def save_form(self):
         if 'active' in self.changed_data:
             if TbBankcard.objects.filter(banktypeid=self.instance.banktypeid).exists():
-                raise UserWarning('已有用户绑定该银行卡类型，不能删除')
+                raise UserWarning('已有用户绑定该银行卡类型，不能禁用！')
         super().save_form()
 
     def clean_banktypename(self):
