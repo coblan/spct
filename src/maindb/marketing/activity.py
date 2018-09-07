@@ -50,7 +50,7 @@ class ActivityPage(TablePage):
             operations = ModelTable.get_operation(self)
             operations.append({
                 'fun':'update_activity_file',
-                'label':'更新活动页面',
+                'label':'更新缓存',
                 'editor':'com-op-btn'
             })
             return operations

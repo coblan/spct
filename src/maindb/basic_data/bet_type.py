@@ -26,11 +26,27 @@ class BetTypePage(TablePage):
         #def inn_filter(self, query): 
             #return query.filter(enabled = 1)
         
-        def get_operation(self): 
+        def get_operation(self):
             return [
-                {'fun': 'set_enable','label': '启用','editor': 'com-op-btn',}, 
-                {'fun': 'set_disable','label': '禁用','editor': 'com-op-btn',}
-            ]
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '启用',
+                        'field': 'enabled',
+                        'value': 1,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认启用该玩法吗?'
+                    },
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '禁用',
+                        'field': 'enabled',
+                        'value': 0,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认禁用该玩法吗?'
+                    }
+                    ]
         
         def dict_head(self, head): 
             dc = {

@@ -52,7 +52,7 @@ class BankTypesPage(TablePage):
             names = ['banktypename']
 
         class sort(RowSort):
-            names = []
+            names = ['sort']
 
         def dict_head(self, head):
             dc = {
