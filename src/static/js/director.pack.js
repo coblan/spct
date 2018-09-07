@@ -636,7 +636,7 @@ var baseInput = exports.baseInput = {
     },
     richtext: {
         props: ['row', 'head'],
-        template: '<div style="position: relative"><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n        <input type="text" :name=\'head.name\' style="display:none">\n            \t\t\t<ckeditor ref="ck" :style="head.style" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></ckeditor>\n\n                       </div>',
+        template: '<div style="position: relative"><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n        <input type="text" :name=\'head.name\' style="display:none" v-model="row[head.name]">\n            \t\t\t<ckeditor ref="ck" :style="head.style" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></ckeditor>\n\n                       </div>',
         methods: {
             commit: function commit() {
                 this.row[this.head.name] = this.$refs.ck.editor.getData();
