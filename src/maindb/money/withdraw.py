@@ -1,4 +1,6 @@
 # encoding:utf-8
+from datetime import datetime
+
 from django.db.models import Sum, Q
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter, ModelFields
 from helpers.director.table.table import RowSearch, RowSort
@@ -132,7 +134,10 @@ class WithDrawForm(ModelFields):
         super().save_form()
         if 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 1:
             notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
-        if 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 5:  # 退款
+        elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 2:
+            self.instance.confirmtime=datetime.now()
+            self.save()
+        elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 5:  # 退款
             beforamount = self.instance.accountid.amount
             afteramount = self.instance.accountid.amount + self.instance.amount
             self.instance.accountid.amount += self.instance.amount
