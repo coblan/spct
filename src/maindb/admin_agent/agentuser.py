@@ -222,5 +222,5 @@ director.update({
 })
 
 page_dc.update({
-    'agentUser': AgentUser,
+    'agent_user': AgentUser,
 })

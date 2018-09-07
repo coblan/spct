@@ -170,5 +170,5 @@ director.update({
 })
 
 page_dc.update({
-    'UserStatisticsPage': UserStatisticsPage
+    'user_statistics': UserStatisticsPage
 })

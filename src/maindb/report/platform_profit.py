@@ -142,9 +142,9 @@ class PlatformProfit(TablePage):
 
 
 director.update({
-    'PlatformProfit': PlatformProfit.tableCls
+    'platform_profit': PlatformProfit.tableCls
 })
 
 page_dc.update({
-    'PlatformProfit': PlatformProfit
+    'platform_profit': PlatformProfit
 })

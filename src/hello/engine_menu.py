@@ -94,15 +94,15 @@ class PcMenu(BaseEngine):
 
             {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,
              'submenu': [
-                 {'label': '会员统计', 'url': page('UserStatisticsPage'),
+                 {'label': '会员统计', 'url': page('user_statistics'),
                   'visible': can_touch(TbAccount, crt_user), },
-                 {'label': '平台亏盈', 'url': page('PlatformProfit'),
+                 {'label': '平台亏盈', 'url': page('platform_profit'),
                   'visible': True, },
              ]},
             
             {'label': '代理系统', 'icon': fa('fa-street-view'), 'visible': True,
              'submenu': [
-                 {'label': '代理用户', 'url': page('agentUser'),'visible': True, },
+                 {'label': '代理用户', 'url': page('agent_user'),'visible': True, },
                  {'label': '佣金审核', 'url': page('agent_commission'),'visible': True, },
     
              ]},
