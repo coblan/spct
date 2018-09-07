@@ -45,7 +45,7 @@ class ChargeTypePage(TablePage):
             dc = {
                 'id': 120,
                 'accountlevel': 150,
-                'paychannelid': 150
+                'paychannelid': 500
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -64,6 +64,7 @@ class ChargeTypePage(TablePage):
                 head['options'] = getVipOptions()
                 
             if head['name'] == 'paychannelid':
+                head['show_tooltip'] = False
                 head['editor'] = 'com-table-array-mapper'
                 head['options'] = [{'value': x.paychannelid, 'label': x.channeltype} for x in TbPaychannel.objects.all()]
             return head
