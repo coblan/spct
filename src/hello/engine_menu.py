@@ -66,7 +66,7 @@ class PcMenu(BaseEngine):
             {'label': _('MoneyFlow'), 'icon': fa('fa-dollar'), 'visible': True,
              'submenu': [
                  # {'label': _('Charge Flow'), 'url': page('ChargeFlow'), 'visible': can_touch(TbChargeflow, crt_user), },
-                 {'label': 'VIP充值渠道', 'url': page('ChargeType'),
+                 {'label': 'VIP充值渠道', 'url': page('VIPPayChannel'),
                   'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
                  {'label': '充值记录', 'url': page('Recharge'), 'visible': can_touch(TbRecharge, crt_user), },
                  {'label': '提现记录', 'url': page('Withdraw'), 'visible': can_touch(TbWithdraw, crt_user), },

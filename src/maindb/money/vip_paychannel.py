@@ -5,7 +5,7 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, 
 from ..models import TbPaychanneljoinlevel, TbSetting, TbPaychannel
 
 
-class ChargeTypePage(TablePage):
+class VIPPayChannelPage(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
@@ -187,11 +187,11 @@ def get_left_vip_options(**kw):
 
 
 director.update({
-    'ChargeType': ChargeTypePage.tableCls,
+    'ChargeType': VIPPayChannelPage.tableCls,
     'ChargeType.edit': ChargeTypeForm, 
     'get_no_relation_vip_level': get_left_vip_options,
 })
 
 page_dc.update({
-    'ChargeType': ChargeTypePage,
+    'VIPPayChannel': VIPPayChannelPage,
 })
