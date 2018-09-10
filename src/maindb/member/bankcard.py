@@ -21,11 +21,11 @@ class BankCard(TablePage):
                 {
                     'fun': 'selected_set_and_save',
                     'editor': 'com-op-btn',
-                    'label': '删除',
+                    'label': '作废',
                     'field': 'active',
                     'value': False,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认删除该银行卡吗?'
+                    'confirm_msg': '确认作废该银行卡吗?'
                 }
             ]
 
