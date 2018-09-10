@@ -49,7 +49,8 @@ class MaxPayoutPage(TablePage):
                 'accountid': 120,
                 'oddstypegroup': 120,
                 'maxpayout': 120,
-                'description': 150
+                'description': 150,
+                'createtime':140
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
