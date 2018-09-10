@@ -21,10 +21,13 @@ class MatchsPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbMatches
-        exclude = []
+        exclude = ['ishidden', 'closelivebet']
         fields_sort = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate', 'period1score', 'matchscore',
-                       'winner', 'statuscode', 'isrecommend', 'livebet', 'ishidden', 'closelivebet', 'marketstatus']
+                       'winner', 'statuscode', 'isrecommend', 'livebet', 'isshow', 'openlivebet', 'marketstatus']
         pop_edit_field = 'matchid'
+
+        def getExtraHead(self):
+            return [{'name': 'isshow', 'label': '显示'}, {'name': 'openlivebet', 'label': '开启走地'}]
 
         class filters(RowFilter):
             range_fields = ['matchdate']
@@ -140,7 +143,7 @@ class MatchsPage(TablePage):
                 head['width'] = dc.get(head['name'])
             if head['name'] == 'matchdate':
                 head['editor'] = 'com-table-label-shower'
-            if head['name'] == 'closelivebet':
+            if head['name'] in ('closelivebet', 'openlivebet', 'isshow'):
                 head['editor'] = 'com-table-bool-shower'
             # if head['name'] == 'matchid':
             # head['editor'] = 'com-table-switch-to-tab'
@@ -152,6 +155,8 @@ class MatchsPage(TablePage):
             return {
                 '_matchid_label': '%(home)s VS %(away)s' % {'home': inst.team1zh, 'away': inst.team2zh},
                 '_matchdate_label': str(inst.matchdate)[: -3],
+                'isshow': not bool(inst.ishidden),
+                'openlivebet': not bool(inst.closelivebet)
             }
 
 
@@ -166,6 +171,11 @@ class MatchForm(ModelFields):
         if head['name'] == 'matchid':
             head['readonly'] = True
         return head
+
+    def dict_row(self, inst):
+        return {'isshow': not bool(inst.ishidden),
+                'openlivebet': not bool(inst.closelivebet)
+                }
 
     def save_form(self):
         super().save_form()
