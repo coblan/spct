@@ -191,21 +191,37 @@ class MaxPayoutForm(ModelFields):
                 setattr(self.instance, vf, None)
         super().save_form()
 
-    # def save_form(self):
-    # keywords = self.keywords.get(self.instance.limittype)
-    # if 'matchid' not in keywords:
-    # self.instance.matchid = null
-    # super().save_form()
-
 
 class LeagueSelect(ModelTable):
     model = TbTournament
-    exclude = []
+    exclude = ['typegroupswitch', 'categoryid', 'uniquetournamentid','createtime']
+    fields_sort = ['tournamentid','tournamentname','issubscribe','openlivebet']
 
     def dict_head(self, head):
+        dc = {
+            'tournamentid': 120,
+            'categoryid': 100,
+            'tournamentname': 250,
+            'createtime': 120
+        }
+        if head['name'] in dc:
+            head['width'] = dc.get(head['name'])
         if head['name'] == 'tournamentname':
             head['editor'] = 'com-table-foreign-click-select'
+        if head['name'] in ('openlivebet'):
+            head['editor'] = 'com-table-bool-shower'
         return head
+
+    def getExtraHead(self):
+        return [{'name': 'openlivebet', 'label': '开启走地'}]
+
+    def dict_row(self, inst):
+        return {
+            'openlivebet': not bool(inst.closelivebet)
+        }
+
+    class search(RowSearch):
+        names = ['tournamentname', 'tournamentid']
 
 
 class MatchSelect(ModelTable):
@@ -216,7 +232,9 @@ class MatchSelect(ModelTable):
         dc = {
             'matchid': 100,
             'tournamentzh': 150,
-
+            'team1zh':150,
+            'team2zh':150,
+            'matchdate':150
         }
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])
