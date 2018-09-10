@@ -14,8 +14,32 @@ class PayChannelPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbPaychannel
-        exclude = ['groupicon','channelicon']
+        exclude = ['groupicon', 'channelicon']
         pop_edit_field = 'channeltype'
+
+        def get_operation(self):
+            create = super().get_operation()[0]
+
+            return [create,
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '启用',
+                        'field': 'active',
+                        'value': True,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认启用该充值渠道吗?'
+                    },
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '禁用',
+                        'field': 'active',
+                        'value': False,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认禁用该充值渠道吗?'
+                    }
+                    ]
 
         class filters(RowFilter):
             names = ['active']
@@ -29,15 +53,12 @@ class PayChannelPage(TablePage):
         class sort(RowSort):
             names = []
 
-        # def get_operation(self):
-        #     return []
-
         def dict_head(self, head):
             dc = {
-                'channelname':120,
+                'channelname': 120,
                 'channeltype': 120,
-                'optionalamount':200,
-                'memo':150
+                'optionalamount': 200,
+                'memo': 150
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -49,7 +70,7 @@ class PayChannelForm(ModelFields):
 
     class Meta:
         model = TbPaychannel
-        exclude = ['groupicon','channelicon']
+        exclude = ['groupicon', 'channelicon']
 
     def save_form(self):
         super().save_form()

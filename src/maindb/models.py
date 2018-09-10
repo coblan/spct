@@ -130,7 +130,7 @@ class TbActivity(models.Model):
     zip = models.CharField(db_column='Zip', max_length=512, null=True)  # Field name made lowercase.
     createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', null=True, default=0,
+    status = models.IntegerField(db_column='Status', null=True, default=1,
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
     priority = models.IntegerField(db_column='Priority', blank=True, null=True)  # Field name made lowercase.
 
@@ -914,7 +914,7 @@ class TbNotice(models.Model):
                                       verbose_name='修改时间')  # Field name made lowercase.
     # createuser = models.ForeignKey(to=User,db_column='CreateUser', blank=True, null=True,db_constraint=False)  #
     createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', default=0, null=True,
+    status = models.IntegerField(db_column='Status', default=1, null=True,
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
     content = models.TextField(db_column='Content', blank=True, null=True, default='')  # Field name made lowercase.
 
@@ -1162,7 +1162,7 @@ class TbQa(models.Model):
     priority = models.SmallIntegerField(db_column='Priority', default=0, blank=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=100)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=1500)  # Field name made lowercase.
-    status = models.SmallIntegerField(db_column='Status', default=0,
+    status = models.SmallIntegerField(db_column='Status', default=1,
                                       choices=ONLINE_STATUS)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
     ver = models.IntegerField(db_column='Ver', default=0, blank=True)  # Field name made lowercase.
@@ -1502,7 +1502,7 @@ class TbBanner(models.Model):
     description = models.CharField(db_column='Description', max_length=1024, blank=True,
                                    null=True)  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', verbose_name=_('status'), null=True, choices=ONLINE_STATUS,
-                                 default=0)  # Field name made lowercase.
+                                 default=1)  # Field name made lowercase.
     navigateurl = models.CharField(db_column='NavigateUrl', max_length=512, verbose_name=_('Navigate Url'), blank=True,
                                    null=True)
 
