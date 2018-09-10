@@ -15,6 +15,10 @@ class AgentUser(TablePage):
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid']
+        fields_sort = ['accountid', 'nickname', 'SumActive', 'AgentAmount', 'BeaeAmount', 'AgentRuleAmount',
+                       'BalanceLostAmount', 'SumLostAmount', 'BonusRate', 'SumBonusAmount', 'SumExpend',
+                       'SumRechargeAmount', 'Poundage', 'AgentRulePercentage', 'SumBetAmount', 'SumWithdrawalAmount',
+                       'SumTurnover', 'CreateTime']
 
         @classmethod
         def clean_search_args(cls, search_args):
@@ -36,8 +40,9 @@ class AgentUser(TablePage):
                 return head
 
         class sort(RowSort):
-            names = ['SumActive', 'SumLostAmount', 'SumBonusAmount', 'SumWithdrawalAmount', 'SumBetAmount',
-                     'SumTurnover']
+            names = ['AgentAmount', 'BeaeAmount', 'SumActive', 'AgentRuleAmount', 'BlanceLostAmount', 'SumLostAmount',
+                     'SumBonusAmount', 'SumWithdrawalAmount', 'SumBetAmount',
+                     'SumTurnover', 'BonusRate', 'SumExpend', 'SumRechargeAmount','AgentRulePercentage']
 
         class search(SelectSearch):
             names = ['nickname']
@@ -61,11 +66,11 @@ class AgentUser(TablePage):
             order_by = self.search_args.get('_sort', '')
             par = self.search_args.get('_par', 0)
             nickname = self.search_args.get('_q', '')
-            
+
             cach_par = self.search_args.get('_cach_par')
             cach_nickname = self.search_args.get('_cach_nickname')
             cach_sort = self.search_args.get('_cach_sort')
-            
+
             self.search_args['_cach_nickname'] = nickname
             self.search_args['_cach_par'] = par
             self.search_args['_cach_sort'] = order_by
@@ -90,7 +95,6 @@ class AgentUser(TablePage):
             else:
                 # 点击 [搜索] 刷新
                 pass
-
 
             if order_by.startswith('-'):
                 order_by = order_by[1:] + ' DESC'
@@ -129,10 +133,10 @@ class AgentUser(TablePage):
                     footer = {}
                     for k, v in row1.items():
                         if k != 'Total' and k.startswith('Total'):
-                            footer['Sum' + k[5:]] = round(v,2)
+                            footer['Sum' + k[5:]] = round(v, 2)
                     self.footer = ['合计'] + self.footer_by_dict(footer)
             # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
-            
+
         def dict_head(self, head):
             if head['name'] == 'SumActive':
                 head['editor'] = 'com-table-call-fun'
@@ -145,20 +149,21 @@ class AgentUser(TablePage):
 
         def getExtraHead(self):
             return [
+                # {'name': 'accountid', 'label': '账号ID ', 'width': 100, },
                 {'name': 'NickName', 'label': '昵称 ', 'width': 100, },
                 # {'name': 'VIPLv', 'label': 'VIP等级', },
-                {'name': 'SumActive', 'label': '活跃用户数','width': 100, },
+                {'name': 'SumActive', 'label': '活跃用户数', 'width': 100, },
                 {'name': 'AgentAmount', 'label': '预估佣金', },
-                {'name': 'BeaeAmount', 'label': '佣金计算基数','width': 120,},
-                {'name': 'AgentRuleAmount','label': '佣金计算金额','width': 120,},
+                {'name': 'BeaeAmount', 'label': '佣金计算基数', 'width': 120, },
+                {'name': 'AgentRuleAmount', 'label': '佣金计算金额', 'width': 120, },
                 {'name': 'BalanceLostAmount', 'label': '累计净盈利', 'width': 100, },
                 {'name': 'SumLostAmount', 'label': '本月净盈利', 'width': 100, },
                 {'name': 'BonusRate', 'label': '返水比例', },
                 {'name': 'SumBonusAmount', 'label': '返水', 'width': 80, },
-                {'name': 'SumExpend', 'label': '系统红利', 'width': 80,},
+                {'name': 'SumExpend', 'label': '系统红利', 'width': 80, },
                 {'name': 'SumRechargeAmount', 'label': '充值金额', 'width': 100, },
-                {'name': 'Poundage','label': '充值手续费','width': 100,},
-                {'name': 'AgentRulePercentage','label': '佣金比例',},
+                {'name': 'Poundage', 'label': '充值手续费', 'width': 100, },
+                {'name': 'AgentRulePercentage', 'label': '佣金比例', },
                 {'name': 'SumBetAmount', 'label': '投注金额', 'width': 120, },
                 {'name': 'SumWithdrawalAmount', 'label': '提现金额', 'width': 100, },
                 {'name': 'SumTurnover', 'label': '流水', 'width': 120, },
@@ -169,7 +174,7 @@ class AgentUser(TablePage):
             self.getData()
             for row in self.child_agents:
                 row['accountid'] = row['AccountID']
-                row['BeaeAmount']=round(row['BeaeAmount'],2)
+                row['BeaeAmount'] = round(row['BeaeAmount'], 2)
                 row['BonusRate'] = round(row['BonusRate'], 3)
                 row['Poundage'] = round(row['Poundage'], 2)
                 row['AgentRuleAmount'] = round(row['AgentRuleAmount'], 2)
@@ -210,10 +215,10 @@ class AgentUser(TablePage):
             ctx = super().get_context()
             ctx['tabs'] = account_tab(self)
             return ctx
-        
-        def get_operation(self): 
+
+        def get_operation(self):
             return [
-                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出Excel','icon': 'fa-file-excel-o',}
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
 
 
