@@ -1629,11 +1629,10 @@ class TbPaychannel(models.Model):
                                     decimal_places=2, verbose_name='最大金额')  # Field name made lowercase.
     optionalamount = models.CharField(db_column='OptionalAmount', max_length=500, verbose_name='快捷金额',
                                       help_text='多个金额以,分割')  # Field name made lowercase.
-    groupway = models.CharField(db_column='GroupWay', max_length=50, verbose_name='分组')  # Field name made lowercase.
-    groupicon = models.CharField(db_column='GroupIcon', max_length=150)  # Field name made lowercase.
     channelicon = models.CharField(db_column='ChannelIcon', max_length=150)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=150, verbose_name='备注')  # Field name made lowercase.
-
+    channelgroupid = models.IntegerField(db_column='ChannelGroupID')  # Field name made lowercase.
+     
     class Meta:
         managed = False
         db_table = 'TB_PayChannel'
