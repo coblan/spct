@@ -226,6 +226,11 @@ class AccoutBaseinfo(ModelFields):
     field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'createtime']
     readonly = ['createtime', 'account', 'nickname', 'amount']
 
+    def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
+        if kw.get('accountid'):
+            pk = kw.get('accountid')
+        super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
+        
     def clean_dict(self, dc):
         if dc.get('password') == 1:
             dc['password'] = gen_pwsd()
