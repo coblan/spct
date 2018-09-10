@@ -82,7 +82,7 @@ class HelpPage(TablePage):
         
         def get_operation(self):
             operations= ModelTable.get_operation(self)
-            operations.append({'fun':'update_help_file','label':'更新帮助文件','editor':'com-op-btn',})
+            operations.append({'fun':'update_help_file','label':'更新缓存','editor':'com-op-btn',})
             return operations
         
         class filters(RowFilter):

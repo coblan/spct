@@ -4,86 +4,90 @@ from ..rabbitmq_instance import updateSpread
 import json
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 
+
 class BetTypePage(TablePage):
     template = 'jb_admin/table.html'
-    extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
-    
-    def get_label(self): 
+    extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
+
+    def get_label(self):
         return '玩法设置'
-    def get_context(self): 
+
+    def get_context(self):
         ctx = super().get_context()
         ctx.update({
             'extra_table_logic': 'oddstypegroup_logic',
         })
         return ctx
-    
+
     class tableCls(ModelTable):
         model = TbOddstypegroup
         exclude = []
-        fields_sort = ['bettype','oddstypenamezh', 'periodtype',  'spread', 'enabled']
+        fields_sort = ['bettype', 'oddstypenamezh', 'periodtype', 'spread', 'enabled']
         pop_edit_field = 'oddstypenamezh'
-        
-        #def inn_filter(self, query): 
-            #return query.filter(enabled = 1)
-        
+
+        # def inn_filter(self, query):
+        # return query.filter(enabled = 1)
+
         def get_operation(self):
             return [
-                    {
-                        'fun': 'selected_set_and_save',
-                        'editor': 'com-op-btn',
-                        'label': '启用',
-                        'field': 'enabled',
-                        'value': 1,
-                        'row_match': 'one_row',
-                        'confirm_msg': '确认启用该玩法吗?'
-                    },
-                    {
-                        'fun': 'selected_set_and_save',
-                        'editor': 'com-op-btn',
-                        'label': '禁用',
-                        'field': 'enabled',
-                        'value': 0,
-                        'row_match': 'one_row',
-                        'confirm_msg': '确认禁用该玩法吗?'
-                    }
-                    ]
-        
-        def dict_head(self, head): 
+                {
+                    'fun': 'selected_set_and_save',
+                    'editor': 'com-op-btn',
+                    'label': '启用',
+                    'field': 'enabled',
+                    'value': 1,
+                    'row_match': 'one_row',
+                    # 'match_field': 'enabled', 'match_values': [0], 'match_msg': '只能选择禁用的玩法！',
+                    'confirm_msg': '确认启用该玩法吗?'
+                },
+                {
+                    'fun': 'selected_set_and_save',
+                    'editor': 'com-op-btn',
+                    'label': '禁用',
+                    'field': 'enabled',
+                    'value': 0,
+                    'row_match': 'one_row',
+                    'confirm_msg': '确认禁用该玩法吗?'
+                }
+            ]
+
+        def dict_head(self, head):
             dc = {
                 'oddstypenamezh': 200,
             }
-            if dc.get( head['name'] ):
-                head['width'] = dc.get( head['name'] )
+            if dc.get(head['name']):
+                head['width'] = dc.get(head['name'])
             return head
-    
+
 
 class BetTypeForm(ModelFields):
     class Meta:
         model = TbOddstypegroup
         exclude = []
-    readonly = ['bettype','oddstypenamezh', 'periodtype']
-    field_sort = ['bettype','oddstypenamezh', 'periodtype', 'spread']
-    
-    def dict_head(self, head): 
+
+    readonly = ['bettype', 'oddstypenamezh', 'periodtype']
+    field_sort = ['bettype', 'oddstypenamezh', 'periodtype', 'spread']
+
+    def dict_head(self, head):
         if head['name'] == 'spread':
             head['fv_rule'] = 'range(0~1);two_valid_digit'
             head['step'] = 0.01
         return head
-    
-    def save_form(self): 
+
+    def save_form(self):
         rt = super().save_form()
-        
+
         ls = [
             {'BetType': self.instance.bettype,
              'PeriodType': self.instance.periodtype,
-             'Spread':float( self.instance.spread )
+             'Spread': float(self.instance.spread)
              }
         ]
-        
+
         updateSpread(json.dumps(ls))
-        
+
         return rt
-        
+
 
 director.update({
     'maindb.TbOddstypeGroupPage': BetTypePage.tableCls,
