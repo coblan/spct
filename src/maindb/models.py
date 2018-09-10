@@ -797,30 +797,30 @@ class TbMatchesBetstatus(models.Model):
 class TbMaxpayout(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     limittype = models.ForeignKey(to='TbMaxpayouttype', db_constraint=False,
-                                  db_column='LimitType')  # Field name made lowercase.
+                                  db_column='LimitType', verbose_name = '限制类型')  # Field name made lowercase.
     # tournamentid = models.IntegerField(db_column='TournamentID', blank=True, null=True)  # Field name made lowercase.
     tournamentid = models.ForeignKey(to='TbTournament', db_constraint=False, db_column='TournamentID', blank=True,
-                                     default=0, null=True)  # Field name made lowercase.
+                                     default=0, null=True, verbose_name = '联赛')  # Field name made lowercase.
     # matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
     matchid = models.ForeignKey(to=TbMatches, db_constraint=False, to_field='matchid', db_column='MatchID', blank=True,
-                                default=0, null=True)  # Field name made lowercase.
+                                default=0, null=True, verbose_name = '比赛')  # Field name made lowercase.
     # limittype = models.IntegerField(db_column='LimitType')  # Field name made lowercase.
 
     # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_constraint=False, db_column='AccountID', blank=True,
-                                  null=True, )  # Field name made lowercase.
+                                  null=True, verbose_name = '账号')  # Field name made lowercase.
     # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
     oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, db_column='OddsTypeGroup', blank=True,
-                                      null=True, to_field='oddstypegroup')
+                                      null=True, to_field='oddstypegroup', verbose_name = '玩法类型')
     viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True,
-                                choices=VIP_LEVEL)  # Field name made lowercase.
+                                choices=VIP_LEVEL, verbose_name= 'VIP等级')  # Field name made lowercase.
     maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18,
-                                    decimal_places=2)  # Field name made lowercase.
+                                    decimal_places=2, verbose_name= '最大赔付')  # Field name made lowercase.
     # issingle = models.BooleanField(db_column='IsSingle')  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', default=1, blank=True)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', default=1, blank=True, verbose_name= '状态')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True,
-                                   null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+                                   null=True, verbose_name = '备注')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now= True, verbose_name= '修改时间')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:

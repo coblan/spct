@@ -58,27 +58,6 @@ class MaxPayoutPage(TablePage):
 
             return head
 
-        # def dict_row(self, inst):
-        # if inst.limittype in [11, 21]:
-        # relationno_label = ''
-        # elif inst.limittype in [12, 22]:
-        # relationno_label = 'ERROR'
-        # for i in  self.oddstype_options:
-        # if i['value'] == inst.relationno:
-        # relationno_label = i['label']
-        # break
-        # elif inst.limittype in [13 ]:
-        # relationno_label = 'ERROR'
-        # for i in  self.user_options:
-        # if i['value'] == inst.relationno:
-        # relationno_label = i['label']
-        # break
-
-        # return {
-        # '_relationno_label': relationno_label,
-        # 'match': inst.matchid.team1zh,
-        # }
-
         class search(RowSearch):
             names = ['matchid']
 
@@ -89,15 +68,6 @@ class MaxPayoutPage(TablePage):
                         return query.filter(matchid_id=self.q)
                     else:
                         return query.filter(pk=-1)
-                    # exp=None
-                    # for name in self.valid_name:
-                    # kw ={}
-                    # kw['%s__icontains'%name] =self.q
-                    # if exp is None:
-                    # exp = Q(**kw)
-                    # else:
-                    # exp = exp | Q(**kw)
-                    # return query.filter(exp)
                 else:
                     return query
 
