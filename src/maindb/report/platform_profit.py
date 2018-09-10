@@ -64,6 +64,7 @@ class PlatformProfit(TablePage):
         return '平台亏盈'
 
     class tableCls(SimTable):
+        fields_sort = ['Profit','BetAmount','Turnover','BetBonus','BetOutCome','RechargeBonus','BirthdayBonus','RescueBonus','AdjustAmount']
 
         @classmethod
         def clean_search_args(cls, search_args):

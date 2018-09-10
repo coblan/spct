@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director, SelectSearch
 from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatches
-from django.db.models import Q, Sum, F
+from django.db.models import Q, Sum, F, Case, When
 import re
 from django.db import connections
 
@@ -84,16 +84,21 @@ class TicketMasterPage(TablePage):
             return [{'name': 'profit', 'label': '亏盈'}]
 
         def dict_row(self, inst):
-            return {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)}
+            if inst.status == 2:
+                return {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)}
 
         def inn_filter(self, query):
             return query.order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus'))
 
         def statistics(self, query):
             dc = query.aggregate(total_betamount=Sum('betamount'), total_betoutcome=Sum('betoutcome'),
-                                 total_turnover=Sum('turnover'), total_bonus=Sum('bonus'))
-            dc = {k: v or 0 for (k, v) in dc.items()}
-            dc['total_profit'] = dc['total_betoutcome'] - dc['total_betamount'] + dc['total_bonus']
+                                 total_turnover=Sum('turnover'), total_bonus=Sum('bonus'),
+                                 total_profit=Sum(
+                                     Case(When(status=2, then=F('betoutcome') - F('betamount') + F('bonus')),
+                                          default=0)))
+
+            # dc = {k: v or 0 for (k, v) in dc.items()}
+            # dc['total_profit'] = dc['total_betoutcome'] - dc['total_betamount'] + dc['total_bonus']
             mapper = {
                 'betamount': 'total_betamount',
                 'betoutcome': 'total_betoutcome',

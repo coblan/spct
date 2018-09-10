@@ -4,7 +4,7 @@ import re
 from django.db import connections
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter
 from helpers.director.table.row_search import SelectSearch
-from ..models import TbMatches
+from ..models import TbMatches, MATCH_STATUS
 from helpers.director.base_data import director
 from django.utils import timezone
 
@@ -18,6 +18,12 @@ class MatchesStatisticsPage(TablePage):
     class tableCls(ModelTable):
         model = TbMatches
         include = ['matchid']
+
+        def dict_head(self,head):
+            if head['name']=='StatusCode':
+                head['options']= [{'value':value,'label':label} for(value,label) in MATCH_STATUS]
+                head['editor']='com-table-mapper'
+            return head
 
         @classmethod
         def clean_search_args(cls, search_args):
