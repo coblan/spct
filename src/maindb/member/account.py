@@ -116,10 +116,11 @@ class AccountPage(TablePage):
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
-                   'isenablewithdraw', 'sumrechargecount', 'sumwithdrawcount','rechargeamount', 'withdrawamount','createtime', 'source']
-        fields_sort = ['accountid', 'account', 'nickname', 'createtime', 'source', 'viplv', 'status',
-                       'isenablewithdraw', 'amount', 'bonusrate', 'agentamount',
-                       'sumrechargecount', 'sumwithdrawcount','rechargeamount','withdrawamount']
+                   'isenablewithdraw', 'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount',
+                   'createtime', 'source']
+        fields_sort = ['accountid', 'account', 'nickname', 'createtime', 'source', 'bonusrate', 'viplv', 'status',
+                       'isenablewithdraw', 'amount', 'agentamount',
+                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount']
 
         class filters(RowFilter):
             range_fields = ['createtime']
