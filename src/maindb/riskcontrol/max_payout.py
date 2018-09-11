@@ -5,7 +5,7 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, 
     model_to_name
 from helpers.director.table.row_search import SelectSearch
 from ..models import TbMaxpayout, TbMatches, TbOddstypegroup, TbMaxpayouttype, TbTournament
-from ..riskcontrol.blanklist import AccountSelect
+from ..riskcontrol.black_users import AccountSelect
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from django import forms

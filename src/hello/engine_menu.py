@@ -83,13 +83,13 @@ class PcMenu(BaseEngine):
             {'label': _('RiskControl'), 'icon': fa('fa-lock'), 'visible': True,
              'submenu': [
                  {'label': _('最大赔付'), 'url': page('maxpayout'), 'visible': can_touch(TbLimit, crt_user), },
-                 {'label': _('Tb Blankuserlist'), 'url': page('blackuserlist'),
-                  'visible': can_touch(TbBlackuserlist, crt_user), },
                  {'label': '提现控制', 'url': page('parameterinfo'), 'visible': can_touch(TbTeams, crt_user), },
+                 {'label': _('Tb Blankuserlist'), 'url': page('black_users'),
+                  'visible': can_touch(TbBlackuserlist, crt_user), },
                  # {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
-                 # {'label':_('Black IP Range'),'url':page('maindb.BlankipRangeList'), 'visible': can_touch(Blackiprangelist, crt_user),},
-                 # {'label':_('White IP'),'url':page('maindb.WhiteIpList'), 'visible': can_touch(Whiteiplist, crt_user),},
-                 # {'label':_('White User'),'url':page('maindb.Whiteuserlist'), 'visible': can_touch(Whiteuserlist, crt_user),},
+                 {'label':_('Black IP Range'),'url':page('blackip_range'), 'visible': can_touch(Blackiprangelist, crt_user),},
+                 {'label':_('White IP'),'url':page('white_ips'), 'visible': can_touch(Whiteiplist, crt_user),},
+                 {'label':_('White User'),'url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
              ]},
 
             {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,

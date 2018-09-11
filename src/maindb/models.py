@@ -47,7 +47,7 @@ class Blackiprangelist(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'BlackIpRangeList'
+        db_table = 'TB_BlackIpRangeList'
 
 
 class TbAccount(models.Model):
@@ -1523,7 +1523,7 @@ class Whiteiplist(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'WhiteIpList'
+        db_table = 'TB_WhiteIpList'
 
 
 class Whiteuserlist(models.Model):
@@ -1543,7 +1543,7 @@ class Whiteuserlist(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'WhiteUserList'
+        db_table = 'TB_WhiteUserList'
 
 
 class TbBankcard(models.Model):
