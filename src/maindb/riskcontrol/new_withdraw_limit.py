@@ -20,10 +20,10 @@ class WithDrawLimitContralPage(TablePage):
         
         def get_operation(self): 
             return [
-                {'fun':'RapidOpen','editor':'com-op-btn','icon': 'fa-plus','label':'急速提现开',},
-                {'fun':'RapidClose','editor':'com-op-btn','icon': 'fa-plus','label':'急速提现关',},
-                {'fun':'WithdrawOpen','editor':'com-op-btn','icon': 'fa-plus','label':'普通提现开',},
-                {'fun':'WithdrawClose','editor':'com-op-btn','icon': 'fa-plus','label':'普通提现关',},
+                {'fun': 'selected_set_and_save','editor': 'com-op-btn', 'label': '启用', 'field': 'isactive',
+                 'value': True, 'confirm_msg': '确认启用这些设置项？'}, 
+                {'fun': 'selected_set_and_save','editor': 'com-op-btn', 'label': '禁用', 'field': 'isactive',
+                 'value': False, 'confirm_msg': '确认禁用这些设置项？'}
             ]
         
         class search(RowSearch):

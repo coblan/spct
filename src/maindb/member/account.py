@@ -219,11 +219,15 @@ class AccountPage(TablePage):
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置资金密码？'},
                 {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
                  'fields_ctx': modifyer.get_head_context()},
+                {'fun': 'selected_set_and_save','editor': 'com-op-btn', 'label': '允许提现', 'field': 'isenablewithdraw',
+                 'value': 1, 'confirm_msg': '确认允许这些用户提现？'}, 
+                {'fun': 'selected_set_and_save','editor': 'com-op-btn', 'label': '禁止提现', 'field': 'isenablewithdraw',
+                 'value': 0, 'confirm_msg': '确认禁止这些用户提现？'}
             ]
 
 
 class AccoutBaseinfo(ModelFields):
-    field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'createtime']
+    field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'isenablewithdraw', 'createtime']
     readonly = ['createtime', 'account', 'nickname', 'amount']
 
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
