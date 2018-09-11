@@ -33,6 +33,8 @@ class ActivityPage(TablePage):
                 'createtime':150,
             
             }
+            if head['name'] == 'status':
+                head['editor'] = 'com-table-bool-shower'
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])
 
@@ -49,12 +51,32 @@ class ActivityPage(TablePage):
             }  
         
         def get_operation(self):
-            operations = ModelTable.get_operation(self)
-            operations.append({
-                'fun':'update_activity_file',
-                'label':'更新缓存',
-                'editor':'com-op-btn'
-            })
+            operations = ModelTable.get_operation(self)[0:1]
+            operations.extend([
+                {
+                    'fun': 'selected_set_and_save',
+                    'editor': 'com-op-btn',
+                    'label': '在线',
+                    'field': 'status',
+                    'value': 1,
+                    'row_match': 'one_row',
+                    'confirm_msg': '确认修改为在线吗?'
+                },
+                {
+                    'fun': 'selected_set_and_save',
+                    'editor': 'com-op-btn',
+                    'label': '离线',
+                    'field': 'status',
+                    'value': 0,
+                    'row_match': 'one_row',
+                    'confirm_msg': '确认修改为离线吗?'
+                },
+                {
+                    'fun': 'update_activity_file',
+                    'label': '更新缓存',
+                    'editor': 'com-op-btn'
+                }
+            ])
             return operations
         
         def get_context(self):
