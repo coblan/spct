@@ -1330,7 +1330,8 @@ var mix_fields_data = {
         var self = this;
         ex.assign(this.op_funs, {
             save: function save() {
-                self.save();
+                //self.save()
+                self.submit();
             }
         });
     },
@@ -1347,15 +1348,21 @@ var mix_fields_data = {
             this.data_getter(this);
         },
         setErrors: function setErrors(errors) {
+            // errors:{field:['xxx','bbb']}
             ex.each(this.heads, function (head) {
                 if (errors[head.name]) {
                     Vue.set(head, 'error', errors[head.name].join(';'));
+                    delete errors[head.name];
                 } else if (head.error) {
                     //delete head.error
                     Vue.delete(head, 'error');
                     //Vue.set(head,'error',null)
                 }
             });
+
+            if (!ex.isEmpty(errors)) {
+                layer.alert(JSON.stringify(errors));
+            }
         },
         dataSaver: function dataSaver(callback) {
             var post_data = [{ fun: 'save_row', row: this.row }];
@@ -1363,33 +1370,60 @@ var mix_fields_data = {
                 callback(resp.save_row);
             });
         },
-        save: function save() {
+        submit: function submit() {
             var self = this;
-
             this.setErrors({});
-            //eventBus.$emit('sync_data')
             ex.vueBroadCall(self, 'commit');
-
-            if (self.before_save() == 'break') {
-                return;
-            }
+            Vue.nextTick(function () {
+                if (!self.isValid()) {
+                    return;
+                }
+                self.save();
+            });
+        },
+        save: function save() {
+            //var self =this;
+            //this.setErrors({})
+            //ex.vueBroadCall(self,'commit')
+            //if(!this.isValid()){
+            //    return
+            //}
+            //if(self.before_save() == 'break'){
+            //    return
+            //}
             //var loader = layer.load(2)
+            var self = this;
             cfg.show_load();
-            self.dataSaver(function (rt) {
+
+            var post_data = [{ fun: 'save_row', row: this.row }];
+            ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                var rt = resp.save_row;
                 if (rt.errors) {
                     cfg.hide_load();
                     self.setErrors(rt.errors);
-                    self.showErrors(rt.errors);
+                    //self.showErrors(rt.errors)
                 } else {
-                    cfg.hide_load(1000);
+                    cfg.hide_load(2000);
                     self.after_save(rt.row);
                     self.setErrors({});
                 }
             });
+
+            //self.dataSaver(function(rt){
+            //    if( rt.errors){
+            //        cfg.hide_load()
+            //        self.setErrors(rt.errors)
+            //        self.showErrors(rt.errors)
+            //    }else{
+            //        cfg.hide_load(1000)
+            //        self.after_save(rt.row)
+            //        self.setErrors({})
+            //    }
+            //})
         },
-        before_save: function before_save() {
-            return 'continue';
-        },
+        //before_save:function(){
+        //    return 'continue'
+        //},
         afterSave: function afterSave(resp) {},
         after_save: function after_save(new_row) {
             ex.assign(this.row, new_row);
@@ -1478,14 +1512,14 @@ var nice_validator = {
             });
             return valid;
         },
-        before_save: function before_save() {
-            ex.vueSuper(this, { mixin: nice_validator, fun: 'before_save' });
-            if (this.isValid()) {
-                return 'continue';
-            } else {
-                return 'break';
-            }
-        },
+        //before_save:function(){
+        //    ex.vueSuper(this,{mixin:nice_validator,fun:'before_save'})
+        //    if(this.isValid()){
+        //        return 'continue'
+        //    }else{
+        //        return 'break'
+        //    }
+        //},
         showErrors: function showErrors(errors) {
             for (var k in errors) {
                 //var head = ex.findone(this.heads,{name:k})
@@ -1886,6 +1920,19 @@ var mix_table_data = {
                     //layer.msg('删除成功',{time:2000})
                 });
             });
+        },
+        get_attr: function get_attr(name) {
+            if (name == undefined) {
+                return false;
+            }
+            if (name.startsWith('!')) {
+                name = name.slice(1);
+                name = name.trim();
+                return !this[name];
+            } else {
+                name = name.trim();
+                return this[name];
+            }
         }
 
     }
@@ -2785,6 +2832,20 @@ Vue.component('com-table-picture', picture);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+/*
+* head={
+*   inn_editor: com-table-mapper  //【可选】 传入一个 table_editor ，除了具备该editor的显示方式外，还具备点击功能
+*   get_row:{
+*       fun:'get_table_row',
+*   },
+*   fields_ctx={},
+*   after_save:{
+*       fun:'update_or_insert'
+*   }
+* }
+*
+* */
+
 var pop_fields = exports.pop_fields = {
     template: '<span @click="edit_me()" class="clickable">\n        <component v-if="head.inn_editor" :is="head.inn_editor" :rowData="rowData" :field="field" :index="index"></component>\n        <span v-else v-text="show_text"  ></span>\n    </span>',
     props: ['rowData', 'field', 'index'],
@@ -3536,6 +3597,7 @@ var ajax_table = {
             row_sort: heads_ctx.row_sort,
             director_name: heads_ctx.director_name,
             footer: heads_ctx.footer || [],
+            ops: heads_ctx.ops || [],
             rows: [],
             row_pages: {},
             //search_tip:this.kw.search_tip,
@@ -3554,7 +3616,7 @@ var ajax_table = {
     //        this.get_data()
     //    }
     //},
-    template: '<div class="rows-block flex-v" style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 3em;" >\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n        <div class="box box-success flex-grow">\n            <div class="table-wraper" style="position: absolute;top:0;left:0;bottom: 0;right:0;">\n               <el-table class="table" ref="e_table"\n                              :data="rows"\n                              border\n                              show-summary\n                              :fit="false"\n                              :stripe="true"\n                              size="mini"\n                              @sort-change="sortChange($event)"\n                              @selection-change="handleSelectionChange"\n                              :summary-method="getSum"\n                              height="100%"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="head in heads">\n\n                            <el-table-column v-if="head.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                                <template slot-scope="scope">\n                                    <component :is="head.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :prop="head.name"\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                            </el-table-column>\n\n                        </template>\n\n                    </el-table>\n            </div>\n\n        </div>\n          <div>\n                    <el-pagination\n                        @size-change="on_perpage_change"\n                        @current-change="get_page"\n                        :current-page="row_pages.crt_page"\n                        :page-sizes="[20, 50, 100, 500]"\n                        :page-size="row_pages.perpage"\n                        layout="total, sizes, prev, pager, next, jumper"\n                        :total="row_pages.total">\n                </el-pagination>\n            </div>\n    </div>',
+    template: '<div class="rows-block flex-v" style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 3em;" >\n        <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n            <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>\n            <div class="flex-grow"></div>\n        </div>\n\n        <div  v-if="ops.length>0">\n            <div class="oprations" style="padding: 5px">\n                <component v-for="op in ops"\n                           :is="op.editor"\n                           :ref="\'op_\'+op.name"\n                           :head="op"\n                           :disabled="get_attr(op.disabled)"\n                           v-show="! get_attr(op.hide)"\n                           @operation="on_operation(op)"></component>\n            </div>\n        </div>\n\n        <div class="box box-success flex-grow">\n            <div class="table-wraper" style="position: absolute;top:0;left:0;bottom: 0;right:0;">\n               <el-table class="table" ref="e_table"\n                              :data="rows"\n                              border\n                              show-summary\n                              :fit="false"\n                              :stripe="true"\n                              size="mini"\n                              @sort-change="sortChange($event)"\n                              @selection-change="handleSelectionChange"\n                              :summary-method="getSum"\n                              height="100%"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="head in heads">\n\n                            <el-table-column v-if="head.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                                <template slot-scope="scope">\n                                    <component :is="head.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(head) "\n                                             :prop="head.name"\n                                             :label="head.label"\n                                             :sortable="is_sort(head)"\n                                             :width="head.width">\n                            </el-table-column>\n\n                        </template>\n\n                    </el-table>\n            </div>\n\n        </div>\n          <div>\n                    <el-pagination\n                        @size-change="on_perpage_change"\n                        @current-change="get_page"\n                        :current-page="row_pages.crt_page"\n                        :page-sizes="[20, 50, 100, 500]"\n                        :page-size="row_pages.perpage"\n                        layout="total, sizes, prev, pager, next, jumper"\n                        :total="row_pages.total">\n                </el-pagination>\n            </div>\n    </div>',
 
     methods: {
         on_show: function on_show() {
@@ -3825,7 +3887,7 @@ var com_pop_field = exports.com_pop_field = {
             });
         }
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div class="field-panel suit" >\n            <field  v-for="head in real_heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div class="field-panel suit" >\n            <field  v-for="head in real_heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n      <div style="height: 1em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {
