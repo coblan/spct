@@ -50,7 +50,7 @@ class MaxPayoutPage(TablePage):
                 'oddstypegroup': 120,
                 'maxpayout': 120,
                 'description': 150,
-                'createtime':140
+                'createtime': 140
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -63,7 +63,8 @@ class MaxPayoutPage(TablePage):
             return head
 
         class search(SelectSearch):
-            names = ['tournament','team1zh','bettype','nickname']
+            names = ['tournament', 'team1zh', 'bettype', 'nickname']
+
             # exact_names = ['matchid']
 
             def get_option(self, name):
@@ -91,7 +92,7 @@ class MaxPayoutPage(TablePage):
                     return super().get_express(q_str)
 
         class filters(RowFilter):
-            names = ['status','viplv']
+            names = ['status', 'viplv']
 
 
 class MaxPayoutForm(ModelFields):
@@ -120,7 +121,7 @@ class MaxPayoutForm(ModelFields):
             ('Vip', 'viplv'),
         )
         keywords = {}
-        for x in TbMaxpayouttype.objects.all():
+        for x in TbMaxpayouttype.objects.filter(isenable=True):
             bb = x.enum.strip()
             for item in mapper:
                 bb = bb.replace(item[0], item[1])
@@ -160,6 +161,7 @@ class MaxPayoutForm(ModelFields):
             head['keywords'] = self.keywords
             head['order'] = True
             head['placeholder'] = '请选择'
+            head['options'] = [{'value': x.pk, 'label': str(x)} for x in TbMaxpayouttype.objects.filter(isenable=True)]
 
         if head['name'] == 'status':
             head['check_label'] = '启用'
@@ -216,8 +218,8 @@ class MaxPayoutForm(ModelFields):
 
 class LeagueSelect(ModelTable):
     model = TbTournament
-    exclude = ['typegroupswitch', 'categoryid', 'uniquetournamentid','createtime']
-    fields_sort = ['tournamentid','tournamentname','issubscribe','openlivebet']
+    exclude = ['typegroupswitch', 'categoryid', 'uniquetournamentid', 'createtime']
+    fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet']
 
     def dict_head(self, head):
         dc = {
@@ -254,9 +256,9 @@ class MatchSelect(ModelTable):
         dc = {
             'matchid': 100,
             'tournamentzh': 150,
-            'team1zh':150,
-            'team2zh':150,
-            'matchdate':150
+            'team1zh': 150,
+            'team2zh': 150,
+            'matchdate': 150
         }
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])
