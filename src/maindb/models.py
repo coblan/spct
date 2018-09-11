@@ -1348,22 +1348,23 @@ class TbTicketmaster(models.Model):
 class TbTicketparlay(models.Model):
     """串关规则"""
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    # ticketid = models.BigIntegerField(db_column='TicketID')
-    ticket_master = models.ForeignKey(TbTicketmaster, db_column='TicketID', db_constraint=False, verbose_name=_(
-        'ticket master'))
+    #ticketid = models.BigIntegerField(db_column='TicketID')
+    ticket_master = models.ForeignKey(to = 'TbTicketmaster', db_column='TicketID', db_constraint=False, 
+                                      verbose_name=_('ticket master'), to_field = 'ticketid')
+    
     # ticketid = models.CharField(db_column='TicketID', max_length=20)  # Field name made lowercase.
     parlay1tid = models.ForeignKey(to='TbTicketstake', db_constraint=False, db_column='Parlay1Tid',
-                                   verbose_name='子注单ID1', related_name='Ticketparlay1')
+                                   verbose_name='子注单ID1', related_name='Ticketparlay1', null = True)
     parlay2tid = models.ForeignKey(to='TbTicketstake', db_constraint=False, db_column='Parlay2Tid',
-                                   verbose_name='子注单ID2', related_name='Ticketparlay2')
+                                   verbose_name='子注单ID2', related_name='Ticketparlay2', null = True)
     parlay3tid = models.ForeignKey(to='TbTicketstake', db_constraint=False, db_column='Parlay3Tid',
-                                   verbose_name='子注单ID3', related_name='Ticketparlay3')
+                                   verbose_name='子注单ID3', related_name='Ticketparlay3', null = True)
     parlay4tid = models.ForeignKey(to='TbTicketstake', db_constraint=False, db_column='Parlay4Tid',
-                                   verbose_name='子注单ID4', related_name='Ticketparlay4')
+                                   verbose_name='子注单ID4', related_name='Ticketparlay4', null = True)
     parlay5tid = models.ForeignKey(to='TbTicketstake', db_constraint=False, db_column='Parlay5Tid',
-                                   verbose_name='子注单ID5', related_name='Ticketparlay5')
+                                   verbose_name='子注单ID5', related_name='Ticketparlay5', null = True)
     parlay6tid = models.ForeignKey(to='TbTicketstake', db_constraint=False, db_column='Parlay6Tid',
-                                   verbose_name='子注单ID6', related_name='Ticketparlay6')
+                                   verbose_name='子注单ID6', related_name='Ticketparlay6', null = True)
 
     # parlay1tid = models.BigIntegerField(db_column='Parlay1Tid',verbose_name='子注单ID1')  # Field name made lowercase.
     # parlay2tid = models.BigIntegerField(db_column='Parlay2Tid',verbose_name='子注单ID2')  # Field name made lowercase.
@@ -1391,8 +1392,8 @@ class TbTicketstake(models.Model):
     """子注单"""
     tid = models.AutoField(db_column='Tid', primary_key=True, verbose_name='序号')  # Field name made lowercase.
     # ticketid = models.CharField(db_column='TicketID', max_length=20)  # Field name made lowercase.
-    ticket_master = models.ForeignKey(TbTicketmaster, db_column='TicketID', db_constraint=False, verbose_name=_(
-        'ticket master'))
+    ticket_master = models.ForeignKey(TbTicketmaster, db_column='TicketID', 
+                                      db_constraint=False, verbose_name=_('ticket master'))
     stakeid = models.SmallIntegerField(db_column='StakeID')  # Field name made lowercase.
     # accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
     match = models.ForeignKey(TbMatches, db_constraint=False, db_column='MatchID', to_field='matchid')

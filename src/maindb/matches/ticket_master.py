@@ -60,16 +60,15 @@ class TicketMasterPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbTicketmaster
-        exclude = []
-        fields_sort = ['ticketid', 'orderid', 'accountid', 'parlayrule', 'status',
+        exclude = ['accountid']
+        fields_sort = ['ticketid', 'orderid', 'accountid__nickname', 'parlayrule', 'status',
                        'winbet', 'stakeamount', 'betamount', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
-                       'createtime',
-                       'settletime', 'memo']
+                       'createtime','settletime', 'memo']
 
         def dict_head(self, head):
             if head['name'] in ['createtime', 'settletime']:
                 head['width'] = 140
-            elif head['name'] in ['status', 'orderid', 'accountid', 'betamount', 'betoutcome', 'turnover', 'bonus',
+            elif head['name'] in ['status', 'orderid', 'accountid__nickname', 'betamount', 'betoutcome', 'turnover', 'bonus',
                                   'profit']:
                 head['width'] = 120
             else:
@@ -84,11 +83,15 @@ class TicketMasterPage(TablePage):
             return [{'name': 'profit', 'label': '亏盈'}]
 
         def dict_row(self, inst):
+            dc = {
+                'accountid__nickname': inst.accountid__nickname,
+            }
             if inst.status == 2:
-                return {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)}
+                dc.update( {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)} )
+            return dc
 
         def inn_filter(self, query):
-            return query.order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus'))
+            return query.order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus')).annotate(accountid__nickname = F('accountid__nickname'))
 
         def statistics(self, query):
             dc = query.aggregate(total_betamount=Sum('betamount'), total_betoutcome=Sum('betoutcome'),
@@ -97,8 +100,6 @@ class TicketMasterPage(TablePage):
                                      Case(When(status=2, then=F('betoutcome') - F('betamount') + F('bonus')),
                                           default=0)))
 
-            # dc = {k: v or 0 for (k, v) in dc.items()}
-            # dc['total_profit'] = dc['total_betoutcome'] - dc['total_betamount'] + dc['total_bonus']
             mapper = {
                 'betamount': 'total_betamount',
                 'betoutcome': 'total_betoutcome',
@@ -158,28 +159,6 @@ class TicketMasterPage(TablePage):
                 else:
                     return super().clean_search()
 
-            # def get_context(self):
-            # ls = []
-            # for name in self.valid_name:
-            # ls.append(_(self.model._meta.get_field(name).verbose_name))
-            # dc = {
-            # 'search_tip': ','.join(ls) + ',matchid',
-            # 'editor': 'com-search-filter',
-            # 'name': '_q'
-            # }
-            # return dc
-
-            # def get_query(self, query):
-            # if self.q:
-            # exp = Q(account=self.q)
-            # if re.search('^\d+$', self.q):
-            # exp = exp | Q(ticketid=self.q) | Q(tbticketstake__match_id=self.q)
-            ## return query.filter(Q(ticketid__icontains = self.q) | Q(account__icontains = self.q) | \
-            ## Q(tbticketstake__match_id = self.q)).distinct()
-            # return query.filter(exp).distinct()
-
-            # else:
-            # return query
 
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
@@ -278,9 +257,9 @@ class TicketstakeTable(TicketTabBase):
         return head
 
 
-class TicketparlayTable(TicketTabBase):
+class TicketparlayTable(ModelTable):
     model = TbTicketparlay
-    exclude = ['tid', 'ticketid']
+    exclude = ['tid']
 
     def dict_head(self, head):
         if head['name'] == 'createtime':
@@ -291,8 +270,9 @@ class TicketparlayTable(TicketTabBase):
         return head
 
     def inn_filter(self, query):
-        return query.filter(
-            ticket_master_id=self.ticketid)  # .select_related('parlay1tid__match', 'parlay2tid__match', 'parlay3tid__match', 'parlay4tid__match', 'parlay5tid__match',  'parlay6tid__match')
+        ticketid = self.kw.get('ticketid')
+        #master = TbTicketmaster.objects.get(ticketid = ticketid)
+        return query.filter(ticket_master_id = ticketid )  # .select_related('parlay1tid__match', 'parlay2tid__match', 'parlay3tid__match', 'parlay4tid__match', 'parlay5tid__match',  'parlay6tid__match')
 
     def dict_row(self, inst):
         dc = {}

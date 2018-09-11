@@ -21,7 +21,7 @@ class MatchsPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbMatches
-        exclude = ['ishidden', 'closelivebet']
+        exclude = []  # 'ishidden', 'closelivebet'
         fields_sort = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate', 'period1score', 'matchscore',
                        'winner', 'statuscode', 'isrecommend', 'livebet', 'isshow', 'openlivebet', 'marketstatus']
         pop_edit_field = 'matchid'
