@@ -9,7 +9,6 @@ from ..riskcontrol.blanklist import AccountSelect
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from django import forms
-import re
 
 
 class MaxPayoutPage(TablePage):
@@ -17,7 +16,7 @@ class MaxPayoutPage(TablePage):
     extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
-        return '最大赔付'  # maxpayout
+        return '最大赔付'
 
     class tableCls(ModelTable):
         model = TbMaxpayout
@@ -36,10 +35,19 @@ class MaxPayoutPage(TablePage):
                 {'value': 5, 'label': '等级五', },
             ]
 
-        # def getExtraHead(self):
-        # return [
-        # {'name': 'match','label': '比赛',}
-        # ]
+        def get_operation(self):
+            create = super().get_operation()[0]
+            return [create,
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '作废',
+                        'field': 'status',
+                        'value': False,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认作废该限制类型吗?'
+                    }
+                    ]
 
         def dict_head(self, head):
             dc = {
@@ -161,14 +169,13 @@ class MaxPayoutForm(ModelFields):
             head['keywords'] = self.keywords
             # head['order'] = True
             head['placeholder'] = '请选择'
-            head['options'] = [{'value': x.pk, 'label': str(x)} for x in TbMaxpayouttype.objects.filter(isenable=True).order_by('level')]
+            head['options'] = [{'value': x.pk, 'label': str(x)} for x in
+                               TbMaxpayouttype.objects.filter(isenable=True).order_by('level')]
+        if head['name'] in( 'oddstypegroup','viplv'):
+            head['placeholder'] = '请选择'
 
         if head['name'] == 'status':
             head['check_label'] = '启用'
-
-        # if head['name'] == 'relationno':
-        # head['user_options'] = self.user_options
-        # head['oddstype_options'] = self.oddstype_options
 
         return head
 
