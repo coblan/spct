@@ -159,9 +159,9 @@ class MaxPayoutForm(ModelFields):
         if head['name'] == 'limittype':
             head['var_fields'] = self.var_fields
             head['keywords'] = self.keywords
-            head['order'] = True
+            # head['order'] = True
             head['placeholder'] = '请选择'
-            head['options'] = [{'value': x.pk, 'label': str(x)} for x in TbMaxpayouttype.objects.filter(isenable=True)]
+            head['options'] = [{'value': x.pk, 'label': str(x)} for x in TbMaxpayouttype.objects.filter(isenable=True).order_by('level')]
 
         if head['name'] == 'status':
             head['check_label'] = '启用'
