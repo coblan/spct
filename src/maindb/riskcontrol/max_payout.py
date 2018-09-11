@@ -18,7 +18,7 @@ class MaxPayoutPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbMaxpayout
-        exclude = ['updatetime']
+        exclude = ['updatetime',]
         pop_edit_field = 'tid'
 
         def __init__(self, *args, **kw):
@@ -33,11 +33,10 @@ class MaxPayoutPage(TablePage):
                 {'value': 5, 'label': '等级五', },
             ]
 
-        # def getExtraHead(self):
-        # return [
-        # {'name': 'match','label': '比赛',}
-        # ]
-
+        #def inn_filter(self, query): 
+            #query = super().inn_filter(query)
+            #return query.select_related('limittype', 'matchid', 'accountid', 'tournamentid')
+        
         def dict_head(self, head):
             dc = {
                 'limittype': 200,
