@@ -1529,12 +1529,10 @@ class Whiteiplist(models.Model):
 class Whiteuserlist(models.Model):
     whiteuserlistid = models.AutoField(db_column='WhiteUserListID', primary_key=True,
                                        verbose_name=_('WhiteUserListID'))  # Field name made lowercase.
-    username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,
-                                verbose_name=_('UserName'))  # Field name made lowercase.
+
     # userid = models.IntegerField(db_column='UserID', blank=True, null=True)  # Field name made lowercase.
     account = models.ForeignKey(TbAccount, db_column='UserID', db_constraint=False, verbose_name=_('Account'))
-    itype = models.IntegerField(db_column='Itype', blank=True, null=True,
-                                verbose_name=_('Itype'))  # Field name made lowercase.
+
     memo = models.CharField(db_column='Memo', max_length=100, blank=True, null=True,
                             verbose_name=_('Memo'))  # Field name made lowercase.
     addtime = models.DateTimeField(db_column='AddTime', blank=True, null=True,

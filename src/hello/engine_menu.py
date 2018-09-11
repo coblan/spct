@@ -84,8 +84,8 @@ class PcMenu(BaseEngine):
              'submenu': [
                  {'label': _('最大赔付'), 'url': page('maxpayout'), 'visible': can_touch(TbLimit, crt_user), },
                  {'label': '提现控制', 'url': page('parameterinfo'), 'visible': can_touch(TbTeams, crt_user), },
-                 {'label': _('Tb Blankuserlist'), 'url': page('black_users'),
-                  'visible': can_touch(TbBlackuserlist, crt_user), },
+                 # {'label': _('Tb Blankuserlist'), 'url': page('black_users'),
+                 #  'visible': can_touch(TbBlackuserlist, crt_user), },
                  # {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
                  {'label':_('Black IP Range'),'url':page('blackip_range'), 'visible': can_touch(Blackiprangelist, crt_user),},
                  {'label':_('White IP'),'url':page('white_ips'), 'visible': can_touch(Whiteiplist, crt_user),},
