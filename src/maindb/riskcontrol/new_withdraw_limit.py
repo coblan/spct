@@ -11,7 +11,7 @@ class WithDrawLimitContralPage(TablePage):
 
     class tableCls(ModelTable):
         pop_edit_field = 'memo'
-        fields_sort = ['memo', 'isactive', 'value', 'daysnumber', 'leveltype', 'tag', ]
+        fields_sort = ['memo',  'value', 'daysnumber', 'leveltype','isactive', 'tag', ]
         model = TbParameterinfo
         exclude = []
 
