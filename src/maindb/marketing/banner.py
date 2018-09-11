@@ -39,17 +39,13 @@ class BannerPage(TablePage):
                 head['editor'] = 'com-table-label-shower'
 
             if head['name'] in ['status']:
-                head['editor'] = 'com-table-mapper'
-
+                head['editor'] = 'com-table-bool-shower'
                 head['options'] = [{'value': x[0], 'label': x[1], } for x in ONLINE_STATUS]  # dict( ONLINE_STATUS )
 
             if head['name'] == 'title':
                 head['editor'] = 'com-table-pop-fields'
                 head['fields_ctx'] = BannerForm(crt_user=self.crt_user).get_head_context()
-                # head['fields_heads']=BannerForm(crt_user=self.crt_user).get_heads()
                 head['get_row'] = {
-                    # 'fun':'use_table_row'
-                    # "fun":'get_table_row'
                     'fun': 'get_with_relat_field',
                     'kws': {
                         "director_name": 'banner.table.edit',
@@ -69,7 +65,7 @@ class BannerPage(TablePage):
             }
 
         def get_operation(self):
-            ops = ModelTable.get_operation(self)
+            ops =  [ModelTable.get_operation(self)[0]]
             ops.extend([
                 {
                     'fun': 'selected_set_and_save',

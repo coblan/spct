@@ -57,6 +57,8 @@ class BetTypePage(TablePage):
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
+            elif head['name'] == 'enabled':
+                head['editor'] = 'com-table-bool-shower'
             return head
 
 

@@ -35,9 +35,11 @@ class ActivityPage(TablePage):
             }
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])
-                
+
             if head['name'] =='createuser':
-                head['editor']='com-table-label-shower'   
+                head['editor']='com-table-label-shower'
+            elif head['name'] == 'status':
+                head['editor'] = 'com-table-bool-shower'
             return head
         
         def dict_row(self, row):
