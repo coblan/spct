@@ -33,4 +33,5 @@ from .money import balancelog
 
 from .admin_agent import agentuser
 from .admin_agent import agent_commission
+from .riskcontrol import new_withdraw_limit
 
