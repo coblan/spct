@@ -911,7 +911,7 @@ class TbNotice(models.Model):
     title = models.CharField(db_column='Title', max_length=1024, blank=False, null=True)  # Field name made lowercase.
     url = models.CharField(db_column='Url', max_length=512, blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
-                                      verbose_name='修改时间')  # Field name made lowercase.
+                                      verbose_name='创建时间')  # Field name made lowercase.
     # createuser = models.ForeignKey(to=User,db_column='CreateUser', blank=True, null=True,db_constraint=False)  #
     createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', default=1, null=True,

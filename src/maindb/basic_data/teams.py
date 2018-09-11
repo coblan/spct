@@ -29,6 +29,9 @@ class TeamsPage(TablePage):
         pop_edit_field = 'enname'
         fields_sort = ['enname', 'saenname', 'status', 'zhname', 'country', 'leaguename', 'icon']
 
+        def get_operation(self):
+            return [super().get_operation()[0]]
+
         class filters(RowFilter):
             names = ['country', 'leaguename', 'status']
 
@@ -48,10 +51,10 @@ class TeamsPage(TablePage):
                 return head
 
             @staticmethod
-            def getLeagueOptions( related): 
-                contry = related  #kws.get('related')
-                query = TbTeams.objects.filter(country = contry).values_list('leaguename', flat = True).distinct()
-                options = [{ 'value':x,'label':str(x)} for x in query]
+            def getLeagueOptions(related):
+                contry = related  # kws.get('related')
+                query = TbTeams.objects.filter(country=contry).values_list('leaguename', flat=True).distinct()
+                options = [{'value': x, 'label': str(x)} for x in query]
                 return options
 
         class search(RowSearch):
