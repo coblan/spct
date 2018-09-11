@@ -48,6 +48,7 @@ class HelpPage(TablePage):
     class tableCls(ModelTable):
         model = TbQa
         exclude=[]
+        hide_fields = ['type']
         #pop_edit_field='title'
         fields_sort=['title','mtype','status']
         
