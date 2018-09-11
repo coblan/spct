@@ -159,7 +159,7 @@ class WhiteUserListPage(TablePage):
 
     class tableCls(ModelTable):
         model = Whiteuserlist
-        exclude = ['username', 'addtime', 'itype']
+        exclude = [ 'addtime']
 
         pop_edit_field = 'whiteuserlistid'
 
@@ -167,7 +167,7 @@ class WhiteUserListPage(TablePage):
 class WhiteUserForm(ModelFields):
     class Meta:
         model = Whiteuserlist
-        exclude = ['username', 'addtime']
+        exclude = ['addtime']
 
     def dict_head(self, head):
         if head['name'] == 'account':
