@@ -27,13 +27,6 @@ class MaxPayoutPage(TablePage):
             super().__init__(*args, **kw)
             self.oddstype_options = [{'value': x.oddstypegroup, 'label': x.oddstypenamezh, } for x in
                                      TbOddstypegroup.objects.filter(enabled=1)]
-            self.user_options = [
-                {'value': 1, 'label': '等级一', },
-                {'value': 2, 'label': '等级二', },
-                {'value': 3, 'label': '等级三', },
-                {'value': 4, 'label': '等级四', },
-                {'value': 5, 'label': '等级五', },
-            ]
 
         def get_operation(self):
             create = super().get_operation()[0]
@@ -73,8 +66,6 @@ class MaxPayoutPage(TablePage):
         class search(SelectSearch):
             names = ['tournament', 'team1zh', 'bettype', 'nickname']
 
-            # exact_names = ['matchid']
-
             def get_option(self, name):
                 if name == 'tournament':
                     return {'value': 'tournament', 'label': '联赛', }
@@ -111,15 +102,6 @@ class MaxPayoutForm(ModelFields):
     extra_mixins = ['maxpayout_form_logic']
 
     def __init__(self, *args, **kw):
-
-        # self.oddstype_options = [{'value': x.oddstypegroup, 'label': x.oddstypenamezh,} for x in TbOddstypegroup.objects.filter(enabled = 1)]
-        self.user_options = [
-            {'value': 1, 'label': '等级一', },
-            {'value': 2, 'label': '等级二', },
-            {'value': 3, 'label': '等级三', },
-            {'value': 4, 'label': '等级四', },
-            {'value': 5, 'label': '等级五', },
-        ]
         self.var_fields = ['accountid', 'matchid', 'tournamentid', 'oddstypegroup', 'viplv']
         mapper = (
             ('User', 'accountid'),
@@ -136,16 +118,6 @@ class MaxPayoutForm(ModelFields):
             keywords[x.pk] = bb.split('_')
         self.keywords = keywords
         super().__init__(*args, **kw)
-
-    # def clean_dict(self, dc):
-    # dc['matchid'] = dc.get('matchid', 0)
-    # dc['tournamentid'] = dc.get('tournamentid', 0)
-    # dc['accountid'] = dc.get('accountid', 0)
-    # dc['oddstypegroup'] = dc.get('oddstypegroup', 0)
-    # dc['viplv'] = dc.get('viplv', 0)
-    # dc = super().clean_dict(dc)
-
-    # return dc
 
     def dict_head(self, head):
         if head['name'] == 'tournamentid':
@@ -171,7 +143,7 @@ class MaxPayoutForm(ModelFields):
             head['placeholder'] = '请选择'
             head['options'] = [{'value': x.pk, 'label': str(x)} for x in
                                TbMaxpayouttype.objects.filter(isenable=True).order_by('level')]
-        if head['name'] in( 'oddstypegroup','viplv'):
+        if head['name'] in ('oddstypegroup', 'viplv'):
             head['placeholder'] = '请选择'
 
         if head['name'] == 'status':
@@ -180,24 +152,7 @@ class MaxPayoutForm(ModelFields):
         return head
 
     def dict_row(self, inst):
-        # if inst.limittype in [11, 21]:
-        # relationno_label = ''
-        # elif inst.limittype in [12, 22]:
-        # relationno_label = 'ERROR'
-        # for i in  self.oddstype_options:
-        # if i['value'] == inst.relationno:
-        # relationno_label = i['label']
-        # break
-        # elif inst.limittype in [13 ]:
-        # relationno_label = 'ERROR'
-        # for i in  self.user_options:
-        # if i['value'] == inst.relationno:
-        # relationno_label = i['label']
-        # break
-
         return {
-            # '_relationno_label': relationno_label,
-            # 'relationno': inst.relationno or 1,
             'createtime': inst.createtime.strftime('%Y-%m-%d %H:%M:%S') if inst.createtime else '',
             'updatetime': inst.updatetime.strftime('%Y-%m-%d %H:%M:%S') if inst.updatetime else '',
         }
