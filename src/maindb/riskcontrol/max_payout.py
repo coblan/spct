@@ -1,12 +1,14 @@
+from django.db.models import Q
+
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowSearch, ModelFields, RowFilter, \
     field_map, \
     model_to_name
+from helpers.director.table.row_search import SelectSearch
 from ..models import TbMaxpayout, TbMatches, TbOddstypegroup, TbMaxpayouttype, TbTournament
 from ..riskcontrol.blanklist import AccountSelect
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from django import forms
-import re
 
 
 class MaxPayoutPage(TablePage):
@@ -14,11 +16,11 @@ class MaxPayoutPage(TablePage):
     extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
-        return '最大赔付'  # maxpayout
+        return '最大赔付'
 
     class tableCls(ModelTable):
         model = TbMaxpayout
-        exclude = ['updatetime',]
+        exclude = ['updatetime']
         pop_edit_field = 'tid'
 
         def __init__(self, *args, **kw):
@@ -33,10 +35,20 @@ class MaxPayoutPage(TablePage):
                 {'value': 5, 'label': '等级五', },
             ]
 
-        #def inn_filter(self, query): 
-            #query = super().inn_filter(query)
-            #return query.select_related('limittype', 'matchid', 'accountid', 'tournamentid')
-        
+        def get_operation(self):
+            create = super().get_operation()[0]
+            return [create,
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '作废',
+                        'field': 'status',
+                        'value': False,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认作废该限制类型吗?'
+                    }
+                    ]
+
         def dict_head(self, head):
             dc = {
                 'limittype': 200,
@@ -45,7 +57,8 @@ class MaxPayoutPage(TablePage):
                 'accountid': 120,
                 'oddstypegroup': 120,
                 'maxpayout': 120,
-                'description': 150
+                'description': 150,
+                'createtime': 140
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -57,18 +70,37 @@ class MaxPayoutPage(TablePage):
 
             return head
 
-        class search(RowSearch):
-            names = ['matchid']
+        class search(SelectSearch):
+            names = ['tournament', 'team1zh', 'bettype', 'nickname']
 
-            def get_query(self, query):
-                if self.q:
-                    if re.search('^\d+$', self.q):
+            # exact_names = ['matchid']
 
-                        return query.filter(matchid_id=self.q)
-                    else:
-                        return query.filter(pk=-1)
+            def get_option(self, name):
+                if name == 'tournament':
+                    return {'value': 'tournament', 'label': '联赛', }
+                elif name == 'team1zh':
+                    return {'value': 'team1zh', 'label': '比赛', }
+                elif name == 'bettype':
+                    return {'value': 'bettype', 'label': '玩法', }
+                elif name == 'nickname':
+                    return {'value': 'nickname', 'label': '昵称', }
                 else:
-                    return query
+                    return super().get_option(name)
+
+            def get_express(self, q_str):
+                if self.qf == 'tournament':
+                    return Q(tournamentid__tournamentname__icontains=q_str)
+                elif self.qf == 'team1zh':
+                    return Q(matchid__team1zh__icontains=q_str) | Q(matchid__team2zh__icontains=q_str)
+                elif self.qf == 'bettype':
+                    return Q(oddstypegroup__oddstypenamezh__icontains=q_str)
+                elif self.qf == 'nickname':
+                    return Q(accountid__nickname__icontains=q_str)
+                else:
+                    return super().get_express(q_str)
+
+        class filters(RowFilter):
+            names = ['status', 'viplv']
 
 
 class MaxPayoutForm(ModelFields):
@@ -97,7 +129,7 @@ class MaxPayoutForm(ModelFields):
             ('Vip', 'viplv'),
         )
         keywords = {}
-        for x in TbMaxpayouttype.objects.all():
+        for x in TbMaxpayouttype.objects.filter(isenable=True):
             bb = x.enum.strip()
             for item in mapper:
                 bb = bb.replace(item[0], item[1])
@@ -135,15 +167,15 @@ class MaxPayoutForm(ModelFields):
         if head['name'] == 'limittype':
             head['var_fields'] = self.var_fields
             head['keywords'] = self.keywords
-            head['order'] = True
+            # head['order'] = True
+            head['placeholder'] = '请选择'
+            head['options'] = [{'value': x.pk, 'label': str(x)} for x in
+                               TbMaxpayouttype.objects.filter(isenable=True).order_by('level')]
+        if head['name'] in( 'oddstypegroup','viplv'):
             head['placeholder'] = '请选择'
 
         if head['name'] == 'status':
             head['check_label'] = '启用'
-
-        # if head['name'] == 'relationno':
-        # head['user_options'] = self.user_options
-        # head['oddstype_options'] = self.oddstype_options
 
         return head
 
@@ -193,8 +225,8 @@ class MaxPayoutForm(ModelFields):
 
 class LeagueSelect(ModelTable):
     model = TbTournament
-    exclude = ['typegroupswitch', 'categoryid', 'uniquetournamentid','createtime']
-    fields_sort = ['tournamentid','tournamentname','issubscribe','openlivebet']
+    exclude = ['typegroupswitch', 'categoryid', 'uniquetournamentid', 'createtime']
+    fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet']
 
     def dict_head(self, head):
         dc = {
@@ -231,9 +263,9 @@ class MatchSelect(ModelTable):
         dc = {
             'matchid': 100,
             'tournamentzh': 150,
-            'team1zh':150,
-            'team2zh':150,
-            'matchdate':150
+            'team1zh': 150,
+            'team2zh': 150,
+            'matchdate': 150
         }
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])

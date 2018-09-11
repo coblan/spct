@@ -808,7 +808,7 @@ class TbMaxpayout(models.Model):
 
     # accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_constraint=False, db_column='AccountID', blank=True,
-                                  null=True, verbose_name = '账号')  # Field name made lowercase.
+                                  null=True, verbose_name = '用户昵称')  # Field name made lowercase.
     # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
     oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, db_column='OddsTypeGroup', blank=True,
                                       null=True, to_field='oddstypegroup', verbose_name = '玩法类型')
@@ -820,7 +820,7 @@ class TbMaxpayout(models.Model):
     status = models.IntegerField(db_column='Status', default=1, blank=True, verbose_name= '状态')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True,
                                    null=True, verbose_name = '备注')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now= True, verbose_name= '修改时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now= True, verbose_name= '创建时间')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:

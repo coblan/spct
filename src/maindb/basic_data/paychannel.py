@@ -16,7 +16,8 @@ class PayChannelPage(TablePage):
         model = TbPaychannel
         # exclude = ['channelicon']
         pop_edit_field = 'paychannelid'
-        fields_sort = ['paychannelid','channelgroupid','channelname','channeltype','active','minamount','maxamount','optionalamount','channelicon','memo']
+        fields_sort = ['paychannelid', 'channelgroupid', 'channelname', 'channeltype', 'active', 'minamount',
+                       'maxamount', 'optionalamount', 'channelicon', 'memo']
 
         def get_operation(self):
             create = super().get_operation()[0]
@@ -56,11 +57,11 @@ class PayChannelPage(TablePage):
 
         def dict_head(self, head):
             dc = {
-                'channelgroupid':120,
+                'channelgroupid': 120,
                 'channelname': 120,
                 'channeltype': 120,
                 'optionalamount': 200,
-                'channelicon':150,
+                'channelicon': 150,
                 'memo': 150
             }
             if dc.get(head['name']):
@@ -70,6 +71,11 @@ class PayChannelPage(TablePage):
 
 class PayChannelForm(ModelFields):
     # readonly = ['channelname','channeltype','groupway','memo']
+
+    def dict_head(self, head):
+        if head['name'] == 'channelgroupid':
+            head['placeholder'] = '请选择'
+        return head
 
     class Meta:
         model = TbPaychannel
