@@ -23,6 +23,9 @@ class AppResource(TablePage):
                 head['width'] =dc.get(head['name'])
             return head
 
+        def get_operation(self):
+            return ModelTable.get_operation(self)[0:1]
+
 class AppResourceForm(ModelFields):
     hide_fields = ['md5']
     class Meta:

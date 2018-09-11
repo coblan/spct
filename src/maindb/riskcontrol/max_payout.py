@@ -44,11 +44,12 @@ class MaxPayoutPage(TablePage):
 
         def dict_head(self, head):
             dc = {
-                'limittype': 200,
+                'tid': 60,
+                'limittype': 180,
                 'tournamentid': 150,
-                'matchid': 150,
+                'matchid': 200,
                 'accountid': 120,
-                'oddstypegroup': 120,
+                'oddstypegroup': 100,
                 'maxpayout': 120,
                 'description': 150,
                 'createtime': 140
