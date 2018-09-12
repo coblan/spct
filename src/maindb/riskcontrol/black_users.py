@@ -84,8 +84,10 @@ class BlackIPRangeListPage(TablePage):
 
         def dict_head(self, head):
             dc = {
-                'startip': 100,
-                'endip': 100,
+                'startip': 120,
+                'endip': 120,
+                'remark':150,
+                'area':150
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -162,6 +164,11 @@ class WhiteUserListPage(TablePage):
         exclude = ['addtime']
 
         pop_edit_field = 'whiteuserlistid'
+
+        def dict_head(self, head):
+            if head['name'] in( 'account','memo'):
+                head['width'] = 150
+            return head
 
 
 class WhiteUserForm(ModelFields):

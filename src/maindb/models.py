@@ -1531,7 +1531,7 @@ class Whiteuserlist(models.Model):
                                        verbose_name=_('WhiteUserListID'))  # Field name made lowercase.
 
     # userid = models.IntegerField(db_column='UserID', blank=True, null=True)  # Field name made lowercase.
-    account = models.ForeignKey(TbAccount, db_column='UserID', db_constraint=False, verbose_name=_('Account'))
+    account = models.ForeignKey(TbAccount, db_column='UserID', db_constraint=False, verbose_name='用户昵称')
 
     memo = models.CharField(db_column='Memo', max_length=100, blank=True, null=True,
                             verbose_name=_('Memo'))  # Field name made lowercase.
