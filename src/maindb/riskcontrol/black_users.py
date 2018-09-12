@@ -86,12 +86,35 @@ class BlackIPRangeListPage(TablePage):
             dc = {
                 'startip': 120,
                 'endip': 120,
-                'remark':150,
-                'area':150
+                'remark': 150,
+                'area': 150
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             return head
+
+        def get_operation(self):
+            create = super().get_operation()[0]
+            return [create,
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '启用',
+                        'field': 'iswork',
+                        'value': True,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认启用该IP黑名单范围吗?'
+                    },
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '禁用',
+                        'field': 'iswork',
+                        'value': False,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认禁用该IP黑名单范围吗?'
+                    }
+                    ]
 
 
 class BlackIPRangeForm(ModelFields):
@@ -141,6 +164,29 @@ class WhiteIpListPage(TablePage):
                 head['width'] = dc.get(head['name'])
             return head
 
+        def get_operation(self):
+            create = super().get_operation()[0]
+            return [create,
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '启用',
+                        'field': 'iswork',
+                        'value': True,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认启用该IP白名单吗?'
+                    },
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '禁用',
+                        'field': 'iswork',
+                        'value': False,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认禁用该IP白名单吗?'
+                    }
+                    ]
+
 
 class WhiteIPForm(ModelFields):
     class Meta:
@@ -162,21 +208,35 @@ class WhiteUserListPage(TablePage):
     class tableCls(ModelTable):
         model = Whiteuserlist
         exclude = ['addtime']
-
         pop_edit_field = 'whiteuserlistid'
-        
-        def dict_head(self, head): 
-            dc = {
-                'account': 150,
-            }
-            if dc.get(head['name']):
-                head['width'] = dc.get(head['name'])
-            return head
 
         def dict_head(self, head):
-            if head['name'] in( 'account','memo'):
+            if head['name'] in ('account', 'memo'):
                 head['width'] = 150
             return head
+
+        def get_operation(self):
+            create = super().get_operation()[0]
+            return [create,
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '启用',
+                        'field': 'iswork',
+                        'value': True,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认启用该用户白名单吗?'
+                    },
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '禁用',
+                        'field': 'iswork',
+                        'value': False,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认禁用该用户白名单吗?'
+                    }
+                    ]
 
 
 class WhiteUserForm(ModelFields):
@@ -194,7 +254,7 @@ class WhiteUserForm(ModelFields):
 
 class AccountSelect(ModelTable):
     model = TbAccount
-    include = ['accountid', 'nickname',]
+    include = ['accountid', 'nickname', ]
 
     def dict_head(self, head):
         dc = {
@@ -207,8 +267,8 @@ class AccountSelect(ModelTable):
         if head['name'] == 'accountid':
             head['editor'] = 'com-table-foreign-click-select'
         return head
-    
-    def dict_row(self, inst): 
+
+    def dict_row(self, inst):
         return {
             'account': inst.accountid,
         }
