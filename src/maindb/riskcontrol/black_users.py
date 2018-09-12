@@ -118,7 +118,8 @@ class BlackIPRangeListPage(TablePage):
 
 
 class BlackIPRangeForm(ModelFields):
-    # hide_fields = ['startipnum', '']
+    hide_fields = ['startipnum', 'endipnum']
+
     class Meta:
         model = Blackiprangelist
         exclude = []
