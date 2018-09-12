@@ -162,6 +162,14 @@ class WhiteUserListPage(TablePage):
         exclude = ['addtime']
 
         pop_edit_field = 'whiteuserlistid'
+        
+        def dict_head(self, head): 
+            dc = {
+                'account': 150,
+            }
+            if dc.get(head['name']):
+                head['width'] = dc.get(head['name'])
+            return head
 
 
 class WhiteUserForm(ModelFields):
@@ -179,7 +187,7 @@ class WhiteUserForm(ModelFields):
 
 class AccountSelect(ModelTable):
     model = TbAccount
-    include = ['accountid', 'nickname']
+    include = ['accountid', 'nickname',]
 
     def dict_head(self, head):
         dc = {
@@ -192,6 +200,11 @@ class AccountSelect(ModelTable):
         if head['name'] == 'accountid':
             head['editor'] = 'com-table-foreign-click-select'
         return head
+    
+    def dict_row(self, inst): 
+        return {
+            'account': inst.accountid,
+        }
 
     class search(RowSearch):
         names = ['accountid', 'nickname']
@@ -199,7 +212,7 @@ class AccountSelect(ModelTable):
 
 def ip2num(ip):
     arr = ip.split('.')
-    num = 256 * 256 * 256 * long(arr[0]) + 256 * 256 * long(arr[1]) + 256 * long(arr[2]) + long(arr[3])
+    num = 256 * 256 * 256 * int(arr[0]) + 256 * 256 * int(arr[1]) + 256 * int(arr[2]) + int(arr[3])
     return num
 
 
