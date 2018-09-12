@@ -1518,8 +1518,8 @@ class Whiteiplist(models.Model):
     ip = models.CharField(db_column='Ip', max_length=16)  # Field name made lowercase.
     remark = models.CharField(db_column='Remark', max_length=200,
                               verbose_name=_('Remark'))  # Field name made lowercase.
-    iswork = models.BooleanField(db_column='IsWork', verbose_name=_('IsWork'))  # Field name made lowercase.
-    itype = models.IntegerField(db_column='IType')  # Field name made lowercase.
+    iswork = models.BooleanField(db_column='IsWork', verbose_name=_('IsWork'),default=True)  # Field name made lowercase.
+
 
     class Meta:
         managed = False
@@ -1537,7 +1537,7 @@ class Whiteuserlist(models.Model):
                             verbose_name=_('Memo'))  # Field name made lowercase.
     addtime = models.DateTimeField(db_column='AddTime', blank=True, null=True,
                                    verbose_name=_('AddTime'))  # Field name made lowercase.
-    iswork = models.BooleanField(db_column='IsWork', verbose_name=_('IsWork'))  # Field name made lowercase.
+    iswork = models.BooleanField(db_column='IsWork', verbose_name=_('IsWork'),default=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

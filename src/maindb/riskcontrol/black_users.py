@@ -6,67 +6,66 @@ from ..models import TbBlackuserlist, TbBlackuserlistLog, Blackiprangelist, \
     Whiteiplist, Whiteuserlist, TbAccount
 
 
-class BlackUserListPage(TablePage):
-    template = 'jb_admin/table.html'
+# class BlackUserListPage(TablePage):
+#     template = 'jb_admin/table.html'
+#
+#     def get_label(self):
+#         return _('Main.TbBlackuserlist')
+#
+#     class tableCls(ModelTable):
+#         model = TbBlackuserlist
+#         exclude = []
+#
+#         def dict_head(self, head):
+#             dc = {
+#                 'blackuserlistid': 120,
+#                 'accounttype': 100
+#             }
+#             if dc.get(head['name']):
+#                 head['width'] = dc.get(head['name'])
+#             return head
+#
+#
+# class BlackUserForm(ModelFields):
+#     class Meta:
+#         model = TbBlackuserlist
+#         exclude = ['accountid', 'accounttype', 'username', 'accounttpe' ,'addtime']
+#
+#     def dict_head(self, head):
+#         if head['name'] == 'account':
+#             table_obj = AccountSelect(crt_user=self.crt_user)
+#             head['editor'] = 'com-field-pop-table-select'
+#             head['table_ctx'] = table_obj.get_head_context()
+#         return head
 
-    def get_label(self):
-        return _('Main.TbBlackuserlist')
 
-    class tableCls(ModelTable):
-        model = TbBlackuserlist
-        exclude = []
-
-        def dict_head(self, head):
-            dc = {
-                'blackuserlistid': 120,
-                'accounttype': 100,
-                'ban_status': 100
-            }
-            if dc.get(head['name']):
-                head['width'] = dc.get(head['name'])
-            return head
-
-
-class BlackUserForm(ModelFields):
-    class Meta:
-        model = TbBlackuserlist
-        exclude = ['accountid', 'accounttype', 'username', 'accounttpe' ,'addtime']
-
-    def dict_head(self, head):
-        if head['name'] == 'account':
-            table_obj = AccountSelect(crt_user=self.crt_user)
-            head['editor'] = 'com-field-pop-table-select'
-            head['table_ctx'] = table_obj.get_head_context()
-        return head
-
-
-class BlackUserListLogPage(TablePage):
-    template = 'jb_admin/table.html'
-
-    def get_label(self):
-        return _('Main.TbBlackuserlistLog')
-
-    class tableCls(ModelTable):
-        model = TbBlackuserlistLog
-        exclude = []
-
-        def dict_head(self, head):
-            dc = {
-                'blacklogid': 100,
-                'before_ban_status': 130,
-                'alter_ban_status': 120,
-                'modify_user': 120,
-
-            }
-            if dc.get(head['name']):
-                head['width'] = dc.get(head['name'])
-            return head
-
-        # class BlankiplistPage(TablePage):
-    # template='jb_admin/table.html'
-    # class tableCls(ModelTable):
-    # model=Blackiplist
-    # exclude=[]
+# class BlackUserListLogPage(TablePage):
+#     template = 'jb_admin/table.html'
+#
+#     def get_label(self):
+#         return _('Main.TbBlackuserlistLog')
+#
+#     class tableCls(ModelTable):
+#         model = TbBlackuserlistLog
+#         exclude = []
+#
+#         def dict_head(self, head):
+#             dc = {
+#                 'blacklogid': 100,
+#                 'before_ban_status': 130,
+#                 'alter_ban_status': 120,
+#                 'modify_user': 120,
+#
+#             }
+#             if dc.get(head['name']):
+#                 head['width'] = dc.get(head['name'])
+#             return head
+#
+#         # class BlankiplistPage(TablePage):
+#     # template='jb_admin/table.html'
+#     # class tableCls(ModelTable):
+#     # model=Blackiplist
+#     # exclude=[]
 
 
 class BlackIPRangeListPage(TablePage):
@@ -126,7 +125,6 @@ class WhiteIpListPage(TablePage):
 
     class tableCls(ModelTable):
         model = Whiteiplist
-        exclude = ['itype']
         pop_edit_field = 'whiteiplistid'
 
         def dict_head(self, head):
@@ -208,9 +206,9 @@ def ip2num(ip):
 # model_dc[Whiteuserlist]={'fields':WhiteuserlistForm}
 
 director.update({
-    'risk.TbBlackuserlistPage': BlackUserListPage.tableCls,
-    'risk.TbBlackuserlistPage.edit': BlackUserForm,
-    'risk.TbBlackuserlistLogPage': BlackUserListLogPage.tableCls,
+    # 'risk.TbBlackuserlistPage': BlackUserListPage.tableCls,
+    # 'risk.TbBlackuserlistPage.edit': BlackUserForm,
+    # 'risk.TbBlackuserlistLogPage': BlackUserListLogPage.tableCls,
 
     'risk.WhiteIpListPage': WhiteIpListPage.tableCls,
     'risk.WhiteIpListPage.edit': WhiteIPForm,
@@ -224,8 +222,8 @@ director.update({
 })
 
 page_dc.update({
-    'black_users': BlackUserListPage,
-    'maindb.TbBlackuserlistLog': BlackUserListLogPage,
+    # 'black_users': BlackUserListPage,
+    # 'maindb.TbBlackuserlistLog': BlackUserListLogPage,
     'blackip_range': BlackIPRangeListPage,
     'white_ips': WhiteIpListPage,
     'white_users': WhiteUserListPage,
