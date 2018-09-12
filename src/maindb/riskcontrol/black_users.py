@@ -1,8 +1,10 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from django.utils.translation import ugettext as _
+
+from numpy import long
+
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowSearch, director
-from ..models import TbBlackuserlist, TbBlackuserlistLog, Blackiprangelist, \
+from ..models import Blackiprangelist, \
     Whiteiplist, Whiteuserlist, TbAccount
 
 
@@ -157,7 +159,7 @@ class WhiteUserListPage(TablePage):
 
     class tableCls(ModelTable):
         model = Whiteuserlist
-        exclude = [ 'addtime']
+        exclude = ['addtime']
 
         pop_edit_field = 'whiteuserlistid'
 
@@ -200,10 +202,6 @@ def ip2num(ip):
     num = 256 * 256 * 256 * long(arr[0]) + 256 * 256 * long(arr[1]) + 256 * long(arr[2]) + long(arr[3])
     return num
 
-
-# model_dc[Blackiprangelist]={'fields':BlankipRangeListForm}
-# model_dc[Whiteiplist]={'fields':WhiteIpListForm}
-# model_dc[Whiteuserlist]={'fields':WhiteuserlistForm}
 
 director.update({
     # 'risk.TbBlackuserlistPage': BlackUserListPage.tableCls,

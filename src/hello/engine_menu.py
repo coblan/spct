@@ -89,7 +89,7 @@ class PcMenu(BaseEngine):
                  # {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
                  {'label':_('Black IP Range'),'url':page('blackip_range'), 'visible': can_touch(Blackiprangelist, crt_user),},
                  {'label':_('White IP'),'url':page('white_ips'), 'visible': can_touch(Whiteiplist, crt_user),},
-                 {'label':_('White User'),'url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
+                 {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
              ]},
 
             {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,
