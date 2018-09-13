@@ -15,9 +15,9 @@ from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from ..redisInstance import redisInst
 
 
-class FeedBack(TablePage):
+class Feedback(TablePage):
     template = 'jb_admin/table.html'
-    extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
+
 
     def get_label(self):
         return '用户留言'
@@ -25,7 +25,12 @@ class FeedBack(TablePage):
     class tableCls(ModelTable):
         model = TbAgentleavemsg
         fields_sort = ['accountid', 'title', 'msg', 'createtime']
+        pop_edit_field = 'title'
 
+
+        def get_operation(self):
+            return []
+        
         def dict_head(self, head):
             dc = {
                 'accountid': 120,
@@ -38,10 +43,24 @@ class FeedBack(TablePage):
             return head
 
 
+class FeedbackForm(ModelFields):
+    readonly = ['title', 'msg','accountid','createtime']
+    field_sort = ['accountid','title', 'msg','createtime']
+
+
+    class Meta:
+        model = TbAgentleavemsg
+        exclude = ['answer','isanswer']
+
+    def save_form(self):
+        super().save_form()
+
+
 director.update({
-    'feedback.table': FeedBack.tableCls
+    'feedback.table': Feedback.tableCls,
+    'feedback.table.edit': FeedbackForm
 })
 
 page_dc.update({
-    'feedback': FeedBack,
+    'feedback': Feedback,
 })
