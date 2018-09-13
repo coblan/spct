@@ -1770,3 +1770,17 @@ class TbPaychannelgroup(models.Model):
 
     def __str__(self):
         return self.groupway
+
+
+class TbAgentleavemsg(models.Model):
+    msgid = models.BigAutoField(db_column='MsgID', primary_key=True)  # Field name made lowercase.
+    accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',db_constraint=False,verbose_name='用户昵称')  # Field name made lowercase.
+    msg = models.CharField(db_column='Msg', max_length=3000, blank=True, null=True,verbose_name='内容')  # Field name made lowercase.
+    answer = models.CharField(db_column='Answer', max_length=3000, blank=True, null=True,verbose_name='回复内容')  # Field name made lowercase.
+    isanswer = models.NullBooleanField(db_column='IsAnswer',verbose_name='是否回复')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True,verbose_name='创建时间')  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=3000, blank=True, null=True,verbose_name='标题')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_AgentLeaveMsg'

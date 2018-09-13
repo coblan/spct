@@ -36,6 +36,7 @@ class PcMenu(BaseEngine):
                  {'label': _('Notice'), 'url': page('notice'), 'visible': can_touch(TbNotice, crt_user), },
                  {'label': _('Help'), 'url': page('help'), 'visible': can_touch(TbQa, crt_user), },
                  {'label': _('Activity'), 'url': page('activity'), 'visible': can_touch(TbActivity, crt_user), },
+                 {'label': '用户留言', 'url': page('feedback'), 'visible': can_touch(TbAgentleavemsg, crt_user), },
              ]},
 
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,
