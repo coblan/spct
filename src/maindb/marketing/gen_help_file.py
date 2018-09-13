@@ -6,7 +6,7 @@ from django.template import loader, Context
 import re
 import os
 from django.conf import settings
-
+from helpers.func.sim_signal import sim_signal
 
 def gen_help_file():
     sections=[]
@@ -49,6 +49,7 @@ def gen_help_file():
             page_path = os.path.join(settings.MEDIA_ROOT,'public/help/%s'%get_html_name(page['title']))
             with open(page_path,'wb') as page_file:
                 page_file.write(page_html)  
+    sim_signal.send('help.static.changed')
     
         
 def get_html_name(title):

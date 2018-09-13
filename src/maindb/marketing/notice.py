@@ -74,6 +74,7 @@ class NoticePage(TablePage):
 
         def get_operation(self):
             operations = ModelTable.get_operation(self)[0:1]
+            operations[0]['tab_name'] = 'notice_form'
             operations.extend([
                 {
                     'fun': 'selected_set_and_save',

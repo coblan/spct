@@ -52,13 +52,13 @@ class HelpPage(TablePage):
         #pop_edit_field='title'
         fields_sort=['title','mtype','status']
         
-        def get_operation(self):
+        #def get_operation(self):
 
-            ops = super().get_operation()
-            for op in ops:
-                if op['name'] == 'add_new':
-                    op['tab_name'] = 'help_form'
-            return ops
+            #ops = super().get_operation()
+            #for op in ops:
+                #if op['name'] == 'add_new':
+                    #op['tab_name'] = 'help_form'
+            #return ops
 
         def dict_head(self, head):
             dc = {
@@ -85,6 +85,7 @@ class HelpPage(TablePage):
 
         def get_operation(self):
             operations = ModelTable.get_operation(self)[0:1]
+            operations[0]['tab_name'] = 'help_form'
             operations.extend([
                 {
                     'fun': 'selected_set_and_save',

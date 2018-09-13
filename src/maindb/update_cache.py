@@ -3,7 +3,7 @@ from django.dispatch import receiver
 from .redisInstance import redisInst
 #from .models import TbCurrency, TbNotice, TbBanner, TbMatches, TbOddstypegroup
 from . import models as sports_model
-
+from helpers.func.sim_signal import sim_signal
 #dc = {
     #TbCurrency: 'App:Static:Currency',
     #TbNotice: 'App:Cache:index:notices',
@@ -12,15 +12,15 @@ from . import models as sports_model
     #TbOddstypegroup: 'App:Static:TypeGroup',
 #}
 
-
+# 利用django的model的signal进行缓存清空
 def update_redis_cache(sender, **kws): 
     
     if sender == sports_model.TbBanner:
         redisInst.delete('App:Cache:index:banners')
     elif sender == sports_model.TbMatches:
         redisInst.delete('App:Cache:index:matches')
-    elif sender == sports_model.TbNotice:
-        redisInst.delete('App:Cache:index:notices')
+    #elif sender == sports_model.TbNotice:
+        #redisInst.delete('App:Cache:index:notices')
     elif sender == sports_model.TbLimit:
         redisInst.delete('App:Static:Limit')
     elif sender == sports_model.TbOddstypes:
@@ -41,6 +41,13 @@ def update_redis_cache(sender, **kws):
     #if sender in dc:
         #redisInst.delete(dc.get(sender))  
         
-
 post_delete.connect(update_redis_cache)
 post_save.connect(update_redis_cache)
+
+@sim_signal.recieve('notice.static.changed')
+def clear_notice_cache(): 
+    redisInst.delete('App:Cache:index:notices')
+
+@sim_signal.recieve('help.static.changed')
+def clear_help_cache(): 
+    pass

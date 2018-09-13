@@ -6,7 +6,7 @@ from django.template import loader, Context
 import re
 import os
 from django.conf import settings
-
+from helpers.func.sim_signal import sim_signal
 
 def gen_notice_file():
     ls = []
@@ -25,7 +25,9 @@ def gen_notice_file():
     index_path = os.path.join(settings.MEDIA_ROOT,'public/notice/index.html')
     with open(index_path,'wb') as index_file:
         index_file.write(index_html.encode('utf-8'))
-      
+    sim_signal.send('notice.static.changed')
+    #redisInst.delete('App:Cache:index:notices')
+    
 def get_html_name(title):
     '''根据分页的名字，获取index页面里面链接到分页的url'''
     fl_name = re.search('\w+',title,re.U).group()
