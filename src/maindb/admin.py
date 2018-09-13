@@ -13,6 +13,7 @@ from .member import loginlog
 from .matches import admin, matches, ticket_master,matches_statistics
 
 from .marketing import admin
+from .marketing import feedback
 from .report import user_statistics
 from .report import report_channel
 from .report import platform_profit
