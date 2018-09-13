@@ -2470,9 +2470,9 @@ Vue.component('com-table-extraclick', extra_click);
 
 
 /*
- 额外的点击列，例如“详情”
- head['label']=
- head['fun']
+ 与 extra_click的区别是
+ 1. 可以添加多个按钮
+ 2. 根据filter返回不同的按钮
  * */
 
 var extra_click_plus = {
