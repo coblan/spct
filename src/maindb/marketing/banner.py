@@ -22,6 +22,12 @@ class BannerPage(TablePage):
             ctx['extra_table_logic'] = 'banner_logic'
             return ctx
 
+        @classmethod
+        def clean_search_args(cls, search_args):
+            if not search_args.get('_sort'):
+                search_args['_sort'] = '-createtime'
+            return search_args
+
         def dict_head(self, head):
             dc = {
                 'title': 180,
@@ -65,7 +71,7 @@ class BannerPage(TablePage):
             }
 
         def get_operation(self):
-            ops =  [ModelTable.get_operation(self)[0]]
+            ops = [ModelTable.get_operation(self)[0]]
             ops.extend([
                 {
                     'fun': 'selected_set_and_save',

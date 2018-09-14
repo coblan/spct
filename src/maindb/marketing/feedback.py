@@ -30,7 +30,7 @@ class Feedback(TablePage):
 
         def get_operation(self):
             return []
-        
+
         def dict_head(self, head):
             dc = {
                 'accountid': 120,
