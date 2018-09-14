@@ -19,10 +19,10 @@ class MatchesStatisticsPage(TablePage):
         model = TbMatches
         include = ['matchid']
 
-        def dict_head(self,head):
-            if head['name']=='StatusCode':
-                head['options']= [{'value':value,'label':label} for(value,label) in MATCH_STATUS]
-                head['editor']='com-table-mapper'
+        def dict_head(self, head):
+            if head['name'] == 'StatusCode':
+                head['options'] = [{'value': value, 'label': label} for (value, label) in MATCH_STATUS]
+                head['editor'] = 'com-table-mapper'
             return head
 
         @classmethod
@@ -48,7 +48,7 @@ class MatchesStatisticsPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['tournamentid']
+            names = ['tournamentid', 'statuscode', 'livebet']
 
             def dict_head(self, head):
                 if head['name'] == 'tournamentid':
@@ -89,6 +89,8 @@ class MatchesStatisticsPage(TablePage):
             sql_args = {
                 'TournamentID': self.search_args.get('tournamentid', 0),
                 'MatchID': matchid,
+                'StatusCode': self.search_args.get('statuscode', -1),
+                'LiveBet': int(self.search_args.get('livebet', -1)),
                 'NickName': nickname,
                 'AccountID': self.search_args.get('accountid', 0),
                 'MatchDateFrom': self.search_args.get('_start_matchdate', ''),
@@ -98,7 +100,7 @@ class MatchesStatisticsPage(TablePage):
                 'Sort': sort,
             }
 
-            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,'%(NickName)s',%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,%(StatusCode)s,%(LiveBet)s,'%(NickName)s',%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql)
@@ -129,6 +131,7 @@ class MatchesStatisticsPage(TablePage):
                 {'name': 'MatchDate', 'label': '比赛日期', 'width': 140},
                 {'name': 'MatchScore', 'label': '比分', 'width': 80},
                 {'name': 'StatusCode', 'label': '状态', },
+                {'name': 'LiveBet', 'label': '走地盘', },
                 {'name': 'TicketCount', 'label': '注数', 'width': 80},
                 {'name': 'UserCount', 'label': '用户数', 'width': 80},
                 {'name': 'SumBetAmount', 'label': '投注金额', 'width': 120},
@@ -144,10 +147,10 @@ class MatchesStatisticsPage(TablePage):
                 'total': self.total,
                 'perpage': self.search_args.get('_perpage', 20)
             }
-        
-        def get_operation(self): 
+
+        def get_operation(self):
             return [
-                 {'fun': 'export_excel','editor': 'com-op-btn','label': '导出Excel','icon': 'fa-file-excel-o',}
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
 
 
