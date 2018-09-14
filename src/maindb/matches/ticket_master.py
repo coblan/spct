@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director, SelectSearch
 from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatches
-from django.db.models import Q, Sum, F, Case, When
+from django.db.models import Q, Sum, F, Case, When, FloatField
 import re
 from django.db import connections
 
@@ -63,12 +63,13 @@ class TicketMasterPage(TablePage):
         exclude = ['accountid']
         fields_sort = ['ticketid', 'orderid', 'accountid__nickname', 'parlayrule', 'status',
                        'winbet', 'stakeamount', 'betamount', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
-                       'createtime','settletime', 'memo']
+                       'createtime', 'settletime', 'memo']
 
         def dict_head(self, head):
             if head['name'] in ['createtime', 'settletime']:
                 head['width'] = 140
-            elif head['name'] in ['status', 'orderid', 'accountid__nickname', 'betamount', 'betoutcome', 'turnover', 'bonus',
+            elif head['name'] in ['status', 'orderid', 'accountid__nickname', 'betamount', 'betoutcome', 'turnover',
+                                  'bonus',
                                   'profit']:
                 head['width'] = 120
             else:
@@ -86,12 +87,25 @@ class TicketMasterPage(TablePage):
             dc = {
                 'accountid__nickname': inst.accountid__nickname,
             }
-            if inst.status == 2:
-                dc.update( {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)} )
+            # if inst.status == 2:
+            #     dc.update( {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)} )
+            if not inst.profit or inst.status != 2:
+                dc['profit'] = '0.00'
+            else:
+                dc['profit'] = inst.profit
+
+            if not inst.betoutcome:
+                dc['betoutcome'] = '0.00'
+            if not inst.turnover:
+                dc['turnover'] = '0.00'
+            if not inst.bonus:
+                dc['bonus'] = '0.00'
+
             return dc
 
         def inn_filter(self, query):
-            return query.order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus')).annotate(accountid__nickname = F('accountid__nickname'))
+            return query.order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus')) \
+                .annotate(accountid__nickname=F('accountid__nickname'))
 
         def statistics(self, query):
             dc = query.aggregate(total_betamount=Sum('betamount'), total_betoutcome=Sum('betoutcome'),
@@ -111,7 +125,7 @@ class TicketMasterPage(TablePage):
                 dc[k] = str(round(dc.get(k, 0) or 0, 2))
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
-            self.footer = ['合计'] + self.footer
+            self.footer = ['合计'] + self.footer[1:]
             return query
 
         def get_context(self):
@@ -158,7 +172,6 @@ class TicketMasterPage(TablePage):
                         return self.q
                 else:
                     return super().clean_search()
-
 
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
@@ -271,8 +284,9 @@ class TicketparlayTable(ModelTable):
 
     def inn_filter(self, query):
         ticketid = self.kw.get('ticketid')
-        #master = TbTicketmaster.objects.get(ticketid = ticketid)
-        return query.filter(ticket_master_id = ticketid )  # .select_related('parlay1tid__match', 'parlay2tid__match', 'parlay3tid__match', 'parlay4tid__match', 'parlay5tid__match',  'parlay6tid__match')
+        # master = TbTicketmaster.objects.get(ticketid = ticketid)
+        return query.filter(
+            ticket_master_id=ticketid)  # .select_related('parlay1tid__match', 'parlay2tid__match', 'parlay3tid__match', 'parlay4tid__match', 'parlay5tid__match',  'parlay6tid__match')
 
     def dict_row(self, inst):
         dc = {}
