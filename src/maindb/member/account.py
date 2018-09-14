@@ -235,18 +235,20 @@ class AccoutBaseinfo(ModelFields):
             pk = kw.get('accountid')
         super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
         
-    def clean_dict(self, dc):
-        if dc.get('password') == 1:
-            dc['password'] = gen_pwsd()
-        if dc.get('fundspassword') == 1:
-            dc['fundspassword'] = gen_pwsd()
-        super().clean_dict(dc)
-        return dc
 
+    def save_form(self): 
+        super().save_form()
+        if self.kw.get('password') == 1:
+            self.instance.password = gen_pwsd()
+            self.instance.save()
+        elif self.kw.get('fundspassword') == 1:
+            self.instance.fundspassword = gen_pwsd()
+            self.instance.save()            
+        
     class Meta:
         model = TbAccount
         exclude = ['actimestamp', 'agent', 'phone', 'gender', 'points', 'codeid', 'parentid',
-                   'sumrechargecount']
+                   'sumrechargecount', 'password']
 
 
 class AccoutModifyAmount(ModelFields):
@@ -373,7 +375,11 @@ page_dc.update({
 
 
 def gen_pwsd():
-    pswd = get_str(length=6)
+    while True:
+        pswd = get_str(length=6)
+        # 不能全是字母，或者全是数字
+        if not (re.search('^\d+$', pswd) or re.search('^\[a-zA-Z]+$', pswd)):
+            break
     print(pswd)
     m1 = hashlib.md5()
     m1.update(pswd.encode("utf-8"))
