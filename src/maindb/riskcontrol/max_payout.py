@@ -95,6 +95,7 @@ class MaxPayoutPage(TablePage):
             names = ['status', 'viplv']
 
 
+
 class MaxPayoutForm(ModelFields):
     class Meta:
         model = TbMaxpayout

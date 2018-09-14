@@ -6,6 +6,11 @@ ACCOUNT_TYPE = (
     (2, '代理')
 )
 
+COMMON_STATUS = (
+    (1, '启用'),
+    (0, '禁用')
+)
+
 ONLINE_STATUS = (
     (1, '启用'),
     (0, '离线')
