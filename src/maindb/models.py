@@ -817,7 +817,7 @@ class TbMaxpayout(models.Model):
     maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18,
                                     decimal_places=2, verbose_name= '最大赔付')  # Field name made lowercase.
     # issingle = models.BooleanField(db_column='IsSingle')  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', default=1, blank=True, verbose_name= '状态')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', default=1, blank=True, verbose_name= '状态',choices=COMMON_STATUS)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True,
                                    null=True, verbose_name = '备注')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now= True, verbose_name= '创建时间')  # Field name made lowercase.
