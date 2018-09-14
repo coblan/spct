@@ -59,7 +59,7 @@ class MatchesStatisticsPage(TablePage):
                 return head
 
         class sort(RowSort):
-            names = ['TicketCount', 'UserCount', 'SumBetAmount', 'SumBetOutcome', 'SumGrossProfit', 'SumBonus',
+            names = ['MatchDate','TicketCount','SeriesTicketCount', 'UserCount', 'SumBetAmount', 'SumBetOutcome', 'SumGrossProfit', 'SumBonus',
                      'SumProfit']
 
         def get_rows(self):
@@ -120,7 +120,7 @@ class MatchesStatisticsPage(TablePage):
                         dc[head_name] = round(row[index], 2)
                     self.footer_dc = dc
 
-                self.footer = ['合计'] + self.footer_by_dict(self.footer_dc)
+                self.footer = ['合计'] + self.footer_by_dict(self.footer_dc)[1:]
 
         def getExtraHead(self):
             return [
@@ -132,7 +132,8 @@ class MatchesStatisticsPage(TablePage):
                 {'name': 'MatchScore', 'label': '比分', 'width': 80},
                 {'name': 'StatusCode', 'label': '状态', },
                 {'name': 'LiveBet', 'label': '走地盘','editor':'com-table-bool-shower' },
-                {'name': 'TicketCount', 'label': '注数', 'width': 80},
+                {'name': 'TicketCount', 'label': '单注注数', 'width': 80},
+                {'name': 'SeriesTicketCount', 'label': '串关注数', 'width': 80},
                 {'name': 'UserCount', 'label': '用户数', 'width': 80},
                 {'name': 'SumBetAmount', 'label': '投注金额', 'width': 120},
                 {'name': 'SumBetOutcome', 'label': '派奖金额', 'width': 120},
