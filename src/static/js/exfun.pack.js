@@ -1562,7 +1562,7 @@ var vuetool = exports.vuetool = {
         });
 
         var real_par = $.extend({}, par);
-        var orgin_mixins = real_par.mixins;
+        var orgin_mixins = [].concat(real_par.mixins);
         delete real_par.mixins;
         if (orgin_mixins) {
             var list = orgin_mixins;
