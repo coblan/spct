@@ -1027,7 +1027,7 @@ var _com_pop_fields = __webpack_require__(57);
 function pop_fields_layer(row, fields_ctx, callback, layerConfig) {
     // row,head ->//model_name,relat_field
 
-
+    var row = ex.copy(row);
     var heads = fields_ctx.heads;
     var ops = fields_ctx.ops;
     var extra_mixins = fields_ctx.extra_mixins || [];
@@ -1334,6 +1334,7 @@ var mix_fields_data = {
                 self.submit();
             }
         });
+        self.setErrors({});
     },
     methods: {
         on_operation: function on_operation(op) {
@@ -1349,6 +1350,7 @@ var mix_fields_data = {
         },
         setErrors: function setErrors(errors) {
             // errors:{field:['xxx','bbb']}
+            var errors = ex.copy(errors);
             ex.each(this.heads, function (head) {
                 if (errors[head.name]) {
                     Vue.set(head, 'error', errors[head.name].join(';'));
@@ -1401,7 +1403,7 @@ var mix_fields_data = {
                 if (rt.errors) {
                     cfg.hide_load();
                     self.setErrors(rt.errors);
-                    //self.showErrors(rt.errors)
+                    self.showErrors(rt.errors);
                 } else {
                     cfg.hide_load(2000);
                     self.after_save(rt.row);
@@ -1431,13 +1433,6 @@ var mix_fields_data = {
         showErrors: function showErrors(errors) {
             // 落到 nice validator去
 
-            //var str = ""
-            //for(var k in errors){
-            //    var head = ex.findone(this.heads,{name:k})
-            //    str += head.label + ':' + errors[k] +'<br>'
-            //}
-            //
-            //layer.confirm(str,{title:['错误','color:white;background-color:red']})
         },
         clear: function clear() {
             this.row = {};

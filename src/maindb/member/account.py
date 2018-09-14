@@ -23,7 +23,7 @@ from ..money.recharge import RechargePage
 from ..money.withdraw import WithdrawPage
 from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
-
+from django.core.exceptions import ValidationError
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -271,7 +271,19 @@ class AccoutModifyAmount(ModelFields):
             self.changed_amount = add_amount
             dc['amount'] = Decimal(dc['amount']) + add_amount
         return dc
-
+    
+    def custom_valid(self):
+        dc = {}
+        if self.cleaned_data.get('amount') < 0:
+            dc['add_amount'] = '叠加值使得余额小于0'
+        return dc
+    
+    #def clean(self): 
+       
+            #raise ValidationError('余额不能小于0')
+        #return self.cleaned_data.get('amount')
+    
+    
     def save_form(self):
         super().save_form()
         if 'amount' in self.changed_data:
