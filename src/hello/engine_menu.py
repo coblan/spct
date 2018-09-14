@@ -47,10 +47,11 @@ class PcMenu(BaseEngine):
                  {'label': '联赛资料', 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},
                  {'label': '球队资料', 'url': page('teams'), 'visible': can_touch(TbTeams, crt_user), },
                  {'label': '银行卡类型', 'url': page('banktypes'), 'visible': can_touch(TbBanktypes, crt_user), },
-                 {'label': '充值渠道', 'url': page('paychannel'), 'visible': can_touch(TbPaychannel, crt_user), },
                  {'label': _('AppResource'), 'url': page('app_resource'),
                   'visible': can_touch(TbAppresource, crt_user), },
-
+                 {'label': '充值渠道', 'url': page('paychannel'), 'visible': can_touch(TbPaychannel, crt_user), },
+                 {'label': 'VIP充值渠道', 'url': page('vip_paychannel'),
+                  'visible': can_touch(TbPaychanneljoinlevel, crt_user), }
              ]},
 
             {'label': _('Member'), 'icon': fa('fa-users'), 'visible': True,
@@ -65,8 +66,6 @@ class PcMenu(BaseEngine):
 
             {'label': _('MoneyFlow'), 'icon': fa('fa-dollar'), 'visible': True,
              'submenu': [
-                 {'label': 'VIP充值渠道', 'url': page('vip_paychannel'),
-                  'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
                  {'label': '充值记录', 'url': page('recharge'), 'visible': can_touch(TbRecharge, crt_user), },
                  {'label': '提现记录', 'url': page('withdraw'), 'visible': can_touch(TbWithdraw, crt_user), }
              ]},

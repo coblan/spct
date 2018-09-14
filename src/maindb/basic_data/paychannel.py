@@ -1,5 +1,8 @@
 # encoding:utf-8
 from __future__ import unicode_literals
+
+from django.core.exceptions import ValidationError
+
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter
 from maindb.models import TbBanktypes, TbPaychannel
@@ -80,6 +83,14 @@ class PayChannelForm(ModelFields):
     class Meta:
         model = TbPaychannel
         exclude = ['memo']
+
+    def clean_channelname(self):
+        name = self.cleaned_data['channelname']
+        if 'channelname' not in self.changed_data:
+            return name
+        if TbPaychannel.objects.filter(channelname=name).exists():
+            raise UserWarning("相同的Apolo渠道【{}】已存在！".format(name))
+        return name
 
     def save_form(self):
         super().save_form()
