@@ -1,8 +1,5 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-
-from numpy import long
-
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowSearch, director
 from ..models import Blackiprangelist, \
     Whiteiplist, Whiteuserlist, TbAccount
