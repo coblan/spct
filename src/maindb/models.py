@@ -40,7 +40,7 @@ class Blackiprangelist(models.Model):
     endip = models.CharField(db_column='EndIp', max_length=16, verbose_name=_('EndIp'))  # Field name made lowercase.
     endipnum = models.BigIntegerField(db_column='EndIpNum', verbose_name=_('EndIpNum'))  # Field name made lowercase.
     remark = models.CharField(db_column='Remark', max_length=200,
-                              verbose_name=_('Remark'))  # Field name made lowercase.
+                              verbose_name='网络')  # Field name made lowercase.
     iswork = models.BooleanField(db_column='IsWork', verbose_name=_('IsWork'),default=True)  # Field name made lowercase.
     # itype = models.IntegerField(db_column='IType')  # Field name made lowercase.
     area = models.CharField(db_column='Area', max_length=255, verbose_name=_('Area'))  # Field name made lowercase.
