@@ -227,8 +227,8 @@ class AccountPage(TablePage):
 
 
 class AccoutBaseinfo(ModelFields):
-    field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'isenablewithdraw', 'createtime']
-    readonly = ['createtime', 'account', 'nickname', 'amount']
+    field_sort = ['account', 'nickname', 'amount','agentamount', 'status', 'agent', 'verify', 'viplv', 'isenablewithdraw', 'createtime']
+    readonly = ['createtime', 'account', 'nickname', 'amount','agentamount']
 
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
         if kw.get('accountid'):

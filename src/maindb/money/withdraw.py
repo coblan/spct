@@ -153,8 +153,12 @@ class WithDrawForm(ModelFields):
         elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 5:  # 退款
             beforamount = self.instance.accountid.amount
             afteramount = self.instance.accountid.amount + self.instance.amount
-            self.instance.accountid.amount += self.instance.amount
-            self.save()
+            if self.instance.amounttype == 1:
+                self.instance.accountid.amount += self.instance.amount
+            elif self.instance.amounttype == 2:
+                self.instance.accountid.agentamount += self.instance.amount
+            self.instance.save()
+            self.instance.accountid.save()
             TbBalancelog.objects.create(account=self.instance.account, beforeamount=beforamount,
                                         amount=self.instance.amount, afteramount=afteramount, creater='system',
                                         memo='提现退款', accountid=self.instance.accountid, categoryid_id=35,
