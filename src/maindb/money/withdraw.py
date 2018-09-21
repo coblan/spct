@@ -129,7 +129,7 @@ class WithdrawPage(TablePage):
 
 
 class WithDrawForm(ModelFields):
-    hide_fields = ['status', 'orderid', 'account']
+    hide_fields = ['status', 'orderid', 'account','confirmtime']
 
     class Meta:
         model = TbWithdraw
@@ -147,9 +147,10 @@ class WithDrawForm(ModelFields):
         super().save_form()
         if 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 1:
             notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
+            self.instance.save()
         elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 2:
             self.instance.confirmtime = datetime.now()
-            self.save()
+            self.instance.save()
         elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 5:  # 退款
             beforamount = self.instance.accountid.amount
             afteramount = self.instance.accountid.amount + self.instance.amount
