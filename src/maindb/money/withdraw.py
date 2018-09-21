@@ -129,11 +129,14 @@ class WithdrawPage(TablePage):
 
 
 class WithDrawForm(ModelFields):
-    hide_fields = ['status', 'orderid', 'account', 'confirmtime']
+    hide_fields = ['status', 'orderid', 'account', 'confirmtime', 'memo', ]
 
     class Meta:
         model = TbWithdraw
         fields = ['orderid', 'account', 'memo', 'status', 'confirmtime']
+
+    def getExtraHeads(self):
+        return [{'name': 'fakememo', 'editor': 'blocktext', 'required': True, 'label': '备注'}]
 
     def dict_head(self, head):
         if head['name'] == 'memo':
@@ -145,10 +148,12 @@ class WithDrawForm(ModelFields):
 
     def save_form(self):
         super().save_form()
-        if 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 1:  # 审核异常单
+        if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
+            self.instance.memo += '\r\n' + self.kw.get('fakememo')
             notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
             self.instance.save()
-        elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 2:  # 确认到账
+        elif 'status' in self.changed_data and self.instance.status == 2:  # 确认到账
+            self.instance.memo += '\r\n' + self.kw.get('fakememo')
             self.instance.confirmtime = datetime.now()
             with transaction.atomic():
                 self.instance.save()
@@ -157,7 +162,8 @@ class WithDrawForm(ModelFields):
                     sender='system',
                     createtime=datetime.now(),
                     accountid=self.instance.accountid_id)
-        elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 5:  # 退款
+        elif 'status' in self.changed_data and self.instance.status == 5:  # 退款
+            self.instance.memo += '\r\n' + self.kw.get('fakememo')
             self.instance.save()
             beforamount = self.instance.accountid.amount
             afteramount = self.instance.accountid.amount + self.instance.amount
