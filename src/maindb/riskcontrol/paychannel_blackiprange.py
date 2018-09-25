@@ -31,8 +31,12 @@ class PayChannelBlackIPRangeList(TablePage):
             return head
 
         def get_operation(self):
-            create = super().get_operation()[0]
-            return [create,
+            opes = super().get_operation()
+            ls = []
+            if opes:
+                create = opes[0]
+                ls.append(create)
+            ls.extend( [
                     {
                         'fun': 'selected_set_and_save',
                         'editor': 'com-op-btn',
@@ -40,7 +44,8 @@ class PayChannelBlackIPRangeList(TablePage):
                         'field': 'iswork',
                         'value': True,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认启用该充值IP黑名单吗?'
+                        'confirm_msg': '确认启用该充值IP黑名单吗?', 
+                        'visible': 'iswork' in self.permit.changeable_fields(),
                     },
                     {
                         'fun': 'selected_set_and_save',
@@ -49,9 +54,12 @@ class PayChannelBlackIPRangeList(TablePage):
                         'field': 'iswork',
                         'value': False,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认禁用该充值IP黑名单吗?'
+                        'confirm_msg': '确认禁用该充值IP黑名单吗?', 
+                         'visible': 'iswork' in self.permit.changeable_fields(),
                     }
-                    ]
+                    ])
+            return ls
+            
 
 
 class PayChannelBlackIPRangeForm(ModelFields):

@@ -140,7 +140,7 @@ class TicketMasterPage(TablePage):
                  'confirm_msg': '确认作废这些注单吗?', 'fields_ctx': {
                     'heads': [{'name': 'memo', 'label': '备注', 'editor': 'blocktext', }],
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
-                }, },
+                }, 'visible': 'status' in self.permit.changeable_fields(),},
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
 

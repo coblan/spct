@@ -18,7 +18,7 @@ class VIPPayChannelPage(TablePage):
         #pop_edit_field = 'levelname'
         def getExtraHead(self):
             return [
-                {'name': 'accountlevel', 'label': '用户等级'},
+                {'name': 'accountlevel', 'label': '用户等级',},
                 #{'name': 'channelid', 'label': '渠道ID'},
             ]
 
@@ -62,33 +62,14 @@ class VIPPayChannelPage(TablePage):
                 head['relat_field'] = 'accountlevel'
                 head['inn_editor'] = 'com-table-mapper'
                 head['options'] = getVipOptions()
-                
+
             if head['name'] == 'paychannelid':
                 head['show_tooltip'] = False
                 head['editor'] = 'com-table-array-mapper'
+                
                 head['options'] = [{'value': x.paychannelid, 'label': x.channeltype} for x in TbPaychannel.objects.all()]
             return head
 
-        #def dict_row(self, inst):
-            #dc = {}
-            #if not getattr(self, 'levels', None):
-                #self.levels = json.loads(TbSetting.objects.get(settingname='Static:VIPTOTier').settingvalue)
-
-            #for i in self.levels:
-                #if i['VipLv'] == inst.accountlevel:
-                    #dc['levelname'] = i['Memo']
-                    #break
-
-            #dc['channelid'] = inst.paychannelid.paychannelid
-            #return dc
-
-        #class filters(RowFilter):
-            #names = ['accountlevel']
-
-            #def dict_head(self, head):
-                #if head['name']=='accountlevel':
-                    #head['options']=getVipOptions()
-                #return head
 
 
 class ChargeTypeForm(ModelFields):
@@ -97,7 +78,7 @@ class ChargeTypeForm(ModelFields):
         self.kw = dc.copy()
         self.kw.update(kw)
         self.crt_user = crt_user
-        self.nolimit = True
+        self.nolimit = False
         self.custom_permit()
     
     def is_valid(self): 
@@ -117,9 +98,10 @@ class ChargeTypeForm(ModelFields):
         exclude = []
     
     def get_heads(self): 
+        
         heads = [
-            {'name': 'accountlevel', 'label': '用户等级',}, 
-            {'name': 'paychannelid','label': '渠道',}
+            {'name': 'accountlevel', 'label': '用户等级','readonly': 'accountlevel'  in self.permit.readonly_fields()}, 
+            {'name': 'paychannelid','label': '渠道','readonly' : 'paychannelid' in self.permit.readonly_fields()}
         ]
         heads = [self.dict_head(head) for head in heads]
         return heads
@@ -134,10 +116,6 @@ class ChargeTypeForm(ModelFields):
             'name': 'paychannel', 'label': 'TbPaychannel', 'options': options, 'editor': 'field_multi_chosen'
         }]
 
-    #def clean_dict(self, dc):
-        #if dc.get('paychannelid'):
-            #dc['paychannelid'] = int(dc['paychannelid'])
-        #return dc
 
     def dict_head(self, head):
         if head['name'] == 'accountlevel':

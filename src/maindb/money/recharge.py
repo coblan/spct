@@ -70,7 +70,8 @@ class RechargePage(TablePage):
                  'match_field': 'status',
                  'match_values': [1],
                  'match_msg': '只能选择状态为未充值的',
-                 'fields_ctx': ConfirmRechargeForm(crt_user=self.crt_user).get_head_context()},
+                 'fields_ctx': ConfirmRechargeForm(crt_user=self.crt_user).get_head_context(), 
+                 'visible': 'status' in self.permit.changeable_fields(),},
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
             ]
 

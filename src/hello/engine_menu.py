@@ -8,6 +8,7 @@ from helpers.func.collection.container import evalue_container
 from helpers.maintenance.update_static_timestamp import js_stamp
 from django.utils.translation import ugettext as _
 from django.conf import settings
+from helpers.director.access.permit import has_permit
 # from .js_translation import get_tr
 # from maindb.models import TbBanner, TbAppversion, TbNotice, TbCurrency, TbQa, TbActivity, TbAppresource, TbAccount, TbLoginlog, \
 # TbBalancelog, TbChargeflow, TbChannel, TbTicketmaster, TbMatches, TbRcFilter, TbRcLevel, TbRcUser, TbBlackuserlist, TbBlackuserlistLog, \
@@ -41,8 +42,7 @@ class PcMenu(BaseEngine):
 
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,
              'submenu': [
-                 {'label': _('玩法设置'), 'url': page('bet_type'),
-                  'visible': can_touch(TbOddstypegroup, crt_user), },
+                 {'label': _('玩法设置'), 'url': page('bet_type'), 'visible': can_touch(TbOddstypegroup, crt_user), },
                  {'label': _('Currency'), 'url': page('currency'), 'visible': can_touch(TbCurrency, crt_user)},
                  {'label': '联赛资料', 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},
                  {'label': '球队资料', 'url': page('teams'), 'visible': can_touch(TbTeams, crt_user), },
@@ -61,7 +61,7 @@ class PcMenu(BaseEngine):
                   'visible': can_touch(TbBalancelog, crt_user), },
                  {'label': _('Tb Login Log'), 'url': page('loginlog'),
                   'visible': can_touch(TbLoginlog, crt_user), },
-                 {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbAccount, crt_user), },
+                 {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbBankcard, crt_user), },
              ]},
 
             {'label': _('MoneyFlow'), 'icon': fa('fa-dollar'), 'visible': True,
@@ -82,14 +82,13 @@ class PcMenu(BaseEngine):
 
             {'label': _('RiskControl'), 'icon': fa('fa-lock'), 'visible': True,
              'submenu': [
-                 {'label': _('最大赔付'), 'url': page('maxpayout'), 'visible': can_touch(TbLimit, crt_user), },
-                 {'label': '提现控制', 'url': page('parameterinfo'), 'visible': can_touch(TbTeams, crt_user), },
+                 {'label': _('最大赔付'), 'url': page('maxpayout'), 'visible': can_touch(TbMaxpayout, crt_user), },
+                 {'label': '提现控制', 'url': page('parameterinfo'), 'visible': can_touch(TbParameterinfo, crt_user), },
                  # {'label': _('Tb Blankuserlist'), 'url': page('black_users'),
                  #  'visible': can_touch(TbBlackuserlist, crt_user), },
                  # {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
                  {'label':'登录IP黑名单','url':page('blackip_range'), 'visible': can_touch(Blackiprangelist, crt_user),},
-                 {'label': '充值IP黑名单', 'url': page('paychannel_blackip'),
-                  'visible': can_touch(TbPaychannelblackiprange, crt_user), },
+                 {'label': '充值IP黑名单', 'url': page('paychannel_blackip'),'visible': can_touch(TbPaychannelblackiprange, crt_user), },
                  {'label':_('White IP'),'url':page('white_ips'), 'visible': can_touch(Whiteiplist, crt_user),},
                  {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
              ]},
@@ -97,15 +96,15 @@ class PcMenu(BaseEngine):
             {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,
              'submenu': [
                  {'label': '会员统计', 'url': page('user_statistics'),
-                  'visible': can_touch(TbAccount, crt_user), },
+                  'visible': has_permit(crt_user, 'member_statistic'), },
                  {'label': '平台亏盈', 'url': page('platform_profit'),
-                  'visible': True, },
+                  'visible': has_permit(crt_user, 'platform_profit'), },
              ]},
             
             {'label': '代理系统', 'icon': fa('fa-street-view'), 'visible': True,
              'submenu': [
-                 {'label': '代理用户', 'url': page('agent_user'),'visible': True, },
-                 {'label': '佣金审核', 'url': page('agent_commission'),'visible': True, },
+                 {'label': '代理用户', 'url': page('agent_user'),'visible': has_permit(crt_user, 'agent'), },
+                 {'label': '佣金审核', 'url': page('agent_commission'),'visible': can_touch(TbAgentcommission, crt_user), },
     
              ]},
 

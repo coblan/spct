@@ -99,7 +99,9 @@ class AgentCommission(TablePage):
                  'match_msg': '只能选择待审核的数据！',
                  'match_field': 'status',
                  'match_values': [0],
-                 'confirm_msg': '确认审核通过？'},
+                 'confirm_msg': '确认审核通过？', 
+                 'visible': self.permit.can_edit(),
+                 },
             ]
 
         @staticmethod

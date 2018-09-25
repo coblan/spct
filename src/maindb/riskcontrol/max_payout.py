@@ -38,7 +38,8 @@ class MaxPayoutPage(TablePage):
                         'field': 'status',
                         'value': False,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认作废该限制类型吗?'
+                        'confirm_msg': '确认作废该限制类型吗?', 
+                        'visible': 'status' in self.permit.changeable_fields(),
                     }
                     ]
 

@@ -25,7 +25,8 @@ class BankCard(TablePage):
                     'field': 'active',
                     'value': False,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认作废该银行卡吗?'
+                    'confirm_msg': '确认作废该银行卡吗?', 
+                    'visible': 'active' in self.permit.changeable_fields()
                 }
             ]
 

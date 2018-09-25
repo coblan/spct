@@ -66,7 +66,8 @@ class WithdrawPage(TablePage):
                     'match_field': 'status',
                     'match_values': [4],
                     'match_msg': '只能选择状态为异常的订单！',
-                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context()},
+                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(), 
+                    'visible': 'status' in self.permit.changeable_fields(),},
                 {
                     'fun': 'selected_set_and_save',
                     'editor': 'com-op-btn',
@@ -78,7 +79,8 @@ class WithdrawPage(TablePage):
                     'match_values': [1],
                     'match_msg': '只能选择状态为处理中的订单！',
                     'confirm_msg': '确认修改订单状态为成功吗？',
-                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context()},
+                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(), 
+                    'visible': 'status' in self.permit.changeable_fields(),},
                 {
                     'fun': 'selected_set_and_save',
                     'editor': 'com-op-btn',
@@ -90,7 +92,8 @@ class WithdrawPage(TablePage):
                     'match_values': [4],
                     'confirm_msg': '确认退款到用户余额吗？',
                     'match_msg': '只能选择状态为异常的订单',
-                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context()},
+                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(), 
+                    'visible': 'status' in self.permit.changeable_fields(),},
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
             ]
 

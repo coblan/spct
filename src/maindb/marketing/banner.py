@@ -80,7 +80,8 @@ class BannerPage(TablePage):
                     'field': 'status',
                     'value': 1,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认修改为在线吗?'
+                    'confirm_msg': '确认修改为在线吗?', 
+                    'visible': self.permit.can_edit(),
                 },
                 {
                     'fun': 'selected_set_and_save',
@@ -89,7 +90,8 @@ class BannerPage(TablePage):
                     'field': 'status',
                     'value': 0,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认修改为离线吗?'
+                    'confirm_msg': '确认修改为离线吗?', 
+                    'visible': self.permit.can_edit(),
                 }
             ])
             return ops

@@ -12,6 +12,7 @@ import re
 from django.conf import settings
 from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
+from helpers.director.access.permit import has_permit
 
 class ActivityPage(TablePage):
     template='jb_admin/table.html'
@@ -60,7 +61,8 @@ class ActivityPage(TablePage):
                     'field': 'status',
                     'value': 1,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认修改为在线吗?'
+                    'confirm_msg': '确认修改为在线吗?', 
+                    'visible': 'status' in self.permit.changeable_fields(),
                 },
                 {
                     'fun': 'selected_set_and_save',
@@ -69,12 +71,14 @@ class ActivityPage(TablePage):
                     'field': 'status',
                     'value': 0,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认修改为离线吗?'
+                    'confirm_msg': '确认修改为离线吗?', 
+                     'visible': 'status' in self.permit.changeable_fields(),
                 },
                 {
                     'fun': 'update_activity_file',
                     'label': '更新缓存',
-                    'editor': 'com-op-btn'
+                    'editor': 'com-op-btn', 
+                     'visible': has_permit(self.crt_user, 'TbActivity.update_cache'),
                 }
             ])
             return operations

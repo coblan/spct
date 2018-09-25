@@ -5,68 +5,6 @@ from ..models import Blackiprangelist, \
     Whiteiplist, Whiteuserlist, TbAccount
 
 
-# class BlackUserListPage(TablePage):
-#     template = 'jb_admin/table.html'
-#
-#     def get_label(self):
-#         return _('Main.TbBlackuserlist')
-#
-#     class tableCls(ModelTable):
-#         model = TbBlackuserlist
-#         exclude = []
-#
-#         def dict_head(self, head):
-#             dc = {
-#                 'blackuserlistid': 120,
-#                 'accounttype': 100
-#             }
-#             if dc.get(head['name']):
-#                 head['width'] = dc.get(head['name'])
-#             return head
-#
-#
-# class BlackUserForm(ModelFields):
-#     class Meta:
-#         model = TbBlackuserlist
-#         exclude = ['accountid', 'accounttype', 'username', 'accounttpe' ,'addtime']
-#
-#     def dict_head(self, head):
-#         if head['name'] == 'account':
-#             table_obj = AccountSelect(crt_user=self.crt_user)
-#             head['editor'] = 'com-field-pop-table-select'
-#             head['table_ctx'] = table_obj.get_head_context()
-#         return head
-
-
-# class BlackUserListLogPage(TablePage):
-#     template = 'jb_admin/table.html'
-#
-#     def get_label(self):
-#         return _('Main.TbBlackuserlistLog')
-#
-#     class tableCls(ModelTable):
-#         model = TbBlackuserlistLog
-#         exclude = []
-#
-#         def dict_head(self, head):
-#             dc = {
-#                 'blacklogid': 100,
-#                 'before_ban_status': 130,
-#                 'alter_ban_status': 120,
-#                 'modify_user': 120,
-#
-#             }
-#             if dc.get(head['name']):
-#                 head['width'] = dc.get(head['name'])
-#             return head
-#
-#         # class BlankiplistPage(TablePage):
-#     # template='jb_admin/table.html'
-#     # class tableCls(ModelTable):
-#     # model=Blackiplist
-#     # exclude=[]
-
-
 class BlackIPRangeListPage(TablePage):
     template = 'jb_admin/table.html'
 
@@ -100,7 +38,8 @@ class BlackIPRangeListPage(TablePage):
                         'field': 'iswork',
                         'value': True,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认启用该IP黑名单范围吗?'
+                        'confirm_msg': '确认启用该IP黑名单范围吗?', 
+                        'visible': 'iswork' in self.permit.changeable_fields(),
                     },
                     {
                         'fun': 'selected_set_and_save',
@@ -109,7 +48,8 @@ class BlackIPRangeListPage(TablePage):
                         'field': 'iswork',
                         'value': False,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认禁用该IP黑名单范围吗?'
+                        'confirm_msg': '确认禁用该IP黑名单范围吗?', 
+                        'visible': 'iswork' in self.permit.changeable_fields(),
                     }
                     ]
 
@@ -172,7 +112,8 @@ class WhiteIpListPage(TablePage):
                         'field': 'iswork',
                         'value': True,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认启用该IP白名单吗?'
+                        'confirm_msg': '确认启用该IP白名单吗?', 
+                        'visible': 'iswork' in self.permit.changeable_fields(),
                     },
                     {
                         'fun': 'selected_set_and_save',
@@ -181,7 +122,8 @@ class WhiteIpListPage(TablePage):
                         'field': 'iswork',
                         'value': False,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认禁用该IP白名单吗?'
+                        'confirm_msg': '确认禁用该IP白名单吗?', 
+                        'visible': 'iswork' in self.permit.changeable_fields(),
                     }
                     ]
 
@@ -214,8 +156,11 @@ class WhiteUserListPage(TablePage):
             return head
 
         def get_operation(self):
-            create = super().get_operation()[0]
-            return [create,
+            opes = super().get_operation()
+            ls = []
+            if opes:
+                ls.append(opes[0])
+            ls.extend( [
                     {
                         'fun': 'selected_set_and_save',
                         'editor': 'com-op-btn',
@@ -223,7 +168,8 @@ class WhiteUserListPage(TablePage):
                         'field': 'iswork',
                         'value': True,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认启用该用户白名单吗?'
+                        'confirm_msg': '确认启用该用户白名单吗?', 
+                        'visible': 'iswork' in self.permit.changeable_fields(),
                     },
                     {
                         'fun': 'selected_set_and_save',
@@ -232,9 +178,11 @@ class WhiteUserListPage(TablePage):
                         'field': 'iswork',
                         'value': False,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认禁用该用户白名单吗?'
+                        'confirm_msg': '确认禁用该用户白名单吗?', 
+                         'visible': 'iswork' in self.permit.changeable_fields(),
                     }
-                    ]
+                    ])
+            return ls
 
 
 class WhiteUserForm(ModelFields):

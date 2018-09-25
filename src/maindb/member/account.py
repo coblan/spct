@@ -10,7 +10,7 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelField
 from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
-from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster
+from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatches
 from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
@@ -24,6 +24,7 @@ from ..money.withdraw import WithdrawPage
 from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
 from django.core.exceptions import ValidationError
+
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -56,21 +57,21 @@ def account_tab(self):
          'com': 'com_tab_table',
          'par_field': 'accountid',
          'table_ctx': UserBankCard(crt_user=self.crt_user).get_head_context(),
-         'visible': True,
+         'visible': can_touch(TbBankcard, self.crt_user),
          },
         {'name': 'UserRecharge',
          'label': '充值记录',
          'com': 'com_tab_table',
          'par_field': 'accountid',
          'table_ctx': UserRecharge(crt_user=self.crt_user).get_head_context(),
-         'visible': True,
+         'visible': can_touch(TbRecharge, self.crt_user),
          },
         {'name': 'UserWithdraw',
          'label': '提现记录',
          'com': 'com_tab_table',
          'par_field': 'accountid',
          'table_ctx': UserWithdraw(crt_user=self.crt_user).get_head_context(),
-         'visible': True,
+         'visible': can_touch(TbWithdraw, self.crt_user),
          },
 
         {'name': 'account_ticket',
@@ -97,7 +98,7 @@ def account_tab(self):
          'com': 'com_tab_table',
          'par_field': 'accountid',
          'table_ctx': MatchesStatisticsTab(crt_user=self.crt_user).get_head_context(),
-         'visible': True},
+         'visible': can_touch(TbMatches, self.crt_user)},
     ]
     return evalue_container(ls)
 
@@ -208,21 +209,22 @@ class AccountPage(TablePage):
 
         def get_operation(self):
             modifyer = AccoutModifyAmount(crt_user=self.crt_user)
+            changeable_fields = self.permit.changeable_fields()
             return [
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '启用', 'field': 'status',
-                 'value': 1, 'confirm_msg': '确认启用？', },
+                 'value': 1, 'confirm_msg': '确认启用？', 'visible': 'status' in changeable_fields,},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'field': 'status',
-                 'value': 0, 'confirm_msg': '确认禁用？'},
+                 'value': 0, 'confirm_msg': '确认禁用？', 'visible': 'status' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置登录密码', 'field': 'password',
-                 'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？'},
+                 'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？', 'visible': 'password' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
-                 'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置资金密码？'},
+                 'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置资金密码？', 'visible': 'fundspassword' in changeable_fields},
                 {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
-                 'fields_ctx': modifyer.get_head_context()},
+                 'fields_ctx': modifyer.get_head_context(), 'visible': 'amount' in changeable_fields},
                 {'fun': 'selected_set_and_save','editor': 'com-op-btn', 'label': '允许提现', 'field': 'isenablewithdraw',
-                 'value': 1, 'confirm_msg': '确认允许这些用户提现？'}, 
+                 'value': 1, 'confirm_msg': '确认允许这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields}, 
                 {'fun': 'selected_set_and_save','editor': 'com-op-btn', 'label': '禁止提现', 'field': 'isenablewithdraw',
-                 'value': 0, 'confirm_msg': '确认禁止这些用户提现？'}
+                 'value': 0, 'confirm_msg': '确认禁止这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields}
             ]
 
 
@@ -373,13 +375,13 @@ director.update({
     'account.matches_statistics': MatchesStatisticsTab
 })
 
-permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
-           ('TbLoginlog', model_full_permit(TbLoginlog), model_to_name(TbLoginlog), 'model'),
-           ('TbBalancelog', model_full_permit(TbBalancelog), model_to_name(TbBalancelog), 'model'),
-           ('TbAccount.all', 'TbAccount;TbLoginlog;TbBalancelog;TbTicketmaster', '', 'set'),
-           ]
+#permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
+           #('TbLoginlog', model_full_permit(TbLoginlog), model_to_name(TbLoginlog), 'model'),
+           #('TbBalancelog', model_full_permit(TbBalancelog), model_to_name(TbBalancelog), 'model'),
+           #('TbAccount.all', 'TbAccount;TbLoginlog;TbBalancelog;TbTicketmaster', '', 'set'),
+           #]
 
-add_permits(permits)
+#add_permits(permits)
 
 page_dc.update({
     'account': AccountPage

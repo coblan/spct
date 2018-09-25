@@ -21,10 +21,7 @@ class CurrencyPage(TablePage):
         model=TbCurrency
         exclude=['id']
         pop_edit_field='price'
-        #def dict_row(self, inst):
-            #return {
-                #'_createuser_label':unicode( User.objects.get(pk = inst.createuser) )
-            #}
+
         def dict_head(self, head):
             dc={
                 'description':150,
@@ -47,29 +44,7 @@ class CurrencyForm(ModelFields):
         if head['name'] == 'value':
             head['fv_rule'] ='range(0~)'
         return head
-    
-    #def save_form(self): 
-        #rt = super().save_form()
-        #redisInst.delete('App:Static:Currency')
-        #return rt
-    
-    #def del_form(self): 
-        #super().del_form()
-        #redisInst.delete('App:Static:Currency')    
-        
-    #def save_form(self):
-        #ModelFields.save_form(self)
-        #if not self.instance.createuser:
-            #self.instance.createuser=self.crt_user.pk
-            #self.instance.save()
-        #return self.instance
-    
-    #def dict_row(self, row):
-        #return {
-            #'createtime':row.createtime.strftime('%Y-%m-%d %H:%M:%S') if row.createtime else None,
-            #'_createuser_label':unicode(User.objects.get(pk=row.createuser)) if row.createuser else "",
-            ##'picturename':'/media/banner/'+row.picturename if row.picturename else ""
-        #}    
+     
 
 director.update({
     'currency.table':CurrencyPage.tableCls,
