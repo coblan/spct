@@ -1,13 +1,12 @@
 # encoding:utf-8
 import re
-
+from django.db import transaction
 from django.utils.timezone import datetime
-
-from django.db.models import Sum, Q
+from django.db.models import Sum
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter, ModelFields
 from helpers.director.table.row_search import SelectSearch
 from helpers.director.table.table import RowSort
-from ..models import TbWithdraw, TbBalancelog
+from ..models import TbWithdraw, TbBalancelog, TbMessageUnsend
 from maindb.rabbitmq_instance import notifyWithdraw
 
 
@@ -89,11 +88,11 @@ class WithdrawPage(TablePage):
                     'value': 5,
                     'row_match': 'one_row_match',
                     'match_field': 'status',
-                    'match_values': [4],
+                    'match_values': [3, 4],
                     'confirm_msg': '确认退款到用户余额吗？',
-                    'match_msg': '只能选择状态为异常的订单',
-                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(), 
-                    'visible': 'status' in self.permit.changeable_fields(),},
+                    'visible': 'status' in self.permit.changeable_fields(),
+                    'match_msg': '只能选择状态为失败或异常的订单',
+                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context()},
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
             ]
 
@@ -132,11 +131,14 @@ class WithdrawPage(TablePage):
 
 
 class WithDrawForm(ModelFields):
-    hide_fields = ['status', 'orderid', 'account']
+    hide_fields = ['status', 'orderid', 'account', 'confirmtime', 'memo', ]
 
     class Meta:
         model = TbWithdraw
         fields = ['orderid', 'account', 'memo', 'status', 'confirmtime']
+
+    def getExtraHeads(self):
+        return [{'name': 'fakememo', 'editor': 'blocktext', 'required': True, 'label': '备注'}]
 
     def dict_head(self, head):
         if head['name'] == 'memo':
@@ -148,20 +150,41 @@ class WithDrawForm(ModelFields):
 
     def save_form(self):
         super().save_form()
-        if 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 1:
+        if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
+            self.instance.memo += '\r\n' + self.kw.get('fakememo')
             notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
-        elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 2:
+            self.instance.save()
+        elif 'status' in self.changed_data and self.instance.status == 2:  # 确认到账
+            self.instance.memo += '\r\n' + self.kw.get('fakememo')
             self.instance.confirmtime = datetime.now()
-            self.save()
-        elif 'status' in self.changed_data and 'memo' in self.changed_data and self.instance.status == 5:  # 退款
+            with transaction.atomic():
+                self.instance.save()
+                TbMessageUnsend.objects.create(
+                    body='提现订单【{0}】,成功提现{1}元'.format(self.instance.orderid, self.instance.amount), type=3,
+                    sender='system',
+                    createtime=datetime.now(),
+                    accountid=self.instance.accountid_id)
+        elif 'status' in self.changed_data and self.instance.status == 5:  # 退款
+            self.instance.memo += '\r\n' + self.kw.get('fakememo')
+            self.instance.save()
             beforamount = self.instance.accountid.amount
             afteramount = self.instance.accountid.amount + self.instance.amount
-            self.instance.accountid.amount += self.instance.amount
-            self.save()
-            TbBalancelog.objects.create(account=self.instance.account, beforeamount=beforamount,
-                                        amount=self.instance.amount, afteramount=afteramount, creater='system',
-                                        memo='提现退款', accountid=self.instance.accountid, categoryid_id=35,
-                                        cashflow=1)
+            category = 35
+            if self.instance.amounttype == 1:
+                self.instance.accountid.amount += self.instance.amount
+            elif self.instance.amounttype == 2:
+                self.instance.accountid.agentamount += self.instance.amount
+                category = 36
+            with transaction.atomic():
+                self.instance.accountid.save()
+                TbBalancelog.objects.create(account=self.instance.accountid.nickname, beforeamount=beforamount,
+                                            amount=self.instance.amount, afteramount=afteramount, creater='system',
+                                            memo='提现退款', accountid=self.instance.accountid, categoryid_id=category,
+                                            cashflow=1)
+                TbMessageUnsend.objects.create(body='提现订单【{0}】处理失败'.format(self.instance.orderid), type=3,
+                                               sender='system',
+                                               createtime=datetime.now(),
+                                               accountid=self.instance.accountid_id)
 
 
 director.update({
