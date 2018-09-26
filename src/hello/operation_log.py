@@ -4,7 +4,6 @@ import socket
 import datetime
 from django.conf import settings
 from helpers.director.middleware.request_cache import get_request_cache
-from helpers.director.shortcut import name_to_model
 
 import json
 
