@@ -52,8 +52,6 @@ class FeedbackForm(ModelFields):
         model = TbAgentleavemsg
         exclude = ['answer','isanswer']
 
-    def save_form(self):
-        super().save_form()
 
 
 director.update({

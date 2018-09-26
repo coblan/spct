@@ -133,22 +133,31 @@ LOGGING = {
             'backupCount':3,
             'formatter':'standard',
             'filename': os.path.join(LOG_PATH,'django.log'),            
-            },         
+            }, 
+        'operation_log': {
+            'level': 'INFO',
+            'class': 'hello.operation_log.DBOperationHandler',
+            },
     },
     'loggers': {
         'django': {
             'handlers': ['console', 'djangoout_warning', 'mail_admins' ],
             'level': 'INFO',
             },
-        'director.sql_op': {
-            'handlers': ['console', ],
-            'level': 'DEBUG',
-            'propagate': True,
-            },
+        #'director.sql_op': {
+            #'handlers': ['console', ],
+            #'level': 'DEBUG',
+            #'propagate': True,
+            #},
         'extra.error': {
             'handlers': ['console', 'djangoout_warning'],
             'level': 'DEBUG',
             'propagate': True,            
+            },
+        'ModelFields.save_form': {
+            'handlers': ['console', 'operation_log'],
+            'level': 'DEBUG',
+            'propagate': True,              
             },
         #'django.request': {
             #'handlers': ['rotfile'],

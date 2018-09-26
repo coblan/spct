@@ -136,7 +136,11 @@ class ConfirmRechargeForm(ModelFields):
         cursor.commit()
         if '@ok' not in str(result):
             raise UserWarning(str(result))
+        # 从数据库刷新
         self.instance = self.instance.__class__.objects.get(pk=self.instance.pk)
+        self.save_log({'content': '手动确认orderid=%(orderid)s的订单' % {'orderid': inst.orderid,}, 
+                       'memo': '手动确认订单',
+                       'model': 'TbRecharge',})
 
 
 director.update({

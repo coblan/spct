@@ -92,9 +92,6 @@ class PayChannelForm(ModelFields):
             raise UserWarning("相同的Apolo渠道【{}】已存在！".format(name))
         return name
 
-    def save_form(self):
-        super().save_form()
-
 
 director.update({
     'paychannel': PayChannelPage.tableCls,

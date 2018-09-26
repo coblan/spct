@@ -2,7 +2,8 @@ from PIL import Image
 import io
 import os
 import re
-def procImage(flPath): 
+def procImage(flPath):
+    """不改变文件名称，只调整文件分辨率"""
     flSize = os.path.getsize(flPath)
     if flSize <  10 * 1024:
         return

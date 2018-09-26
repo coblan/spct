@@ -2,12 +2,11 @@
 from __future__ import unicode_literals
 from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSearch, RowSort, RowFilter, director, SelectSearch
+    RowSearch, RowSort, RowFilter, director, SelectSearch, model_to_name
 from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatches
 from django.db.models import Q, Sum, F, Case, When, FloatField
 import re
 from django.db import connections
-
 
 class TicketMasterPage(TablePage):
     template = 'jb_admin/table.html'  # 'maindb/table_ajax_tab.html'
@@ -195,9 +194,9 @@ class TicketMasterForm(ModelFields):
             cursor.commit()
             self.instance.memo = self.kw.get('memo')
             self.instance.save()
+            self.save_log({'model': model_to_name(TbTicketmaster), 'memo': '取消订单', 'pk': self.instance.pk,})
         else:
             super().save_form()
-        return self.instance
 
 
 class TicketTabBase(ModelTable):

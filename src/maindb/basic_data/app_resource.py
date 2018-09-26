@@ -43,10 +43,6 @@ class AppResourceForm(ModelFields):
         
         return dc
         
-    #def save_form(self): 
-        #super().save_form()
-        #if self.kw.url:
-            #pass
         
         
         

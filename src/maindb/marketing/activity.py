@@ -93,12 +93,9 @@ class ActiveForm(ModelFields):
         model = TbActivity
         exclude=[]
     
-    def save_form(self):
-        ModelFields.save_form(self)
+    def clean_save(self):
         if not self.instance.createuser:
             self.instance.createuser=self.crt_user.pk
-            self.instance.save()
-        return self.instance   
 
     def dict_row(self, row):
         return {

@@ -236,17 +236,23 @@ class AccoutBaseinfo(ModelFields):
         if kw.get('accountid'):
             pk = kw.get('accountid')
         super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
-        
-
-    def save_form(self): 
-        super().save_form()
+    
+    def dict_row(self, inst):
+        tmp = list(inst.account)
+        tmp[0:-4] = '*' * (len(tmp) - 4)
+        out_str = ''.join(tmp)
+        return {
+            'account': out_str,
+        }    
+    
+    def clean_save(self): 
         if self.kw.get('password') == 1:
             self.instance.password = gen_pwsd()
-            self.instance.save()
+            return {'password': '重置',}
         elif self.kw.get('fundspassword') == 1:
             self.instance.fundspassword = gen_pwsd()
-            self.instance.save()            
-        
+            return {'fundspassword': '重置',}
+
     class Meta:
         model = TbAccount
         exclude = ['actimestamp', 'agent', 'phone', 'gender', 'points', 'codeid', 'parentid',
@@ -286,14 +292,17 @@ class AccoutModifyAmount(ModelFields):
         #return self.cleaned_data.get('amount')
     
     
-    def save_form(self):
-        super().save_form()
-        if 'amount' in self.changed_data:
+    def clean_save(self):
+        if 'add_amount' in self.kw:
             cashflow, moenycategory = (1, 4) if self.changed_amount > 0 else (0, 34)
+            before_amount = self.instance.amount
+            self.instance.amount = before_amount + Decimal(self.kw.get('add_amount', 0))
             TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
                                         amount=self.changed_amount, afteramount=self.instance.amount, creater='system',
                                         memo='调账', accountid=self.instance, categoryid_id=moenycategory,
                                         cashflow=cashflow)
+            return { 'memo': '调账', 'ex_before':{'amount': before_amount}, 'ex_after': {'amount': self.instance.amount,} }
+        
 
 
 class AccountTabBase(ModelTable):

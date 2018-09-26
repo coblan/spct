@@ -720,6 +720,7 @@ class TbMatches(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Matches'
+    
 
     def __str__(self):
         return '[%(matchid)s]%(home)s vs %(away)s' % {'matchid': self.matchid, 'home': self.team1zh,
@@ -1805,3 +1806,16 @@ class TbPaychannelblackiprange(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_PayChannelBlackIPRange'
+
+
+class TbOperationlog(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    type = models.CharField(db_column='Type', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    content = models.CharField(db_column='Content', max_length=2000)  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=1000)  # Field name made lowercase.
+    createuser = models.CharField(db_column='CreateUser', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_OperationLog'
