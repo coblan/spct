@@ -15,7 +15,7 @@ class AgentUser(TablePage):
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid']
-        fields_sort = ['accountid', 'nickname', 'SumActive', 'AgentAmount', 'BeaeAmount', 'AgentRuleAmount',
+        fields_sort = ['accountid', 'NickName', 'SumActive', 'AgentAmount', 'BeaeAmount', 'AgentRuleAmount',
                        'BalanceLostAmount', 'SumLostAmount', 'BonusRate', 'SumBonusAmount', 'SumExpend',
                        'SumRechargeAmount', 'Poundage', 'AgentRulePercentage', 'SumBetAmount', 'SumWithdrawalAmount',
                        'SumTurnover', 'CreateTime']
@@ -174,6 +174,7 @@ class AgentUser(TablePage):
             self.getData()
             for row in self.child_agents:
                 row['accountid'] = row['AccountID']
+                row['NickName'] = row['NickName']
                 row['BeaeAmount'] = round(row['BeaeAmount'], 2)
                 row['BonusRate'] = round(row['BonusRate'], 3)
                 row['Poundage'] = round(row['Poundage'], 2)
