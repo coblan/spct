@@ -1831,9 +1831,9 @@ class TbOperationlog(models.Model):
 
 
 class TbAreablacklist(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='ID', primary_key=True,verbose_name='编号')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status',default=1)  # Field name made lowercase.
-    area = models.CharField(db_column='Area', max_length=200)  # Field name made lowercase.
+    area = models.CharField(db_column='Area', max_length=200,verbose_name='地区')  # Field name made lowercase.
 
     class Meta:
         managed = False
