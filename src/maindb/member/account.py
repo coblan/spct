@@ -22,12 +22,8 @@ from ..money.recharge import RechargePage
 from ..money.withdraw import WithdrawPage
 from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
-<<<<<<< HEAD
-
-=======
-from django.core.exceptions import ValidationError
 from maindb.send_phone_message import send_message_password, send_message_fundspassword
->>>>>>> 7ef75050a101b6c3d9bb5f67a4b70efd8b12fa3c
+
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)

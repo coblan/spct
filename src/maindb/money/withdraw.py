@@ -88,10 +88,10 @@ class WithdrawPage(TablePage):
                     'value': 5,
                     'row_match': 'one_row_match',
                     'match_field': 'status',
-                    'match_values': [3, 4],
+                    'match_values': [1,3, 4],
                     'confirm_msg': '确认退款到用户余额吗？',
                     'visible': 'status' in self.permit.changeable_fields(),
-                    'match_msg': '只能选择状态为失败或异常的订单',
+                    'match_msg': '只能选择状态为处理中，失败或异常的订单',
                     'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context()},
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
             ]
@@ -153,6 +153,7 @@ class WithDrawForm(ModelFields):
         #super().save_form()
         if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
             self.instance.memo += '\r\n' + self.kw.get('fakememo')
+            self.instance.confirmtime = datetime.now()
             notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
             ex_log = {'memo': self.kw.get('fakememo'),}
             #self.instance.save()
@@ -170,8 +171,8 @@ class WithDrawForm(ModelFields):
                     'memo': self.kw.get('fakememo')}
         elif 'status' in self.changed_data and self.instance.status == 5:  # 退款
             self.instance.memo += '\r\n' + self.kw.get('fakememo')
+            self.instance.confirmtime = datetime.now()
             #self.instance.save()
-
             category = 35
             if self.instance.amounttype == 1:
                 self.instance.accountid.amount += self.instance.amount

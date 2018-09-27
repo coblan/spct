@@ -36,6 +36,9 @@ class RechargePage(TablePage):
                 'confirmtime': 150,
                 'apollomsg': 200
             }
+            # if head['name'] == 'accountid':
+            #     head['editor'] = 'com-table-switch-to-tab'
+            #     head['tab_name'] = 'baseinfo'
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             return head
@@ -59,6 +62,7 @@ class RechargePage(TablePage):
         def get_context(self):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
+            # ctx['tabs'] = account_tab(self)
             return ctx
 
         def get_operation(self):
