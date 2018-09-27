@@ -25,7 +25,9 @@ class MatchesStatisticsPage(TablePage):
                 head['options'] = [{'value': value, 'label': label} for (value, label) in MATCH_STATUS]
                 head['editor'] = 'com-table-mapper'
             if head['name'] == 'matchid':
-                head['editor'] = ''
+                detail_statistic = DetailStatistic(crt_user= self.crt_user)
+                head['editor'] = 'com-table-pop-table'
+                head['table_ctx'] = detail_statistic.get_head_context()
             return head
 
         @classmethod
@@ -166,12 +168,17 @@ class MatchesStatisticsPage(TablePage):
 
 
 class DetailStatistic(PlainTable):
+    
+    def get_heads(self): 
+        return [
+            {'name': 'bb','label': 'bb',}
+        ]
+    
     def get_rows(self): 
-        pass
+        return [
+            {'bb': 'aaaa'}
+        ]
     
-
-    
-
 
 director.update({
     'match.viewbymatch': MatchesStatisticsPage.tableCls, 
