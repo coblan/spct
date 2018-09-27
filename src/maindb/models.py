@@ -908,15 +908,15 @@ class TbNetworkerror(models.Model):
 
 class TbNotice(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    title = models.CharField(db_column='Title', max_length=1024, blank=False, null=True)  # Field name made lowercase.
-    url = models.CharField(db_column='Url', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=1024, blank=False, null=True,verbose_name='标题')  # Field name made lowercase.
+    url = models.CharField(db_column='Url', max_length=512, blank=True, null=True,verbose_name='链接Url')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
     # createuser = models.ForeignKey(to=User,db_column='CreateUser', blank=True, null=True,db_constraint=False)  #
-    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
+    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,verbose_name='创建人')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', default=1, null=True,
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
-    content = models.TextField(db_column='Content', blank=True, null=True, default='')  # Field name made lowercase.
+    content = models.TextField(db_column='Content', blank=True, null=True, default='',verbose_name='内容')  # Field name made lowercase.
 
     class Meta:
         managed = False
