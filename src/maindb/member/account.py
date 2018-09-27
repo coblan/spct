@@ -22,7 +22,12 @@ from ..money.recharge import RechargePage
 from ..money.withdraw import WithdrawPage
 from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
+<<<<<<< HEAD
 
+=======
+from django.core.exceptions import ValidationError
+from maindb.send_phone_message import send_message_password, send_message_fundspassword
+>>>>>>> 7ef75050a101b6c3d9bb5f67a4b70efd8b12fa3c
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -263,11 +268,13 @@ class AccoutBaseinfo(ModelFields):
     
     def clean_save(self): 
         if self.kw.get('password') == 1:
-            self.instance.password = gen_pwsd()
-            return {'password': '重置',}
+            text_pswd, self.instance.password = gen_pwsd()
+            send_message_password(self.instance.phone, text_pswd)
+            return {'memo': '重置密码',}
         elif self.kw.get('fundspassword') == 1:
-            self.instance.fundspassword = gen_pwsd()
-            return {'fundspassword': '重置',}
+            text_pswd, self.instance.fundspassword = gen_pwsd()
+            send_message_fundspassword(self.instance.phone, text_pswd)
+            return {'memo': '重置资金密码',}
 
     class Meta:
         model = TbAccount
@@ -419,7 +426,7 @@ def gen_pwsd():
         # 不能全是字母，或者全是数字
         if not (re.search('^\d+$', pswd) or re.search('^\[a-zA-Z]+$', pswd)):
             break
-    print(pswd)
+    text_pswd = pswd
     m1 = hashlib.md5()
     m1.update(pswd.encode("utf-8"))
     pswd = m1.hexdigest()
@@ -428,4 +435,4 @@ def gen_pwsd():
     m2 = hashlib.md5()
     m2.update(pswd_str.encode("utf-8"))  # 参数必须是byte类型，否则报Unicode-objects must be encoded before
     pswd_db_str = m2.hexdigest().upper()
-    return pswd_db_str
+    return text_pswd, pswd_db_str

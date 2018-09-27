@@ -154,16 +154,26 @@ LOGGING = {
             'handlers': ['console', 'djangoout_warning', 'mail_admins', 'elk_warning'],
             'level': 'INFO',
             },
-        'director.sql_op': {
-            'handlers': ['console', 'elk_info'],
-            'level': 'DEBUG',
-            'propagate': True,
-            },
+        #'director.sql_op': {
+            #'handlers': ['console', 'elk_info'],
+            #'level': 'DEBUG',
+            #'propagate': True,
+            #},
         'extra.error': {
             'handlers': ['console', 'djangoout_warning'],
             'level': 'DEBUG',
             'propagate': True,            
             },
+        'ModelFields.save_form': {
+            'handlers': ['operation_log', 'elk_info'],
+            'level': 'DEBUG',
+            'propagate': True,              
+            },
+        'task': {
+            'handlers': ['elk_info'],
+            'level': 'DEBUG',
+            'propagate': True,                 
+            },        
         #'django.request': {
             #'handlers': ['rotfile'],
             #'level': 'ERROR',

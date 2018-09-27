@@ -159,6 +159,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,              
             },
+        'task': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,                 
+            },
         #'django.request': {
             #'handlers': ['rotfile'],
             #'level': 'ERROR',
