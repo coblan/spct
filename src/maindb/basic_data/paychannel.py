@@ -82,7 +82,7 @@ class PayChannelForm(ModelFields):
 
     class Meta:
         model = TbPaychannel
-        exclude = ['memo']
+        exclude = []
 
     def clean_channelname(self):
         name = self.cleaned_data['channelname']

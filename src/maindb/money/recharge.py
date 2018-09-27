@@ -47,7 +47,7 @@ class RechargePage(TablePage):
                 'confirmamount': 'total_confirmamount'
             }
             for k in dc:
-                dc[k] = str(dc[k])
+                dc[k] = str(round(dc.get(k) or 0, 2))
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = ['合计'] + self.footer

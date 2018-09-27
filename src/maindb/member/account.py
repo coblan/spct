@@ -11,7 +11,6 @@ from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatches
-from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
 from helpers.func.random_str import get_str
@@ -23,7 +22,6 @@ from ..money.recharge import RechargePage
 from ..money.withdraw import WithdrawPage
 from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
-from django.core.exceptions import ValidationError
 
 
 def account_tab(self):
@@ -177,6 +175,24 @@ class AccountPage(TablePage):
 
             return head
 
+        def statistics(self, query):
+            dc = query.aggregate(total_amount=Sum('amount'), total_agentamount=Sum('agentamount'))
+            mapper = {
+                'amount': 'total_amount',
+                'agentamount': 'total_agentamount'
+            }
+            for k in dc:
+                dc[k] = str(round(dc.get(k) or 0,2))
+            footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
+            self.footer = footer
+            self.footer = ['合计'] + self.footer
+            return query
+
+        def get_context(self):
+            ctx = ModelTable.get_context(self)
+            ctx['footer'] = self.footer
+            return ctx
+
         def getExtraHead(self):
             return [{'name': 'rechargeamount', 'label': '充值金额'}, {'name': 'withdrawamount', 'label': '提现金额'}]
 
@@ -211,10 +227,10 @@ class AccountPage(TablePage):
             modifyer = AccoutModifyAmount(crt_user=self.crt_user)
             changeable_fields = self.permit.changeable_fields()
             return [
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '启用', 'field': 'status',
-                 'value': 1, 'confirm_msg': '确认启用？', 'visible': 'status' in changeable_fields,},
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'field': 'status',
-                 'value': 0, 'confirm_msg': '确认禁用？', 'visible': 'status' in changeable_fields},
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '解冻', 'field': 'status',
+                 'value': 1, 'confirm_msg': '确认解冻？', 'visible': 'status' in changeable_fields,},
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '冻结', 'field': 'status',
+                 'value': 0, 'confirm_msg': '确认冻结？', 'visible': 'status' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置登录密码', 'field': 'password',
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？', 'visible': 'password' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
