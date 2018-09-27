@@ -20,9 +20,7 @@ class BlackIPRangeListPage(TablePage):
         def dict_head(self, head):
             dc = {
                 'startip': 120,
-                'endip': 120,
-                'remark': 150,
-                'area': 150
+                'endip': 120
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
