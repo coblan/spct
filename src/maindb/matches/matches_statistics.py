@@ -17,7 +17,8 @@ class MatchesStatisticsPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbMatches
-        include = ['matchid']
+        include = ['matchid', 'livebet', 'statuscode', 'matchdate', 'team1zh', 'team2zh', 'tournamentid']
+        hide_fields = ['livebet', 'statuscode', 'matchdate', 'team1zh', 'team2zh', 'tournamentid']
 
         def dict_head(self, head):
             if head['name'] == 'StatusCode':
@@ -37,7 +38,7 @@ class MatchesStatisticsPage(TablePage):
             return search_args
 
         class search(SelectSearch):
-            names = ['nickname', 'teamzh']
+            names = ['teamzh', 'nickname']
             exact_names = ['matchid']
 
             def get_option(self, name):
@@ -79,10 +80,13 @@ class MatchesStatisticsPage(TablePage):
         def getData(self):
             nickname = ""
             matchid = 0
+            teamzh = ''
             if self.search_args.get('_qf') == 'nickname':
                 nickname = self.search_args.get('_q', '')
             elif self.search_args.get('_qf') == 'matchid':
                 matchid = self.search_args.get('_q', 0) or 0
+            elif self.search_args.get('_qf') == 'teamzh':
+                teamzh = self.search_args.get('_q', '')
             if not re.search('^\d*$', str(matchid)):
                 matchid = -1
             sort = self.search_args.get('_sort') or '-MatchDate'
@@ -92,6 +96,7 @@ class MatchesStatisticsPage(TablePage):
             sql_args = {
                 'TournamentID': self.search_args.get('tournamentid', 0),
                 'MatchID': matchid,
+                'TeamZH': teamzh,
                 'StatusCode': self.search_args.get('statuscode', -1),
                 'LiveBet': int(self.search_args.get('livebet', -1)),
                 'NickName': nickname,
@@ -103,7 +108,7 @@ class MatchesStatisticsPage(TablePage):
                 'Sort': sort,
             }
 
-            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,%(StatusCode)s,%(LiveBet)s,'%(NickName)s',%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,'%(TeamZH)s',%(StatusCode)s,%(LiveBet)s,'%(NickName)s',%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql)
@@ -123,7 +128,7 @@ class MatchesStatisticsPage(TablePage):
                         dc[head_name] = round(row[index], 2)
                     self.footer_dc = dc
 
-                self.footer = ['合计'] + self.footer_by_dict(self.footer_dc)[1:]
+                self.footer = ['合计'] + self.footer_by_dict(self.footer_dc)[0:]
 
         def getExtraHead(self):
             return [
