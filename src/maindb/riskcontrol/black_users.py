@@ -9,7 +9,7 @@ class BlackIPRangeListPage(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return 'IP黑名单(范围)'
+        return '登录IP黑名单'
 
     class tableCls(ModelTable):
         model = Blackiprangelist
@@ -20,9 +20,7 @@ class BlackIPRangeListPage(TablePage):
         def dict_head(self, head):
             dc = {
                 'startip': 120,
-                'endip': 120,
-                'remark': 150,
-                'area': 150
+                'endip': 120
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])

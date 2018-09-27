@@ -37,12 +37,14 @@ class MatchesStatisticsPage(TablePage):
             return search_args
 
         class search(SelectSearch):
-            names = ['nickname']
+            names = ['nickname', 'teamzh']
             exact_names = ['matchid']
 
             def get_option(self, name):
                 if name == 'nickname':
                     return {'value': 'nickname', 'label': '用户昵称', }
+                elif name == 'teamzh':
+                    return {'value': 'teamzh', 'label': '球队名称', }
                 else:
                     return super().get_option(name)
 
@@ -59,7 +61,8 @@ class MatchesStatisticsPage(TablePage):
                 return head
 
         class sort(RowSort):
-            names = ['MatchDate','TicketCount','SeriesTicketCount', 'UserCount', 'SumBetAmount', 'SumBetOutcome', 'SumGrossProfit', 'SumBonus',
+            names = ['MatchDate', 'TicketCount', 'SeriesTicketCount', 'UserCount', 'SumBetAmount', 'SumBetOutcome',
+                     'SumGrossProfit', 'SumBonus',
                      'SumProfit']
 
         def get_rows(self):
@@ -131,7 +134,7 @@ class MatchesStatisticsPage(TablePage):
                 {'name': 'MatchDate', 'label': '比赛日期', 'width': 140},
                 {'name': 'MatchScore', 'label': '比分', 'width': 80},
                 {'name': 'StatusCode', 'label': '状态', },
-                {'name': 'LiveBet', 'label': '走地盘','editor':'com-table-bool-shower' },
+                {'name': 'LiveBet', 'label': '走地盘', 'editor': 'com-table-bool-shower'},
                 {'name': 'TicketCount', 'label': '单注注数', 'width': 80},
                 {'name': 'SeriesTicketCount', 'label': '串关注数', 'width': 80},
                 {'name': 'UserCount', 'label': '用户数', 'width': 80},

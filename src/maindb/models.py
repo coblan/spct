@@ -39,12 +39,9 @@ class Blackiprangelist(models.Model):
                                         verbose_name=_('StartIpNum'))  # Field name made lowercase.
     endip = models.CharField(db_column='EndIp', max_length=16, verbose_name=_('EndIp'))  # Field name made lowercase.
     endipnum = models.BigIntegerField(db_column='EndIpNum', verbose_name=_('EndIpNum'))  # Field name made lowercase.
-    remark = models.CharField(db_column='Remark', max_length=200,
-                              verbose_name='网络')  # Field name made lowercase.
+
     iswork = models.BooleanField(db_column='IsWork', verbose_name=_('IsWork'),
                                  default=True)  # Field name made lowercase.
-    # itype = models.IntegerField(db_column='IType')  # Field name made lowercase.
-    area = models.CharField(db_column='Area', max_length=255, verbose_name=_('Area'))  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -112,13 +109,13 @@ class TbAccountMatchFav(models.Model):
 
 
 class TbAppresource(models.Model):
-    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=255)  # Field name made lowercase.
-    url = CusFileField(db_column='Url', max_length=255)  # Field name made lowercase.
-    isexpired = models.BooleanField(db_column='IsExpired')  # Field name made lowercase.
-    md5 = models.CharField(db_column='Md5', max_length=64)  # Field name made lowercase.
-    remark = models.CharField(db_column='Remark', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    type = models.IntegerField(db_column='Type')  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True,verbose_name='编号')  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=255,verbose_name='名称')  # Field name made lowercase.
+    url = CusFileField(db_column='Url', max_length=255,verbose_name='文件')  # Field name made lowercase.
+    isexpired = models.BooleanField(db_column='IsExpired',verbose_name='过期')  # Field name made lowercase.
+    md5 = models.CharField(db_column='Md5', max_length=64,verbose_name='散列值')  # Field name made lowercase.
+    remark = models.CharField(db_column='Remark', max_length=255, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
+    type = models.IntegerField(db_column='Type',verbose_name='类型')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -126,14 +123,14 @@ class TbAppresource(models.Model):
 
 
 class TbActivity(models.Model):
-    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    cover = CusPictureField(db_column='Cover', max_length=512, null=True)  # Field name made lowercase.
-    zip = models.CharField(db_column='Zip', max_length=512, null=True)  # Field name made lowercase.
-    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True,verbose_name='编号')  # Field name made lowercase.
+    cover = CusPictureField(db_column='Cover', max_length=512, null=True,verbose_name='封面')  # Field name made lowercase.
+    zip = models.CharField(db_column='Zip', max_length=512, null=True,verbose_name='压缩包')  # Field name made lowercase.
+    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,verbose_name='创建人')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', null=True, default=1,
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
-    priority = models.IntegerField(db_column='Priority', blank=True, null=True)  # Field name made lowercase.
+    priority = models.IntegerField(db_column='Priority', blank=True, null=True,verbose_name='优先级')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -162,18 +159,18 @@ class TbAreacode(models.Model):
 
 class TbAppversion(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    terminal = models.IntegerField(db_column='Terminal', choices=PLATFORM)  # Field name made lowercase.
+    terminal = models.IntegerField(db_column='Terminal', choices=PLATFORM,verbose_name='终端')  # Field name made lowercase.
     packageurl = models.CharField(db_column='PackageUrl', max_length=255, blank=True,
-                                  null=True)  # Field name made lowercase.
-    md5 = models.CharField(db_column='Md5', max_length=32, blank=True, null=True)  # Field name made lowercase.
-    versionid = models.IntegerField(db_column='VersionId', default=0)  # Field name made lowercase.
-    versionname = models.CharField(db_column='VersionName', max_length=64, blank=False)  # Field name made lowercase.
+                                  null=True,verbose_name='文件')  # Field name made lowercase.
+    md5 = models.CharField(db_column='Md5', max_length=32, blank=True, null=True,verbose_name='散列值')  # Field name made lowercase.
+    versionid = models.IntegerField(db_column='VersionId', default=0,verbose_name='编号')  # Field name made lowercase.
+    versionname = models.CharField(db_column='VersionName', max_length=64, blank=False,verbose_name='版本号')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=512, blank=True,
-                                   null=True)  # Field name made lowercase.
+                                   null=True,verbose_name='描述')  # Field name made lowercase.
     required = models.IntegerField(db_column='Required', verbose_name=_('Force Update'), default=0,
                                    choices=REQUIRED)  # Field name made lowercase.
-    size = models.FloatField(db_column='Size', default=0)  # Field name made lowercase.
-    valid = models.BooleanField(db_column='Valid')  # Field name made lowercase.
+    size = models.FloatField(db_column='Size', default=0,verbose_name='大小')  # Field name made lowercase.
+    valid = models.BooleanField(db_column='Valid',verbose_name='状态')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -602,13 +599,13 @@ class TbLoginlog(models.Model):
     ternimal = models.IntegerField(db_column='Ternimal', verbose_name=_('Terminal'))  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',
                                       verbose_name=_('Login Time'))  # Field name made lowercase.
-    appversion = models.CharField(db_column='AppVersion', verbose_name=_('App Version'), max_length=20, blank=True,
+    appversion = models.CharField(db_column='AppVersion', verbose_name='App版本', max_length=20, blank=True,
                                   null=True)  # Field name made lowercase.
     devicename = models.CharField(db_column='DeviceName', max_length=40, blank=True,
-                                  null=True)  # Field name made lowercase.
+                                  null=True,verbose_name='设备名称')  # Field name made lowercase.
     deviceversion = models.CharField(db_column='DeviceVersion', max_length=20, blank=True,
-                                     null=True)  # Field name made lowercase.
-    logintype = models.IntegerField(db_column='LoginType')  # Field name made lowercase.
+                                     null=True,verbose_name='设备版本号')  # Field name made lowercase.
+    logintype = models.IntegerField(db_column='LoginType',verbose_name='登录方式')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -911,15 +908,15 @@ class TbNetworkerror(models.Model):
 
 class TbNotice(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    title = models.CharField(db_column='Title', max_length=1024, blank=False, null=True)  # Field name made lowercase.
-    url = models.CharField(db_column='Url', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=1024, blank=False, null=True,verbose_name='标题')  # Field name made lowercase.
+    url = models.CharField(db_column='Url', max_length=512, blank=True, null=True,verbose_name='链接Url')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
     # createuser = models.ForeignKey(to=User,db_column='CreateUser', blank=True, null=True,db_constraint=False)  #
-    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
+    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,verbose_name='创建人')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', default=1, null=True,
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
-    content = models.TextField(db_column='Content', blank=True, null=True, default='')  # Field name made lowercase.
+    content = models.TextField(db_column='Content', blank=True, null=True, default='',verbose_name='内容')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1007,13 +1004,13 @@ class TbOddstypegroup(models.Model):
     sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
     oddstypegroup = models.IntegerField(db_column='OddsTypeGroup', unique=True)  # Field name made lowercase.
     oddstypenamezh = models.CharField(db_column='OddsTypeNameZH', max_length=100, blank=True,
-                                      null=True)  # Field name made lowercase.
+                                      null=True,verbose_name='玩法')  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
-    enabled = models.IntegerField(db_column='Enabled')  # Field name made lowercase.
+    enabled = models.IntegerField(db_column='Enabled',verbose_name='状态')  # Field name made lowercase.
     periodtype = models.IntegerField(db_column='PeriodType', blank=True, null=True, verbose_name='半/全场',
                                      choices=periodtype_CHOICE)  # Field name made lowercase.
-    bettype = models.IntegerField(db_column='BetType')  # Field name made lowercase.
-    spread = models.DecimalField(db_column='Spread', max_digits=18, decimal_places=4)  # Field name made lowercase.    
+    bettype = models.IntegerField(db_column='BetType',verbose_name='编号')  # Field name made lowercase.
+    spread = models.DecimalField(db_column='Spread', max_digits=18, decimal_places=4,verbose_name='水位')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1143,7 +1140,7 @@ class TbQa(models.Model):
                                 verbose_name=_('Belong To'))  # 从属于Field name made lowercase.
     type = models.IntegerField(db_column='Type')  # Field name made lowercase.
     priority = models.SmallIntegerField(db_column='Priority', default=0, blank=True)  # Field name made lowercase.
-    title = models.CharField(db_column='Title', max_length=100)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=100,verbose_name='标题')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=1500)  # Field name made lowercase.
     status = models.SmallIntegerField(db_column='Status', default=1,
                                       choices=ONLINE_STATUS)  # Field name made lowercase.
@@ -1462,7 +1459,7 @@ class TbTournament(models.Model):
                                              verbose_name='联赛ID')  # Field name made lowercase.
     issubscribe = models.IntegerField(db_column='IsSubscribe', verbose_name='已订阅')  # Field name made lowercase.
     closelivebet = models.IntegerField(db_column='CloseLiveBet', verbose_name='关闭滚球')  # Field name made lowercase.
-    sort = models.IntegerField(db_column='Sort', blank=True, null=True)  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort', blank=True, null=True,verbose_name='排序')  # Field name made lowercase.
     typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True,
                                        verbose_name='已关闭玩法')  # Field name made lowercase.
 
@@ -1476,15 +1473,15 @@ class TbTournament(models.Model):
 
 class TbBanner(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    title = models.CharField(db_column='Title', max_length=255, null=True)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=255, null=True,verbose_name='标题')  # Field name made lowercase.
     picturename = CusPictureField(db_column='PictureName', verbose_name=_('Picture Name'),
                                   max_length=255)  # Field name made lowercase
     # picturename = models.CharField(db_column='PictureName',verbose_name=_('Picture Name'), max_length=255)  # Field name made lowercase.
     order = models.IntegerField(db_column='Order', verbose_name=_('Priority'))  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', auto_now=True)  # Field name made lowercase.
-    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,verbose_name='创建时间')  # Field name made lowercase.
+    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,verbose_name='创建人')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=1024, blank=True,
-                                   null=True)  # Field name made lowercase.
+                                   null=True,verbose_name='描述')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', verbose_name=_('status'), null=True, choices=ONLINE_STATUS,
                                  default=1)  # Field name made lowercase.
     navigateurl = models.CharField(db_column='NavigateUrl', max_length=512, verbose_name=_('Navigate Url'), blank=True,
@@ -1808,12 +1805,9 @@ class TbPaychannelblackiprange(models.Model):
                                         verbose_name=_('StartIpNum'))  # Field name made lowercase.
     endip = models.CharField(db_column='EndIp', max_length=16, verbose_name=_('EndIp'))  # Field name made lowercase.
     endipnum = models.BigIntegerField(db_column='EndIpNum', verbose_name=_('EndIpNum'))  # Field name made lowercase.
-    remark = models.CharField(db_column='Remark', max_length=200,
-                              verbose_name=_('Remark'))  # Field name made lowercase.
+
     iswork = models.BooleanField(db_column='IsWork', verbose_name=_('IsWork'),
                                  default=True)  # Field name made lowercase.
-    # itype = models.IntegerField(db_column='IType')  # Field name made lowercase.
-    area = models.CharField(db_column='Area', max_length=255, verbose_name=_('Area'))  # Field name made lowercase.
     paychannelid = models.ForeignKey(to=TbPaychannel, db_column='PayChannelID', db_constraint=False,
                                      verbose_name='充值渠道')  # Field name made lowercase.
 
@@ -1837,9 +1831,9 @@ class TbOperationlog(models.Model):
 
 
 class TbAreablacklist(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
-    area = models.CharField(db_column='Area', max_length=200)  # Field name made lowercase.
+    id = models.AutoField(db_column='ID', primary_key=True,verbose_name='编号')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',default=1)  # Field name made lowercase.
+    area = models.CharField(db_column='Area', max_length=200,verbose_name='地区')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1848,8 +1842,10 @@ class TbAreablacklist(models.Model):
 
 class TbRechargeareablacklist(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
-    area = models.CharField(db_column='Area', max_length=200)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',default=1)  # Field name made lowercase.
+    paychannelid = models.ForeignKey(to=TbPaychannel, db_column='PayChannelID', db_constraint=False,
+                                     verbose_name='充值渠道')  # Field name made lowercase.
+    area = models.CharField(db_column='Area', max_length=200,verbose_name='地区')  # Field name made lowercase.
 
     class Meta:
         managed = False

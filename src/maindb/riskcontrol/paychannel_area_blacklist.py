@@ -5,24 +5,23 @@ from helpers.director.base_data import director, page_dc, field_map
 from helpers.director.model_func.dictfy import model_to_name
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from helpers.director.shortcut import ModelTable, TablePage, ModelFields
-from ..models import TbAreablacklist
+from maindb.riskcontrol.black_users import ip2num
+from ..models import TbPaychannelblackiprange, TbRechargeareablacklist
 
 
-class AreaBlackList(TablePage):
+class PayChannelAreaBlackList(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return '登录地区黑名单'
+        return '充值地区黑名单'
 
     class tableCls(ModelTable):
-        model = TbAreablacklist
+        model = TbRechargeareablacklist
         exclude = []
         pop_edit_field = 'id'
 
         def dict_head(self, head):
             dc = {
-                'id': 120,
-                'status': 120,
                 'area': 150
             }
             if dc.get(head['name']):
@@ -43,7 +42,7 @@ class AreaBlackList(TablePage):
                     'field': 'status',
                     'value': True,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认启用该地区黑名单吗?',
+                    'confirm_msg': '确认启用该充值地区黑名单吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
                 {
@@ -53,28 +52,33 @@ class AreaBlackList(TablePage):
                     'field': 'status',
                     'value': False,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认禁用该地区黑名单吗?',
+                    'confirm_msg': '确认禁用该充值地区黑名单吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 }
             ])
             return ls
 
 
-class AreaBlackListForm(ModelFields):
+class PayChannelAreaBlackListForm(ModelFields):
     hide_fields = []
 
     class Meta:
-        model = TbAreablacklist
+        model = TbRechargeareablacklist
         exclude = []
 
-field_map[model_to_name(TbAreablacklist) + '.status'] = IntBoolProc
+    def dict_head(self, head):
+        if head['name'] == 'paychannelid':
+            head['placeholder'] = '请选择'
+        return head
 
+
+field_map[model_to_name(TbRechargeareablacklist) + '.status'] = IntBoolProc
 
 director.update({
-    'AreaBlackList': AreaBlackList.tableCls,
-    'AreaBlackList.edit': AreaBlackListForm
+    'PayChannelAreaBlackList': PayChannelAreaBlackList.tableCls,
+    'PayChannelAreaBlackList.edit': PayChannelAreaBlackListForm
 })
 
 page_dc.update({
-    'area_blacklist': AreaBlackList,
+    'paychannel_area_blacklist': PayChannelAreaBlackList,
 })
