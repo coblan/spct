@@ -9,7 +9,7 @@ class BlackIPRangeListPage(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return 'IP黑名单(范围)'
+        return '登录IP黑名单'
 
     class tableCls(ModelTable):
         model = Blackiprangelist

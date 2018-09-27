@@ -12,7 +12,7 @@ class AreaBlackList(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return '地区黑名单'
+        return '登录地区黑名单'
 
     class tableCls(ModelTable):
         model = TbAreablacklist
