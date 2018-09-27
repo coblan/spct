@@ -12,6 +12,7 @@ class AppResource(TablePage):
         pop_edit_field = 'name'
         hide_fields = ['url']
         model = TbAppresource
+        fields_sort = ['id','name','valid','md5','remark','type']
         exclude = []
         
         def dict_head(self, head): 
@@ -23,8 +24,16 @@ class AppResource(TablePage):
                 head['width'] =dc.get(head['name'])
             return head
 
+        def getExtraHead(self):
+            return [{'name': 'valid', 'label': '状态','editor':'com-table-bool-shower'}]
+
         def get_operation(self):
             return ModelTable.get_operation(self)[0:1]
+
+        def dict_row(self, inst):
+            return {
+                'valid': not bool(inst.isexpired)
+            }
 
 class AppResourceForm(ModelFields):
     hide_fields = ['md5']

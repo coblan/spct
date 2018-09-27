@@ -16,7 +16,7 @@ class UserStatisticsPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbAccount
-        include = ['accountid']
+        include = ['accountid','date']
 
         @classmethod
         def clean_search_args(cls, search_args):
@@ -45,6 +45,9 @@ class UserStatisticsPage(TablePage):
                 if head['name'] == 'date':
                     head['label'] = '日期'
                 return head
+
+            def getExtraHead(self):
+                return [{'name':'date','editor':'com-date-datetimefield-range-filter','label':'日期'}]
 
         class sort(RowSort):
             names = ['Amount', 'GameCoinRechargeAmount', 'CommissionRechargeAmount', 'ReservedAmount',
