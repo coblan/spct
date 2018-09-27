@@ -1,6 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import RowSearch, RowSort, RowFilter, director
+from django.db.models import Sum
+from helpers.director.shortcut import RowSort
 from helpers.director.table.row_search import SelectSearch
 from ..models import TbBalancelog
 from .chargeflow import *
@@ -33,8 +34,25 @@ class BalancelogPage(TablePage):
 
         def get_operation(self):
             return [
-                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出Excel','icon': 'fa-file-excel-o',}
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
+
+        def statistics(self, query):
+            dc = query.aggregate(total_amount=Sum('amount'))
+            mapper = {
+                'amount': 'total_amount'
+            }
+            for k in dc:
+                dc[k] = str(round(dc.get(k) or 0, 2))
+            footer = [dc.get(mapper.get(name), '') for name in self.include]
+            self.footer = footer
+            self.footer = ['合计'] + self.footer
+            return query
+
+        def get_context(self):
+            ctx = ModelTable.get_context(self)
+            ctx['footer'] = self.footer
+            return ctx
 
         def inn_filter(self, query):
             return query.order_by('-createtime')

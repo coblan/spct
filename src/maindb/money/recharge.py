@@ -36,6 +36,9 @@ class RechargePage(TablePage):
                 'confirmtime': 150,
                 'apollomsg': 200
             }
+            # if head['name'] == 'accountid':
+            #     head['editor'] = 'com-table-switch-to-tab'
+            #     head['tab_name'] = 'baseinfo'
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             return head
@@ -47,7 +50,7 @@ class RechargePage(TablePage):
                 'confirmamount': 'total_confirmamount'
             }
             for k in dc:
-                dc[k] = str(dc[k])
+                dc[k] = str(round(dc.get(k) or 0, 2))
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = ['合计'] + self.footer
@@ -59,6 +62,7 @@ class RechargePage(TablePage):
         def get_context(self):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
+            # ctx['tabs'] = account_tab(self)
             return ctx
 
         def get_operation(self):
