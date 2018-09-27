@@ -17,8 +17,12 @@ class League(TablePage):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
+        fields_sort = ['tournamentid','tournamentzh','issubscribe','openlivebet','sort','typegroupswitch']
 
         # hide_fields = ['tournamentid']
+
+        def getExtraHead(self):
+            return [{'name': 'openlivebet', 'label': '走地','editor':'com-table-bool-shower'}]
 
         def inn_filter(self, query):
             return query.order_by('-sort')
@@ -38,6 +42,12 @@ class League(TablePage):
                 head['options'] = [{'value': str(x.oddstypegroup), 'label': x.oddstypenamezh, } for x in
                                    TbOddstypegroup.objects.all()]
             return head
+
+        def dict_row(self, inst):
+            return {
+                'openlivebet': not bool(inst.closelivebet)
+            }
+
 
         def get_operation(self):
             return []
