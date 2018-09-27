@@ -27,6 +27,7 @@ from .riskcontrol import max_payout
 from . import update_cache
 from .riskcontrol import withdraw_limit
 from .riskcontrol import paychannel_blackiprange
+from .riskcontrol import area_blacklist
 
 from .money import vip_paychannel
 from .money import recharge

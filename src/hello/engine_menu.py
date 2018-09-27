@@ -14,6 +14,7 @@ from helpers.director.access.permit import has_permit
 # TbBalancelog, TbChargeflow, TbChannel, TbTicketmaster, TbMatches, TbRcFilter, TbRcLevel, TbRcUser, TbBlackuserlist, TbBlackuserlistLog, \
 # Blackiprangelist, Whiteiplist, Whiteuserlist, TbWithdrawlimitlog, TbTeams,
 from maindb.models import *
+from maindb.riskcontrol.area_blacklist import AreaBlackList
 from . import permit
 
 
@@ -88,6 +89,7 @@ class PcMenu(BaseEngine):
                  #  'visible': can_touch(TbBlackuserlist, crt_user), },
                  # {'label':_('Tb BlackuserlistLog'),'url':page('maindb.TbBlackuserlistLog'), 'visible': can_touch(TbBlackuserlistLog, crt_user),},
                  {'label':'登录IP黑名单','url':page('blackip_range'), 'visible': can_touch(Blackiprangelist, crt_user),},
+                 {'label': '登录地区黑名单', 'url': page('area_blacklist'), 'visible': can_touch(AreaBlackList, crt_user), },
                  {'label': '充值IP黑名单', 'url': page('paychannel_blackip'),'visible': can_touch(TbPaychannelblackiprange, crt_user), },
                  {'label':_('White IP'),'url':page('white_ips'), 'visible': can_touch(Whiteiplist, crt_user),},
                  {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
