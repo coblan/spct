@@ -7,7 +7,7 @@ from helpers.director.table.row_search import SelectSearch
 from ..models import TbMatches, MATCH_STATUS
 from helpers.director.base_data import director
 from django.utils import timezone
-
+from helpers.director.table.table import PlainTable
 
 class MatchesStatisticsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -17,13 +17,15 @@ class MatchesStatisticsPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbMatches
-        include = ['matchid', 'livebet', 'statuscode', 'matchdate', 'team1zh', 'team2zh', 'tournamentid']
-        hide_fields = ['livebet', 'statuscode', 'matchdate', 'team1zh', 'team2zh', 'tournamentid']
+        include = ['matchid', 'livebet', 'statuscode', 'matchdate', 'tournamentid']
+        hide_fields = ['livebet', 'statuscode', 'matchdate', 'tournamentid']
 
         def dict_head(self, head):
             if head['name'] == 'StatusCode':
                 head['options'] = [{'value': value, 'label': label} for (value, label) in MATCH_STATUS]
                 head['editor'] = 'com-table-mapper'
+            if head['name'] == 'matchid':
+                head['editor'] = ''
             return head
 
         @classmethod
@@ -163,8 +165,17 @@ class MatchesStatisticsPage(TablePage):
             ]
 
 
+class DetailStatistic(PlainTable):
+    def get_rows(self): 
+        pass
+    
+
+    
+
+
 director.update({
-    'match.viewbymatch': MatchesStatisticsPage.tableCls
+    'match.viewbymatch': MatchesStatisticsPage.tableCls, 
+    'DetailStatistic': DetailStatistic,
 })
 
 page_dc.update({
