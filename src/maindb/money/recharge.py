@@ -6,7 +6,7 @@ from django.db import connections
 from helpers.director.fields.fields import ModelFields
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter
 from helpers.director.table.row_search import SelectSearch
-from helpers.director.table.table import RowSearch, RowSort
+from helpers.director.table.table import RowSort
 from ..models import TbRecharge
 
 
@@ -36,9 +36,10 @@ class RechargePage(TablePage):
                 'confirmtime': 150,
                 'apollomsg': 200
             }
-            # if head['name'] == 'accountid':
-            #     head['editor'] = 'com-table-switch-to-tab'
-            #     head['tab_name'] = 'baseinfo'
+            if head['name'] == 'accountid':
+                head['editor'] = 'com-table-switch-to-tab'
+                head['inn_editor']='com-table-label-shower'
+                head['tab_name'] = 'baseinfo'
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             return head
@@ -62,7 +63,8 @@ class RechargePage(TablePage):
         def get_context(self):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
-            # ctx['tabs'] = account_tab(self)
+            from maindb.member.account import account_tab
+            ctx['tabs'] = account_tab(self)
             return ctx
 
         def get_operation(self):
@@ -111,11 +113,11 @@ class RechargePage(TablePage):
 
 
 class ConfirmRechargeForm(ModelFields):
-    hide_fields = ['status']
+    hide_fields = ['status','confirmtime','isauto']
 
     class Meta:
         model = TbRecharge
-        fields = ['amount', 'memo', 'status']
+        fields = ['amount', 'memo', 'status','confirmtime','isauto']
 
     def dict_head(self, head):
         if head['name'] == 'memo':

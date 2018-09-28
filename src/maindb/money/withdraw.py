@@ -32,6 +32,10 @@ class WithdrawPage(TablePage):
                 'memo': 120,
                 'apollocode': 150
             }
+            if head['name'] == 'accountid':
+                head['editor'] = 'com-table-switch-to-tab'
+                head['inn_editor']='com-table-label-shower'
+                head['tab_name'] = 'baseinfo'
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             return head
@@ -51,6 +55,8 @@ class WithdrawPage(TablePage):
         def get_context(self):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
+            from maindb.member.account import account_tab
+            ctx['tabs'] = account_tab(self)
             return ctx
 
         def get_operation(self):
