@@ -6,7 +6,7 @@ from django.db import connections
 from helpers.director.fields.fields import ModelFields
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter
 from helpers.director.table.row_search import SelectSearch
-from helpers.director.table.table import RowSearch, RowSort
+from helpers.director.table.table import RowSort
 from ..models import TbRecharge
 
 
@@ -113,11 +113,11 @@ class RechargePage(TablePage):
 
 
 class ConfirmRechargeForm(ModelFields):
-    hide_fields = ['status']
+    hide_fields = ['status','confirmtime','isauto']
 
     class Meta:
         model = TbRecharge
-        fields = ['amount', 'memo', 'status']
+        fields = ['amount', 'memo', 'status','confirmtime','isauto']
 
     def dict_head(self, head):
         if head['name'] == 'memo':
