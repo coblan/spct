@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from .status_code import *
 from .cus_models_fields import CusPictureField, CusFileField
 from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
-
+from maindb.create_user import CreateUserField
 
 class Blackiplist(models.Model):
     blackiplistid = models.AutoField(db_column='BlackIpListID', primary_key=True)  # Field name made lowercase.
@@ -913,7 +913,7 @@ class TbNotice(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
     # createuser = models.ForeignKey(to=User,db_column='CreateUser', blank=True, null=True,db_constraint=False)  #
-    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,verbose_name='创建人')  # Field name made lowercase.
+    createuser = CreateUserField(db_column='CreateUser', blank=True, null=True,verbose_name='创建人')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', default=1, null=True,
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
     content = models.TextField(db_column='Content', blank=True, null=True, default='',verbose_name='内容')  # Field name made lowercase.

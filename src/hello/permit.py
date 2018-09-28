@@ -16,7 +16,7 @@ def get_permit():
              { 'label': _('Notice'), 'children': [
                  {'label': '查看','value': 'TbNotice',}, 
                  {'label': '编辑','value': 'TbNotice.edit', 'depend': ['TbNotice'],}, 
-                 {'label': '更新缓存','value': 'TbNotice.update_cache', 'depend': ['TbAppversion', 'TbNotice', 'TbNotice.edit'],}, 
+                 {'label': '更新缓存','value': 'TbNotice.update_cache', 'depend': [ 'TbNotice', 'TbNotice.edit'],}, 
                  ],},
              #{ 'label': _('Notice'), 'value': 'TbNotice',}, 
              { 'label': _('Help'), 'children':[

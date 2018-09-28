@@ -25,9 +25,12 @@ class MatchesStatisticsPage(TablePage):
                 head['options'] = [{'value': value, 'label': label} for (value, label) in MATCH_STATUS]
                 head['editor'] = 'com-table-mapper'
             if head['name'] == 'matchid':
-                detail_statistic = DetailStatistic(crt_user= self.crt_user)
-                head['editor'] = 'com-table-pop-table'
-                head['table_ctx'] = detail_statistic.get_head_context()
+                head['editor'] = 'com-table-switch-to-tab'
+                head['tab_name'] = 'detailStatic'
+          
+                #detail_statistic = DetailStatistic(crt_user= self.crt_user)
+                #head['editor'] = 'com-table-pop-table'
+                #head['table_ctx'] = detail_statistic.get_head_context()
             return head
 
         @classmethod
@@ -165,18 +168,69 @@ class MatchesStatisticsPage(TablePage):
             return [
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
+    def get_context(self): 
+        ctx = super().get_context()
+        ls = [
+           {'name': 'detailStatic',
+            'label': '详细统计',
+            'com': 'com_tab_table',
+            'par_field': 'matchid',
+            'table_ctx': DetailStatistic(crt_user=self.crt_user).get_head_context(),
+            'visible': True,
+            },
+        ]
+        ctx['tabs'] = ls
+        return ctx
+    
 
 
 class DetailStatistic(PlainTable):
     
+    @classmethod
+    def clean_search_args(cls, search_args): 
+        search_args['half_or_full'] = search_args.get('half_or_full') or 1
+        search_args['oddkind'] = search_args.get('oddkind') or 1
+        return search_args
+         
     def get_heads(self): 
         return [
-            {'name': 'bb','label': 'bb',}
+            {'name': 'OddsTypeNameZH','label': '玩法',}, 
+            {'name': 'Outcome','label': '盘口',}, 
+            {'name': 'HomeBetAmount','label': '主',}, 
+            {'name': 'AwayBetAmount','label': '客',}
         ]
     
     def get_rows(self): 
+        #exec [dbo].[SP_SingleMatchStatistics] 97856,0,1 
+        sql_args = {
+            'matchid': self.kw.get('matchid'),
+            'half_or_full': self.search_args.get('half_or_full'),
+            'oddkind': self.search_args.get('oddkind'),
+        }
+        sql = r"exec dbo.SP_SingleMatchStatistics %(matchid)s,%(half_or_full)s,'%(oddkind)s'" \
+              % sql_args
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql)
+            rows = []
+            for row in cursor:
+                dc = {}
+                for index, head in enumerate(cursor.description):
+                    dc[head[0]] = row[index]
+                rows.append(dc)            
+                
+        return rows
+    
+    def getRowFilters(self): 
         return [
-            {'bb': 'aaaa'}
+             {'name': 'half_or_full','label': '全场/半场','editor': 'com-select-filter','options': [
+                 {'value': 1, 'label': '半场',}, 
+                 {'value': 0, 'label': '全场',}
+                 ],}, 
+            {'name': 'oddkind', 'label': '早盘/走地','editor': 'com-select-filter','options': [
+                {'value': 1, 'label': '早盘'}, 
+                {'value': 2, 'label': '走地'}
+                ],}, 
+           
         ]
     
 

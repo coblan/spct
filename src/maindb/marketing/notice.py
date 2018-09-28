@@ -52,10 +52,10 @@ class NoticePage(TablePage):
         exclude = ['id', 'url']
         hide_fields = ['content']
 
-        def dict_row(self, inst):
-            return {
-                '_createuser_label': str(User.objects.get(pk=inst.createuser))
-            }
+        #def dict_row(self, inst):
+            #return {
+                #'_createuser_label': str(User.objects.get(pk=inst.createuser))
+            #}
 
         def dict_head(self, head):
             dc = {
@@ -111,31 +111,32 @@ class NoticePage(TablePage):
 class NoticeForm(ModelFields):
     class Meta:
         model = TbNotice
-        exclude = ['createuser']
+        exclude = []
+    hide_fields = ['createuser']
 
     def dict_head(self, head):
-        if head['name'] == 'createuser':
-            head['editor'] = 'com-field-label-shower'
-        elif head['name'] == 'content':
+        #if head['name'] == 'createuser':
+            #head['editor'] = 'com-field-label-shower'
+        if head['name'] == 'content':
             head['editor'] = 'richtext'
             head['config'] = {
                 'imageUploadUrl': reverse('ckeditor_img'),
             }
         return head
 
-    def save_form(self):
-        ModelFields.save_form(self)
-        if not self.instance.createuser:
-            self.instance.createuser = self.crt_user.pk
-            self.instance.save()
-        # redisInst.delete('App:Cache:index:notices')
+    #def save_form(self):
+        #ModelFields.save_form(self)
+        #if not self.instance.createuser:
+            #self.instance.createuser = self.crt_user.pk
+            #self.instance.save()
+        ## redisInst.delete('App:Cache:index:notices')
 
-        return self.instance
+        #return self.instance
 
     def dict_row(self, row):
         return {
             'createtime': row.createtime.strftime('%Y-%m-%d %H:%M:%S') if row.createtime else None,
-            '_createuser_label': str(User.objects.get(pk=row.createuser)) if row.createuser else "",
+            #'_createuser_label': str(User.objects.get(pk=row.createuser)) if row.createuser else "",
             # 'picturename':'/media/banner/'+row.picturename if row.picturename else ""
         }
 
