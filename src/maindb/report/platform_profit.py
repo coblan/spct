@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.db import connections
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowFilter, SimTable, FieldsPage, Fields
+from helpers.director.shortcut import TablePage, page_dc, SimTable, FieldsPage, Fields
 from helpers.director.base_data import director
 from django.utils import timezone
 
@@ -64,7 +64,11 @@ class PlatformProfit(TablePage):
         return '平台亏盈'
 
     class tableCls(SimTable):
-        fields_sort = ['Profit','BetAmount','Turnover','BetBonus','BetOutCome','RechargeBonus','BirthdayBonus','RescueBonus','AdjustAmount']
+        fields_sort = ['Profit', 'BetAmount', 'Turnover', 'BetBonus', 'BetOutCome', 'RechargeBonus', 'BirthdayBonus',
+                       'RescueBonus', 'AdjustAmount']
+
+        def getRowFilters(self):
+            return [{'name': 'date', 'label': '日期', 'editor': 'com-date-datetimefield-range-filter'}]
 
         @classmethod
         def clean_search_args(cls, search_args):
@@ -76,14 +80,6 @@ class PlatformProfit(TablePage):
             search_args['_start_date'] = search_args.get('_start_date') or def_start
             search_args['_end_date'] = search_args.get('_end_date') or def_end
             return search_args
-
-        class filters(RowFilter):
-            range_fields = ['date']
-
-            def dict_head(self, head):
-                if head['name'] == 'date':
-                    head['label'] = '日期'
-                return head
 
         def get_rows(self):
             self.getData()
@@ -136,9 +132,10 @@ class PlatformProfit(TablePage):
                 'total': self.total,
                 'perpage': self.search_args.get('_perpage', 20)
             }
-        def get_operation(self): 
+
+        def get_operation(self):
             return [
-                {'fun': 'export_excel','editor': 'com-op-btn','label': '导出Excel','icon': 'fa-file-excel-o',}
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
 
 
