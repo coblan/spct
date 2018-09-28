@@ -104,6 +104,8 @@ REDIS_SERVER = '192.168.40.222'
 ELASTIC = 'http://192.168.40.217:9200'
 
 AGENT_SERVICE = 'http://192.168.40.137:8001'
+CENTER_SERVICE = 'http://192.168.40.103:9022'
+
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
 

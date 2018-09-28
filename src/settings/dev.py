@@ -88,7 +88,7 @@ RAB_USER = 'stageuser'
 RAB_PSWD = 'YXNkZmFmc2RmbAo'
 
 AGENT_SERVICE = 'http://192.168.40.137:8001'
-
+CENTER_SERVICE = 'http://192.168.40.103:9022'
 
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 

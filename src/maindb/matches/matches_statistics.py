@@ -186,28 +186,29 @@ class MatchesStatisticsPage(TablePage):
 
 class DetailStatistic(PlainTable):
     
-    @classmethod
-    def clean_search_args(cls, search_args): 
-        search_args['half_or_full'] = search_args.get('half_or_full') or 1
-        search_args['oddkind'] = search_args.get('oddkind') or 1
-        return search_args
-         
+    #@classmethod
+    #def clean_search_args(cls, search_args): 
+        #if search_args.get('half_or_full') not in [0, 1]:   
+            #search_args['half_or_full'] = -1
+        #search_args['oddkind'] = search_args.get('oddkind') or - 1
+        #return search_args
+    
     def get_heads(self): 
         return [
-            {'name': 'OddsTypeNameZH','label': '玩法',}, 
+            {'name': 'OddsTypeNameZH','label': '玩法','width': 150,}, 
             {'name': 'Outcome','label': '盘口',}, 
-            {'name': 'HomeBetAmount','label': '主',}, 
-            {'name': 'AwayBetAmount','label': '客',}
+            {'name': 'HomeBetAmount','label': '主','editor': 'com-table-digit-shower','digit': 2,}, 
+            {'name': 'AwayBetAmount','label': '客','editor': 'com-table-digit-shower','digit': 2,}
         ]
     
     def get_rows(self): 
         #exec [dbo].[SP_SingleMatchStatistics] 97856,0,1 
         sql_args = {
             'matchid': self.kw.get('matchid'),
-            'half_or_full': self.search_args.get('half_or_full'),
-            'oddkind': self.search_args.get('oddkind'),
+            'half_or_full': self.search_args.get('half_or_full', 'null'),
+            'oddkind': self.search_args.get('oddkind', 'null'),
         }
-        sql = r"exec dbo.SP_SingleMatchStatistics %(matchid)s,%(half_or_full)s,'%(oddkind)s'" \
+        sql = r"exec dbo.SP_SingleMatchStatistics %(matchid)s,%(half_or_full)s,%(oddkind)s" \
               % sql_args
         with connections['Sports'].cursor() as cursor:
             cursor.execute(sql)
@@ -216,22 +217,55 @@ class DetailStatistic(PlainTable):
                 dc = {}
                 for index, head in enumerate(cursor.description):
                     dc[head[0]] = row[index]
-                rows.append(dc)            
+                rows.append(dc) 
+        
+        def jj(x): 
+            name =  x['OddsTypeNameZH']
+            if '让分' in name:
+                return '0'
+            if '大小' in name:
+                return '1'
+            return name
+        
+        out_rows = sorted(rows, key= jj)
                 
-        return rows
+        return out_rows
     
     def getRowFilters(self): 
         return [
-             {'name': 'half_or_full','label': '全场/半场','editor': 'com-select-filter','options': [
-                 {'value': 1, 'label': '半场',}, 
-                 {'value': 0, 'label': '全场',}
-                 ],}, 
             {'name': 'oddkind', 'label': '早盘/走地','editor': 'com-select-filter','options': [
                 {'value': 1, 'label': '早盘'}, 
-                {'value': 2, 'label': '走地'}
-                ],}, 
-           
+                {'value': 2, 'label': '走地'}, 
+                ],},             
+             {'name': 'half_or_full','label': '全场/半场','editor': 'com-select-filter','options': [
+                 {'value': 1, 'label': '半场',}, 
+                 {'value': 0, 'label': '全场',}, 
+                 ],}, 
         ]
+    
+    def getTableLayout(self, rows):
+        heads = self.get_heads()
+        taked = {}
+        out_dc = {}
+        for (index , row) in enumerate( rows):
+            namezh =  row.get('OddsTypeNameZH')
+            layindex = '%s,%s'%(index, 0)
+            if  namezh not in taked:
+                taked[namezh] = layindex
+                out_dc[layindex] = [1, 1]
+            else:
+                valid_layindex = taked[namezh]
+                count =  out_dc[valid_layindex][0] + 1
+                out_dc[valid_layindex] = [count, 1]
+                
+                out_dc[layindex] = [0, 1]
+            
+            if not ('让分' in namezh or '大小' in namezh ):
+                out_dc[ '%s,%s'%(index, 2)] = [1, 2]
+                out_dc[ '%s,%s'%(index, 3)] = [1, 0]
+        
+        return out_dc
+    
     
 
 director.update({

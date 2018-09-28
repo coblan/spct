@@ -10,6 +10,8 @@ from .redisInstance import redisInst
 from helpers.func.random_str import get_str
 import hashlib
 from django.db import connections
+from django.conf import settings
+import urllib
 
 def get_global():
     return globals()
@@ -32,7 +34,7 @@ def produce_match_outcome(row):
     手动结算
     """
     #url = 'http://192.168.40.103:9001/Match/ManualResulting'
-    url = 'http://192.168.40.103:9022/Match/ManualResulting'
+    url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
     data ={
         'MatchID':row.get('matchid'),
         'Team1Score':row.get('home_score', 0),
