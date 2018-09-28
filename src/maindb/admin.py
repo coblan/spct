@@ -29,6 +29,7 @@ from .riskcontrol import withdraw_limit
 from .riskcontrol import paychannel_blackiprange
 from .riskcontrol import area_blacklist
 from .riskcontrol import paychannel_area_blacklist
+from .riskcontrol import white_ip_rangelist
 
 from .money import vip_paychannel
 from .money import recharge
