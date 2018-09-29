@@ -149,7 +149,11 @@ LOGGING = {
             'backupCount':3,
             'formatter':'standard',
             'filename': os.path.join(LOG_PATH,'django.log'),            
-            },         
+            }, 
+        'operation_log': {
+            'level': 'INFO',
+            'class': 'hello.operation_log.DBOperationHandler',
+            },        
     },
     'loggers': {
         'django': {
