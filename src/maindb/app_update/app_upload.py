@@ -36,7 +36,7 @@ class AppPackageReciever(BasicReciever):
             else:
                 relative_path+='?md5=%(md5)s&size=%(size)s'%{'md5':md5,'size':size}
                 
-            return settings.APP_PKG_ACCESS_URL + relative_path
+            return settings.STATIC_SERVICE + relative_path
     
     def parsePKGInfo(self,file_path):
         a, d, dx = misc.AnalyzeAPK(file_path)

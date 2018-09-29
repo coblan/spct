@@ -187,6 +187,11 @@ class MatchesStatisticsPage(TablePage):
             'visible': True, }        
         ]
         ctx['tabs'] = ls
+        
+        crt['named_tabs'] = {
+            ''
+        }
+        
         return ctx
     
 

@@ -45,7 +45,7 @@ def receive_banner(request):
         # 切换为service
         ext = mt_name.group(1)
         file_url = upload_banner(catch.getvalue(), ext)
-        file_url = settings.BANNER_ACCESS_URL + file_url
+        file_url = settings.STATIC_SERVICE + file_url
         
         #file_path=os.path.join(file_dir,file_name)
         #if not os.path.exists( file_path ):

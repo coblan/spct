@@ -67,14 +67,14 @@ class AppPkgUrlProc(BaseFieldProc):
     def to_dict(self,inst,name):
         relative_url=getattr(inst,name,None)
         if relative_url:
-            return {name:settings.APP_PKG_ACCESS_URL+relative_url}
+            return {name:settings.STATIC_SERVICE+relative_url}
         else:
             return {name:''}
      
     def clean_field(self,dc,name):
         value = dc.get(name)
-        if value and value.startswith(settings.APP_PKG_ACCESS_URL):
-            return value[len(settings.APP_PKG_ACCESS_URL):]
+        if value and value.startswith(settings.STATIC_SERVICE):
+            return value[len(settings.STATIC_SERVICE):]
         else:
             return value
 

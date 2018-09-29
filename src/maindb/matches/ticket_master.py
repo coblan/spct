@@ -13,7 +13,11 @@ class TicketMasterPage(TablePage):
 
     def get_label(self):
         return _('Tb Trans')  # '注单列表'
-
+    
+    @staticmethod
+    def get_tabs(): 
+        pass
+    
     def get_context(self):
         ctx = TablePage.get_context(self)
         ls = [
@@ -21,38 +25,14 @@ class TicketMasterPage(TablePage):
              'label': '子注单',
              'com': 'com_tab_table',
              'par_field': 'ticketid',
-
-             # 'get_data': {
-             # 'fun': 'get_rows',
-             # 'kws': {
-             # 'director_name': TicketstakeTable.get_director_name(),  # model_to_name(TbTicketstake),
-             # 'relat_field': 'ticketid',
-             # }
-
-             # },
              'table_ctx': TicketstakeTable(crt_user=self.crt_user).get_head_context()
              },
-            # 'model':model_to_name(TbTicketstake),
-            # 'relat_field':'ticketid',
-            # 'kw': TicketstakeTable(crt_user=self.crt_user).get_head_context()},
             {'name': 'ticketparlay',
              'label': '串关规则',
              'com': 'com_tab_table',
              'par_field': 'ticketid',
-             # 'get_data': {
-             # 'fun': 'get_rows',
-             # 'kws': {
-             # 'director_name': TicketparlayTable.get_director_name(),  # model_to_name(TbTicketparlay),
-             # 'relat_field': 'ticketid',
-             # }
-
-             # },
              'table_ctx': TicketparlayTable(crt_user=self.crt_user).get_head_context()
              }
-
-            # 'model':model_to_name(TbTicketparlay),
-            # 'relat_field':'ticketid',
-            # 'kw':TicketparlayTable(crt_user=self.crt_user).get_head_context()},
         ]
         ctx['tabs'] = ls
         return ctx
