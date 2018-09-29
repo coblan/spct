@@ -8,6 +8,7 @@ from ..models import TbMatches, MATCH_STATUS
 from helpers.director.base_data import director
 from django.utils import timezone
 from helpers.director.table.table import PlainTable
+from .ticket_master import TicketMasterPage
 
 class MatchesStatisticsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -178,6 +179,12 @@ class MatchesStatisticsPage(TablePage):
             'table_ctx': DetailStatistic(crt_user=self.crt_user).get_head_context(),
             'visible': True,
             },
+           {'name': 'ticket_master',
+            'label': '注单', 
+            'com': 'com_tab_table',
+            'par_field': 'matchid',
+            'table_ctx': TickmasterTab(crt_user=self.crt_user).get_head_context(),
+            'visible': True, }        
         ]
         ctx['tabs'] = ls
         return ctx
@@ -266,11 +273,16 @@ class DetailStatistic(PlainTable):
         
         return out_dc
     
+class TickmasterTab(TicketMasterPage.tableCls):
     
+    def inn_filter(self, query): 
+        query = super().inn_filter(query)
+        return query.filter(tbticketstake__match_id = int(self.kw.get('matchid')) )
 
 director.update({
     'match.viewbymatch': MatchesStatisticsPage.tableCls, 
     'DetailStatistic': DetailStatistic,
+    'match_statistic.ticket_master': TickmasterTab,
 })
 
 page_dc.update({
