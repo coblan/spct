@@ -1672,7 +1672,7 @@ class TbRecharge(models.Model):
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,
                                  verbose_name='金额')  # Field name made lowercase.
     orderid = models.CharField(db_column='OrderID', max_length=50, verbose_name='订单号')  # Field name made lowercase.
-    isauto = models.IntegerField(db_column='IsAuto', verbose_name='自动')  # Field name made lowercase.
+    isauto = models.IntegerField(db_column='IsAuto', verbose_name='自动',default=0,blank=True)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID', db_constraint=False,
                                   verbose_name='昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.
