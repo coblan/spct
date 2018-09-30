@@ -9,6 +9,7 @@ from .status_code import *
 from .member.account import AccountPage
 from .member import bankcard
 from .member import loginlog
+from .member import operation_log
 
 from .matches import admin, matches, ticket_master,matches_statistics
 

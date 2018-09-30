@@ -1880,3 +1880,16 @@ class TbWhiteiprangelist(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_WhiteIpRangeList'
+
+
+class TbOperationlog(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    type = models.CharField(db_column='Type', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    content = models.CharField(db_column='Content', max_length=2000,verbose_name='内容')  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=1000,verbose_name='备注')  # Field name made lowercase.
+    createuser = models.CharField(db_column='CreateUser', max_length=100, blank=True, null=True,verbose_name='操作人')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_OperationLog'
