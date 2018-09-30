@@ -7,6 +7,7 @@ from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatches
 from django.db.models import Q, Sum, F, Case, When, FloatField
 import re
 from django.db import connections
+from helpers.director.middleware.request_cache import get_request_cache
 
 class TicketMasterPage(TablePage):
     template = 'jb_admin/table.html'  # 'maindb/table_ajax_tab.html'
@@ -16,25 +17,29 @@ class TicketMasterPage(TablePage):
     
     @staticmethod
     def get_tabs(): 
-        pass
-    
-    def get_context(self):
-        ctx = TablePage.get_context(self)
+        catch = get_request_cache()
+        crt_user =  catch.get('request').user
         ls = [
             {'name': 'ticketstake',
              'label': '子注单',
              'com': 'com_tab_table',
              'par_field': 'ticketid',
-             'table_ctx': TicketstakeTable(crt_user=self.crt_user).get_head_context()
+             'table_ctx': TicketstakeTable(crt_user=crt_user).get_head_context()
              },
             {'name': 'ticketparlay',
              'label': '串关规则',
              'com': 'com_tab_table',
              'par_field': 'ticketid',
-             'table_ctx': TicketparlayTable(crt_user=self.crt_user).get_head_context()
+             'table_ctx': TicketparlayTable(crt_user=crt_user).get_head_context()
              }
         ]
-        ctx['tabs'] = ls
+        return {
+             'ticketmaster': ls
+        }
+
+    def get_context(self):
+        ctx = TablePage.get_context(self)
+        ctx['named_tabs'] = self.get_tabs()
         return ctx
 
     class tableCls(ModelTable):
@@ -56,6 +61,7 @@ class TicketMasterPage(TablePage):
             if head['name'] == 'ticketid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'ticketstake'
+                head['named_tabs'] = 'ticketmaster'
 
             return head
 

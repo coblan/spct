@@ -46,10 +46,10 @@ LOGGING = {
             'formatter':'standard',
             'filename': os.path.join(LOG_PATH,'django.log'),            
             }, 
-        'operation_log': {
-            'level': 'INFO',
-            'class': 'hello.operation_log.DBOperationHandler',
-            },        
+        #'operation_log': {
+            #'level': 'INFO',
+            #'class': 'hello.operation_log.DBOperationHandler',
+            #},        
     },
     'loggers': {
         'django': {
@@ -61,11 +61,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,            
             },
-        'ModelFields.save_form': {
-            'handlers': ['operation_log', 'elk_info'],
-            'level': 'DEBUG',
-            'propagate': True,              
-            },
+        #'ModelFields.save_form': {
+            #'handlers': ['operation_log', 'elk_info'],
+            #'level': 'DEBUG',
+            #'propagate': True,              
+            #},
         'task': {
             'handlers': ['elk_info'],
             'level': 'DEBUG',

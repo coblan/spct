@@ -188,10 +188,8 @@ class MatchesStatisticsPage(TablePage):
         ]
         ctx['tabs'] = ls
         
-        crt['named_tabs'] = {
-            ''
-        }
-        
+        ctx['named_tabs'] = TicketMasterPage.get_tabs()
+
         return ctx
     
 
