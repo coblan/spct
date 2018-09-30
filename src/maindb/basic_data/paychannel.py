@@ -17,7 +17,7 @@ class PayChannelPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbPaychannel
-        # exclude = ['channelicon']
+        exclude = []
         pop_edit_field = 'paychannelid'
         fields_sort = ['paychannelid', 'channelgroupid', 'channelname', 'channeltype', 'active', 'minamount',
                        'maxamount', 'optionalamount', 'channelicon', 'memo']
@@ -73,7 +73,6 @@ class PayChannelPage(TablePage):
 
 
 class PayChannelForm(ModelFields):
-    # readonly = ['channelname','channeltype','groupway','memo']
 
     def dict_head(self, head):
         if head['name'] == 'channelgroupid':

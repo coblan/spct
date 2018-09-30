@@ -112,6 +112,7 @@ class PcMenu(BaseEngine):
              'submenu': [
                  {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user)},
                  {'label': _('Role'), 'url': page('jb_group'), 'visible': can_touch(Group, crt_user)},
+                 {'label': '操作日志', 'url': page('operation_log'), 'visible': can_touch(TbOperationlog, crt_user)},
                  # {'label':'权限分组','url':page('group_human'),'visible':can_touch(Group)},
              ]},
 
