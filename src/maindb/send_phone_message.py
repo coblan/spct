@@ -1,10 +1,11 @@
 import requests
 import logging
-
+from django.conf import settings
 log = logging.getLogger('task')
 
+
 def send_message_password(phone, pswd): 
-    url = 'http://192.168.40.137:5002/message/send'
+    url = settings.PHONE_MESSAGE_SERVICE  #'http://192.168.40.137:5002/message/send'
     dc =  {
         "phone":phone,
         "message":"【飞球】您的新的登录密码是%(pswd)s。请尽快修改，如非本人操作，请忽略本短信" % {'pswd': pswd,}
@@ -18,7 +19,7 @@ def send_message_password(phone, pswd):
     log.debug('发送结果为:%s' % rt.text)
 
 def send_message_fundspassword(phone, pswd): 
-    url = 'http://192.168.40.137:5002/message/send'
+    url = settings.PHONE_MESSAGE_SERVICE
     dc =  {
         "phone":phone,
         "message":"【飞球】您的新的资金密码是%(pswd)s。请尽快修改，如非本人操作，请忽略本短信" % {'pswd': pswd,}

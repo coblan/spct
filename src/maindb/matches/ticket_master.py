@@ -300,6 +300,12 @@ class MatchForm(ModelFields):
                                                                                            'livebet', 'generatedat',
                   'tournamentzh']
     readonly = field_sort
+    def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
+        if kw.get('matchid'):
+            instance = TbMatches.objects.get(matchid = kw.get('matchid'))
+            super().__init__(dc, pk, crt_user, nolimit, instance = instance,**kw)
+        else:
+            super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
 
     class Meta:
         model = TbMatches

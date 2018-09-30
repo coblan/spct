@@ -78,6 +78,8 @@ class PayChannelForm(ModelFields):
     def dict_head(self, head):
         if head['name'] == 'channelgroupid':
             head['placeholder'] = '请选择'
+        if head['name'] == 'memo':
+            head['required'] = True
         return head
 
     class Meta:

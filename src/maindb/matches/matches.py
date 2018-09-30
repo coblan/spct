@@ -163,7 +163,7 @@ class MatchsPage(TablePage):
 class MatchForm(ModelFields):
     class Meta:
         model = TbMatches
-        exclude = []
+        exclude = ['marketstatus']
 
     field_sort = ['matchid', 'team1zh', 'team2zh']
 

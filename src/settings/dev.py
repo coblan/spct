@@ -89,7 +89,7 @@ RAB_PSWD = 'YXNkZmFmc2RmbAo'
 
 AGENT_SERVICE = 'http://192.168.40.137:8001'
 CENTER_SERVICE = 'http://192.168.40.103:9022'
-
+PHONE_MESSAGE_SERVICE = 'http://192.168.40.137:5002/message/send'
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
 

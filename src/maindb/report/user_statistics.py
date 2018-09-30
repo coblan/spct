@@ -47,6 +47,8 @@ class UserStatisticsPage(TablePage):
                 return head
 
             def getExtraHead(self):
+                #return [{'name':'date','editor':'com-date-range-filter','label':'日期'}]
+                
                 return [{'name':'date','editor':'com-date-datetimefield-range-filter','label':'日期'}]
 
         class sort(RowSort):

@@ -1626,7 +1626,7 @@ class TbPaychannel(models.Model):
                                       help_text='多个金额以,分割')  # Field name made lowercase.
     channelicon = models.CharField(db_column='ChannelIcon', max_length=150,
                                    verbose_name='Icon')  # Field name made lowercase.
-    memo = models.CharField(db_column='Memo', max_length=150, verbose_name='备注')  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=150, verbose_name='备注', blank = True)  # Field name made lowercase.
     channelgroupid = models.ForeignKey(to='TbPaychannelgroup', db_constraint=False, db_column='ChannelGroupID',
                                        verbose_name='分组')  # Field name made lowercase.
 
