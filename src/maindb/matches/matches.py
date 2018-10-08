@@ -69,7 +69,7 @@ class MatchsPage(TablePage):
                  'com': 'com-tab-special-bet-value',
                  'ops': [
                      {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
-                     #{'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }
+                     {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
                  ]
                  }
             ]
@@ -240,19 +240,19 @@ def get_special_bet_value(matchid):
             )
 
             # 把 以前操作过的 spvalue 加进来。因为这时通过tbOdds 已经查不到这些 sp value了
-    for switch in TbMatchesoddsswitch.objects.filter(matchid=matchid, types=3):
-        name = "%s %s" % (switch.oddstypegroup.oddstypenamezh, switch.specialbetvalue)
-        specialbetvalue.append(
-            {
-                'name': name,
-                'oddstypegroup': switch.oddstypegroup_id,
-                'specialbetvalue': switch.specialbetvalue,
-                'opened': switch.status == 0,
-                'Handicapkey': switch.handicapkey,
-                'BetTypeId': switch.bettypeid,
-                'PeriodType': switch.periodtype,
-            }
-        )
+    #for switch in TbMatchesoddsswitch.objects.filter(matchid=matchid, types=3):
+        #name = "%s %s" % (switch.oddstypegroup.oddstypenamezh, switch.specialbetvalue)
+        #specialbetvalue.append(
+            #{
+                #'name': name,
+                #'oddstypegroup': switch.oddstypegroup_id,
+                #'specialbetvalue': switch.specialbetvalue,
+                #'opened': switch.status == 0,
+                #'Handicapkey': switch.handicapkey,
+                #'BetTypeId': switch.bettypeid,
+                #'PeriodType': switch.periodtype,
+            #}
+        #)
 
         # 去重
     tmp_dc = {}
