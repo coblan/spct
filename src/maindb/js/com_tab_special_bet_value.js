@@ -141,8 +141,8 @@ var com_tab_special_bet_value={
             cfg.show_load()
             ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
                 self.match_opened=resp.update_special_bet_value.match_opened
-                self.oddstype= resp.update_special_bet_value.oddstype,
-                self.specialbetvalue= resp.update_special_bet_value.specialbetvalue,
+                self.oddstype= resp.update_special_bet_value.oddstype
+                self.specialbetvalue= resp.update_special_bet_value.specialbetvalue
                 cfg.hide_load()
 
             })
