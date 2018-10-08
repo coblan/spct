@@ -1394,16 +1394,20 @@ var com_sim_fields = {
     },
     components: window._baseInput,
     mixins: [mix_fields_data, mix_nice_validator],
-    template: ' <div class="field-panel sim-fields" style="text-align:center;">\n                <!--<com-table-fields :heads="heads" :row="row">-->\n                    <!--<slot>-->\n                    <!--<tr>-->\n                        <!--<td colspan="2">-->\n                            <!--<div class="submit-block">-->\n                                <!--<button @click="panel_submit" type="btn"-->\n                                    <!--:class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>-->\n                            <!--</div>-->\n                         <!--</td>-->\n                    <!--</tr>-->\n                    <!--</slot>-->\n           <!--</com-table-fields>-->\n\n           <table class="table-fields">\n        <tr v-for="head in heads">\n            <td class="field-label-td"  valign="top">\n            <div class="field-label" style="position: relative">\n                <span v-text="head.label"></span>\n                <span class="req_star" v-if=\'head.required\'>*</span>\n            </div>\n\n            </td>\n            <td class="field-input-td" >\n            <div class="field-input">\n                <component v-if="head.editor" :is="head.editor"\n                     @field-event="$emit(\'field-event\',$event)"\n                     :head="head" :row="row"></component>\n                <span v-if="head.help_text" class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n            </div>\n\n            </td>\n        </tr>\n\n           <tr>\n           <td></td>\n                <td colspan="1">\n                    <div class="submit-block">\n                        <button @click="panel_submit" type="btn"\n                            :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                 </td>\n           </tr>\n    </table>\n\n\n        </div>',
+    template: ' <div class="field-panel sim-fields" style="text-align:center;">\n                <!--<com-table-fields :heads="heads" :row="row">-->\n                    <!--<slot>-->\n                    <!--<tr>-->\n                        <!--<td colspan="2">-->\n                            <!--<div class="submit-block">-->\n                                <!--<button @click="panel_submit" type="btn"-->\n                                    <!--:class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>-->\n                            <!--</div>-->\n                         <!--</td>-->\n                    <!--</tr>-->\n                    <!--</slot>-->\n           <!--</com-table-fields>-->\n\n           <table class="table-fields">\n        <tr v-for="head in heads">\n            <td class="field-label-td"  valign="top">\n            <div class="field-label" style="position: relative">\n                <span v-text="head.label"></span>\n                <span class="req_star" v-if=\'head.required\'>*</span>\n            </div>\n\n            </td>\n            <td class="field-input-td" >\n            <div class="field-input">\n                <component v-if="head.editor" :is="head.editor"\n                     @field-event="$emit(\'field-event\',$event)"\n                     :head="head" :row="row"></component>\n                <span v-if="head.help_text" class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n            </div>\n\n            </td>\n        </tr>\n\n           <tr>\n           <td class="field-label-td"></td>\n                <td colspan="1">\n                    <div class="submit-block">\n                        <button @click="submit" type="btn"\n                            :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                 </td>\n           </tr>\n    </table>\n\n\n        </div>',
     methods: {
-        panel_submit: function panel_submit() {
-            if (this.isValid()) {
-                this.$emit('submit');
-            }
-        },
+        //panel_submit:function(){
+        //    if(this.isValid()){
+        //        this.$emit('submit')
+        //    }
+        //},
         show_msg: function show_msg(msg, event) {
             layer.tips(msg, event.target);
+        },
+        after_save: function after_save(row) {
+            this.$emit('after-save', row);
         }
+
     }
 };
 
@@ -1622,7 +1626,11 @@ function pop_layer(com_ctx, component_name, callback, layerConfig) {
         resize: true,
         resizing: function resizing(layero) {
             var total_height = $('#fields-pop-' + pop_id).parents('.layui-layer').height();
-            $('#fields-pop-' + pop_id).parents('.layui-layer-content').height(total_height - 42);
+            if (this.title) {
+                $('#fields-pop-' + pop_id).parents('.layui-layer-content').height(total_height - 42);
+            } else {
+                $('#fields-pop-' + pop_id).parents('.layui-layer-content').height(total_height);
+            }
         },
         //shadeClose: true, //点击遮罩关闭
         content: '<div id="fields-pop-' + pop_id + '">\n                    <component :is="component_name" :com_ctx="com_ctx" @finish="on_finish($event)"></component>\n                </div>',
@@ -1888,6 +1896,9 @@ var mix_fields_data = {
         setErrors: function setErrors(errors) {
             // errors:{field:['xxx','bbb']}
             var errors = ex.copy(errors);
+            if (!this.heads) {
+                return;
+            }
             ex.each(this.heads, function (head) {
                 if (errors[head.name]) {
                     Vue.set(head, 'error', errors[head.name].join(';'));
@@ -1944,6 +1955,7 @@ var mix_fields_data = {
                     self.showErrors(rt.errors);
                 } else {
                     cfg.hide_load(2000);
+                    ex.vueAssign(self.row, rt.row);
                     self.after_save(rt.row);
                     self.setErrors({});
                 }
@@ -1966,7 +1978,7 @@ var mix_fields_data = {
         //},
         afterSave: function afterSave(resp) {},
         after_save: function after_save(new_row) {
-            ex.assign(this.row, new_row);
+            //ex.assign(this.row,new_row)
         },
         showErrors: function showErrors(errors) {
             // 落到 nice validator去
@@ -3965,7 +3977,7 @@ var op_a = {
     },
     methods: {
         operation_call: function operation_call() {
-            this.$emit('operation', this.head.name);
+            this.$emit('operation', this.head.name || this.head.fun);
         },
         set_enable: function set_enable(yes) {
             this.enable = yes;
@@ -4626,7 +4638,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".sim-fields .table-fields {\n  margin: auto; }\n\n.sim-fields .field-label {\n  min-width: 5em;\n  text-align: left; }\n\n.sim-fields .field-input {\n  width: 23em;\n  text-align: left; }\n\n.sim-fields .submit-block {\n  margin-top: 1em;\n  text-align: left; }\n  .sim-fields .submit-block button {\n    min-width: 10em;\n    padding-left: 2em;\n    padding-right: 2em; }\n\n.sim-fields.field-panel.pop {\n  padding-top: 8px; }\n  .sim-fields.field-panel.pop .field-input {\n    width: 20em; }\n  .sim-fields.field-panel.pop .submit-block {\n    margin-top: 10px; }\n    .sim-fields.field-panel.pop .submit-block button {\n      min-width: 8em; }\n\n.sim-fields.field-panel.mb {\n  padding: 1em; }\n  .sim-fields.field-panel.mb .field-label {\n    min-width: 5em;\n    text-align: right; }\n  .sim-fields.field-panel.mb .field-input {\n    width: auto; }\n  .sim-fields.field-panel.mb .submit-block {\n    margin-top: 10px; }\n    .sim-fields.field-panel.mb .submit-block button {\n      width: 100%; }\n", ""]);
+exports.push([module.i, ".sim-fields .table-fields {\n  margin: auto; }\n\n.sim-fields .field-label {\n  min-width: 5em;\n  text-align: left; }\n\n.sim-fields .field-input {\n  width: 23em;\n  text-align: left; }\n\n.sim-fields .submit-block {\n  margin-top: 1em;\n  text-align: left; }\n  .sim-fields .submit-block button {\n    min-width: 10em;\n    padding-left: 2em;\n    padding-right: 2em; }\n\n.sim-fields.no-label .field-label-td {\n  display: none; }\n\n.sim-fields.no-label .field-input {\n  width: 100%;\n  text-align: left; }\n\n.sim-fields.no-label .table-fields {\n  width: 100%; }\n\n.sim-fields.no-label .submit-block {\n  margin-top: 1em;\n  text-align: left; }\n  .sim-fields.no-label .submit-block button {\n    width: 100%; }\n\n.sim-fields.field-panel.pop {\n  padding-top: 8px; }\n  .sim-fields.field-panel.pop .field-input {\n    width: 20em; }\n  .sim-fields.field-panel.pop .submit-block {\n    margin-top: 10px; }\n    .sim-fields.field-panel.pop .submit-block button {\n      min-width: 8em; }\n\n.sim-fields.field-panel.mb {\n  padding: 1em; }\n  .sim-fields.field-panel.mb .field-label {\n    min-width: 5em;\n    text-align: right; }\n  .sim-fields.field-panel.mb .field-input {\n    width: auto; }\n  .sim-fields.field-panel.mb .submit-block {\n    margin-top: 10px; }\n    .sim-fields.field-panel.mb .submit-block button {\n      width: 100%; }\n", ""]);
 
 // exports
 

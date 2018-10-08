@@ -70,6 +70,9 @@ var com_tab_special_bet_value={
         ex.assign(this.op_funs,{
             refresh:function(){
                 self.getRowData()
+            },
+            save:function(){
+                self.save()
             }
         })
     },
