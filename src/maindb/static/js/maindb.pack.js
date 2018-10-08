@@ -583,6 +583,7 @@ var com_tab_special_bet_value = {
     },
     methods: {
         save: function save() {
+            var self = this;
             var post_data = [{ fun: 'save_special_bet_value',
                 matchid: this.par_row.matchid,
                 match_opened: this.match_opened,
