@@ -69,7 +69,7 @@ class MatchsPage(TablePage):
                  'com': 'com-tab-special-bet-value',
                  'ops': [
                      {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
-                     {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }
+                     #{'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }
                  ]
                  }
             ]
