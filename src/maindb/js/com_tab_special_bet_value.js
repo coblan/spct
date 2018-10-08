@@ -125,8 +125,9 @@ var com_tab_special_bet_value={
                 //cfg.hide_load(2000,'封盘成功')
                 if(resp.save_special_bet_value.status=='success'){
                     cfg.hide_load(2000,'封盘成功')
-                    self.getRowData()
-
+                    Vue.nextTick(function(){
+                        self.getRowData()
+                    })
                 }else{
                     cfg.showMsg('error')
                 }
