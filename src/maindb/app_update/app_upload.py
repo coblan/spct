@@ -12,7 +12,7 @@ import os
 class AppPackageReciever(BasicReciever):
 
     def getParDir(self):
-        return os.path.join(settings.MEDIA_ROOT,'public/package')
+        return os.path.join(settings.MEDIA_ROOT,'public','package')
     
     def procFile(self,file_data,name):
         par_dir = self.getParDir()

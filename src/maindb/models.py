@@ -179,7 +179,8 @@ class TbAppversion(models.Model):
                                    choices=REQUIRED)  # Field name made lowercase.
     size = models.FloatField(db_column='Size', default=0, verbose_name='大小')  # Field name made lowercase.
     valid = models.BooleanField(db_column='Valid', verbose_name='状态')  # Field name made lowercase.
-
+    plisturl = models.CharField(db_column='PListUrl', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'Tb_AppVersion'
