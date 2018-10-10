@@ -1348,7 +1348,7 @@ class TbTicketmaster(models.Model):
     possibleturnover = CusDecimalField(db_column='PossibleTurnover', max_digits=18, decimal_places=4, blank=True,
                                        null=True)  # Field name made lowercase.
     minendcount = models.IntegerField(db_column='MinEndCount')  # Field name made lowercase.
-    memo = models.CharField(db_column='Memo', max_length=200, blank=True, null=True)  # Field name made lowercase.    
+    memo = models.CharField(db_column='Memo', max_length=200, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
 
     class Meta:
         managed = False

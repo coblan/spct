@@ -21,9 +21,7 @@ class RechargePage(TablePage):
         sort = ['createtime']
         exclude = ['account', 'apolloinfo', 'apollomsg']
         fields_sort = ['rechargeid', 'accountid', 'orderid', 'amount', 'confirmamount', 'status', 'createtime',
-                       'confirmtime',
-                       'channelid', 'amounttype', 'isauto', 'memo',
-                       'apolloinfo', 'apollomsg']
+                       'confirmtime', 'channelid', 'amounttype', 'isauto','apolloinfo', 'apollomsg', 'memo']
 
         def dict_head(self, head):
             dc = {
@@ -38,7 +36,7 @@ class RechargePage(TablePage):
             }
             if head['name'] == 'accountid':
                 head['editor'] = 'com-table-switch-to-tab'
-                head['inn_editor']='com-table-label-shower'
+                head['inn_editor'] = 'com-table-label-shower'
                 head['tab_name'] = 'baseinfo'
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -76,8 +74,8 @@ class RechargePage(TablePage):
                  'match_field': 'status',
                  'match_values': [1],
                  'match_msg': '只能选择状态为未充值的',
-                 'fields_ctx': ConfirmRechargeForm(crt_user=self.crt_user).get_head_context(), 
-                 'visible': 'status' in self.permit.changeable_fields(),},
+                 'fields_ctx': ConfirmRechargeForm(crt_user=self.crt_user).get_head_context(),
+                 'visible': 'status' in self.permit.changeable_fields(), },
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
             ]
 
@@ -109,15 +107,15 @@ class RechargePage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime', 'confirmtime']
-            names = ['channelid', 'status']
+            names = ['channelid', 'status', 'amounttype']
 
 
 class ConfirmRechargeForm(ModelFields):
-    hide_fields = ['status','confirmtime','isauto']
+    hide_fields = ['status', 'confirmtime', 'isauto']
 
     class Meta:
         model = TbRecharge
-        fields = ['amount', 'memo', 'status','confirmtime','isauto']
+        fields = ['amount', 'memo', 'status', 'confirmtime', 'isauto']
 
     def dict_head(self, head):
         if head['name'] == 'memo':
@@ -144,9 +142,9 @@ class ConfirmRechargeForm(ModelFields):
             raise UserWarning(str(result))
         # 从数据库刷新
         self.instance = self.instance.__class__.objects.get(pk=self.instance.pk)
-        self.save_log({'content': '手动确认orderid=%(orderid)s的订单' % {'orderid': inst.orderid,}, 
+        self.save_log({'content': '手动确认orderid=%(orderid)s的订单' % {'orderid': inst.orderid, },
                        'memo': '手动确认订单',
-                       'model': 'TbRecharge',})
+                       'model': 'TbRecharge', })
 
 
 director.update({

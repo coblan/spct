@@ -20,8 +20,7 @@ class WithdrawPage(TablePage):
         model = TbWithdraw
         exclude = []
         fields_sort = ['accountid', 'orderid', 'amount', 'status', 'createtime', 'confirmtime',
-                       'amounttype', 'memo',
-                       'apollocode', 'apollomsg']
+                       'amounttype', 'apollocode', 'apollomsg', 'memo']
 
         def dict_head(self, head):
             dc = {
@@ -34,7 +33,7 @@ class WithdrawPage(TablePage):
             }
             if head['name'] == 'accountid':
                 head['editor'] = 'com-table-switch-to-tab'
-                head['inn_editor']='com-table-label-shower'
+                head['inn_editor'] = 'com-table-label-shower'
                 head['tab_name'] = 'baseinfo'
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -71,8 +70,8 @@ class WithdrawPage(TablePage):
                     'match_field': 'status',
                     'match_values': [4],
                     'match_msg': '只能选择状态为异常的订单！',
-                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(), 
-                    'visible': 'status' in self.permit.changeable_fields(),},
+                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(),
+                    'visible': 'status' in self.permit.changeable_fields(), },
                 {
                     'fun': 'selected_set_and_save',
                     'editor': 'com-op-btn',
@@ -84,8 +83,8 @@ class WithdrawPage(TablePage):
                     'match_values': [1],
                     'match_msg': '只能选择状态为处理中的订单！',
                     'confirm_msg': '确认修改订单状态为成功吗？',
-                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(), 
-                    'visible': 'status' in self.permit.changeable_fields(),},
+                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(),
+                    'visible': 'status' in self.permit.changeable_fields(), },
                 {
                     'fun': 'selected_set_and_save',
                     'editor': 'com-op-btn',
@@ -94,7 +93,7 @@ class WithdrawPage(TablePage):
                     'value': 5,
                     'row_match': 'one_row_match',
                     'match_field': 'status',
-                    'match_values': [1,3, 4],
+                    'match_values': [1, 3, 4],
                     'confirm_msg': '确认退款到用户余额吗？',
                     'visible': 'status' in self.permit.changeable_fields(),
                     'match_msg': '只能选择状态为处理中，失败或异常的订单',
@@ -133,7 +132,7 @@ class WithdrawPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime', 'confirmtime']
-            names = ['status']
+            names = ['status', 'amounttype']
 
 
 class WithDrawForm(ModelFields):
@@ -154,15 +153,14 @@ class WithDrawForm(ModelFields):
             head['readonly'] = True
         return head
 
-  
     def clean_save(self):
-        #super().save_form()
+        # super().save_form()
         if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
             self.instance.memo += '\r\n' + self.kw.get('fakememo')
             self.instance.confirmtime = datetime.now()
             notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
-            ex_log = {'memo': self.kw.get('fakememo'),}
-            #self.instance.save()
+            ex_log = {'memo': self.kw.get('fakememo'), }
+            # self.instance.save()
         elif 'status' in self.changed_data and self.instance.status == 2:  # 确认到账
             self.instance.memo += '\r\n' + self.kw.get('fakememo')
             self.instance.confirmtime = datetime.now()
@@ -173,12 +171,12 @@ class WithDrawForm(ModelFields):
                     sender='system',
                     createtime=datetime.now(),
                     accountid=self.instance.accountid_id)
-            ex_log = {'content':'提现订单【{0}】,成功提现{1}元'.format(self.instance.orderid, self.instance.amount), 
-                    'memo': self.kw.get('fakememo')}
+            ex_log = {'content': '提现订单【{0}】,成功提现{1}元'.format(self.instance.orderid, self.instance.amount),
+                      'memo': self.kw.get('fakememo')}
         elif 'status' in self.changed_data and self.instance.status == 5:  # 退款
             self.instance.memo += '\r\n' + self.kw.get('fakememo')
             self.instance.confirmtime = datetime.now()
-            #self.instance.save()
+            # self.instance.save()
             category = 35
             if self.instance.amounttype == 1:
                 self.instance.accountid.amount += self.instance.amount
@@ -200,7 +198,7 @@ class WithDrawForm(ModelFields):
                                                createtime=datetime.now(),
                                                accountid=self.instance.accountid_id)
             ex_log = {
-                'content': '提现订单【{0}】处理失败'.format(self.instance.orderid), 
+                'content': '提现订单【{0}】处理失败'.format(self.instance.orderid),
                 'memo': '提现退款'}
         return ex_log
 
