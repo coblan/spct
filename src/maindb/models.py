@@ -1894,3 +1894,12 @@ class TbOperationlog(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_OperationLog'
+
+class TbLeagueGroup(models.Model):
+    groupid = models.IntegerField(db_column='GroupId', primary_key=True)  # Field name made lowercase.
+    groupname = models.CharField(db_column='GroupName', max_length=50)  # Field name made lowercase.
+    enabled = models.SmallIntegerField(db_column='Enabled')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_League_Group'
