@@ -470,6 +470,9 @@ var code = exports.code = {
 
             return obj[bb[1]] != target;
         }
+    },
+    eval: function _eval(js, scope) {
+        return eval(js);
     }
     //hashCode: function (input){
     //    var I64BIT_TABLE =

@@ -14,12 +14,13 @@ class LeagueGroupPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbLeagueGroup
-        exclude = []
+        exclude = ['id', 'enabled']
         
         def dict_head(self, head): 
             if head['name'] == 'groupname':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'baseinfo'
+                head['width'] = 200
             return head
         
         def get_operation(self): 
@@ -27,7 +28,7 @@ class LeagueGroupPage(TablePage):
             for op in ops:
                 if op['name'] == 'add_new':
                     op['tab_name'] = 'baseinfo'
-            return ops
+            return ops[0:1]
                 
         
     
@@ -97,13 +98,18 @@ class LeagueGroupForm(ModelFields):
     readonly = ['groupid']
     class Meta:
         model = TbLeagueGroup
-        exclude = []
+        exclude = ['enabled']
     
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
         if kw.get('groupid'):
             inst = TbLeagueGroup.objects.get(groupid = kw.get('groupid'))
             pk = inst.pk
         super().__init__(dc, pk, crt_user, nolimit, *args, **kw)    
+    
+    def dict_head(self, head): 
+        if head['name'] == 'groupname':
+            head['readonly'] = 'scope.row.groupid!=null'
+        return head
     
     def save_form(self): 
         url = urljoin( settings.SPREAD_SERVICE, 'spread/group/create')

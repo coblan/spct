@@ -1911,8 +1911,8 @@ class TbOperationlog(models.Model):
 
 class TbLeagueGroup(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    groupid = models.IntegerField(db_column='GroupId', blank= True)  # Field name made lowercase.
-    groupname = models.CharField(db_column='GroupName', max_length=50)  # Field name made lowercase.
+    groupid = models.IntegerField(db_column='GroupId', blank= True, verbose_name= '分组ID')  # Field name made lowercase.
+    groupname = models.CharField(db_column='GroupName', max_length=50, verbose_name = '分组名')  # Field name made lowercase.
     enabled = models.SmallIntegerField(db_column='Enabled', default = 1, blank= True)  # Field name made lowercase.
     
 

@@ -8,7 +8,9 @@ from ..member.account import account_tab
 
 class AgentUser(TablePage):
     template = 'jb_admin/table.html'
-
+    def check_permit(): 
+        pass
+    
     def get_label(self):
         return '代理用户'
 

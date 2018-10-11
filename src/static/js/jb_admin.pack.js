@@ -1899,7 +1899,38 @@ var mix_fields_data = {
             }
         });
         self.setErrors({});
+        ex.each(this.heads, function (head) {
+            if (typeof head.readonly == 'string') {
+                head._org_readonly = head.readonly;
+                head.readonly = ex.eval(head._org_readonly, { row: self.row });
+            }
+        });
     },
+    computed: {
+        normed_heads: function normed_heads() {
+            var self = this;
+            ex.each(self.heads, function (head) {
+                if (head._org_readonly) {
+                    head.readonly = ex.eval(head._org_readonly, { row: self.row });
+                }
+            });
+            var heads = self.heads;
+            return heads;
+        }
+    },
+    //watch:{
+    //    row:function(v){
+    //        var self=this
+    //        Vue.nextTick(function(){
+    //            ex.each(self.heads,function(head){
+    //                if( head._org_readonly){
+    //                    head.readonly=ex.eval(head._org_readonly,{row:v})
+    //                }
+    //            })
+    //        })
+    //
+    //    }
+    //},
     methods: {
         on_operation: function on_operation(op) {
             var fun_name = op.fun || op.name;
@@ -4210,7 +4241,7 @@ var ajax_fields = {
         };
     },
     mixins: [mix_fields_data, mix_nice_validator],
-    template: '<div class="flex-v"  style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 3em;">\n\n    <div>\n        <div class=\'field-panel suit\' id="form" >\n            <field  v-for=\'head in heads\' :key="head.name" :head="head" :row=\'row\'></field>\n        </div>\n    </div>\n\n    <div class="oprations" style="margin-left: 3em;margin-top: 2em;">\n        <component v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </div>\n    </div>\n    </div>',
+    template: '<div class="flex-v"  style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 3em;">\n\n    <div>\n        <div class=\'field-panel suit\' id="form" >\n            <field  v-for=\'head in normed_heads\' :key="head.name" :head="head" :row=\'row\'></field>\n        </div>\n    </div>\n\n    <div class="oprations" style="margin-left: 3em;margin-top: 2em;">\n        <component v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </div>\n    </div>\n    </div>',
 
     //created:function(){
     //    // find head from parent table
