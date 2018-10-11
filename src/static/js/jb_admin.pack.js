@@ -1378,6 +1378,7 @@ var com_sim_fields = {
                 return '确定';
             }
         },
+        crossBtn: '',
         btnCls: {
             default: function _default() {
                 return 'btn-primary btn-sm';
@@ -1394,7 +1395,7 @@ var com_sim_fields = {
     },
     components: window._baseInput,
     mixins: [mix_fields_data, mix_nice_validator],
-    template: ' <div class="field-panel sim-fields" style="text-align:center;">\n                <!--<com-table-fields :heads="heads" :row="row">-->\n                    <!--<slot>-->\n                    <!--<tr>-->\n                        <!--<td colspan="2">-->\n                            <!--<div class="submit-block">-->\n                                <!--<button @click="panel_submit" type="btn"-->\n                                    <!--:class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>-->\n                            <!--</div>-->\n                         <!--</td>-->\n                    <!--</tr>-->\n                    <!--</slot>-->\n           <!--</com-table-fields>-->\n\n           <table class="table-fields">\n        <tr v-for="head in heads">\n            <td class="field-label-td"  valign="top">\n            <div class="field-label" style="position: relative">\n                <span v-text="head.label"></span>\n                <span class="req_star" v-if=\'head.required\'>*</span>\n            </div>\n\n            </td>\n            <td class="field-input-td" >\n            <div class="field-input">\n                <component v-if="head.editor" :is="head.editor"\n                     @field-event="$emit(\'field-event\',$event)"\n                     :head="head" :row="row"></component>\n                <span v-if="head.help_text" class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n            </div>\n\n            </td>\n        </tr>\n\n           <tr>\n           <td class="field-label-td"></td>\n                <td colspan="1">\n                    <div class="submit-block">\n                        <button @click="submit" type="btn"\n                            :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                 </td>\n           </tr>\n    </table>\n\n\n        </div>',
+    template: ' <div class="field-panel sim-fields" style="text-align:center;">\n                <!--<com-table-fields :heads="heads" :row="row">-->\n                    <!--<slot>-->\n                    <!--<tr>-->\n                        <!--<td colspan="2">-->\n                            <!--<div class="submit-block">-->\n                                <!--<button @click="panel_submit" type="btn"-->\n                                    <!--:class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>-->\n                            <!--</div>-->\n                         <!--</td>-->\n                    <!--</tr>-->\n                    <!--</slot>-->\n           <!--</com-table-fields>-->\n\n           <table class="table-fields">\n        <tr v-for="head in heads">\n            <td class="field-label-td"  valign="top">\n            <div class="field-label" style="position: relative">\n                <span v-text="head.label"></span>\n                <span class="req_star" v-if=\'head.required\'>*</span>\n            </div>\n\n            </td>\n            <td class="field-input-td" >\n            <div class="field-input">\n                <component v-if="head.editor" :is="head.editor"\n                     @field-event="$emit(\'field-event\',$event)"\n                     :head="head" :row="row"></component>\n                <span v-if="head.help_text" class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n            </div>\n\n            </td>\n        </tr>\n        <tr v-if="crossBtn" class="btn-row">\n            <td class="field-input-td" colspan="2">\n                    <div class="submit-block">\n                        <button @click="submit" type="btn"\n                            :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                 </td>\n        </tr>\n           <tr v-else class="btn-row">\n               <td class="field-label-td"></td>\n                <td class="field-input-td" colspan="1">\n                    <div class="submit-block">\n                        <button @click="submit" type="btn"\n                            :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                 </td>\n           </tr>\n    </table>\n\n\n        </div>',
     methods: {
         //panel_submit:function(){
         //    if(this.isValid()){
@@ -1453,7 +1454,7 @@ Vue.component('com-head-sm-link', {
 
 Vue.component('com-widget-el-tab', {
     props: ['ctx'],
-    template: '<div class="tab-full" style="position: absolute;bottom: 0;top: 0;left: 0;right: 0;" >\n     <el-tabs  v-if="ctx.tabs.length >1" type="border-card"\n                           @tab-click="handleClick"\n                           style="width: 100%;height: 100%;"\n                           :value="ctx.crt_tab_name" >\n\n                    <!--<el-tab-pane v-for="tab in normed_tab( tabgroup.tabs )"-->\n                    <el-tab-pane v-for="tab in ctx.tabs"\n                                 :key="tab.name"\n                                 :name="tab.name">\n                        <span slot="label" v-text="tab.label" ></span>\n\n                        <component :is="tab.com" :tab_head="tab"\n                                   :par_row="ctx.par_row"\n                                   :ref="\'_tab_\'+tab.name" @tab-event="on_tab_event($event)"></component>\n\n\n                    </el-tab-pane>\n                </el-tabs>\n\n                <component v-else v-for="tab in ctx.tabs"  :is="tab.com" :tab_head="tab"\n                           :par_row="ctx.par_row"\n                           :ref="\'_tab_\'+tab.name" @tab-event="on_tab_event($event)"></component>\n    </div>',
+    template: '<div class="tab-full" style="position: absolute;bottom: 0;top: 0;left: 0;right: 0;" >\n     <el-tabs  v-if="ctx.tabs.length >1" type="border-card"\n                           @tab-click="handleClick"\n                           style="width: 100%;height: 100%;"\n                           :value="ctx.crt_tab_name" >\n\n                    <!--<el-tab-pane v-for="tab in normed_tab( tabgroup.tabs )"-->\n                    <el-tab-pane v-for="tab in normed_tab"\n                                 :key="tab.name"\n                                 :name="tab.name">\n                        <span slot="label" v-text="tab.label" ></span>\n\n                        <component :is="tab.com" :tab_head="tab"\n                                   :par_row="ctx.par_row"\n                                   :ref="\'_tab_\'+tab.name" @tab-event="up_event($event)"></component>\n\n\n                    </el-tab-pane>\n                </el-tabs>\n\n                <component v-else v-for="tab in ctx.tabs"  :is="tab.com" :tab_head="tab"\n                           :par_row="ctx.par_row"\n                           :ref="\'_tab_\'+tab.name" @tab-event="up_event($event)"></component>\n    </div>',
     watch: {
         'ctx.crt_tab_name': function ctxCrt_tab_name(v) {
             this.show_tab(v);
@@ -1462,8 +1463,21 @@ Vue.component('com-widget-el-tab', {
     mounted: function mounted() {
         this.show_tab(this.ctx.crt_tab_name);
     },
+    computed: {
+        normed_tab: function normed_tab() {
+            var tabs = this.ctx.tabs;
+            var par_row = this.ctx.par_row;
+            var out_tabs = ex.filter(tabs, function (tab) {
+                if (tab.show) {
+                    return ex.boolExpress(par_row, tab.show);
+                } else {
+                    return true;
+                }
+            });
+            return out_tabs;
+        }
+    },
     methods: {
-
         show_tab: function show_tab(name) {
             this.ctx.crt_tab_name = name;
             //this.crt_tab_name = name
@@ -1474,6 +1488,10 @@ Vue.component('com-widget-el-tab', {
         },
         handleClick: function handleClick(tab, event) {
             this.show_tab(tab.name);
+        },
+
+        up_event: function up_event(event) {
+            this.$emit('win-event', event);
         }
     }
 });
@@ -1679,13 +1697,12 @@ exports.pop_table_layer = pop_table_layer;
  * root 层面创建Vue组件，形成弹出框
  * */
 
-function pop_table_layer(row, table_ctx, callback) {
+function pop_table_layer(row, table_ctx, callback, layer_config) {
     // row,head ->//model_name,relat_field
 
 
     var pop_id = new Date().getTime();
-
-    var opened_layer_indx = layer.open({
+    var inn_config = {
         type: 1,
         area: ['800px', '500px'],
         title: '列表',
@@ -1698,7 +1715,9 @@ function pop_table_layer(row, table_ctx, callback) {
         },
         shadeClose: true, //点击遮罩关闭
         content: '<div id="pop-table-' + pop_id + '" style="height: 100%;">\n\n            <div class="rows-block flex-v" style="height: 100%">\n                <div class=\'flex\' style="min-height: 3em;" v-if="row_filters.length > 0">\n                    <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                                @submit="search()"></com-filter>\n                    <div class="flex-grow"></div>\n                </div>\n                <div class="box box-success flex-grow flex-v" >\n                    <div class="table-wraper flex-grow" style="position: relative">\n                    <div style="position: absolute;top:0;right:0;left:0;bottom: 0">\n                     <el-table class="table" ref="e_table"\n                                      :data="rows"\n                                      border\n                                      show-summary\n                                      :fit="false"\n                                      :stripe="true"\n                                      size="mini"\n                                      @sort-change="sortChange($event)"\n                                      @selection-change="handleSelectionChange"\n                                      :summary-method="getSum"\n                                      height="100%"\n                                      style="width: 100%">\n                                <el-table-column\n                                        v-if="selectable"\n                                        type="selection"\n                                        width="55">\n                                </el-table-column>\n\n                                <template  v-for="head in heads">\n\n                                    <el-table-column v-if="head.editor"\n                                                     :show-overflow-tooltip="is_show_tooltip(head) "\n                                                     :label="head.label"\n                                                     :sortable="is_sort(head)"\n                                                     :width="head.width">\n                                        <template slot-scope="scope">\n                                            <component :is="head.editor"\n                                                       @on-custom-comp="on_td_event($event)"\n                                                       :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                            </component>\n\n                                        </template>\n\n                                    </el-table-column>\n\n                                    <el-table-column v-else\n                                                     :show-overflow-tooltip="is_show_tooltip(head) "\n                                                     :prop="head.name.toString()"\n                                                     :label="head.label"\n                                                     :sortable="is_sort(head)"\n                                                     :width="head.width">\n                                    </el-table-column>\n\n                                </template>\n\n                            </el-table>\n                     </div>\n\n                    </div>\n                    <div style="margin-top: 10px;">\n                         <el-pagination\n                                @size-change="on_perpage_change"\n                                @current-change="get_page"\n                                :current-page="row_pages.crt_page"\n                                :page-sizes="[20, 50, 100, 500]"\n                                :page-size="row_pages.perpage"\n                                layout="total, sizes, prev, pager, next, jumper"\n                                :total="row_pages.total">\n                        </el-pagination>\n                    </div>\n                </div>\n        </div>\n    </div>'
-    });
+    };
+    ex.assign(inn_config, layer_config);
+    var opened_layer_indx = layer.open(inn_config);
 
     if (table_ctx.extra_mixins) {
         var real_extra_mixins = ex.map(table_ctx.extra_mixins, function (item) {
@@ -1783,7 +1802,7 @@ __webpack_require__(90);
 
 Vue.component('com-widget-stack', {
     props: ['ctx_list'],
-    template: '<div class="com-widget-stack">\n        <component v-for="(ctx,index) in ctx_list" v-show="index==ctx_list.length-1"   :is="ctx.widget" :ctx="ctx"></component>\n    </div>'
+    template: '<div class="com-widget-stack">\n        <component v-for="(ctx,index) in ctx_list" v-show="index==ctx_list.length-1"\n            :is="ctx.widget" :ctx="ctx" @win-event="$emit(\'win-event\',$event)"></component>\n    </div>'
 
 });
 
@@ -1933,20 +1952,11 @@ var mix_fields_data = {
             });
         },
         save: function save() {
-            //var self =this;
-            //this.setErrors({})
-            //ex.vueBroadCall(self,'commit')
-            //if(!this.isValid()){
-            //    return
-            //}
-            //if(self.before_save() == 'break'){
-            //    return
-            //}
-            //var loader = layer.load(2)
             var self = this;
             cfg.show_load();
 
             var post_data = [{ fun: 'save_row', row: this.row }];
+            this.old_row = ex.copy(this.row);
             ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
                 var rt = resp.save_row;
                 if (rt.errors) {
@@ -2239,6 +2249,33 @@ var mix_table_data = {
                     cfg.hide_load(2000);
                 });
             },
+            director_call: function director_call(kws) {
+                function bb() {
+                    cfg.show_load();
+                    ex.director_call(kws.director_name, {}, function (resp) {
+                        if (!resp.msg) {
+                            cfg.hide_load(2000);
+                        } else {
+                            cfg.hide_load();
+                        }
+                        if (kws.after_call) {
+                            self.op_funs[kws.after_call](resp);
+                            if (resp.msg) {
+                                cfg.showMsg(resp.msg);
+                            }
+                        }
+                    });
+                }
+
+                if (kws.confirm_msg) {
+                    layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
+                        layer.close(index);
+                        bb();
+                    });
+                } else {
+                    bb();
+                }
+            },
             director_rows: function director_rows(kws) {
                 // kws: {after_call:'update_or_insert_rows'}
                 var row_match_fun = kws.row_match || 'one_row';
@@ -2265,6 +2302,7 @@ var mix_table_data = {
 
                 if (kws.confirm_msg) {
                     layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
+                        layer.close(index);
                         bb();
                     });
                 } else {
@@ -2367,10 +2405,9 @@ var mix_table_data = {
                 //pop_fields_layer(new_row,kws.heads,kws.ops,pop_id)
                 self.crt_row = crt_row;
                 if (kws.tab_name) {
-                    self.show_tab(kws.tab_name);
-
-                    //self.$emit('operation',{fun:'switch_to_tab',tab_name:kws.tab_editor,row:crt_row})
-                    //self.switch_to_tab(kws.tab_editor)
+                    //self.switch_to_tab(kws)
+                    self.$emit('operation', { fun: 'switch_to_tab', tab_name: kws.tab_name, row: crt_row });
+                    //self.switch_to_tab({tab_name:kws.tab_name,row:crt_row})
                 } else {
                     var win = pop_fields_layer(crt_row, fields_ctx, function (new_row) {
                         self.update_or_insert(new_row, crt_row);
@@ -3345,8 +3382,11 @@ var mapper = {
                 var value = this.rowData[this.field];
                 var options = this.head.options;
                 var opt = ex.findone(options, { value: value });
-                return opt['label'];
-                //return options[value]
+                if (opt) {
+                    return opt['label'];
+                } else {
+                    return value;
+                }
             }
         }
     }
@@ -4255,15 +4295,18 @@ var get_data = {
 
 var _after_save = {
     update_or_insert: function update_or_insert(self, new_row, kws) {
-        var old_row = self.row;
-        self.$emit('tab-event', { name: 'update_or_insert', new_row: new_row, old_row: old_row });
+        var old_row = self.old_row;
+        // 要update_or_insert ，证明一定是 更新了 par_row
+        ex.vueAssign(self.par_row, new_row);
+        self.$emit('tab-event', { name: 'update_or_insert', new_row: self.par_row, old_row: old_row });
     },
     do_nothing: function do_nothing(self, new_row, kws) {},
+
     update_par_row_from_db: function update_par_row_from_db(self, new_row, kws) {
         //
         var post_data = [{ fun: 'get_row', director_name: self.par_row._director_name, pk: self.par_row.pk }];
         ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-            ex.assign(self.par_row, resp.get_row);
+            ex.vueAssign(self.par_row, resp.get_row);
         });
     }
 };

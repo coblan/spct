@@ -10,7 +10,9 @@ import requests
 import urllib
 from django.conf import settings
 import json
+import logging
 
+req_log = logging.getLogger('requests')
 
 class AgentCommission(TablePage):
     template = 'jb_admin/table.html'
@@ -102,7 +104,31 @@ class AgentCommission(TablePage):
                  'confirm_msg': '确认审核通过？', 
                  'visible': self.permit.can_edit(),
                  },
+                {
+                    'fun': 'director_call',
+                    'editor': 'com-op-btn',
+                    'label': '一键审核',
+                    'director_name': 'agent_commission.onekey_all',
+                    'after_call': 'get_data',
+                    'confirm_msg': '确认审核通过所有订单？',
+                    'visible': self.permit.can_edit(),
+                }
             ]
+        
+        @staticmethod
+        def onekey_audit_all(): 
+            url = urllib.parse.urljoin(settings.AGENT_SERVICE, '/comm/audit')
+            cache = get_request_cache()
+            request = cache['request']
+            user = request.user
+            data = json.dumps({'CommIDs': [],'OperatorName': user.username, 'AuditAll': True,})
+            rt = requests.post(url, data=data, headers={'Content-Type': 'application/json'})
+            req_log.info(json.dumps({'url': url, 'data': data,'return': rt.text,}))
+            dc = json.loads(rt.text)
+            if not dc.get('success'):
+                raise UserWarning(dc.get('error_description'))      
+            return {'status': 'success',}
+           
 
         @staticmethod
         def audit(rows):
@@ -120,6 +146,8 @@ class AgentCommission(TablePage):
             user = request.user
             data = json.dumps({'CommIDs': comids, 'OperatorName': user.username, })
             rt = requests.post(url, data=data, headers={'Content-Type': 'application/json'})
+            req_log.info(json.loads({'url': url, 'data': data,'return': rt.text,}))
+            
             dc = json.loads(rt.text)
             if dc.get('success'):
                 rt_data = dc.get('data')
@@ -143,7 +171,8 @@ class AgentCommission(TablePage):
 
 director.update({
     'agent_commission': AgentCommission.tableCls,
-    'agent_commission.audit': AgentCommission.tableCls.audit
+    'agent_commission.audit': AgentCommission.tableCls.audit, 
+    'agent_commission.onekey_all': AgentCommission.tableCls.onekey_audit_all,
 })
 
 page_dc.update({

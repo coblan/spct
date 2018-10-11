@@ -3,7 +3,9 @@ from ..models import TbOddstypegroup
 from ..rabbitmq_instance import updateSpread
 import json
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
-
+from urllib.parse import urljoin
+from django.conf import settings
+import requests
 
 class BetTypePage(TablePage):
     template = 'jb_admin/table.html'
@@ -80,13 +82,15 @@ class BetTypeForm(ModelFields):
         rt = super().save_form()
 
         ls = [
-            {'BetType': self.instance.bettype,
-             'PeriodType': self.instance.periodtype,
-             'Spread': float(self.instance.spread)
+            {'betType': self.instance.bettype,
+             'periodType': self.instance.periodtype,
+             'spread': float(self.instance.spread)
              }
         ]
-
-        updateSpread(json.dumps(ls))
+        url = urljoin(settings.SPREAD_SERVICE, 'spread/set')
+        rq_rt = requests.post(url, json = ls)
+        self.save_log({'model': 'TbOddstypegroup', 'service_return': rq_rt.text,})
+        #updateSpread(json.dumps(ls))
 
         return rt
 

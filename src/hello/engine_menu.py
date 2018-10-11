@@ -77,20 +77,23 @@ class PcMenu(BaseEngine):
                   'visible': can_touch(TbMatches, crt_user), },
                  {'label': '注单列表', 'url': page('tickets'),
                   'visible': can_touch(TbTicketmaster, crt_user), },
+                 
+                 
                  # {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},
              ]},
 
             {'label': _('RiskControl'), 'icon': fa('fa-lock'), 'visible': True,
              'submenu': [
-                 {'label': _('最大赔付'), 'url': page('maxpayout'), 'visible': can_touch(TbMaxpayout, crt_user), },
-                 {'label': '提现控制', 'url': page('parameterinfo'), 'visible': can_touch(TbParameterinfo, crt_user), },
-                 {'label':'登录IP黑名单','url':page('blackip_range'), 'visible': can_touch(Blackiprangelist, crt_user),},
-                 {'label': '登录地区黑名单', 'url': page('area_blacklist'), 'visible': can_touch(TbAreablacklist, crt_user), },
-                 {'label': '充值IP黑名单', 'url': page('paychannel_blackip'),'visible': can_touch(TbPaychannelblackiprange, crt_user), },
-                 {'label': '充值地区黑名单', 'url': page('paychannel_area_blacklist'),
-                  'visible': can_touch(TbRechargeareablacklist, crt_user), },
-                 {'label':_('White IP'),'url':page('white_ip_rangelist'), 'visible': can_touch(TbWhiteiprangelist, crt_user),},
-                 {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
+                {'label': _('最大赔付'), 'url': page('maxpayout'), 'visible': can_touch(TbMaxpayout, crt_user), },
+                {'label': '提现控制', 'url': page('parameterinfo'), 'visible': can_touch(TbParameterinfo, crt_user), },
+                {'label':'登录IP黑名单','url':page('blackip_range'), 'visible': can_touch(Blackiprangelist, crt_user),},
+                {'label': '登录地区黑名单', 'url': page('area_blacklist'), 'visible': can_touch(TbAreablacklist, crt_user), },
+                {'label': '充值IP黑名单', 'url': page('paychannel_blackip'),'visible': can_touch(TbPaychannelblackiprange, crt_user), },
+                {'label': '充值地区黑名单', 'url': page('paychannel_area_blacklist'),
+                 'visible': can_touch(TbRechargeareablacklist, crt_user), },
+                {'label':_('White IP'),'url':page('white_ip_rangelist'), 'visible': can_touch(TbWhiteiprangelist, crt_user),},
+                {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
+                {'label': '联赛分组', 'url': page('LeagueGroupPage'), 'visible': True, },
              ]},
 
             {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,

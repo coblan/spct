@@ -1895,11 +1895,49 @@ class TbOperationlog(models.Model):
         managed = False
         db_table = 'TB_OperationLog'
 
+#class TbLeagueGroup(models.Model):
+    #groupid = models.IntegerField(db_column='GroupId', primary_key=True, blank= True)  # Field name made lowercase.
+    #groupname = models.CharField(db_column='GroupName', max_length=50)  # Field name made lowercase.
+    #enabled = models.SmallIntegerField(db_column='Enabled', default = 1, blank= True)  # Field name made lowercase.
+    ##members = models.ManyToManyField(
+            ##TbTournament,
+            ##through='TbLeagueidInGroup',
+            ##through_fields=('groupid', 'leagueid'),
+        ##)    
+
+    #class Meta:
+        #managed = False
+        #db_table = 'TB_League_Group'
+
 class TbLeagueGroup(models.Model):
-    groupid = models.IntegerField(db_column='GroupId', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    groupid = models.IntegerField(db_column='GroupId', blank= True)  # Field name made lowercase.
     groupname = models.CharField(db_column='GroupName', max_length=50)  # Field name made lowercase.
-    enabled = models.SmallIntegerField(db_column='Enabled')  # Field name made lowercase.
+    enabled = models.SmallIntegerField(db_column='Enabled', default = 1, blank= True)  # Field name made lowercase.
+    
 
     class Meta:
         managed = False
         db_table = 'TB_League_Group'
+        
+class TbLeagueGroupSpread(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    groupid = models.IntegerField(db_column='GroupId')  # Field name made lowercase.
+    #groupid = models.ForeignKey(to= TbLeagueGroup, db_constraint= False, db_column='GroupId') 
+    bettype = models.IntegerField(db_column='BetType')  # Field name made lowercase.
+    periodtype = models.IntegerField(db_column='PeriodType')  # Field name made lowercase.
+    spread = models.DecimalField(db_column='Spread', max_digits=18, decimal_places= 3, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_League_Group_Spread'
+        
+class TbLeagueidInGroup(models.Model):
+    groupid = models.IntegerField(db_column='GroupId')  # Field name made lowercase.
+    #groupid = models.ForeignKey(to= TbLeagueGroup, db_constraint= False, db_column='GroupId') 
+    leagueid = models.IntegerField(db_column='LeagueId', primary_key=True)  # Field name made lowercase.
+    #leagueid = models.ForeignKey(to = TbTournament, db_constraint= False, db_column='LeagueId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_LeagueId_In_Group'
