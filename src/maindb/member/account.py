@@ -236,7 +236,8 @@ class AccountPage(TablePage):
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？', 'visible': 'password' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置资金密码？', 'visible': 'fundspassword' in changeable_fields},
-                {'fun': 'selected_pop_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
+                # selected_pop_set_and_save
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
                  'fields_ctx': modifyer.get_head_context(), 'visible': 'amount' in changeable_fields},
                 {'fun': 'selected_set_and_save','editor': 'com-op-btn', 'label': '允许提现', 'field': 'isenablewithdraw',
                  'value': 1, 'confirm_msg': '确认允许这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields}, 

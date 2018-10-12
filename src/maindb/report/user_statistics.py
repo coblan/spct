@@ -8,6 +8,7 @@ from helpers.director.base_data import director
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied
 from helpers.director.access.permit import has_permit
+from helpers.func.sql import qn
 
 class UserStatisticsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -107,7 +108,7 @@ class UserStatisticsPage(TablePage):
             realsort = sort_dc.get(sort) or sort;
             AccountID = self.kw.get('accountid') or 0
             sql_args = {
-                'NickName': nickname,
+                'NickName': qn(nickname),
                 'AccountID':AccountID,
                 'StartTime': self.search_args.get('_start_date', ''),
                 'EndTime': self.search_args.get('_end_date', ''),

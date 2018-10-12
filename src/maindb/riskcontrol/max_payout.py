@@ -148,7 +148,10 @@ class MaxPayoutForm(ModelFields):
                                TbMaxpayouttype.objects.filter(isenable=True).order_by('level')]
         if head['name'] in ('oddstypegroup', 'viplv'):
             head['placeholder'] = '请选择'
-
+            
+        if head['name'] == 'maxpayout':
+            head['fv_rule'] = 'range(0~)'
+            
         if head['name'] == 'status':
             head['check_label'] = '启用'
 

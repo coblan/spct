@@ -68,7 +68,7 @@ class AgentCommission(TablePage):
                 'withdrawalamount': 'total_withdrawalamount'
             }
             for k in dc:
-                dc[k] = str(round(dc[k], 2))
+                dc[k] = str(round(dc[k], 2)) if dc[k] else ''
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = ['合计'] + self.footer

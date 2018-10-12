@@ -2191,6 +2191,7 @@ var mix_table_data = {
             selected_set_and_save: function selected_set_and_save(kws) {
                 /*
                 这个是主力函数
+                 // 路线：弹出->编辑->update前端（缓存的）row->保存->后台->成功->update前端row->关闭窗口
                 * */
                 // head: row_match:many_row ,
                 var row_match_fun = kws.row_match || 'many_row';
@@ -2200,24 +2201,26 @@ var mix_table_data = {
 
                 function bb(all_set_dict, after_save_callback) {
                     var cache_rows = ex.copy(self.selected);
-
                     ex.each(cache_rows, function (row) {
                         ex.assign(row, all_set_dict);
+                        row._cache_director_name = row._director_name; // [1] 有可能是用的特殊的 direcotor
+                        row._director_name = kws.fields_ctx.director_name;
                         row[kws.field] = kws.value;
                     });
                     var post_data = [{ fun: 'save_rows', rows: cache_rows }];
                     cfg.show_load();
                     ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
 
-                        self.op_funs.update_or_insert_rows({ rows: resp.save_rows });
-                        //ex.each(self.selected ,function(row){
-                        //    ex.assign(row,all_set_dict)
-                        //    row[kws.field]=kws.value
-                        //})
-                        cfg.hide_load(2000);
+                        ex.each(resp.save_rows, function (new_row) {
+                            delete new_row._director_name; // [1]  这里还原回去
+                            self.update_or_insert(new_row);
+                        });
+                        //self.op_funs.update_or_insert_rows({rows:resp.save_rows} )
+
                         if (after_save_callback) {
                             after_save_callback();
                         }
+                        cfg.hide_load(2000);
                     });
                 }
 
@@ -2226,9 +2229,7 @@ var mix_table_data = {
                         var one_row = ex.copy(self.selected[0]);
                         var win_index = pop_edit_local(one_row, kws.fields_ctx, function (new_row) {
                             bb(new_row, function () {
-                                setTimeout(function () {
-                                    layer.close(win_index);
-                                }, 1500);
+                                layer.close(win_index);
                             });
                         });
                     } else {
@@ -2240,26 +2241,14 @@ var mix_table_data = {
                     layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
                         layer.close(index);
                         judge_pop_fun();
-
-                        //if(kws.fields_ctx){
-                        //   var win_index = pop_edit_local({},kws.fields_ctx,function(new_row){
-                        //        bb(new_row,function(){
-                        //            setTimeout(function(){
-                        //                layer.close(win_index)
-                        //            },1500)
-                        //        })
-                        //    })
-                        //}else{
-                        //    bb({})
-                        //}
-
                     });
                 } else {
                     judge_pop_fun();
                 }
             },
             selected_pop_set_and_save: function selected_pop_set_and_save(kws) {
-                // 这个函数应该是没用了。注意剔除掉
+                // 被  selected_set_and_save 取代了。
+                // 路线：弹出->编辑->保存->后台(成功)->update前端row->关闭窗口
                 var row_match_fun = kws.row_match || 'one_row';
                 if (!row_match[row_match_fun](self, kws)) {
                     return;
@@ -2271,9 +2260,7 @@ var mix_table_data = {
                 var win_index = pop_fields_layer(crt_row, kws.fields_ctx, function (new_row) {
                     ex.assign(crt_row, new_row);
                     crt_row._director_name = cache_director_name;
-                    setTimeout(function () {
-                        layer.close(win_index);
-                    }, 1500);
+                    layer.close(win_index);
                 });
             },
             ajax_row: function ajax_row(kws) {

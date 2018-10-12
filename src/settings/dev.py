@@ -71,9 +71,15 @@ MAX_BANNER_SIZE=1024*1024*2
 BANNER_UPLOAD_URL='http://103.246.219.202:9004/api/upload?folder=banner'
 BANNER_ACCESS_URL='http://103.246.219.202:9004/static' 
 
-
 APP_PKG_UPLOAD_URL='http://103.246.219.202:9004/api/upload?folder=package'
 APP_PKG_ACCESS_URL='http://103.246.219.202:9004/static' 
+
+# 各种服务地址
+STATIC_SERVICE = 'http://103.246.219.202:9004/static'
+AGENT_SERVICE = 'http://192.168.40.137:8001'
+CENTER_SERVICE = 'http://192.168.40.103:9022'
+SPREAD_SERVICE = 'http://192.168.40.103:9030'
+PHONE_MESSAGE_SERVICE = 'http://192.168.40.137:5002/message/send'
 #MONGO_SERVER = "mongodb://192.168.40.104:27017"
 #MONGO_SERVER ="mongodb://192.168.40.104:27017,192.168.40.104:27018,192.168.40.104:27019/?replicaSet=jingbo;slaveok=true"
 MONGO_SERVER ="mongodb://admin:lishen123@192.168.40.210:27017,192.168.40.211:27017,192.168.40.212:27017/?replicaSet=testrs;slaveok=true"
@@ -87,12 +93,7 @@ RABBITMA_PORT = '5673'
 RAB_USER = 'stageuser'
 RAB_PSWD = 'YXNkZmFmc2RmbAo'
 
-# 各种服务地址
-STATIC_SERVICE = 'http://103.246.219.202:9004/static'
-AGENT_SERVICE = 'http://192.168.40.137:8001'
-CENTER_SERVICE = 'http://192.168.40.103:9022'
-SPREAD_SERVICE = 'http://192.168.40.103:9030'
-PHONE_MESSAGE_SERVICE = 'http://192.168.40.137:5002/message/send'
+
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
 
