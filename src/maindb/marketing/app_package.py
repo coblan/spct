@@ -42,6 +42,7 @@ class AppPackage(TablePage):
     
 class AppPackageForm(ModelFields):
     extra_mixins=['app_pkg']
+    readonly = ['plisturl']
     class Meta:
         model = TbAppversion
         exclude = []
@@ -50,6 +51,9 @@ class AppPackageForm(ModelFields):
 
         if head['name'] in ['md5','versionid','versionname','size']:
             head['readonly']=True
+        if head['name'] == 'plisturl':
+            head['show'] = 'scope.row.terminal==1'
+            
         if head['name'] == 'packageurl':
             head['editor']= 'com-field-app-pkg-uploader' #'com-field-plain-file'
             head['required'] = True

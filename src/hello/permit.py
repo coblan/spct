@@ -94,7 +94,7 @@ def get_permit():
          'children': [
              {'label': '充值记录', 'children': [
                  {'label': '查看', 'value': 'TbRecharge',}, 
-                 {'label': '编辑', 'value': 'TbRecharge.edit', 'depend': ['TbRecharge'],}
+                 {'label': '编辑', 'value': 'TbRecharge.edit', 'depend': ['TbRecharge', 'TbAccount'],}
                  ],}, 
              {'label': '提现记录', 'children': [
                  {'label': '查看', 'value': 'TbWithdraw',}, 
@@ -113,7 +113,7 @@ def get_permit():
                  ]}, 
              {'label': _('Tb TicketMaster'), 'children': [
                  {'label': '查看', 'value': 'TbTicketmaster_all_tab_read',}, 
-                 {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read'],}
+                 {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', 'TbMatches'],}
                  ]},              
              ],
         }, 
@@ -122,7 +122,7 @@ def get_permit():
          'children': [
              {'label': '最大赔付', 'children': [
                  {'label': '查看', 'value': 'TbMaxpayout',}, 
-                 {'label': '编辑', 'value': 'TbMaxpayout.edit', 'depend': ['TbMaxpayout'],}, 
+                 {'label': '编辑', 'value': 'TbMaxpayout.edit', 'depend': ['TbMaxpayout', 'TbMatches', 'TbTournament', 'TbAccount'],}, 
                  ],}, 
              {'label': '提现控制', 'children': [
                  {'label': '查看', 'value': 'TbParameterinfo',}, 
@@ -137,12 +137,12 @@ def get_permit():
                  {'label': '编辑', 'value': 'TbPaychannelblackiprange.edit', 'depend': ['TbPaychannelblackiprange'],}, 
                           ],}, 
              {'label': 'IP白名单', 'children': [
-                 {'label': '查看', 'value': 'Whiteiplist',}, 
-                 {'label': '编辑', 'value': 'Whiteiplist.edit', 'depend': ['Whiteiplist'],}, 
+                 {'label': '查看', 'value': 'TbWhiteiprangelist',}, 
+                 {'label': '编辑', 'value': 'TbWhiteiprangelist.edit', 'depend': ['TbWhiteiprangelist', ],}, 
                           ],}, 
              {'label': '用户白名单', 'children': [
                  {'label': '查看', 'value': 'Whiteuserlist',}, 
-                 {'label': '编辑', 'value': 'Whiteuserlist.edit', 'depend': ['Whiteuserlist'],}, 
+                 {'label': '编辑', 'value': 'Whiteuserlist.edit', 'depend': ['Whiteuserlist', 'TbAccount'],}, 
                       ],}, 
              
             
@@ -161,7 +161,7 @@ def get_permit():
              ],},
         {'label': '报表中心', 
          'children': [
-             {'label': '会员统计', 'value': 'member_statistic',}, 
+             {'label': '会员统计', 'value': 'member_statistic', 'depend': ['TbAccount'],}, 
              {'label': '平台亏盈', 'value': 'platform_profit',},     
                      ],
         }, 

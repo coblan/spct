@@ -1904,6 +1904,10 @@ var mix_fields_data = {
                 head._org_readonly = head.readonly;
                 head.readonly = ex.eval(head._org_readonly, { row: self.row });
             }
+            if (typeof head.show == 'string') {
+                head._org_show = head.show;
+                head.show = ex.eval(head._org_show, { row: self.row });
+            }
         });
     },
     computed: {
@@ -1914,7 +1918,13 @@ var mix_fields_data = {
                     head.readonly = ex.eval(head._org_readonly, { row: self.row });
                 }
             });
-            var heads = self.heads;
+            var heads = ex.filter(self.heads, function (head) {
+                if (head._org_show) {
+                    return ex.eval(head._org_show, { row: self.row });
+                } else {
+                    return true;
+                }
+            });
             return heads;
         }
     },
@@ -4618,15 +4628,15 @@ Object.defineProperty(exports, "__esModule", {
 var com_pop_field = exports.com_pop_field = {
     props: ['row', 'heads', 'ops'],
     mixins: [mix_fields_data, mix_nice_validator],
-    computed: {
-        real_heads: function real_heads() {
-            if (this.dict_heads) {
-                return this.dict_heads;
-            } else {
-                return this.heads;
-            }
-        }
-    },
+    //computed:{
+    //    real_heads:function(){
+    //        if(this.dict_heads){
+    //            return this.dict_heads
+    //        }else{
+    //            return this.heads
+    //        }
+    //    }
+    //},
     methods: {
         after_save: function after_save(new_row) {
             //this.$emit('sub_success',{new_row:new_row,old_row:this.row})
@@ -4646,7 +4656,7 @@ var com_pop_field = exports.com_pop_field = {
             });
         }
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div class="field-panel suit" >\n            <field  v-for="head in real_heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n      <div style="height: 1em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div class="field-panel suit" >\n            <field  v-for="head in normed_heads" :key="head.name" :head="head" :row="row"></field>\n        </div>\n      <div style="height: 1em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {

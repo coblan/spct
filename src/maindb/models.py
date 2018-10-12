@@ -170,9 +170,9 @@ class TbAppversion(models.Model):
                                   null=True, verbose_name='文件')  # Field name made lowercase.
     md5 = models.CharField(db_column='Md5', max_length=32, blank=True, null=True,
                            verbose_name='散列值')  # Field name made lowercase.
-    versionid = models.IntegerField(db_column='VersionId', default=0, verbose_name='编号')  # Field name made lowercase.
+    versionid = models.IntegerField(db_column='VersionId', default=0, verbose_name='版本ID')  # Field name made lowercase.
     versionname = models.CharField(db_column='VersionName', max_length=64, blank=False,
-                                   verbose_name='版本号')  # Field name made lowercase.
+                                   verbose_name='版本名称')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=512, blank=True,
                                    null=True, verbose_name='描述')  # Field name made lowercase.
     required = models.IntegerField(db_column='Required', verbose_name=_('Force Update'), default=0,
@@ -206,7 +206,7 @@ class TbBalancelog(models.Model):
     account = models.CharField(db_column='Account', verbose_name=_('Account'),
                                max_length=20)  # Field name made lowercase.
     categoryid = models.ForeignKey(to='TbMoneyCategories', verbose_name='类型', db_column='CategoryID',
-                                   db_constraint=False)  # Field name made lowercase.
+                                   db_constraint=False, null = True, blank = True)  # Field name made lowercase.
     cashflow = models.SmallIntegerField(db_column='CashFlow')  # Field name made lowercase.
     beforeamount = CusDecimalField(db_column='BeforeAmount', verbose_name=_('BeforeAmount'), max_digits=18,
                                    decimal_places=4)  # Field name made lowercase.
@@ -221,7 +221,7 @@ class TbBalancelog(models.Model):
     creater = models.CharField(db_column='Creater', verbose_name=_('Operator'), max_length=20, blank=True,
                                null=True)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',
-                                  db_constraint=False, verbose_name='用户昵称')  # Field name made lowercase.
+                                  db_constraint=False, verbose_name='用户昵称', blank = True, null = True)  # Field name made lowercase.
 
     class Meta:
         managed = False

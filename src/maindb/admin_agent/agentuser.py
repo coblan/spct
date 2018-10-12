@@ -4,12 +4,14 @@ from ..models import TbAccount
 from django.db import connections
 from django.utils import timezone
 from ..member.account import account_tab
-
-
+from helpers.director.access.permit import has_permit
+from django.core.exceptions import PermissionDenied
 class AgentUser(TablePage):
     template = 'jb_admin/table.html'
-    def check_permit(): 
-        pass
+    
+    def check_permit(self): 
+        if not has_permit(self.crt_user, 'agent'):
+            raise PermissionDenied('没有权限访问代理用户列表')
     
     def get_label(self):
         return '代理用户'

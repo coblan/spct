@@ -98,8 +98,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbPaychannelblackiprange', model_read_permit(TbPaychannelblackiprange), model_to_name(TbPaychannelblackiprange), 'model'), 
            ('TbPaychannelblackiprange.edit', model_full_permit(TbPaychannelblackiprange), model_to_name(TbPaychannelblackiprange), 'model'), 
            
-           ('Whiteiplist', model_read_permit(Whiteiplist), model_to_name(Whiteiplist), 'model'), 
-           ('Whiteiplist.edit', model_full_permit(Whiteiplist), model_to_name(Whiteiplist), 'model'), 
+           ('TbWhiteiprangelist', model_read_permit(TbWhiteiprangelist), model_to_name(TbWhiteiprangelist), 'model'), 
+           ('TbWhiteiprangelist.edit', model_full_permit(TbWhiteiprangelist), model_to_name(TbWhiteiprangelist), 'model'), 
            
            ('Whiteuserlist', model_read_permit(Whiteuserlist), model_to_name(Whiteuserlist), 'model'), 
            ('Whiteuserlist.edit', model_full_permit(Whiteuserlist), model_to_name(Whiteuserlist), 'model'), 

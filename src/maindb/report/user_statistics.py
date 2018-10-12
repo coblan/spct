@@ -6,11 +6,16 @@ from helpers.director.table.row_search import SelectSearch
 from ..models import TbAccount
 from helpers.director.base_data import director
 from django.utils import timezone
-
+from django.core.exceptions import PermissionDenied
+from helpers.director.access.permit import has_permit
 
 class UserStatisticsPage(TablePage):
     template = 'jb_admin/table.html'
 
+    def check_permit(self): 
+        if not has_permit(self.crt_user, 'member_statistic'):
+            raise PermissionDenied('没有权限访问会员统计页面')
+        
     def get_label(self):
         return '会员统计'
 

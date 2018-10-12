@@ -344,26 +344,47 @@ class WithAccoutInnFilter(ModelTable):
 
 
 class AccountBalanceTable(WithAccoutInnFilter, BalancelogPage.tableCls):
+    @classmethod
+    def get_edit_director_name(cls): 
+        return BalancelogPage.tableCls.get_edit_director_name()
+    
     class search(RowSearch):
         names = []
 
 
 class UserBankCard(WithAccoutInnFilter, BankCard.tableCls):
+    @classmethod
+    def get_edit_director_name(cls): 
+        return BankCard.tableCls.get_edit_director_name()
+    
     class search(RowSearch):
         names = []
 
 
 class UserRecharge(WithAccoutInnFilter, RechargePage.tableCls):
+    @classmethod
+    def get_edit_director_name(cls): 
+        return RechargePage.tableCls.get_edit_director_name()
+    
     class search(RowSearch):
         names = []
 
 
 class UserWithdraw(WithAccoutInnFilter, WithdrawPage.tableCls):
+    @classmethod
+    def get_edit_director_name(cls): 
+        return WithdrawPage.tableCls.get_edit_director_name()
+    
     class search(RowSearch):
         names = []
 
 
 class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
+    
+    @classmethod
+    def get_edit_director_name(cls): 
+        return TicketMasterPage.tableCls.get_edit_director_name()
+    
     def dict_head(self, head):
         head = super().dict_head(head)
 
@@ -373,6 +394,10 @@ class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
 
 
 class AccountLoginTable(WithAccoutInnFilter, LoginLogPage.tableCls):
+    @classmethod
+    def get_edit_director_name(cls): 
+        return LoginLogPage.tableCls.get_edit_director_name()
+    
     class search(RowSearch):
         names = []
 
