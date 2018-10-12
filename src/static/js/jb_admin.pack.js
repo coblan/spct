@@ -2203,14 +2203,15 @@ var mix_table_data = {
                     var cache_rows = ex.copy(self.selected);
                     ex.each(cache_rows, function (row) {
                         ex.assign(row, all_set_dict);
-                        row._cache_director_name = row._director_name; // [1] 有可能是用的特殊的 direcotor
-                        row._director_name = kws.fields_ctx.director_name;
+                        if (kws.fields_ctx) {
+                            row._cache_director_name = row._director_name; // [1] 有可能是用的特殊的 direcotor
+                            row._director_name = kws.fields_ctx.director_name;
+                        }
                         row[kws.field] = kws.value;
                     });
                     var post_data = [{ fun: 'save_rows', rows: cache_rows }];
                     cfg.show_load();
                     ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-
                         ex.each(resp.save_rows, function (new_row) {
                             delete new_row._director_name; // [1]  这里还原回去
                             self.update_or_insert(new_row);
