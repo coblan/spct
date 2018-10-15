@@ -86,6 +86,8 @@ class TicketMasterPage(TablePage):
             if not inst.bonus:
                 dc['bonus'] = '0.00'
 
+            if inst.status != 2:
+                dc['winbet'] = ''
             return dc
 
         def inn_filter(self, query):

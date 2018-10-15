@@ -142,7 +142,7 @@ class ChargeTypeForm(ModelFields):
         for i in paychannelid_list:
             TbPaychanneljoinlevel.objects.update_or_create(accountlevel=self.kw['accountlevel'], paychannelid_id=i)
         
-        self.save_log({'model': 'TbPaychanneljoinlevel', 'level': inst.accountlevel})
+        self.save_log({'model': 'TbPaychanneljoinlevel', 'level': self.kw['accountlevel']})
         
     def del_form(self): 
         accountlevel = self.kw.get('accountlevel')

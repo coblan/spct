@@ -21,8 +21,9 @@ def update_redis_cache(sender, **kws):
         redisInst.delete('App:Cache:index:matches')
     #elif sender == sports_model.TbNotice:
         #redisInst.delete('App:Cache:index:notices')
-    elif sender == sports_model.TbLimit:
-        redisInst.delete('App:Static:Limit')
+    elif sender == sports_model.TbMaxpayout:
+        for key in  ['App:Static:MaxPayout', 'App:Static:MaxSinglePayout']:
+            redisInst.delete(key)
     elif sender == sports_model.TbOddstypes:
         redisInst.delete('App:Static:OddsType')
     elif sender == sports_model.TbOddstypegroup:

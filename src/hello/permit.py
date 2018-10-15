@@ -169,7 +169,7 @@ def get_permit():
             {'label': '代理用户', 'children': [
                 {'label': '查看', 'value': 'agent', 'depend': ['TbAccount'],}, 
                 {'label': '编辑', 'value': 'agent.edit', 'depend': ['TbAccount.edit'],},     
-                    ],}, 
+               ],}, 
             {'label': '代理佣金', 'children': [
                 {'label': '查看', 'value': 'TbAgentcommission',}, 
                 {'label': '编辑', 'value': 'TbAgentcommission.edit',},
