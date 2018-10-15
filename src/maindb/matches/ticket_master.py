@@ -315,13 +315,20 @@ class MatchForm(ModelFields):
 
     def get_operations(self):
         return []
+    
+    def dict_head(self, head): 
+        if head['name'] == 'winner':
+            head['editor'] = 'linetext'
+        return head
 
     def dict_row(self, inst):
-        winner = inst.winner
+        
         if inst.winner == 1:
             winner = inst.team1zh
         elif inst.winner == 2:
             winner = inst.team2zh
+        else:
+            winner = '---'
         return {
             'winner': winner
         }
