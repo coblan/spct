@@ -1395,7 +1395,7 @@ var com_sim_fields = {
     },
     components: window._baseInput,
     mixins: [mix_fields_data, mix_nice_validator],
-    template: ' <div class="field-panel sim-fields" style="text-align:center;">\n                <!--<com-table-fields :heads="heads" :row="row">-->\n                    <!--<slot>-->\n                    <!--<tr>-->\n                        <!--<td colspan="2">-->\n                            <!--<div class="submit-block">-->\n                                <!--<button @click="panel_submit" type="btn"-->\n                                    <!--:class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>-->\n                            <!--</div>-->\n                         <!--</td>-->\n                    <!--</tr>-->\n                    <!--</slot>-->\n           <!--</com-table-fields>-->\n\n           <table class="table-fields">\n        <tr v-for="head in heads">\n            <td class="field-label-td"  valign="top">\n            <div class="field-label" style="position: relative">\n                <span v-text="head.label"></span>\n                <span class="req_star" v-if=\'head.required\'>*</span>\n            </div>\n\n            </td>\n            <td class="field-input-td" >\n            <div class="field-input">\n                <component v-if="head.editor" :is="head.editor"\n                     @field-event="$emit(\'field-event\',$event)"\n                     :head="head" :row="row"></component>\n                <span v-if="head.help_text" class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n            </div>\n\n            </td>\n        </tr>\n        <tr v-if="crossBtn" class="btn-row">\n            <td class="field-input-td" colspan="2">\n                    <div class="submit-block">\n                        <button @click="submit" type="btn"\n                            :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                 </td>\n        </tr>\n           <tr v-else class="btn-row">\n               <td class="field-label-td"></td>\n                <td class="field-input-td" colspan="1">\n                    <div class="submit-block">\n                        <button @click="submit" type="btn"\n                            :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                 </td>\n           </tr>\n    </table>\n\n\n        </div>',
+    template: ' <div class="field-panel sim-fields" style="text-align:center;">\n           <table class="table-fields">\n        <tr v-for="head in heads">\n            <td class="field-label-td"  valign="top">\n            <div class="field-label" style="position: relative">\n                <span v-text="head.label"></span>\n                <span class="req_star" v-if=\'head.required\'>*</span>\n            </div>\n\n            </td>\n            <td class="field-input-td" >\n            <div class="field-input">\n                <component v-if="head.editor" :is="head.editor"\n                     @field-event="$emit(\'field-event\',$event)"\n                     :head="head" :row="row"></component>\n                <span v-if="head.help_text" class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n            </div>\n\n            </td>\n        </tr>\n        <slot :row="row">\n             <tr v-if="crossBtn" class="btn-row">\n                <td class="field-input-td" colspan="2">\n                        <div class="submit-block">\n                            <button @click="submit" type="btn"\n                                :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                        </div>\n                     </td>\n            </tr>\n               <tr v-else class="btn-row">\n                   <td class="field-label-td"></td>\n                    <td class="field-input-td" colspan="1">\n                        <div class="submit-block">\n                            <button @click="submit" type="btn"\n                                :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                        </div>\n                     </td>\n               </tr>\n        </slot>\n\n    </table>\n\n\n        </div>',
     methods: {
         //panel_submit:function(){
         //    if(this.isValid()){
@@ -1437,12 +1437,12 @@ Vue.component('com-head-dropdown', {
 "use strict";
 
 
-//require('./scss/dropdown.scss')
+__webpack_require__(98);
 
-
+// header 上的小链接
 Vue.component('com-head-sm-link', {
     props: ['head'],
-    template: '<div>\n    <span v-for="action in head.options">\n        <a :href="action.url" class="login-link" v-text="action.label"></a>\n        <span v-if="action != head.options[head.options.length-1]">&nbsp;|&nbsp;</span>\n    </span>\n\n        <!--<a href="/accounts/regist">\u6CE8\u518C</a>-->\n\n    </div>'
+    template: '<div class="small-link">\n    <span class="item" v-for="action in head.options">\n        <a :href="action.url" class="login-link" v-text="action.label"></a>\n        <span class="space" v-if="action != head.options[head.options.length-1]">&nbsp;|&nbsp;</span>\n    </span>\n\n    </div>'
 });
 
 /***/ }),
@@ -1651,7 +1651,7 @@ function pop_layer(com_ctx, component_name, callback, layerConfig) {
             }
         },
         //shadeClose: true, //点击遮罩关闭
-        content: '<div id="fields-pop-' + pop_id + '">\n                    <component :is="component_name" :com_ctx="com_ctx" @finish="on_finish($event)"></component>\n                </div>',
+        content: '<div id="fields-pop-' + pop_id + '">\n                    <component :is="component_name" :ctx="com_ctx" @finish="on_finish($event)"></component>\n                </div>',
         end: function end() {
 
             //eventBus.$emit('openlayer_changed')
@@ -1896,6 +1896,9 @@ var mix_fields_data = {
             save: function save() {
                 //self.save()
                 self.submit();
+            },
+            submit: function submit() {
+                self.submit();
             }
         });
         self.setErrors({});
@@ -1995,7 +1998,6 @@ var mix_fields_data = {
         save: function save() {
             var self = this;
             cfg.show_load();
-
             var post_data = [{ fun: 'save_row', row: this.row }];
             this.old_row = ex.copy(this.row);
             ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
@@ -2024,16 +2026,13 @@ var mix_fields_data = {
             //    }
             //})
         },
-        //before_save:function(){
-        //    return 'continue'
-        //},
-        afterSave: function afterSave(resp) {},
+
         after_save: function after_save(new_row) {
             //ex.assign(this.row,new_row)
+            console.log('mix_fields_data.after_save');
         },
         showErrors: function showErrors(errors) {
             // 落到 nice validator去
-
         },
         clear: function clear() {
             this.row = {};
@@ -2475,7 +2474,7 @@ var mix_table_data = {
             self.rows = [];
 
             var post_data = [{ fun: 'get_rows', director_name: self.director_name, search_args: self.search_args }];
-            $.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+            ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
 
                 self.rows = resp.get_rows.rows;
                 self.row_pages = resp.get_rows.row_pages;
@@ -5425,6 +5424,46 @@ __webpack_require__(67);
 
 
 //ui
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, "@media (max-width: 900px) {\n  .small-link .item {\n    display: block;\n    color: white;\n    margin: 0.6em 1.2em; }\n    .small-link .item a {\n      color: white; }\n    .small-link .item .space {\n      display: none; } }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(97);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./sm_link.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./sm_link.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);
