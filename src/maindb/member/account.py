@@ -183,7 +183,7 @@ class AccountPage(TablePage):
                 'agentamount': 'total_agentamount'
             }
             for k in dc:
-                dc[k] = str(round(dc.get(k) or 0,2))
+                dc[k] = str(round(dc.get(k) or 0, 2))
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = ['合计'] + self.footer
@@ -229,49 +229,57 @@ class AccountPage(TablePage):
             changeable_fields = self.permit.changeable_fields()
             return [
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '解冻', 'field': 'status',
-                 'value': 1, 'confirm_msg': '确认解冻？', 'visible': 'status' in changeable_fields,},
+                 'value': 1, 'confirm_msg': '确认解冻？', 'visible': 'status' in changeable_fields, },
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '冻结', 'field': 'status',
                  'value': 0, 'confirm_msg': '确认冻结？', 'visible': 'status' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置登录密码', 'field': 'password',
-                 'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？', 'visible': 'password' in changeable_fields},
+                 'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？',
+                 'visible': 'password' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
-                 'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置资金密码？', 'visible': 'fundspassword' in changeable_fields},
+                 'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置资金密码？',
+                 'visible': 'fundspassword' in changeable_fields},
                 # selected_pop_set_and_save
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
                  'fields_ctx': modifyer.get_head_context(), 'visible': 'amount' in changeable_fields},
-                {'fun': 'selected_set_and_save','editor': 'com-op-btn', 'label': '允许提现', 'field': 'isenablewithdraw',
-                 'value': 1, 'confirm_msg': '确认允许这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields}, 
-                {'fun': 'selected_set_and_save','editor': 'com-op-btn', 'label': '禁止提现', 'field': 'isenablewithdraw',
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '允许提现', 'field': 'isenablewithdraw',
+                 'value': 1, 'confirm_msg': '确认允许这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields},
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁止提现', 'field': 'isenablewithdraw',
                  'value': 0, 'confirm_msg': '确认禁止这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields}
             ]
 
 
 class AccoutBaseinfo(ModelFields):
-    field_sort = ['account', 'nickname', 'amount','agentamount', 'status', 'agent', 'verify', 'viplv', 'isenablewithdraw', 'createtime']
-    readonly = ['createtime', 'account', 'nickname', 'amount','agentamount']
+    field_sort = ['account', 'nickname', 'amount', 'agentamount', 'status', 'agent', 'verify', 'viplv', 'bonusrate',
+                  'isenablewithdraw', 'createtime']
+    readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount']
 
-    def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
+    def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('accountid'):
             pk = kw.get('accountid')
         super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
-    
+
+    def dict_head(self, head):
+        if head['name'] == 'bonusrate':
+            head['step'] = 0.001
+        return head
+
     def dict_row(self, inst):
         tmp = list(inst.account)
         tmp[0:-4] = '*' * (len(tmp) - 4)
         out_str = ''.join(tmp)
         return {
             'account': out_str,
-        }    
-    
-    def clean_save(self): 
+        }
+
+    def clean_save(self):
         if self.kw.get('password') == 1:
             text_pswd, self.instance.password = gen_pwsd()
             send_message_password(self.instance.phone, text_pswd)
-            return {'memo': '重置密码',}
+            return {'memo': '重置密码', }
         elif self.kw.get('fundspassword') == 1:
             text_pswd, self.instance.fundspassword = gen_pwsd()
             send_message_fundspassword(self.instance.phone, text_pswd)
-            return {'memo': '重置资金密码',}
+            return {'memo': '重置资金密码', }
 
     class Meta:
         model = TbAccount
@@ -299,19 +307,18 @@ class AccoutModifyAmount(ModelFields):
             self.changed_amount = add_amount
             dc['amount'] = Decimal(dc['amount']) + add_amount
         return dc
-    
+
     def custom_valid(self):
         dc = {}
         if self.cleaned_data.get('amount') < 0:
             dc['add_amount'] = '叠加值使得余额小于0'
         return dc
-    
-    #def clean(self): 
-       
-            #raise ValidationError('余额不能小于0')
-        #return self.cleaned_data.get('amount')
-    
-    
+
+    # def clean(self):
+
+    # raise ValidationError('余额不能小于0')
+    # return self.cleaned_data.get('amount')
+
     def clean_save(self):
         if 'add_amount' in self.kw:
             cashflow, moenycategory = (1, 4) if self.changed_amount > 0 else (0, 34)
@@ -321,8 +328,8 @@ class AccoutModifyAmount(ModelFields):
                                         amount=self.changed_amount, afteramount=self.instance.amount, creater='system',
                                         memo='调账', accountid=self.instance, categoryid_id=moenycategory,
                                         cashflow=cashflow)
-            return { 'memo': '调账', 'ex_before':{'amount': before_amount}, 'ex_after': {'amount': self.instance.amount,} }
-        
+            return {'memo': '调账', 'ex_before': {'amount': before_amount},
+                    'ex_after': {'amount': self.instance.amount, }}
 
 
 class AccountTabBase(ModelTable):
@@ -346,46 +353,46 @@ class WithAccoutInnFilter(ModelTable):
 
 class AccountBalanceTable(WithAccoutInnFilter, BalancelogPage.tableCls):
     @classmethod
-    def get_edit_director_name(cls): 
+    def get_edit_director_name(cls):
         return BalancelogPage.tableCls.get_edit_director_name()
-    
+
     class search(RowSearch):
         names = []
 
 
 class UserBankCard(WithAccoutInnFilter, BankCard.tableCls):
     @classmethod
-    def get_edit_director_name(cls): 
+    def get_edit_director_name(cls):
         return BankCard.tableCls.get_edit_director_name()
-    
+
     class search(RowSearch):
         names = []
 
 
 class UserRecharge(WithAccoutInnFilter, RechargePage.tableCls):
     @classmethod
-    def get_edit_director_name(cls): 
+    def get_edit_director_name(cls):
         return RechargePage.tableCls.get_edit_director_name()
-    
+
     class search(RowSearch):
         names = []
 
 
 class UserWithdraw(WithAccoutInnFilter, WithdrawPage.tableCls):
     @classmethod
-    def get_edit_director_name(cls): 
+    def get_edit_director_name(cls):
         return WithdrawPage.tableCls.get_edit_director_name()
-    
+
     class search(RowSearch):
         names = []
 
 
 class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
-    
+
     @classmethod
-    def get_edit_director_name(cls): 
+    def get_edit_director_name(cls):
         return TicketMasterPage.tableCls.get_edit_director_name()
-    
+
     def dict_head(self, head):
         head = super().dict_head(head)
 
@@ -396,9 +403,9 @@ class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
 
 class AccountLoginTable(WithAccoutInnFilter, LoginLogPage.tableCls):
     @classmethod
-    def get_edit_director_name(cls): 
+    def get_edit_director_name(cls):
         return LoginLogPage.tableCls.get_edit_director_name()
-    
+
     class search(RowSearch):
         names = []
 
@@ -429,13 +436,13 @@ director.update({
     'account.matches_statistics': MatchesStatisticsTab
 })
 
-#permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
-           #('TbLoginlog', model_full_permit(TbLoginlog), model_to_name(TbLoginlog), 'model'),
-           #('TbBalancelog', model_full_permit(TbBalancelog), model_to_name(TbBalancelog), 'model'),
-           #('TbAccount.all', 'TbAccount;TbLoginlog;TbBalancelog;TbTicketmaster', '', 'set'),
-           #]
+# permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
+# ('TbLoginlog', model_full_permit(TbLoginlog), model_to_name(TbLoginlog), 'model'),
+# ('TbBalancelog', model_full_permit(TbBalancelog), model_to_name(TbBalancelog), 'model'),
+# ('TbAccount.all', 'TbAccount;TbLoginlog;TbBalancelog;TbTicketmaster', '', 'set'),
+# ]
 
-#add_permits(permits)
+# add_permits(permits)
 
 page_dc.update({
     'account': AccountPage
