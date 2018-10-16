@@ -93,7 +93,7 @@ def get_permit():
         {'label': _('MoneyFlow'),
          'children': [
              {'label': '充值记录', 'children': [
-                 {'label': '查看', 'value': 'TbRecharge',}, 
+                 {'label': '查看', 'value': 'TbRecharge', 'depend': ['TbAccount']}, 
                  {'label': '编辑', 'value': 'TbRecharge.edit', 'depend': ['TbRecharge', 'TbAccount'],}
                  ],}, 
              {'label': '提现记录', 'children': [

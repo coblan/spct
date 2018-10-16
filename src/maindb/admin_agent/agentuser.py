@@ -116,16 +116,27 @@ class AgentUser(TablePage):
                   % sql_args
 
             with connections['Sports'].cursor() as cursor:
-                cursor.execute(sql)
-                # cursor.commit()
                 self.parent_agents = []
+                self.child_agents = []
+                try:
+                    cursor.execute(sql)
+                except Exception as e:
+                    print(e)
+                    msg = str(e)
+                    if '没有查到这个昵称' in msg:
+                        msg = '没有查到这个昵称'
+                    raise UserWarning(msg)
+                # cursor.commit()
+                
+                
                 for par in cursor:
                     self.parent_agents.append({'value': par[3], 'label': par[1], })
+
                 self.parent_agents.append({'value': 0, 'label': '根用户', })
                 self.parent_agents.reverse()
 
                 cursor.nextset()
-                self.child_agents = []
+                
                 for row in cursor:
                     dc = {}
                     for index, desp_item in enumerate(cursor.description):
@@ -139,6 +150,7 @@ class AgentUser(TablePage):
                         if k != 'Total' and k.startswith('Total'):
                             footer[k[5:]] = round(v, 2)
                     self.footer = ['合计'] + self.footer_by_dict(footer)
+                            
             # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
 
         def dict_head(self, head):
