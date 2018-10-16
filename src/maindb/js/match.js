@@ -190,10 +190,15 @@ var produce_match_outcome={
         var self=this
         ex.assign(this.op_funs, {
             produce_match_outcome: function (kws) {
+                var rt =ex.vueBroadCall(self.$parent,'isValid')
+                for(var i=0;i<rt.length;i++){
+                    if(!rt[i]){
+                        return
+                    }
+                }
 
                 var index = layer.confirm('确认手动结算?',function(index){
                     layer.close(index);
-
                     var post_data = [{fun:'produce_match_outcome',row:self.row}]
                     cfg.show_load()
                     ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
@@ -213,22 +218,31 @@ var produceMatchOutcomePanel={
         mixins:[mix_fields_data,mix_nice_validator],
 
         methods:{
+            update_nice:function(){
+                this.nice_validator= $(this.$el).validator({
+                    msgClass:'n-bottom'
+                });
+            },
+            isValid:function(){
+                var nice_rt = this.nice_validator.isValid()
+                return nice_rt
+            },
             after_save:function(new_row){
                 this.$emit('submit-success',new_row) //{new_row:new_row,old_row:this.row})
                 ex.assign(this.row,new_row)
             },
-            del_row:function(){
-                var self=this
-                layer.confirm('真的删除吗?', {icon: 3, title:'确认'}, function(index){
-                    layer.close(index);
-                    var ss = layer.load(2);
-                    var post_data = [{fun:'del_rows',rows:[self.row]}]
-                    $.post('/d/ajax',JSON.stringify(post_data),function(resp){
-                        layer.close(ss)
-                        self.$emit('del_success',self.row)
-                    })
-                });
-            }
+            //del_row:function(){
+            //    var self=this
+            //    layer.confirm('真的删除吗?', {icon: 3, title:'确认'}, function(index){
+            //        layer.close(index);
+            //        var ss = layer.load(2);
+            //        var post_data = [{fun:'del_rows',rows:[self.row]}]
+            //        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
+            //            layer.close(ss)
+            //            self.$emit('del_success',self.row)
+            //        })
+            //    });
+            //}
 
         },
         template:`<div class="flex-v" style="margin: 0;height: 100%;">
@@ -242,9 +256,16 @@ var produceMatchOutcomePanel={
           <table style="display: inline-block;">
             <tr><td></td> <td >主队</td><td>客队</td></tr>
 
-             <tr><td>半场得分</td><td><input type="text" v-model="row.home_half_score"></td><td><input type="text" v-model="row.away_half_score"></td></tr>
+             <tr>
+                 <td style="padding: 1em 1em">半场得分</td><td>
+                 <input type="text" v-model="row.home_half_score" data-rule="required;integer(+0)"></td>
+                 <td><input type="text" v-model="row.away_half_score" data-rule="required;integer(+0)"></td>
+             </tr>
 
-            <tr><td>全场得分</td><td><input type="text" v-model="row.home_score"></td><td><input type="text" v-model="row.away_score"></td></tr>
+            <tr>
+                <td style="padding: 1em 1em">全场得分</td><td><input type="text" v-model="row.home_score" data-rule="required;integer(+0)"></td>
+                <td><input type="text" v-model="row.away_score" data-rule="required;integer(+0)"></td>
+            </tr>
 
             <!--<tr><td>角球</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>-->
             </table>
