@@ -146,7 +146,7 @@ class AgentCommission(TablePage):
             user = request.user
             data = json.dumps({'CommIDs': comids, 'OperatorName': user.username, })
             rt = requests.post(url, data=data, headers={'Content-Type': 'application/json'})
-            req_log.info(json.loads({'url': url, 'data': data,'return': rt.text,}))
+            req_log.info(json.dumps({'url': url, 'data': data,'return': rt.text,}))
             
             dc = json.loads(rt.text)
             if dc.get('success'):

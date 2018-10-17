@@ -117,6 +117,8 @@ class NoticeForm(ModelFields):
     def dict_head(self, head):
         #if head['name'] == 'createuser':
             #head['editor'] = 'com-field-label-shower'
+        if head['name'] == 'title':
+            head['fv_rule'] = 'length(~200)'
         if head['name'] == 'content':
             head['editor'] = 'richtext'
             head['config'] = {

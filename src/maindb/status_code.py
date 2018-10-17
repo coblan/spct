@@ -138,7 +138,8 @@ WINNER = (
 
 AGENT_COMMISION_STATUS = (
     (0, '未审核'),
-    (1, '已审核')
+    (1, '审核中'), 
+    (2, '已发放'), 
 )
 
 Account_Source = (
