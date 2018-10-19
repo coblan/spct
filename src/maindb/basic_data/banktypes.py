@@ -16,7 +16,7 @@ class BankTypesPage(TablePage):
     class tableCls(ModelTable):
         model = TbBanktypes
         pop_edit_field = 'banktypename'
-        fields_sort = ['banktypeid', 'banktypename', 'active', 'sort']
+        fields_sort = ['banktypeid', 'banktypename', 'active', 'sort', 'img']
 
         def get_operation(self):
             create = super().get_operation()[0]
@@ -68,7 +68,7 @@ class BankTypesPage(TablePage):
 class BankTypesForm(ModelFields):
     class Meta:
         model = TbBanktypes
-        exclude = ['img']
+        exclude = []
 
     hide_fields = ['active']
 
@@ -85,6 +85,11 @@ class BankTypesForm(ModelFields):
         if TbBanktypes.objects.filter(banktypename=name).exists():
             raise ValidationError("相同的银行卡类型已存在！")
         return name
+    
+    def dict_head(self, head): 
+        if head['name'] == 'img':
+            head['up_url'] = '/d/upload?path=public/icon/banktypes'
+        return head
 
 
 director.update({

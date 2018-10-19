@@ -249,15 +249,26 @@ class TbBankcard(models.Model):
         db_table = 'TB_BankCard'
 
 
-class TbBanktype(models.Model):
-    banktypeid = models.IntegerField(db_column='BankTypeID', primary_key=True)  # Field name made lowercase.
-    banktypename = models.CharField(db_column='BankTypeName', max_length=50, blank=True,
-                                    null=True)  # Field name made lowercase.
-    moneyintype = models.IntegerField(db_column='MoneyInType', blank=True, null=True)  # Field name made lowercase.
+#class TbBanktype(models.Model):
+    #banktypeid = models.IntegerField(db_column='BankTypeID', primary_key=True)  # Field name made lowercase.
+    #banktypename = models.CharField(db_column='BankTypeName', max_length=50, blank=True,
+                                    #null=True)  # Field name made lowercase.
+    #moneyintype = models.IntegerField(db_column='MoneyInType', blank=True, null=True)  # Field name made lowercase.
 
-    class Meta:
-        managed = False
-        db_table = 'TB_BankType'
+    #class Meta:
+        #managed = False
+        #db_table = 'TB_BankType'
+        
+#class TbBanktypes(models.Model):
+    #banktypeid = models.AutoField(db_column='BankTypeID', primary_key=True)  # Field name made lowercase.
+    #banktypename = models.CharField(db_column='BankTypeName', max_length=50)  # Field name made lowercase.
+    #active = models.BooleanField(db_column='Active')  # Field name made lowercase.
+    #img = models.CharField(db_column='Img', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    #sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
+
+    #class Meta:
+        #managed = False
+        #db_table = 'TB_BankTypes'
 
 
 class TbBetstopreason(models.Model):
@@ -1722,7 +1733,8 @@ class TbBanktypes(models.Model):
     banktypename = models.CharField(db_column='BankTypeName', max_length=50, verbose_name='银行卡类型',
                                     unique=True)  # Field name made lowercase.
     active = models.BooleanField(db_column='Active', default=True)  # Field name made lowercase.
-    img = models.CharField(db_column='Img', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    img = CusPictureField(db_column='Img', max_length=200, blank=True, null=True)
+    #img = models.CharField(db_column='Img', max_length=200, blank=True, null=True)  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort', verbose_name='排序')  # Field name made lowercase.
 
     class Meta:
