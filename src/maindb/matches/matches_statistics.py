@@ -232,6 +232,12 @@ class DetailStatistic(PlainTable):
             #search_args['half_or_full'] = -1
         #search_args['oddkind'] = search_args.get('oddkind') or - 1
         #return search_args
+    def get_head_context(self): 
+        ctx = super().get_head_context()
+        ctx.update({
+            'selectable': False,
+        })
+        return ctx
     
     def get_heads(self): 
         return [

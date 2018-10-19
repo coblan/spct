@@ -391,8 +391,18 @@ var baseInput = exports.baseInput = {
     },
     number: {
         props: ['row', 'head'],
-
-        template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t<input v-else type="number" class="form-control input-sm" v-model="row[head.name]"\n            \t\t    onkeypress=\'return( /[d]/.test(String.fromCharCode(event.keyCode) ) )\'\n            \t    \t:id="\'id_\'+head.name"\n            \t\t    :name="head.name" :step="head.step" :min=\'head.min\' :max="head.max"\n                        :placeholder="head.placeholder" :autofocus="head.autofocus"></div>'
+        template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t<input v-else type="number" class="form-control input-sm" v-model="row[head.name]"\n            \t\t    @keypress="isNumber($event)"\n            \t    \t:id="\'id_\'+head.name"\n            \t\t    :name="head.name" :step="head.step" :min=\'head.min\' :max="head.max"\n                        :placeholder="head.placeholder" :autofocus="head.autofocus"></div>',
+        methods: {
+            isNumber: function isNumber(evt) {
+                evt = evt ? evt : window.event;
+                var charCode = evt.which ? evt.which : evt.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+                    evt.preventDefault();;
+                } else {
+                    return true;
+                }
+            }
+        }
     },
     fields_ele_number: {
         props: ['row', 'head'],
