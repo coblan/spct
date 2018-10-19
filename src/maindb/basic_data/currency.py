@@ -43,6 +43,8 @@ class CurrencyForm(ModelFields):
             head['fv_rule'] = 'integer(+);range(-2147483648~2147483647)'
         if head['name'] == 'value':
             head['fv_rule'] ='range(0.01~)'
+        if head['name'] == 'description':
+            head['fv_rule'] = 'length(~60)'
         return head
      
 

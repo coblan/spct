@@ -112,6 +112,10 @@ class LeagueGroupForm(ModelFields):
         return head
     
     def save_form(self): 
+        # 如果有groupid了，就不能再去请求service了
+        if self.instance.groupid:
+            return
+        
         url = urljoin( settings.SPREAD_SERVICE, 'spread/group/create')
         rt = requests.post(url, json = {"groupName":self.instance.groupname})
         print(rt.text)

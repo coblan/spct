@@ -79,6 +79,11 @@ class TeamsFields(ModelFields):
     class Meta:
         model = TbTeams
         exclude = []
+    
+    def dict_head(self, head): 
+        if head['name'] == 'enname':
+            head['fv_rule'] = 'length(~30)'
+        return head
 
     def save_form(self):
         super().save_form()

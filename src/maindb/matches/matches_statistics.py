@@ -28,6 +28,7 @@ class MatchesStatisticsPage(TablePage):
             if head['name'] == 'matchid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'detailStatic'
+                head['named_tabs'] = 'match_statistic'
           
                 #detail_statistic = DetailStatistic(crt_user= self.crt_user)
                 #head['editor'] = 'com-table-pop-table'
@@ -171,26 +172,55 @@ class MatchesStatisticsPage(TablePage):
             ]
     def get_context(self): 
         ctx = super().get_context()
+        #ls = [
+           #{'name': 'detailStatic',
+            #'label': '详细统计',
+            #'com': 'com_tab_table',
+            #'par_field': 'matchid',
+            #'table_ctx': DetailStatistic(crt_user=self.crt_user).get_head_context(),
+            #'visible': True,
+            #},
+           #{'name': 'ticket_master',
+            #'label': '注单', 
+            #'com': 'com_tab_table',
+            #'par_field': 'matchid',
+            #'table_ctx': TickmasterTab(crt_user=self.crt_user).get_head_context(),
+            #'visible': True, }        
+        #]
+        ##ctx['tabs'] = ls
+        
+        #ctx['named_tabs'] = {
+            #'match_statistic': ls,
+        #}
+        #ctx['named_tabs'] .update( TicketMasterPage.get_tabs() )
+        
+        ctx['named_tabs'] = self.get_tabs(self.crt_user)
+
+        return ctx
+    
+    @classmethod
+    def get_tabs(cls, crt_user): 
         ls = [
            {'name': 'detailStatic',
             'label': '详细统计',
             'com': 'com_tab_table',
             'par_field': 'matchid',
-            'table_ctx': DetailStatistic(crt_user=self.crt_user).get_head_context(),
+            'table_ctx': DetailStatistic(crt_user=crt_user).get_head_context(),
             'visible': True,
             },
            {'name': 'ticket_master',
             'label': '注单', 
             'com': 'com_tab_table',
             'par_field': 'matchid',
-            'table_ctx': TickmasterTab(crt_user=self.crt_user).get_head_context(),
+            'table_ctx': TickmasterTab(crt_user=crt_user).get_head_context(),
             'visible': True, }        
         ]
-        ctx['tabs'] = ls
         
-        ctx['named_tabs'] = TicketMasterPage.get_tabs()
-
-        return ctx
+        dc = {
+            'match_statistic': ls,
+        }
+        dc .update( TicketMasterPage.get_tabs() )
+        return dc
     
 
 

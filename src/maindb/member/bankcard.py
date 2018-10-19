@@ -88,7 +88,8 @@ class BankCard(TablePage):
 class BankCardForm(ModelFields):
     class Meta:
         model = TbBankcard
-        exclude = ['account', 'banktypeid']
+        #exclude = ['account', 'banktypeid']
+        fields = ['active']
 
     def dict_head(self, head):
         if head['name'] not in ['active']:

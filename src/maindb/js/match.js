@@ -47,8 +47,8 @@ var match_logic = {
                     var home_score= mt[1]
                     var away_score=mt[2]
                 }else{
-                    var home_score= 0
-                    var away_score=0
+                    var home_score= ''
+                    var away_score=''
                 }
 
                 var row={
@@ -231,19 +231,6 @@ var produceMatchOutcomePanel={
                 this.$emit('submit-success',new_row) //{new_row:new_row,old_row:this.row})
                 ex.assign(this.row,new_row)
             },
-            //del_row:function(){
-            //    var self=this
-            //    layer.confirm('真的删除吗?', {icon: 3, title:'确认'}, function(index){
-            //        layer.close(index);
-            //        var ss = layer.load(2);
-            //        var post_data = [{fun:'del_rows',rows:[self.row]}]
-            //        $.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //            layer.close(ss)
-            //            self.$emit('del_success',self.row)
-            //        })
-            //    });
-            //}
-
         },
         template:`<div class="flex-v" style="margin: 0;height: 100%;">
     <div class = "flex-grow" style="overflow: auto;margin: 0;">

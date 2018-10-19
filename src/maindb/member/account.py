@@ -13,7 +13,7 @@ from maindb.money.balancelog import BalancelogPage
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatches
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
-from helpers.func.random_str import get_str
+from helpers.func.random_str import get_str, get_random_number
 import hashlib
 from decimal import Decimal
 from ..matches.ticket_master import TicketMasterPage
@@ -111,6 +111,8 @@ class AccountPage(TablePage):
     def get_context(self):
         ctx = super().get_context()
         ctx['tabs'] = account_tab(self)
+        ctx['named_tabs'] = MatchesStatisticsPage.get_tabs(self.crt_user)
+        
         return ctx
 
     class tableCls(ModelTable):
@@ -277,7 +279,7 @@ class AccoutBaseinfo(ModelFields):
             send_message_password(self.instance.phone, text_pswd)
             return {'memo': '重置密码', }
         elif self.kw.get('fundspassword') == 1:
-            text_pswd, self.instance.fundspassword = gen_pwsd()
+            text_pswd, self.instance.fundspassword = gen_money_pswd()
             send_message_fundspassword(self.instance.phone, text_pswd)
             return {'memo': '重置资金密码', }
 
@@ -455,6 +457,19 @@ def gen_pwsd():
         # 不能全是字母，或者全是数字
         if not (re.search('^\d+$', pswd) or re.search('^\[a-zA-Z]+$', pswd)):
             break
+    text_pswd = pswd
+    m1 = hashlib.md5()
+    m1.update(pswd.encode("utf-8"))
+    pswd = m1.hexdigest()
+    salt = ':69257765ACB34A08A6D0D978E9CF39ED'
+    pswd_str = pswd + salt
+    m2 = hashlib.md5()
+    m2.update(pswd_str.encode("utf-8"))  # 参数必须是byte类型，否则报Unicode-objects must be encoded before
+    pswd_db_str = m2.hexdigest().upper()
+    return text_pswd, pswd_db_str
+
+def gen_money_pswd(): 
+    pswd = get_random_number(6)
     text_pswd = pswd
     m1 = hashlib.md5()
     m1.update(pswd.encode("utf-8"))

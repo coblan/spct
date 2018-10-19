@@ -1675,14 +1675,14 @@ class TbRecharge(models.Model):
     orderid = models.CharField(db_column='OrderID', max_length=50, verbose_name='订单号')  # Field name made lowercase.
     isauto = models.IntegerField(db_column='IsAuto', verbose_name='自动',default=0,blank=True)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID', db_constraint=False,
-                                  verbose_name='昵称')  # Field name made lowercase.
+                                  verbose_name='昵称', null = True)  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=255)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', verbose_name='创建时间')  # Field name made lowercase.
     channelname = models.CharField(db_column='ChannelName', max_length=50)  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', choices=RECHARGE_STATUS)  # Field name made lowercase.
     # channelid = models.IntegerField(db_column='ChannelID')  # Field name made lowercase.
     channelid = models.ForeignKey(to=TbPaychannel, db_constraint=False, db_column='ChannelID',
-                                  verbose_name='充值渠道')  # Field name made lowercase.
+                                  verbose_name='充值渠道', null = True)  # Field name made lowercase.
     apollomsg = models.CharField(db_column='ApolloMsg', max_length=500)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=150, verbose_name='备注')  # Field name made lowercase.
     amounttype = models.IntegerField(db_column='AmountType', choices=AMOUNT_TYPE,
