@@ -402,6 +402,35 @@ class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
         if head['name'] == 'ticketid':
             head['editor'] = ''
         return head
+    
+    class search(SelectSearch):
+            #names = ['accountid__nickname']
+            exact_names = ['orderid', 'tbticketstake__match_id']
+
+            def get_option(self, name):
+
+                if name == 'orderid':
+                    return {'value': name,
+                            'label': '订单编号', }
+                #elif name == 'accountid__nickname':
+                    #return {
+                        #'value': name,
+                        #'label': '昵称',
+                    #}
+                elif name == 'tbticketstake__match_id':
+                    return {
+                        'value': name,
+                        'label': '比赛ID',
+                    }
+
+            def clean_search(self):
+                if self.qf in ['ticketid', 'tbticketstake__match_id']:
+                    if not re.search('^\d*$', self.q):
+                        return None
+                    else:
+                        return self.q
+                else:
+                    return super().clean_search()
 
 
 class AccountLoginTable(WithAccoutInnFilter, LoginLogPage.tableCls):

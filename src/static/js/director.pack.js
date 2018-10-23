@@ -3802,13 +3802,20 @@ Vue.component('com-filter-search-select', com_select);
 
 var com_select = {
     props: ['head', 'search_args', 'config'],
-    template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm" >\n        <option :value="undefined" v-text=\'head.label\'></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy( head.options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
+    template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm" >\n        <option :value="null_value" v-text=\'head.label\'></option>\n        <option  disabled >---</option>\n        <option v-for=\'option in orderBy( head.options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
         return {};
     },
     computed: {
         watchedValue: function watchedValue() {
             return this.search_args[this.head.related];
+        },
+        null_value: function null_value() {
+            if (this.search_args[this.head.name] === null) {
+                return null;
+            } else {
+                return undefined;
+            }
         }
     },
     watch: {

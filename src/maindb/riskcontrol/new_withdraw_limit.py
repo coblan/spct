@@ -11,7 +11,7 @@ class WithDrawLimitContralPage(TablePage):
 
     class tableCls(ModelTable):
         pop_edit_field = 'memo'
-        fields_sort = ['memo',  'value', 'daysnumber', 'leveltype','isactive', 'tag', ]
+        fields_sort = ['memo',  'value', 'daysnumber', 'leveltype','isactive', ]
         model = TbParameterinfo
         exclude = []
 
@@ -52,6 +52,10 @@ class WithDrawForm(ModelFields):
         if head['name'] in ['daysnumber', 'value']:
             head['editor'] = 'number'
             head['fv_rule'] = 'integer(+)'
+        if head['name'] == 'value':
+            head['show'] = "scope.row.tag !='IsRapidWithdraw' && scope.row.tag !='IsEnableWithdraw'"
+        if head['name'] == 'daysnumber':
+            head['show'] = "scope.row.tag !='IsRapidWithdraw' && scope.row.tag !='IsEnableWithdraw'"        
         return head
 
 

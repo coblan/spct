@@ -928,7 +928,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var maxpayout = exports.maxpayout = {
     watch: {
-        dict_heads: function dict_heads() {
+        normed_heads: function normed_heads() {
             this.update_nice();
         }
     },

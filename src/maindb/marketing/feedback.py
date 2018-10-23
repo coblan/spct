@@ -47,6 +47,8 @@ class FeedbackForm(ModelFields):
     readonly = ['title', 'msg','accountid','createtime']
     field_sort = ['accountid','title', 'msg','createtime']
 
+    def get_operations(self): 
+        return []
 
     class Meta:
         model = TbAgentleavemsg

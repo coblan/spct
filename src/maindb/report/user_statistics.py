@@ -117,10 +117,10 @@ class UserStatisticsPage(TablePage):
                 'Sort': realsort,
                 'SortWay': sortway
             }
-            sql = r"exec dbo.SP_UserStatistics '%(NickName)s',%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s'" \
+            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s'" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
-                cursor.execute(sql)
+                cursor.execute(sql, [nickname])
                 set0 = cursor.fetchall()
                 self.total = set0[0][0]
 

@@ -40,6 +40,16 @@ class MaxPayoutPage(TablePage):
                         'row_match': 'one_row',
                         'confirm_msg': '确认作废该限制类型吗?', 
                         'visible': 'status' in self.permit.changeable_fields(),
+                    }, 
+                    {
+                        'fun': 'selected_set_and_save',
+                        'editor': 'com-op-btn',
+                        'label': '启用',
+                        'field': 'status',
+                        'value': True,
+                        'row_match': 'one_row',
+                        'confirm_msg': '确认作废该限制类型吗?', 
+                        'visible': 'status' in self.permit.changeable_fields()                    ,
                     }
                     ]
 
@@ -98,6 +108,7 @@ class MaxPayoutPage(TablePage):
 
 
 class MaxPayoutForm(ModelFields):
+    hide_fields = ['status']
     class Meta:
         model = TbMaxpayout
         exclude = ['createtime', 'updatetime']

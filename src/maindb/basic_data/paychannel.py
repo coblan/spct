@@ -8,7 +8,6 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelField
 from maindb.models import TbBanktypes, TbPaychannel
 from helpers.director.base_data import director
 
-
 class PayChannelPage(TablePage):
     template = 'jb_admin/table.html'
 
@@ -92,7 +91,7 @@ class PayChannelForm(ModelFields):
         if 'channelname' not in self.changed_data:
             return name
         if TbPaychannel.objects.filter(channelname=name).exists():
-            raise UserWarning("相同的Apolo渠道【{}】已存在！".format(name))
+            raise ValidationError("相同的Apolo渠道【{}】已存在！".format(name))
         return name
 
 

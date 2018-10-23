@@ -28,7 +28,7 @@ class AppResource(TablePage):
             return head
 
         def getExtraHead(self):
-            return [{'name': 'valid', 'label': '状态', 'editor': 'com-table-bool-shower'}]
+            return [{'name': 'valid', 'label': '有效', 'editor': 'com-table-bool-shower'}]
 
         def get_operation(self):
             return ModelTable.get_operation(self)[0:1]
@@ -40,12 +40,22 @@ class AppResource(TablePage):
 
 
 class AppResourceForm(ModelFields):
-    hide_fields = ['md5']
+    hide_fields = ['md5', 'isexpired' ]
 
     class Meta:
         model = TbAppresource
         exclude = []
 
+    def dict_row(self, inst): 
+        return {
+                'valid': not bool(inst.isexpired)
+            }
+    
+    def getExtraHeads(self): 
+        return [
+            {'name': 'valid','label': '有效','editor': 'bool',}
+        ]
+    
     def clean_dict(self, dc):
         super().clean_dict(dc)
         url = dc.get('url')
@@ -54,8 +64,12 @@ class AppResourceForm(ModelFields):
             name = ls[-1]
             md5 = name[:32]
             dc['md5'] = md5
-
+        dc['isexpired'] = False if dc.get('valid') else True
+            
         return dc
+    
+    
+    
 
 
 director.update({

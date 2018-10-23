@@ -1,6 +1,6 @@
 export  var  maxpayout={
     watch:{
-        dict_heads:function(){
+        normed_heads:function(){
             this.update_nice()
         }
     },

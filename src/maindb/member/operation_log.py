@@ -50,6 +50,9 @@ class OperationLogForm(ModelFields):
         exclude = ['type']
 
     readonly = ['type', 'content', 'memo', 'createuser', 'createtime']
+    
+    def get_operations(self):
+        return []    
 
 
 director.update({
