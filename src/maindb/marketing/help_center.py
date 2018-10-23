@@ -146,8 +146,9 @@ class HelpForm(ModelFields):
 
     def dict_head(self, head):
         if head['name'] == 'mtype':
-            head['options'] = get_mtype_options()
-            head['editor'] = 'sim_select'
+            head['options'] = []  #get_mtype_options()
+            head['remote_options'] = 'get_mtype_options'
+            head['editor'] = 'com-field-select'
         elif head['name'] == 'description':
             head['editor'] = 'richtext'
             head['config'] = {
@@ -159,7 +160,7 @@ class HelpForm(ModelFields):
 
 
 @request_cache
-def get_mtype_options():
+def get_mtype_options(row = None):
     ls = [{'value': 0, 'label': '顶层'}]
     for i in TbQa.objects.filter(mtype=0).order_by('-priority'):
         ls.append({'value': i.type, 'label': i.title})
@@ -168,7 +169,8 @@ def get_mtype_options():
 
 director.update({
     'help.table': HelpPage.tableCls,
-    'help.table.edit': HelpForm
+    'help.table.edit': HelpForm, 
+    'get_mtype_options': get_mtype_options,
 })
 
 page_dc.update({
