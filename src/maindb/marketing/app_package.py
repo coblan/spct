@@ -64,6 +64,7 @@ class AppPackageForm(ModelFields):
             }
         if head['name'] == 'description':
             head['editor'] = 'blocktext'
+            head['fv_rule'] = 'length(~200)'
             
         return head
     

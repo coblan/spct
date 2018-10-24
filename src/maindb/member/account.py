@@ -299,7 +299,7 @@ class AccoutModifyAmount(ModelFields):
 
     def getExtraHeads(self):
         return [
-            {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'fv_rule': 'range(-50000~50000)', }
+            {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', }
         ]
 
     def clean_dict(self, dc):

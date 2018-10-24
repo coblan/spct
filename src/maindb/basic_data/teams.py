@@ -96,7 +96,7 @@ class TeamsFields(ModelFields):
     
     def dict_head(self, head): 
         if head['name'] == 'enname':
-            head['fv_rule'] = 'length(~30)'
+            head['fv_rule'] = 'length(~20)'
         return head
 
     def save_form(self):
