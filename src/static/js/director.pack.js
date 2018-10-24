@@ -3520,7 +3520,7 @@ var com_search = {
         }
         return {};
     },
-    template: '<div>\n    <input style="max-width: 20em;min-width: 10em;"\n             type="text"\n             name="_q"\n             v-model=\'search_args._q\'\n             :placeholder=\'head.search_tip\'\n             @keyup.13="$emit(\'submit\')"\n             class=\'form-control input-sm\'/>\n    </div> '
+    template: '<div>\n    <input style="max-width: 20em;min-width: 10em;"\n             type="text"\n             name="_q"\n             v-model=\'search_args._q\'\n             :placeholder=\'head.search_tip\'\n             @keyup.13="$emit(\'submit\')"\n             maxlength="500"\n             class=\'form-control input-sm\'/>\n    </div> '
 };
 Vue.component('com-search-filter', com_search);
 
