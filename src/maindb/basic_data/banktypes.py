@@ -16,7 +16,7 @@ class BankTypesPage(TablePage):
     class tableCls(ModelTable):
         model = TbBanktypes
         pop_edit_field = 'banktypename'
-        fields_sort = ['banktypeid', 'banktypename', 'active', 'sort', 'img']
+        fields_sort = ['banktypeid', 'banktypename', 'active', 'sort', 'img', 'bgimg']
 
         def get_operation(self):
             create = super().get_operation()[0]
@@ -58,7 +58,9 @@ class BankTypesPage(TablePage):
 
         def dict_head(self, head):
             dc = {
-                'banktypename': 160
+                'banktypename': 160, 
+                'img': 120,
+                'bgimg': 200,
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -88,6 +90,8 @@ class BankTypesForm(ModelFields):
     
     def dict_head(self, head): 
         if head['name'] == 'img':
+            head['up_url'] = '/d/upload?path=public/icon/banktypes'
+        if head['name'] == 'bgimg':
             head['up_url'] = '/d/upload?path=public/icon/banktypes'
         return head
 

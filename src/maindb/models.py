@@ -1736,7 +1736,8 @@ class TbBanktypes(models.Model):
     img = CusPictureField(db_column='Img', max_length=200, blank=True, null=True)
     #img = models.CharField(db_column='Img', max_length=200, blank=True, null=True)  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort', verbose_name='排序')  # Field name made lowercase.
-
+    bgimg = CusPictureField(db_column='BgImg', max_length=200, blank=True, null=True, verbose_name = '背景图')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_BankTypes'
