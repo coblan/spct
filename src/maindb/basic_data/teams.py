@@ -40,20 +40,34 @@ class TeamsPage(TablePage):
                     {
                         'name': 'leaguename',
                         'label': '联赛',
-                        'editor': 'com-related-select-filter',
+                        #'editor': 'com-related-select-filter',
+                        'editor': 'com-filter-select',
                         'options': [],
                         'related': 'country',
-                        'director_name': 'league-filter', }
+                        '_director_name': 'league-options', 
+                        'update_on': ['row.update_or_insert', 'country.changed'],
+                    }
                 ]
 
             def dict_head(self, head):
                 head['order'] = True
+                if head['name'] == 'country':
+                    head['update_on'] = 'row.update_or_insert'
+                    head['changed_emit'] = 'country.changed'
+                    head['_director_name'] = 'contry-options'
                 return head
-
+            
+            @staticmethod  # contry-options
+            def getCountry(**kws): 
+                query = TbTeams.objects.values('country').distinct()
+                options = [{'value': x.get('country'), 'label': x.get('country')} for x in query]
+                return options
+            
             @staticmethod
-            def getLeagueOptions(related):
-                contry = related  # kws.get('related')
-                query = TbTeams.objects.filter(country=contry).values_list('leaguename', flat=True).distinct()
+            def getLeagueOptions(search_args):
+                country = search_args.get('country')
+                #contry = related  # kws.get('related')
+                query = TbTeams.objects.filter(country=country).values_list('leaguename', flat=True).distinct()
                 options = [{'value': x, 'label': str(x)} for x in query]
                 return options
 
@@ -126,7 +140,8 @@ director.update({
     'maindb.teams': TeamsPage.tableCls,
     'maindb.teams.edit': TeamsFields,
 
-    'league-filter': TeamsPage.tableCls.filters.getLeagueOptions,
+    'league-options': TeamsPage.tableCls.filters.getLeagueOptions,
+    'contry-options': TeamsPage.tableCls.filters.getCountry,
 })
 
 page_dc.update({

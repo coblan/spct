@@ -3578,20 +3578,47 @@ var com_select = {
     props: ['head', 'search_args', 'config'],
     template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm com-filter-select" >\n        <option v-if="head.forbid_select_null" :value="null" disabled v-text=\'head.label\'></option>\n        <option v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy( head.options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
-        //var inn_cfg = {
-        //    order: this.head.order || false  // 默认false
-        //}
-        //ex.assign(inn_cfg,this.config)
         return {
             order: this.head.order || false
         };
     },
+    computed: {
+        myvalue: function myvalue() {
+            return this.search_args[this.head.name];
+        }
+    },
     watch: {
         myvalue: function myvalue(v) {
             this.$emit('input', v);
+
+            if (this.head.changed_emit) {
+                ex.vuexEmit(this, this.head.changed_emit);
+                //this.$store.state[parName].childbus.$emit(this.head.changed_emit)
+            }
+        }
+    },
+    mounted: function mounted() {
+        //var parName = ex.vuexParName(this)
+        var self = this;
+        if (this.head.update_on) {
+            ex.vuexOn(this, this.head.update_on, this.get_options);
+            //if($.isArray(this.head.update_on)){
+            //    ex.each(this.head.update_on,function(on_event){
+            //        self.$store.state[parName].childbus.$on(on_event,self.get_options)
+            //    })
+            //}else{
+            //    this.$store.state[parName].childbus.$on(this.head.update_on,this.get_options)
+            //}
         }
     },
     methods: {
+        get_options: function get_options() {
+            var self = this;
+            console.log('sss');
+            ex.director_call(this.head._director_name, { search_args: self.search_args }, function (resp) {
+                self.head.options = resp;
+            });
+        },
         orderBy: function orderBy(array, key) {
             if (!this.order) {
                 return array;
@@ -4133,7 +4160,6 @@ Vue.component('com-filter', {
             });
         }
     }
-
 });
 
 var sim_filter_with_search = {

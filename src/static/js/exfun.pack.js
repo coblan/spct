@@ -476,6 +476,11 @@ var code = exports.code = {
     },
     eval: function _eval(js, scope) {
         return eval(js);
+    },
+    _count: 0,
+    get_uid: function get_uid() {
+        this._count++;
+        return this._count;
     }
     //hashCode: function (input){
     //    var I64BIT_TABLE =
@@ -1699,6 +1704,28 @@ var vuetool = exports.vuetool = {
         return rt;
     },
     vueBroadcase: function vueBroadcase() {},
+    vuexParName: function vuexParName(self) {
+        var par = self.$parent;
+        while (par) {
+            if (par.store_name) {
+                return par.store_name;
+            } else {
+                par = par.$parent;
+            }
+        }
+    },
+    vuexEmit: function vuexEmit(self, event_name, event) {
+        var parName = ex.vuexParName(self);
+        if (parName) {
+            self.$store.state[parName].childbus.$emit(event_name, event);
+        }
+    },
+    vuexOn: function vuexOn(self, event_name, func) {
+        var parName = ex.vuexParName(self);
+        if (parName) {
+            self.$store.state[parName].childbus.$on(event_name, func);
+        }
+    },
     vueDispatch: function vueDispatch(self, event, kws) {
         var kws = kws || {};
         kws.source = self;

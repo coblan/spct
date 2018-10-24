@@ -240,7 +240,7 @@ def get_special_bet_value(matchid):
             )
 
     # 把 以前操作过的 spvalue 加进来。因为这时通过tbOdds 已经查不到这些 sp value了
-    for switch in TbMatchesoddsswitch.objects.filter(matchid=matchid, types=3):
+    for switch in TbMatchesoddsswitch.objects.filter(matchid=matchid, types=3, status = 1):
         name = "%s %s" % (switch.oddstypegroup.oddstypenamezh, switch.specialbetvalue)
         specialbetvalue.append(
             {

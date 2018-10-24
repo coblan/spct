@@ -748,14 +748,14 @@ class TbMatchesoddsswitch(models.Model):
     matchesoddsswitchid = models.AutoField(db_column='MatchesOddsSwitchID',
                                            primary_key=True)  # Field name made lowercase.
     sportid = models.IntegerField(db_column='SportID', default=1)  # Field name made lowercase.
-    types = models.IntegerField(db_column='Types', blank=True, )  # Field name made lowercase.
+    types = models.IntegerField(db_column='Types', blank=True, help_text= '初始值(0)/封比赛(1)/玩法(2)/盘口(3)')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
     oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, to_field='oddstypegroup',
                                       db_column='OddsTypeGroup', blank=True, default=0)  # Field name made lowercase.
     # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup', blank=True, null=True)  # Field name made lowercase.
     specialbetvalue = models.CharField(db_column='SpecialBetValue', max_length=12,
                                        blank=True, )  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', help_text= '0无用/1启用')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
 
