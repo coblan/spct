@@ -189,7 +189,7 @@ class AccountPage(TablePage):
             footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
             self.footer = footer
             self.footer = ['合计'] + self.footer
-            return query
+            return query.order_by('-pk')
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
