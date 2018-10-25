@@ -45,14 +45,15 @@ class TeamsPage(TablePage):
                         'options': [],
                         'related': 'country',
                         '_director_name': 'league-options', 
-                        'update_on': ['row.update_or_insert', 'country.changed'],
+                        'update_options_on': ['row.update_or_insert', 'country.changed'],
+                        'clear_value_on': ['country.changed'],
                     }
                 ]
 
             def dict_head(self, head):
                 head['order'] = True
                 if head['name'] == 'country':
-                    head['update_on'] = 'row.update_or_insert'
+                    head['update_options_on'] = 'row.update_or_insert'
                     head['changed_emit'] = 'country.changed'
                     head['_director_name'] = 'contry-options'
                 return head

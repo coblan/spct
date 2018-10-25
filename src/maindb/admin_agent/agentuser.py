@@ -112,14 +112,14 @@ class AgentUser(TablePage):
                 'OrderBy': order_by,
             }
 
-            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s','%(NickName)s','%(OrderBy)s'" \
+            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s',%%s,'%(OrderBy)s'" \
                   % sql_args
 
             with connections['Sports'].cursor() as cursor:
                 self.parent_agents = []
                 self.child_agents = []
                 try:
-                    cursor.execute(sql)
+                    cursor.execute(sql, [nickname])
                 except Exception as e:
                     print(e)
                     msg = str(e)

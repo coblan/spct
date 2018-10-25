@@ -1483,7 +1483,7 @@ class TbTournament(models.Model):
                                              verbose_name='联赛ID')  # Field name made lowercase.
     issubscribe = models.IntegerField(db_column='IsSubscribe', verbose_name='已订阅')  # Field name made lowercase.
     closelivebet = models.IntegerField(db_column='CloseLiveBet', verbose_name='关闭滚球')  # Field name made lowercase.
-    sort = models.IntegerField(db_column='Sort', blank=True, null=True, verbose_name='排序')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort', null=True, verbose_name='排序')  # Field name made lowercase.
     typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True,
                                        verbose_name='已关闭玩法')  # Field name made lowercase.
 

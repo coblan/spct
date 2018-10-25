@@ -117,10 +117,10 @@ class MatchesStatisticsPage(TablePage):
                 'Sort': sort,
             }
 
-            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,'%(TeamZH)s',%(StatusCode)s,%(LiveBet)s,'%(NickName)s',%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
-                cursor.execute(sql)
+                cursor.execute(sql, [teamzh, nickname ])
                 self.total = cursor.fetchall()[0][0]
                 cursor.nextset()
                 self.matches = []

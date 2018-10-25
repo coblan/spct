@@ -649,7 +649,7 @@ var baseInput = exports.baseInput = {
     },
     richtext: {
         props: ['row', 'head'],
-        template: '<div style="position: relative">\n            <span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            <div v-else>\n                <input type="text" :name=\'head.name\' style="display:none" v-model="row[head.name]">\n                <ckeditor ref="ck" :style="head.style" v-model="row[head.name]" :id="\'id_\'+head.name" :set="head.set" :config="head.config"></ckeditor>\n            </div>\n\n                       </div>',
+        template: '<div >\n            <span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            <div v-else>\n                <ckeditor ref="ck" :style="head.style" v-model="row[head.name]"\n                :maxlength=\'head.maxlength\'\n                :id="\'id_\'+head.name" :set="head.set" :config="head.config"></ckeditor>\n                <div style="height: 1em;width: 0;position: relative">\n                <input type="text" :name=\'head.name\' style="display: none"  v-model="row[head.name]">\n                </div>\n            </div>\n         </div>',
         methods: {
             commit: function commit() {
                 Vue.set(this.row, this.head.name, this.$refs.ck.editor.getData());
@@ -1189,13 +1189,14 @@ var ck_complex = {
 };
 
 var ckeditor = {
-	template: '<div class=\'ckeditor\'>\n\t\t    \t<textarea class="form-control" ></textarea>\n\t    \t</div>',
+	template: '<div class=\'ckeditor\'>\n\t\t    \t<textarea class="form-control" :maxlength="maxlength"></textarea>\n\t    \t</div>',
 	props: {
 		value: {},
 		config: {},
 		set: {
 			default: 'edit'
-		}
+		},
+		maxlength: {}
 	},
 	created: function created() {
 		var self = this;
@@ -3576,8 +3577,11 @@ __webpack_require__(94);
 
 var com_select = {
     props: ['head', 'search_args', 'config'],
-    template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm com-filter-select" >\n        <option v-if="head.forbid_select_null" :value="null" disabled v-text=\'head.label\'></option>\n        <option v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy( head.options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
+    template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm com-filter-select" >\n        <option v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy( head.options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
+        //if(!this.search_args[this.head.name]){
+        //Vue.set(this.search_args,this.head.name,'')
+        //}
         return {
             order: this.head.order || false
         };
@@ -3600,15 +3604,11 @@ var com_select = {
     mounted: function mounted() {
         //var parName = ex.vuexParName(this)
         var self = this;
-        if (this.head.update_on) {
-            ex.vuexOn(this, this.head.update_on, this.get_options);
-            //if($.isArray(this.head.update_on)){
-            //    ex.each(this.head.update_on,function(on_event){
-            //        self.$store.state[parName].childbus.$on(on_event,self.get_options)
-            //    })
-            //}else{
-            //    this.$store.state[parName].childbus.$on(this.head.update_on,this.get_options)
-            //}
+        if (this.head.update_options_on) {
+            ex.vuexOn(this, this.head.update_options_on, this.get_options);
+        }
+        if (this.head.clear_value_on) {
+            ex.vuexOn(this, this.head.update_options_on, this.clear_value);
         }
     },
     methods: {
@@ -3618,6 +3618,9 @@ var com_select = {
             ex.director_call(this.head._director_name, { search_args: self.search_args }, function (resp) {
                 self.head.options = resp;
             });
+        },
+        clear_value: function clear_value() {
+            delete this.search_args[this.head.name];
         },
         orderBy: function orderBy(array, key) {
             if (!this.order) {

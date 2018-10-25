@@ -2168,7 +2168,7 @@ var nice_validator = {
                 if (real_input.length != 0) {
                     real_input.trigger("showmsg", ["error", errors[k].join(';')]);
                 } else {
-                    $(this.$el).find('#id_' + k).trigger("showmsg", ["error", errors[k].join(';')]);
+                    $(this.$el).find('[name=' + k + ']').trigger("showmsg", ["error", errors[k].join(';')]);
                 }
             }
         }
