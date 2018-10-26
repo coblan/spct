@@ -2591,14 +2591,13 @@ var mix_table_data = {
                 cfg.show_load();
                 var post_data = [{ fun: 'del_rows', rows: self.selected }];
                 ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    //layer.close(ss)
-                    self.row_pages.total -= self.selected.length;
-                    ex.each(self.selected, function (item) {
-                        ex.remove(self.rows, { pk: item.pk });
-                    });
-
-                    self.selected = [];
-                    cfg.hide_load(200);
+                    //self.row_pages.total -= self.selected.length
+                    //ex.each(self.selected,function(item){
+                    //    ex.remove(self.rows,{pk:item.pk} )
+                    //})
+                    //self.selected=[]
+                    cfg.hide_load(500);
+                    self.search();
                     //layer.msg('删除成功',{time:2000})
                 });
             });
