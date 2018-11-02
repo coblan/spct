@@ -61,18 +61,18 @@ class TbAccount(models.Model):
     agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
     viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'), choices=VIP_LEVEL, null=False,
                                 default=0)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', verbose_name='注册时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', verbose_name='注册时间', auto_now_add= True)  # Field name made lowercase.
     pwupdatetime = models.DateTimeField(db_column='PWUpdateTime', auto_now=True)  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4,
-                                 verbose_name='游戏账户余额')  # Field name made lowercase.
+                                 verbose_name='游戏账户余额', default = 0)  # Field name made lowercase.
     phone = models.CharField(db_column='Phone', max_length=64, blank=True, null=True)  # Field name made lowercase.
     avatar = models.CharField(db_column='Avatar', max_length=255, blank=True)  # Field name made lowercase.
-    gender = models.IntegerField(db_column='Gender')  # Field name made lowercase.
+    gender = models.IntegerField(db_column='Gender', default= 0)  # Field name made lowercase.
     birthday = models.CharField(db_column='Birthday', max_length=10, blank=True,
                                 null=True)  # Field name made lowercase.
     points = models.IntegerField(db_column='Points', blank=True, null=True)  # Field name made lowercase.
     # actimestamp = models.TextField(db_column='AcTimestamp')  # Field name made lowercase. This field type is a guess.
-    codeid = models.IntegerField(db_column='CodeID')  # Field name made lowercase.
+    codeid = models.IntegerField(db_column='CodeID', default= 0)  # Field name made lowercase.
     bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4,
                                     verbose_name='反水比例')  # Field name made lowercase.
     agentamount = models.DecimalField(db_column='AgentAmount', max_digits=18, decimal_places=4, blank=True, null=True,
@@ -80,15 +80,15 @@ class TbAccount(models.Model):
     parentid = models.IntegerField(db_column='ParentID')  # Field name made lowercase.
 
     isenablewithdraw = models.BooleanField(db_column='IsEnableWithdraw',
-                                           verbose_name='允许提现')  # Field name made lowercase.
+                                           verbose_name='允许提现', default = True)  # Field name made lowercase.
     sumrechargecount = models.IntegerField(db_column='SumRechargeCount',
-                                           verbose_name='充值次数')  # Field name made lowercase.
+                                           verbose_name='充值次数', default= 0)  # Field name made lowercase.
     fundspassword = models.CharField(db_column='FundsPassword', max_length=255, blank=True,
                                      null=True)  # Field name made lowercase.
     source = models.IntegerField(db_column='Source', verbose_name='来源',
-                                 choices=Account_Source)  # Field name made lowercase.
+                                 choices=Account_Source, default= 3)  # Field name made lowercase.
     sumwithdrawcount = models.IntegerField(db_column='SumWithdrawCount', blank=True,
-                                           null=True, verbose_name='提现次数')  # Field name made lowercase.
+                                           default= 0, verbose_name='提现次数')  # Field name made lowercase.
 
     class Meta:
         managed = False

@@ -2334,6 +2334,50 @@ var mix_table_data = {
                     cfg.hide_load(2000);
                 });
             },
+            create_child_row: function create_child_row(kws) {
+                /*
+                 * */
+                if (kws.fields_ctx) {
+                    var fields_ctx = kws.fields_ctx;
+                    var dc = { fun: 'get_row', director_name: fields_ctx.director_name };
+                    if (kws.init_fields) {
+                        ex.assign(dc, kws.init_fields);
+                    }
+                    var post_data = [dc];
+                    cfg.show_load();
+                    ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                        cfg.hide_load();
+                        var crt_row = resp.get_row;
+                        self.crt_row = crt_row;
+                        crt_row.carry_parents = self.parents;
+
+                        if (kws.tab_name) {
+                            self.$emit('operation', { fun: 'switch_to_tab', tab_name: kws.tab_name, row: crt_row });
+                        } else {
+                            var win = pop_fields_layer(crt_row, fields_ctx, function (new_row) {
+                                layer.close(win);
+                                if (kws.after_save == 'refresh') {
+                                    self.search();
+                                } else {
+                                    self.update_or_insert(new_row, crt_row);
+                                }
+                            });
+                        }
+                    });
+
+                    //var row={
+                    //    _director_name:kws.fields_ctx._director_name
+                    //}
+                    //pop_edit_local(row,kws.fields_ctx,function(new_row){
+                    //    cfg.show_load()
+                    //    ex.director_call(kws.fields_ctx.director_name,{row:new_row,parents:self.parents},function(resp){
+                    //        cfg.hide_load(300)
+                    //        self.update_or_insert(resp.row)
+                    //    })
+                    //})
+                }
+            },
+
             director_call: function director_call(kws) {
                 function bb() {
                     cfg.show_load();
@@ -2397,6 +2441,7 @@ var mix_table_data = {
             emitEvent: function emitEvent(e) {
                 self.$emit(e);
             },
+
             update_or_insert: function update_or_insert(kws) {
                 self.update_or_insert(kws.new_row, kws.old_row);
             },
@@ -5479,6 +5524,10 @@ var _ele_tree_depend = __webpack_require__(7);
 
 var ele_tree_depend = _interopRequireWildcard(_ele_tree_depend);
 
+var _china_address = __webpack_require__(102);
+
+var com_china_address = _interopRequireWildcard(_china_address);
+
 var _operator_a = __webpack_require__(59);
 
 var op_a = _interopRequireWildcard(_operator_a);
@@ -5573,6 +5622,7 @@ __webpack_require__(65);
 
 // field editor
 
+
 // table operator
 
 
@@ -5594,6 +5644,30 @@ __webpack_require__(65);
 
 
 // store
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var china_address_logic = {
+    props: ['row', 'head'],
+    template: '<div class="com-field-china-address">\n            <el-cascader\n              :options="options"\n              v-model="row[head.name]"></el-cascader>\n               </div>',
+    mounted: function mounted() {},
+    data: function data() {
+        return {
+            options: china_address
+        };
+    }
+};
+
+Vue.component('com-field-china-address', function (resolve, reject) {
+    ex.load_js('/static/lib/china_address.js', function () {
+        resolve(china_address_logic);
+    });
+});
 
 /***/ })
 /******/ ]);

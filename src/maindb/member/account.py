@@ -510,3 +510,4 @@ def gen_money_pswd():
     m2.update(pswd_str.encode("utf-8"))  # 参数必须是byte类型，否则报Unicode-objects must be encoded before
     pswd_db_str = m2.hexdigest().upper()
     return text_pswd, pswd_db_str
+
