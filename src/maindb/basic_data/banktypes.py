@@ -29,7 +29,7 @@ class BankTypesPage(TablePage):
                         'field': 'active',
                         'value': True,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认启用该银行卡类型吗?', 
+                        'confirm_msg': '确认启用该银行卡类型吗?',
                         'visible': 'active' in self.permit.changeable_fields(),
                     },
                     {
@@ -39,7 +39,7 @@ class BankTypesPage(TablePage):
                         'field': 'active',
                         'value': False,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认禁用该银行卡类型吗?', 
+                        'confirm_msg': '确认禁用该银行卡类型吗?',
                         'visible': 'active' in self.permit.changeable_fields(),
                     }
                     ]
@@ -58,7 +58,7 @@ class BankTypesPage(TablePage):
 
         def dict_head(self, head):
             dc = {
-                'banktypename': 160, 
+                'banktypename': 160,
                 'img': 120,
                 'bgimg': 200,
             }
@@ -78,6 +78,9 @@ class BankTypesForm(ModelFields):
         if 'active' in self.changed_data:
             if TbBankcard.objects.filter(banktypeid=self.instance.banktypeid).exists():
                 raise UserWarning('已有用户绑定该银行卡类型，不能禁用！')
+        if 'banktypename' in self.changed_data:
+            if TbBankcard.objects.filter(banktypeid=self.instance.banktypeid).exists():
+                raise UserWarning('已有用户绑定该银行卡类型，不能修名称！')
         super().save_form()
 
     def clean_banktypename(self):
@@ -87,8 +90,8 @@ class BankTypesForm(ModelFields):
         if TbBanktypes.objects.filter(banktypename=name).exists():
             raise ValidationError("相同的银行卡类型已存在！")
         return name
-    
-    def dict_head(self, head): 
+
+    def dict_head(self, head):
         if head['name'] == 'img':
             head['up_url'] = '/d/upload?path=public/icon/banktypes'
         if head['name'] == 'bgimg':
