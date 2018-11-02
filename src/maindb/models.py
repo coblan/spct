@@ -65,7 +65,7 @@ class TbAccount(models.Model):
     pwupdatetime = models.DateTimeField(db_column='PWUpdateTime', auto_now=True)  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4,
                                  verbose_name='游戏账户余额', default = 0)  # Field name made lowercase.
-    phone = models.CharField(db_column='Phone', max_length=64, blank=True, null=True)  # Field name made lowercase.
+    phone = models.CharField(db_column='Phone', verbose_name = '手机号', max_length=64, blank=True, null=True)  # Field name made lowercase.
     avatar = models.CharField(db_column='Avatar', max_length=255, blank=True)  # Field name made lowercase.
     gender = models.IntegerField(db_column='Gender', default= 0)  # Field name made lowercase.
     birthday = models.CharField(db_column='Birthday', max_length=10, blank=True,
