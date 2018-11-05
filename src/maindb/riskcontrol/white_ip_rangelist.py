@@ -83,8 +83,8 @@ class WhiteIPRangeForm(ModelFields):
             dc['endipnum'] = 0
         return dc
 
-field_map[model_to_name(TbAreablacklist) + '.status'] = IntBoolProc
 
+field_map[model_to_name(TbAreablacklist) + '.status'] = IntBoolProc
 
 director.update({
     'WhiteIPRangeList': WhiteIPRangeList.tableCls,
