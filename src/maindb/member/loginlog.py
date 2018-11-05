@@ -9,7 +9,6 @@ import re
 from django.db.models import Q
 
 
-
 class LoginLogPage(TablePage):
     template = 'jb_admin/table.html'
 
@@ -19,7 +18,8 @@ class LoginLogPage(TablePage):
     class tableCls(ModelTable):
         model = TbLoginlog
         exclude = []
-        fields_sort = ['accountid_id', 'accountid__nickname', 'devicecode', 'deviceip', 'appversion', 'devicename',
+        fields_sort = ['accountid_id', 'accountid__nickname', 'devicecode', 'deviceip', 'area', 'appversion',
+                       'devicename',
                        'deviceversion',
                        'logintype', 'createtime']
 
@@ -31,6 +31,7 @@ class LoginLogPage(TablePage):
                 'appversion': 100,
                 'devicename': 120,
                 'deviceversion': 120,
+                'area': 200,
                 'createtime': 150
             }
             if dc.get(head['name']):
@@ -47,7 +48,7 @@ class LoginLogPage(TablePage):
             return query.values(*self.fields_sort).order_by('-createtime')
 
         class search(SelectSearch):
-            names = ['accountid__nickname']
+            names = ['accountid__nickname','area']
             exact_names = ['accountid']
 
             def get_option(self, name):
@@ -58,6 +59,11 @@ class LoginLogPage(TablePage):
                     return {
                         'value': name,
                         'label': '昵称',
+                    }
+                elif name == 'area':
+                    return {
+                        'value': name,
+                        'label': '地区',
                     }
 
             def clean_search(self):

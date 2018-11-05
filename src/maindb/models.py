@@ -523,6 +523,7 @@ class TbLoginlog(models.Model):
     deviceversion = models.CharField(db_column='DeviceVersion', max_length=20, blank=True,
                                      null=True, verbose_name='设备版本号')  # Field name made lowercase.
     logintype = models.IntegerField(db_column='LoginType', verbose_name='登录方式')  # Field name made lowercase.
+    area = models.CharField(db_column='Area', max_length=200, blank=True, null=True,verbose_name='地区')  # Field name made lowercase.
 
     class Meta:
         managed = False
