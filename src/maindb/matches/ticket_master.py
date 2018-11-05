@@ -66,7 +66,8 @@ class TicketMasterPage(TablePage):
             return head
 
         def getExtraHead(self):
-            return [{'name': 'profit', 'label': '亏盈'}]
+            return [{'name': 'profit', 'label': '亏盈'}, 
+                    {'name': 'accountid__nickname','label': '昵称',}]
 
         def dict_row(self, inst):
             dc = {

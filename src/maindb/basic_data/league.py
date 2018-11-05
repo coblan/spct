@@ -59,7 +59,22 @@ class League(TablePage):
             names = ['tournamentname', 'tournamentid']
 
         class filters(RowFilter):
-            names = ['issubscribe', 'openlivebet']
+            names = ['issubscribe',]
+            def getExtraHead(self): 
+                return [
+                    {'name': 'openlivebet','label': '走地',
+                     'editor': 'com-filter-select',
+                     'options': [
+                         {'value': 0, 'label': '关闭',}, 
+                         {'value': 1, 'label': '开启',}
+                        ],}
+                ]
+            
+            def clean_query(self, query): 
+                if self.kw.get('openlivebet') !=  None:
+                    query = query.filter( closelivebet = not self.kw['openlivebet'] )
+                return query
+
 
 
 class LeagueForm(ModelFields):
@@ -71,6 +86,7 @@ class LeagueForm(ModelFields):
                                TbOddstypegroup.objects.all()]
         return head
 
+
     def save_form(self):
         super().save_form()
         if 'closelivebet' in self.changed_data:
@@ -79,6 +95,11 @@ class LeagueForm(ModelFields):
                     'Backend:league:closelivebet:%(tournamentid)s' % {'tournamentid': self.instance.tournamentid})
             else:
                 redisInst.set('Backend:league:closelivebet:%s' % self.instance.tournamentid, 1)
+    
+    def dict_row(self, inst): 
+        return {
+            'openlivebet': not inst.closelivebet,
+        }
 
     class Meta:
         model = TbTournament
