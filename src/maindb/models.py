@@ -60,7 +60,7 @@ class TbAccount(models.Model):
                                       default=0)  # Field name made lowercase.
     agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
     viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'), choices=VIP_LEVEL, null=False,
-                                default=0)  # Field name made lowercase.
+                                default=1)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', verbose_name='注册时间',
                                       auto_now_add=True)  # Field name made lowercase.
     pwupdatetime = models.DateTimeField(db_column='PWUpdateTime', auto_now=True)  # Field name made lowercase.

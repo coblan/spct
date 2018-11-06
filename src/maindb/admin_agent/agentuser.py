@@ -117,7 +117,9 @@ class AgentUser(TablePage):
 
             sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s',%%s,'%(OrderBy)s'" \
                   % sql_args
-
+            
+            print(sql)
+            
             with connections['Sports'].cursor() as cursor:
                 self.parent_agents = []
                 self.child_agents = []
