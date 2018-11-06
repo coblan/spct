@@ -131,12 +131,13 @@ class AgentUser(TablePage):
                     if '没有查到这个昵称' in msg:
                         msg = '没有查到这个昵称'
                     raise UserWarning(msg)
-                # cursor.commit()
+                
+                print('顺利走过 execute')
                 
                 
                 for par in cursor:
                     self.parent_agents.append({'value': par[3], 'label': par[1], })
-
+                print('获取到的代理数为 %s' % len(self.parent_agents))
                 self.parent_agents.append({'value': 0, 'label': '根用户', })
                 self.parent_agents.reverse()
 
