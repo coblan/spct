@@ -8,6 +8,7 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelField
 from maindb.models import TbBanktypes, TbPaychannel
 from helpers.director.base_data import director
 
+
 class PayChannelPage(TablePage):
     template = 'jb_admin/table.html'
 
@@ -32,8 +33,8 @@ class PayChannelPage(TablePage):
                         'field': 'active',
                         'value': True,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认启用该充值渠道吗?', 
-                        'visible': 'active' in self.permit.changeable_fields() ,
+                        'confirm_msg': '确认启用该充值渠道吗?',
+                        'visible': 'active' in self.permit.changeable_fields(),
                     },
                     {
                         'fun': 'selected_set_and_save',
@@ -42,8 +43,8 @@ class PayChannelPage(TablePage):
                         'field': 'active',
                         'value': False,
                         'row_match': 'one_row',
-                        'confirm_msg': '确认禁用该充值渠道吗?', 
-                        'visible': 'active' in self.permit.changeable_fields() ,
+                        'confirm_msg': '确认禁用该充值渠道吗?',
+                        'visible': 'active' in self.permit.changeable_fields(),
                     }
                     ]
 
@@ -74,6 +75,7 @@ class PayChannelPage(TablePage):
 
 
 class PayChannelForm(ModelFields):
+    readonly = ['minamount', 'maxamount']
 
     def dict_head(self, head):
         if head['name'] == 'channelgroupid':
