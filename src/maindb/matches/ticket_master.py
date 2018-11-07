@@ -103,17 +103,18 @@ class TicketMasterPage(TablePage):
                                           default=0)))
 
             mapper = {
-                'betamount': 'total_betamount',
-                'betoutcome': 'total_betoutcome',
-                'turnover': 'total_turnover',
-                'bonus': 'total_bonus',
-                'profit': 'total_profit'
+                'total_betamount': 'betamount' ,
+                'total_betoutcome': 'betoutcome' ,
+                'total_turnover': 'turnover',
+                'total_bonus': 'bonus',
+                'total_profit':'profit'
             }
             for k in dc:
                 dc[k] = str(round(dc.get(k, 0) or 0, 2))
-            footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
-            self.footer = footer
-            self.footer = ['合计'] + self.footer[1:]
+            normed_dc = {mapper.get(k): v for (k, v) in dc.items()}
+            #footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
+            self.footer = self.footer_by_dict(normed_dc)
+            self.footer = ['合计'] + self.footer
             return query
 
         def get_context(self):

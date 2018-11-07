@@ -118,7 +118,7 @@ class AgentUser(TablePage):
             sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s',%%s,'%(OrderBy)s'" \
                   % sql_args
             
-            print(sql)
+            #print(sql)
             
             with connections['Sports'].cursor() as cursor:
                 self.parent_agents = []
@@ -132,12 +132,13 @@ class AgentUser(TablePage):
                         msg = '没有查到这个昵称'
                     raise UserWarning(msg)
                 
-                print('顺利走过 execute')
+                #print('顺利走过 execute')
                 
                 
                 for par in cursor:
                     self.parent_agents.append({'value': par[3], 'label': par[1], })
-                print('获取到的代理数为 %s' % len(self.parent_agents))
+                #print('获取到的代理数为 %s' % len(self.parent_agents))
+                
                 self.parent_agents.append({'value': 0, 'label': '根用户', })
                 self.parent_agents.reverse()
 
