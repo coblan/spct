@@ -95,6 +95,7 @@ class PcMenu(BaseEngine):
                 {'label':_('White IP'),'url':page('white_ip_rangelist'), 'visible': can_touch(TbWhiteiprangelist, crt_user),},
                 {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
                 {'label': '联赛组水位', 'url': page('LeagueGroupPage'), 'visible': True, },
+                {'label': '参数设置', 'url': page('ParameterPage'),'visible': True,}
              ]},
 
             {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,
