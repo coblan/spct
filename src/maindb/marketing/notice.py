@@ -52,10 +52,16 @@ class NoticePage(TablePage):
         exclude = ['id', 'url']
         hide_fields = ['content']
 
-        #def dict_row(self, inst):
-            #return {
-                #'_createuser_label': str(User.objects.get(pk=inst.createuser))
-            #}
+        class search(RowSearch):
+            names = ['title']
+
+        class filters(RowFilter):
+            names = ['status', ]
+
+        # def dict_row(self, inst):
+        # return {
+        # '_createuser_label': str(User.objects.get(pk=inst.createuser))
+        # }
 
         def dict_head(self, head):
             dc = {
@@ -84,7 +90,7 @@ class NoticePage(TablePage):
                     'field': 'status',
                     'value': 1,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认修改为在线吗?', 
+                    'confirm_msg': '确认修改为在线吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
                 {
@@ -94,11 +100,11 @@ class NoticePage(TablePage):
                     'field': 'status',
                     'value': 0,
                     'row_match': 'one_row',
-                    'confirm_msg': '确认修改为离线吗?', 
+                    'confirm_msg': '确认修改为离线吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
-                {'fun': 'update_notice_file', 'label': '更新缓存', 'editor': 'com-op-btn', 
-                 'visible': has_permit(self.crt_user, 'TbNotice.update_cache'),}
+                {'fun': 'update_notice_file', 'label': '更新缓存', 'editor': 'com-op-btn',
+                 'visible': has_permit(self.crt_user, 'TbNotice.update_cache'), }
             ])
             return operations
 
@@ -112,11 +118,12 @@ class NoticeForm(ModelFields):
     class Meta:
         model = TbNotice
         exclude = []
+
     hide_fields = ['createuser']
 
     def dict_head(self, head):
-        #if head['name'] == 'createuser':
-            #head['editor'] = 'com-field-label-shower'
+        # if head['name'] == 'createuser':
+        # head['editor'] = 'com-field-label-shower'
         if head['name'] == 'title':
             head['fv_rule'] = 'length(~200)'
         if head['name'] == 'content':
@@ -126,19 +133,19 @@ class NoticeForm(ModelFields):
             }
         return head
 
-    #def save_form(self):
-        #ModelFields.save_form(self)
-        #if not self.instance.createuser:
-            #self.instance.createuser = self.crt_user.pk
-            #self.instance.save()
-        ## redisInst.delete('App:Cache:index:notices')
+    # def save_form(self):
+    # ModelFields.save_form(self)
+    # if not self.instance.createuser:
+    # self.instance.createuser = self.crt_user.pk
+    # self.instance.save()
+    ## redisInst.delete('App:Cache:index:notices')
 
-        #return self.instance
+    # return self.instance
 
     def dict_row(self, row):
         return {
             'createtime': row.createtime.strftime('%Y-%m-%d %H:%M:%S') if row.createtime else None,
-            #'_createuser_label': str(User.objects.get(pk=row.createuser)) if row.createuser else "",
+            # '_createuser_label': str(User.objects.get(pk=row.createuser)) if row.createuser else "",
             # 'picturename':'/media/banner/'+row.picturename if row.picturename else ""
         }
 
