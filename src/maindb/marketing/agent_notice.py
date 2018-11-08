@@ -52,6 +52,12 @@ class AgentNoticePage(TablePage):
         exclude = ['id', 'url']
         hide_fields = ['content']
 
+        class search(RowSearch):
+            names = ['title']
+
+        class filters(RowFilter):
+            names = ['status', ]
+
         def dict_head(self, head):
             dc = {
                 'title': 180,

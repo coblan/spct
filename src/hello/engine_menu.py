@@ -28,7 +28,15 @@ class PcMenu(BaseEngine):
         crt_user = self.request.user
         menu = [
             {'label': _('DashBoard'), 'url': page('home'), 'icon': fa('fa-home'), 'visible': True},
-
+            {'label': _('Member'), 'icon': fa('fa-users'), 'visible': True,
+             'submenu': [
+                 {'label': _('Tb Account'), 'url': page('account'), 'visible': can_touch(TbAccount, crt_user), },
+                 {'label': _('Tb Balance Log'), 'url': page('balancelog'),
+                  'visible': can_touch(TbBalancelog, crt_user), },
+                 {'label': _('Tb Login Log'), 'url': page('loginlog'),
+                  'visible': can_touch(TbLoginlog, crt_user), },
+                 {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbBankcard, crt_user), },
+             ]},
             {'label': '市场活动', 'icon': fa('fa-image'), 'visible': True,
              'submenu': [
                  {'label': _('Banner'), 'url': page('banner'), 'visible': can_touch(TbBanner, crt_user)},
@@ -40,7 +48,6 @@ class PcMenu(BaseEngine):
                  {'label': _('Activity'), 'url': page('activity'), 'visible': can_touch(TbActivity, crt_user), },
                  {'label': '用户留言', 'url': page('feedback'), 'visible': can_touch(TbAgentleavemsg, crt_user), },
              ]},
-
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,
              'submenu': [
                  {'label': _('玩法设置'), 'url': page('bet_type'), 'visible': can_touch(TbOddstypegroup, crt_user), },
@@ -55,15 +62,7 @@ class PcMenu(BaseEngine):
                   'visible': can_touch(TbPaychanneljoinlevel, crt_user), }
              ]},
 
-            {'label': _('Member'), 'icon': fa('fa-users'), 'visible': True,
-             'submenu': [
-                 {'label': _('Tb Account'), 'url': page('account'), 'visible': can_touch(TbAccount, crt_user), },
-                 {'label': _('Tb Balance Log'), 'url': page('balancelog'),
-                  'visible': can_touch(TbBalancelog, crt_user), },
-                 {'label': _('Tb Login Log'), 'url': page('loginlog'),
-                  'visible': can_touch(TbLoginlog, crt_user), },
-                 {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbBankcard, crt_user), },
-             ]},
+
 
             {'label': _('MoneyFlow'), 'icon': fa('fa-dollar'), 'visible': True,
              'submenu': [
