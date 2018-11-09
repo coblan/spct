@@ -57,3 +57,11 @@ def clear_notice_cache():
 @sim_signal.recieve('help.static.changed')
 def clear_help_cache(): 
     pass
+
+@sim_signal.recieve('tbsetting.maxpayout.changed')
+def clear_maxpayout(): 
+    redisInst.delete('App:Static:MaxPayout')
+
+@sim_signal.recieve('tbsetting.quickamount.changed')
+def clear_quickamount(): 
+    redisInst.delete('App:Static:QuickAmount')

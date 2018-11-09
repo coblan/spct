@@ -1,7 +1,7 @@
 from helpers.director.shortcut import FieldsPage, Fields, page_dc, director
 from ..models import TbSetting
 import json
-
+from helpers.func.sim_signal import sim_signal
 class ParameterPage(FieldsPage):
     template = 'jb_admin/fields.html'
     def get_label(self): 
@@ -32,10 +32,12 @@ class ParameterPage(FieldsPage):
             quickamount = self.kw.get('quickamount')
             quickamount_str = '[%s]' % quickamount
             TbSetting.objects.filter(settingname = 'Static:QuickAmount').update(settingvalue = quickamount_str)
+            sim_signal.send('tbsetting.quickamount.changed')
             payout = {}
             for k in ['MinStakeAmount', 'MaxSinglePayout', 'MaxMatchPayout', 'SeriesMaxSinglePayout']:
                 payout[k] = float(self.kw.get(k))
             TbSetting.objects.filter(settingname = 'Static:SinglePayout').update(settingvalue = json.dumps(payout))
+            sim_signal.send('tbsetting.maxpayout.changed')
 
 director.update({
     'ParameterForm': ParameterPage.fieldsCls,
