@@ -23,7 +23,7 @@ class AgentUser(TablePage):
         include = ['accountid','createtime']
         fields_sort = ['accountid', 'NickName', 'SumActive',  'BeaeAmount', 'AgentRuleAmount','AgentAmount',
                        'BalanceLostAmount', 'SumLostAmount', 'BonusRate', 'SumBonusAmount', 'SumExpend',
-                       'SumRechargeAmount', 'Poundage', 'AgentRulePercentage', 'SumBetAmount', 'SumWithdrawalAmount',
+                       'SumRechargeAmount', 'Poundage', 'SumBetAmount', 'SumWithdrawalAmount',
                        'SumTurnover', 'CreateTime']
 
         @classmethod
@@ -49,7 +49,7 @@ class AgentUser(TablePage):
         class sort(RowSort):
             names = ['AgentAmount', 'BeaeAmount', 'SumActive', 'AgentRuleAmount', 'BalanceLostAmount', 'SumLostAmount',
                      'SumBonusAmount', 'SumWithdrawalAmount', 'SumBetAmount', 'Poundage',
-                     'SumTurnover', 'BonusRate', 'SumExpend', 'SumRechargeAmount', 'AgentRulePercentage']
+                     'SumTurnover', 'BonusRate', 'SumExpend', 'SumRechargeAmount']
 
         class search(SelectSearch):
             names = ['nickname']
@@ -188,7 +188,7 @@ class AgentUser(TablePage):
                 {'name': 'SumExpend', 'label': '系统红利', 'width': 80, },
                 {'name': 'SumRechargeAmount', 'label': '充值金额', 'width': 100, },
                 {'name': 'Poundage', 'label': '充值手续费', 'width': 100, },
-                {'name': 'AgentRulePercentage', 'label': '佣金比例', },
+                #{'name': 'AgentRulePercentage', 'label': '佣金比例', },
                 {'name': 'SumBetAmount', 'label': '投注金额', 'width': 120, },
                 {'name': 'SumWithdrawalAmount', 'label': '提现金额', 'width': 100, },
                 {'name': 'SumTurnover', 'label': '流水', 'width': 120, },
@@ -207,7 +207,7 @@ class AgentUser(TablePage):
                 row['BalanceLostAmount'] = round(row['BalanceLostAmount'] or 0, 2)
                 row['AgentAmount'] = round(row['AgentAmount'] or 0, 2)
                 row['SumExpend'] = round(row['SumExpend'] or 0, 2)
-                row['AgentRulePercentage'] = round(row['AgentRulePercentage'] or 0, 3)
+                #row['AgentRulePercentage'] = round(row['AgentRulePercentage'] or 0, 3)
                 row['SumLostAmount'] = round(row['SumLostAmount']or 0, 2)
                 row['SumBonusAmount'] = round(row['SumBonusAmount'] or 0, 2)
                 row['SumBetAmount'] = round(row['SumBetAmount'] or 0, 2)
