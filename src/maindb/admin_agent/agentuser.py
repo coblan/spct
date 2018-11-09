@@ -21,7 +21,7 @@ class AgentUser(TablePage):
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid','createtime']
-        fields_sort = ['accountid', 'NickName', 'SumActive', 'AgentAmount', 'BeaeAmount', 'AgentRuleAmount',
+        fields_sort = ['accountid', 'NickName', 'SumActive',  'BeaeAmount', 'AgentRuleAmount','AgentAmount',
                        'BalanceLostAmount', 'SumLostAmount', 'BonusRate', 'SumBonusAmount', 'SumExpend',
                        'SumRechargeAmount', 'Poundage', 'AgentRulePercentage', 'SumBetAmount', 'SumWithdrawalAmount',
                        'SumTurnover', 'CreateTime']
@@ -177,9 +177,10 @@ class AgentUser(TablePage):
                 {'name': 'NickName', 'label': '昵称 ', 'width': 100, },
                 # {'name': 'VIPLv', 'label': 'VIP等级', },
                 {'name': 'SumActive', 'label': '活跃用户数', 'width': 100, },
-                {'name': 'AgentAmount', 'label': '预估佣金', },
+                
                 {'name': 'BeaeAmount', 'label': '佣金计算基数', 'width': 120, },
-                {'name': 'AgentRuleAmount', 'label': '佣金计算金额', 'width': 120, },
+                {'name': 'AgentRuleAmount', 'label': '佣金计算比例', 'width': 120, },
+                {'name': 'AgentAmount', 'label': '预估佣金', },
                 {'name': 'BalanceLostAmount', 'label': '累计净盈利', 'width': 100, },
                 {'name': 'SumLostAmount', 'label': '本月净盈利', 'width': 100, },
                 {'name': 'BonusRate', 'label': '返水比例', },
