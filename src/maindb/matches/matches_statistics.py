@@ -64,7 +64,8 @@ class MatchesStatisticsPage(TablePage):
 
             def dict_head(self, head):
                 if head['name'] == 'tournamentid':
-                    head['editor'] = 'com-filter-search-select'
+                    #head['editor'] = 'com-filter-search-select'
+                    head['editor'] = 'com-filter-single-select2'
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
                     head['order'] = True

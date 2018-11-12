@@ -902,7 +902,6 @@ var order_list = {
         add_new: function add_new() {
             var self = this;
             self.crt_row = {};
-            self.rows.push(self.crt_row);
 
             var fields_ctx = {
                 heads: self.head.fields_heads,
@@ -915,6 +914,7 @@ var order_list = {
                 //ex.assign(self.row,new_row)
                 var new_row = resp;
                 ex.vueAssign(self.crt_row, new_row);
+                self.rows.push(self.crt_row);
                 //self.crt_row.append(resp.new_row)
                 self.row[self.head.name] = JSON.stringify(self.rows);
                 layer.close(win);
@@ -1626,29 +1626,43 @@ function pop_fields_layer(row, fields_ctx, callback, layerConfig) {
 
         //Vue.nextTick(function(){
         var store_id = 'store_fields_' + new Date().getTime();
-        new Vue({
+
+        var vc = new Vue({
             el: '#fields-pop-' + pop_id,
-            store: store,
             data: {
                 has_heads_adaptor: false,
                 row: row,
                 fields_heads: heads,
                 ops: ops,
                 com_id: com_id
+
             },
             mounted: function mounted() {
-                this.$store.registerModule(store_id, {
-                    namespaced: true,
-                    state: {
-                        fields_obj: this.$refs.field_panel
+                var vc = this;
+                this.childStore = new Vue({
+                    data: {
+                        fields_obj: vc.$refs.field_panel
                     },
-                    mutations: {
-                        showErrors: function showErrors(state, errors) {
-                            state.fields_obj.setErrors(errors);
-                            state.fields_obj.showErrors(errors);
+                    methods: {
+                        showErrors: function showErrors(errors) {
+                            vc.fields_obj.setErrors(errors);
+                            vc.fields_obj.showErrors(errors);
                         }
                     }
+
                 });
+                //this.$store.registerModule(store_id,{
+                //    namespaced: true,
+                //    state:{
+                //        fields_obj:this.$refs.field_panel
+                //    },
+                //    mutations:{
+                //        showErrors:function(state,errors){
+                //            state.fields_obj.setErrors(errors)
+                //            state.fields_obj.showErrors(errors)
+                //        }
+                //    }
+                //})
             },
             methods: {
                 on_sub_success: function on_sub_success(new_row) {
@@ -1884,7 +1898,7 @@ var mix_ele_table_adapter = {
     },
     watch: {
         'search_args._sort': function search_args_sort(v) {
-            if (!v) {
+            if (!v && this.$refs.e_table) {
                 this.$refs.e_table.clearSort();
             }
         }
@@ -2223,6 +2237,11 @@ var nice_validator = {
 
 
 var mix_table_data = {
+    created: function created() {
+        if (!this.search_args) {
+            this.search_args = search_args;
+        }
+    },
     data: function data() {
         return {
             op_funs: {},
@@ -2233,6 +2252,8 @@ var mix_table_data = {
     },
     mounted: function mounted() {
         var self = this;
+        this.childStore = new Vue({});
+
         ex.assign(this.op_funs, {
             save_changed_rows: function save_changed_rows() {
                 self.save_rows(self.changed_rows);

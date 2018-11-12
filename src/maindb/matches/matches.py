@@ -35,7 +35,8 @@ class MatchsPage(TablePage):
 
             def dict_head(self, head):
                 if head['name'] == 'tournamentid':
-                    head['editor'] = 'com-filter-search-select'
+                    #head['editor'] = 'com-filter-search-select'
+                    head['editor'] = 'com-filter-single-select2'
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
                     head['order'] = True
@@ -184,7 +185,10 @@ class MatchForm(ModelFields):
             'MatchID': inst.matchid,
             'IsRecommend': inst.isrecommend,
             'IsHidden': inst.ishidden,
-            'CloseLiveBet': inst.closelivebet
+            'CloseLiveBet': inst.closelivebet, 
+            'Team1ZH': inst.team1zh,
+            'Team2ZH': inst.team2zh,
+            
         }
         updateMatchMongo(dc)
 
