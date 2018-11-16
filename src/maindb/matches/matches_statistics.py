@@ -87,6 +87,11 @@ class MatchesStatisticsPage(TablePage):
                 row['SumProfit'] = round(row['SumProfit'], 2)
             return self.matches
 
+        def get_statistic_sql(self, sql_args): 
+            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+                  % sql_args
+            return sql
+        
         def getData(self):
             nickname = ""
             matchid = 0
@@ -116,10 +121,8 @@ class MatchesStatisticsPage(TablePage):
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
                 'Sort': sort,
-            }
-
-            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
-                  % sql_args
+            }            
+            sql = self.get_statistic_sql(sql_args)
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql, [teamzh, nickname ])
                 self.total = cursor.fetchall()[0][0]

@@ -52,8 +52,10 @@ class PcMenu(BaseEngine):
              'submenu': [
                  {'label': _('玩法设置'), 'url': page('bet_type'), 'visible': can_touch(TbOddstypegroup, crt_user), },
                  {'label': _('Currency'), 'url': page('currency'), 'visible': can_touch(TbCurrency, crt_user)},
-                 {'label': '联赛资料', 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},
+                 {'label': '足球联赛资料', 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},
                  {'label': '球队资料', 'url': page('teams'), 'visible': can_touch(TbTeams, crt_user), },
+                 {'label': '篮球联赛资料', 'url': page('basketball_league'), 'visible': can_touch(TbTournament, crt_user)},
+                 
                  {'label': '银行卡类型', 'url': page('banktypes'), 'visible': can_touch(TbBanktypes, crt_user), },
                  {'label': _('AppResource'), 'url': page('app_resource'),
                   'visible': can_touch(TbAppresource, crt_user), },
@@ -72,9 +74,13 @@ class PcMenu(BaseEngine):
 
             {'label': _('Games'), 'icon': fa('fa-globe'), 'visible': True,
              'submenu': [
-                 {'label': '赛事列表', 'url': page('matches'), 'visible': can_touch(TbMatches, crt_user), },
-                 {'label': '赛事统计', 'url': page('matches_statistics'),
+                 {'label': '足球赛事列表', 'url': page('matches'), 'visible': can_touch(TbMatches, crt_user), },
+                 {'label': '足球赛事统计', 'url': page('matches_statistics'),
                   'visible': can_touch(TbMatches, crt_user), },
+                 {'label': '篮球赛事列表', 'url': page('basketball_matchs'), 'visible': can_touch(TbMatchesBasketball, crt_user), },
+                  {'label': '篮球赛事统计', 'url': page('BasketballMatchesStatisticsPage'),
+                  'visible': can_touch(TbMatchesBasketball, crt_user), },
+                 
                  {'label': '注单列表', 'url': page('tickets'),
                   'visible': can_touch(TbTicketmaster, crt_user), },
                  

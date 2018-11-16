@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director, SelectSearch, model_to_name
-from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatches
+from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatches, TbMatchesBasketball
 from django.db.models import Q, Sum, F, Case, When, FloatField
 import re
 from django.db import connections
@@ -40,6 +40,31 @@ class TicketMasterPage(TablePage):
     def get_context(self):
         ctx = TablePage.get_context(self)
         ctx['named_tabs'] = self.get_tabs()
+        ctx['named_ctx'] = {
+            'match_form_ctx': {
+                'fields_ctx' : MatchForm(crt_user=self.crt_user).get_head_context(), 
+                'after_save' : {
+                    'fun': 'do_nothing'
+                    # 'fun':'update_or_insert'
+                }, 
+                'get_row': {
+                    "fun": 'get_with_relat_field',
+                    'director_name': 'games.ticketstake.matchform',
+                    'relat_field': 'matchid',
+                }
+                },
+            'basketball_match_form_ctx': {
+                'fields_ctx' : BasketballMatchForm(crt_user=self.crt_user).get_head_context(), 
+                'after_save' : {
+                    'fun': 'do_nothing'
+                }, 
+                'get_row': {
+                    "fun": 'get_with_relat_field',
+                    'director_name': 'games.ticketstake.basketball_matchform',
+                    'relat_field': 'matchid',
+                }
+                },
+        }
         return ctx
 
     class tableCls(ModelTable):
@@ -217,7 +242,14 @@ class TicketstakeTable(TicketTabBase):
 
     def dict_row(self, inst):
         match = inst.match  # TbMatches.objects.get(matchid =  inst.matchid)
+        if inst.sportid == 0:
+            matchid_form = 'match_form_ctx'
+        elif inst.sportid == 1:
+            matchid_form = 'basketball_match_form_ctx'
+        else:
+            raise UserWarning('子注单%s无法匹配比赛' % inst.tid)
         return {
+            '_matchid_form': matchid_form,
             'matchid': match.matchid,
             'tournament': match.tournamentzh,
             'matchname': '{team1zh} VS {team2zh}'.format(team1zh=match.team1zh, team2zh=match.team2zh)
@@ -239,23 +271,24 @@ class TicketstakeTable(TicketTabBase):
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])
 
-        if head['name'] == 'match':
-            head['label'] = '比赛'
+        #if head['name'] == 'match':
+            #head['label'] = '比赛'
         if head['name'] == 'matchid':
-            head['editor'] = 'com-table-pop-fields'
-            head['fields_ctx'] = MatchForm(crt_user=self.crt_user).get_head_context()
-            head['after_save'] = {
-                'fun': 'do_nothing'
-                # 'fun':'update_or_insert'
-            }
-            # head['fields_heads']= MatchForm(crt_user=self.crt_user).get_heads()
-            # head['model_name']=model_to_name(TbMatches)
-            head['get_row'] = {
-                "fun": 'get_with_relat_field',
-                'director_name': 'games.ticketstake.matchform',
-                'relat_field': 'matchid',
-            }
-            # head['ops']=[] #MatchForm(crt_user=self.crt_user).get_operations()
+            head['editor'] = 'com-table-pop-fields-from-row'
+            head['ctx_field'] = '_matchid_form'
+            #head['fields_ctx'] = MatchForm(crt_user=self.crt_user).get_head_context()
+            #head['after_save'] = {
+                #'fun': 'do_nothing'
+                ## 'fun':'update_or_insert'
+            #}
+            ## head['fields_heads']= MatchForm(crt_user=self.crt_user).get_heads()
+            ## head['model_name']=model_to_name(TbMatches)
+            #head['get_row'] = {
+                #"fun": 'get_with_relat_field',
+                #'director_name': 'games.ticketstake.matchform',
+                #'relat_field': 'matchid',
+            #}
+            ## head['ops']=[] #MatchForm(crt_user=self.crt_user).get_operations()
         return head
 
 
@@ -336,6 +369,18 @@ class MatchForm(ModelFields):
         }
 
 
+class BasketballMatchForm(MatchForm):
+    def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
+        if kw.get('matchid'):
+            instance = TbMatchesBasketball.objects.get(matchid = kw.get('matchid'))
+            super(MatchForm, self).__init__(dc, pk, crt_user, nolimit, instance = instance,**kw)
+        else:
+            super(MatchForm, self).__init__(dc, pk, crt_user, nolimit, *args, **kw)    
+            
+    class Meta:
+        model = TbMatchesBasketball
+        exclude = [] 
+
 director.update({
     'games.ticketmaster': TicketMasterPage.tableCls,
     'games.ticketmaster.edit': TicketMasterForm,
@@ -344,6 +389,7 @@ director.update({
     'games.TicketparlayTable': TicketparlayTable,
 
     'games.ticketstake.matchform': MatchForm,
+     'games.ticketstake.basketball_matchform': BasketballMatchForm,
 
 })
 

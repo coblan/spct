@@ -12,6 +12,8 @@ from .member import loginlog
 from .member import operation_log
 
 from .matches import admin, matches, ticket_master,matches_statistics
+from .matches import basketball_matches
+from .matches import basketball_matches_statistics
 
 from .marketing import admin
 from .marketing import feedback
@@ -22,6 +24,7 @@ from .report import platform_profit
 from .basic_data import bet_type, league, teams, app_resource, currency
 from .basic_data import banktypes
 from .basic_data import paychannel
+from .basic_data import basketball_league
 
 from .riskcontrol import admin
 from .riskcontrol import max_payout
