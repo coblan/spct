@@ -144,6 +144,7 @@ def get_permit():
                  {'label': '查看', 'value': 'Whiteuserlist',}, 
                  {'label': '编辑', 'value': 'Whiteuserlist.edit', 'depend': ['Whiteuserlist', 'TbAccount'],}, 
                       ],}, 
+             {'label': '联赛组水位', 'value': 'TbLeagueGroup.edit',}, 
              
             
             #{'label': _('Tb RC Filter'), 'value': 'TbRcFilter',}, 
