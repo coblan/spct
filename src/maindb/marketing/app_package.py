@@ -70,9 +70,10 @@ class AppPackageForm(ModelFields):
     
     #def save_form(self): 
         #super().save_form()
+        
     def clean_save(self): 
         if self.instance.terminal ==1:
-            plist_fl = plist_template % {'ipa_download': settings.STATIC_SERVICE + self.instance.packageurl, 'version': self.instance.versionname,}
+            plist_fl = plist_template % {'ipa_download': settings.CLOUD_STORAGE + self.instance.packageurl, 'version': self.instance.versionname,}
             fl_path = os.path.join(settings.MEDIA_ROOT, 'public', 'package', self.instance.md5 + '.plist')
             with open(fl_path, 'wb') as f:
                 f.write(plist_fl.encode('utf-8'))

@@ -12,7 +12,7 @@ from django.conf import settings
 import json
 import logging
 
-req_log = logging.getLogger('requests')
+req_log = logging.getLogger('general_log')
 
 class AgentCommission(TablePage):
     template = 'jb_admin/table.html'

@@ -5,7 +5,7 @@ import datetime
 from django.conf import settings
 
 import logging
-log = logging.getLogger('extra.error')
+log = logging.getLogger('general_log')
 
 
 hostName = socket.gethostname()
