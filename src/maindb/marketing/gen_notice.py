@@ -13,7 +13,7 @@ from urllib.parse import urljoin
 def gen_notice_file():
     index_url = urljoin(settings.SELF_URL, '/notice/index.html')
     
-    root_path = os.path.join(settings.MEDIA_ROOT, 'media/public/notice')
+    root_path = os.path.join(settings.MEDIA_ROOT, 'public/notice')
     spd = StaticHtmlBuilder(url= index_url, root_path= root_path)
     spd.run()
     for itm in TbNotice.objects.filter(status=1):
