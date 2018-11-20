@@ -8,6 +8,7 @@ from django.views.generic.base import View
 from .models import TbNotice, TbQa
 import re
 import json
+import time
 
 def test(request):
     gen_help()
@@ -28,7 +29,7 @@ class Notice(View):
             ls = []
             for itm in TbNotice.objects.filter(status=1).order_by('-createtime'):
                 ls.append({'title':itm.title,
-                           'url':  '%s.html' % itm.pk , #self.get_html_name(itm.title),
+                           'url':  '%s.html?t=%s' % (itm.pk , int(time.time()) ), #self.get_html_name(itm.title),
                            'update_date':itm.createtime.strftime('%Y-%m-%d')})      
             return render(request, 'maindb/notice_index.html', context= {'notice_list':ls})
         else:
@@ -45,23 +46,23 @@ class Notice(View):
 class Help(Notice):
     def get(self, request, name = None): 
         if not name or name == 'index.html':
-            sections=[]
+            index_section=[]
             for itm in TbQa.objects.filter(mtype=0,status=1).order_by('-priority'):
                 index_dc={'title':itm.title}
                 pages=[]
                 for sub_itm in TbQa.objects.filter(mtype=itm.type,status=1).order_by('-priority'):
-                    pages.append({'title':sub_itm.title,'description':sub_itm.description})
-                index_dc['pages']=pages
-                sections.append(index_dc)
-            index_section=[]
-            
-            for index_dc in sections:
-                index_section.append({
-                    'title':index_dc['title'],
-                    'items':[ {'title':x['title'],
-                               'url':self.get_html_name(x['title'])} for x in index_dc['pages'] ],
+                    pages.append({'title':sub_itm.title,
+                                  'url': '%s.html?t=%s' % (sub_itm.pk , int(time.time()) ),})
+                index_dc['items']=pages
+                #sections.append(index_dc)
+                
+                index_section.append(index_dc)
+                #index_section.append({
+                    #'title':itm.title,
+                    #'items':[ {'title':x['title'],
+                               #'url':'%s.html?t=%s' % (itm.pk , int(time.time()) )} for itm in index_dc['pages'] ],
                              
-                    })             
+                    #})             
             return render(request, 'maindb/help_index.html', context= {'section_list': index_section})
         else:
             real_name = name[:-5]
