@@ -151,9 +151,9 @@ class HelpForm(ModelFields):
             head['editor'] = 'com-field-select'
         elif head['name'] == 'description':
             head['editor'] = 'richtext'
-            head['config'] = {
-                'imageUploadUrl': reverse('ckeditor_img'),
-            }
+            #head['config'] = {
+                #'imageUploadUrl': reverse('ckeditor_img'),
+            #}
             # head['style']="height:300px;width:450px"
 
         return head

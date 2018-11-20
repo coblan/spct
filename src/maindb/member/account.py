@@ -103,7 +103,7 @@ def account_tab(self):
 
 
 class AccountPage(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
 
     def get_label(self):
         return '会员管理'

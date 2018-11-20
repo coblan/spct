@@ -14,6 +14,7 @@ class StaticHtmlBuilder(object):
     
     def run(self): 
         self.proc_static()
+        self.proc_media()
         fl_path = os.path.join(self.root_path, self.file_name)
         with open(fl_path, 'wb') as f:
             f.write(self.content.encode('utf-8'))
@@ -21,7 +22,8 @@ class StaticHtmlBuilder(object):
     def proc_static(self): 
         ls = []
         for static_mt in re.finditer('"(/static/.+?)"|\'(/static/.+?)\'', self.content):
-            ls.append(static_mt.group(1))
+            normed =  re.sub( '\W+$', '', static_mt.group(1))
+            ls.append(normed)
         for static_rsc in set(ls):
             rsc_url = urljoin(self.root_url, static_rsc)
             rt = requests.get(rsc_url)
@@ -36,7 +38,8 @@ class StaticHtmlBuilder(object):
     def proc_media(self): 
         ls = []
         for static_mt in re.finditer('"(/media/.+?)"|\'(/media/.+?)\'', self.content):
-            ls.append(static_mt.group(1))
+            normed =  re.sub( '\W+$', '', static_mt.group(1))
+            ls.append(normed)
         for static_rsc in set(ls):
             rsc_url = urljoin(self.root_url, static_rsc)
             rt = requests.get(rsc_url)

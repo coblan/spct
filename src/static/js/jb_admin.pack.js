@@ -63,324 +63,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 129);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _config = __webpack_require__(8);
-
-var config = _interopRequireWildcard(_config);
-
-var _mix_table_data = __webpack_require__(35);
-
-var mix_table_data = _interopRequireWildcard(_mix_table_data);
-
-var _mix_v_table_adapter = __webpack_require__(36);
-
-var mix_v_table_adapter = _interopRequireWildcard(_mix_v_table_adapter);
-
-var _mix_nice_validator = __webpack_require__(34);
-
-var mix_nice_validator = _interopRequireWildcard(_mix_nice_validator);
-
-var _mix_fields_data = __webpack_require__(33);
-
-var mix_fields_data = _interopRequireWildcard(_mix_fields_data);
-
-var _mix_ele_table_adapter = __webpack_require__(32);
-
-var mix_ele_table_adapter = _interopRequireWildcard(_mix_ele_table_adapter);
-
-var _ajax_fields = __webpack_require__(70);
-
-var ajax_fields = _interopRequireWildcard(_ajax_fields);
-
-var _ajax_table = __webpack_require__(71);
-
-var ajax_table = _interopRequireWildcard(_ajax_table);
-
-var _ele_tree = __webpack_require__(12);
-
-var ele_tree = _interopRequireWildcard(_ele_tree);
-
-var _picture = __webpack_require__(61);
-
-var table_picture = _interopRequireWildcard(_picture);
-
-var _label_shower = __webpack_require__(56);
-
-var table_label_shower = _interopRequireWildcard(_label_shower);
-
-var _mapper = __webpack_require__(59);
-
-var table_mapper = _interopRequireWildcard(_mapper);
-
-var _call_fun = __webpack_require__(47);
-
-var call_fun = _interopRequireWildcard(_call_fun);
-
-var _pop_fields = __webpack_require__(4);
-
-var table_pop_fields = _interopRequireWildcard(_pop_fields);
-
-var _pop_fields_local = __webpack_require__(62);
-
-var pop_fields_local = _interopRequireWildcard(_pop_fields_local);
-
-var _linetext = __webpack_require__(57);
-
-var table_linetext = _interopRequireWildcard(_linetext);
-
-var _check_box = __webpack_require__(49);
-
-var table_checkbox = _interopRequireWildcard(_check_box);
-
-var _switch_to_tab = __webpack_require__(65);
-
-var switch_to_tab = _interopRequireWildcard(_switch_to_tab);
-
-var _select = __webpack_require__(64);
-
-var select = _interopRequireWildcard(_select);
-
-var _extra_click = __webpack_require__(51);
-
-var extra_click = _interopRequireWildcard(_extra_click);
-
-var _extra_click_plus = __webpack_require__(52);
-
-var extra_click_plus = _interopRequireWildcard(_extra_click_plus);
-
-var _array_mapper = __webpack_require__(42);
-
-var array_mapper = _interopRequireWildcard(_array_mapper);
-
-var _operations = __webpack_require__(60);
-
-var operations = _interopRequireWildcard(_operations);
-
-var _bool_shower = __webpack_require__(46);
-
-var bool_shower = _interopRequireWildcard(_bool_shower);
-
-var _foreign_click_select = __webpack_require__(53);
-
-var foreign_click_select = _interopRequireWildcard(_foreign_click_select);
-
-var _array_option_mapper = __webpack_require__(44);
-
-var array_option_mapper = _interopRequireWildcard(_array_option_mapper);
-
-var _html_shower = __webpack_require__(54);
-
-var html_shower = _interopRequireWildcard(_html_shower);
-
-var _bool_editor = __webpack_require__(45);
-
-var bool_editor = _interopRequireWildcard(_bool_editor);
-
-var _jump_link = __webpack_require__(55);
-
-var jump_link = _interopRequireWildcard(_jump_link);
-
-var _change_order = __webpack_require__(48);
-
-var change_order = _interopRequireWildcard(_change_order);
-
-var _digit = __webpack_require__(50);
-
-var digit = _interopRequireWildcard(_digit);
-
-var _append_html_shower = __webpack_require__(41);
-
-var append_html_shower = _interopRequireWildcard(_append_html_shower);
-
-var _array_obj_shower = __webpack_require__(43);
-
-var array_obj_shower = _interopRequireWildcard(_array_obj_shower);
-
-var _pop_table = __webpack_require__(63);
-
-var pop_table = _interopRequireWildcard(_pop_table);
-
-var _label_shower2 = __webpack_require__(14);
-
-var field_label_shower = _interopRequireWildcard(_label_shower2);
-
-var _ele_transfer = __webpack_require__(11);
-
-var ele_transfer = _interopRequireWildcard(_ele_transfer);
-
-var _datetime = __webpack_require__(10);
-
-var datetime = _interopRequireWildcard(_datetime);
-
-var _pop_table_select = __webpack_require__(18);
-
-var pop_table_select = _interopRequireWildcard(_pop_table_select);
-
-var _plain_file = __webpack_require__(17);
-
-var plain_file = _interopRequireWildcard(_plain_file);
-
-var _validate_code = __webpack_require__(19);
-
-var validate_code = _interopRequireWildcard(_validate_code);
-
-var _order_list_table = __webpack_require__(15);
-
-var order_list_table = _interopRequireWildcard(_order_list_table);
-
-var _phon_code = __webpack_require__(16);
-
-var phon_code = _interopRequireWildcard(_phon_code);
-
-var _ele_tree_depend = __webpack_require__(13);
-
-var ele_tree_depend = _interopRequireWildcard(_ele_tree_depend);
-
-var _china_address = __webpack_require__(9);
-
-var com_china_address = _interopRequireWildcard(_china_address);
-
-var _operator_a = __webpack_require__(67);
-
-var op_a = _interopRequireWildcard(_operator_a);
-
-var _delete_op = __webpack_require__(66);
-
-var delete_op = _interopRequireWildcard(_delete_op);
-
-var _operator_btn = __webpack_require__(68);
-
-var operator_btn = _interopRequireWildcard(_operator_btn);
-
-var _btn = __webpack_require__(20);
-
-var btn = _interopRequireWildcard(_btn);
-
-var _pop_table_layer = __webpack_require__(30);
-
-var pop_table_layer = _interopRequireWildcard(_pop_table_layer);
-
-var _pop_fields_layer = __webpack_require__(28);
-
-var pop_fields_layer = _interopRequireWildcard(_pop_fields_layer);
-
-var _pop_layer = __webpack_require__(29);
-
-var pop_layer = _interopRequireWildcard(_pop_layer);
-
-var _main = __webpack_require__(39);
-
-var panels_main = _interopRequireWildcard(_main);
-
-var _sim_fields = __webpack_require__(3);
-
-var sim_fields = _interopRequireWildcard(_sim_fields);
-
-var _sim_fields_local = __webpack_require__(24);
-
-var sim_fields_local = _interopRequireWildcard(_sim_fields_local);
-
-var _pop_edit_local = __webpack_require__(23);
-
-var pop_edit_local = _interopRequireWildcard(_pop_edit_local);
-
-var _plain_field_panel = __webpack_require__(22);
-
-var plain_field_panel = _interopRequireWildcard(_plain_field_panel);
-
-var _ele_table = __webpack_require__(69);
-
-var ele_table = _interopRequireWildcard(_ele_table);
-
-var _user_info = __webpack_require__(38);
-
-var user_info = _interopRequireWildcard(_user_info);
-
-var _nice_validator_rule = __webpack_require__(37);
-
-var nice_validator_rule = _interopRequireWildcard(_nice_validator_rule);
-
-var _dropdown = __webpack_require__(25);
-
-var dropdown = _interopRequireWildcard(_dropdown);
-
-var _sm_link = __webpack_require__(26);
-
-var sm_link = _interopRequireWildcard(_sm_link);
-
-var _stack_widget = __webpack_require__(31);
-
-var stack_widget = _interopRequireWildcard(_stack_widget);
-
-var _el_tab_widget = __webpack_require__(27);
-
-var el_tab_widget = _interopRequireWildcard(_el_tab_widget);
-
-var _table_store = __webpack_require__(40);
-
-var table_store = _interopRequireWildcard(_table_store);
-
-var _main2 = __webpack_require__(21);
-
-var fields_panels_main = _interopRequireWildcard(_main2);
-
-var _main3 = __webpack_require__(58);
-
-var table_editor_main = _interopRequireWildcard(_main3);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-__webpack_require__(73);
-__webpack_require__(77);
-__webpack_require__(74);
-__webpack_require__(75);
-__webpack_require__(76);
-__webpack_require__(72);
-//table mix
-
-//import * as com_pop_fields from './com_pop_fields.js'
-
-// table editor
-
-
-// field editor
-
-
-// table operator
-
-
-//fields operator
-
-
-//import * as validate from  './validator'
-
-//import * as com_table from  './misc/com_table.js'
-
-//misc
-
-
-//fields_panels
-
-
-// top_heads
-
-
-//ui
-
-
-// store
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports) {
 
 /*
@@ -436,7 +123,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports) {
 
 /*
@@ -688,7 +375,7 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -697,7 +384,7 @@ function updateLink(linkElement, obj) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-__webpack_require__(107);
+__webpack_require__(117);
 
 var com_sim_fields = exports.com_sim_fields = {
     props: {
@@ -748,7 +435,7 @@ var com_sim_fields = exports.com_sim_fields = {
     //},
     components: window._baseInput,
     mixins: [mix_fields_data, mix_nice_validator],
-    template: ' <div :class="[\'field-panel sim-fields\',{\'mobile\':is_mobile}]" style="text-align:center;">\n           <table class="table-fields">\n        <tr v-for="head in heads">\n            <td class="field-label-td"  valign="top" >\n            <div class="field-label" :style="label_width">\n                <span class="label-content">\n                     <span v-text="head.label"></span>\n                     <span class="req_star" v-if=\'head.required\'>*</span>\n                </span>\n\n\n            </div>\n\n            </td>\n            <td class="field-input-td" >\n                <div class="field-input">\n                    <component v-if="head.editor" :is="head.editor"\n                         @field-event="$emit(\'field-event\',$event)"\n                         :head="head" :row="row"></component>\n\n                </div>\n            </td>\n            <td>\n                <span v-if="head.help_text" class="help-text clickable">\n                            <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n            </td>\n        </tr>\n        <slot :row="row">\n            <!--\u6309\u94AE\u6A2A\u8DE8\u4E24\u5217 \uFF01\u79FB\u52A8\u7AEF\u5F3A\u5236 -->\n             <tr v-if="crossBtn || is_mobile" class="btn-row">\n                <td class="field-input-td" colspan="3">\n                    <div class="submit-block">\n                        <button @click="submit" type="btn"\n                            :class="[\'form-control btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                </td>\n            </tr>\n            <!--\u6309\u94AE\u5728\u7B2C\u4E8C\u5217-->\n               <tr v-else class="btn-row">\n                   <td class="field-label-td"></td>\n                    <td class="field-input-td" colspan="1">\n                        <div class="submit-block">\n                            <button @click="panel_submit" type="btn"\n                                :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                        </div>\n                     </td>\n                     <td></td>\n               </tr>\n        </slot>\n\n    </table>\n\n\n        </div>',
+    template: ' <div :class="[\'field-panel sim-fields\',{\'mobile\':is_mobile,\'msg-bottom\':is_mobile}]" style="text-align:center;">\n           <table class="table-fields">\n        <tr v-for="head in heads">\n            <td class="field-label-td"  valign="top" >\n            <div class="field-label" :style="label_width">\n                <span class="label-content">\n                     <span v-text="head.label"></span>\n                     <span class="req_star" v-if=\'head.required\'>*</span>\n                </span>\n\n\n            </div>\n\n            </td>\n            <td class="field-input-td" >\n                <div class="field-input">\n                    <component v-if="head.editor" :is="head.editor"\n                         @field-event="$emit(\'field-event\',$event)"\n                         :head="head" :row="row"></component>\n\n                </div>\n            </td>\n            <td>\n                <span v-if="head.help_text" class="help-text clickable">\n                            <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n            </td>\n        </tr>\n        <slot :row="row">\n            <!--\u6309\u94AE\u6A2A\u8DE8\u4E24\u5217 \uFF01\u79FB\u52A8\u7AEF\u5F3A\u5236 -->\n             <tr v-if="crossBtn || is_mobile" class="btn-row">\n                <td class="field-input-td" colspan="3">\n                    <div class="submit-block">\n                        <button @click="submit" type="btn"\n                            :class="[\'form-control btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                </td>\n            </tr>\n            <!--\u6309\u94AE\u5728\u7B2C\u4E8C\u5217-->\n               <tr v-else class="btn-row">\n                   <td class="field-label-td"></td>\n                    <td class="field-input-td" colspan="1">\n                        <div class="submit-block">\n                            <button @click="panel_submit" type="btn"\n                                :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n                        </div>\n                     </td>\n                     <td></td>\n               </tr>\n        </slot>\n\n    </table>\n\n\n        </div>',
     methods: {
 
         panel_submit: function panel_submit() {
@@ -775,7 +462,7 @@ window.com_sim_fields = com_sim_fields;
 Vue.component('com-sim-fields', com_sim_fields);
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -904,7 +591,7 @@ var after_save = {
 };
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -915,7 +602,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.suit_fields = undefined;
 
-var _sim_fields = __webpack_require__(3);
+var _sim_fields = __webpack_require__(2);
 
 var suit_fields = exports.suit_fields = {
     props: ['row', 'heads', 'ops'],
@@ -928,7 +615,7 @@ var suit_fields = exports.suit_fields = {
 Vue.component('com-suit-fields', suit_fields);
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -966,16 +653,16 @@ var mix_editor = exports.mix_editor = {
 };
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(84);
+var content = __webpack_require__(94);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -992,7 +679,7 @@ if(false) {
 }
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1004,7 +691,7 @@ ex.assign(cfg, {
 });
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1028,7 +715,7 @@ Vue.component('com-field-china-address', function (resolve, reject) {
 });
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1052,7 +739,7 @@ Vue.component('com-field-datetime', function (resolve, reject) {
 });
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1075,13 +762,13 @@ var ele_transfer = {
 Vue.component('com-field-ele-transfer', ele_transfer);
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(7);
+__webpack_require__(6);
 var label_shower = {
     props: ['row', 'head'],
     methods: {
@@ -1163,13 +850,13 @@ Vue.component('com-field-ele-tree', label_shower);
 //})
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(7);
+__webpack_require__(6);
 var label_shower = {
     props: ['row', 'head'],
 
@@ -1392,7 +1079,7 @@ Vue.component('com-field-ele-tree-depend', label_shower);
 //})
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1409,6 +1096,23 @@ var label_shower = {
 };
 
 Vue.component('com-field-label-shower', label_shower);
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _invite_code = __webpack_require__(80);
+
+var invite_code = _interopRequireWildcard(_invite_code);
+
+var _line_text = __webpack_require__(81);
+
+var line_text = _interopRequireWildcard(_line_text);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
 /* 15 */
@@ -1547,7 +1251,10 @@ Vue.component('com-field-phone-code', {
                 return;
             }
 
+            cfg.show_load();
             ex.director_call(this.head.fun, { row: this.row }, function (resp) {
+                cfg.hide_load();
+
                 setTimeout(function () {
                     self.countGetVCodeAgain();
                 }, 1000);
@@ -1556,33 +1263,34 @@ Vue.component('com-field-phone-code', {
             //ex.vueParCall(this,'get_phone_code',{com_vcode:this})
             //this.$emit('field-event',{fun:'get_phone_code'})
         },
-        checkImageCode: function checkImageCode(phone, image_key, image_code) {
-            var self = this;
-            $(self.$el).find('input').trigger("hidemsg");
-
-            //if(this.row.image_code && this.hasValidPhone){
-            var data = {
-                Phone: phone,
-                Key: image_key,
-                Answer: image_code
-            };
-            cfg.show_load();
-            service_post('/anonymity/vcode/generate', data, function (resp) {
-                if (resp.error_description) {
-                    $(self.$el).find('input').trigger("showmsg", ["error", resp.error_description]);
-                } else if (resp.success) {
-                    //$(self.$el).find('.image_code').trigger("showmsg", ["ok", '正确' ])
-                    setTimeout(function () {
-                        //self.image_valid=true
-                        self.countGetVCodeAgain();
-                    }, 1000);
-                }
-                // else {
-                //    $(self.$el).find('.image_code').trigger("showmsg", ["error", resp.error_description ])
-                //}
-            }, false);
-            //}
-        },
+        //checkImageCode:function(phone,image_key,image_code){
+        //    var self=this
+        //    $(self.$el).find('input').trigger("hidemsg")
+        //
+        //    //if(this.row.image_code && this.hasValidPhone){
+        //    var data={
+        //        Phone:phone,
+        //        Key:image_key,
+        //        Answer:image_code,
+        //    }
+        //    cfg.show_load()
+        //    service_post('/anonymity/vcode/generate',data,function(resp){
+        //        if(resp.error_description){
+        //            $(self.$el).find('input').trigger("showmsg", ["error", resp.error_description ])
+        //        }else if(resp.success){
+        //            //$(self.$el).find('.image_code').trigger("showmsg", ["ok", '正确' ])
+        //            setTimeout(function(){
+        //                //self.image_valid=true
+        //                self.countGetVCodeAgain()
+        //            },1000)
+        //        }
+        //        // else {
+        //        //    $(self.$el).find('.image_code').trigger("showmsg", ["error", resp.error_description ])
+        //        //}
+        //
+        //    },false)
+        //    //}
+        //},
         countGetVCodeAgain: function countGetVCodeAgain() {
             var self = this;
             self.vcode_count = 120;
@@ -1607,7 +1315,7 @@ Vue.component('com-field-phone-code', {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-__webpack_require__(105);
+__webpack_require__(115);
 
 /*
  * config={
@@ -1873,11 +1581,11 @@ Vue.component('com-field-op-btn', {
 "use strict";
 
 
-var _suit_fields = __webpack_require__(5);
+var _suit_fields = __webpack_require__(4);
 
 var suit_fields = _interopRequireWildcard(_suit_fields);
 
-var _suit_fields_local = __webpack_require__(78);
+var _suit_fields_local = __webpack_require__(82);
 
 var suit_fields_local = _interopRequireWildcard(_suit_fields_local);
 
@@ -1894,7 +1602,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 * 可能无用了。
 * */
 
-__webpack_require__(106);
+__webpack_require__(116);
 
 var com_plain_fields = {
     props: {
@@ -1981,7 +1689,7 @@ window.pop_edit_local = pop_edit_local;
 "use strict";
 
 
-var _sim_fields = __webpack_require__(3);
+var _sim_fields = __webpack_require__(2);
 
 var com_sim_fields_local = {
     mixins: [_sim_fields.com_sim_fields],
@@ -2005,7 +1713,7 @@ Vue.component('com-sim-fields-local', com_sim_fields_local);
 "use strict";
 
 
-__webpack_require__(108);
+__webpack_require__(118);
 
 Vue.component('com-head-dropdown', {
     props: ['head'],
@@ -2019,7 +1727,7 @@ Vue.component('com-head-dropdown', {
 "use strict";
 
 
-__webpack_require__(109);
+__webpack_require__(119);
 
 // header 上的小链接
 Vue.component('com-head-sm-link', {
@@ -2099,7 +1807,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.pop_fields_layer = pop_fields_layer;
 
-var _com_pop_fields = __webpack_require__(79);
+var _com_pop_fields = __webpack_require__(83);
 
 function pop_fields_layer(row, fields_ctx, callback, layerConfig) {
     // row,head ->//model_name,relat_field
@@ -2408,7 +2116,7 @@ window.pop_table_layer = pop_table_layer;
 "use strict";
 
 
-__webpack_require__(110);
+__webpack_require__(120);
 
 Vue.component('com-widget-stack', {
     props: ['ctx_list'],
@@ -2423,7 +2131,7 @@ Vue.component('com-widget-stack', {
 "use strict";
 
 
-__webpack_require__(111);
+__webpack_require__(121);
 
 var mix_ele_table_adapter = {
     mounted: function mounted() {
@@ -2787,7 +2495,9 @@ var mix_table_data = {
     },
     mounted: function mounted() {
         var self = this;
-        this.childStore = new Vue({});
+        //this.childStore=new Vue({
+        //
+        //})
 
         ex.assign(this.op_funs, {
             save_changed_rows: function save_changed_rows() {
@@ -3446,6 +3156,23 @@ $.validator.config({
 "use strict";
 
 
+var _table_store = __webpack_require__(85);
+
+var table_store = _interopRequireWildcard(_table_store);
+
+var _table_page_store = __webpack_require__(84);
+
+var table_page_store = _interopRequireWildcard(_table_page_store);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 var user_info = {
     props: ['ctx'],
     template: ' <li class="dropdown user user-menu">\n                        <!-- Menu Toggle Button -->\n                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">\n                            <!-- The user image in the navbar-->\n                            <!--<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">-->\n                            <i class="fa fa-user-circle-o"></i>\n\n                            <!-- hidden-xs hides the username on small devices so only the image appears. -->\n                            <span class="hidden-xs" v-text="ctx.first_name || ctx.username">\n                            </span>\n                        </a>\n                        <ul class="dropdown-menu">\n                            <!-- The user image in the menu -->\n                            <li class="user-header" style="font-size: 3em;">\n                                <!--<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">-->\n                                <i class="fa fa-user-circle-o fa-lg"></i>\n                                <p v-text="ctx.first_name || ctx.username">\n                                </p>\n                            </li>\n                            <!-- Menu Body -->\n                            <!--<li class="user-body">-->\n                                <!--<div class="row">-->\n                                    <!--<div class="col-xs-4 text-center">-->\n                                        <!--<a href="#">Followers</a>-->\n                                    <!--</div>-->\n                                    <!--<div class="col-xs-4 text-center">-->\n                                        <!--<a href="#">Sales</a>-->\n                                    <!--</div>-->\n                                    <!--<div class="col-xs-4 text-center">-->\n                                        <!--<a href="#">Friends</a>-->\n                                    <!--</div>-->\n                                <!--</div>-->\n                                <!--&lt;!&ndash; /.row &ndash;&gt;-->\n                            <!--</li>-->\n                            <!-- Menu Footer-->\n                            <li class="user-footer">\n                                <div class="pull-left">\n                                    <a href="/accounts/pswd" class="btn btn-default btn-flat" v-text="tr.change_password"></a>\n                                </div>\n                                <div class="pull-right">\n                                    <a href="/accounts/logout" class="btn btn-default btn-flat" v-text="tr.logout"></a>\n                                </div>\n                            </li>\n                        </ul>\n                    </li>',
@@ -3459,28 +3186,28 @@ var user_info = {
 Vue.component('com-headbar-user-info', user_info);
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _fields_panel = __webpack_require__(80);
+var _fields_panel = __webpack_require__(86);
 
 var fields_panel = _interopRequireWildcard(_fields_panel);
 
-var _html_panel = __webpack_require__(81);
+var _html_panel = __webpack_require__(87);
 
 var html_panel = _interopRequireWildcard(_html_panel);
 
-var _table_panel = __webpack_require__(82);
+var _table_panel = __webpack_require__(88);
 
 var table_panel = _interopRequireWildcard(_table_panel);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3500,7 +3227,7 @@ var table_store = {
 window.table_store = table_store;
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3518,7 +3245,7 @@ var append_html_shower = {
 Vue.component('com-table-append-html-shower', append_html_shower);
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3593,7 +3320,7 @@ var parse_input = {
 Vue.component('com-table-array-mapper', array_mapper);
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3637,7 +3364,7 @@ var array_mapper = {
 Vue.component('com-table-array-obj-shower', array_mapper);
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3685,7 +3412,7 @@ var mapper = {
 Vue.component('com-table-array-option-mapper', mapper);
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3721,7 +3448,7 @@ var bool_shower = {
 Vue.component('com-table-bool-editor', bool_shower);
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3736,7 +3463,7 @@ var bool_shower = {
 Vue.component('com-table-bool-shower', bool_shower);
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3772,13 +3499,13 @@ var call_fun = {
 Vue.component('com-table-call-fun', call_fun);
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(114);
+__webpack_require__(124);
 var change_order = {
     props: ['rowData', 'field', 'index'],
     template: '<span class="change-order">\n    <span class="arrow" @click="up()">\n    <i  class="fa fa-long-arrow-up"></i>\n    </span>\n    <span class="arrow" @click="down()">\n     <i  class="fa fa-long-arrow-down"></i>\n    </span>\n    </span>',
@@ -3796,15 +3523,15 @@ var change_order = {
 Vue.component('com-table-change-order', change_order);
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mix_editor = __webpack_require__(6);
+var _mix_editor = __webpack_require__(5);
 
-__webpack_require__(115);
+__webpack_require__(125);
 
 var check_box = {
     props: ['rowData', 'field', 'index'],
@@ -3815,7 +3542,7 @@ var check_box = {
 Vue.component('com-table-checkbox', check_box);
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3855,7 +3582,7 @@ var money_shower = {
 Vue.component('com-table-digit-shower', money_shower);
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3897,7 +3624,7 @@ var extra_click = {
 Vue.component('com-table-extraclick', extra_click);
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3909,7 +3636,7 @@ Vue.component('com-table-extraclick', extra_click);
  2. 根据filter返回不同的按钮
  * */
 
-__webpack_require__(116);
+__webpack_require__(126);
 
 var extra_click_plus = {
     props: ['rowData', 'field', 'index'],
@@ -3961,7 +3688,7 @@ var extra_click_plus = {
 Vue.component('com-table-extraclick-plus', extra_click_plus);
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3986,7 +3713,7 @@ var foreign_click_select = {
 Vue.component('com-table-foreign-click-select', foreign_click_select);
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4001,7 +3728,7 @@ var bool_shower = {
 Vue.component('com-table-html-shower', bool_shower);
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4036,7 +3763,7 @@ var bool_shower = {
 Vue.component('com-table-jump-link', bool_shower);
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4060,13 +3787,13 @@ var label_shower = {
 Vue.component('com-table-label-shower', label_shower);
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(117);
+__webpack_require__(127);
 var line_text = {
     props: ['rowData', 'field', 'index'],
     template: '<div :class="[\'com-table-linetext\',{\'dirty\':is_dirty}]">\n        <span v-if="readonly" v-text="rowData[field]"></span>\n        <input v-else @change="on_changed()" style="width: 100%" type="text" v-model="rowData[field]">\n    </div>',
@@ -4133,20 +3860,20 @@ var _readonly = {
 };
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _pop_fields_from_row = __webpack_require__(83);
+var _pop_fields_from_row = __webpack_require__(89);
 
 var pop_fields_from_row = _interopRequireWildcard(_pop_fields_from_row);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4194,7 +3921,7 @@ var mapper = {
 Vue.component('com-table-mapper', mapper);
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4238,7 +3965,7 @@ var operations = {
 Vue.component('com-table-operations', operations);
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4284,7 +4011,7 @@ var picture = {
 Vue.component('com-table-picture', picture);
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4399,7 +4126,7 @@ var show_label = {
 };
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4448,15 +4175,15 @@ var pop_table = exports.pop_table = {
 Vue.component('com-table-pop-table', pop_table);
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _mix_editor = __webpack_require__(6);
+var _mix_editor = __webpack_require__(5);
 
-__webpack_require__(118);
+__webpack_require__(128);
 
 
 var select = {
@@ -4555,7 +4282,7 @@ Vue.component('com-table-select', select);
 //Vue.component('com-table-select',select)
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4581,20 +4308,19 @@ var switch_to_tab = {
     },
     methods: {
         goto_tab: function goto_tab() {
-            //this.$emit('on-custom-comp',
+            this.$emit('on-custom-comp', {
+                fun: 'switch_to_tab',
+                tab_name: this.head.tab_name,
+                named_tabs: this.head.named_tabs,
+                row: this.rowData
+            });
+            //eventBus.$emit('switch_to_tab',
             //    {
             //        name:'switch_to_tab',
             //        tab_name:this.head.tab_name,
             //        named_tabs:this.head.named_tabs,
             //        row:this.rowData
-            //    }
-            //)
-            eventBus.$emit('switch_to_tab', {
-                name: 'switch_to_tab',
-                tab_name: this.head.tab_name,
-                named_tabs: this.head.named_tabs,
-                row: this.rowData
-            });
+            //    })
         }
     }
 };
@@ -4602,7 +4328,32 @@ var switch_to_tab = {
 Vue.component('com-table-switch-to-tab', switch_to_tab);
 
 /***/ }),
-/* 66 */
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _table_grid = __webpack_require__(93);
+
+var table_grid = _interopRequireWildcard(_table_grid);
+
+var _operations = __webpack_require__(91);
+
+var operations = _interopRequireWildcard(_operations);
+
+var _filter = __webpack_require__(90);
+
+var filter = _interopRequireWildcard(_filter);
+
+var _pagination = __webpack_require__(92);
+
+var pagination = _interopRequireWildcard(_pagination);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ }),
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4629,7 +4380,7 @@ var delete_op = {
 Vue.component('com-op-delete', delete_op);
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4655,7 +4406,7 @@ var op_a = {
 Vue.component('com-op-a', op_a);
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4690,7 +4441,7 @@ var op_a = {
 Vue.component('com-op-btn', op_a);
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4856,7 +4607,7 @@ window.ele_table_logic = ele_table;
 window.ele_table_page_logic = ele_page;
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4975,7 +4726,7 @@ var _after_save = {
 };
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5091,16 +4842,16 @@ Vue.component('com_tab_table', ajax_table);
 //}
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(94);
+var content = __webpack_require__(104);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5117,16 +4868,16 @@ if(false) {
 }
 
 /***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(95);
+var content = __webpack_require__(105);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5143,16 +4894,16 @@ if(false) {
 }
 
 /***/ }),
-/* 74 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(96);
+var content = __webpack_require__(106);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5169,16 +4920,16 @@ if(false) {
 }
 
 /***/ }),
-/* 75 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(97);
+var content = __webpack_require__(107);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5195,16 +4946,16 @@ if(false) {
 }
 
 /***/ }),
-/* 76 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(98);
+var content = __webpack_require__(108);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5221,16 +4972,16 @@ if(false) {
 }
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(104);
+var content = __webpack_require__(114);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5247,13 +4998,51 @@ if(false) {
 }
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _suit_fields = __webpack_require__(5);
+var com_field_invite_code = {
+    props: ['row', 'head'],
+    created: function created() {
+
+        if (search_args[this.head.key]) {
+            this.row[this.head.name] = search_args[this.head.key];
+        }
+    },
+    template: '<div class="com-field-invite-code">\n        <com-field-linetext :head="head" :row="row"></com-field-linetext>\n    </div>',
+    computed: {
+        label: function label() {
+            return this.row['_' + this.head.name + '_label'];
+        }
+    }
+};
+
+Vue.component('com-field-invite-code', com_field_invite_code);
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var line_text = {
+        props: ['row', 'head'],
+        template: '<div :style="head.style">\n            \t\t\t<span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t\t<input v-else type="text" class="form-control input-sm" v-model="row[head.name]"\n            \t\t \t    :id="\'id_\'+head.name" :name="head.name"\n                        \t:placeholder="head.placeholder" :autofocus="head.autofocus" :maxlength=\'head.maxlength\'>\n                       </div>'
+};
+Vue.component('com-field-linetext', line_text);
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _suit_fields = __webpack_require__(4);
 
 var suit_fields_local = {
     mixins: [_suit_fields.suit_fields],
@@ -5271,7 +5060,7 @@ window.suit_fields_local = suit_fields_local;
 Vue.component('com-suit-fields-local', suit_fields_local);
 
 /***/ }),
-/* 79 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5327,7 +5116,319 @@ var com_pop_field = exports.com_pop_field = {
 };
 
 /***/ }),
-/* 80 */
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var table_page_store = {
+    data: function data() {
+        return {
+            tab_stack: [],
+            tabs: [],
+            named_tabs: []
+        };
+    },
+    methods: {
+        switch_to_tab: function switch_to_tab(kws) {
+            var self = this;
+            if (kws.named_tabs) {
+                // 传入named_tabs，造成tabs的切换
+                var next_tabs = self.named_tabs[kws.named_tabs];
+            } else {
+                var next_tabs = self.tabs;
+            }
+            self.tab_stack.push({
+                widget: 'com-widget-el-tab',
+                tabs: next_tabs,
+                crt_tab_name: kws.tab_name,
+                par_row: kws.row
+
+            });
+            self.crt_row = kws.row;
+        },
+        pop_tab_stack: function pop_tab_stack() {
+
+            if (this.tab_stack.length != 0) {
+                this.tab_stack.pop();
+            }
+            //                if(this.tab_stack.length==0){
+            //                    this.tabgroup.crt='_main'
+            //                    this.tabgroup.crt_tabs=[]
+            //                }
+            var self = this;
+            Vue.nextTick(function () {
+                //self.$refs.e_table.doLayout()
+            });
+        }
+    }
+};
+
+window.table_page_store = table_page_store;
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var table_store = {
+    data: function data() {
+        return {
+            parents: [],
+            heads: [],
+            rows: [],
+            row_filters: {},
+            row_sort: {},
+            row_pages: {},
+            director_name: '',
+            footer: [],
+            selected: [],
+            search_args: search_args, //ex.parseSearch(),
+            ops: [],
+            crt_row: {},
+            selectable: true,
+            changed_rows: []
+        };
+    },
+    mixins: [mix_ele_table_adapter],
+    computed: {
+        changed: function changed() {
+            return this.changed_rows.length != 0;
+        },
+        has_select: function has_select() {
+            return this.selected.length != 0;
+        }
+    },
+    methods: {
+        search: function search() {
+            this.search_args._page = 1;
+            this.getRows();
+        },
+        getRows: function getRows() {
+            /*
+             以后都用这个函数，不用什么get_data 或者 data_getter 了
+             * */
+            var self = this;
+
+            cfg.show_load();
+            self.rows = [];
+
+            var post_data = [{ fun: 'get_rows', director_name: self.director_name, search_args: self.search_args }];
+            ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+
+                self.rows = resp.get_rows.rows;
+                self.row_pages = resp.get_rows.row_pages;
+                //self.search_args=resp.get_rows.search_args
+                ex.vueAssign(self.search_args, resp.get_rows.search_args);
+                self.footer = resp.get_rows.footer;
+                self.parents = resp.get_rows.parents;
+                self.table_layout = resp.get_rows.table_layout;
+                cfg.hide_load();
+            });
+        },
+        add_new: function add_new(kws) {
+            var self = this;
+            var fields_ctx = kws.fields_ctx;
+            var dc = { fun: 'get_row', director_name: fields_ctx.director_name };
+            if (kws.init_fields) {
+                ex.assign(dc, kws.init_fields);
+            }
+            var post_data = [dc];
+            cfg.show_load();
+            ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                cfg.hide_load();
+                var crt_row = resp.get_row;
+                //var pop_id= new Date().getTime()
+                // e = {name:'after_save',new_row:event.new_row,old_row:event.old_row}
+                //eventBus.$on('pop-win-'+pop_id,function(e){
+                //    self.update_or_insert(e.new_row, e.old_row)
+                //})
+                //pop_fields_layer(new_row,kws.heads,kws.ops,pop_id)
+                self.crt_row = crt_row;
+                if (kws.tab_name) {
+                    //self.switch_to_tab(kws)
+                    self.$emit('operation', { fun: 'switch_to_tab', tab_name: kws.tab_name, row: crt_row });
+                    //self.switch_to_tab({tab_name:kws.tab_name,row:crt_row})
+                } else {
+                    var win = pop_fields_layer(crt_row, fields_ctx, function (new_row) {
+                        self.update_or_insert(new_row, crt_row);
+                        layer.close(win);
+                    });
+                }
+            });
+        },
+        clearSelection: function clearSelection() {
+            this.selected = [];
+        },
+        update_or_insert: function update_or_insert(new_row, old_row) {
+            // 如果是更新，不用输入old_row，old_row只是用来判断是否是创建的行为
+            if (old_row && !old_row.pk) {
+
+                //var rows = this.rows.splice(0, 0, new_row)
+
+                this.rows = [new_row].concat(this.rows);
+                this.row_pages.total += 1;
+            } else {
+                var table_row = ex.findone(this.rows, { pk: new_row.pk });
+                //ex.assign(table_row,new_row)
+                for (var key in new_row) {
+                    Vue.set(table_row, key, new_row[key]);
+                }
+            }
+        },
+        selected_set_and_save: function selected_set_and_save(kws) {
+            /*
+             这个是主力函数
+             // 路线：弹出->编辑->update前端（缓存的）row->保存->后台->成功->update前端row->关闭窗口
+             * */
+            // head: row_match:many_row ,
+            var self = this;
+            var row_match_fun = kws.row_match || 'many_row';
+            if (!row_match[row_match_fun](self, kws)) {
+                return;
+            }
+
+            function bb(all_set_dict, after_save_callback) {
+                var cache_rows = ex.copy(self.selected);
+                ex.each(cache_rows, function (row) {
+                    ex.assign(row, all_set_dict);
+                    if (kws.fields_ctx && kws.fields_ctx.director_name) {
+                        row._cache_director_name = row._director_name; // [1] 有可能是用的特殊的 direcotor
+                        row._director_name = kws.fields_ctx.director_name;
+                    }
+                    row[kws.field] = kws.value;
+                });
+                var post_data = [{ fun: 'save_rows', rows: cache_rows }];
+                cfg.show_load();
+                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                    if (!resp.save_rows.errors) {
+                        ex.each(resp.save_rows, function (new_row) {
+                            delete new_row._director_name; // [1]  这里还原回去
+                            self.update_or_insert(new_row);
+                        });
+                        self.clearSelection();
+
+                        cfg.hide_load(2000);
+                    } else {
+                        cfg.hide_load();
+                        // 留到下面的field弹出框，按照nicevalidator的方式去显示错误
+                        //cfg.showError(resp.save_rows.msg)
+                    }
+
+                    //self.op_funs.update_or_insert_rows({rows:resp.save_rows} )
+
+                    if (after_save_callback) {
+                        after_save_callback(resp);
+                    }
+                });
+            }
+
+            function judge_pop_fun() {
+                if (kws.fields_ctx) {
+                    var one_row = ex.copy(self.selected[0]);
+                    var win_index = pop_edit_local(one_row, kws.fields_ctx, function (new_row, store_id) {
+                        bb(new_row, function (resp) {
+                            if (resp.save_rows.errors) {
+                                self.$store.commit(store_id + '/showErrors', resp.save_rows.errors);
+                            } else {
+                                layer.close(win_index);
+                            }
+                        });
+                    });
+                } else {
+                    bb({});
+                }
+            }
+            if (kws.confirm_msg) {
+                layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
+                    layer.close(index);
+                    judge_pop_fun();
+                });
+            } else {
+                judge_pop_fun();
+            }
+        },
+        export_excel: function export_excel() {
+            var self = this;
+            var search_args = ex.copy(self.search_args);
+            search_args._perpage = 5000;
+            var post_data = [{ fun: 'get_excel', director_name: self.director_name, search_args: search_args }];
+            cfg.show_load();
+            ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                cfg.hide_load();
+                var url = resp.get_excel.file_url;
+                ex.download(url);
+            });
+        }
+    }
+
+};
+
+var row_match = {
+    one_row: function one_row(self, head) {
+        if (self.selected.length != 1) {
+            cfg.showMsg('请选择一行数据！');
+            return false;
+        } else {
+            return true;
+        }
+    },
+    many_row: function many_row(self, head) {
+        if (self.selected.length == 0) {
+            cfg.showMsg('请至少选择一行数据！');
+            return false;
+        } else {
+            return true;
+        }
+    },
+    one_row_match: function one_row_match(self, head) {
+        if (self.selected.length != 1) {
+            cfg.showMsg('请选择一行数据！');
+            return false;
+        } else {
+            var field = head.match_field;
+            var values = head.match_values;
+            var msg = head.match_msg;
+
+            var row = self.selected[0];
+
+            if (!ex.isin(row[field], values)) {
+                cfg.showMsg(msg);
+                return false;
+            } else {
+                return true;
+            }
+        }
+    },
+    many_row_match: function many_row_match(self, head) {
+        // head : @match_field , @match_values ,@match_msg
+        if (self.selected.length == 0) {
+            cfg.showMsg('请至少选择一行数据！');
+            return false;
+        } else {
+            var field = head.match_field;
+            var values = head.match_values;
+            var msg = head.match_msg;
+
+            for (var i = 0; i < self.selected.length; i++) {
+                var row = self.selected[i];
+                if (!ex.isin(row[field], values)) {
+                    cfg.showMsg(msg);
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+};
+
+window.table_store = table_store;
+
+/***/ }),
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5336,7 +5437,7 @@ var com_pop_field = exports.com_pop_field = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-__webpack_require__(112);
+__webpack_require__(122);
 
 var com_fields_panel = exports.com_fields_panel = {
     props: ['ctx'],
@@ -5362,13 +5463,13 @@ window.com_fields_panel = com_fields_panel;
 Vue.component('com-fields-panel', com_fields_panel);
 
 /***/ }),
-/* 81 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(113);
+__webpack_require__(123);
 
 var html_panel = {
     props: ['ctx'],
@@ -5378,7 +5479,7 @@ var html_panel = {
 Vue.component('com-html-panel', html_panel);
 
 /***/ }),
-/* 82 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5420,13 +5521,13 @@ Vue.component('com-table-editor', table_panel);
 Vue.component('com-table-panel', table_panel);
 
 /***/ }),
-/* 83 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _pop_fields = __webpack_require__(4);
+var _pop_fields = __webpack_require__(3);
 
 var pop_fields_from_row = {
     // fields 的 所有 ctx 从row中获取
@@ -5507,10 +5608,206 @@ var after_save = {
 };
 
 /***/ }),
-/* 84 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+"use strict";
+
+
+var ele_filter = {
+    data: function data() {
+        this.parStore = ex.vueParStore(this);
+        return {
+            row_filters: this.parStore.row_filters,
+            search_args: this.parStore.search_args
+        };
+    },
+    template: ' <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                        @submit="search()"></com-filter>',
+    methods: {
+        search: function search() {
+            this.parStore.search();
+            //this.bus.eventBus.$emit('search',this.bus.search_args)
+        }
+    }
+};
+
+Vue.component('com-table-filters', ele_filter);
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ele_operations = {
+
+    //                      :disabled="get_attr(op.disabled)"
+    //v-show="! get_attr(op.hide)"
+    template: '<div class="oprations" style="padding: 5px;">\n                <component v-for="op in ops"\n                           :is="op.editor"\n                           :ref="\'op_\'+op.name"\n                           :head="op"\n                           :disabled="eval(op.disabled)"\n                           v-show="op.show==undefined?true:eval(op.show)"\n                           @operation="on_operation(op)"></component>\n            </div>',
+    data: function data() {
+        var self = this;
+        this.parStore = ex.vueParStore(this);
+        return {
+            ops: this.parStore.ops
+        };
+    },
+    methods: {
+        eval: function _eval(express) {
+            if (express == undefined) {
+                return false;
+            } else {
+                return ex.eval(express, this.parStore);
+            }
+        },
+        on_operation: function on_operation(op) {
+            var fun_name = op.fun || op.name; // 以后都使用 fun
+            this.parStore[fun_name](op);
+            //this.bus.eventBus.$emit('operation',op)
+        }
+    }
+};
+
+Vue.component('com-table-operations', ele_operations);
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ele_page = {
+
+    data: function data() {
+        var parStore = ex.vueParStore(this);
+        this.parStore = parStore.table ? parStore.table : parStore;
+        return {
+            row_pages: this.parStore.row_pages,
+            search_args: this.parStore.search_args
+        };
+    },
+    methods: {
+        on_page_change: function on_page_change(v) {
+            this.search_args._page = v;
+            this.parStore.getRows();
+            //this.bus.eventBus.$emit('pageindex-change',v)
+        },
+        on_perpage_change: function on_perpage_change(v) {
+            this.search_args._perpage = v;
+            this.parStore.search();
+            //this.bus.eventBus.$emit('perpage-change',v)
+        }
+    },
+    //  @size-change="on_perpage_change"
+    //@current-change="get_page"
+    template: ' <el-pagination\n                         @size-change="on_perpage_change"\n                        @current-change="on_page_change"\n                        :current-page="row_pages.crt_page"\n                        :page-sizes="[20, 50, 100, 500]"\n                        :page-size="row_pages.perpage"\n                        layout="total, sizes, prev, pager, next, jumper"\n                        :total="row_pages.total">\n                </el-pagination>'
+};
+
+Vue.component('com-table-pagination', ele_page);
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var ele_table = {
+    props: ['bus'],
+    created: function created() {
+        //this.bus.table = this
+
+    },
+    data: function data() {
+        this.parStore = ex.vueParStore(this);
+        return {
+            heads: this.parStore.heads,
+            //rows:this.parStore.rows,
+            search_args: this.parStore.search_args,
+            row_sort: this.parStore.row_sort,
+            footer: this.parStore.footer,
+            selectable: this.parStore.selectable
+
+        };
+    },
+    mounted: function mounted() {
+        //this.bus.eventBus.$on('search', this.bus_search)
+        //this.bus.eventBus.$on('pageindex-change', this.get_page)
+        //this.bus.eventBus.$on('operation', this.on_operation)
+        //this.bus.eventBus.$on('perpage-change', this.on_perpage_change)
+
+    },
+
+    computed: {
+        rows: function rows() {
+            return this.parStore.rows;
+        },
+        selected: function selected() {
+            return this.parStore.selected;
+        }
+        //bus_serarch_count:function(){
+        //    return this.bus.search_count
+        //},
+        //rows: {
+        //    get: function () {
+        //        return this.bus.rows
+        //    },
+        //    set: function (v) {
+        //        this.bus.rows = v
+        //    }
+        //},
+        //footer: {
+        //    get: function () {
+        //        return this.bus.footer
+        //    },
+        //    set: function (v) {
+        //        this.bus.footer = v
+        //    }
+        //}
+        //search_args:{
+        //    get:function(){
+        //        return this.bus.search_args
+        //    },
+        //    set:function(v){
+        //        this.bus.search_args=v
+        //    }
+        //}
+    },
+    watch: {
+        selected: function selected(newvalue, old) {
+            if (newvalue.length == 0 && old.length != 0) {
+                this.$refs.e_table.clearSelection();
+            }
+        }
+    },
+    // height="100%"
+    //style="width: 100%"
+    mixins: [mix_table_data, mix_ele_table_adapter],
+    template: '  <div style="position: absolute;top:0;left:0;bottom: 0;right:0;">\n        <el-table class="table flat-head" ref="e_table"\n                              :data="rows"\n                              border\n                              show-summary\n                              :fit="false"\n                              :stripe="true"\n                              size="mini"\n                              height="100%"\n                              style="width: 100%"\n                              @sort-change="parStore.sortChange($event)"\n                              @selection-change="parStore.handleSelectionChange"\n                              :summary-method="getSum">\n                        <el-table-column v-if="selectable"\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="head in heads">\n\n                            <el-table-column v-if="head.editor"\n                                             :show-overflow-tooltip="parStore.is_show_tooltip(head) "\n                                             :label="head.label"\n                                             :prop="head.name.toString()"\n                                             :sortable="parStore.is_sort(head)"\n                                             :width="head.width">\n                                <template slot-scope="scope">\n                                    <component :is="head.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="parStore.is_show_tooltip(head) "\n                                             :prop="head.name.toString()"\n                                             :label="head.label"\n                                             :sortable="parStore.is_sort(head)"\n                                             :width="head.width">\n                            </el-table-column>\n\n                        </template>\n\n                    </el-table>\n                    </div>\n',
+    methods: {
+        bus_search: function bus_search(search_args) {
+            ex.assign(this.search_args, search_args);
+            this.search();
+        },
+        on_td_event: function on_td_event(e) {
+            var fun_name = e.fun || e.name; // 以后都用fun
+            this.parStore[fun_name](e);
+        }
+    }
+    //watch:{
+    //    bus_serarch_count:function(){
+    //        this.search()
+    //    }
+    //},
+};
+Vue.component('com-table-grid', ele_table);
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5521,10 +5818,10 @@ exports.push([module.i, ".com-field-ele-tree-name-layer {\n  min-width: 20em;\n 
 
 
 /***/ }),
-/* 85 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5535,10 +5832,10 @@ exports.push([module.i, ".file-uploader .item img {\n  max-width: 300px;\n  curs
 
 
 /***/ }),
-/* 86 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5549,10 +5846,10 @@ exports.push([module.i, ".plain-field-panel .submit-block {\n  text-align: cente
 
 
 /***/ }),
-/* 87 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5563,10 +5860,10 @@ exports.push([module.i, ".sim-fields .table-fields {\n  width: 100%; }\n\n.sim-f
 
 
 /***/ }),
-/* 88 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5577,10 +5874,10 @@ exports.push([module.i, ".com-head-dropdown-action {\n  display: inline-block;\n
 
 
 /***/ }),
-/* 89 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5591,10 +5888,10 @@ exports.push([module.i, "@media (max-width: 900px) {\n  .small-link .item {\n   
 
 
 /***/ }),
-/* 90 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5605,10 +5902,10 @@ exports.push([module.i, ".com-widget-stack {\n  position: absolute;\n  bottom: 0
 
 
 /***/ }),
-/* 91 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5619,10 +5916,10 @@ exports.push([module.i, ".table .el-table__row > td, .table tr > th, table.el-ta
 
 
 /***/ }),
-/* 92 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5633,10 +5930,10 @@ exports.push([module.i, ".com-fields-panel {\n  padding: 2rem;\n  border-radius:
 
 
 /***/ }),
-/* 93 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5647,10 +5944,10 @@ exports.push([module.i, ".con-html-panel {\n  padding: 2rem 1rem; }\n  .con-html
 
 
 /***/ }),
-/* 94 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5661,10 +5958,10 @@ exports.push([module.i, ".el-select-dropdown {\n  z-index: 99891020 !important; 
 
 
 /***/ }),
-/* 95 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5675,10 +5972,10 @@ exports.push([module.i, ".msg-hide .field .msg {\n  display: none; }\n\n.field .
 
 
 /***/ }),
-/* 96 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5689,10 +5986,10 @@ exports.push([module.i, ".el-tabs__item.is-top.is-active {\n  color: #3e8ebd; }\
 
 
 /***/ }),
-/* 97 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5703,10 +6000,10 @@ exports.push([module.i, ".table.flat-head th .cell {\n  white-space: nowrap; }\n
 
 
 /***/ }),
-/* 98 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5717,10 +6014,10 @@ exports.push([module.i, ".jb-table-parent {\n  margin-bottom: 0; }\n", ""]);
 
 
 /***/ }),
-/* 99 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5731,10 +6028,10 @@ exports.push([module.i, ".change-order .arrow {\n  cursor: pointer;\n  display: 
 
 
 /***/ }),
-/* 100 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5745,10 +6042,10 @@ exports.push([module.i, ".com-table-checkbox.dirty input {\n  background-color: 
 
 
 /***/ }),
-/* 101 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5759,10 +6056,10 @@ exports.push([module.i, ".extra-click-plus .icon .item {\n  display: inline-bloc
 
 
 /***/ }),
-/* 102 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5773,10 +6070,10 @@ exports.push([module.i, ".com-table-linetext.dirty input {\n  background-color: 
 
 
 /***/ }),
-/* 103 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5787,10 +6084,10 @@ exports.push([module.i, ".el-dropdown-menu__item.crt-value {\n  background-color
 
 
 /***/ }),
-/* 104 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)();
+exports = module.exports = __webpack_require__(0)();
 // imports
 
 
@@ -5801,16 +6098,16 @@ exports.push([module.i, ".dirty {\n  background-color: yellow; }\n", ""]);
 
 
 /***/ }),
-/* 105 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(85);
+var content = __webpack_require__(95);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5827,16 +6124,16 @@ if(false) {
 }
 
 /***/ }),
-/* 106 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(86);
+var content = __webpack_require__(96);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5853,16 +6150,16 @@ if(false) {
 }
 
 /***/ }),
-/* 107 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(87);
+var content = __webpack_require__(97);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5879,16 +6176,16 @@ if(false) {
 }
 
 /***/ }),
-/* 108 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(88);
+var content = __webpack_require__(98);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5905,16 +6202,16 @@ if(false) {
 }
 
 /***/ }),
-/* 109 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(89);
+var content = __webpack_require__(99);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5931,16 +6228,16 @@ if(false) {
 }
 
 /***/ }),
-/* 110 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(90);
+var content = __webpack_require__(100);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5957,16 +6254,16 @@ if(false) {
 }
 
 /***/ }),
-/* 111 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(91);
+var content = __webpack_require__(101);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -5983,16 +6280,16 @@ if(false) {
 }
 
 /***/ }),
-/* 112 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(92);
+var content = __webpack_require__(102);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -6009,16 +6306,16 @@ if(false) {
 }
 
 /***/ }),
-/* 113 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(93);
+var content = __webpack_require__(103);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -6035,16 +6332,16 @@ if(false) {
 }
 
 /***/ }),
-/* 114 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(99);
+var content = __webpack_require__(109);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -6061,16 +6358,16 @@ if(false) {
 }
 
 /***/ }),
-/* 115 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(100);
+var content = __webpack_require__(110);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -6087,16 +6384,16 @@ if(false) {
 }
 
 /***/ }),
-/* 116 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(101);
+var content = __webpack_require__(111);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -6113,16 +6410,16 @@ if(false) {
 }
 
 /***/ }),
-/* 117 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(102);
+var content = __webpack_require__(112);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -6139,16 +6436,16 @@ if(false) {
 }
 
 /***/ }),
-/* 118 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(103);
+var content = __webpack_require__(113);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(2)(content, {});
+var update = __webpack_require__(1)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -6163,6 +6460,331 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _config = __webpack_require__(7);
+
+var config = _interopRequireWildcard(_config);
+
+var _mix_table_data = __webpack_require__(35);
+
+var mix_table_data = _interopRequireWildcard(_mix_table_data);
+
+var _mix_v_table_adapter = __webpack_require__(36);
+
+var mix_v_table_adapter = _interopRequireWildcard(_mix_v_table_adapter);
+
+var _mix_nice_validator = __webpack_require__(34);
+
+var mix_nice_validator = _interopRequireWildcard(_mix_nice_validator);
+
+var _mix_fields_data = __webpack_require__(33);
+
+var mix_fields_data = _interopRequireWildcard(_mix_fields_data);
+
+var _mix_ele_table_adapter = __webpack_require__(32);
+
+var mix_ele_table_adapter = _interopRequireWildcard(_mix_ele_table_adapter);
+
+var _ajax_fields = __webpack_require__(72);
+
+var ajax_fields = _interopRequireWildcard(_ajax_fields);
+
+var _ajax_table = __webpack_require__(73);
+
+var ajax_table = _interopRequireWildcard(_ajax_table);
+
+var _ele_tree = __webpack_require__(11);
+
+var ele_tree = _interopRequireWildcard(_ele_tree);
+
+var _picture = __webpack_require__(62);
+
+var table_picture = _interopRequireWildcard(_picture);
+
+var _label_shower = __webpack_require__(57);
+
+var table_label_shower = _interopRequireWildcard(_label_shower);
+
+var _mapper = __webpack_require__(60);
+
+var table_mapper = _interopRequireWildcard(_mapper);
+
+var _call_fun = __webpack_require__(48);
+
+var call_fun = _interopRequireWildcard(_call_fun);
+
+var _pop_fields = __webpack_require__(3);
+
+var table_pop_fields = _interopRequireWildcard(_pop_fields);
+
+var _pop_fields_local = __webpack_require__(63);
+
+var pop_fields_local = _interopRequireWildcard(_pop_fields_local);
+
+var _linetext = __webpack_require__(58);
+
+var table_linetext = _interopRequireWildcard(_linetext);
+
+var _check_box = __webpack_require__(50);
+
+var table_checkbox = _interopRequireWildcard(_check_box);
+
+var _switch_to_tab = __webpack_require__(66);
+
+var switch_to_tab = _interopRequireWildcard(_switch_to_tab);
+
+var _select = __webpack_require__(65);
+
+var select = _interopRequireWildcard(_select);
+
+var _extra_click = __webpack_require__(52);
+
+var extra_click = _interopRequireWildcard(_extra_click);
+
+var _extra_click_plus = __webpack_require__(53);
+
+var extra_click_plus = _interopRequireWildcard(_extra_click_plus);
+
+var _array_mapper = __webpack_require__(43);
+
+var array_mapper = _interopRequireWildcard(_array_mapper);
+
+var _operations = __webpack_require__(61);
+
+var operations = _interopRequireWildcard(_operations);
+
+var _bool_shower = __webpack_require__(47);
+
+var bool_shower = _interopRequireWildcard(_bool_shower);
+
+var _foreign_click_select = __webpack_require__(54);
+
+var foreign_click_select = _interopRequireWildcard(_foreign_click_select);
+
+var _array_option_mapper = __webpack_require__(45);
+
+var array_option_mapper = _interopRequireWildcard(_array_option_mapper);
+
+var _html_shower = __webpack_require__(55);
+
+var html_shower = _interopRequireWildcard(_html_shower);
+
+var _bool_editor = __webpack_require__(46);
+
+var bool_editor = _interopRequireWildcard(_bool_editor);
+
+var _jump_link = __webpack_require__(56);
+
+var jump_link = _interopRequireWildcard(_jump_link);
+
+var _change_order = __webpack_require__(49);
+
+var change_order = _interopRequireWildcard(_change_order);
+
+var _digit = __webpack_require__(51);
+
+var digit = _interopRequireWildcard(_digit);
+
+var _append_html_shower = __webpack_require__(42);
+
+var append_html_shower = _interopRequireWildcard(_append_html_shower);
+
+var _array_obj_shower = __webpack_require__(44);
+
+var array_obj_shower = _interopRequireWildcard(_array_obj_shower);
+
+var _pop_table = __webpack_require__(64);
+
+var pop_table = _interopRequireWildcard(_pop_table);
+
+var _main = __webpack_require__(14);
+
+var fields_editor_main = _interopRequireWildcard(_main);
+
+var _label_shower2 = __webpack_require__(13);
+
+var field_label_shower = _interopRequireWildcard(_label_shower2);
+
+var _ele_transfer = __webpack_require__(10);
+
+var ele_transfer = _interopRequireWildcard(_ele_transfer);
+
+var _datetime = __webpack_require__(9);
+
+var datetime = _interopRequireWildcard(_datetime);
+
+var _pop_table_select = __webpack_require__(18);
+
+var pop_table_select = _interopRequireWildcard(_pop_table_select);
+
+var _plain_file = __webpack_require__(17);
+
+var plain_file = _interopRequireWildcard(_plain_file);
+
+var _validate_code = __webpack_require__(19);
+
+var validate_code = _interopRequireWildcard(_validate_code);
+
+var _order_list_table = __webpack_require__(15);
+
+var order_list_table = _interopRequireWildcard(_order_list_table);
+
+var _phon_code = __webpack_require__(16);
+
+var phon_code = _interopRequireWildcard(_phon_code);
+
+var _ele_tree_depend = __webpack_require__(12);
+
+var ele_tree_depend = _interopRequireWildcard(_ele_tree_depend);
+
+var _china_address = __webpack_require__(8);
+
+var com_china_address = _interopRequireWildcard(_china_address);
+
+var _operator_a = __webpack_require__(69);
+
+var op_a = _interopRequireWildcard(_operator_a);
+
+var _delete_op = __webpack_require__(68);
+
+var delete_op = _interopRequireWildcard(_delete_op);
+
+var _operator_btn = __webpack_require__(70);
+
+var operator_btn = _interopRequireWildcard(_operator_btn);
+
+var _btn = __webpack_require__(20);
+
+var btn = _interopRequireWildcard(_btn);
+
+var _pop_table_layer = __webpack_require__(30);
+
+var pop_table_layer = _interopRequireWildcard(_pop_table_layer);
+
+var _pop_fields_layer = __webpack_require__(28);
+
+var pop_fields_layer = _interopRequireWildcard(_pop_fields_layer);
+
+var _pop_layer = __webpack_require__(29);
+
+var pop_layer = _interopRequireWildcard(_pop_layer);
+
+var _main2 = __webpack_require__(40);
+
+var panels_main = _interopRequireWildcard(_main2);
+
+var _sim_fields = __webpack_require__(2);
+
+var sim_fields = _interopRequireWildcard(_sim_fields);
+
+var _sim_fields_local = __webpack_require__(24);
+
+var sim_fields_local = _interopRequireWildcard(_sim_fields_local);
+
+var _pop_edit_local = __webpack_require__(23);
+
+var pop_edit_local = _interopRequireWildcard(_pop_edit_local);
+
+var _plain_field_panel = __webpack_require__(22);
+
+var plain_field_panel = _interopRequireWildcard(_plain_field_panel);
+
+var _ele_table = __webpack_require__(71);
+
+var ele_table = _interopRequireWildcard(_ele_table);
+
+var _user_info = __webpack_require__(39);
+
+var user_info = _interopRequireWildcard(_user_info);
+
+var _nice_validator_rule = __webpack_require__(37);
+
+var nice_validator_rule = _interopRequireWildcard(_nice_validator_rule);
+
+var _dropdown = __webpack_require__(25);
+
+var dropdown = _interopRequireWildcard(_dropdown);
+
+var _sm_link = __webpack_require__(26);
+
+var sm_link = _interopRequireWildcard(_sm_link);
+
+var _stack_widget = __webpack_require__(31);
+
+var stack_widget = _interopRequireWildcard(_stack_widget);
+
+var _el_tab_widget = __webpack_require__(27);
+
+var el_tab_widget = _interopRequireWildcard(_el_tab_widget);
+
+var _table_store = __webpack_require__(41);
+
+var table_store = _interopRequireWildcard(_table_store);
+
+var _main3 = __webpack_require__(21);
+
+var fields_panels_main = _interopRequireWildcard(_main3);
+
+var _main4 = __webpack_require__(59);
+
+var table_editor_main = _interopRequireWildcard(_main4);
+
+var _main5 = __webpack_require__(67);
+
+var table_group_main = _interopRequireWildcard(_main5);
+
+var _main6 = __webpack_require__(38);
+
+var node_store_main = _interopRequireWildcard(_main6);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+__webpack_require__(75);
+__webpack_require__(79);
+__webpack_require__(76);
+__webpack_require__(77);
+__webpack_require__(78);
+__webpack_require__(74);
+//table mix
+
+//import * as com_pop_fields from './com_pop_fields.js'
+
+// table editor
+
+
+// field editor
+
+
+// table operator
+
+
+//fields operator
+
+
+//import * as validate from  './validator'
+
+//import * as com_table from  './misc/com_table.js'
+
+//misc
+
+
+//fields_panels
+
+
+// top_heads
+
+
+//ui
+
+
+// store
 
 /***/ })
 /******/ ]);

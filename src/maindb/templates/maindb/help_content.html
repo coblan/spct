@@ -1,3 +1,4 @@
+{% load jsonify %}
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -18,7 +19,7 @@
 <script>
 
     content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
-    content = {{ content | safe }}
+    page = {{ page | jsonify }}
 
 </script>
 
@@ -73,8 +74,8 @@
 
 <div id="there">
     <div  class="section">
-        <div  class="section-title" v-text="content.title"></div>
-        <div v-html="content.description" class="content">
+        <div  class="section-title" v-text="page.title"></div>
+        <div v-html="page.description" class="content">
         </div>
     </div>
 
@@ -84,7 +85,7 @@
     new Vue({
         el:'#there',
         data:{
-            content:content,
+            page:page,
         }
     })
 </script>

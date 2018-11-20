@@ -5,7 +5,7 @@ from django.db.models import Q, fields
 
 
 class BankCard(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
 
     def get_label(self):
         return '银行卡管理'

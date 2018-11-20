@@ -4,7 +4,7 @@ from django.contrib import admin
 from helpers.director.shortcut import TablePage, ModelTable, model_dc, page_dc, ModelFields, FieldsPage, \
     TabPage, RowSearch, RowSort, RowFilter, field_map, model_to_name
 from helpers.director.model_func.dictfy import model_to_name
-from ..models import TbNotice
+from ..models import TbAgentnotice
 from ..status_code import *
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -48,7 +48,7 @@ class AgentNoticePage(TablePage):
         return ctx
 
     class tableCls(ModelTable):
-        model = TbNotice
+        model = TbAgentnotice
         exclude = ['id', 'url']
         hide_fields = ['content']
 
@@ -109,7 +109,7 @@ class AgentNoticePage(TablePage):
 
 class NoticeForm(ModelFields):
     class Meta:
-        model = TbNotice
+        model = TbAgentnotice
         exclude = []
 
     hide_fields = ['createuser']
