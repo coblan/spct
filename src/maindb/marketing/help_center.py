@@ -13,7 +13,7 @@ from django.conf import settings
 from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.access.permit import has_permit
-
+from .gen_help_file import gen_help_file
 
 class HelpPage(TablePage):
     template = 'jb_admin/table.html'
@@ -108,10 +108,16 @@ class HelpPage(TablePage):
                     'confirm_msg': '确认修改为离线吗?', 
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
-                {'fun': 'update_help_file', 'label': '更新缓存', 'editor': 'com-op-btn', 
-                 'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}
+                #{'fun': 'update_help_file', 'label': '更新缓存', 'editor': 'com-op-btn', 
+                 #'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
+                  {'fun': 'director_call', 'director_name': "gen_help_static_file", 'label': '更新缓存', 'editor': 'com-op-btn', 
+                 'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
             ])
             return operations
+        
+        @staticmethod
+        def gen_help_static_file(): 
+            return gen_help_file()
 
         class filters(RowFilter):
             names = ['mtype']
@@ -171,6 +177,8 @@ director.update({
     'help.table': HelpPage.tableCls,
     'help.table.edit': HelpForm, 
     'get_mtype_options': get_mtype_options,
+    'gen_help_static_file': HelpPage.tableCls.gen_help_static_file,
+    
 })
 
 page_dc.update({
