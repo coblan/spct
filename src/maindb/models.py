@@ -100,6 +100,21 @@ class TbAccount(models.Model):
         return self.nickname or ''
 
 
+class TbAgentqa(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=1024, blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add= True)  # Field name made lowercase.
+    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', choices=ONLINE_STATUS, blank=True, null=True)  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort', default= 0, blank=True, null=True)  # Field name made lowercase.
+    content = models.TextField(db_column='Content', blank=True, null=True)  # Field name made lowercase.
+    
+    
+    class Meta:
+        managed = False
+        db_table = 'TB_AgentQA'
+
+
 class TbAccountMatchFav(models.Model):
     accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.

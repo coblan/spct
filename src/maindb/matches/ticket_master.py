@@ -10,7 +10,7 @@ from django.db import connections
 from helpers.director.middleware.request_cache import get_request_cache
 
 class TicketMasterPage(TablePage):
-    template = 'jb_admin/table.html'  # 'maindb/table_ajax_tab.html'
+    template = 'jb_admin/table_new.html'  # 'maindb/table_ajax_tab.html'
 
     def get_label(self):
         return _('Tb Trans')  # '注单列表'
@@ -40,6 +40,7 @@ class TicketMasterPage(TablePage):
     def get_context(self):
         ctx = TablePage.get_context(self)
         ctx['named_tabs'] = self.get_tabs()
+        ctx['named_ctx'] = self.get_tabs()
         return ctx
 
     class tableCls(ModelTable):
@@ -61,7 +62,8 @@ class TicketMasterPage(TablePage):
             if head['name'] == 'ticketid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'ticketstake'
-                head['named_tabs'] = 'ticketmaster'
+                head['ctx_name'] = 'ticketmaster'
+                #head['named_tabs'] = 'ticketmaster'
 
             return head
 

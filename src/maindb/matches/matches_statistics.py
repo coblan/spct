@@ -206,14 +206,14 @@ class MatchesStatisticsPage(TablePage):
         ls = [
            {'name': 'detailStatic',
             'label': '详细统计',
-            'com': 'com_tab_table',
+            'com': 'com-tab-table',
             'par_field': 'matchid',
             'table_ctx': DetailStatistic(crt_user=crt_user).get_head_context(),
             'visible': True,
             },
            {'name': 'ticket_master',
             'label': '注单', 
-            'com': 'com_tab_table',
+            'com': 'com-tab-table',
             'par_field': 'matchid',
             'table_ctx': TickmasterTab(crt_user=crt_user).get_head_context(),
             'visible': True, }        
