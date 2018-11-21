@@ -129,7 +129,8 @@ class NoticePage(TablePage):
         @staticmethod
         @director_view('gen_notice_static')
         def gen_notice_static(): 
-            return gen_notice_file()
+            gen_notice_file()
+            return {'status': 'success',}
 
 
 class NoticeForm(ModelFields):

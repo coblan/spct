@@ -128,7 +128,8 @@ class HelpPage(TablePage):
         
         @staticmethod
         def gen_help_static_file(): 
-            return gen_help_file()
+            gen_help_file()
+            return {'status': 'success',}
 
         class filters(RowFilter):
             names = ['mtype']
