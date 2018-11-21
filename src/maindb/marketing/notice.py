@@ -10,15 +10,15 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import re
 from django.conf import settings
-from helpers.director.base_data import director
+from helpers.director.base_data import director, director_view
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
-from ..redisInstance import redisInst
+#from ..redisInstance import redisInst
 from helpers.director.access.permit import has_permit
-
+from .gen_notice import gen_notice_file
 
 class NoticePage(TablePage):
-    template = 'jb_admin/table.html'
-    extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
+    template = 'jb_admin/table_new.html'
+    #extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
         return '通知'
@@ -103,15 +103,22 @@ class NoticePage(TablePage):
                     'confirm_msg': '确认修改为离线吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
-                {'fun': 'update_notice_file', 'label': '更新缓存', 'editor': 'com-op-btn',
+                #{'fun': 'update_notice_file', 'label': '更新缓存', 'editor': 'com-op-btn',
+                 #'visible': has_permit(self.crt_user, 'TbNotice.update_cache'), }
+                {'fun': 'director_call', 'director_name': 'gen_notice_static', 'label': '更新缓存', 'editor': 'com-op-btn',
                  'visible': has_permit(self.crt_user, 'TbNotice.update_cache'), }
             ])
             return operations
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
-            ctx['extra_table_logic'] = 'notice_logic'
+            #ctx['extra_table_logic'] = 'notice_logic'
             return ctx
+        
+        @staticmethod
+        @director_view('gen_notice_static')
+        def gen_notice_static(): 
+            return gen_notice_file()
 
 
 class NoticeForm(ModelFields):

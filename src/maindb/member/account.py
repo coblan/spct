@@ -94,7 +94,7 @@ def account_tab(self):
          'visible': True},
         {'name': 'MatchesStatistics',
          'label': '赛事统计',
-         'com': 'com_tab_table',
+         'com': 'com-tab-table',
          'par_field': 'accountid',
          'table_ctx': MatchesStatisticsTab(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbMatches, self.crt_user)},
@@ -111,7 +111,11 @@ class AccountPage(TablePage):
     def get_context(self):
         ctx = super().get_context()
         ctx['tabs'] = account_tab(self)
-        ctx['named_tabs'] = MatchesStatisticsPage.get_tabs(self.crt_user)
+        named_ctx =  {
+            'account_tabs': account_tab(self),
+        }
+        named_ctx.update(MatchesStatisticsPage.get_tabs(self.crt_user) )
+        ctx['named_ctx'] = named_ctx
         
         return ctx
 
@@ -166,6 +170,7 @@ class AccountPage(TablePage):
                 head['width'] = dc.get(head['name'])
             if head['name'] == 'accountid':
                 head['editor'] = 'com-table-switch-to-tab'
+                head['ctx_name'] = 'account_tabs'
                 head['tab_name'] = 'baseinfo'
             if head['name'] == 'status':
                 head['editor'] = 'com-table-bool-shower'
