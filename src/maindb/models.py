@@ -102,14 +102,19 @@ class TbAccount(models.Model):
 
 class TbAgentqa(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    title = models.CharField(db_column='Title', max_length=1024, blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add= True)  # Field name made lowercase.
-    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', choices=ONLINE_STATUS, blank=True, null=True)  # Field name made lowercase.
-    sort = models.IntegerField(db_column='Sort', default= 0, blank=True, null=True)  # Field name made lowercase.
-    content = models.TextField(db_column='Content', blank=True, null=True)  # Field name made lowercase.
-    
-    
+    title = models.CharField(db_column='Title', max_length=1024, blank=True, null=True,
+                             verbose_name='标题')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,
+                                      verbose_name='创建时间')  # Field name made lowercase.
+    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
+                                     verbose_name='创建人')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', choices=ONLINE_STATUS, blank=True, default=1, null=True,
+                                 verbose_name='状态')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort', default=0, blank=True, null=True,
+                               verbose_name='排序')  # Field name made lowercase.
+    content = models.TextField(db_column='Content', blank=True, null=True,
+                               verbose_name='内容')  # Field name made lowercase.
+
     class Meta:
         managed = False
         db_table = 'TB_AgentQA'
@@ -538,7 +543,8 @@ class TbLoginlog(models.Model):
     deviceversion = models.CharField(db_column='DeviceVersion', max_length=20, blank=True,
                                      null=True, verbose_name='设备版本号')  # Field name made lowercase.
     logintype = models.IntegerField(db_column='LoginType', verbose_name='登录方式')  # Field name made lowercase.
-    area = models.CharField(db_column='Area', max_length=200, blank=True, null=True,verbose_name='地区')  # Field name made lowercase.
+    area = models.CharField(db_column='Area', max_length=200, blank=True, null=True,
+                            verbose_name='地区')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1809,7 +1815,8 @@ class TbWhiteiprangelist(models.Model):
                              verbose_name='结束IP')  # Field name made lowercase.
     endipnum = models.BigIntegerField(db_column='EndIpNum', blank=True, null=True)  # Field name made lowercase.
     iswork = models.BooleanField(db_column='IsWork', default=True, verbose_name='状态')  # Field name made lowercase.
-    type = models.IntegerField(db_column='Type', blank=True, null=True, default=0,verbose_name='类型',choices=WhiteIP_Type)
+    type = models.IntegerField(db_column='Type', blank=True, null=True, default=0, verbose_name='类型',
+                               choices=WhiteIP_Type)
 
     class Meta:
         managed = False

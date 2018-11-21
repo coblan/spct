@@ -34,6 +34,9 @@ class AgentQAPage(NoticePage):
         model = TbAgentqa
         exclude = ['id']
 
+        def get_operation(self):
+            return super().get_operation()[:-1]
+
 class AgentQAForm(NoticeForm):
     class Meta:
         model = TbAgentqa
