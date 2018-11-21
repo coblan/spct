@@ -28,7 +28,7 @@ class BankTypesPage(TablePage):
                         'label': '启用',
                         'field': 'active',
                         'value': True,
-                        'row_match': 'one_row',
+                        'row_match': 'many_row',
                         'confirm_msg': '确认启用该银行卡类型吗?',
                         'visible': 'active' in self.permit.changeable_fields(),
                     },
@@ -38,7 +38,7 @@ class BankTypesPage(TablePage):
                         'label': '禁用',
                         'field': 'active',
                         'value': False,
-                        'row_match': 'one_row',
+                        'row_match': 'many_row',
                         'confirm_msg': '确认禁用该银行卡类型吗?',
                         'visible': 'active' in self.permit.changeable_fields(),
                     }

@@ -96,7 +96,7 @@ class AgentNoticePage(TablePage):
                     'label': '在线',
                     'field': 'status',
                     'value': 1,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     'confirm_msg': '确认修改为在线吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
@@ -106,7 +106,7 @@ class AgentNoticePage(TablePage):
                     'label': '离线',
                     'field': 'status',
                     'value': 0,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     'confirm_msg': '确认修改为离线吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 }

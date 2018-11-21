@@ -42,7 +42,7 @@ class AreaBlackList(TablePage):
                     'label': '启用',
                     'field': 'status',
                     'value': True,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     'confirm_msg': '确认启用该地区黑名单吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
@@ -52,7 +52,7 @@ class AreaBlackList(TablePage):
                     'label': '禁用',
                     'field': 'status',
                     'value': False,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     'confirm_msg': '确认禁用该地区黑名单吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 }

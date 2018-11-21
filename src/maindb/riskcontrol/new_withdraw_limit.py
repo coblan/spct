@@ -24,9 +24,9 @@ class WithDrawLimitContralPage(TablePage):
 
         def get_operation(self):
             return [
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '启用', 'field': 'isactive',
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '启用', 'field': 'isactive','row_match': 'many_row',
                  'value': True, 'confirm_msg': '确认启用这些设置项？', 'visible': 'isactive' in self.permit.changeable_fields(),},
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'field': 'isactive',
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'field': 'isactive','row_match': 'many_row',
                  'value': False, 'confirm_msg': '确认禁用这些设置项？', 'visible': 'isactive' in self.permit.changeable_fields()}
             ]
 
