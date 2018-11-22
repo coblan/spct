@@ -4,7 +4,7 @@ from . league import League, LeagueForm
 
 class BasekballLeague(League):
     def get_label(self): 
-        return '篮球联赛'
+        return '篮球联赛资料'
     
     class tableCls(League.tableCls):
         model = TbTournamentBasketball
