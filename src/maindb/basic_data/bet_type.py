@@ -38,7 +38,7 @@ class BetTypePage(TablePage):
                     'label': '启用',
                     'field': 'enabled',
                     'value': 1,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     # 'match_field': 'enabled', 'match_values': [0], 'match_msg': '只能选择禁用的玩法！',
                     'confirm_msg': '确认启用该玩法吗?'
                 },
@@ -48,7 +48,7 @@ class BetTypePage(TablePage):
                     'label': '禁用',
                     'field': 'enabled',
                     'value': 0,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     'confirm_msg': '确认禁用该玩法吗?'
                 }
             ]

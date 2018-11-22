@@ -39,7 +39,7 @@ class WhiteIPRangeList(TablePage):
                         'label': '启用',
                         'field': 'iswork',
                         'value': True,
-                        'row_match': 'one_row',
+                        'row_match': 'many_row',
                         'confirm_msg': '确认启用该IP白名单范围吗?',
                         'visible': 'iswork' in self.permit.changeable_fields(),
                     },
@@ -49,7 +49,7 @@ class WhiteIPRangeList(TablePage):
                         'label': '禁用',
                         'field': 'iswork',
                         'value': False,
-                        'row_match': 'one_row',
+                        'row_match': 'many_row',
                         'confirm_msg': '确认禁用该IP白名单范围吗?',
                         'visible': 'iswork' in self.permit.changeable_fields(),
                     }

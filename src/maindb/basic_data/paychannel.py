@@ -32,7 +32,7 @@ class PayChannelPage(TablePage):
                         'label': '启用',
                         'field': 'active',
                         'value': True,
-                        'row_match': 'one_row',
+                        'row_match': 'many_row',
                         'confirm_msg': '确认启用该充值渠道吗?',
                         'visible': 'active' in self.permit.changeable_fields(),
                     },
@@ -42,7 +42,7 @@ class PayChannelPage(TablePage):
                         'label': '禁用',
                         'field': 'active',
                         'value': False,
-                        'row_match': 'one_row',
+                        'row_match': 'many_row',
                         'confirm_msg': '确认禁用该充值渠道吗?',
                         'visible': 'active' in self.permit.changeable_fields(),
                     }

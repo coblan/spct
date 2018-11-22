@@ -41,7 +41,7 @@ class PayChannelBlackIPRangeList(TablePage):
                         'label': '启用',
                         'field': 'iswork',
                         'value': True,
-                        'row_match': 'one_row',
+                        'row_match': 'many_row',
                         'confirm_msg': '确认启用该充值IP黑名单吗?', 
                         'visible': 'iswork' in self.permit.changeable_fields(),
                     },
@@ -51,7 +51,7 @@ class PayChannelBlackIPRangeList(TablePage):
                         'label': '禁用',
                         'field': 'iswork',
                         'value': False,
-                        'row_match': 'one_row',
+                        'row_match': 'many_row',
                         'confirm_msg': '确认禁用该充值IP黑名单吗?', 
                          'visible': 'iswork' in self.permit.changeable_fields(),
                     }

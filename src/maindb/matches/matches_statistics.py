@@ -11,7 +11,7 @@ from helpers.director.table.table import PlainTable
 from .ticket_master import TicketMasterPage
 
 class MatchesStatisticsPage(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
 
     def get_label(self):
         return '赛事投注状况'
@@ -28,7 +28,8 @@ class MatchesStatisticsPage(TablePage):
             if head['name'] == 'matchid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'detailStatic'
-                head['named_tabs'] = 'match_statistic'
+                head['ctx_name'] = 'match_statistic'
+                #head['named_tabs'] = 'match_statistic'
           
                 #detail_statistic = DetailStatistic(crt_user= self.crt_user)
                 #head['editor'] = 'com-table-pop-table'
@@ -198,7 +199,8 @@ class MatchesStatisticsPage(TablePage):
         #}
         #ctx['named_tabs'] .update( TicketMasterPage.get_tabs() )
         
-        ctx['named_tabs'] = self.get_tabs(self.crt_user)
+        ctx['named_ctx'] = self.get_tabs(self.crt_user)
+        
 
         return ctx
     
@@ -207,14 +209,14 @@ class MatchesStatisticsPage(TablePage):
         ls = [
            {'name': 'detailStatic',
             'label': '详细统计',
-            'com': 'com_tab_table',
+            'com': 'com-tab-table',
             'par_field': 'matchid',
             'table_ctx': DetailStatistic(crt_user=crt_user).get_head_context(),
             'visible': True,
             },
            {'name': 'ticket_master',
             'label': '注单', 
-            'com': 'com_tab_table',
+            'com': 'com-tab-table',
             'par_field': 'matchid',
             'table_ctx': TickmasterTab(crt_user=crt_user).get_head_context(),
             'visible': True, }        

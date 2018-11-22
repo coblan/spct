@@ -13,22 +13,26 @@ from django.conf import settings
 from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.access.permit import has_permit
-
+from .gen_help_file import gen_help_file
 
 class HelpPage(TablePage):
-    template = 'jb_admin/table.html'
-    extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
+    template = 'jb_admin/table_new.html'
+    #extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
         return '帮助管理'
 
     def get_context(self):
         ctx = TablePage.get_context(self)
+        ctx['named_ctx'] = self.get_tabs()
+        return ctx
+    
+    def get_tabs(self): 
         help_form = HelpForm(crt_user=self.crt_user)
         ls = [
             {'name': 'help_form',
              'label': '基本信息',
-             'com': 'com_tab_fields',
+             'com': 'com-tab-fields',
              'get_data': {
                  'fun': 'table_row',
                  # 'kws':{
@@ -42,10 +46,11 @@ class HelpPage(TablePage):
              'heads': help_form.get_heads(),
              'ops': help_form.get_operations()
              },
-        ]
-        ctx['tabs'] = ls
-        return ctx
-
+               ]
+        return {
+            'helpcenter_tabs': ls,
+        }
+    
     class tableCls(ModelTable):
         model = TbQa
         exclude=[]
@@ -73,6 +78,8 @@ class HelpPage(TablePage):
             if head['name'] == 'title':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'help_form'
+                head['ctx_name'] = 'helpcenter_tabs'
+                
             if head['name'] == 'mtype':
                 head['options'] = get_mtype_options()
                 head['editor'] = 'com-table-array-option-mapper'
@@ -81,12 +88,16 @@ class HelpPage(TablePage):
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
-            ctx['extra_table_logic'] = 'help_logic'
+            #ctx['extra_table_logic'] = 'help_logic'
             return ctx
 
         def get_operation(self):
             operations = ModelTable.get_operation(self)[0:1]
-            operations[0]['tab_name'] = 'help_form'
+            add_new = operations[0]
+            add_new.update({
+                'tab_name': 'help_form',
+                'ctx_name': 'helpcenter_tabs',
+            })
             operations.extend([
                 {
                     'fun': 'selected_set_and_save',
@@ -108,10 +119,17 @@ class HelpPage(TablePage):
                     'confirm_msg': '确认修改为离线吗?', 
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
-                {'fun': 'update_help_file', 'label': '更新缓存', 'editor': 'com-op-btn', 
-                 'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}
+                #{'fun': 'update_help_file', 'label': '更新缓存', 'editor': 'com-op-btn', 
+                 #'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
+                  {'fun': 'director_call', 'director_name': "gen_help_static_file", 'label': '更新缓存', 'editor': 'com-op-btn', 
+                 'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
             ])
             return operations
+        
+        @staticmethod
+        def gen_help_static_file(): 
+            gen_help_file()
+            return {'status': 'success',}
 
         class filters(RowFilter):
             names = ['mtype']
@@ -151,9 +169,9 @@ class HelpForm(ModelFields):
             head['editor'] = 'com-field-select'
         elif head['name'] == 'description':
             head['editor'] = 'richtext'
-            head['config'] = {
-                'imageUploadUrl': reverse('ckeditor_img'),
-            }
+            #head['config'] = {
+                #'imageUploadUrl': reverse('ckeditor_img'),
+            #}
             # head['style']="height:300px;width:450px"
 
         return head
@@ -171,6 +189,8 @@ director.update({
     'help.table': HelpPage.tableCls,
     'help.table.edit': HelpForm, 
     'get_mtype_options': get_mtype_options,
+    'gen_help_static_file': HelpPage.tableCls.gen_help_static_file,
+    
 })
 
 page_dc.update({

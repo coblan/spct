@@ -17,6 +17,8 @@ from .matches import basketball_matches_statistics
 
 from .marketing import admin
 from .marketing import feedback
+from .marketing import agent_qa
+
 from .report import user_statistics
 from .report import report_channel
 from .report import platform_profit

@@ -10,26 +10,30 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 import re
 from django.conf import settings
-from helpers.director.base_data import director
+from helpers.director.base_data import director, director_view
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
-from ..redisInstance import redisInst
+#from ..redisInstance import redisInst
 from helpers.director.access.permit import has_permit
-
+from .gen_notice import gen_notice_file
 
 class NoticePage(TablePage):
-    template = 'jb_admin/table.html'
-    extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
+    template = 'jb_admin/table_new.html'
+    #extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
         return '通知'
 
     def get_context(self):
         ctx = TablePage.get_context(self)
+        ctx['named_ctx'] = self.get_tabs()
+        return ctx
+    
+    def get_tabs(self): 
         notice_form = NoticeForm(crt_user=self.crt_user)
         ls = [
             {'name': 'notice_form',
              'label': '基本信息',
-             'com': 'com_tab_fields',
+             'com': 'com-tab-fields',
              'get_data': {
                  'fun': 'table_row',
                  # 'kws':{
@@ -44,8 +48,9 @@ class NoticePage(TablePage):
              'ops': notice_form.get_operations()
              },
         ]
-        ctx['tabs'] = ls
-        return ctx
+        return {
+            'notice_tabs':ls
+        }        
 
     class tableCls(ModelTable):
         model = TbNotice
@@ -77,19 +82,25 @@ class NoticePage(TablePage):
             elif head['name'] == 'title':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'notice_form'
+                head['ctx_name'] = 'notice_tabs'
             return head
 
         def get_operation(self):
             operations = ModelTable.get_operation(self)[0:1]
-            operations[0]['tab_name'] = 'notice_form'
-            operations.extend([
+            add_new = operations[0]
+            add_new.update({
+                'tab_name': 'notice_form',
+                'ctx_name': 'notice_tabs',
+            })
+            
+            operations.extend( [
                 {
                     'fun': 'selected_set_and_save',
                     'editor': 'com-op-btn',
                     'label': '在线',
                     'field': 'status',
                     'value': 1,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     'confirm_msg': '确认修改为在线吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
@@ -99,19 +110,27 @@ class NoticePage(TablePage):
                     'label': '离线',
                     'field': 'status',
                     'value': 0,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     'confirm_msg': '确认修改为离线吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
-                {'fun': 'update_notice_file', 'label': '更新缓存', 'editor': 'com-op-btn',
+                #{'fun': 'update_notice_file', 'label': '更新缓存', 'editor': 'com-op-btn',
+                 #'visible': has_permit(self.crt_user, 'TbNotice.update_cache'), }
+                {'fun': 'director_call', 'director_name': 'gen_notice_static', 'label': '更新缓存', 'editor': 'com-op-btn',
                  'visible': has_permit(self.crt_user, 'TbNotice.update_cache'), }
             ])
             return operations
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
-            ctx['extra_table_logic'] = 'notice_logic'
+            #ctx['extra_table_logic'] = 'notice_logic'
             return ctx
+        
+        @staticmethod
+        @director_view('gen_notice_static')
+        def gen_notice_static(): 
+            gen_notice_file()
+            return {'status': 'success',}
 
 
 class NoticeForm(ModelFields):
@@ -129,7 +148,7 @@ class NoticeForm(ModelFields):
         if head['name'] == 'content':
             head['editor'] = 'richtext'
             head['config'] = {
-                'imageUploadUrl': reverse('ckeditor_img'),
+                #'imageUploadUrl': reverse('ckeditor_img'),
             }
         return head
 

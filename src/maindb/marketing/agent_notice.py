@@ -4,7 +4,7 @@ from django.contrib import admin
 from helpers.director.shortcut import TablePage, ModelTable, model_dc, page_dc, ModelFields, FieldsPage, \
     TabPage, RowSearch, RowSort, RowFilter, field_map, model_to_name
 from helpers.director.model_func.dictfy import model_to_name
-from ..models import TbNotice
+from ..models import TbAgentnotice
 from ..status_code import *
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -17,7 +17,7 @@ from helpers.director.access.permit import has_permit
 
 
 class AgentNoticePage(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
     extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
@@ -26,10 +26,15 @@ class AgentNoticePage(TablePage):
     def get_context(self):
         ctx = TablePage.get_context(self)
         notice_form = NoticeForm(crt_user=self.crt_user)
+        ctx['named_ctx'] = self.get_tabs()
+        return ctx
+    
+    def get_tabs(self): 
+        notice_form = NoticeForm(crt_user=self.crt_user)
         ls = [
             {'name': 'notice_form',
              'label': '基本信息',
-             'com': 'com_tab_fields',
+             'com': 'com-tab-fields',
              'get_data': {
                  'fun': 'table_row',
                  # 'kws':{
@@ -44,11 +49,12 @@ class AgentNoticePage(TablePage):
              'ops': notice_form.get_operations()
              },
         ]
-        ctx['tabs'] = ls
-        return ctx
+        return {
+            'agent_notice_tabs': ls,
+        }
 
     class tableCls(ModelTable):
-        model = TbNotice
+        model = TbAgentnotice
         exclude = ['id', 'url']
         hide_fields = ['content']
 
@@ -72,11 +78,17 @@ class AgentNoticePage(TablePage):
             elif head['name'] == 'title':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'notice_form'
+                head['ctx_name'] = 'agent_notice_tabs'
             return head
 
         def get_operation(self):
             operations = ModelTable.get_operation(self)[0:1]
-            operations[0]['tab_name'] = 'notice_form'
+            add_new =  operations[0]
+            add_new.update({
+                'tab_name': 'notice_form',
+                'ctx_name': 'agent_notice_tabs',
+            })
+            
             operations.extend([
                 {
                     'fun': 'selected_set_and_save',
@@ -84,7 +96,7 @@ class AgentNoticePage(TablePage):
                     'label': '在线',
                     'field': 'status',
                     'value': 1,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     'confirm_msg': '确认修改为在线吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 },
@@ -94,7 +106,7 @@ class AgentNoticePage(TablePage):
                     'label': '离线',
                     'field': 'status',
                     'value': 0,
-                    'row_match': 'one_row',
+                    'row_match': 'many_row',
                     'confirm_msg': '确认修改为离线吗?',
                     'visible': 'status' in self.permit.changeable_fields(),
                 }
@@ -109,7 +121,7 @@ class AgentNoticePage(TablePage):
 
 class NoticeForm(ModelFields):
     class Meta:
-        model = TbNotice
+        model = TbAgentnotice
         exclude = []
 
     hide_fields = ['createuser']

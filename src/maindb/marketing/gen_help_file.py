@@ -7,8 +7,24 @@ import re
 import os
 from django.conf import settings
 from helpers.func.sim_signal import sim_signal
+from ..static_html_builder import StaticHtmlBuilder
+from urllib.parse import urljoin
 
-def gen_help_file():
+def gen_help_file(): 
+    index_url = urljoin(settings.SELF_URL, '/help/index.html')
+    
+    root_path = os.path.join(settings.MEDIA_ROOT, 'public/help')
+    spd = StaticHtmlBuilder(url= index_url, root_path= root_path)
+    spd.run()
+    for itm in TbQa.objects.filter(status=1).exclude(mtype=0):
+        page_url =  urljoin(settings.SELF_URL, '/help/%s.html' % itm.pk )
+        spd = StaticHtmlBuilder(url= page_url, root_path= root_path)
+        spd.run()        
+    sim_signal.send('help.static.changed')
+    
+
+def gen_help_file1():
+    """老的函数，被替换"""
     sections=[]
     
     for itm in TbQa.objects.filter(mtype=0,status=1).order_by('-priority'):

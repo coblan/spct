@@ -7,8 +7,22 @@ import re
 import os
 from django.conf import settings
 from helpers.func.sim_signal import sim_signal
+from ..static_html_builder import StaticHtmlBuilder
+from urllib.parse import urljoin
 
 def gen_notice_file():
+    index_url = urljoin(settings.SELF_URL, '/notice/index.html')
+    
+    root_path = os.path.join(settings.MEDIA_ROOT, 'public/notice')
+    spd = StaticHtmlBuilder(url= index_url, root_path= root_path)
+    spd.run()
+    for itm in TbNotice.objects.filter(status=1):
+        page_url =  urljoin(settings.SELF_URL, '/notice/%s.html' % itm.pk )
+        spd = StaticHtmlBuilder(url= page_url, root_path= root_path)
+        spd.run()        
+    sim_signal.send('notice.static.changed')
+
+def gen_notice_file1():
     ls = []
     for itm in TbNotice.objects.filter(status=1).order_by('-createtime'):
         content_temp = loader.get_template('maindb/notice_content.html')

@@ -1,3 +1,4 @@
+{% load jsonify %}
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -23,25 +24,28 @@
                 {title:'单注',url:'bbb',update_date:'2018-10-01'}
             ]
 
-   var notice_list={{ notice_list | safe }}
+   var notice_list={{ notice_list |jsonify  }}
 
 </script>
 
 <style>
+    html{
+        font-size: 14px;
+    }
     body{
-        background-color: #fefefe;
+        background-color: #f4f4f4;
         /*font-size: 1.5em;*/
     }
-    .section-title{
-        color: #333;
-        /*border-left: 2px solid #72727e;*/
-        margin: 0.9em;
-        font-size: 1.2em;
-    }
+    /*.section-title{*/
+        /*color: #333;*/
+        /*!*border-left: 2px solid #72727e;*!*/
+        /*margin: 0.9em;*/
+        /*font-size: 1.2rem;*/
+    /*}*/
     .section-content{
         /*background-color: #fefefe;*/
         padding-left: 0;
-        margin-left: 0.4em;
+        /*margin-left: 0.4em;*/
         /*padding-left: 20px;*/
     }
 
@@ -52,11 +56,14 @@
     }
     .itm-title{
         color: #333;
-        margin-left: 5px;
-        border-bottom: 1px solid #f8f8f8;
+        /*margin-left: 5px;*/
+        background-color: white;
         position: relative;
         /*display: flex;*/
         /*align-items:center;*/
+    }
+    .item-content{
+        border-bottom: 1px solid #f8f8f8;
     }
     /*.section-content>li:last-child{*/
         /*border-bottom: none;*/
@@ -83,36 +90,29 @@
         user-select: none;
     }
 
-    /*body{*/
-    /*width: 100vw;*/
-    /*height: 100vh;*/
-    /*overflow: hidden;*/
-    /*}*/
-    /*#there{*/
-    /*width: 100vw;*/
-    /*height: 100vh;*/
-    /*overflow-y: auto;*/
-    /*}*/
-    /*#there::-webkit-scrollbar{width:0;height:0}*/
+.one-row{
+    display: flex;
+    width: 100vw;
+    overflow-x: hidden;
+}
 
-    /*body::-webkit-scrollbar {display:none}*/
 </style>
 
 <div id="there">
 
     <ul class="section-content">
         <li v-for="itm in notice_list" class="itm-title"  @click="goto(itm.url)">
-            <div>
-                <div style="width: 2em;float: left;padding-top: 0.7em">
-                    <img style="width: 1.9em" src="/static/images/home_ic_gonggao2.png" alt="">
+            <div class="one-row">
+                <div style="padding: 0.2rem 1rem">
+                    <img style="width: 2.5rem" src="/static/images/ic.png" alt="">
                 </div>
 
-                <div style="margin-left: 3.3em;padding-right: 2em;">
-                    <div >
-                        <div class="ellipsis" style="font-size: 1.3em">
+                <div class="item-content" style="padding-left:1rem;padding-right: 2rem;flex-shrink: 0;flex-grow: 100;position: relative">
+                    <div style="position: absolute;left: 0;top:0;bottom: 0;right: 0">
+                        <div class="ellipsis" style="font-size: 1rem;padding-right: 1rem;">
                             <span v-text="itm.title"></span>
                         </div>
-                        <div style="color: #bdbdbd;font-size: 1.2em;position: relative;top:-0.1em;">
+                        <div style="color: #bdbdbd;font-size: 0.75rem;position: relative;top:-0.1em;margin-top: 0.4rem">
                             <span v-text="itm.update_date"></span>
                         </div>
                     </div>

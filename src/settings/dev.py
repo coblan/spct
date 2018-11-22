@@ -62,7 +62,7 @@ DATABASES = {
 }
 
 
-ALLOWED_HOSTS=['192.168.0.244','localhost', '192.168.0.197']
+ALLOWED_HOSTS=['192.168.0.244','localhost', '192.168.0.199']
 DATABASE_ROUTERS = ['hello.db_router.DbRouter']
 
 MAX_BANNER_SIZE=1024*1024*2
@@ -76,6 +76,8 @@ APP_PKG_ACCESS_URL='http://103.246.219.202:9004/static'
 
 # 各种服务地址
 STATIC_SERVICE = 'http://103.246.219.202:9004/static'
+CLOUD_STORAGE = 'http://103.246.219.202:9004/static'
+
 AGENT_SERVICE = 'http://192.168.40.137:8001'
 CENTER_SERVICE = 'http://192.168.40.103:9022'
 SPREAD_SERVICE = 'http://192.168.40.103:9030'
@@ -87,6 +89,7 @@ MONGO_SERVER ="mongodb://admin:lishen123@192.168.40.210:27017,192.168.40.211:270
 
 REDIS_SERVER = '192.168.40.222'
 ELASTIC = 'http://192.168.40.217:9200'
+SELF_URL = 'http://localhost:8000'
 
 RABBITMQ = '192.168.40.20'
 RABBITMA_PORT = '5673'
@@ -153,7 +156,7 @@ LOGGING = {
             #'level': 'DEBUG',
             #'propagate': True,
             #},
-        'extra.error': {
+        'general_log': {
             'handlers': ['console', 'djangoout_warning'],
             'level': 'DEBUG',
             'propagate': True,            

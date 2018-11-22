@@ -56,8 +56,8 @@ LOGGING = {
             'handlers': ['console', 'djangoout_warning', 'mail_admins', 'elk_warning'],
             'level': 'INFO',
             },
-        'extra.error': {
-            'handlers': ['console', 'djangoout_warning'],
+        'general_log': {
+            'handlers': ['console', 'djangoout_warning', 'elk_warning'],
             'level': 'DEBUG',
             'propagate': True,            
             },

@@ -1,3 +1,4 @@
+{% load jsonify %}
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -34,11 +35,14 @@
 
     ]
 
-    var section_list={{ section_list | safe }}
+    var section_list={{ section_list | jsonify }}
 
 </script>
 
 <style>
+    html{
+        font-size: 14px;
+    }
     body{
         background-color: #ededed;
         /*font-size: 1.5em;*/
@@ -47,12 +51,12 @@
         color: #333;
         /*border-left: 2px solid #72727e;*/
         margin: 0.7em 10px;
-        font-size: 1.4em;
+        font-size: 1.2rem;
     }
     .section-content{
-        font-size: 1.1em;
+        font-size: 1em;
         background-color: #fefefe;
-        padding-left: 0;
+        padding-left: 0.4rem;
         margin-left: 1em;
         margin: 0;
         /*padding-left: 5px;*/
@@ -68,11 +72,12 @@
     .itm-title{
         color: #333;
         /*margin-left: 5px;*/
-        padding-left: 10px;
+        /*padding-left: 10px;*/
         border-bottom: 1px solid #f8f8f8;
         position: relative;
         display: flex;
         align-items:center;
+        padding: 1rem 0.5rem;
     }
     .section-content>li:last-child{
         border-bottom: none;
@@ -112,17 +117,16 @@
 <div id="there">
     <div v-for="sec in section_list">
 
-        <div class="section-title">
-            <span style="margin-right: 0.2em;"> </span>
+        <div class="section-title flex" style="align-items: center">
+            <img src="/static/images/ic_qa.png" style="height: 1.3rem" alt="">
             <span  v-text="sec.title"></span>
         </div>
 
         <ul class="section-content">
             <li class="itm-title" v-for="itm in sec.items" @click="goto(itm.url)">
-                <div style="flex-grow:10;font-size: 1em;">
+                <div style="flex-grow:10;font-size: 1rem;padding: 0.3rem">
                     <span v-text="itm.title"></span>
                 </div>
-
 
                 <div class="right-arrow">
                     <i class="fa fa-chevron-right"></i>
