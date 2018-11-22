@@ -11,7 +11,7 @@ from maindb.rabbitmq_instance import notifyWithdraw
 
 
 class WithdrawPage(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
 
     def get_label(self):
         return '提现管理'
@@ -35,6 +35,8 @@ class WithdrawPage(TablePage):
                 head['editor'] = 'com-table-switch-to-tab'
                 head['inn_editor'] = 'com-table-label-shower'
                 head['tab_name'] = 'baseinfo'
+                head['ctx_name'] = 'account_tabs'
+                
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             return head
@@ -54,8 +56,10 @@ class WithdrawPage(TablePage):
         def get_context(self):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
+            
+            # 交叉引用问题
             from maindb.member.account import account_tab
-            ctx['tabs'] = account_tab(self)
+            ctx['named_ctx'] = account_tab(self)
             return ctx
 
         def get_operation(self):

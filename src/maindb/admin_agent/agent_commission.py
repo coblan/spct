@@ -15,7 +15,7 @@ import logging
 req_log = logging.getLogger('general_log')
 
 class AgentCommission(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
 
     def get_label(self):
         return '代理佣金'
@@ -92,11 +92,10 @@ class AgentCommission(TablePage):
 
         def get_operation(self):
             return [
-                {'fun': 'director_rows',
+                {'fun': 'director_call',
                  'director_name': 'agent_commission.audit',
                  'editor': 'com-op-btn',
                  'label': '审核通过',
-                 'after_call': 'update_or_insert_rows',
                  'row_match': 'many_row_match',
                  'match_msg': '只能选择待审核的数据！',
                  'match_field': 'status',

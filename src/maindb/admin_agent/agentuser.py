@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 from ..alg import encode_paswd
 
 class AgentUser(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
     
     def check_permit(self): 
         if not has_permit(self.crt_user, 'agent'):
@@ -165,10 +165,12 @@ class AgentUser(TablePage):
             if head['name'] == 'SumActive':
                 head['editor'] = 'com-table-call-fun'
                 head['fun'] = 'get_childs'
+                head['arg_filter'] = 'field'
                 head['field'] = 'accountid'
             if head['name'] == 'accountid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'baseinfo'
+                head['ctx_name'] = 'account_tabs'
             return head
 
         def getExtraHead(self):
@@ -239,7 +241,7 @@ class AgentUser(TablePage):
 
         def get_context(self):
             ctx = super().get_context()
-            ctx['tabs'] = account_tab(self)
+            ctx['named_ctx'] = account_tab(self)
             return ctx
 
         def get_operation(self):

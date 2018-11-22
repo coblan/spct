@@ -22,13 +22,13 @@ class TicketMasterPage(TablePage):
         ls = [
             {'name': 'ticketstake',
              'label': '子注单',
-             'com': 'com_tab_table',
+             'com': 'com-tab-table',
              'par_field': 'ticketid',
              'table_ctx': TicketstakeTable(crt_user=crt_user).get_head_context()
              },
             {'name': 'ticketparlay',
              'label': '串关规则',
-             'com': 'com_tab_table',
+             'com': 'com-tab-table',
              'par_field': 'ticketid',
              'table_ctx': TicketparlayTable(crt_user=crt_user).get_head_context()
              }

@@ -18,7 +18,7 @@ from maindb.marketing.proc_image import procImage
 
 
 class TeamsPage(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
 
     def get_label(self):
         return '球队资料'
@@ -44,9 +44,9 @@ class TeamsPage(TablePage):
                         'editor': 'com-filter-select',
                         'options': [],
                         'related': 'country',
-                        '_director_name': 'league-options', 
+                        'director_name': 'league-options', 
                         'update_options_on': ['row.update_or_insert', 'country.changed'],
-                        'clear_value_on': ['country.changed'],
+                        'clear_value_on': ['country.changed'], # 清除一下，否则 由于当前选中的是别的联赛，新来的联赛不能匹配。
                     }
                 ]
 
@@ -55,7 +55,7 @@ class TeamsPage(TablePage):
                 if head['name'] == 'country':
                     head['update_options_on'] = 'row.update_or_insert'
                     head['changed_emit'] = 'country.changed'
-                    head['_director_name'] = 'contry-options'
+                    head['director_name'] = 'contry-options'
                 return head
             
             @staticmethod  # contry-options
