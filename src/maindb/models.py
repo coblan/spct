@@ -106,8 +106,10 @@ class TbAgentqa(models.Model):
                              verbose_name='标题')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
-    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
-                                     verbose_name='创建人')  # Field name made lowercase.
+    createuser =CreateUserField(db_column='CreateUser', blank=True, null=True,
+                                     verbose_name='创建人')  # Field name made lowe    rcase.
+    #createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
+                                     #verbose_name='创建人')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', choices=ONLINE_STATUS, blank=True, default=1, null=True,
                                  verbose_name='状态')  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort', default=0, blank=True, null=True,

@@ -8,7 +8,7 @@ import json
 from django.core.exceptions import ValidationError
 
 class LeagueGroupPage(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
     def get_label(self): 
         return '联赛组'
     
@@ -20,6 +20,7 @@ class LeagueGroupPage(TablePage):
             if head['name'] == 'groupname':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'baseinfo'
+                head['ctx_name'] = 'leaguegroup_tabs'
                 head['width'] = 200
             return head
         
@@ -28,19 +29,25 @@ class LeagueGroupPage(TablePage):
             for op in ops:
                 if op['name'] == 'add_new':
                     op['tab_name'] = 'baseinfo'
+                    op['ctx_name'] = 'leaguegroup_tabs'
             return ops[0:1]
                 
         
     
     def get_context(self): 
         ctx = super().get_context()
+        ctx['named_ctx'] = self.get_tabs()
+        #ctx['tabs'] = ls
+        return ctx
+    
+    def get_tabs(self): 
         baseinfo = LeagueGroupForm(crt_user= self.crt_user)
         leagueingroup_form = LeagueidInGroupForm(crt_user = self.crt_user)
         spreadform = LeagueGroupSpreadForm(crt_user= self.crt_user)
         ls = [
               {'name': 'baseinfo',
                'label': _('Basic Info'),
-               'com': 'com_tab_fields',
+               'com': 'com-tab-fields',
                'get_data': {
                    'fun': 'get_row',
                    'kws': {
@@ -57,7 +64,7 @@ class LeagueGroupPage(TablePage):
               
               {'name': 'league_list',
                'label': '联赛列表',
-               'com': 'com_tab_fields',
+               'com': 'com-tab-fields',
                'get_data': {
                    'fun': 'get_row',
                    'kws': {
@@ -70,11 +77,11 @@ class LeagueGroupPage(TablePage):
                },
                'heads': leagueingroup_form.get_heads(),
                'ops': leagueingroup_form.get_operations(), 
-               'show': 'groupid!=null',
+               'show': 'scope.par_row.groupid!=null',
                },               
               {'name': 'spreadform',
                'label':'水位',
-               'com': 'com_tab_fields',
+               'com': 'com-tab-fields',
                'get_data': {
                    'fun': 'get_row',
                    'kws': {
@@ -87,12 +94,13 @@ class LeagueGroupPage(TablePage):
                },
                'heads': spreadform.get_heads(),
                'ops': spreadform.get_operations(), 
-               'show': 'groupid!=null',
+               'show': 'scope.par_row.groupid!=null',
                },               
               
         ]
-        ctx['tabs'] = ls
-        return ctx
+        return {
+            'leaguegroup_tabs': ls,
+        }
         
 class LeagueGroupForm(ModelFields):
     readonly = ['groupid']
