@@ -247,8 +247,11 @@ class AgentUser(TablePage):
         def get_operation(self):
             agent = NewAgentUserForm(crt_user= self.crt_user)
             return [
-                {'fun': 'create_child_row', 'par_field': 'parentid','editor': 'com-op-btn' ,
-                 'after_save': 'refresh',
+                #{'fun': 'create_child_row', 'par_field': 'parentid','editor': 'com-op-btn' ,
+                 #'after_save': 'refresh',
+                 #'label': '创建下级用户','fields_ctx': agent.get_head_context(),}, 
+                {'fun': 'add_new', 'editor': 'com-op-btn' ,
+                 'after_save': 'rt=scope.search()',
                  'label': '创建下级用户','fields_ctx': agent.get_head_context(),}, 
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
@@ -297,7 +300,8 @@ class NewAgentUserForm(ModelFields):
         nickname =  self.cleaned_data.get('nickname')
         if TbAccount.objects.filter(nickname = nickname).exists():
             self.add_error('nickname', '昵称已经存在')
-        parentid = self.kw.get('carry_parents')[-1]['value']
+        parentid = self.kw.get('meta_par', 0)
+        #parentid = self.kw.get('carry_parents')[-1]['value']
         parent = TbAccount.objects.get(accountid = parentid)
         self.catch_parent = parent
         
@@ -316,7 +320,7 @@ class NewAgentUserForm(ModelFields):
         return dc
     
     def clean_save(self): 
-        parentid = self.kw.get('carry_parents')[-1]['value']
+        parentid = self.kw.get('meta_par', 0)
         self.instance.parentid = parentid
         self.instance.account = self.instance.phone
         self.instance.agent = self.catch_parent.agent

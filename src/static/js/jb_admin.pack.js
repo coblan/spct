@@ -5314,6 +5314,9 @@ var table_store = {
             ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
                 cfg.hide_load();
                 var crt_row = resp.get_row;
+                if (self.search_args._par) {
+                    crt_row.meta_par = self.search_args._par;
+                }
                 //var pop_id= new Date().getTime()
                 // e = {name:'after_save',new_row:event.new_row,old_row:event.old_row}
                 //eventBus.$on('pop-win-'+pop_id,function(e){
@@ -5333,6 +5336,9 @@ var table_store = {
                     var win = pop_fields_layer(crt_row, fields_ctx, function (new_row) {
                         self.update_or_insert(new_row, crt_row);
                         layer.close(win);
+                        if (kws.after_save) {
+                            ex.eval(kws.after_save, self);
+                        }
                     });
                 }
             });
