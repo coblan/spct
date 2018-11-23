@@ -25,8 +25,10 @@ class HelpPage(TablePage):
     def get_context(self):
         ctx = TablePage.get_context(self)
         ctx['named_ctx'] = self.get_named_ctx()
-        ctx['childStore_event_router'] = [
-            {'event': 'row.update_or_insert', 'fun': 'update_ctx', 'ctx_name': 'mtype_options', 'director_name': 'get_mtype_options',}
+        ctx['childStore_event_slot'] = [
+            {'event': 'row.update_or_insert', 'fun': 'update_ctx', 
+             'kws': "rt={director_name:'get_mtype_options',ctx_name:'mtype_options'}",}
+            #{'event': 'row.update_or_insert', 'fun': 'update_ctx', 'ctx_name': 'mtype_options', 'director_name': 'get_mtype_options',}
         ]
             
         
@@ -144,12 +146,13 @@ class HelpPage(TablePage):
 
             def dict_head(self, head):
                 if head['name'] == 'mtype':
-                    #head['ctx_name'] = 'mtype_options'
+                    head['ctx_name'] = 'mtype_options'
                     #head['ctx_field'] = 'options'
-                    head['options'] = get_mtype_options()
+                    head['options'] = []
+                    #get_mtype_options()
                     #head[] = get_mtype_options()
-                    head['director_name'] = 'get_mtype_options'
-                    head['update_options_on'] = 'row.update_or_insert'
+                    #head['director_name'] = 'get_mtype_options'
+                    #head['update_options_on'] = 'row.update_or_insert'
                     
                 return head
             # def get_options(self,name):

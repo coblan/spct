@@ -3703,6 +3703,9 @@ var com_select = {
             //ex.vuexOn(this,this.head.update_options_on,this.clear_value)
             this.parStore.$on(this.head.update_options_on, this.clear_value);
         }
+        if (this.head.ctx_name) {
+            this.head.options = named_ctx[this.head.ctx_name];
+        }
     },
     methods: {
         get_options: function get_options() {
