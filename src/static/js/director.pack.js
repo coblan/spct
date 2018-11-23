@@ -2999,7 +2999,7 @@ var sim_select = {
             Vue.set(this.row, this.head.name, this.head.default);
         }
         var self = this;
-        // 下面这个淘汰了。
+        // 下面这个淘汰了,暂时为了兼容性，放在这里
         if (this.head.remote_options) {
             ex.director_call(this.head.remote_options, { crt_value: this.row[this.head.name] }, function (resp) {
                 self.head.options = resp;
@@ -3662,11 +3662,8 @@ __webpack_require__(102);
 
 var com_select = {
     props: ['head', 'search_args', 'config'],
-    template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm com-filter-select" >\n        <option v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy( head.options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
+    template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm com-filter-select" >\n        <option v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy(options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
-        //if(!this.search_args[this.head.name]){
-        //Vue.set(this.search_args,this.head.name,'')
-        //}
         var self = this;
         return {
             order: this.head.order || false,
@@ -3676,6 +3673,13 @@ var com_select = {
     computed: {
         myvalue: function myvalue() {
             return this.search_args[this.head.name];
+        },
+        options: function options() {
+            if (this.head.ctx_name) {
+                return named_ctx[this.head.ctx_name];
+            } else {
+                return this.head.options;
+            }
         }
     },
     watch: {
@@ -3684,8 +3688,6 @@ var com_select = {
 
             if (this.head.changed_emit) {
                 this.parStore.$emit(this.head.changed_emit, v);
-                //ex.vuexEmit(this,this.head.changed_emit)
-                //this.$store.state[parName].childbus.$emit(this.head.changed_emit)
             }
         }
     },
@@ -3699,16 +3701,14 @@ var com_select = {
             this.parStore.$on(this.head.update_options_on, this.get_options);
         }
         // 清空值
-        if (this.head.clear_value_on) {
-            //ex.vuexOn(this,this.head.update_options_on,this.clear_value)
-            this.parStore.$on(this.head.update_options_on, this.clear_value);
-        }
-        if (this.head.ctx_name) {
-            this.head.options = named_ctx[this.head.ctx_name];
-        }
+        //if(this.head.clear_value_on){
+        //    //ex.vuexOn(this,this.head.update_options_on,this.clear_value)
+        //    this.parStore.$on(this.head.update_options_on,this.clear_value)
+        //}
     },
     methods: {
         get_options: function get_options() {
+            this.clear_value();
             var self = this;
             console.log('sss');
             ex.director_call(this.head.director_name, { search_args: self.search_args }, function (resp) {
