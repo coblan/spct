@@ -787,6 +787,23 @@ class TbMaxpayouttype(models.Model):
     def __str__(self):
         return self.description
 
+class TbMaxpayoutBasketball(models.Model):
+    tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    tournamentid = models.IntegerField(db_column='TournamentID', blank=True, null=True)  # Field name made lowercase.
+    matchid = models.BigIntegerField(db_column='MatchID', blank=True, null=True)  # Field name made lowercase.
+    limittype = models.IntegerField(db_column='LimitType')  # Field name made lowercase.
+    accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
+    oddstypegroup = models.IntegerField(db_column='OddsTypeGroup', blank=True, null=True)  # Field name made lowercase.
+    viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True)  # Field name made lowercase.
+    maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_MaxPayout_Basketball'
 
 class TbMessageUnsend(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
