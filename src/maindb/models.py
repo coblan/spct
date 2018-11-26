@@ -1599,9 +1599,9 @@ class TbPaychannel(models.Model):
     channeltype = models.CharField(db_column='ChannelType', max_length=50,
                                    verbose_name='渠道名称')  # Field name made lowercase.
     active = models.BooleanField(db_column='Active', default=True)  # Field name made lowercase.
-    minamount = models.DecimalField(db_column='MinAmount', max_digits=18,
+    minamount = models.DecimalField(db_column='MinAmount', max_digits=18, default = 0, 
                                     decimal_places=2, verbose_name='最小金额')  # Field name made lowercase.
-    maxamount = models.DecimalField(db_column='MaxAmount', max_digits=18,
+    maxamount = models.DecimalField(db_column='MaxAmount', max_digits=18, default = 0,
                                     decimal_places=2, verbose_name='最大金额')  # Field name made lowercase.
     optionalamount = models.CharField(db_column='OptionalAmount', max_length=500, verbose_name='快捷金额',
                                       help_text='多个金额以,分割')  # Field name made lowercase.

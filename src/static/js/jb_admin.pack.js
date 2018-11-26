@@ -1518,8 +1518,8 @@ var pop_table_select = {
         }
     },
     mounted: function mounted() {
-        var self = this;
-        var name = this.head.name;
+        //var self=this
+        //var name =this.head.name
         //this.validator=$(this.$el).validator({
         //    fields: {
         //        name:'required;'
@@ -5283,6 +5283,25 @@ var table_store = {
         }
     },
     methods: {
+        express: function express(kws) {
+            var self = this;
+            var row_match_fun = kws.row_match;
+            if (row_match_fun && !row_match[row_match_fun](self, kws)) {
+                return;
+            }
+            if (kws.confirm_msg) {
+                layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
+                    layer.close(index);
+                    ex.eval(kws.express, self);
+                });
+            } else {
+                var real_kws = ex.copy(kws);
+                if (kws.update_kws) {
+                    ex.assign(real_kws, ex.eval(real_kws, { ts: self, kws: kws }));
+                }
+                ex.eval(real_kws.express, { ts: self, kws: real_kws });
+            }
+        },
         search: function search() {
             this.search_args._page = 1;
             this.getRows();
@@ -5413,7 +5432,11 @@ var table_store = {
                     if (!resp.save_rows.errors) {
                         ex.each(resp.save_rows, function (new_row) {
                             delete new_row._director_name; // [1]  这里还原回去
-                            self.update_or_insert(new_row);
+                            if (kws.after_save) {
+                                ex.eval(kws.after_save, { new_row: new_row, ts: self });
+                            } else {
+                                self.update_or_insert(new_row);
+                            }
                         });
                         self.clearSelection();
 
@@ -5491,9 +5514,9 @@ var table_store = {
                 return;
             }
 
-            function bb() {
+            function bb(new_row, callback) {
                 cfg.show_load();
-                ex.director_call(kws.director_name, { rows: self.selected }, function (resp) {
+                ex.director_call(kws.director_name, { rows: self.selected, new_row: new_row }, function (resp) {
                     if (!resp.msg) {
                         cfg.hide_load(2000);
                     } else {
@@ -5503,24 +5526,52 @@ var table_store = {
                         cfg.showMsg(resp.msg);
                     }
 
-                    // 返回rows ，默认更新
-                    if (resp.rows) {
-                        self.update_rows(resp.rows);
+                    if (kws.after_save) {
+                        ex.eval(kws.after_save, { resp: resp, ts: self });
+                    } else {
+                        // 兼容老的调用
+                        // 返回rows ，默认更新
+                        if (resp.rows) {
+                            self.update_rows(resp.rows);
+                        }
+                        if (resp.row) {
+                            self.update_or_insert(resp.row);
+                        }
                     }
-                    if (resp.row) {
-                        self.update_or_insert(resp.row);
-                    }
+
                     self.clearSelection();
+                    if (callback) {
+                        callback(resp);
+                    }
                 });
+            }
+
+            function judge_pop_fun() {
+                var one_row = {};
+                ex.assign(one_row, ex.eval(kws.pre_set));
+                if (kws.fields_ctx) {
+                    ex.map(kws.fields_ctx.heads, function (head) {
+                        if (!head.name.startsWith('_') && one_row[head.name] == undefined) {
+                            one_row[head.name] = self.selected[0][head.name];
+                        }
+                    });
+                    var win_index = pop_edit_local(one_row, kws.fields_ctx, function (new_row, store) {
+                        bb(new_row, function (resp) {
+                            layer.close(win_index);
+                        });
+                    });
+                } else {
+                    bb(one_row);
+                }
             }
 
             if (kws.confirm_msg) {
                 layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
                     layer.close(index);
-                    bb();
+                    judge_pop_fun();
                 });
             } else {
-                bb();
+                judge_pop_fun();
             }
         },
         arraySpanMethod: function arraySpanMethod(_ref) {

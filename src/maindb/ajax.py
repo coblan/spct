@@ -35,6 +35,7 @@ def produce_match_outcome(row):
     """
     #url = 'http://192.168.40.103:9001/Match/ManualResulting'
     url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
+    
     data ={
         'MatchID':row.get('matchid'),
         'Team1Score':row.get('home_score', 0),
@@ -44,7 +45,7 @@ def produce_match_outcome(row):
         'Team1Corner':row.get('home_corner', 0),
         'Team2Corner':row.get('away_corner', 0),
         'Terminator': 'adminSys',
-        'PeriodType': 2,
+        'PeriodType': row.get('PeriodType'),  # 1上半场 0全场 2 上半场+ 全场
         
     }    
     

@@ -671,6 +671,40 @@ window.help_logic = help_logic;
 "use strict";
 
 
+var manual_end_money = function manual_end_money(self, kws) {
+    if (self.selected.length != 1) {
+        cfg.showMsg('请选择一条记录');
+        return;
+    }
+
+    var crt_row = self.selected[0];
+    //if(crt_row.statuscode !=100){
+    //    cfg.showMsg('请先结束比赛')
+    //    return
+    //}
+
+    var mt = /(\d+):(\d+)/.exec(crt_row.matchscore);
+    if (mt) {
+        var home_score = mt[1];
+        var away_score = mt[2];
+    } else {
+        var home_score = '';
+        var away_score = '';
+    }
+
+    var row = {
+        matchid: crt_row.matchid,
+        _matchid_label: crt_row._matchid_label,
+        home_score: home_score,
+        away_score: away_score
+        //statuscode:crt_row.statuscode
+    };
+    pop_fields_layer(row, kws.fields_ctx, function (e) {
+        alert(new_row);
+    });
+};
+window.manual_end_money = manual_end_money;
+
 var match_logic = {
     mounted: function mounted() {
         var self = this;
@@ -860,14 +894,44 @@ var produce_match_outcome = {
         var self = this;
         ex.assign(this.op_funs, {
             produce_match_outcome: function produce_match_outcome(kws) {
-                var rt = ex.vueBroadCall(self.$parent, 'isValid');
-                for (var i = 0; i < rt.length; i++) {
-                    if (!rt[i]) {
+                // 不验证了，因为可以不填
+                //var rt =ex.vueBroadCall(self.$parent,'isValid')
+                //for(var i=0;i<rt.length;i++){
+                //    if(!rt[i]){
+                //        return
+                //    }
+                //}
+                var half = false;
+                var full = false;
+                if (self.row.home_half_score && self.row.away_half_score) {
+                    half = true;
+                }
+                if (self.row.home_score && self.row.away_score) {
+                    full = true;
+                }
+                var msg = '';
+                if (!half && !full) {
+                    cfg.showError('请至少完成一行数据填写！');
+                    return;
+                }
+                if (half && full) {
+                    msg = '【上半场】&【全场】';
+                    if (self.row.home_score < self.row.home_half_score || self.row.away_score < self.row.away_half_score) {
+                        cfg.showError('全场得分不能少于半场得分，请纠正后再提交！');
                         return;
+                    }
+                    self.row.PeriodType = 2;
+                } else {
+                    if (half) {
+                        msg = '【上半场】';
+                        self.row.PeriodType = 1;
+                    } else {
+                        msg = '【全场】';
+                        self.row.PeriodType = 0;
                     }
                 }
 
-                var index = layer.confirm('确认手动结算?', function (index) {
+                var index = layer.confirm('\u786E\u8BA4\u624B\u52A8\u7ED3\u7B97' + msg + '?', function (index) {
                     layer.close(index);
                     var post_data = [{ fun: 'produce_match_outcome', row: self.row }];
                     cfg.show_load();
@@ -899,8 +963,9 @@ var produceMatchOutcomePanel = {
             this.$emit('submit-success', new_row); //{new_row:new_row,old_row:this.row})
             ex.assign(this.row, new_row);
         }
+
     },
-    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n\n\n        <div style="width: 40em;margin: auto;">\n        <div style="text-align: center;margin:1em;">\n            <span v-text="row._matchid_label"></span>\n        </div>\n          <table style="display: inline-block;">\n            <tr><td></td> <td >\u4E3B\u961F</td><td>\u5BA2\u961F</td></tr>\n\n             <tr>\n                 <td style="padding: 1em 1em">\u534A\u573A\u5F97\u5206</td><td>\n                 <input type="text" v-model="row.home_half_score" data-rule="required;integer(+0)"></td>\n                 <td><input type="text" v-model="row.away_half_score" data-rule="required;integer(+0)"></td>\n             </tr>\n\n            <tr>\n                <td style="padding: 1em 1em">\u5168\u573A\u5F97\u5206</td><td><input type="text" v-model="row.home_score" data-rule="required;integer(+0)"></td>\n                <td><input type="text" v-model="row.away_score" data-rule="required;integer(+0)"></td>\n            </tr>\n\n            <!--<tr><td>\u89D2\u7403</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>-->\n            </table>\n        </div>\n\n\n        <!--<div class="field-panel msg-hide" >-->\n            <!--<field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>-->\n        <!--</div>-->\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
+    template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n\n\n        <div style="width: 40em;margin: auto;">\n        <div style="text-align: center;margin:1em;">\n            <span v-text="row._matchid_label"></span>\n        </div>\n          <table style="display: inline-block;">\n            <tr><td></td> <td >\u4E3B\u961F</td><td>\u5BA2\u961F</td></tr>\n\n             <tr>\n                 <td style="padding: 1em 1em">\u534A\u573A\u5F97\u5206</td><td>\n                 <input type="text" v-model="row.home_half_score" data-rule="integer(+0)"></td>\n                 <td><input type="text" v-model="row.away_half_score" data-rule="integer(+0)"></td>\n             </tr>\n\n            <tr>\n                <td style="padding: 1em 1em">\u5168\u573A\u5F97\u5206</td><td><input type="text" v-model="row.home_score" data-rule="integer(+0)"></td>\n                <td><input type="text" v-model="row.away_score" data-rule="integer(+0)"></td>\n            </tr>\n\n            <!--<tr><td>\u89D2\u7403</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>-->\n            </table>\n        </div>\n\n\n        <!--<div class="field-panel msg-hide" >-->\n            <!--<field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>-->\n        <!--</div>-->\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
     data: function data() {
         return {
             fields_kw: {

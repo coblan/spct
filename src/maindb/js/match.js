@@ -1,3 +1,37 @@
+var manual_end_money=function(self,kws){
+    if(self.selected.length!=1){
+        cfg.showMsg('请选择一条记录')
+        return
+    }
+
+    var crt_row = self.selected[0]
+    //if(crt_row.statuscode !=100){
+    //    cfg.showMsg('请先结束比赛')
+    //    return
+    //}
+
+    var mt = /(\d+):(\d+)/.exec(crt_row.matchscore)
+    if(mt){
+        var home_score= mt[1]
+        var away_score=mt[2]
+    }else{
+        var home_score= ''
+        var away_score=''
+    }
+
+    var row={
+        matchid:crt_row.matchid,
+        _matchid_label:crt_row._matchid_label,
+        home_score:home_score,
+        away_score:away_score,
+        //statuscode:crt_row.statuscode
+    }
+    pop_fields_layer(row,kws.fields_ctx,function(e){
+        alert(new_row)
+    })
+}
+window.manual_end_money=manual_end_money
+
 var match_logic = {
     mounted:function(){
         var self=this
@@ -190,14 +224,45 @@ var produce_match_outcome={
         var self=this
         ex.assign(this.op_funs, {
             produce_match_outcome: function (kws) {
-                var rt =ex.vueBroadCall(self.$parent,'isValid')
-                for(var i=0;i<rt.length;i++){
-                    if(!rt[i]){
+                // 不验证了，因为可以不填
+                //var rt =ex.vueBroadCall(self.$parent,'isValid')
+                //for(var i=0;i<rt.length;i++){
+                //    if(!rt[i]){
+                //        return
+                //    }
+                //}
+                var half=false
+                var full=false
+                if(self.row.home_half_score && self.row.away_half_score){
+                    half=true
+                }
+                if(self.row.home_score && self.row.away_score){
+                    full = true
+                }
+                var msg=''
+                if( !half && !full ){
+                    cfg.showError('请至少完成一行数据填写！')
+                    return
+                }
+                if(half && full){
+                    msg='【上半场】&【全场】'
+                    if(self.row.home_score < self.row.home_half_score || self.row.away_score < self.row.away_half_score){
+                        cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
                         return
+                    }
+                    self.row.PeriodType=2
+                }else{
+                    if(half){
+                        msg='【上半场】'
+                        self.row.PeriodType=1
+                    }else {
+                        msg='【全场】'
+                        self.row.PeriodType=0
                     }
                 }
 
-                var index = layer.confirm('确认手动结算?',function(index){
+
+                var index = layer.confirm(`确认手动结算${msg}?`,function(index){
                     layer.close(index);
                     var post_data = [{fun:'produce_match_outcome',row:self.row}]
                     cfg.show_load()
@@ -231,6 +296,7 @@ var produceMatchOutcomePanel={
                 this.$emit('submit-success',new_row) //{new_row:new_row,old_row:this.row})
                 ex.assign(this.row,new_row)
             },
+
         },
         template:`<div class="flex-v" style="margin: 0;height: 100%;">
     <div class = "flex-grow" style="overflow: auto;margin: 0;">
@@ -245,13 +311,13 @@ var produceMatchOutcomePanel={
 
              <tr>
                  <td style="padding: 1em 1em">半场得分</td><td>
-                 <input type="text" v-model="row.home_half_score" data-rule="required;integer(+0)"></td>
-                 <td><input type="text" v-model="row.away_half_score" data-rule="required;integer(+0)"></td>
+                 <input type="text" v-model="row.home_half_score" data-rule="integer(+0)"></td>
+                 <td><input type="text" v-model="row.away_half_score" data-rule="integer(+0)"></td>
              </tr>
 
             <tr>
-                <td style="padding: 1em 1em">全场得分</td><td><input type="text" v-model="row.home_score" data-rule="required;integer(+0)"></td>
-                <td><input type="text" v-model="row.away_score" data-rule="required;integer(+0)"></td>
+                <td style="padding: 1em 1em">全场得分</td><td><input type="text" v-model="row.home_score" data-rule="integer(+0)"></td>
+                <td><input type="text" v-model="row.away_score" data-rule="integer(+0)"></td>
             </tr>
 
             <!--<tr><td>角球</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>-->

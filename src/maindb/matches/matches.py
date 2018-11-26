@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
-    SelectSearch
+    SelectSearch, Fields, director_view
 from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
@@ -10,7 +10,9 @@ from maindb.rabbitmq_instance import closeHandicap
 import json
 from ..redisInstance import redisInst
 from django.db.models import Q
-
+import urllib
+import requests
+from django.conf import settings
 
 class MatchsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -76,12 +78,14 @@ class MatchsPage(TablePage):
             ]
             ctx['named_ctx'] = {
                 'match_closelivebet_tabs': ls,
-                }
+            }
             return ctx
 
         def get_operation(self):
+            PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
             ops = [
-                {'fun': 'manual_end_money',
+                {'fun': 'express',
+                 'express': "rt=manual_end_money(scope.ts,scope.kws)",
                  'editor': 'com-op-btn',
                  'label': '手动结算',
                  # 'disabled':'!only_one_selected',
@@ -118,7 +122,24 @@ class MatchsPage(TablePage):
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '隐藏', 'confirm_msg': '确认隐藏比赛吗？',
                  'field': 'ishidden',
                  'value': 1, 'visible': 'ishidden' in self.permit.changeable_fields()},
-                {'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘',  'visible': self.permit.can_edit(),}
+                {'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
+                    'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_closelivebet_tabs",par_row:scope.ts.selected[0]})',
+                            'visible': self.permit.can_edit(),}, 
+                 {'fun': 'director_call', 'editor': 'com-op-btn', 
+                  'director_name': 'quit_ticket',
+                  'label': '退单', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
+                  'pre_set': 'rt={PeriodType:2}',
+                  #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
+                 'fields_ctx': PeriodTypeForm_form.get_head_context(),
+                 'visible': 'ishidden' in self.permit.changeable_fields()},
+                #closeHandicap:function(){
+                    #if(self.selected.length !=1){
+                        #cfg.showMsg('请选择一条记录')
+                        #return
+                    #}
+                    #self.op_funs.switch_to_tab({tab_name:'special_bet_value',row:self.selected[0]})
+                #},                      
+                #{'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘',  'visible': self.permit.can_edit(),}
             ]
             return ops
 
@@ -161,6 +182,22 @@ class MatchsPage(TablePage):
                 'isshow': not bool(inst.ishidden),
                 'openlivebet': not bool(inst.closelivebet)
             }
+        @staticmethod
+        @director_view('quit_ticket')
+        def quit_ticket(rows, new_row): 
+            PeriodType = new_row.get('PeriodType')
+            row = rows[0]
+            url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
+            data ={
+                'MatchID':row.get('matchid'),
+                'OrderBack': True,
+                'PeriodType': PeriodType,  # 1上半场 0全场 2 上半场+ 全场
+            }    
+            
+            rt = requests.post(url,data=data)
+            #print(rt.text)
+            dc = json.loads( rt.text )  
+            return {'msg': dc.get('Message'),}
 
 
 class MatchForm(ModelFields):
@@ -201,6 +238,24 @@ class MatchForm(ModelFields):
                 redisInst.set('Backend:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
                               60 * 1000 * 60 * 24 * 7)
 
+class PeriodTypeForm(Fields):
+    def get_heads(self): 
+        return [
+            {'name': 'PeriodType','label': 'PeriodType','editor': 'sim_select','options': [
+                {'value': 0, 'label': '全场',}, 
+                {'value': 1, 'label': '上半场',}, 
+                {'value': 2, 'label': '上半场+全场',}
+                ],}
+        ]
+    def get_row(self): 
+        return {
+            'PeriodType': 2,
+            '_director_name': self.get_director_name(),
+        }
+    
+
+        
+        
 
 def get_special_bet_value(matchid):
     """
@@ -389,6 +444,7 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
 director.update({
     'match.table': MatchsPage.tableCls,
     'match.table.edit': MatchForm,
+    'PeriodTypeForm': PeriodTypeForm,
 
 })
 
