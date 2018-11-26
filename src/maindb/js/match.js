@@ -1,3 +1,37 @@
+var manual_end_money=function(self,kws){
+    if(self.selected.length!=1){
+        cfg.showMsg('请选择一条记录')
+        return
+    }
+
+    var crt_row = self.selected[0]
+    //if(crt_row.statuscode !=100){
+    //    cfg.showMsg('请先结束比赛')
+    //    return
+    //}
+
+    var mt = /(\d+):(\d+)/.exec(crt_row.matchscore)
+    if(mt){
+        var home_score= mt[1]
+        var away_score=mt[2]
+    }else{
+        var home_score= ''
+        var away_score=''
+    }
+
+    var row={
+        matchid:crt_row.matchid,
+        _matchid_label:crt_row._matchid_label,
+        home_score:home_score,
+        away_score:away_score,
+        //statuscode:crt_row.statuscode
+    }
+    pop_fields_layer(row,kws.fields_ctx,function(e){
+        alert(new_row)
+    })
+}
+window.manual_end_money=manual_end_money
+
 var match_logic = {
     mounted:function(){
         var self=this

@@ -74,12 +74,15 @@ class MatchsPage(TablePage):
                  ]
                  }
             ]
-            ctx['tabs'] = ls
+            ctx['named_ctx'] = {
+                'match_closelivebet_tabs': ls,
+            }
             return ctx
 
         def get_operation(self):
             ops = [
-                {'fun': 'manual_end_money',
+                {'fun': 'express',
+                 'express': "rt=manual_end_money(scope.ts,scope.kws)",
                  'editor': 'com-op-btn',
                  'label': '手动结算',
                  # 'disabled':'!only_one_selected',
@@ -116,7 +119,17 @@ class MatchsPage(TablePage):
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '隐藏', 'confirm_msg': '确认隐藏比赛吗？',
                  'field': 'ishidden',
                  'value': 1, 'visible': 'ishidden' in self.permit.changeable_fields()},
-                {'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘',  'visible': self.permit.can_edit(),}
+                {'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
+                    'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_closelivebet_tabs",par_row:scope.ts.selected[0]})',
+                            'visible': self.permit.can_edit(),}
+                #closeHandicap:function(){
+                    #if(self.selected.length !=1){
+                        #cfg.showMsg('请选择一条记录')
+                        #return
+                    #}
+                    #self.op_funs.switch_to_tab({tab_name:'special_bet_value',row:self.selected[0]})
+                #},                      
+                #{'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘',  'visible': self.permit.can_edit(),}
             ]
             return ops
 
