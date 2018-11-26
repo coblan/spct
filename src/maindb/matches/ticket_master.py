@@ -126,7 +126,9 @@ class TicketMasterPage(TablePage):
 
         def get_operation(self):
             return [
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废', 'field': 'status', 'value': 30,
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废',
+                 'pre_set': 'rt={status:30,memo:""}',
+                 #'field': 'status', 'value': 30,
                  'row_match': 'many_row_match', 'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择未结算的订单',
                  'confirm_msg': '确认作废这些注单吗?', 'fields_ctx': {
                     'heads': [{'name': 'memo', 'label': '备注', 'editor': 'blocktext', }],
