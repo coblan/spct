@@ -106,8 +106,10 @@ class TbAgentqa(models.Model):
                              verbose_name='标题')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
-    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
-                                     verbose_name='创建人')  # Field name made lowercase.
+    createuser =CreateUserField(db_column='CreateUser', blank=True, null=True,
+                                     verbose_name='创建人')  # Field name made lowe    rcase.
+    #createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
+                                     #verbose_name='创建人')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', choices=ONLINE_STATUS, blank=True, default=1, null=True,
                                  verbose_name='状态')  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort', default=0, blank=True, null=True,
@@ -1336,7 +1338,7 @@ class TbTicketparlay(models.Model):
 
 class TbTicketstake(models.Model):
     """子注单"""
-    tid = models.AutoField(db_column='Tid', primary_key=True, verbose_name='序号')  # Field name made lowercase.
+    tid = models.AutoField(db_column='Tid', primary_key=True, verbose_name='记录ID')  # Field name made lowercase.
     # ticketid = models.CharField(db_column='TicketID', max_length=20)  # Field name made lowercase.
     ticket_master = models.ForeignKey(TbTicketmaster, db_column='TicketID',
                                       db_constraint=False, verbose_name=_('ticket master'))
@@ -1512,7 +1514,7 @@ class Whiteuserlist(models.Model):
 
 class TbBankcard(models.Model):
     bankcardid = models.AutoField(db_column='BankCardId', primary_key=True,
-                                  verbose_name='序号')  # Field name made lowercase.
+                                  verbose_name='卡ID')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountId',
                                   db_constraint=False, verbose_name='用户昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=50)  # Field name made lowercase.
@@ -1562,7 +1564,7 @@ class TbSetting(models.Model):
 
 class TbPaychannel(models.Model):
     paychannelid = models.AutoField(db_column='PayChannelId', primary_key=True,
-                                    verbose_name='序号')  # Field name made lowercase.
+                                    verbose_name='渠道ID')  # Field name made lowercase.
     channelname = models.CharField(db_column='ChannelName', max_length=50,
                                    verbose_name='Apolo渠道名称')  # Field name made lowercase.
     channeltype = models.CharField(db_column='ChannelType', max_length=50,
@@ -1591,7 +1593,7 @@ class TbPaychannel(models.Model):
 
 class TbWithdraw(models.Model):
     withdrawid = models.AutoField(db_column='WithdrawId', primary_key=True,
-                                  verbose_name='序号')  # Field name made lowercase.
+                                  verbose_name='记录ID')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,
                                  verbose_name='金额')  # Field name made lowercase.
     orderid = models.CharField(db_column='OrderID', max_length=50, verbose_name='订单号')  # Field name made lowercase.
@@ -1619,7 +1621,7 @@ class TbWithdraw(models.Model):
 
 class TbRecharge(models.Model):
     rechargeid = models.AutoField(db_column='RechargeId', primary_key=True,
-                                  verbose_name='序号')  # Field name made lowercase.
+                                  verbose_name='记录ID')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=2,
                                  verbose_name='金额')  # Field name made lowercase.
     orderid = models.CharField(db_column='OrderID', max_length=50, verbose_name='订单号')  # Field name made lowercase.
@@ -1685,7 +1687,7 @@ class TbBanktypes(models.Model):
 
 
 class TbAgentcommission(models.Model):
-    commid = models.BigAutoField(db_column='CommID', primary_key=True, verbose_name='序号')  # Field name made lowercase.
+    commid = models.BigAutoField(db_column='CommID', primary_key=True, verbose_name='记录ID')  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',
                                   db_constraint=False, verbose_name='用户昵称')  # Field name made lowercase.
     agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.

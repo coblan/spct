@@ -30,7 +30,7 @@ def account_tab(self):
     ls = [
         {'name': 'baseinfo',
          'label': _('Basic Info'),
-         'com': 'com_tab_fields',
+         'com': 'com-tab-fields',
          'get_data': {
              'fun': 'get_row',
              'kws': {
@@ -46,28 +46,28 @@ def account_tab(self):
          },
         {'name': 'balance_log',
          'label': '账目记录',
-         'com': 'com_tab_table',
+         'com': 'com-tab-table',
          'par_field': 'accountid',
          'table_ctx': AccountBalanceTable(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbBalancelog, self.crt_user),
          },
         {'name': 'backcard',
          'label': '银行卡',
-         'com': 'com_tab_table',
+         'com': 'com-tab-table',
          'par_field': 'accountid',
          'table_ctx': UserBankCard(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbBankcard, self.crt_user),
          },
         {'name': 'UserRecharge',
          'label': '充值记录',
-         'com': 'com_tab_table',
+         'com': 'com-tab-table',
          'par_field': 'accountid',
          'table_ctx': UserRecharge(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbRecharge, self.crt_user),
          },
         {'name': 'UserWithdraw',
          'label': '提现记录',
-         'com': 'com_tab_table',
+         'com': 'com-tab-table',
          'par_field': 'accountid',
          'table_ctx': UserWithdraw(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbWithdraw, self.crt_user),
@@ -75,20 +75,20 @@ def account_tab(self):
 
         {'name': 'account_ticket',
          'label': _('Ticket'),
-         'com': 'com_tab_table',
+         'com': 'com-tab-table',
          'par_field': 'accountid',
          'table_ctx': AccountTicketTable(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbTicketmaster, self.crt_user),
          },
         {'name': 'account_login',
          'label': _('Login Log'),
-         'com': 'com_tab_table',
+         'com': 'com-tab-table',
          'par_field': 'accountid',
          'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbLoginlog, self.crt_user), },
         {'name': 'UserStatistics',
          'label': '会员统计',
-         'com': 'com_tab_table',
+         'com': 'com-tab-table',
          'par_field': 'accountid',
          'table_ctx': UserStatisticsTab(crt_user=self.crt_user).get_head_context(),
          'visible': True},
@@ -99,7 +99,11 @@ def account_tab(self):
          'table_ctx': MatchesStatisticsTab(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbMatches, self.crt_user)},
     ]
-    return evalue_container(ls)
+    dc = {
+        'account_tabs':evalue_container(ls)
+    }
+    dc.update(MatchesStatisticsPage.get_tabs(self.crt_user))
+    return dc
 
 
 class AccountPage(TablePage):
@@ -110,11 +114,8 @@ class AccountPage(TablePage):
 
     def get_context(self):
         ctx = super().get_context()
-        ctx['tabs'] = account_tab(self)
-        named_ctx =  {
-            'account_tabs': account_tab(self),
-        }
-        named_ctx.update(MatchesStatisticsPage.get_tabs(self.crt_user) )
+        #ctx['tabs'] = account_tab(self)
+        named_ctx =  account_tab(self)
         ctx['named_ctx'] = named_ctx
         
         return ctx

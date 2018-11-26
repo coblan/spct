@@ -24,10 +24,17 @@ class HelpPage(TablePage):
 
     def get_context(self):
         ctx = TablePage.get_context(self)
-        ctx['named_ctx'] = self.get_tabs()
+        ctx['named_ctx'] = self.get_named_ctx()
+        ctx['childStore_event_slot'] = [
+            {'event': 'row.update_or_insert', 'fun': 'update_ctx', 
+             'kws': "rt={director_name:'get_mtype_options',ctx_name:'mtype_options'}",}
+            #{'event': 'row.update_or_insert', 'fun': 'update_ctx', 'ctx_name': 'mtype_options', 'director_name': 'get_mtype_options',}
+        ]
+            
+        
         return ctx
     
-    def get_tabs(self): 
+    def get_named_ctx(self): 
         help_form = HelpForm(crt_user=self.crt_user)
         ls = [
             {'name': 'help_form',
@@ -47,8 +54,11 @@ class HelpPage(TablePage):
              'ops': help_form.get_operations()
              },
                ]
+        
+        
         return {
             'helpcenter_tabs': ls,
+            'mtype_options':  get_mtype_options(),
         }
     
     class tableCls(ModelTable):
@@ -127,7 +137,7 @@ class HelpPage(TablePage):
             return operations
         
         @staticmethod
-        def gen_help_static_file(): 
+        def gen_help_static_file(**kws): 
             gen_help_file()
             return {'status': 'success',}
 
@@ -136,7 +146,14 @@ class HelpPage(TablePage):
 
             def dict_head(self, head):
                 if head['name'] == 'mtype':
-                    head['options'] = get_mtype_options()
+                    head['ctx_name'] = 'mtype_options'
+                    #head['ctx_field'] = 'options'
+                    head['options'] = []
+                    #get_mtype_options()
+                    #head[] = get_mtype_options()
+                    #head['director_name'] = 'get_mtype_options'
+                    #head['update_options_on'] = 'row.update_or_insert'
+                    
                 return head
             # def get_options(self,name):
             # if name =='mtype':
@@ -164,9 +181,14 @@ class HelpForm(ModelFields):
 
     def dict_head(self, head):
         if head['name'] == 'mtype':
-            head['options'] = []  #get_mtype_options()
-            head['remote_options'] = 'get_mtype_options'
+            head['options'] = []
+            head['ctx_name'] = 'mtype_options'
+            #head['options'] = get_mtype_options()
+            #head['remote_options'] = 'get_mtype_options'
             head['editor'] = 'com-field-select'
+            head['director_name'] = 'get_mtype_options'
+            head['update_options_on'] = 'row.update_or_insert'
+            
         elif head['name'] == 'description':
             head['editor'] = 'richtext'
             #head['config'] = {
@@ -178,7 +200,7 @@ class HelpForm(ModelFields):
 
 
 @request_cache
-def get_mtype_options(row = None):
+def get_mtype_options(row = None, **kws):
     ls = [{'value': 0, 'label': '顶层'}]
     for i in TbQa.objects.filter(mtype=0).order_by('-priority'):
         ls.append({'value': i.type, 'label': i.title})

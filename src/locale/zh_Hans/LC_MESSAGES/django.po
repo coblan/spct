@@ -303,7 +303,7 @@ msgstr "提款限额日志"
 
 #: .\maindb\models.py:31 .\maindb\models.py:413
 msgid "ID"
-msgstr "序号"
+msgstr "ID"
 
 #: .\maindb\models.py:32
 msgid "StartIp"

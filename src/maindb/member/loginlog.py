@@ -10,7 +10,7 @@ from django.db.models import Q
 
 
 class LoginLogPage(TablePage):
-    template = 'jb_admin/table.html'
+    template = 'jb_admin/table_new.html'
 
     def get_label(self):
         return _('Tb Login Log')
