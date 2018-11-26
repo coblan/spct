@@ -157,7 +157,10 @@ class MaxPayoutForm(ModelFields):
             head['placeholder'] = '请选择'
             head['options'] = [{'value': x.pk, 'label': str(x)} for x in
                                TbMaxpayouttype.objects.filter(isenable=True).order_by('level')]
-        if head['name'] in ('oddstypegroup', 'viplv'):
+        if head['name'] == 'oddstypegroup':
+            head['placeholder'] = '请选择'
+            head['options'] = [{'value': x.pk, 'label': str(x)} for x in TbOddstypegroup.objects.filter(sportid = 0)]
+        if head['name'] == 'viplv':
             head['placeholder'] = '请选择'
             
         if head['name'] == 'maxpayout':

@@ -789,11 +789,23 @@ class TbMaxpayouttype(models.Model):
 
 class TbMaxpayoutBasketball(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    tournamentid = models.IntegerField(db_column='TournamentID', blank=True, null=True)  # Field name made lowercase.
-    matchid = models.BigIntegerField(db_column='MatchID', blank=True, null=True)  # Field name made lowercase.
-    limittype = models.IntegerField(db_column='LimitType')  # Field name made lowercase.
-    accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
-    oddstypegroup = models.IntegerField(db_column='OddsTypeGroup', blank=True, null=True)  # Field name made lowercase.
+    tournamentid = models.ForeignKey(to='TbTournamentBasketball', db_constraint=False, db_column='TournamentID', blank=True,
+                                     default=0, null=True, verbose_name='联赛')  # Field name made lowerc    ase.
+    #tournamentid = models.IntegerField(db_column='TournamentID', blank=True, null=True)  # Field name made lowercase.
+    matchid = models.ForeignKey(to= 'TbMatchesBasketball', db_constraint=False, to_field='matchid', db_column='MatchID', blank=True,
+                                default=0, null=True, verbose_name='比赛')  # Field name made lowerc    ase.
+    #matchid = models.BigIntegerField(db_column='MatchID', blank=True, null=True)  # Field name made lowercase.
+    
+    limittype = models.ForeignKey(to='TbMaxpayouttype', db_constraint=False,
+                                  db_column='LimitType', verbose_name='限制类型')  # Field name     made lo
+    #limittype = models.IntegerField(db_column='LimitType')  # Field name made lowercase.
+    
+    accountid = models.ForeignKey(to=TbAccount, db_constraint=False, db_column='AccountID', blank=True,
+                                  null=True, verbose_name='用户昵称')  # Field name made lo    wercase.
+    #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
+    oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, db_column='OddsTypeGroup', blank=True,
+                                      null=True, to_field='oddstypegroup', verbose_name='玩法类型')
+    #oddstypegroup = models.IntegerField(db_column='OddsTypeGroup', blank=True, null=True)  # Field name made lowercase.
     viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True)  # Field name made lowercase.
     maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18, decimal_places=2)  # Field name made lowercase.
     status = models.IntegerField(db_column='Status')  # Field name made lowercase.
@@ -1990,6 +2002,10 @@ class TbMatchesBasketball(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Matches_Basketball'
+    
+    def __str__(self):
+        return '[%(matchid)s]%(home)s vs %(away)s' % {'matchid': self.matchid, 'home': self.team1zh,
+                                                      'away': self.team2zh, }    
         
 class TbTournamentBasketball(models.Model):
     tournamentid = models.IntegerField(db_column='TournamentID', primary_key=True)  # Field name made lowercase.

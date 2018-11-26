@@ -74,7 +74,9 @@ class MatchsPage(TablePage):
                  ]
                  }
             ]
-            ctx['tabs'] = ls
+            ctx['named_ctx'] = {
+                'match_closelivebet_tabs': ls,
+                }
             return ctx
 
         def get_operation(self):
