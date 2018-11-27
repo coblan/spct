@@ -12,7 +12,8 @@ import hashlib
 from django.db import connections
 from django.conf import settings
 import urllib
-
+from .models import TbMatches
+from helpers.director.model_func.dictfy import to_dict
 def get_global():
     return globals()
 
@@ -49,9 +50,30 @@ def produce_match_outcome(row):
         
     }    
     
+    match = TbMatches.objects.get(matchid = row.get('matchid'))
+    
+    if row.get('home_half_score') and row.get('away_half_score'):
+        match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
+        match.statuscode = 31
+    if row.get('home_score') and row.get('away_score'):
+        match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
+        match.homescore = row.get('home_score')
+        match.awayscore = row.get('away_score')   
+        match.statuscode = 100
+    match.save()
+        
+    data = {
+        'SportID': 0, 
+        'MatchID': row.get('matchid'),
+        'PeriodType': row.get('PeriodType'),
+        'OrderBack': False,
+    }
+    
     rt = requests.post(url,data=data)
     #print(rt.text)
-    return json.loads( rt.text )
+    dc = json.loads( rt.text )
+    dc['row'] = to_dict(match)
+    return dc
     
 def update_activity_file():
     gen_activity_file()

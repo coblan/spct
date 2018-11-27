@@ -699,8 +699,9 @@ var manual_end_money = function manual_end_money(self, kws) {
         away_score: away_score
         //statuscode:crt_row.statuscode
     };
-    pop_fields_layer(row, kws.fields_ctx, function (e) {
-        alert(new_row);
+    pop_fields_layer(row, kws.fields_ctx, function (new_row) {
+        ex.vueAssign(self.selected[0], new_row);
+        //alert(new_row)
     });
 };
 window.manual_end_money = manual_end_money;
@@ -938,6 +939,8 @@ var produce_match_outcome = {
                     ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
                         cfg.hide_load();
                         cfg.showMsg(resp.produce_match_outcome.Message);
+                        //ex.vueAssign(self.row,resp.produce_match_outcome.row)
+                        self.$emit('submit-success', resp.produce_match_outcome.row);
                     });
                 });
             }

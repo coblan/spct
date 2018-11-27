@@ -190,6 +190,7 @@ class MatchsPage(TablePage):
             url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
             data ={
                 'MatchID':row.get('matchid'),
+                'SportID': 0, 
                 'OrderBack': True,
                 'PeriodType': PeriodType,  # 1上半场 0全场 2 上半场+ 全场
             }    
@@ -243,7 +244,7 @@ class PeriodTypeForm(Fields):
         return [
             {'name': 'PeriodType','label': 'PeriodType','editor': 'sim_select','options': [
                 {'value': 0, 'label': '全场',}, 
-                {'value': 1, 'label': '上半场',}, 
+                #{'value': 1, 'label': '上半场',}, 
                 {'value': 2, 'label': '上半场+全场',}
                 ],}
         ]

@@ -1982,8 +1982,8 @@ function pop_layer(com_ctx, component_name, callback, layerConfig) {
                 $('#fields-pop-' + pop_id).parents('.layui-layer-content').height(total_height);
             }
         },
-        //shadeClose: true, //点击遮罩关闭
-        content: '<div id="fields-pop-' + pop_id + '" style="height: 100%;width: 100%">\n                    <component :is="component_name" :ctx="com_ctx" @finish="on_finish($event)"></component>\n                </div>',
+        //shadeClose: true, //点击遮罩关闭  style="height: 100%;width: 100%"
+        content: '<div id="fields-pop-' + pop_id + '" class="pop-layer" style="height: 100%;width: 100%">\n                    <component :is="component_name" :ctx="com_ctx" @finish="on_finish($event)"></component>\n                </div>',
         end: function end() {
 
             //eventBus.$emit('openlayer_changed')
