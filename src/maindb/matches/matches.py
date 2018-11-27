@@ -488,6 +488,7 @@ def produce_match_outcome(row):
         'CloseLiveBet': match.closelivebet, 
         'Team1ZH': match.team1zh,
         'Team2ZH': match.team2zh,
+        'StatusCode': match.statuscode,
     }
     updateMatchMongo(dc)    
         
