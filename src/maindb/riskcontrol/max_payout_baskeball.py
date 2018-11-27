@@ -21,7 +21,7 @@ class MaxPayoutBasketballForm(MaxPayoutForm):
         head = super().dict_head(head)
         if head['name'] == 'oddstypegroup':
             head['placeholder'] = '请选择'
-            head['options'] = [{'value': x.pk, 'label': str(x)} for x in TbOddstypegroup.objects.filter(sportid = 1)]
+            head['options'] = [{'value': x.pk, 'label': str(x)} for x in TbOddstypegroup.objects.filter(sportid = 1, enabled = 1)]
 
         if head['name'] == 'tournamentid':
             table_obj = LeagueBasketballSelect(crt_user=self.crt_user)

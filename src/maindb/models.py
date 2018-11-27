@@ -668,7 +668,7 @@ class TbMatches(models.Model):
 class TbMatchesoddsswitch(models.Model):
     matchesoddsswitchid = models.AutoField(db_column='MatchesOddsSwitchID',
                                            primary_key=True)  # Field name made lowercase.
-    sportid = models.IntegerField(db_column='SportID', default=1)  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
     types = models.IntegerField(db_column='Types', blank=True,
                                 help_text='初始值(0)/封比赛(1)/玩法(2)/盘口(3)')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
