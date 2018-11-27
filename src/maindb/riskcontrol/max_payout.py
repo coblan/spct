@@ -234,6 +234,8 @@ class MatchSelect(ModelTable):
     model = TbMatches
     include = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate']
 
+    def inn_filter(self, query): 
+        return query.filter(specialcategoryid = 0)
     def dict_head(self, head):
         dc = {
             'matchid': 100,

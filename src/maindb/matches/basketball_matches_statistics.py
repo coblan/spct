@@ -1,7 +1,6 @@
 from helpers.director.shortcut import page_dc, director
 from .matches_statistics import MatchesStatisticsPage
 from ..models import TbMatchesBasketball
-
 class BasketballMatchesStatisticsPage(MatchesStatisticsPage):
     def get_label(self): 
         return '篮球赛事统计'

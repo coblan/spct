@@ -655,6 +655,13 @@ class TbMatches(models.Model):
     satimestam = models.DateTimeField(db_column='SaTimestam')  # Field name made lowercase.
     closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True, choices=MATCH_CLOSELIVEBET,
                                        verbose_name='关闭走地')  # Field name made lowercase.
+    matchstatustype = models.CharField(db_column='MatchStatusType', max_length=50)  # Field name made lowercase.
+    specialcategoryid = models.IntegerField(db_column='SpecialCategoryID')  # Field name made lowercase.
+    mainleagueid = models.IntegerField(db_column='MainLeagueID')  # Field name made lowercase.
+    mainhomeid = models.IntegerField(db_column='MainHomeID')  # Field name made lowercase.
+    mainawayid = models.IntegerField(db_column='MainAwayID')  # Field name made lowercase.
+    mainmatchid = models.IntegerField(db_column='MainMatchID')  # Field name made lowercase.
+    maineventid = models.CharField(db_column='MainEventID', max_length=100)  # Field name made lowercase.    
 
     class Meta:
         managed = False
@@ -751,7 +758,7 @@ class TbMaxpayout(models.Model):
                                   null=True, verbose_name='用户昵称')  # Field name made lowercase.
     # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
     oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, db_column='OddsTypeGroup', blank=True,
-                                      null=True, to_field='oddstypegroup', verbose_name='玩法类型')
+                                      null=True, verbose_name='玩法类型')
     viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True,
                                 choices=VIP_LEVEL, verbose_name='VIP等级')  # Field name made lowercase.
     maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18,
@@ -804,9 +811,10 @@ class TbMaxpayoutBasketball(models.Model):
                                   null=True, verbose_name='用户昵称')  # Field name made lo    wercase.
     #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
     oddstypegroup = models.ForeignKey(to='TbOddstypegroup', db_constraint=False, db_column='OddsTypeGroup', blank=True,
-                                      null=True, to_field='oddstypegroup', verbose_name='玩法类型')
+                                      null=True, verbose_name='玩法类型')
     #oddstypegroup = models.IntegerField(db_column='OddsTypeGroup', blank=True, null=True)  # Field name made lowercase.
-    viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True)  # Field name made lowercase.
+    viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True, 
+                                choices=VIP_LEVEL,verbose_name='VIP等级')  # Field name made lowercase.
     maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18, decimal_places=2)  # Field name made lowercase.
     status = models.IntegerField(db_column='Status')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True, null=True)  # Field name made lowercase.
@@ -1960,7 +1968,9 @@ class TbMatchesBasketball(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID')  # Field name made lowercase.
-    tournamentid = models.IntegerField(db_column='TournamentID')  # Field name made lowercase.
+    
+    tournamentid = models.ForeignKey(to='TbTournamentBasketball', db_constraint=False, db_column='TournamentID')
+    #tournamentid = models.IntegerField(db_column='TournamentID')  # Field name made lowercase.
     tournamentzh = models.CharField(db_column='TournamentZH', max_length=100, blank=True, null=True)  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID', primary_key=True)  # Field name made lowercase.
     prematchdate = models.DateTimeField(db_column='PreMatchDate')  # Field name made lowercase.
@@ -2021,3 +2031,6 @@ class TbTournamentBasketball(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Tournament_Basketball'
+    
+    def __str__(self):
+        return self.tournamentname   

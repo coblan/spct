@@ -13,6 +13,8 @@ from django.db.models import Q
 import urllib
 import requests
 from django.conf import settings
+from helpers.director.model_func.dictfy import to_dict
+import functools
 
 
 class MatchsPage(TablePage):
@@ -22,6 +24,26 @@ class MatchsPage(TablePage):
     def get_label(self, prefer=None):
         return '比赛信息'
 
+    def get_context(self):
+        ctx = super().get_context()
+        #ctx['extra_table_logic'] = 'match_logic'
+        ls = [
+            {'name': 'special_bet_value',
+             'label': '盘口',
+             'com': 'com-tab-special-bet-value',
+             'update_director': 'football_get_special_bet_value',
+             'save_director': 'football_save_special_bet_value',
+             'ops': [
+                 {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
+                 {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
+             ]
+             }
+        ]
+        ctx['named_ctx'] = {
+            'match_closelivebet_tabs': ls,
+        }
+        return ctx
+    
     class tableCls(ModelTable):
         model = TbMatches
         exclude = []  # 'ishidden', 'closelivebet'
@@ -64,25 +86,7 @@ class MatchsPage(TablePage):
         class sort(RowSort):
             names = ['matchdate']
 
-        def get_context(self):
-            ctx = ModelTable.get_context(self)
-            #ctx['extra_table_logic'] = 'match_logic'
-            ls = [
-                {'name': 'special_bet_value',
-                 'label': '盘口',
-                 'com': 'com-tab-special-bet-value',
-                 'update_director': 'football_get_special_bet_value',
-                 'save_director': 'football_save_special_bet_value',
-                 'ops': [
-                     {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
-                     {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
-                 ]
-                 }
-            ]
-            ctx['named_ctx'] = {
-                'match_closelivebet_tabs': ls,
-            }
-            return ctx
+
 
         def get_operation(self):
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
@@ -101,9 +105,17 @@ class MatchsPage(TablePage):
                                {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
                                {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
                                ],
-                'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn'}, ],
-                'extra_mixins': ['produce_match_outcome'],
-                'fieldsPanel': 'produceMatchOutcomePanel',
+                     #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn'}, ],
+                     
+                  
+                     #'extra_mixins': ['produce_match_outcome'],
+                     #'fieldsPanel': 'produceMatchOutcomePanel',
+                    'option': {
+                           'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                           'produce_match_outcome_director': 'football_produce_match_outcome',
+                        },
+                     'form': 'com-form-produceMatchOutcomePanel',
+                     
                  }, 
                  'visible': self.permit.can_edit(),
                  },
@@ -185,6 +197,7 @@ class MatchsPage(TablePage):
                 'isshow': not bool(inst.ishidden),
                 'openlivebet': not bool(inst.closelivebet)
             }
+        
         @staticmethod
         @director_view('quit_ticket')
         def quit_ticket(rows, new_row): 
@@ -193,6 +206,7 @@ class MatchsPage(TablePage):
             url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
             data ={
                 'MatchID':row.get('matchid'),
+                'SportID': 0, 
                 'OrderBack': True,
                 'PeriodType': PeriodType,  # 1上半场 0全场 2 上半场+ 全场
             }    
@@ -246,7 +260,7 @@ class PeriodTypeForm(Fields):
         return [
             {'name': 'PeriodType','label': 'PeriodType','editor': 'sim_select','options': [
                 {'value': 0, 'label': '全场',}, 
-                {'value': 1, 'label': '上半场',}, 
+                #{'value': 1, 'label': '上半场',}, 
                 {'value': 2, 'label': '上半场+全场',}
                 ],}
         ]
@@ -260,12 +274,15 @@ class PeriodTypeForm(Fields):
         
         
 @director_view('football_get_special_bet_value')
-def get_special_bet_value(matchid):
+def football_get_special_bet_value(matchid): 
+    return get_special_bet_value(matchid,sportid = 0 )
+
+def get_special_bet_value(matchid, sportid = 0 ):
     """
     获取封盘状态数据
     """
     try:
-        TbMatchesoddsswitch.objects.get(matchid=matchid,sportid = 0, status=1, oddstypegroup_id=0)
+        TbMatchesoddsswitch.objects.get(matchid=matchid,sportid = sportid, status=1, oddstypegroup_id=0)
         match_opened = False
     except:
         match_opened = True
@@ -273,7 +290,7 @@ def get_special_bet_value(matchid):
     oddstype = []
     specialbetvalue = []
 
-    for odtp in TbOddstypegroup.objects.filter(enabled=1, sportid = 0):
+    for odtp in TbOddstypegroup.objects.filter(enabled=1, sportid = sportid):
         oddstype.append(
             {
                 'name': odtp.oddstypenamezh,
@@ -304,7 +321,7 @@ def get_special_bet_value(matchid):
             )
 
     # 把 以前操作过的 spvalue 加进来。因为这时通过tbOdds 已经查不到这些 sp value了
-    for switch in TbMatchesoddsswitch.objects.filter(matchid=matchid, sportid = 0,types=3, status = 1):
+    for switch in TbMatchesoddsswitch.objects.filter(matchid=matchid, sportid = sportid,types=3, status = 1):
         name = "%s %s" % (switch.oddstypegroup.oddstypenamezh, switch.specialbetvalue)
         specialbetvalue.append(
             {
@@ -328,7 +345,7 @@ def get_special_bet_value(matchid):
             tmp_ls.append(i)
     specialbetvalue = tmp_ls
 
-    for oddsswitch in TbMatchesoddsswitch.objects.select_related('oddstypegroup').filter(matchid=matchid, status=1,sportid = 0,
+    for oddsswitch in TbMatchesoddsswitch.objects.select_related('oddstypegroup').filter(matchid=matchid, status=1,sportid = sportid,
                                                                                          oddstypegroup__enabled=1):
         # 1 封盘 比赛 这个 OddsTypeGroup =0 所以这里筛选条件里面没有它
         # if oddsswitch.types==1:
@@ -352,14 +369,17 @@ def get_special_bet_value(matchid):
     }
 
 @director_view('football_save_special_bet_value')
-def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue):
+def football_save_special_bet_value(matchid, match_opened, oddstype, specialbetvalue): 
+    return save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue, sportid = 0)
+
+def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue, sportid = 0):
     """
     存储封盘操作
     """
     # TbMatchesoddsswitch.objects.filter(matchid=matchid,status=1).delete()
     batchOperationSwitch = []
 
-    matchSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = 0, types=1, defaults={'status': 0})
+    matchSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = sportid, types=1, defaults={'status': 0})
 
     if not match_opened:
         if matchSwitch.status == 0:
@@ -374,7 +394,7 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
             batchOperationSwitch.append(matchSwitch)
 
         for odtp in oddstype:
-            playMethod, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = 0, types=2,
+            playMethod, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = sportid, types=2,
                                                                             oddstypegroup_id=odtp['oddstypegroup'],
                                                                             defaults={'status': 0})
 
@@ -397,7 +417,7 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
                 if oddstypegroup == i['oddstypegroup']:
                     par_odd = i
                     break
-            spSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = 0, types=3,
+            spSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = sportid, types=3,
                                                                           oddstypegroup_id=par_odd['oddstypegroup'],
                                                                           bettypeid=spbt['BetTypeId'],
                                                                           periodtype=spbt['PeriodType'],
@@ -422,7 +442,7 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
     for switch in batchOperationSwitch:
         ls.append({
             'MatchID': switch.matchid,
-            'SportID': 0,
+            'SportID': sportid,
             'Types': switch.types,
             'OddsTypeGroup': switch.oddstypegroup_id,
             'SpecialBetValue': switch.specialbetvalue,
@@ -434,15 +454,73 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
     closeHandicap(json.dumps(ls))
 
     # 请求service，关闭盘口
-    match = TbMatches.objects.get(matchid=matchid)
-    msg = ['TbMatchesoddsswitch操作成功']
+    #match = TbMatches.objects.get(matchid=matchid)
+    #msg = ['TbMatchesoddsswitch操作成功']
 
-    # if match.livebet == 1:
-    # url = 'http://192.168.40.103:9001/Match/Messages'
-    # rt = requests.post(url,data={'EventName':'oddtypesChanged','MatchID':matchid})
-    # msg.append('已经滚球，请求service封盘，返回结果为:%s'%rt.text)
 
     return {'status': 'success'}  # ,'msg':msg}
+
+
+@director_view('football_produce_match_outcome')
+def football_produce_match_outcome(row): 
+    return produce_match_outcome(row, MatchModel = TbMatches, sportid = 0)
+
+def produce_match_outcome(row, MatchModel , sportid):
+    """
+    手动结算
+    """
+    #url = 'http://192.168.40.103:9001/Match/ManualResulting'
+    url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
+    
+    #data ={
+        #'MatchID':row.get('matchid'),
+        #'Team1Score':row.get('home_score', 0),
+        #'Team2Score':row.get('away_score', 0),
+        #'Team1HalfScore':row.get('home_half_score', 0),
+        #'Team2HalfScore':row.get('away_half_score', 0),        
+        #'Team1Corner':row.get('home_corner', 0),
+        #'Team2Corner':row.get('away_corner', 0),
+        #'Terminator': 'adminSys',
+        #'PeriodType': row.get('PeriodType'),  # 1上半场 0全场 2 上半场+ 全场
+        
+    #}    
+    
+    match = MatchModel.objects.get(matchid = row.get('matchid'))
+    
+    if row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
+        match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
+        match.statuscode = 31
+    if row.get('home_score', '') != '' and row.get('away_score', '') != '':
+        match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
+        match.homescore = row.get('home_score')
+        match.awayscore = row.get('away_score')   
+        match.statuscode = 100
+    #match.ishidden = True
+    match.save()
+    
+    dc = {
+        'MatchID': match.matchid,
+        'IsRecommend': match.isrecommend,
+        'IsHidden': match.ishidden,
+        'CloseLiveBet': match.closelivebet, 
+        'Team1ZH': match.team1zh,
+        'Team2ZH': match.team2zh,
+        'StatusCode': match.statuscode,
+    }
+    updateMatchMongo(dc)    
+        
+    data = {
+        'SportID': sportid, 
+        'MatchID': row.get('matchid'),
+        'PeriodType': row.get('PeriodType'),
+        'OrderBack': False,
+    }
+    
+    rt = requests.post(url,json=data)
+    #print(rt.text)
+    dc = json.loads( rt.text )
+    dc['row'] = to_dict(match)
+    return dc    
 
 
 director.update({

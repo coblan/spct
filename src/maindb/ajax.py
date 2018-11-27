@@ -12,6 +12,9 @@ import hashlib
 from django.db import connections
 from django.conf import settings
 import urllib
+from .models import TbMatches
+from helpers.director.model_func.dictfy import to_dict
+from maindb.mongoInstance import updateMatchMongo
 
 def get_global():
     return globals()
@@ -36,22 +39,53 @@ def produce_match_outcome(row):
     #url = 'http://192.168.40.103:9001/Match/ManualResulting'
     url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
     
-    data ={
-        'MatchID':row.get('matchid'),
-        'Team1Score':row.get('home_score', 0),
-        'Team2Score':row.get('away_score', 0),
-        'Team1HalfScore':row.get('home_half_score', 0),
-        'Team2HalfScore':row.get('away_half_score', 0),        
-        'Team1Corner':row.get('home_corner', 0),
-        'Team2Corner':row.get('away_corner', 0),
-        'Terminator': 'adminSys',
-        'PeriodType': row.get('PeriodType'),  # 1上半场 0全场 2 上半场+ 全场
+    #data ={
+        #'MatchID':row.get('matchid'),
+        #'Team1Score':row.get('home_score', 0),
+        #'Team2Score':row.get('away_score', 0),
+        #'Team1HalfScore':row.get('home_half_score', 0),
+        #'Team2HalfScore':row.get('away_half_score', 0),        
+        #'Team1Corner':row.get('home_corner', 0),
+        #'Team2Corner':row.get('away_corner', 0),
+        #'Terminator': 'adminSys',
+        #'PeriodType': row.get('PeriodType'),  # 1上半场 0全场 2 上半场+ 全场
         
-    }    
+    #}    
+    
+    match = TbMatches.objects.get(matchid = row.get('matchid'))
+    
+    if row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
+        match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
+        match.statuscode = 31
+    if row.get('home_score', '') != '' and row.get('away_score', '') != '':
+        match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
+        match.homescore = row.get('home_score')
+        match.awayscore = row.get('away_score')   
+        match.statuscode = 100
+    match.save()
+    
+    dc = {
+        'MatchID': match.matchid,
+        'IsRecommend': match.isrecommend,
+        'IsHidden': match.ishidden,
+        'CloseLiveBet': match.closelivebet, 
+        'Team1ZH': match.team1zh,
+        'Team2ZH': match.team2zh,
+    }
+    updateMatchMongo(dc)    
+        
+    data = {
+        'SportID': 0, 
+        'MatchID': row.get('matchid'),
+        'PeriodType': row.get('PeriodType'),
+        'OrderBack': False,
+    }
     
     rt = requests.post(url,data=data)
     #print(rt.text)
-    return json.loads( rt.text )
+    dc = json.loads( rt.text )
+    dc['row'] = to_dict(match)
+    return dc
     
 def update_activity_file():
     gen_activity_file()

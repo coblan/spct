@@ -1594,6 +1594,10 @@ Vue.component('com-field-op-btn', {
 "use strict";
 
 
+var _com_form = __webpack_require__(142);
+
+var com_form = _interopRequireWildcard(_com_form);
+
 var _suit_fields = __webpack_require__(4);
 
 var suit_fields = _interopRequireWildcard(_suit_fields);
@@ -1982,8 +1986,8 @@ function pop_layer(com_ctx, component_name, callback, layerConfig) {
                 $('#fields-pop-' + pop_id).parents('.layui-layer-content').height(total_height);
             }
         },
-        //shadeClose: true, //点击遮罩关闭
-        content: '<div id="fields-pop-' + pop_id + '" style="height: 100%;width: 100%">\n                    <component :is="component_name" :ctx="com_ctx" @finish="on_finish($event)"></component>\n                </div>',
+        //shadeClose: true, //点击遮罩关闭  style="height: 100%;width: 100%"
+        content: '<div id="fields-pop-' + pop_id + '" class="pop-layer" style="height: 100%;width: 100%">\n                    <component :is="component_name" :ctx="com_ctx" @finish="on_finish($event)"></component>\n                </div>',
         end: function end() {
 
             //eventBus.$emit('openlayer_changed')
@@ -3225,6 +3229,10 @@ var iframe = _interopRequireWildcard(_iframe);
 var _html_content_panel = __webpack_require__(88);
 
 var html_content_panel = _interopRequireWildcard(_html_content_panel);
+
+var _form_panel = __webpack_require__(141);
+
+var form_panel = _interopRequireWildcard(_form_panel);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -7402,6 +7410,152 @@ __webpack_require__(75);
 
 
 // store
+
+/***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+__webpack_require__(131);
+
+var com_form_panel = exports.com_form_panel = {
+    props: ['ctx'],
+    data: function data() {
+        var self = this;
+        var option = {
+            okBtn: self.ctx.okBtn || '确定',
+            ops: self.ctx.ops
+        };
+        if (this.ctx.option) {
+            ex.assign(option, this.ctx.option);
+        }
+
+        return {
+            row: this.ctx.row || {},
+            heads: this.ctx.heads,
+            form: this.ctx.form || cfg.form || com_form,
+            small: false,
+            small_srn: ex.is_small_screen(),
+            option: option
+
+        };
+    },
+    mounted: function mounted() {
+        if ($(this.$el).width() < 600) {
+            this.small = true;
+        } else {
+            this.small = false;
+        }
+    },
+    methods: {
+        on_finish: function on_finish(e) {
+            this.$emit('finish', e);
+        }
+    },
+    template: '<div :class="[\'flex-v com-fields-panel\',option.cssCls,{\'small_srn\':small_srn}]">\n     <component class="msg-bottom" :is="form" :heads="heads" :row="row" :option="option" @finish="on_finish($event)"></component>\n     </div>'
+};
+window.com_form_panel = com_form_panel;
+Vue.component('com-form-panel', com_form_panel);
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+__webpack_require__(126);
+
+var com_form = exports.com_form = {
+    props: {
+        heads: '',
+        row: '',
+        options: {}
+        //autoWidth:{
+        //    default:function(){
+        //        return true
+        //    }
+        //},
+        //btnCls:{
+        //    default:function(){
+        //        return 'btn-primary btn-sm'
+        //    }
+        //}
+    },
+    data: function data() {
+        return {
+            okBtn: this.option.okBtn || '确定',
+            //autoWidth:this.option.autoWidth==undefined?true:this.option.autoWidth,
+            small_srn: ex.is_small_screen(),
+            small: false
+        };
+    },
+    mounted: function mounted() {
+        // 由于与nicevalidator 有冲突，所以等渲染完成，再检测
+        setTimeout(function () {
+            if ($(this.$el).width() < 600) {
+                this.small = true;
+            } else {
+                this.small = false;
+            }
+        }, 10);
+    },
+    computed: {
+        normed_heads: function normed_heads() {
+            return this.heads;
+        },
+        label_width: function label_width() {
+            if (!this.autoWith) {}
+            var max = 4;
+            ex.each(this.heads, function (head) {
+                if (max < head.label.length) {
+                    max = head.label.length;
+                }
+            });
+            max += 1;
+            return { width: max + 'em' };
+        }
+    },
+    //created:function(){
+    //    if(!this.okBtn){
+    //        this.okBtn='确定'
+    //    }
+    //},
+    components: window._baseInput,
+    mixins: [mix_fields_data, mix_nice_validator],
+    template: ' <div :class="[\'field-panel sim-fields\',{\'small\':small,\'msg-bottom\':small}]"\n    style="text-align:center;">\n           <table class="table-fields">\n        <tr v-for="head in heads">\n            <td class="field-label-td"  valign="top" >\n            <div class="field-label" :style="label_width">\n                <span class="label-content">\n                     <span v-text="head.label"></span>\n                     <span class="req_star" v-if=\'head.required\'>*</span>\n                </span>\n\n\n            </div>\n\n            </td>\n            <td class="field-input-td" >\n                <div class="field-input">\n                    <component v-if="head.editor" :is="head.editor"\n                         @field-event="$emit(\'field-event\',$event)"\n                         :head="head" :row="row"></component>\n\n                </div>\n            </td>\n            <td>\n                <span v-if="head.help_text" class="help-text clickable">\n                            <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                </span>\n            </td>\n        </tr>\n        <slot :row="row">\n            <!--\u6309\u94AE\u6A2A\u8DE8\u4E24\u5217 \uFF01\u5C0F\u5C3A\u5BF8\u65F6 \u5F3A\u5236 -->\n             <tr v-if="crossBtn || small" class="btn-row">\n                <td class="field-input-td" colspan="3">\n                    <div class="submit-block">\n                        <button @click="submit" type="btn"\n                            :class="[\'form-control btn\',btnCls]"><span v-text="okBtn"></span></button>\n                    </div>\n                </td>\n            </tr>\n            <!--\u6309\u94AE\u5728\u7B2C\u4E8C\u5217-->\n               <tr v-else class="btn-row">\n                   <td class="field-label-td"></td>\n                    <td class="field-input-td" colspan="1">\n                        <div class="submit-block">\n                            <button @click="panel_submit" type="btn"\n                                class="btn "><span v-text="okBtn"></span></button>\n                        </div>\n                     </td>\n                     <td></td>\n               </tr>\n        </slot>\n\n    </table>\n\n\n        </div>',
+    methods: {
+
+        panel_submit: function panel_submit() {
+            if (this.$listeners && this.$listeners.submit) {
+                if (this.isValid()) {
+                    this.$emit('submit', this.row);
+                }
+            } else {
+                this.submit();
+            }
+        },
+        show_msg: function show_msg(msg, event) {
+            layer.tips(msg, event.target);
+        },
+        after_save: function after_save(row) {
+            this.$emit('after-save', row);
+        }
+
+    }
+};
+
+window.com_form = com_form;
+
+Vue.component('com-form', com_form);
 
 /***/ })
 /******/ ]);
