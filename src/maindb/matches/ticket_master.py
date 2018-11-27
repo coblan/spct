@@ -73,7 +73,7 @@ class TicketMasterPage(TablePage):
         exclude = ['accountid']
         fields_sort = ['ticketid', 'orderid', 'accountid__nickname', 'parlayrule', 'status',
                        'winbet', 'stakeamount', 'betamount', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
-                       'createtime', 'settletime', 'memo']
+                       'createtime', 'settletime', 'memo','voidreason']
 
         def dict_head(self, head):
             if head['name'] in ['createtime', 'settletime']:
