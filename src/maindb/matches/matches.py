@@ -280,7 +280,7 @@ class PeriodTypeForm(Fields):
 def football_get_special_bet_value(matchid): 
     return get_special_bet_value(matchid,sportid = 0 )
 
-def get_special_bet_value(matchid, sportid = 0 ):
+def get_special_bet_value(matchid, sportid = 0 , oddsModel = TbOdds):
     """
     获取封盘状态数据
     """
@@ -305,7 +305,7 @@ def get_special_bet_value(matchid, sportid = 0 ):
             }
         )
 
-    for odd in TbOdds.objects.filter(match_id=matchid, status=1, oddstype__status=1, oddstype__oddstypegroup__enabled=1) \
+    for odd in oddsModel.objects.filter(match_id=matchid, status=1, oddstype__status=1, oddstype__oddstypegroup__enabled=1) \
             .values('oddstype__oddstypegroup__oddstypenamezh', 'oddstype__oddstypegroup', 'specialbetvalue',
                     'handicapkey', 'oddstype__oddstypeid', 'oddstype__oddstypegroup__periodtype'):
         # print(odd.specialbetvalue)

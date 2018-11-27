@@ -1,6 +1,6 @@
 from helpers.director.shortcut import page_dc, director, director_view
 from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, save_special_bet_value_proc
-from ..models import TbMatchesBasketball
+from ..models import TbMatchesBasketball, TbOddsBasketball
 
 class BasketMatchsPage(MatchsPage):
     
@@ -106,7 +106,7 @@ class BasketMatchForm(MatchForm):
 
 @director_view('basketball_get_special_bet_value')
 def basketball_get_special_bet_value(matchid): 
-    return get_special_bet_value(matchid,sportid = 1 )
+    return get_special_bet_value(matchid,sportid = 1,oddsModel = TbOddsBasketball )
 
 @director_view('basketball_save_special_bet_value')
 def basketball_save_special_bet_value(matchid, match_opened, oddstype, specialbetvalue): 
