@@ -220,7 +220,8 @@ class MatchsPage(TablePage):
 class MatchForm(ModelFields):
     class Meta:
         model = TbMatches
-        exclude = ['marketstatus']
+        exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
+                   'mainhomeid', 'mainawayid', 'mainmatchid']
 
     field_sort = ['matchid', 'team1zh', 'team2zh']
 
@@ -247,12 +248,14 @@ class MatchForm(ModelFields):
             
         }
         updateMatchMongo(dc)
+        self.proc_redis()
 
+    def proc_redis(self): 
         if 'closelivebet' in self.changed_data:
             if self.instance.closelivebet == 0:
-                redisInst.delete('Backend:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid})
+                redisInst.delete('Backend:Soccer:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid})
             else:
-                redisInst.set('Backend:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
+                redisInst.set('Backend:Soccer:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
                               60 * 1000 * 60 * 24 * 7)
 
 class PeriodTypeForm(Fields):

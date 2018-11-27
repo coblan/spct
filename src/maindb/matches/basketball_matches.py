@@ -93,6 +93,15 @@ class BasketMatchsPage(MatchsPage):
 
 class BasketMatchForm(MatchForm):
     model = TbMatchesBasketball
+    exclude = ['marketstatus']
+    
+    def proc_redis(self): 
+        if 'closelivebet' in self.changed_data:
+            if self.instance.closelivebet == 0:
+                redisInst.delete('Backend:Basketball:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid})
+            else:
+                redisInst.set('Backend:Basketball:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
+                              60 * 1000 * 60 * 24 * 7)    
 
 
 @director_view('basketball_get_special_bet_value')
