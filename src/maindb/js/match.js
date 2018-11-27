@@ -26,11 +26,19 @@ var manual_end_money=function(self,kws){
         away_score:away_score,
         //statuscode:crt_row.statuscode
     }
-    pop_fields_layer(row,kws.fields_ctx,function(new_row){
+
+    var ctx=ex.copy(kws.fields_ctx)
+    ctx.row=row
+
+    cfg.pop_middle('com-form-panel',ctx,function(new_row){
         ex.vueAssign(self.selected[0],new_row)
-        //alert(new_row)
     })
+    //pop_fields_layer(row,kws.fields_ctx,function(new_row){
+    //    ex.vueAssign(self.selected[0],new_row)
+    //    //alert(new_row)
+    //})
 }
+
 window.manual_end_money=manual_end_money
 
 var match_logic = {
@@ -265,15 +273,27 @@ var produce_match_outcome={
 
                 var index = layer.confirm(`确认手动结算${msg}?`,function(index){
                     layer.close(index)
-                    var post_data = [{fun:'produce_match_outcome',row:self.row}]
+                    //var post_data = [{fun:'produce_match_outcome',row:self.row}]
+                    //cfg.show_load()
+                    //ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+                    //    cfg.hide_load()
+                    //    cfg.showMsg(resp.produce_match_outcome.Message)
+                    //    //ex.vueAssign(self.row,resp.produce_match_outcome.row)
+                    //    self.$emit('submit-success',resp.produce_match_outcome.row)
+                    //
+                    //})
                     cfg.show_load()
-                    ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
-                        cfg.hide_load()
-                        cfg.showMsg(resp.produce_match_outcome.Message)
-                        //ex.vueAssign(self.row,resp.produce_match_outcome.row)
-                        self.$emit('submit-success',resp.produce_match_outcome.row)
-
+                    var post_data={
+                        row:self.row,
+                        matchid:self.par_row
+                    }
+                    ex.director_call(self.option.produce_match_outcome_director,{row:self.row},function(resp){
+                            cfg.hide_load()
+                            cfg.showMsg(resp.Message)
+                            //ex.vueAssign(self.row,resp.produce_match_outcome.row)
+                            self.$emit('finish',resp.row)
                     })
+
                 })
 
             }
@@ -283,8 +303,8 @@ var produce_match_outcome={
 }
 
 var produceMatchOutcomePanel={
-        props:['row','heads','ops'],
-        mixins:[mix_fields_data,mix_nice_validator],
+        props:['row','heads','option'],
+        mixins:[mix_fields_data,mix_nice_validator,produce_match_outcome],
 
         methods:{
             update_nice:function(){
@@ -341,16 +361,18 @@ var produceMatchOutcomePanel={
      </div>`,
         data:function(){
             return {
-                fields_kw:{
-                    heads:this.heads,
-                    row:this.row,
-                    errors:{},
-                },
+                ops:this.option.ops,
+                //fields_kw:{
+                //    heads:this.heads,
+                //    row:this.row,
+                //    errors:{},
+                //},
             }
         }
  }
 
 
+Vue.component('com-form-produceMatchOutcomePanel',produceMatchOutcomePanel)
 
 window.match_logic = match_logic
 window.produce_match_outcome = produce_match_outcome

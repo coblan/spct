@@ -699,11 +699,19 @@ var manual_end_money = function manual_end_money(self, kws) {
         away_score: away_score
         //statuscode:crt_row.statuscode
     };
-    pop_fields_layer(row, kws.fields_ctx, function (new_row) {
+
+    var ctx = ex.copy(kws.fields_ctx);
+    ctx.row = row;
+
+    cfg.pop_middle('com-form-panel', ctx, function (new_row) {
         ex.vueAssign(self.selected[0], new_row);
-        //alert(new_row)
     });
+    //pop_fields_layer(row,kws.fields_ctx,function(new_row){
+    //    ex.vueAssign(self.selected[0],new_row)
+    //    //alert(new_row)
+    //})
 };
+
 window.manual_end_money = manual_end_money;
 
 var match_logic = {
@@ -934,13 +942,25 @@ var produce_match_outcome = {
 
                 var index = layer.confirm('\u786E\u8BA4\u624B\u52A8\u7ED3\u7B97' + msg + '?', function (index) {
                     layer.close(index);
-                    var post_data = [{ fun: 'produce_match_outcome', row: self.row }];
+                    //var post_data = [{fun:'produce_match_outcome',row:self.row}]
+                    //cfg.show_load()
+                    //ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+                    //    cfg.hide_load()
+                    //    cfg.showMsg(resp.produce_match_outcome.Message)
+                    //    //ex.vueAssign(self.row,resp.produce_match_outcome.row)
+                    //    self.$emit('submit-success',resp.produce_match_outcome.row)
+                    //
+                    //})
                     cfg.show_load();
-                    ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+                    var post_data = {
+                        row: self.row,
+                        matchid: self.par_row
+                    };
+                    ex.director_call(self.option.produce_match_outcome_director, { row: self.row }, function (resp) {
                         cfg.hide_load();
-                        cfg.showMsg(resp.produce_match_outcome.Message);
+                        cfg.showMsg(resp.Message);
                         //ex.vueAssign(self.row,resp.produce_match_outcome.row)
-                        self.$emit('submit-success', resp.produce_match_outcome.row);
+                        self.$emit('finish', resp.row);
                     });
                 });
             }
@@ -949,8 +969,8 @@ var produce_match_outcome = {
 };
 
 var produceMatchOutcomePanel = {
-    props: ['row', 'heads', 'ops'],
-    mixins: [mix_fields_data, mix_nice_validator],
+    props: ['row', 'heads', 'option'],
+    mixins: [mix_fields_data, mix_nice_validator, produce_match_outcome],
 
     methods: {
         update_nice: function update_nice() {
@@ -971,14 +991,17 @@ var produceMatchOutcomePanel = {
     template: '<div class="flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n\n\n        <div style="width: 40em;margin: auto;">\n        <div style="text-align: center;margin:1em;">\n            <span v-text="row._matchid_label"></span>\n        </div>\n          <table style="display: inline-block;">\n            <tr><td></td> <td >\u4E3B\u961F</td><td>\u5BA2\u961F</td></tr>\n\n             <tr>\n                 <td style="padding: 1em 1em">\u534A\u573A\u5F97\u5206</td><td>\n                 <input type="text" v-model="row.home_half_score" data-rule="integer(+0)"></td>\n                 <td><input type="text" v-model="row.away_half_score" data-rule="integer(+0)"></td>\n             </tr>\n\n            <tr>\n                <td style="padding: 1em 1em">\u5168\u573A\u5F97\u5206</td><td><input type="text" v-model="row.home_score" data-rule="integer(+0)"></td>\n                <td><input type="text" v-model="row.away_score" data-rule="integer(+0)"></td>\n            </tr>\n\n            <!--<tr><td>\u89D2\u7403</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>-->\n            </table>\n        </div>\n\n\n        <!--<div class="field-panel msg-hide" >-->\n            <!--<field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>-->\n        <!--</div>-->\n      <div style="height: 15em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>\n    </div>\n     </div>',
     data: function data() {
         return {
-            fields_kw: {
-                heads: this.heads,
-                row: this.row,
-                errors: {}
-            }
+            ops: this.option.ops
+            //fields_kw:{
+            //    heads:this.heads,
+            //    row:this.row,
+            //    errors:{},
+            //},
         };
     }
 };
+
+Vue.component('com-form-produceMatchOutcomePanel', produceMatchOutcomePanel);
 
 window.match_logic = match_logic;
 window.produce_match_outcome = produce_match_outcome;

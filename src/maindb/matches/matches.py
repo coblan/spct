@@ -13,6 +13,7 @@ from django.db.models import Q
 import urllib
 import requests
 from django.conf import settings
+from helpers.director.model_func.dictfy import to_dict
 
 class MatchsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -98,9 +99,17 @@ class MatchsPage(TablePage):
                                {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
                                {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
                                ],
-                'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn'}, ],
-                'extra_mixins': ['produce_match_outcome'],
-                'fieldsPanel': 'produceMatchOutcomePanel',
+                     #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn'}, ],
+                     
+                  
+                     #'extra_mixins': ['produce_match_outcome'],
+                     #'fieldsPanel': 'produceMatchOutcomePanel',
+                    'option': {
+                           'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                           'produce_match_outcome_director': 'football_produce_match_outcome',
+                        },
+                     'form': 'com-form-produceMatchOutcomePanel',
+                     
                  }, 
                  'visible': self.permit.can_edit(),
                  },
@@ -254,9 +263,6 @@ class PeriodTypeForm(Fields):
             '_director_name': self.get_director_name(),
         }
     
-
-        
-        
 
 def get_special_bet_value(matchid):
     """
@@ -440,6 +446,63 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
     # msg.append('已经滚球，请求service封盘，返回结果为:%s'%rt.text)
 
     return {'status': 'success'}  # ,'msg':msg}
+
+
+@director_view('football_produce_match_outcome')
+def produce_match_outcome(row):
+    """
+    手动结算
+    """
+    #url = 'http://192.168.40.103:9001/Match/ManualResulting'
+    url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
+    
+    #data ={
+        #'MatchID':row.get('matchid'),
+        #'Team1Score':row.get('home_score', 0),
+        #'Team2Score':row.get('away_score', 0),
+        #'Team1HalfScore':row.get('home_half_score', 0),
+        #'Team2HalfScore':row.get('away_half_score', 0),        
+        #'Team1Corner':row.get('home_corner', 0),
+        #'Team2Corner':row.get('away_corner', 0),
+        #'Terminator': 'adminSys',
+        #'PeriodType': row.get('PeriodType'),  # 1上半场 0全场 2 上半场+ 全场
+        
+    #}    
+    
+    match = TbMatches.objects.get(matchid = row.get('matchid'))
+    
+    if row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
+        match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
+        match.statuscode = 31
+    if row.get('home_score', '') != '' and row.get('away_score', '') != '':
+        match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
+        match.homescore = row.get('home_score')
+        match.awayscore = row.get('away_score')   
+        match.statuscode = 100
+    match.save()
+    
+    dc = {
+        'MatchID': match.matchid,
+        'IsRecommend': match.isrecommend,
+        'IsHidden': match.ishidden,
+        'CloseLiveBet': match.closelivebet, 
+        'Team1ZH': match.team1zh,
+        'Team2ZH': match.team2zh,
+    }
+    updateMatchMongo(dc)    
+        
+    data = {
+        'SportID': 0, 
+        'MatchID': row.get('matchid'),
+        'PeriodType': row.get('PeriodType'),
+        'OrderBack': False,
+    }
+    
+    rt = requests.post(url,json=data)
+    #print(rt.text)
+    dc = json.loads( rt.text )
+    dc['row'] = to_dict(match)
+    return dc    
 
 
 director.update({
