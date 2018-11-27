@@ -584,34 +584,61 @@ var com_tab_special_bet_value = {
     methods: {
         save: function save() {
             var self = this;
-            var post_data = [{ fun: 'save_special_bet_value',
+            //var post_data=[{fun:'save_special_bet_value',
+            //    matchid:this.par_row.matchid,
+            //    match_opened:this.match_opened,
+            //    oddstype:this.oddstype,
+            //    specialbetvalue:this.specialbetvalue,
+            //}]
+            //cfg.show_load()
+            //ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+            //    //cfg.hide_load(2000,'封盘成功')
+            //    if(resp.save_special_bet_value.status=='success'){
+            //        cfg.hide_load(2000,'封盘成功')
+            //       setTimeout(function(){
+            //           self.getRowData()
+            //       },10)
+            //    }else{
+            //        cfg.showMsg('error')
+            //    }
+            //})
+            var data = {
                 matchid: this.par_row.matchid,
                 match_opened: this.match_opened,
                 oddstype: this.oddstype,
                 specialbetvalue: this.specialbetvalue
-            }];
+            };
             cfg.show_load();
-            ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
+            ex.director_call(this.tab_head.save_director, data, function (resp) {
                 //cfg.hide_load(2000,'封盘成功')
-                if (resp.save_special_bet_value.status == 'success') {
+                if (resp.status == 'success') {
                     cfg.hide_load(2000, '封盘成功');
                     setTimeout(function () {
                         self.getRowData();
                     }, 10);
-                } else {
-                    cfg.showMsg('error');
                 }
+                //else{
+                //    cfg.showMsg('封盘出现问题')
+                //}
             });
         },
         on_show: function on_show() {},
         getRowData: function getRowData() {
             var self = this;
-            var post_data = [{ fun: 'update_special_bet_value', matchid: this.par_row.matchid }];
+            //var post_data=[{fun:'update_special_bet_value',matchid:this.par_row.matchid}]
+            //cfg.show_load()
+            //ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+            //    self.match_opened=resp.update_special_bet_value.match_opened
+            //    self.oddstype= resp.update_special_bet_value.oddstype
+            //    self.specialbetvalue= resp.update_special_bet_value.specialbetvalue
+            //    cfg.hide_load()
+            //
+            //})
             cfg.show_load();
-            ex.post('/d/ajax/maindb', JSON.stringify(post_data), function (resp) {
-                self.match_opened = resp.update_special_bet_value.match_opened;
-                self.oddstype = resp.update_special_bet_value.oddstype;
-                self.specialbetvalue = resp.update_special_bet_value.specialbetvalue;
+            ex.director_call(this.tab_head.update_director, { matchid: this.par_row.matchid }, function (resp) {
+                self.match_opened = resp.match_opened;
+                self.oddstype = resp.oddstype;
+                self.specialbetvalue = resp.specialbetvalue;
                 cfg.hide_load();
             });
         }
@@ -705,189 +732,192 @@ var manual_end_money = function manual_end_money(self, kws) {
 };
 window.manual_end_money = manual_end_money;
 
-var match_logic = {
-    mounted: function mounted() {
-        var self = this;
-        ex.assign(this.op_funs, {
-            close_match: function close_match(kws) {
-                if (self.selected.length != 1) {
-                    cfg.showMsg('请选择一条记录');
-                    return;
-                }
-                var crt_row = self.selected[0];
-                if (crt_row.statuscode == 100) {
-                    cfg.showMsg('比赛状态已经为结束，不需要手动结束！');
-                    return;
-                }
-
-                var index = layer.confirm('结束比赛?', function (index) {
-                    layer.close(index);
-                    crt_row.statuscode = 100;
-                    var post_data = [{ fun: 'save_row', row: crt_row }];
-                    cfg.show_load();
-                    ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-
-                        if (resp.save_row.errors) {
-                            cfg.warning(JSON.stringify(resp.save_row.errors));
-                        } else {
-                            cfg.hide_load(2000);
-                        }
-                    });
-                });
-            },
-            manual_end_money: function manual_end_money(kws) {
-                if (self.selected.length != 1) {
-                    cfg.showMsg('请选择一条记录');
-                    return;
-                }
-
-                var crt_row = self.selected[0];
-                //if(crt_row.statuscode !=100){
-                //    cfg.showMsg('请先结束比赛')
-                //    return
-                //}
-
-                var mt = /(\d+):(\d+)/.exec(crt_row.matchscore);
-                if (mt) {
-                    var home_score = mt[1];
-                    var away_score = mt[2];
-                } else {
-                    var home_score = '';
-                    var away_score = '';
-                }
-
-                var row = {
-                    matchid: crt_row.matchid,
-                    _matchid_label: crt_row._matchid_label,
-                    home_score: home_score,
-                    away_score: away_score
-                    //statuscode:crt_row.statuscode
-                };
-                pop_fields_layer(row, kws.fields_ctx, function (e) {
-                    alert(new_row);
-                });
-            },
-            jie_suan_pai_cai: function jie_suan_pai_cai(kws) {
-                if (self.selected.length != 1) {
-                    cfg.showMsg('请选择一条记录');
-                    return;
-                }
-            },
-            recommendate: function recommendate(kws) {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.isrecommend = true;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-            un_recommendate: function un_recommendate(kws) {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.isrecommend = false;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-
-            livebet: function livebet(kws) {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.livebet = true;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-            un_livebet: function un_livebet(kws) {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.livebet = false;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-            show_match: function show_match(kws) {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.ishidden = false;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-            hide_match: function hide_match() {
-                if (self.selected.length == 0) {
-                    cfg.showMsg('请选择一些记录');
-                    return;
-                }
-                ex.each(self.selected, function (row) {
-                    row.ishidden = true;
-                });
-                var post_data = [{ fun: 'save_rows', rows: self.selected }];
-                cfg.show_load();
-                ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-                    cfg.hide_load(2000);
-                });
-            },
-            closeHandicap: function closeHandicap() {
-                if (self.selected.length != 1) {
-                    cfg.showMsg('请选择一条记录');
-                    return;
-                }
-                self.op_funs.switch_to_tab({ tab_name: 'special_bet_value', row: self.selected[0] });
-            },
-            change_maxsinglepayout: function change_maxsinglepayout() {
-                if (self.selected.length != 1) {
-                    cfg.showMsg('请选择一条记录');
-                    return;
-                }
-            }
-        });
-    },
-    computed: {
-        only_one_selected: function only_one_selected() {
-            return this.selected.length == 1;
-        },
-        status_is_not_100: function status_is_not_100() {
-            if (this.selected.length == 1) {
-                var row = this.selected[0];
-                if (row.statuscode != 100) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }
-};
+//var match_logic = {
+//    mounted:function(){
+//        var self=this
+//        ex.assign(this.op_funs,{
+//            close_match:function(kws){
+//                if(self.selected.length!=1){
+//                    cfg.showMsg('请选择一条记录')
+//                    return
+//                }
+//                var crt_row = self.selected[0]
+//                if(crt_row.statuscode==100){
+//                    cfg.showMsg('比赛状态已经为结束，不需要手动结束！')
+//                    return
+//                }
+//
+//                var index = layer.confirm('结束比赛?',function(index){
+//                    layer.close(index);
+//                    crt_row.statuscode=100
+//                    var post_data=[{fun:'save_row',row:crt_row}]
+//                    cfg.show_load()
+//                    ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+//
+//                        if(resp.save_row.errors){
+//                            cfg.warning(JSON.stringify( resp.save_row.errors))
+//                        }else{
+//                            cfg.hide_load(2000)
+//
+//                        }
+//
+//                    })
+//                })
+//            },
+//            manual_end_money:function(kws){
+//                if(self.selected.length!=1){
+//                    cfg.showMsg('请选择一条记录')
+//                    return
+//                }
+//
+//                var crt_row = self.selected[0]
+//                //if(crt_row.statuscode !=100){
+//                //    cfg.showMsg('请先结束比赛')
+//                //    return
+//                //}
+//
+//                var mt = /(\d+):(\d+)/.exec(crt_row.matchscore)
+//                if(mt){
+//                    var home_score= mt[1]
+//                    var away_score=mt[2]
+//                }else{
+//                    var home_score= ''
+//                    var away_score=''
+//                }
+//
+//                var row={
+//                    matchid:crt_row.matchid,
+//                    _matchid_label:crt_row._matchid_label,
+//                    home_score:home_score,
+//                    away_score:away_score,
+//                    //statuscode:crt_row.statuscode
+//                }
+//                pop_fields_layer(row,kws.fields_ctx,function(e){
+//                    alert(new_row)
+//                })
+//            },
+//            jie_suan_pai_cai:function(kws){
+//                if(self.selected.length!=1){
+//                    cfg.showMsg('请选择一条记录')
+//                    return
+//                }
+//            },
+//            recommendate:function(kws){
+//                if(self.selected.length==0){
+//                    cfg.showMsg('请选择一些记录')
+//                    return
+//                }
+//                ex.each(self.selected,function(row){
+//                    row.isrecommend=true
+//                })
+//                var post_data=[{fun:'save_rows',rows:self.selected}]
+//                cfg.show_load()
+//                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+//                    cfg.hide_load(2000)
+//                })
+//            },
+//            un_recommendate:function(kws){
+//                if(self.selected.length==0){
+//                    cfg.showMsg('请选择一些记录')
+//                    return
+//                }
+//                ex.each(self.selected,function(row){
+//                    row.isrecommend=false
+//                })
+//                var post_data=[{fun:'save_rows',rows:self.selected}]
+//                cfg.show_load()
+//                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+//                    cfg.hide_load(2000)
+//                })
+//            },
+//
+//            livebet:function(kws){
+//                if(self.selected.length==0){
+//                    cfg.showMsg('请选择一些记录')
+//                    return
+//                }
+//                ex.each(self.selected,function(row){
+//                    row.livebet=true
+//                })
+//                var post_data=[{fun:'save_rows',rows:self.selected}]
+//                cfg.show_load()
+//                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+//                    cfg.hide_load(2000)
+//                })
+//            },
+//            un_livebet:function(kws){
+//                if(self.selected.length==0){
+//                    cfg.showMsg('请选择一些记录')
+//                    return
+//                }
+//                ex.each(self.selected,function(row){
+//                    row.livebet=false
+//                })
+//                var post_data=[{fun:'save_rows',rows:self.selected}]
+//                cfg.show_load()
+//                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+//                    cfg.hide_load(2000)
+//                })
+//            },
+//            show_match:function(kws){
+//                if(self.selected.length==0){
+//                    cfg.showMsg('请选择一些记录')
+//                    return
+//                }
+//                ex.each(self.selected,function(row){
+//                    row.ishidden=false
+//                })
+//                var post_data=[{fun:'save_rows',rows:self.selected}]
+//                cfg.show_load()
+//                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+//                    cfg.hide_load(2000)
+//                })
+//            },
+//            hide_match:function(){
+//                if(self.selected.length==0){
+//                    cfg.showMsg('请选择一些记录')
+//                    return
+//                }
+//                ex.each(self.selected,function(row){
+//                    row.ishidden=true
+//                })
+//                var post_data=[{fun:'save_rows',rows:self.selected}]
+//                cfg.show_load()
+//                ex.post('/d/ajax',JSON.stringify(post_data),function(resp){
+//                    cfg.hide_load(2000)
+//                })
+//            },
+//            closeHandicap:function(){
+//                if(self.selected.length !=1){
+//                    cfg.showMsg('请选择一条记录')
+//                    return
+//                }
+//                self.op_funs.switch_to_tab({tab_name:'special_bet_value',row:self.selected[0]})
+//            },
+//            change_maxsinglepayout:function(){
+//                if(self.selected.length !=1){
+//                    cfg.showMsg('请选择一条记录')
+//                    return
+//                }
+//
+//            }
+//        })
+//    },
+//    computed:{
+//        only_one_selected:function(){
+//            return this.selected.length ==1
+//        },
+//        status_is_not_100:function(){
+//            if(this.selected.length ==1){
+//                var row = this.selected[0]
+//                if(row.statuscode !=100){
+//                    return true
+//                }
+//            }
+//            return false
+//        }
+//    }
+//}
 
 var produce_match_outcome = {
     mounted: function mounted() {
@@ -975,10 +1005,9 @@ var produceMatchOutcomePanel = {
             }
         };
     }
-};
 
-window.match_logic = match_logic;
-window.produce_match_outcome = produce_match_outcome;
+    //window.match_logic = match_logic
+};window.produce_match_outcome = produce_match_outcome;
 window.produceMatchOutcomePanel = produceMatchOutcomePanel;
 
 /***/ }),

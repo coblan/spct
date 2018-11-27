@@ -114,23 +114,42 @@ var com_tab_special_bet_value={
     methods:{
         save:function(){
             var self=this
-            var post_data=[{fun:'save_special_bet_value',
-                matchid:this.par_row.matchid,
-                match_opened:this.match_opened,
-                oddstype:this.oddstype,
-                specialbetvalue:this.specialbetvalue,
-            }]
+            //var post_data=[{fun:'save_special_bet_value',
+            //    matchid:this.par_row.matchid,
+            //    match_opened:this.match_opened,
+            //    oddstype:this.oddstype,
+            //    specialbetvalue:this.specialbetvalue,
+            //}]
+            //cfg.show_load()
+            //ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+            //    //cfg.hide_load(2000,'封盘成功')
+            //    if(resp.save_special_bet_value.status=='success'){
+            //        cfg.hide_load(2000,'封盘成功')
+            //       setTimeout(function(){
+            //           self.getRowData()
+            //       },10)
+            //    }else{
+            //        cfg.showMsg('error')
+            //    }
+            //})
+            var data={
+                    matchid:this.par_row.matchid,
+                    match_opened:this.match_opened,
+                    oddstype:this.oddstype,
+                    specialbetvalue:this.specialbetvalue,
+            }
             cfg.show_load()
-            ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
-                //cfg.hide_load(2000,'封盘成功')
-                if(resp.save_special_bet_value.status=='success'){
-                    cfg.hide_load(2000,'封盘成功')
-                   setTimeout(function(){
-                       self.getRowData()
-                   },10)
-                }else{
-                    cfg.showMsg('error')
-                }
+            ex.director_call(this.tab_head.save_director,data,function(resp){
+                    //cfg.hide_load(2000,'封盘成功')
+                    if(resp.status=='success'){
+                        cfg.hide_load(2000,'封盘成功')
+                       setTimeout(function(){
+                           self.getRowData()
+                       },10)
+                    }
+                    //else{
+                    //    cfg.showMsg('封盘出现问题')
+                    //}
             })
         },
         on_show:function(){
@@ -138,14 +157,21 @@ var com_tab_special_bet_value={
         },
         getRowData:function(){
             var self=this
-            var post_data=[{fun:'update_special_bet_value',matchid:this.par_row.matchid}]
+            //var post_data=[{fun:'update_special_bet_value',matchid:this.par_row.matchid}]
+            //cfg.show_load()
+            //ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
+            //    self.match_opened=resp.update_special_bet_value.match_opened
+            //    self.oddstype= resp.update_special_bet_value.oddstype
+            //    self.specialbetvalue= resp.update_special_bet_value.specialbetvalue
+            //    cfg.hide_load()
+            //
+            //})
             cfg.show_load()
-            ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
-                self.match_opened=resp.update_special_bet_value.match_opened
-                self.oddstype= resp.update_special_bet_value.oddstype
-                self.specialbetvalue= resp.update_special_bet_value.specialbetvalue
-                cfg.hide_load()
-
+            ex.director_call(this.tab_head.update_director,{matchid:this.par_row.matchid},function(resp){
+                    self.match_opened=resp.match_opened
+                    self.oddstype= resp.oddstype
+                    self.specialbetvalue= resp.specialbetvalue
+                    cfg.hide_load()
             })
 
         }

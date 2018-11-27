@@ -14,6 +14,7 @@ import urllib
 import requests
 from django.conf import settings
 
+
 class MatchsPage(TablePage):
     template = 'jb_admin/table.html'
     extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
@@ -65,11 +66,13 @@ class MatchsPage(TablePage):
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
-            ctx['extra_table_logic'] = 'match_logic'
+            #ctx['extra_table_logic'] = 'match_logic'
             ls = [
                 {'name': 'special_bet_value',
                  'label': '盘口',
                  'com': 'com-tab-special-bet-value',
+                 'update_director': 'football_get_special_bet_value',
+                 'save_director': 'football_save_special_bet_value',
                  'ops': [
                      {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
                      {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
@@ -256,13 +259,13 @@ class PeriodTypeForm(Fields):
 
         
         
-
+@director_view('football_get_special_bet_value')
 def get_special_bet_value(matchid):
     """
     获取封盘状态数据
     """
     try:
-        TbMatchesoddsswitch.objects.get(matchid=matchid, status=1, oddstypegroup_id=0)
+        TbMatchesoddsswitch.objects.get(matchid=matchid,sportid = 0, status=1, oddstypegroup_id=0)
         match_opened = False
     except:
         match_opened = True
@@ -270,7 +273,7 @@ def get_special_bet_value(matchid):
     oddstype = []
     specialbetvalue = []
 
-    for odtp in TbOddstypegroup.objects.filter(enabled=1):
+    for odtp in TbOddstypegroup.objects.filter(enabled=1, sportid = 0):
         oddstype.append(
             {
                 'name': odtp.oddstypenamezh,
@@ -301,7 +304,7 @@ def get_special_bet_value(matchid):
             )
 
     # 把 以前操作过的 spvalue 加进来。因为这时通过tbOdds 已经查不到这些 sp value了
-    for switch in TbMatchesoddsswitch.objects.filter(matchid=matchid, types=3, status = 1):
+    for switch in TbMatchesoddsswitch.objects.filter(matchid=matchid, sportid = 0,types=3, status = 1):
         name = "%s %s" % (switch.oddstypegroup.oddstypenamezh, switch.specialbetvalue)
         specialbetvalue.append(
             {
@@ -325,7 +328,7 @@ def get_special_bet_value(matchid):
             tmp_ls.append(i)
     specialbetvalue = tmp_ls
 
-    for oddsswitch in TbMatchesoddsswitch.objects.select_related('oddstypegroup').filter(matchid=matchid, status=1,
+    for oddsswitch in TbMatchesoddsswitch.objects.select_related('oddstypegroup').filter(matchid=matchid, status=1,sportid = 0,
                                                                                          oddstypegroup__enabled=1):
         # 1 封盘 比赛 这个 OddsTypeGroup =0 所以这里筛选条件里面没有它
         # if oddsswitch.types==1:
@@ -348,7 +351,7 @@ def get_special_bet_value(matchid):
         'specialbetvalue': specialbetvalue,
     }
 
-
+@director_view('football_save_special_bet_value')
 def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue):
     """
     存储封盘操作
@@ -356,7 +359,7 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
     # TbMatchesoddsswitch.objects.filter(matchid=matchid,status=1).delete()
     batchOperationSwitch = []
 
-    matchSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, types=1, defaults={'status': 0})
+    matchSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = 0, types=1, defaults={'status': 0})
 
     if not match_opened:
         if matchSwitch.status == 0:
@@ -371,7 +374,7 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
             batchOperationSwitch.append(matchSwitch)
 
         for odtp in oddstype:
-            playMethod, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, types=2,
+            playMethod, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = 0, types=2,
                                                                             oddstypegroup_id=odtp['oddstypegroup'],
                                                                             defaults={'status': 0})
 
@@ -394,7 +397,7 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
                 if oddstypegroup == i['oddstypegroup']:
                     par_odd = i
                     break
-            spSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, types=3,
+            spSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = 0, types=3,
                                                                           oddstypegroup_id=par_odd['oddstypegroup'],
                                                                           bettypeid=spbt['BetTypeId'],
                                                                           periodtype=spbt['PeriodType'],
@@ -419,6 +422,7 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
     for switch in batchOperationSwitch:
         ls.append({
             'MatchID': switch.matchid,
+            'SportID': 0,
             'Types': switch.types,
             'OddsTypeGroup': switch.oddstypegroup_id,
             'SpecialBetValue': switch.specialbetvalue,
