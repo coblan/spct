@@ -141,7 +141,7 @@ class MatchsPage(TablePage):
                     'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_closelivebet_tabs",par_row:scope.ts.selected[0]})',
                             'visible': self.permit.can_edit(),}, 
                  {'fun': 'director_call', 'editor': 'com-op-btn', 
-                  'director_name': 'quit_ticket',
+                  'director_name': 'football_quit_ticket',
                   'label': '退单', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
                   'pre_set': 'rt={PeriodType:2}',
                   #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
@@ -198,23 +198,25 @@ class MatchsPage(TablePage):
                 'openlivebet': not bool(inst.closelivebet)
             }
         
-        @staticmethod
-        @director_view('quit_ticket')
-        def quit_ticket(rows, new_row): 
-            PeriodType = new_row.get('PeriodType')
-            row = rows[0]
-            url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
-            data ={
-                'MatchID':row.get('matchid'),
-                'SportID': 0, 
-                'OrderBack': True,
-                'PeriodType': PeriodType,  # 1上半场 0全场 2 上半场+ 全场
-            }    
-            
-            rt = requests.post(url,data=data)
-            #print(rt.text)
-            dc = json.loads( rt.text )  
-            return {'msg': dc.get('Message'),}
+
+@director_view('football_quit_ticket')
+def football_quit_ticket(rows, new_row): 
+    return quit_ticket(rows, new_row, sportid = 0)
+
+def quit_ticket(rows, new_row, sportid = 0): 
+    PeriodType = new_row.get('PeriodType')
+    row = rows[0]
+    url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
+    data ={
+        'MatchID':row.get('matchid'),
+        'SportID': sportid, 
+        'OrderBack': True,
+        'PeriodType': PeriodType,  # 1上半场 0全场 2 上半场+ 全场
+    }    
+    
+    rt = requests.post(url,data=data)
+    dc = json.loads( rt.text )  
+    return {'msg': dc.get('Message'),}
 
 
 class MatchForm(ModelFields):

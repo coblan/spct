@@ -1,5 +1,5 @@
 from helpers.director.shortcut import page_dc, director, director_view
-from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, save_special_bet_value_proc
+from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, quit_ticket
 from ..models import TbMatchesBasketball, TbOddsBasketball
 
 class BasketMatchsPage(MatchsPage):
@@ -80,7 +80,7 @@ class BasketMatchsPage(MatchsPage):
                     'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_closelivebet_tabs",par_row:scope.ts.selected[0]})',
                             'visible': self.permit.can_edit(),}, 
                  {'fun': 'director_call', 'editor': 'com-op-btn', 
-                  'director_name': 'quit_ticket',
+                  'director_name': 'basketball_quit_ticket',
                   'label': '退单', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
                   'pre_set': 'rt={PeriodType:2}',
                   #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
@@ -103,6 +103,10 @@ class BasketMatchForm(MatchForm):
                 redisInst.set('Backend:Basketball:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
                               60 * 1000 * 60 * 24 * 7)    
 
+
+@director_view('basketball_quit_ticket')
+def basketball_quit_ticket(rows, new_row): 
+    return quit_ticket(rows, new_row, sportid = 1)
 
 @director_view('basketball_get_special_bet_value')
 def basketball_get_special_bet_value(matchid): 
