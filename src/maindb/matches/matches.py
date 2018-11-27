@@ -479,6 +479,7 @@ def produce_match_outcome(row):
         match.homescore = row.get('home_score')
         match.awayscore = row.get('away_score')   
         match.statuscode = 100
+    #match.ishidden = True
     match.save()
     
     dc = {
