@@ -528,21 +528,24 @@ var com_tab_special_bet_value = {
             oddstype: [],
             specialbetvalue: [],
 
-            ops: this.tab_head.ops
+            ops: this.tab_head.ops || []
         };
     },
-    mixins: [mix_fields_data],
+    //mixins:[mix_fields_data],
     template: '<div class="com_tab_special_bet_value" style="position: absolute;top:0;right:0;left:0;bottom: 0;overflow: auto">\n    <div style="text-align: center;">\n        <span v-text="par_row.matchdate"></span>/\n        <span v-text="par_row.matchid"></span>/\n        <span v-text="par_row.team1zh"></span>\n        <span>VS</span>\n        <span v-text="par_row.team2zh"></span>\n\n    </div>\n    <div>\n           <div class="box">\n\n                <el-switch\n                      v-model="match_opened"\n                      active-color="#13ce66"\n                      inactive-color="#ff4949">\n                </el-switch>\n                <span>\u6574\u573A\u6BD4\u8D5B</span>\n            </div>\n            <div class="box">\n                <div v-for="odtp in normed_oddstype">\n                    <el-switch\n                          v-model="odtp.opened"\n                          active-color="#13ce66"\n                          inactive-color="#ff4949">\n                    </el-switch>\n                    <span v-text="odtp.name"></span>\n                     <!--<span v-text="odtp.oddstypeid"></span>-->\n                      <!--<span v-text="odtp.oddstypegroup"></span>-->\n                </div>\n            </div>\n            <div class="box">\n                <div v-for="spbet in normed_specailbetvalue" :class="spbet.cls">\n                    <el-switch\n                          v-model="spbet.opened"\n                          active-color="#13ce66"\n                          inactive-color="#ff4949">\n                    </el-switch>\n                    <span v-text="spbet.name"></span>\n                    <!--<span v-text="spbet.specialbetvalue"></span>-->\n                     <!--<span v-text="spbet.oddsid"></span>-->\n                </div>\n            </div>\n\n             <div class="oprations">\n                <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.fun" :head="op" @operation="on_operation(op)"></component>\n            </div>\n    </div>\n\n\n    </div>',
     mounted: function mounted() {
         this.getRowData();
 
         var self = this;
-        ex.assign(this.op_funs, {
-            refresh: function refresh() {
-                self.getRowData();
-            },
-            save: function save() {
-                self.save();
+        var vc = this;
+        this.childStore = new Vue({
+            methods: {
+                refresh: function refresh() {
+                    vc.getRowData();
+                },
+                save: function save() {
+                    vc.save();
+                }
             }
         });
     },
@@ -582,6 +585,9 @@ var com_tab_special_bet_value = {
         }
     },
     methods: {
+        on_operation: function on_operation(op) {
+            this.childStore[op.fun](op);
+        },
         save: function save() {
             var self = this;
             //var post_data=[{fun:'save_special_bet_value',
