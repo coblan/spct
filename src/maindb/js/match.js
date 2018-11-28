@@ -1,8 +1,8 @@
 var manual_end_money=function(self,kws){
-    if(self.selected.length!=1){
-        cfg.showMsg('请选择一条记录')
-        return
-    }
+    //if(self.selected.length!=1){
+    //    cfg.showMsg('请选择一条记录')
+    //    return
+    //}
 
     var crt_row = self.selected[0]
     //if(crt_row.statuscode !=100){
@@ -364,13 +364,13 @@ var produceMatchOutcomePanel={
 
              <tr>
                  <td style="padding: 1em 1em">半场得分</td><td>
-                 <input type="text" v-model="row.home_half_score" data-rule="integer(+0)"></td>
-                 <td><input type="text" v-model="row.away_half_score" data-rule="integer(+0)"></td>
+                 <input type="text" v-model="row.home_half_score" data-rule="integer(+0);length(~6)"></td>
+                 <td><input type="text" v-model="row.away_half_score" data-rule="integer(+0);length(~6)"></td>
              </tr>
 
             <tr>
-                <td style="padding: 1em 1em">全场得分</td><td><input type="text" v-model="row.home_score" data-rule="integer(+0)"></td>
-                <td><input type="text" v-model="row.away_score" data-rule="integer(+0)"></td>
+                <td style="padding: 1em 1em">全场得分</td><td><input type="text" v-model="row.home_score" data-rule="integer(+0);length(~6)"></td>
+                <td><input type="text" v-model="row.away_score" data-rule="integer(+0);length(~6)"></td>
             </tr>
 
             <!--<tr><td>角球</td><td><input type="text" v-model="row.home_corner"></td><td><input type="text" v-model="row.away_corner"></td></tr>-->

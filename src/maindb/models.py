@@ -1017,7 +1017,7 @@ class TbOddstypegroup(models.Model):
     """
     """
     tid = models.IntegerField(db_column='TID', primary_key=True)  # Field name made lowercase.
-    sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID', choices= SPORTID_OPTION, verbose_name= '运动类型')  # Field name made lowercase.
     oddstypegroup = models.IntegerField(db_column='OddsTypeGroup', unique=True)  # Field name made lowercase.
     oddstypenamezh = models.CharField(db_column='OddsTypeNameZH', max_length=100, blank=True,
                                       null=True, verbose_name='玩法')  # Field name made lowercase.

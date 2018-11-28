@@ -86,6 +86,23 @@ class MatchsPage(TablePage):
         class sort(RowSort):
             names = ['matchdate']
 
+        def get_context(self):
+            ctx = ModelTable.get_context(self)
+            #ctx['extra_table_logic'] = 'match_logic'
+            ls = [
+                {'name': 'special_bet_value',
+                 'label': '盘口',
+                 'com': 'com-tab-special-bet-value',
+                 'ops': [
+                     {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
+                     {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
+                 ]
+                 }
+            ]
+            ctx['named_ctx'] = {
+                'match_closelivebet_tabs': ls,
+            }
+            return ctx
 
 
         def get_operation(self):
@@ -95,6 +112,7 @@ class MatchsPage(TablePage):
                  'express': "rt=manual_end_money(scope.ts,scope.kws)",
                  'editor': 'com-op-btn',
                  'label': '手动结算',
+                 'row_match': 'one_row',
                  # 'disabled':'!only_one_selected',
                  'fields_ctx': {
                      'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
@@ -105,14 +123,15 @@ class MatchsPage(TablePage):
                                {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
                                {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
                                ],
+                     
+                    'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                    'produce_match_outcome_director': 'football_produce_match_outcome',
+                    
                      #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn'}, ],
                      
                   
                      #'extra_mixins': ['produce_match_outcome'],
                      #'fieldsPanel': 'produceMatchOutcomePanel',
-                    #'formPanel': 'com-form-produceMatchOutcomePanel',
-                    'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                    'produce_match_outcome_director': 'football_produce_match_outcome',
                     #'option': {
                            #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
                            #'produce_match_outcome_director': 'football_produce_match_outcome',
@@ -476,35 +495,55 @@ def football_produce_match_outcome(row):
 def produce_match_outcome(row, MatchModel , sportid):
     """
     手动结算
-    """
-    #url = 'http://192.168.40.103:9001/Match/ManualResulting'
-    url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
-    
-    #data ={
-        #'MatchID':row.get('matchid'),
-        #'Team1Score':row.get('home_score', 0),
-        #'Team2Score':row.get('away_score', 0),
-        #'Team1HalfScore':row.get('home_half_score', 0),
-        #'Team2HalfScore':row.get('away_half_score', 0),        
-        #'Team1Corner':row.get('home_corner', 0),
-        #'Team2Corner':row.get('away_corner', 0),
-        #'Terminator': 'adminSys',
-        #'PeriodType': row.get('PeriodType'),  # 1上半场 0全场 2 上半场+ 全场
-        
-    #}    
+    """ 
     
     match = MatchModel.objects.get(matchid = row.get('matchid'))
+    match.ishidden = True
     
-    if row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
+    crt_settlestatus = 0 if not match.settlestatus else match.settlestatus
+    settlestatus = crt_settlestatus
+    if crt_settlestatus < 1 and row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
         match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
         match.statuscode = 31
-    if row.get('home_score', '') != '' and row.get('away_score', '') != '':
+        settlestatus = 1
+    if crt_settlestatus < 2 and row.get('home_score', '') != '' and row.get('away_score', '') != '':
         match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
         match.homescore = row.get('home_score')
         match.awayscore = row.get('away_score')   
         match.statuscode = 100
-    #match.ishidden = True
+        settlestatus += 2
+    
+    if crt_settlestatus < settlestatus:
+        match.settlestatus = settlestatus
+    else:
+        dc = {
+            1: '上半场',
+            2: '全场',
+            3: '半场&全场',
+        }
+        raise UserWarning('%s已经结算,请不要重复结算!' % dc.get(settlestatus))
+        
+    data = {
+        'SportID': 0, 
+        'MatchID': row.get('matchid'),
+        'PeriodType': row.get('PeriodType'),
+        'OrderBack': False,
+    }
+    org_match = to_dict(match)
     match.save()
+    
+    url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
+    rt = requests.post(url,json=data)
+    rt_dc = json.loads( rt.text )
+    if not rt_dc.get('Success'):
+        for k in org_match:
+            if not k.startswith('_'):
+                setattr(match, k, org_match[k])
+            match.save()
+            
+        raise UserWarning( rt_dc.get('Message', '手动结算后端发生问题'))
+    
+    rt_dc['row'] = to_dict(match)
     
     dc = {
         'MatchID': match.matchid,
@@ -514,21 +553,11 @@ def produce_match_outcome(row, MatchModel , sportid):
         'Team1ZH': match.team1zh,
         'Team2ZH': match.team2zh,
         'StatusCode': match.statuscode,
+        'Period1Score': match.period1score,
+        'MatchScore': match.matchscore,
     }
-    updateMatchMongo(dc)    
-        
-    data = {
-        'SportID': sportid, 
-        'MatchID': row.get('matchid'),
-        'PeriodType': row.get('PeriodType'),
-        'OrderBack': False,
-    }
-    
-    rt = requests.post(url,json=data)
-    #print(rt.text)
-    dc = json.loads( rt.text )
-    dc['row'] = to_dict(match)
-    return dc    
+    updateMatchMongo(dc)     
+    return rt_dc    
 
 
 director.update({

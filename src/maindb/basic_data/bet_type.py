@@ -1,4 +1,5 @@
-from helpers.director.shortcut import TablePage, ModelTable, ModelFields, page_dc, director
+from helpers.director.shortcut import TablePage, ModelTable, ModelFields, page_dc, director, RowFilter, field_map, model_to_name
+from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from ..models import TbOddstypegroup
 from ..rabbitmq_instance import updateSpread
 import json
@@ -24,11 +25,11 @@ class BetTypePage(TablePage):
     class tableCls(ModelTable):
         model = TbOddstypegroup
         exclude = []
-        fields_sort = ['bettype', 'oddstypenamezh', 'periodtype', 'spread', 'enabled']
+        fields_sort = ['bettype', 'sportid', 'oddstypenamezh', 'periodtype', 'spread', 'enabled']
         pop_edit_field = 'oddstypenamezh'
 
-        # def inn_filter(self, query):
-        # return query.filter(enabled = 1)
+        #def inn_filter(self, query):
+            #return query.filter(enabled = 1)
 
         def get_operation(self):
             return [
@@ -59,9 +60,12 @@ class BetTypePage(TablePage):
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
-            elif head['name'] == 'enabled':
-                head['editor'] = 'com-table-bool-shower'
+            #elif head['name'] == 'enabled':
+                #head['editor'] = 'com-table-bool-shower'
             return head
+        
+        class filters(RowFilter):
+            names = ['sportid', 'enabled']
 
 
 class BetTypeForm(ModelFields):
@@ -76,6 +80,7 @@ class BetTypeForm(ModelFields):
         if head['name'] == 'spread':
             head['fv_rule'] = 'range(0~1);two_valid_digit'
             head['step'] = 0.01
+            head['show'] = 'scope.row.sportid !=1'
         return head
 
     def save_form(self):
@@ -94,6 +99,10 @@ class BetTypeForm(ModelFields):
 
         return rt
 
+
+field_map.update({
+    '%s.enabled' % model_to_name(TbOddstypegroup): IntBoolProc,
+})
 
 director.update({
     'maindb.TbOddstypeGroupPage': BetTypePage.tableCls,
