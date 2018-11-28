@@ -310,7 +310,7 @@ def get_special_bet_value(matchid, sportid = 0 , oddsModel = TbOdds):
             }
         )
 
-    for odd in oddsModel.objects.filter(match_id=matchid, status=1, oddstype__status=1, oddstype__oddstypegroup__enabled=1) \
+    for odd in oddsModel.objects.filter(match_id=matchid, status=1, oddstype__oddskind = 2, oddstype__status=1, oddstype__oddstypegroup__enabled=1) \
             .values('oddstype__oddstypegroup__oddstypenamezh', 'oddstype__oddstypegroup', 'specialbetvalue',
                     'handicapkey', 'oddstype__oddstypeid', 'oddstype__oddstypegroup__periodtype'):
         # print(odd.specialbetvalue)
