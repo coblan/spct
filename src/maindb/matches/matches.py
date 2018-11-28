@@ -15,6 +15,10 @@ import requests
 from django.conf import settings
 from helpers.director.model_func.dictfy import to_dict
 
+import logging
+op_log = logging.getLogger('operation_log')
+
+
 class MatchsPage(TablePage):
     template = 'jb_admin/table.html'
     extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
@@ -366,6 +370,7 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
     存储封盘操作
     """
     # TbMatchesoddsswitch.objects.filter(matchid=matchid,status=1).delete()
+    log_msg = '封盘操作：'
     batchOperationSwitch = []
 
     matchSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, types=1, defaults={'status': 0})
@@ -374,12 +379,14 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
         if matchSwitch.status == 0:
             matchSwitch.status = 1
             matchSwitch.save()
+            log_msg += '开启比赛%s;' % matchid
             batchOperationSwitch.append(matchSwitch)
         # obj, created = TbMatchesoddsswitch.objects.update_or_create(matchid=matchid,types=1, defaults = { 'status': 1})
     else:
         if matchSwitch.status == 1:
             matchSwitch.status = 0
             matchSwitch.save()
+            log_msg += '关闭比赛%s;' % matchid
             batchOperationSwitch.append(matchSwitch)
 
         for odtp in oddstype:
@@ -392,11 +399,13 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
                 if playMethod.status == 0:
                     playMethod.status = 1
                     playMethod.save()
+                    log_msg += '屏蔽玩法：%s' % odtp['oddstypegroup']
                     batchOperationSwitch.append(playMethod)
             else:
                 if playMethod.status == 1:
                     playMethod.status = 0
                     playMethod.save()
+                    log_msg += '开启玩法：%s' % odtp['oddstypegroup']
                     batchOperationSwitch.append(playMethod)
 
         for spbt in specialbetvalue:
@@ -418,11 +427,13 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
                     if spSwitch.status == 0:
                         spSwitch.status = 1
                         spSwitch.save()
+                        log_msg += '屏蔽盘口：%s' % spbt['specialbetvalue']
                         batchOperationSwitch.append(spSwitch)
                 else:
                     if spSwitch.status == 1:
                         spSwitch.status = 0
                         spSwitch.save()
+                        log_msg += '开启盘口：%s' % spbt['specialbetvalue']
                         batchOperationSwitch.append(spSwitch)
                         # TbMatchesoddsswitch.objects.create(matchid=matchid,types=3,status=1,
                         # oddstypegroup_id=par_odd['oddstypegroup'],
@@ -441,9 +452,11 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
         })
     closeHandicap(json.dumps(ls))
 
+    op_log.info(log_msg)
+    
     # 请求service，关闭盘口
-    match = TbMatches.objects.get(matchid=matchid)
-    msg = ['TbMatchesoddsswitch操作成功']
+    #match = TbMatches.objects.get(matchid=matchid)
+    #msg = ['TbMatchesoddsswitch操作成功']
 
     # if match.livebet == 1:
     # url = 'http://192.168.40.103:9001/Match/Messages'
@@ -490,15 +503,16 @@ def produce_match_outcome(row):
         match.statuscode = 100
         settlestatus += 2
     
-    if crt_settlestatus < settlestatus:
-        match.settlestatus = settlestatus
-    else:
-        dc = {
+    settle_dict =  {
             1: '上半场',
             2: '全场',
             3: '半场&全场',
         }
-        raise UserWarning('%s已经结算,请不要重复结算!' % dc.get(settlestatus))
+    if crt_settlestatus < settlestatus:
+        match.settlestatus = settlestatus
+    else:
+        
+        raise UserWarning('%s已经结算,请不要重复结算!' % settle_dict.get(settlestatus))
         
     data = {
         'SportID': 0, 
@@ -517,6 +531,9 @@ def produce_match_outcome(row):
             if not k.startswith('_'):
                 setattr(match, k, org_match[k])
             match.save()
+        op_log.info('手动结算%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
+                                                         'type': settle_dict.get(match.settlestatus),
+                                                        'msg': rt_dc.get('Message',''),})
             
         raise UserWarning( rt_dc.get('Message', '手动结算后端发生问题'))
     
@@ -534,8 +551,11 @@ def produce_match_outcome(row):
         'MatchScore': match.matchscore,
     }
     updateMatchMongo(dc)    
-        
-
+    
+    op_log.info('手动结算%(matchid)s的%(type)s，结算后比分为:上半场:%(period1score)s,全场:%(matchscore)s' % {'matchid': match.matchid, 
+                                                     'type': settle_dict.get(match.settlestatus),
+                                                     'period1score': match.period1score,
+                                                     'matchscore': match.matchscore,})
     return rt_dc    
 
 
