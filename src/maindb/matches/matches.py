@@ -475,7 +475,7 @@ def produce_match_outcome(row):
     #}    
     
     match = TbMatches.objects.get(matchid = row.get('matchid'))
-    
+    match.ishidden = True
     
     crt_settlestatus = 0 if not match.settlestatus else match.settlestatus
     settlestatus = crt_settlestatus
