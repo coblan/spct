@@ -506,13 +506,20 @@ def produce_match_outcome(row):
         'PeriodType': row.get('PeriodType'),
         'OrderBack': False,
     }
+    org_match = to_dict(match)
+    match.save()
     
     url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
     rt = requests.post(url,json=data)
     rt_dc = json.loads( rt.text )
     if not rt_dc.get('Success'):
+        for k in org_match:
+            if not k.startswith('_'):
+                setattr(match, k, org_match[k])
+            match.save()
+            
         raise UserWarning( rt_dc.get('Message', '手动结算后端发生问题'))
-    match.save()
+    
     rt_dc['row'] = to_dict(match)
     
     dc = {
