@@ -655,6 +655,7 @@ class TbMatches(models.Model):
     satimestam = models.DateTimeField(db_column='SaTimestam')  # Field name made lowercase.
     closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True, choices=MATCH_CLOSELIVEBET,
                                        verbose_name='关闭走地')  # Field name made lowercase.
+    settlestatus = models.IntegerField(db_column='SettleStatus', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False

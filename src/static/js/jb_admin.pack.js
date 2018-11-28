@@ -5603,15 +5603,29 @@ var row_match = {
         if (self.selected.length != 1) {
             cfg.showMsg('请选择一行数据！');
             return false;
-        } else {
-            return true;
+        } else if (head.match_express) {
+            var matched = ex.eval(head.match_express, { row: self.selected[0] });
+            if (!matched) {
+                cfg.showError(head.match_msg);
+                return false;
+            }
         }
+        return true;
     },
     many_row: function many_row(self, head) {
         if (self.selected.length == 0) {
             cfg.showMsg('请至少选择一行数据！');
             return false;
         } else {
+            if (head.match_express) {
+                for (var i = 0; i < self.selected.length; i++) {
+                    var row = self.selected[i];
+                    if (!ex.eval(head.match_express, { row: row })) {
+                        cfg.showError(head.match_msg);
+                        return false;
+                    }
+                }
+            }
             return true;
         }
     },

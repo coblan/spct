@@ -66,7 +66,7 @@ class MatchsPage(TablePage):
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
-            ctx['extra_table_logic'] = 'match_logic'
+            #ctx['extra_table_logic'] = 'match_logic'
             ls = [
                 {'name': 'special_bet_value',
                  'label': '盘口',
@@ -89,6 +89,7 @@ class MatchsPage(TablePage):
                  'express': "rt=manual_end_money(scope.ts,scope.kws)",
                  'editor': 'com-op-btn',
                  'label': '手动结算',
+                 'row_match': 'one_row',
                  # 'disabled':'!only_one_selected',
                  'fields_ctx': {
                      'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
@@ -99,16 +100,20 @@ class MatchsPage(TablePage):
                                {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
                                {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
                                ],
+                     
+                    'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                    'produce_match_outcome_director': 'football_produce_match_outcome',
+                    
                      #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn'}, ],
                      
                   
                      #'extra_mixins': ['produce_match_outcome'],
                      #'fieldsPanel': 'produceMatchOutcomePanel',
-                    'option': {
-                           'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                           'produce_match_outcome_director': 'football_produce_match_outcome',
-                        },
-                     'form': 'com-form-produceMatchOutcomePanel',
+                    #'option': {
+                           #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                           #'produce_match_outcome_director': 'football_produce_match_outcome',
+                        #},
+                     #'form': 'com-form-produceMatchOutcomePanel',
                      
                  }, 
                  'visible': self.permit.can_edit(),
@@ -454,7 +459,7 @@ def produce_match_outcome(row):
     手动结算
     """
     #url = 'http://192.168.40.103:9001/Match/ManualResulting'
-    url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
+    
     
     #data ={
         #'MatchID':row.get('matchid'),
@@ -471,14 +476,30 @@ def produce_match_outcome(row):
     
     match = TbMatches.objects.get(matchid = row.get('matchid'))
     
-    if row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
+    
+    crt_settlestatus = 0 if not match.settlestatus else match.settlestatus
+    settlestatus = crt_settlestatus
+    if crt_settlestatus < 1 and row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
         match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
         match.statuscode = 31
-    if row.get('home_score', '') != '' and row.get('away_score', '') != '':
+        settlestatus = 1
+    if crt_settlestatus < 2 and row.get('home_score', '') != '' and row.get('away_score', '') != '':
         match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
         match.homescore = row.get('home_score')
         match.awayscore = row.get('away_score')   
         match.statuscode = 100
+        settlestatus += 2
+    
+    if crt_settlestatus < settlestatus:
+        match.settlestatus = settlestatus
+    else:
+        dc = {
+            1: '上半场',
+            2: '全场',
+            3: '半场&全场',
+        }
+        raise UserWarning('%s已经结算,请不要重复结算!' % dc.get(settlestatus))
+        
     #match.ishidden = True
     match.save()
     
@@ -490,6 +511,7 @@ def produce_match_outcome(row):
         'Team1ZH': match.team1zh,
         'Team2ZH': match.team2zh,
         'StatusCode': match.statuscode,
+        'MatchScore': match.matchscore,
     }
     updateMatchMongo(dc)    
         
@@ -500,6 +522,7 @@ def produce_match_outcome(row):
         'OrderBack': False,
     }
     
+    url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
     rt = requests.post(url,json=data)
     #print(rt.text)
     dc = json.loads( rt.text )
