@@ -49,11 +49,14 @@ class BasketMatchsPage(MatchsPage):
                   
                      #'extra_mixins': ['produce_match_outcome'],
                      #'fieldsPanel': 'produceMatchOutcomePanel',
-                    'option': {
-                           'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                           'produce_match_outcome_director': 'basketball_produce_match_outcome',
-                        },
-                     'form': 'com-form-produceMatchOutcomePanel',
+                     'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                     'produce_match_outcome_director': 'basketball_produce_match_outcome                     me',
+                     
+                    #'option': {
+                           #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                           #'produce_match_outcome_director': 'basketball_produce_match_outcome',
+                        #},
+                     #'form': 'com-form-produceMatchOutcomePanel',
                      
                  }, 
                  'visible': self.permit.can_edit(),
@@ -92,8 +95,9 @@ class BasketMatchsPage(MatchsPage):
 
 
 class BasketMatchForm(MatchForm):
-    model = TbMatchesBasketball
-    exclude = ['marketstatus']
+    class Meta:
+        model = TbMatchesBasketball
+        exclude = ['marketstatus']
     
     def proc_redis(self): 
         if 'closelivebet' in self.changed_data:

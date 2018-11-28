@@ -18,19 +18,30 @@ var manual_end_money=function(self,kws){
         var home_score= ''
         var away_score=''
     }
+    var mt = /(\d+):(\d+)/.exec(crt_row.period1score)
+    if(mt){
+        var home_half_score= mt[1]
+        var away_half_score=mt[2]
+    }else{
+        var home_half_score= ''
+        var away_half_score=''
+    }
 
     var row={
         matchid:crt_row.matchid,
         _matchid_label:crt_row._matchid_label,
         home_score:home_score,
         away_score:away_score,
+        home_half_score:home_half_score,
+        away_half_score:away_half_score,
+
         //statuscode:crt_row.statuscode
     }
 
     var ctx=ex.copy(kws.fields_ctx)
     ctx.row=row
 
-    cfg.pop_middle('com-form-panel',ctx,function(new_row){
+    cfg.pop_middle('com-form-produceMatchOutcomePanel',ctx,function(new_row){
         ex.vueAssign(self.selected[0],new_row)
     })
     //pop_fields_layer(row,kws.fields_ctx,function(new_row){
@@ -233,7 +244,10 @@ var produce_match_outcome={
         var self=this
         ex.assign(this.op_funs, {
             produce_match_outcome: function (kws) {
-                // 不验证了，因为可以不填
+                //
+                if(!self.isValid()){
+                    return
+                }
                 //var rt =ex.vueBroadCall(self.$parent,'isValid')
                 //for(var i=0;i<rt.length;i++){
                 //    if(!rt[i]){
@@ -255,7 +269,7 @@ var produce_match_outcome={
                 }
                 if(half && full){
                     msg='【上半场】&【全场】'
-                    if(self.row.home_score < self.row.home_half_score || self.row.away_score < self.row.away_half_score){
+                    if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
                         cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
                         return
                     }
@@ -287,7 +301,7 @@ var produce_match_outcome={
                         row:self.row,
                         matchid:self.par_row
                     }
-                    ex.director_call(self.option.produce_match_outcome_director,{row:self.row},function(resp){
+                    ex.director_call(self.ctx.produce_match_outcome_director,{row:self.row},function(resp){
                             cfg.hide_load()
                             cfg.showMsg(resp.Message)
                             //ex.vueAssign(self.row,resp.produce_match_outcome.row)
@@ -303,9 +317,24 @@ var produce_match_outcome={
 }
 
 var produceMatchOutcomePanel={
-        props:['row','heads','option'],
+        props:['ctx'],
+        //props:['row','heads','option'],
         mixins:[mix_fields_data,mix_nice_validator,produce_match_outcome],
 
+        data:function(){
+            return {
+                //ops:this.option.ops,
+                row:this.ctx.row,
+                heads:this.ctx.heads,
+                ops:this.ctx.ops,
+
+                //fields_kw:{
+                //    heads:this.heads,
+                //    row:this.row,
+                //    errors:{},
+                //},
+            }
+        },
         methods:{
             update_nice:function(){
                 this.nice_validator= $(this.$el).validator({
@@ -359,16 +388,7 @@ var produceMatchOutcomePanel={
         <component v-for="op in ops" :is="op.editor" @operation="on_operation(op)" :head="op"></component>
     </div>
      </div>`,
-        data:function(){
-            return {
-                ops:this.option.ops,
-                //fields_kw:{
-                //    heads:this.heads,
-                //    row:this.row,
-                //    errors:{},
-                //},
-            }
-        }
+
  }
 
 

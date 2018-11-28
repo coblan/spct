@@ -110,11 +110,14 @@ class MatchsPage(TablePage):
                   
                      #'extra_mixins': ['produce_match_outcome'],
                      #'fieldsPanel': 'produceMatchOutcomePanel',
-                    'option': {
-                           'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                           'produce_match_outcome_director': 'football_produce_match_outcome',
-                        },
-                     'form': 'com-form-produceMatchOutcomePanel',
+                    #'formPanel': 'com-form-produceMatchOutcomePanel',
+                    'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                    'produce_match_outcome_director': 'football_produce_match_outcome',
+                    #'option': {
+                           #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                           #'produce_match_outcome_director': 'football_produce_match_outcome',
+                        #},
+                     #'form': 'com-form-produceMatchOutcomePanel',
                      
                  }, 
                  'visible': self.permit.can_edit(),
@@ -225,7 +228,7 @@ class MatchForm(ModelFields):
         exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
                    'mainhomeid', 'mainawayid', 'mainmatchid']
 
-    field_sort = ['matchid', 'team1zh', 'team2zh']
+    field_sort = ['matchid', 'team1zh', 'team2zh', 'maineventid']
 
     def dict_head(self, head):
         if head['name'] == 'matchid':
