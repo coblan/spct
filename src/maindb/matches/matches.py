@@ -500,21 +500,6 @@ def produce_match_outcome(row):
         }
         raise UserWarning('%s已经结算,请不要重复结算!' % dc.get(settlestatus))
         
-    #match.ishidden = True
-    match.save()
-    
-    dc = {
-        'MatchID': match.matchid,
-        'IsRecommend': match.isrecommend,
-        'IsHidden': match.ishidden,
-        'CloseLiveBet': match.closelivebet, 
-        'Team1ZH': match.team1zh,
-        'Team2ZH': match.team2zh,
-        'StatusCode': match.statuscode,
-        'MatchScore': match.matchscore,
-    }
-    updateMatchMongo(dc)    
-        
     data = {
         'SportID': 0, 
         'MatchID': row.get('matchid'),
@@ -524,10 +509,27 @@ def produce_match_outcome(row):
     
     url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
     rt = requests.post(url,json=data)
-    #print(rt.text)
-    dc = json.loads( rt.text )
-    dc['row'] = to_dict(match)
-    return dc    
+    rt_dc = json.loads( rt.text )
+    if not rt_dc.get('Success'):
+        raise UserWarning( rt_dc.get('Message', '手动结算后端发生问题'))
+    match.save()
+    rt_dc['row'] = to_dict(match)
+    
+    dc = {
+        'MatchID': match.matchid,
+        'IsRecommend': match.isrecommend,
+        'IsHidden': match.ishidden,
+        'CloseLiveBet': match.closelivebet, 
+        'Team1ZH': match.team1zh,
+        'Team2ZH': match.team2zh,
+        'StatusCode': match.statuscode,
+        'Period1Score': match.period1score,
+        'MatchScore': match.matchscore,
+    }
+    updateMatchMongo(dc)    
+        
+
+    return rt_dc    
 
 
 director.update({

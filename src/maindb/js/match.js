@@ -369,7 +369,7 @@ var produceMatchOutcomePanel={
              </tr>
 
             <tr>
-                <td style="padding: 1em 1em">全场得分</td><td><input type="text" v-model="row.home_score" data-rule="integer(+0)"></td>
+                <td style="padding: 1em 1em">全场得分</td><td><input type="text" v-model="row.home_score" data-rule="integer(+0);length(~6)"></td>
                 <td><input type="text" v-model="row.away_score" data-rule="integer(+0)"></td>
             </tr>
 
