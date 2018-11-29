@@ -204,7 +204,7 @@ class LeagueSelect(ModelTable):
     fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet']
 
     def inn_filter(self, query): 
-        return query.filter(specialcategoryid__gt = 0)
+        return query.filter(specialcategoryid__lte = 0)
     
     def dict_head(self, head):
         dc = {
