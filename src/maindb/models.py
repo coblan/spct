@@ -662,7 +662,8 @@ class TbMatches(models.Model):
     mainawayid = models.IntegerField(db_column='MainAwayID')  # Field name made lowercase.
     mainmatchid = models.IntegerField(db_column='MainMatchID')  # Field name made lowercase.
     maineventid = models.CharField(db_column='MainEventID', max_length=100, blank = True)  # Field name made lowercase.    
-
+    settlestatus = models.IntegerField(db_column='SettleStatus', blank=True, null=True)  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_Matches'
@@ -1920,7 +1921,7 @@ class TbOperationlog(models.Model):
     memo = models.CharField(db_column='Memo', max_length=1000, verbose_name='备注')  # Field name made lowercase.
     createuser = models.CharField(db_column='CreateUser', max_length=100, blank=True, null=True,
                                   verbose_name='操作人')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', verbose_name='创建时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', verbose_name='创建时间', auto_now_add= True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -2043,6 +2044,12 @@ class TbMatchesBasketball(models.Model):
     closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True)  # Field name made lowercase.
     matchstatustype = models.CharField(db_column='MatchStatusType', max_length=50, blank = True)  # Field name made lowercase.
     specialcategoryid = models.IntegerField(db_column='SpecialCategoryID')  # Field name made lowercase.
+    mainleagueid = models.IntegerField(db_column='MainLeagueID')  # Field name made lowercase.
+    mainhomeid = models.IntegerField(db_column='MainHomeID')  # Field name made lowercase.
+    mainawayid = models.IntegerField(db_column='MainAwayID')  # Field name made lowercase.
+    mainmatchid = models.IntegerField(db_column='MainMatchID')  # Field name made lowercase.
+    maineventid = models.CharField(db_column='MainEventID', max_length=100)  # Field name made lowercase.
+    settlestatus = models.IntegerField(db_column='SettleStatus', blank=True, null=True)  # Field name made lowercase.    
 
     class Meta:
         managed = False

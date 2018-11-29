@@ -36,7 +36,7 @@ CLOUD_STORAGE = 'http://103.246.219.202:9004/static'  #云存储路径，用于�
 SELF_URL = 'http://192.168.40.116:9008'   # 后台系统自身的访问url，用户爬取helper，notice页面，生成静态文件
 
 AGENT_SERVICE = 'http://192.168.40.137:8001'
-CENTER_SERVICE = 'http://192.168.40.103:9022'
+CENTER_SERVICE = 'http://192.168.40.104:9022'
 SPREAD_SERVICE = 'http://192.168.40.103:9030'
 PHONE_MESSAGE_SERVICE = 'http://192.168.40.137:5002/message/send'
 MONGO_SERVER ="mongodb://admin:lishen123@192.168.40.210:27017,192.168.40.211:27017,192.168.40.212:27017/?replicaSet=testrs;slaveok=true"

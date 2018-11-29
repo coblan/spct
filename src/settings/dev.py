@@ -79,7 +79,7 @@ STATIC_SERVICE = 'http://103.246.219.202:9004/static'
 CLOUD_STORAGE = 'http://103.246.219.202:9004/static'
 
 AGENT_SERVICE = 'http://192.168.40.137:8001'
-CENTER_SERVICE = 'http://192.168.40.103:9022'
+CENTER_SERVICE = 'http://192.168.40.104:9022'
 SPREAD_SERVICE = 'http://192.168.40.103:9030'
 PHONE_MESSAGE_SERVICE = 'http://192.168.40.137:5002/message/send'
 #MONGO_SERVER = "mongodb://192.168.40.104:27017"
@@ -171,11 +171,16 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,                 
             },
-        'requests': {
-            'handlers': ['console'],
+        'operation_log': {
+            'handlers': ['operation_log'],
             'level': 'DEBUG',
             'propagate': True,               
-            },
+            },        
+        #'requests': {
+            #'handlers': ['console'],
+            #'level': 'DEBUG',
+            #'propagate': True,               
+            #},
         #'django.request': {
             #'handlers': ['rotfile'],
             #'level': 'ERROR',

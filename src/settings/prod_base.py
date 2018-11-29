@@ -57,7 +57,7 @@ LOGGING = {
             'level': 'INFO',
             },
         'general_log': {
-            'handlers': ['console', 'djangoout_warning', 'elk_warning'],
+            'handlers': ['console', 'djangoout_warning', 'elk_warning', ],
             'level': 'DEBUG',
             'propagate': True,            
             },
@@ -65,6 +65,11 @@ LOGGING = {
             'handlers': ['operation_log', 'elk_info'],
             'level': 'DEBUG',
             'propagate': True,              
+            },
+        'operation_log': {
+            'handlers': ['operation_log', 'elk_info'],
+            'level': 'DEBUG',
+            'propagate': True,               
             },
         'task': {
             'handlers': ['elk_info'],

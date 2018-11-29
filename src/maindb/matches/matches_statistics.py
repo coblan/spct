@@ -231,7 +231,7 @@ class MatchesStatisticsPage(TablePage):
 
 
 class DetailStatistic(PlainTable):
-    
+    sportid = 0
     #@classmethod
     #def clean_search_args(cls, search_args): 
         #if search_args.get('half_or_full') not in [0, 1]:   
@@ -259,8 +259,9 @@ class DetailStatistic(PlainTable):
             'matchid': self.kw.get('matchid'),
             'half_or_full': self.search_args.get('half_or_full', 'null'),
             'oddkind': self.search_args.get('oddkind', 'null'),
+            'sportid': self.sportid,
         }
-        sql = r"exec dbo.SP_SingleMatchStatistics %(matchid)s,%(half_or_full)s,%(oddkind)s" \
+        sql = r"exec dbo.SP_SingleMatchStatistics %(matchid)s,%(half_or_full)s,%(oddkind)s,%(sportid)s" \
               % sql_args
         with connections['Sports'].cursor() as cursor:
             cursor.execute(sql)
@@ -322,7 +323,7 @@ class TickmasterTab(TicketMasterPage.tableCls):
     
     def inn_filter(self, query): 
         query = super().inn_filter(query)
-        return query.filter(tbticketstake__match_id = int(self.kw.get('matchid')) )
+        return query.filter(tbticketstake__matchid = int(self.kw.get('matchid')) )
 
 director.update({
     'match.viewbymatch': MatchesStatisticsPage.tableCls, 

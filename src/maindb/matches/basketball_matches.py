@@ -50,7 +50,7 @@ class BasketMatchsPage(MatchsPage):
                      #'extra_mixins': ['produce_match_outcome'],
                      #'fieldsPanel': 'produceMatchOutcomePanel',
                      'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                     'produce_match_outcome_director': 'basketball_produce_match_outcome                     me',
+                     'produce_match_outcome_director': 'basketball_produce_match_outcome',
                      
                     #'option': {
                            #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
