@@ -250,7 +250,7 @@ class MatchForm(ModelFields):
         exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
                    'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid']
 
-    field_sort = ['matchid', 'team1zh', 'team2zh', 'maineventid']
+    field_sort = ['matchid', 'team1zh', 'team2zh', ]
 
     def dict_head(self, head):
         if head['name'] == 'matchid':
@@ -502,9 +502,9 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
 
 @director_view('football_produce_match_outcome')
 def football_produce_match_outcome(row): 
-    return produce_match_outcome(row, MatchModel = TbMatches, sportid = 0)
+    return produce_match_outcome(row, MatchModel = TbMatches, sportid = 0, half_end_code = 31)
 
-def produce_match_outcome(row, MatchModel , sportid):
+def produce_match_outcome(row, MatchModel , sportid, half_end_code = 31):
     """
     手动结算
     """ 
@@ -516,7 +516,7 @@ def produce_match_outcome(row, MatchModel , sportid):
     settlestatus = crt_settlestatus
     if crt_settlestatus < 1 and row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
         match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
-        match.statuscode = 31
+        match.statuscode = half_end_code
         settlestatus = 1
     if crt_settlestatus < 2 and row.get('home_score', '') != '' and row.get('away_score', '') != '':
         match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))

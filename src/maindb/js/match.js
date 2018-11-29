@@ -41,8 +41,9 @@ var manual_end_money=function(self,kws){
     var ctx=ex.copy(kws.fields_ctx)
     ctx.row=row
 
-    cfg.pop_middle('com-form-produceMatchOutcomePanel',ctx,function(new_row){
+     cfg.pop_middle('com-form-produceMatchOutcomePanel',ctx,function(new_row){
         ex.vueAssign(self.selected[0],new_row)
+
     })
     //pop_fields_layer(row,kws.fields_ctx,function(new_row){
     //    ex.vueAssign(self.selected[0],new_row)

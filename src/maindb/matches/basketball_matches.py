@@ -95,9 +95,9 @@ class BasketMatchsPage(MatchsPage):
 
 
 class BasketMatchForm(MatchForm):
-    class Meta:
+    class Meta(MatchForm.Meta):
         model = TbMatchesBasketball
-        exclude = ['marketstatus']
+        #exclude = ['marketstatus', 'maineventid']
     
     def proc_redis(self): 
         if 'closelivebet' in self.changed_data:
@@ -122,7 +122,7 @@ def basketball_save_special_bet_value(matchid, match_opened, oddstype, specialbe
 
 @director_view('basketball_produce_match_outcome')
 def basketball_produce_match_outcome(row): 
-    return produce_match_outcome(row, MatchModel = TbMatchesBasketball, sportid = 1)
+    return produce_match_outcome(row, MatchModel = TbMatchesBasketball, sportid = 1, half_end_code = 4)
 
 director.update({
     'basketball_matchs': BasketMatchsPage.tableCls,
