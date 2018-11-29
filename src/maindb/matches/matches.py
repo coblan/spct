@@ -502,6 +502,12 @@ def produce_match_outcome(row):
         match.awayscore = row.get('away_score')   
         match.statuscode = 100
         settlestatus += 2
+        if row.get('home_score') > row.get('away_score'):
+            match.winner = 1
+        elif row.get('home_score') < row.get('away_score'):
+            match.winner = 2
+        else:
+            match.winner = 3
     
     settle_dict =  {
             1: '上半场',
@@ -549,6 +555,7 @@ def produce_match_outcome(row):
         'StatusCode': match.statuscode,
         'Period1Score': match.period1score,
         'MatchScore': match.matchscore,
+        'Winner': match.winner,
     }
     updateMatchMongo(dc)    
     
