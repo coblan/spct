@@ -1499,6 +1499,8 @@ class TbTournament(models.Model):
     sort = models.IntegerField(db_column='Sort', null=True, verbose_name='排序')  # Field name made lowercase.
     typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True,
                                        verbose_name='已关闭玩法')  # Field name made lowercase.
+    closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True)  # Field name made lowercase.
+    specialcategoryid = models.IntegerField(db_column='SpecialCategoryID')  # Field name made lowercase.    
 
     class Meta:
         managed = False
@@ -2069,6 +2071,7 @@ class TbTournamentBasketball(models.Model):
     sort = models.IntegerField(db_column='Sort', blank=True, null=True, verbose_name= '排序')  # Field name made lowercase.
     typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True, verbose_name='已关闭玩法')  # Field name made lowercase.
     closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True, verbose_name='关闭滚球')  # Field name made lowercase.
+    specialcategoryid = models.IntegerField(db_column='SpecialCategoryID')  # Field name made lowercase.
 
     class Meta:
         managed = False

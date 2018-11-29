@@ -203,6 +203,9 @@ class LeagueSelect(ModelTable):
     exclude = ['typegroupswitch', 'categoryid', 'uniquetournamentid', 'createtime']
     fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet']
 
+    def inn_filter(self, query): 
+        return query.filter(specialcategoryid > 0)
+    
     def dict_head(self, head):
         dc = {
             'tournamentid': 120,
