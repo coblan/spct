@@ -231,7 +231,7 @@ class MatchesStatisticsPage(TablePage):
 
 
 class DetailStatistic(PlainTable):
-    sportid = 0
+    sql_fun = 'SP_SingleMatchStatistics'
     #@classmethod
     #def clean_search_args(cls, search_args): 
         #if search_args.get('half_or_full') not in [0, 1]:   
@@ -256,12 +256,13 @@ class DetailStatistic(PlainTable):
     def get_rows(self): 
         #exec [dbo].[SP_SingleMatchStatistics] 97856,0,1 
         sql_args = {
+            'sql_fun': self.sql_fun,
             'matchid': self.kw.get('matchid'),
             'half_or_full': self.search_args.get('half_or_full', 'null'),
             'oddkind': self.search_args.get('oddkind', 'null'),
-            'sportid': self.sportid,
         }
-        sql = r"exec dbo.SP_SingleMatchStatistics %(matchid)s,%(half_or_full)s,%(oddkind)s,%(sportid)s" \
+        
+        sql = r"exec dbo.%(sql_fun)s %(matchid)s,%(half_or_full)s,%(oddkind)s" \
               % sql_args
         with connections['Sports'].cursor() as cursor:
             cursor.execute(sql)

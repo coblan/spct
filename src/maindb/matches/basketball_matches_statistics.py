@@ -38,7 +38,7 @@ class BasketballMatchesStatisticsPage(MatchesStatisticsPage):
             return sql       
 
 class BasketballDetailStatistic(DetailStatistic):
-    sportid = 1
+    sql_fun = 'SP_SingleMatchStatistics_Basketball'
 
 director.update({
     'BasketballMatchesStatisticsPage': BasketballMatchesStatisticsPage.tableCls,
