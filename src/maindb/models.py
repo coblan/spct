@@ -1833,7 +1833,7 @@ class TbOperationlog(models.Model):
     memo = models.CharField(db_column='Memo', max_length=1000, verbose_name='备注')  # Field name made lowercase.
     createuser = models.CharField(db_column='CreateUser', max_length=100, blank=True, null=True,
                                   verbose_name='操作人')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', verbose_name='创建时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', verbose_name='创建时间', auto_now_add= True)  # Field name made lowercase.
 
     class Meta:
         managed = False

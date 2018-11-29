@@ -23,20 +23,25 @@ class DBOperationHandler(logging.Handler):
         if record.levelname == 'ERROR':
             msg += '\n' + record.exc_text
         
-        db_op_dict = json.loads(msg)
         user = get_request_cache().get('request').user
         user_label = user.username if user.is_authenticated else '【匿名用户】'
         
-        content = db_op_dict.pop('content', None)
-        if not content:
-            content = pop_content(db_op_dict, user)
-        type_key = db_op_dict.pop('model', '')
-        memo = db_op_dict.get('memo', '')
+        try:
+            db_op_dict = json.loads(msg)
+            content = db_op_dict.pop('content', None)
+            if not content:
+                content = pop_content(db_op_dict, user)
+            type_key = db_op_dict.pop('model', '')
+            memo = db_op_dict.get('memo', '')
+        except json.decoder.JSONDecodeError:
+            type_key = '_direct_message'
+            memo = ''
+            content = msg
         TbOperationlog.objects.create(createuser = user_label,
                                       type = type_key, 
                                       content = content, 
-                                      memo = memo, 
-                                      createtime = datetime.datetime.now())
+                                      memo = memo)
+                                      #createtime = datetime.datetime.now())
 
 def pop_content(dc, user): 
     after = dc.pop('after', {})

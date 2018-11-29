@@ -531,7 +531,7 @@ def produce_match_outcome(row):
             if not k.startswith('_'):
                 setattr(match, k, org_match[k])
             match.save()
-        op_log.info('手动结算%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
+        op_log.info('手动结算足球比赛%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
                                                          'type': settle_dict.get(match.settlestatus),
                                                         'msg': rt_dc.get('Message',''),})
             
@@ -552,7 +552,7 @@ def produce_match_outcome(row):
     }
     updateMatchMongo(dc)    
     
-    op_log.info('手动结算%(matchid)s的%(type)s，结算后比分为:上半场:%(period1score)s,全场:%(matchscore)s' % {'matchid': match.matchid, 
+    op_log.info('手动结算足球比赛%(matchid)s的%(type)s，结算后比分为:上半场:%(period1score)s,全场:%(matchscore)s' % {'matchid': match.matchid, 
                                                      'type': settle_dict.get(match.settlestatus),
                                                      'period1score': match.period1score,
                                                      'matchscore': match.matchscore,})
