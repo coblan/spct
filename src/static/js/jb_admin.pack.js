@@ -1581,11 +1581,14 @@ var pop_table_select = {
     methods: {
         open_win: function open_win() {
             var self = this;
-            pop_table_layer(this.row, this.head.table_ctx, function (foreign_row) {
+            //pop_table_layer(this.row,this.head.table_ctx,function(foreign_row){
+            //    Vue.set(self.row,self.head.name,foreign_row[self.head.name])
+            //    Vue.set(self.row,'_'+self.head.name+'_label',foreign_row._label)
+            //})
+            var win_close = cfg.pop_middle('com-table-panel', this.head.table_ctx, function (foreign_row) {
                 Vue.set(self.row, self.head.name, foreign_row[self.head.name]);
                 Vue.set(self.row, '_' + self.head.name + '_label', foreign_row._label);
-                //self.row[self.head.name]=foreign_row.pk
-                //self.row['_'+self.head.name+'_label'] = foreign_row._label
+                win_close();
             });
         }
         //isValid:function(){
@@ -3781,13 +3784,15 @@ var foreign_click_select = {
     template: '<span class="clickable" v-text="rowData[field]" @click="on_click()"></span>',
     data: function data() {
         return {
+            parStore: ex.vueParStore(this),
             label: '_' + this.field + '_label'
         };
     },
     computed: {},
     methods: {
         on_click: function on_click() {
-            this.$emit('on-custom-comp', { fun: 'send_select', row: this.rowData });
+            //this.$emit('on-custom-comp',{fun:'send_select',row:this.rowData})
+            this.parStore.$emit('finish', this.rowData);
         }
     }
 };
@@ -5970,30 +5975,47 @@ Vue.component('com-iframe-panel', iframe_panel);
 var table_panel = {
     props: ['ctx'],
     data: function data() {
+        var self = this;
         if (this.ctx.selectable == undefined) {
             this.ctx.selectable = true;
         }
-        return {
-            par_row: this.ctx.par_row || {},
-            heads: this.ctx.heads || [],
-            selectable: this.ctx.selectable,
-            search_args: this.ctx.search_args || {},
-            row_filters: this.ctx.row_filters || {},
-            row_sort: this.ctx.row_sort || { sortable: [] },
-            director_name: this.ctx.director_name || '',
-            ops: this.ctx.ops || [],
-            row_pages: this.ctx.row_pages || { crt_page: 1, total: 0, perpage: 20 },
-            rows: [],
-            footer: [],
-            selected: [],
-            del_info: [],
-            height: 350
+        var this_table_store = {
+            data: function data() {
+                return {
+                    heads: self.ctx.heads || [],
+                    selectable: self.ctx.selectable,
+                    search_args: self.ctx.search_args || {},
+                    row_filters: self.ctx.row_filters || {},
+                    row_sort: self.ctx.row_sort || { sortable: [] },
+                    director_name: self.ctx.director_name || '',
+                    ops: self.ctx.ops || [],
+                    row_pages: self.ctx.row_pages || { crt_page: 1, total: 0, perpage: 20 },
+                    rows: [],
+                    footer: [],
+                    selected: []
+                };
+            },
+            mixins: [table_store]
 
+        };
+        return {
+            childStore: new Vue(this_table_store),
+            par_row: this.ctx.par_row || {},
+
+            del_info: []
         };
     },
     mixins: [mix_table_data, mix_ele_table_adapter],
-
-    template: '<div class="com-table-panel" style="height: 100%;padding-left: 10px">\n\n            <div class="rows-block flex-v" style="height: 100%">\n                <div class=\'flex\' style="min-height: 3rem;padding-right: 1rem" v-if="row_filters.length > 0">\n                    <com-filter class="flex" :heads="row_filters" :search_args="search_args"\n                                @submit="search()"></com-filter>\n                </div>\n                <div class="box box-success flex-grow flex-v" >\n                    <div class="table-wraper flex-grow" style="position: relative">\n                    <div style="position: absolute;top:0;right:0;left:0;bottom: 0">\n                     <el-table class="table" ref="e_table"\n                                      :data="rows"\n                                      border\n                                      show-summary\n                                      :fit="false"\n                                      :stripe="true"\n                                      size="mini"\n                                      @sort-change="sortChange($event)"\n                                      @selection-change="handleSelectionChange"\n                                      :summary-method="getSum"\n                                      height="100%"\n                                      style="width: 100%">\n                                <el-table-column\n                                        v-if="selectable"\n                                        type="selection"\n                                        width="55">\n                                </el-table-column>\n\n                                <template  v-for="head in heads">\n\n                                    <el-table-column v-if="head.editor"\n                                                     :show-overflow-tooltip="is_show_tooltip(head) "\n                                                     :label="head.label"\n                                                     :sortable="is_sort(head)"\n                                                     :width="head.width">\n                                        <template slot-scope="scope">\n                                            <component :is="head.editor"\n                                                       @on-custom-comp="on_td_event($event)"\n                                                       :row-data="scope.row" :field="head.name" :index="scope.$index">\n                                            </component>\n\n                                        </template>\n\n                                    </el-table-column>\n\n                                    <el-table-column v-else\n                                                     :show-overflow-tooltip="is_show_tooltip(head) "\n                                                     :prop="head.name.toString()"\n                                                     :label="head.label"\n                                                     :sortable="is_sort(head)"\n                                                     :width="head.width">\n                                    </el-table-column>\n\n                                </template>\n\n                            </el-table>\n                     </div>\n\n                    </div>\n                    <div style="margin-top: 10px;">\n                         <el-pagination\n                                @size-change="on_perpage_change"\n                                @current-change="get_page"\n                                :current-page="row_pages.crt_page"\n                                :page-sizes="[20, 50, 100, 500]"\n                                :page-size="row_pages.perpage"\n                                layout="total, sizes, prev, pager, next, jumper"\n                                :total="row_pages.total">\n                        </el-pagination>\n                    </div>\n                </div>\n        </div>\n    </div>'
+    mounted: function mounted() {
+        this.childStore.$on('finish', this.emit_finish);
+        this.childStore.search();
+    },
+    methods: {
+        emit_finish: function emit_finish(event) {
+            this.$emit('finish', event);
+        }
+    },
+    template: '<div class="com-table-panel" style="height: 100%;padding-left: 10px">\n\n            <div class="rows-block flex-v" style="height: 100%">\n\n\n              <div v-if="childStore.row_filters.length > 0" style="background-color: #fbfbf8;padding: 8px 1em;border-radius: 4px;margin-top: 8px">\n\n                     <com-table-filters></com-table-filters>\n\n               </div>\n\n               <div  v-if="childStore.ops.length>0 && childStore.tab_stack.length ==0">\n                        <com-table-operations></com-table-operations>\n               </div>\n\n                <div class="box box-success flex-v flex-grow" style="margin-bottom: 0">\n                    <div class="table-wraper flex-grow" style="position: relative;">\n\n                        <com-table-grid></com-table-grid>\n                    </div>\n                </div>\n            <div style="background-color: white;">\n                <com-table-pagination></com-table-pagination>\n            </div>\n\n        </div>\n    </div>'
 };
 
 window.com_table_panel = table_panel;
