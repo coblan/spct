@@ -247,9 +247,9 @@ class TicketstakeTable(TicketTabBase):
 
     def getExtraHead(self):
         return [
-            {'name': 'matchid', 'label': 'matchid', },
+            #{'name': 'matchid', 'label': 'matchid', },
             {'name': 'matchname', 'label': '比赛', 'width': 200, },
-            {'name': 'tournament', 'label': 'tournament', 'width': 120, }
+            {'name': 'tournament', 'label': '联赛', 'width': 120, }
         ]
 
     def dict_row(self, inst):

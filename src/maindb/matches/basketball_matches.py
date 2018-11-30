@@ -104,7 +104,7 @@ class BasketMatchForm(MatchForm):
         dc = {
             'MatchID': inst.matchid,
             'IsRecommend': inst.isrecommend,
-            'IsHidden': 1 if inst.ishidden else 0,
+            'IsHidden': inst.ishidden ,
             'CloseLiveBet': inst.closelivebet, 
             'Team1ZH': inst.team1zh,
             'Team2ZH': inst.team2zh,
