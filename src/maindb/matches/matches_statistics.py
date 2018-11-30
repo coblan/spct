@@ -225,7 +225,7 @@ class MatchesStatisticsPage(TablePage):
         dc = {
             'match_statistic': ls,
         }
-        dc .update( TicketMasterPage.get_tabs() )
+        dc .update( TicketMasterPage.get_named_ctx() )
         return dc
     
 
@@ -324,7 +324,7 @@ class TickmasterTab(TicketMasterPage.tableCls):
     
     def inn_filter(self, query): 
         query = super().inn_filter(query)
-        return query.filter(tbticketstake__matchid = int(self.kw.get('matchid')) )
+        return query.filter(tbticketstake__mainmatchid = int(self.kw.get('matchid')) )
 
 director.update({
     'match.viewbymatch': MatchesStatisticsPage.tableCls, 

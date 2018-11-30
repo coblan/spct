@@ -26,7 +26,7 @@ class BasketballMatchesStatisticsPage(MatchesStatisticsPage):
         dc = {
             'match_statistic': ls,
         }
-        dc .update( TicketMasterPage.get_tabs() )
+        dc .update( TicketMasterPage.get_named_ctx() )
         return dc
     
     class tableCls(MatchesStatisticsPage.tableCls):

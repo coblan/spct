@@ -36,14 +36,16 @@ class TicketMasterPage(TablePage):
         return {
              'ticketmaster': ls
         }
-
-    def get_context(self):
-        ctx = TablePage.get_context(self)
-        #ctx['named_tabs'] = self.get_tabs()
-        ctx['named_ctx'] = self.get_tabs()
-        ctx['named_ctx'].update( {
+    
+    @classmethod
+    def get_named_ctx(cls): 
+        catch = get_request_cache()
+        crt_user =  catch.get('request').user
+        
+        dc = cls.get_tabs()
+        dc.update({
             'match_form_ctx': {
-                'fields_ctx' : MatchForm(crt_user=self.crt_user).get_head_context(), 
+                'fields_ctx' : MatchForm(crt_user=crt_user).get_head_context(), 
                 'after_save' : {
                     'fun': 'do_nothing'
                     # 'fun':'update_or_insert'
@@ -55,7 +57,7 @@ class TicketMasterPage(TablePage):
                 }
                 },
             'basketball_match_form_ctx': {
-                'fields_ctx' : BasketballMatchForm(crt_user=self.crt_user).get_head_context(), 
+                'fields_ctx' : BasketballMatchForm(crt_user=crt_user).get_head_context(), 
                 'after_save' : {
                     'fun': 'do_nothing'
                 }, 
@@ -66,7 +68,13 @@ class TicketMasterPage(TablePage):
                 }
                 },
         })
+        return dc
+
+    def get_context(self):
+        ctx = TablePage.get_context(self)
+        ctx['named_ctx'] = self.get_named_ctx()
         return ctx
+        
 
     class tableCls(ModelTable):
         model = TbTicketmaster
@@ -179,7 +187,7 @@ class TicketMasterPage(TablePage):
                 elif name == 'tbticketstake__mainmatchid':
                     return {
                         'value': name,
-                        'label': 'MainMatchID',
+                        'label': 'matchid',
                     }
 
             def clean_search(self):
