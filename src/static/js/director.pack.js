@@ -4509,7 +4509,8 @@ Vue.component('com-auto-more', {
     }, //onmousewheel="return false;"
     template: '<div class="com-auto-more" :style="{height:orgHeight}">\n        <div class="outer-wrap" :style="{height:orgHeight}">\n            <div class="inn-wrap">\n                <slot></slot>\n            </div>\n        </div>\n\n        <div class="toggle-btn clickable" @click="toggle()">\n            <span v-if="expanded">\u6536\u8D77</span>\n            <span v-else>\u66F4\u591A</span>\n        </div>\n    </div>',
     mounted: function mounted() {
-        if ($(this.$el).find('.inn-wrap').height() > $(this.$el).height()) {
+        if ($(this.$el).find('.inn-wrap').height() > $(this.$el).height() + 10) {
+            // 10是为了去噪
             $(this.$el).addClass('has-overflow');
         }
     },
@@ -4522,7 +4523,7 @@ Vue.component('com-auto-more', {
                 $(this.$el).find('.outer-wrap').css('height', this.orgHeight);
                 $(this.$el).removeClass('expanded');
             } else {
-                $(this.$el).find('.outer-wrap').css('height', $(this.$el).find('.inn-wrap').height() + 20 + 'px');
+                $(this.$el).find('.outer-wrap').css('height', $(this.$el).find('.inn-wrap').height() + 2 + 'px');
                 $(this.$el).addClass('expanded');
             }
             this.expanded = !this.expanded;
