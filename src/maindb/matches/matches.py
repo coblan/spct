@@ -264,19 +264,22 @@ class MatchForm(ModelFields):
 
     def save_form(self):
         super().save_form()
+        self.updateMongo()
+        self.proc_redis()
+    
+    def updateMongo(self): 
         inst = self.instance
         dc = {
             'MatchID': inst.matchid,
             'IsRecommend': inst.isrecommend,
-            'IsHidden': inst.ishidden,
+            'IsHidden': 1 if inst.ishidden else 0,
             'CloseLiveBet': inst.closelivebet, 
             'Team1ZH': inst.team1zh,
             'Team2ZH': inst.team2zh,
             
         }
         updateMatchMongo(dc)
-        self.proc_redis()
-
+    
     def proc_redis(self): 
         if 'closelivebet' in self.changed_data:
             if self.instance.closelivebet == 0:
@@ -502,9 +505,9 @@ def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue
 
 @director_view('football_produce_match_outcome')
 def football_produce_match_outcome(row): 
-    return produce_match_outcome(row, MatchModel = TbMatches, sportid = 0, half_end_code = 31)
+    return produce_match_outcome(row, MatchModel = TbMatches, sportid = 0, half_end_code = 31, updateMongo= updateMatchMongo)
 
-def produce_match_outcome(row, MatchModel , sportid, half_end_code = 31):
+def produce_match_outcome(row, MatchModel , sportid, half_end_code = 31, updateMongo = updateMatchMongo):
     """
     手动结算
     """ 
@@ -579,7 +582,7 @@ def produce_match_outcome(row, MatchModel , sportid, half_end_code = 31):
         'MatchScore': match.matchscore,
         'Winner': match.winner,
     }
-    updateMatchMongo(dc)    
+    updateMongo(dc)    
     
     op_log.info('手动结算足球比赛%(matchid)s的%(type)s，结算后比分为:上半场:%(period1score)s,全场:%(matchscore)s' % {'matchid': match.matchid, 
                                                      'type': settle_dict.get(match.settlestatus),

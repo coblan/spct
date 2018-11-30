@@ -9,3 +9,8 @@ def updateMatchMongo(dc):
     match_col = mydb["Matches"]
     match_col.update({'MatchID': matchID}, {'$set': dc})
     
+
+def updateMatchBasketMongo(dc): 
+    matchID = dc.pop('MatchID')
+    match_col = mydb["Matches_Basketball"]
+    match_col.update({'MatchID': matchID}, {'$set': dc})

@@ -797,6 +797,8 @@ class TbMaxpayouttype(models.Model):
 
 class TbMaxpayoutBasketball(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    limittype = models.ForeignKey(to='TbMaxpayouttype', db_constraint=False,
+                               db_column='LimitType', verbose_name='限制类型')  # Field name     made lo
     tournamentid = models.ForeignKey(to='TbTournamentBasketball', db_constraint=False, db_column='TournamentID', blank=True,
                                      default=0, null=True, verbose_name='联赛')  # Field name made lowerc    ase.
     #tournamentid = models.IntegerField(db_column='TournamentID', blank=True, null=True)  # Field name made lowercase.
@@ -804,8 +806,7 @@ class TbMaxpayoutBasketball(models.Model):
                                 default=0, null=True, verbose_name='比赛')  # Field name made lowerc    ase.
     #matchid = models.BigIntegerField(db_column='MatchID', blank=True, null=True)  # Field name made lowercase.
     
-    limittype = models.ForeignKey(to='TbMaxpayouttype', db_constraint=False,
-                                  db_column='LimitType', verbose_name='限制类型')  # Field name     made lo
+ 
     #limittype = models.IntegerField(db_column='LimitType')  # Field name made lowercase.
     
     accountid = models.ForeignKey(to=TbAccount, db_constraint=False, db_column='AccountID', blank=True,
@@ -816,7 +817,7 @@ class TbMaxpayoutBasketball(models.Model):
     #oddstypegroup = models.IntegerField(db_column='OddsTypeGroup', blank=True, null=True)  # Field name made lowercase.
     viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True, 
                                 choices=VIP_LEVEL,verbose_name='VIP等级')  # Field name made lowercase.
-    maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18, decimal_places=2, verbose_name= '最大赔付')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True, null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.

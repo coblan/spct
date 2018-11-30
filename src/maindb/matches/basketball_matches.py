@@ -1,6 +1,7 @@
 from helpers.director.shortcut import page_dc, director, director_view
 from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, quit_ticket
 from ..models import TbMatchesBasketball, TbOddsBasketball
+from maindb.mongoInstance import updateMatchBasketMongo
 
 class BasketMatchsPage(MatchsPage):
     
@@ -98,6 +99,18 @@ class BasketMatchForm(MatchForm):
     class Meta(MatchForm.Meta):
         model = TbMatchesBasketball
         #exclude = ['marketstatus', 'maineventid']
+    def updateMongo(self): 
+        inst = self.instance
+        dc = {
+            'MatchID': inst.matchid,
+            'IsRecommend': inst.isrecommend,
+            'IsHidden': 1 if inst.ishidden else 0,
+            'CloseLiveBet': inst.closelivebet, 
+            'Team1ZH': inst.team1zh,
+            'Team2ZH': inst.team2zh,
+            
+        }
+        updateMatchBasketMongo(dc)    
     
     def proc_redis(self): 
         if 'closelivebet' in self.changed_data:
@@ -122,7 +135,7 @@ def basketball_save_special_bet_value(matchid, match_opened, oddstype, specialbe
 
 @director_view('basketball_produce_match_outcome')
 def basketball_produce_match_outcome(row): 
-    return produce_match_outcome(row, MatchModel = TbMatchesBasketball, sportid = 1, half_end_code = 4)
+    return produce_match_outcome(row, MatchModel = TbMatchesBasketball, sportid = 1, half_end_code = 4, updateMongo= updateMatchBasketMongo)
 
 director.update({
     'basketball_matchs': BasketMatchsPage.tableCls,
