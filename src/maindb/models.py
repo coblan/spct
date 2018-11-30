@@ -818,10 +818,11 @@ class TbMaxpayoutBasketball(models.Model):
     viplv = models.IntegerField(db_column='VIPLv', blank=True, null=True, 
                                 choices=VIP_LEVEL,verbose_name='VIP等级')  # Field name made lowercase.
     maxpayout = models.DecimalField(db_column='MaxPayout', max_digits=18, decimal_places=2, verbose_name= '最大赔付')  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=500, blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
-    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', default= 1)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=500, blank=True, null=True,
+                                   verbose_name = '描述')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now_add= True, verbose_name= '创建时间')  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True, auto_now= True)  # Field name made lowercase.
 
     class Meta:
         managed = False

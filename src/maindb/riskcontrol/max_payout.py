@@ -16,11 +16,11 @@ class MaxPayoutPage(TablePage):
     extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
-        return '最大赔付'
+        return '足球最大赔付'
 
     class tableCls(ModelTable):
         model = TbMaxpayout
-        exclude = ['updatetime']
+        exclude = ['updatetime', ]
         pop_edit_field = 'tid'
 
         def __init__(self, *args, **kw):
