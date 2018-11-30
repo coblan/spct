@@ -164,7 +164,7 @@ class TicketMasterPage(TablePage):
 
         class search(SelectSearch):
             names = ['accountid__nickname']
-            exact_names = ['orderid', 'tbticketstake__match_id']
+            exact_names = ['orderid', 'tbticketstake__mainmatchid']
 
             def get_option(self, name):
 
@@ -176,14 +176,14 @@ class TicketMasterPage(TablePage):
                         'value': name,
                         'label': '昵称',
                     }
-                elif name == 'tbticketstake__match_id':
+                elif name == 'tbticketstake__mainmatchid':
                     return {
                         'value': name,
-                        'label': '比赛ID',
+                        'label': 'MainMatchID',
                     }
 
             def clean_search(self):
-                if self.qf in ['ticketid', 'tbticketstake__match_id']:
+                if self.qf in ['ticketid', 'tbticketstake__mainmatchid']:
                     if not re.search('^\d*$', self.q):
                         return None
                     else:

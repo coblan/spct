@@ -202,6 +202,7 @@ class LeagueSelect(ModelTable):
     model = TbTournament
     exclude = ['typegroupswitch', 'categoryid', 'uniquetournamentid', 'createtime']
     fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet']
+    selectable = False
 
     def inn_filter(self, query): 
         return query.filter(specialcategoryid__lte = 0)
@@ -234,6 +235,7 @@ class LeagueSelect(ModelTable):
 
 
 class MatchSelect(ModelTable):
+    selectable = False
     model = TbMatches
     include = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate']
 

@@ -1449,6 +1449,7 @@ class TbTicketstake(models.Model):
     parlayrule = models.IntegerField(db_column='ParlayRule', blank=True, null=True)  # Field name made lowercase.
     winbet = models.IntegerField(db_column='WinBet')  # Field name made lowercase.
     sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
+    mainmatchid = models.IntegerField(db_column='MainMatchID')  # Field name made lowercase.
     
     @property
     def match(self): 

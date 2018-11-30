@@ -197,6 +197,7 @@ class WhiteUserForm(ModelFields):
 
 
 class AccountSelect(ModelTable):
+    selectable = False
     model = TbAccount
     include = ['accountid', 'nickname', ]
 
