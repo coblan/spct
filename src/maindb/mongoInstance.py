@@ -5,12 +5,18 @@ myclient = pymongo.MongoClient(settings.MONGO_SERVER)
 mydb = myclient["MatchData_SA"]
 
 def updateMatchMongo(dc): 
+    dc.update({
+        'CloseLiveBet': bool(dc['CloseLiveBet']),
+    })
     matchID = dc.pop('MatchID')
     match_col = mydb["Matches"]
     match_col.update({'MatchID': matchID}, {'$set': dc})
     
 
 def updateMatchBasketMongo(dc): 
+    dc.update({
+        'CloseLiveBet': bool(dc['CloseLiveBet']),
+    })    
     matchID = dc.pop('MatchID')
     match_col = mydb["Matches_Basketball"]
     match_col.update({'MatchID': matchID}, {'$set': dc})
