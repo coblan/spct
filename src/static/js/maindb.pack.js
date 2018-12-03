@@ -1805,7 +1805,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".home-page .my-panel {\n  background-color: white;\n  padding: 0 2rem; }\n", ""]);
+exports.push([module.i, ".home-page .my-panel {\n  background-color: white;\n  padding: 0 2rem;\n  margin-top: 1rem;\n  margin-bottom: 2rem; }\n\n.home-page .today-item {\n  display: inline-block;\n  margin: 2rem;\n  width: 20rem;\n  padding-bottom: 1rem;\n  text-align: center;\n  border-bottom: 1px solid #dadada; }\n", ""]);
 
 // exports
 
