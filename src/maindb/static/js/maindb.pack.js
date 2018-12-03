@@ -1452,13 +1452,16 @@ Vue.component('com-bar-chart', {
     methods: {
         getRows: function getRows() {
             var self = this;
+            cfg.show_load();
             ex.director_call('trend_data', { key: this.trend.key }, function (resp) {
                 self.barRows = resp;
+                cfg.hide_load();
             });
         }
     },
     watch: {
         barRows: function barRows(v) {
+            var self = this;
             var x_data = ex.map(v, function (item) {
                 return item.time;
             });
@@ -1479,7 +1482,7 @@ Vue.component('com-bar-chart', {
                 },
                 yAxis: {},
                 series: [{
-                    name: '销量',
+                    name: self.trend.label,
                     type: 'bar',
                     data: y_data
                 }]

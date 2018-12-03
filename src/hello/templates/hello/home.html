@@ -66,8 +66,8 @@
 
 <div id="there">
 
-    <el-tabs v-model="activeName" @tab-click="handleClick" lazy>
-        <el-tab-pane v-for="trend in trend_list" :label="trend.label" :name="trend.key">
+    <el-tabs v-model="activeName" @tab-click="handleClick" >
+        <el-tab-pane v-for="trend in trend_list" :label="trend.label" :name="trend.key" lazy>
             <div style="height:400px;width: 600px">
                 <com-bar-chart :trend="trend"></com-bar-chart>
             </div>
