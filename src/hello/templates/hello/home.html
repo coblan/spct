@@ -8,7 +8,8 @@
 
 <script>
 
-    today_static={{ today_static | jsonify }}
+    today_heads={{ today_heads | jsonify }}
+    today_row={{ today_row | jsonify }}
     trend_list={{ trend_list | jsonify }}
 
     $(function(){
@@ -18,48 +19,13 @@
         new Vue({
             el:'#there',
             data:{
-                today_static:today_static,
+                today_heads:today_heads,
+                today_row:today_row,
 
                 trend_list:trend_list,
                 activeName:trend_list[0].key,
             },
-            mounted:function(){
-//                $('#mainjj').width($(this.$el).width()-30)
-//                this. myChart = echarts.init(document.getElementById('mainjj'));
-                this.bar_rows=rows
 
-            },
-//            watch:{
-//                bar_rows:function(v){
-//                    var x_data=ex.map(v,function(item){
-//                        return item.time
-//                    })
-//                    var y_data=ex.map(v,function(item){
-//                        return item.amount
-//                    })
-//
-//                    var option = {
-//                        title: {
-////                text: 'ECharts 入门示例'
-//                        },
-//                        tooltip: {},
-////            legend: {
-////                data:['销量']
-////            },
-//                        xAxis: {
-//                            data: x_data
-//                        },
-//                        yAxis: {},
-//                        series: [{
-//                            name: '销量',
-//                            type: 'bar',
-//                            data: y_data,
-//                        }]
-//                    };
-//                    this.myChart.setOption(option);
-//                }
-//            }
-//
         })
 
 
@@ -68,10 +34,15 @@
 </script>
 
 <div id="there" class="home-page">
+    <b>今日统计</b>
     <div class="my-panel">
-
+        <div class="today-item" v-for="head in today_heads">
+            <span v-text="today_row[head.name]"></span><br>
+            <span v-text="head.label"></span>
+        </div>
     </div>
 
+    <b>趋势图</b>
     <div class="my-panel">
         <el-tabs v-model="activeName" >
             <el-tab-pane v-for="trend in trend_list" :label="trend.label" :name="trend.key" lazy>

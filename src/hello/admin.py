@@ -27,8 +27,13 @@ class Home(object):
     def __init__(self,request, engin):
         pass
     def get_context(self):
-        statistic_items = [
-            
+        # {"RegNum": 1, "BetNum": 232, "SumBetAmount": "180123", "SumPrizeAmount": "140617", "SumLostAmount": "49071"}
+        today_heads = [
+            {'name': 'RegNum', 'label': '注册人数',}, 
+            {'name': 'BetNum', 'label': '注单数',}, 
+            {'name': 'SumBetAmount', 'label': '投注金额',}, 
+            {'name': 'SumPrizeAmount', 'label': '派彩金额',}, 
+            {'name': 'SumLostAmount', 'label': '亏盈金额',}
         ]
         
         trend = [
@@ -41,29 +46,20 @@ class Home(object):
         ]
         
         sql = "exec  SP_TodayStatistics"
+        today_row = {} 
         with connections['Sports'].cursor() as cursor:
             cursor.execute(sql)
-            today_static = {} 
+   
             row =  list(cursor)[0]  # 统计数据只有一行
             for col_data, col in zip(row, cursor.description):
                 head_name = col[0]
-                today_static[head_name] = col_data
+                today_row[head_name] = col_data
         return {
+            'today_heads': today_heads,
+            'today_row': today_row,            
             'trend_list': trend,
-            'today_static': today_static,
+            
         }
-        
-        
-        #sql = "exec SP_TrendChart 1"
-        #rows = []
-        #with connections['Sports'].cursor() as cursor:
-            #cursor.execute(sql)
-            #for par in cursor:
-                #rows.append({'time': par[0], 'amount': par[1], })            
-        #return {
-            #'rows': rows,
-        #}
-    
     
 @director_view('trend_data')
 def trend_data(key): 
@@ -72,7 +68,7 @@ def trend_data(key):
     with connections['Sports'].cursor() as cursor:
         cursor.execute(sql)
         for par in cursor:
-            rows.append({'time': par[0], 'amount': par[1], })
+            rows.append({'time': par[0], 'amount': round(par[1], 2), })
     return rows
 
 

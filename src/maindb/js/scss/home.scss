@@ -2,5 +2,15 @@
     .my-panel{
       background-color: white;
       padding: 0 2rem;
+      margin-top: 1rem;
+      margin-bottom: 2rem;
     }
+  .today-item{
+    display: inline-block;
+    margin: 2rem;
+    width: 20rem;
+    padding-bottom:1rem ;
+    text-align: center;
+    border-bottom: 1px solid #dadada;
+  }
 }
