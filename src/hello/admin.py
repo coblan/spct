@@ -1,7 +1,8 @@
 from django.contrib import admin
-
+from django.db import connections
 # Register your models here.
 from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,ModelFields,model_dc
+
 #from orgmodel.models import Exceptions
 
 #class ExceptionsPage(TablePage):
@@ -27,7 +28,15 @@ class Home(object):
     def __init__(self,request, engin):
         pass
     def get_context(self):
-        return {}
+        sql = "exec SP_TrendChart 1"
+        rows = []
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql)
+            for par in cursor:
+                rows.append({'time': par[0], 'amount': par[1], })            
+        return {
+            'rows': rows,
+        }
 
 page_dc.update({
     'home':Home

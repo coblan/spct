@@ -3,7 +3,99 @@
 {% load jsonify %}
 
 {% block page_content %}
-this is home
+<script src="https://cdn.bootcss.com/echarts/4.1.0-release/echarts.min.js"></script>
+
+<script>
+
+    rows={{ rows | jsonify }}
+
+    $(function(){
+//        var myChart = echarts.init(document.getElementById('mainjj'));
+//
+//        // 指定图表的配置项和数据
+//        var option = {
+//            title: {
+////                text: 'ECharts 入门示例'
+//            },
+//            tooltip: {},
+////            legend: {
+////                data:['销量']
+////            },
+//            xAxis: {
+//                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+//            },
+//            yAxis: {},
+//            series: [{
+//                name: '销量',
+//                type: 'bar',
+//                data: [5, 20, 36, 10, 10, 20]
+//            }]
+//        };
+//
+//        myChart.setOption(option);
+
+
+        new Vue({
+            el:'#there',
+            data:{
+                bar_rows:[],
+            },
+            mounted:function(){
+                $('#mainjj').width($(this.$el).width()-30)
+                this. myChart = echarts.init(document.getElementById('mainjj'));
+                this.bar_rows=rows
+
+            },
+            watch:{
+                bar_rows:function(v){
+                    var x_data=ex.map(v,function(item){
+                        return item.time
+                    })
+                    var y_data=ex.map(v,function(item){
+                        return item.amount
+                    })
+
+                    var option = {
+                        title: {
+//                text: 'ECharts 入门示例'
+                        },
+                        tooltip: {},
+//            legend: {
+//                data:['销量']
+//            },
+                        xAxis: {
+                            data: x_data
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '销量',
+                            type: 'bar',
+                            data: y_data,
+                        }]
+                    };
+                    this.myChart.setOption(option);
+                }
+            }
+        })
+
+
+    })
+
+</script>
+
+<div id="there">
+
+    <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane label="用户管理" name="first">用户管理</el-tab-pane>
+        <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
+        <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+        <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+    </el-tabs>
+    <div id="mainjj" style="height:400px;">
+
+    </div>
+</div>
+
 
 {% block extra %}
 {% endblock %}
