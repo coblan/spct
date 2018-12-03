@@ -19,6 +19,8 @@ import * as validator from  './validator_rule.js'
 
 import * as parameter from  './parameter.js'
 
+import * as coms_main from  './coms/main.js'
+
 
 
 

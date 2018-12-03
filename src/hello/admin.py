@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.db import connections
 # Register your models here.
-from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,ModelFields,model_dc
-
+from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,ModelFields,model_dc, director_view
 #from orgmodel.models import Exceptions
 
 #class ExceptionsPage(TablePage):
@@ -28,15 +27,41 @@ class Home(object):
     def __init__(self,request, engin):
         pass
     def get_context(self):
-        sql = "exec SP_TrendChart 1"
-        rows = []
-        with connections['Sports'].cursor() as cursor:
-            cursor.execute(sql)
-            for par in cursor:
-                rows.append({'time': par[0], 'amount': par[1], })            
+        trend = [
+            {'key': 1,'label': '投注', }, 
+            {'key': 2,'label': '派奖', }, 
+            {'key': 3,'label': '流水', }, 
+            {'key': 4,'label': '平台亏盈',}, 
+            {'key': 5,'label': '充值', }, 
+            {'key': 6,'label': '提现', }, 
+            
+        ]
         return {
-            'rows': rows,
+            'trend_list': trend,
         }
+        
+        
+        #sql = "exec SP_TrendChart 1"
+        #rows = []
+        #with connections['Sports'].cursor() as cursor:
+            #cursor.execute(sql)
+            #for par in cursor:
+                #rows.append({'time': par[0], 'amount': par[1], })            
+        #return {
+            #'rows': rows,
+        #}
+    
+    
+@director_view('trend_data')
+def trend_data(key): 
+    sql = "exec SP_TrendChart %s" % key
+    rows = []
+    with connections['Sports'].cursor() as cursor:
+        cursor.execute(sql)
+        for par in cursor:
+            rows.append({'time': par[0], 'amount': par[1], })
+    return rows
+
 
 page_dc.update({
     'home':Home

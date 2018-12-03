@@ -47,3 +47,5 @@ from .admin_agent import agent_commission
 from .riskcontrol import new_withdraw_limit
 
 from . import permit
+
+from . import js_cfg
