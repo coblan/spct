@@ -95,7 +95,7 @@ RABBITMQ = '192.168.40.20'
 RABBITMA_PORT = '5673'
 RAB_USER = 'stageuser'
 RAB_PSWD = 'YXNkZmFmc2RmbAo'
-
+PRODUCT_NAME = '飞球竞猜'
 
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
