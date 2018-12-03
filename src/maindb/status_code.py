@@ -162,7 +162,8 @@ AGENT_COMMISION_STATUS = (
 Account_Source = (
     (0, 'APP注册'),
     (1, '推广链接'),
-    (2, '代理添加')
+    (2, '代理添加'), 
+    (3, '后台添加'), 
 )
 WhiteIP_Type = (
     (0, '登录'),
