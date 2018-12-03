@@ -27,17 +27,30 @@ class Home(object):
     def __init__(self,request, engin):
         pass
     def get_context(self):
-        trend = [
-            {'key': 1,'label': '投注', }, 
-            {'key': 2,'label': '派奖', }, 
-            {'key': 3,'label': '流水', }, 
-            {'key': 4,'label': '平台亏盈',}, 
-            {'key': 5,'label': '充值', }, 
-            {'key': 6,'label': '提现', }, 
+        statistic_items = [
             
         ]
+        
+        trend = [
+            {'key': '1','label': '投注', }, 
+            {'key': '2','label': '派奖', }, 
+            {'key': '3','label': '流水', }, 
+            {'key': '4','label': '平台亏盈',}, 
+            {'key': '5','label': '充值', }, 
+            {'key': '6','label': '提现', }, 
+        ]
+        
+        sql = "exec  SP_TodayStatistics"
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql)
+            today_static = {} 
+            row =  list(cursor)[0]  # 统计数据只有一行
+            for col_data, col in zip(row, cursor.description):
+                head_name = col[0]
+                today_static[head_name] = col_data
         return {
             'trend_list': trend,
+            'today_static': today_static,
         }
         
         
