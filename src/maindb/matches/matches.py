@@ -111,39 +111,56 @@ class MatchsPage(TablePage):
         def get_operation(self):
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
             ops = [
-                {'fun': 'express',
-                 'express': "rt=manual_end_money(scope.ts,scope.kws)",
+                #{'fun': 'express',
+                 #'express': "rt=manual_end_money(scope.ts,scope.kws)",
+                 #'editor': 'com-op-btn',
+                 #'label': '手动结算',
+                 #'row_match': 'one_row',
+                 ## 'disabled':'!only_one_selected',
+                 #'fields_ctx': {
+                     #'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
+                               #{'name': 'home_score', 'label': '主队分数', 'editor': 'linetext'},
+                               #{'name': 'home_half_score', 'label': '主队半场得分', 'editor': 'linetext'},
+                               #{'name': 'home_corner', 'label': '主队角球', 'editor': 'linetext'},
+                               #{'name': 'away_score', 'label': '客队分数', 'editor': 'linetext'},
+                               #{'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
+                               #{'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
+                               #],
+                     
+                    #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                    #'produce_match_outcome_director': 'football_produce_match_outcome',
+
+                 #}, 
+                 #'visible': self.permit.can_edit(),
+                 #},
+                 
+                  {'fun': 'pop_panel',
                  'editor': 'com-op-btn',
+                 'panel': 'com-form-produceMatchOutcomePanel',
                  'label': '手动结算',
                  'row_match': 'one_row',
-                 # 'disabled':'!only_one_selected',
-                 'fields_ctx': {
-                     'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-                               {'name': 'home_score', 'label': '主队分数', 'editor': 'linetext'},
-                               {'name': 'home_half_score', 'label': '主队半场得分', 'editor': 'linetext'},
-                               {'name': 'home_corner', 'label': '主队角球', 'editor': 'linetext'},
-                               {'name': 'away_score', 'label': '客队分数', 'editor': 'linetext'},
-                               {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
-                               {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
-                               ],
-                     
-                    'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                    'produce_match_outcome_director': 'football_produce_match_outcome',
-                    
-                     #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn'}, ],
-                     
-                  
-                     #'extra_mixins': ['produce_match_outcome'],
-                     #'fieldsPanel': 'produceMatchOutcomePanel',
-                    #'option': {
-                           #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                           #'produce_match_outcome_director': 'football_produce_match_outcome',
-                        #},
-                     #'form': 'com-form-produceMatchOutcomePanel',
-                     
-                 }, 
+                 'ctx_express': 'rt={row:scope.ts.selected[0]},ex.assign(rt,scope.kws.ctx_dict.normal)',
+                 'ctx_dict': {
+                     'normal': {
+                        
+                        'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
+                                  {'name': 'home_score', 'label': '主队分数', 'editor': 'linetext'},
+                                  {'name': 'home_half_score', 'label': '主队半场得分', 'editor': 'linetext'},
+                                  {'name': 'home_corner', 'label': '主队角球', 'editor': 'linetext'},
+                                  {'name': 'away_score', 'label': '客队分数', 'editor': 'linetext'},
+                                  {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
+                                  {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
+                                  ],
+                        
+                       'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                       'produce_match_outcome_director': 'football_produce_match_outcome',
+                       'after_express': 'rt=scope.ts.update_or_insert(scope.resp)',
+                         },
+                     },
+               
                  'visible': self.permit.can_edit(),
                  },
+                 
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
                  'field': 'isrecommend',
                  'value': 1, 'visible': 'isrecommend' in self.permit.changeable_fields(),},

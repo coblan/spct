@@ -132,9 +132,44 @@ var produceMatchOutcomePanel={
         mixins:[mix_fields_data,mix_nice_validator,produce_match_outcome],
 
         data:function(){
+
+            var crt_row = this.ctx.row
+            //if(crt_row.statuscode !=100){
+            //    cfg.showMsg('请先结束比赛')
+            //    return
+            //}
+
+            var mt = /(\d+):(\d+)/.exec(crt_row.matchscore)
+            if(mt){
+                var home_score= mt[1]
+                var away_score=mt[2]
+            }else{
+                var home_score= ''
+                var away_score=''
+            }
+            var mt = /(\d+):(\d+)/.exec(crt_row.period1score)
+            if(mt){
+                var home_half_score= mt[1]
+                var away_half_score=mt[2]
+            }else{
+                var home_half_score= ''
+                var away_half_score=''
+            }
+
+            var row={
+                matchid:crt_row.matchid,
+                _matchid_label:crt_row._matchid_label,
+                home_score:home_score,
+                away_score:away_score,
+                home_half_score:home_half_score,
+                away_half_score:away_half_score,
+
+                //statuscode:crt_row.statuscode
+            }
+
             return {
                 //ops:this.option.ops,
-                row:this.ctx.row,
+                row:row,
                 heads:this.ctx.heads,
                 ops:this.ctx.ops,
 
