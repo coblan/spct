@@ -45,20 +45,8 @@ class BasketMatchsPage(MatchsPage):
                                {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
                                {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
                                ],
-                     #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn'}, ],
-                     
-                  
-                     #'extra_mixins': ['produce_match_outcome'],
-                     #'fieldsPanel': 'produceMatchOutcomePanel',
                      'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
                      'produce_match_outcome_director': 'basketball_produce_match_outcome',
-                     
-                    #'option': {
-                           #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                           #'produce_match_outcome_director': 'basketball_produce_match_outcome',
-                        #},
-                     #'form': 'com-form-produceMatchOutcomePanel',
-                     
                  }, 
                  'visible': self.permit.can_edit(),
                  },
