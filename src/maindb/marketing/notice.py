@@ -128,7 +128,7 @@ class NoticePage(TablePage):
         
         @staticmethod
         @director_view('gen_notice_static')
-        def gen_notice_static(): 
+        def gen_notice_static(**kws): 
             gen_notice_file()
             return {'status': 'success',}
 
