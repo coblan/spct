@@ -17,7 +17,7 @@ def gen_activity_file():
             mt = re.search(r'([^\/\\]+).zip$',itm.zip)
             if mt:
                 file_name = mt.group(0)
-                zip_path = os.path.join( settings.MEDIA_ROOT,'general_upload',file_name )
+                zip_path = os.path.join( settings.MEDIA_ROOT,'public', 'activity',file_name )
                 par_path = os.path.join( settings.MEDIA_ROOT,'public','activity',mt.group(1) )
                 try:
                     os.makedirs(par_path)

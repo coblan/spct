@@ -5606,7 +5606,14 @@ var table_store = {
                     } else {
                         cfg.hide_load();
                         // 留到下面的field弹出框，按照nicevalidator的方式去显示错误
-                        //cfg.showError(resp.save_rows.msg)
+                        if (!after_save_callback) {
+                            if (resp.save_rows.msg) {
+                                cfg.showError(resp.save_rows.msg);
+                            } else {
+                                cfg.showError(JSON.stringify(resp.save_rows.errors));
+                            }
+                        }
+                        //
                     }
 
                     //self.op_funs.update_or_insert_rows({rows:resp.save_rows} )
@@ -5760,6 +5767,28 @@ var table_store = {
                     cfg.hide_load();
                     self.search();
                 });
+            });
+        },
+        pop_panel: function pop_panel(kws) {
+            var self = this;
+            var row_match_fun = kws.row_match || 'many_row';
+            if (!row_match[row_match_fun](self, kws)) {
+                return;
+            }
+            if (kws.panel) {
+                var panel = kws.panel;
+            } else {
+                var panel = ex.eval(kws.panel_express, { ts: self });
+            }
+            var ctx = ex.copy(kws);
+            if (kws.ctx_express) {
+                var cus_ctx = ex.eval(kws.ctx_express, { ts: self, kws: kws });
+                ex.assign(ctx, cus_ctx);
+            }
+            cfg.pop_middle(panel, ctx, function (resp) {
+                if (ctx.after_express) {
+                    ex.eval(ctx.after_express, { ts: self, resp: resp });
+                }
             });
         }
     }

@@ -150,9 +150,9 @@ class TbAppresource(models.Model):
 
 class TbActivity(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True, verbose_name='编号')  # Field name made lowercase.
-    cover = CusPictureField(db_column='Cover', max_length=512, null=True,
+    cover = CusPictureField(db_column='Cover', max_length=512, null=True, blank = True, 
                             verbose_name='封面')  # Field name made lowercase.
-    zip = models.CharField(db_column='Zip', max_length=512, null=True, verbose_name='压缩包')  # Field name made lowercase.
+    zip = models.CharField(db_column='Zip', max_length=512, blank = True, null=True, verbose_name='压缩包')  # Field name made lowercase.
     createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
                                      verbose_name='创建人')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,

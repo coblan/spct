@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter,field_map,model_to_name
+     TabPage,RowSearch,RowSort,RowFilter,field_map,model_to_name, director_view
 from helpers.director.model_func.dictfy import model_to_name
 from ..models import TbActivity
 from ..status_code import *
@@ -13,6 +13,7 @@ from django.conf import settings
 from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.access.permit import has_permit
+from .gen_activity_file import gen_activity_file
 
 class ActivityPage(TablePage):
     template='jb_admin/table.html'
@@ -75,18 +76,30 @@ class ActivityPage(TablePage):
                      'visible': 'status' in self.permit.changeable_fields(),
                 },
                 {
-                    'fun': 'update_activity_file',
+                    'fun': 'director_call',
+                    'director_name': 'update_activity_file',
                     'label': '更新缓存',
                     'editor': 'com-op-btn', 
                      'visible': has_permit(self.crt_user, 'TbActivity.update_cache'),
-                }
+                          }
+                #{
+                    #'fun': 'update_activity_file',
+                    #'label': '更新缓存',
+                    #'editor': 'com-op-btn', 
+                     #'visible': has_permit(self.crt_user, 'TbActivity.update_cache'),
+                #}
             ])
             return operations
         
         def get_context(self):
             ctx = ModelTable.get_context(self)
             ctx['extra_table_logic'] = 'activity_logic'
-            return ctx        
+            return ctx
+
+@director_view('update_activity_file')
+def update_activity_file(**kws): 
+    gen_activity_file()
+    return {'status': 'success',}
         
 class ActiveForm(ModelFields):
     class Meta:
@@ -111,6 +124,8 @@ class ActiveForm(ModelFields):
             head['config']={
                 'multiple':False,
                 'accept':'.zip',
+                'upload_url':'/d/upload?path=public/activity', 
+               #'media\public\activity'
                 #'upload_url':reverse('app_pkg_upload')
             }          
         elif head['name'] =='createuser':
