@@ -110,6 +110,7 @@ class MatchsPage(TablePage):
 
         def get_operation(self):
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
+            spoutcome_form =  SpOutcome(crt_user= self.crt_user)
             ops = [
                 #{'fun': 'express',
                  #'express': "rt=manual_end_money(scope.ts,scope.kws)",
@@ -134,15 +135,24 @@ class MatchsPage(TablePage):
                  #'visible': self.permit.can_edit(),
                  #},
                  
+                 
                   {'fun': 'pop_panel',
                  'editor': 'com-op-btn',
-                 'panel': 'com-form-produceMatchOutcomePanel',
+                 #'panel':  'com-panel-fields', #'com-form-produceMatchOutcomePanel',
+                 'panel_express': 'rt=manul_outcome_panel_express_parse(scope.kws.panel_map,scope.kws.play_type,scope.ts.selected[0].specialcategoryid)',
                  'label': '手动结算',
                  'row_match': 'one_row',
-                 'ctx_express': 'rt={row:scope.ts.selected[0]},ex.assign(rt,scope.kws.ctx_dict.normal)',
+                 'ctx_express': 'rt=manul_outcome_panel_ctx(scope.ts.selected[0],scope.kws.ctx_dict,scope.kws.play_type,scope.ts.selected[0].specialcategoryid) ',
+                 'play_type': {
+                     'normal': [0], 
+                     'abnormal': [170],
+                     },
+                 'panel_map': {
+                     'normal': 'com-form-produceMatchOutcomePanel',
+                     'abnormal': 'com-panel-fields',
+                     },
                  'ctx_dict': {
                      'normal': {
-                        
                         'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
                                   {'name': 'home_score', 'label': '主队分数', 'editor': 'linetext'},
                                   {'name': 'home_half_score', 'label': '主队半场得分', 'editor': 'linetext'},
@@ -156,6 +166,7 @@ class MatchsPage(TablePage):
                        'produce_match_outcome_director': 'football_produce_match_outcome',
                        'after_express': 'rt=scope.ts.update_or_insert(scope.resp)',
                          },
+                     'abnormal': spoutcome_form.get_head_context(),
                      },
                
                  'visible': self.permit.can_edit(),
@@ -281,6 +292,7 @@ class MatchForm(ModelFields):
 
     def save_form(self):
         super().save_form()
+        
         self.updateMongo()
         self.proc_redis()
     
@@ -608,10 +620,22 @@ def produce_match_outcome(row, MatchModel , sportid, half_end_code = 31, updateM
     return rt_dc    
 
 
+class SpOutcome(Fields):
+    def get_heads(self): 
+        return [
+            {'name': 'bbb', 'label': 'bb','editor': 'linetext',}
+        ]
+    
+    def save_form(self): 
+        print('here')
+
+
 director.update({
     'match.table': MatchsPage.tableCls,
     'match.table.edit': MatchForm,
     'PeriodTypeForm': PeriodTypeForm,
+    
+    'sp1': SpOutcome,
 
 })
 

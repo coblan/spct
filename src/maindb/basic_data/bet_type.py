@@ -85,7 +85,12 @@ class BetTypeForm(ModelFields):
 
     def save_form(self):
         rt = super().save_form()
-
+        
+        if not self.changed_data:
+            return
+        # 如果只是更改启用与否，就不用调用SPREAD_SERVICE服务器了
+        if  len(self.changed_data) == 1 and 'enabled' in self.changed_data:
+            return
         ls = [
             {'betType': self.instance.bettype,
              'periodType': self.instance.periodtype,

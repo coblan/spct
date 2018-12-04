@@ -1,3 +1,29 @@
+function  type_find(play_type,sp_id){
+    for(var k in play_type){
+        var types = play_type[k]
+        if(ex.isin(sp_id,types)){
+            return k
+        }
+    }
+}
+
+
+function manul_outcome_panel_express_parse(panel_map,play_type,sp_id){
+    var type =type_find(play_type,sp_id)
+    return panel_map[type]
+}
+
+function manul_outcome_panel_ctx(row,ctx_dict,play_type,sp_id){
+    var type = type_find(play_type,sp_id)
+    var cus_ctx = ex.copy(ctx_dict[type])
+    cus_ctx.row=row
+    return cus_ctx
+
+}
+
+window.manul_outcome_panel_express_parse = manul_outcome_panel_express_parse
+window.manul_outcome_panel_ctx=manul_outcome_panel_ctx
+
 var manual_end_money=function(self,kws){
     //if(self.selected.length!=1){
     //    cfg.showMsg('请选择一条记录')
