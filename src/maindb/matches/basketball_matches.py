@@ -2,6 +2,7 @@ from helpers.director.shortcut import page_dc, director, director_view
 from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, quit_ticket
 from ..models import TbMatchesBasketball, TbOddsBasketball
 from maindb.mongoInstance import updateMatchBasketMongo
+from .match_outcome_forms import FirstScore
 
 class BasketMatchsPage(MatchsPage):
     
@@ -30,24 +31,42 @@ class BasketMatchsPage(MatchsPage):
         
         def get_operation(self):
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
+            first_score = FirstScore(crt_user= self.crt_user)
             ops = [
-                {'fun': 'express',
-                 'express': "rt=manual_end_money(scope.ts,scope.kws)",
+                             
+                  {'fun': 'pop_panel',
                  'editor': 'com-op-btn',
+                 #'panel':  'com-panel-fields', #'com-form-produceMatchOutcomePanel',
+                 'panel_express': 'rt=manul_outcome_panel_express_parse(scope.kws.panel_map,scope.kws.play_type,scope.ts.selected[0].specialcategoryid)',
                  'label': '手动结算',
-                 # 'disabled':'!only_one_selected',
-                 'fields_ctx': {
-                     'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-                               {'name': 'home_score', 'label': '主队分数', 'editor': 'linetext'},
-                               {'name': 'home_half_score', 'label': '主队半场得分', 'editor': 'linetext'},
-                               {'name': 'home_corner', 'label': '主队角球', 'editor': 'linetext'},
-                               {'name': 'away_score', 'label': '客队分数', 'editor': 'linetext'},
-                               {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
-                               {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
-                               ],
-                     'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                     'produce_match_outcome_director': 'basketball_produce_match_outcome',
-                 }, 
+                 'row_match': 'one_row',
+                 'ctx_express': 'rt=manul_outcome_panel_ctx(scope.ts.selected[0],scope.kws.ctx_dict,scope.kws.play_type,scope.ts.selected[0].specialcategoryid) ',
+                 'play_type': {
+                     'normal': [0], 
+                     'race-to-first-number-of-points': [185],
+                     },
+                 'panel_map': {
+                     'normal': 'com-form-produceMatchOutcomePanel',
+                     'race-to-first-number-of-points': 'com-panel-pop-fields',
+                     },
+                 'ctx_dict': {
+                     'normal': {
+                        'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
+                                  {'name': 'home_score', 'label': '主队分数', 'editor': 'linetext'},
+                                  {'name': 'home_half_score', 'label': '主队半场得分', 'editor': 'linetext'},
+                                  {'name': 'home_corner', 'label': '主队角球', 'editor': 'linetext'},
+                                  {'name': 'away_score', 'label': '客队分数', 'editor': 'linetext'},
+                                  {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
+                                  {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
+                                  ],
+                        
+                       'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                       'produce_match_outcome_director': 'football_produce_match_outcome',
+                       'after_express': 'rt=scope.ts.update_or_insert(scope.resp)',
+                         },
+                     'race-to-first-number-of-points': first_score.get_head_context(),
+                     },
+               
                  'visible': self.permit.can_edit(),
                  },
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',

@@ -15,6 +15,7 @@ import requests
 from django.conf import settings
 from helpers.director.model_func.dictfy import to_dict
 import functools
+from .match_outcome_forms import FootBallPoints
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -22,7 +23,7 @@ op_log = logging.getLogger('operation_log')
 
 class MatchsPage(TablePage):
     template = 'jb_admin/table.html'
-    extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
+    #extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self, prefer=None):
         return '比赛信息'
@@ -109,8 +110,10 @@ class MatchsPage(TablePage):
 
 
         def get_operation(self):
+            points_form =  FootBallPoints(crt_user= self.crt_user)
+            
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
-            spoutcome_form =  SpOutcome(crt_user= self.crt_user)
+            #spoutcome_form =  SpOutcome(crt_user= self.crt_user)
             ops = [
                 #{'fun': 'express',
                  #'express': "rt=manual_end_money(scope.ts,scope.kws)",
@@ -142,31 +145,35 @@ class MatchsPage(TablePage):
                  'panel_express': 'rt=manul_outcome_panel_express_parse(scope.kws.panel_map,scope.kws.play_type,scope.ts.selected[0].specialcategoryid)',
                  'label': '手动结算',
                  'row_match': 'one_row',
-                 'ctx_express': 'rt=manul_outcome_panel_ctx(scope.ts.selected[0],scope.kws.ctx_dict,scope.kws.play_type,scope.ts.selected[0].specialcategoryid) ',
+                 'ctx_express': 'rt=manul_outcome_panel_ctx(scope.ts.selected[0],scope.kws,scope.ts.selected[0].specialcategoryid)',
                  'play_type': {
                      'normal': [0], 
-                     'abnormal': [170],
+                     'race-to-first-number-of-points': [185],
+                     },
+                 'row_adapt': {
+                     'normal': 'rt=scope.adaptor.parse_score(scope.row)',
                      },
                  'panel_map': {
                      'normal': 'com-form-produceMatchOutcomePanel',
-                     'abnormal': 'com-panel-fields',
+                     'race-to-first-number-of-points': 'com-panel-fields',
                      },
                  'ctx_dict': {
-                     'normal': {
-                        'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-                                  {'name': 'home_score', 'label': '主队分数', 'editor': 'linetext'},
-                                  {'name': 'home_half_score', 'label': '主队半场得分', 'editor': 'linetext'},
-                                  {'name': 'home_corner', 'label': '主队角球', 'editor': 'linetext'},
-                                  {'name': 'away_score', 'label': '客队分数', 'editor': 'linetext'},
-                                  {'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
-                                  {'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
-                                  ],
+                     'normal': points_form.get_head_context(),
+                     #'normal': {
+                        #'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
+                                  #{'name': 'home_score', 'label': '主队分数', 'editor': 'linetext'},
+                                  #{'name': 'home_half_score', 'label': '主队半场得分', 'editor': 'linetext'},
+                                  #{'name': 'home_corner', 'label': '主队角球', 'editor': 'linetext'},
+                                  #{'name': 'away_score', 'label': '客队分数', 'editor': 'linetext'},
+                                  #{'name': 'away_half_score', 'label': '客队半场得分', 'editor': 'linetext'},
+                                  #{'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
+                                  #],
                         
-                       'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
-                       'produce_match_outcome_director': 'football_produce_match_outcome',
-                       'after_express': 'rt=scope.ts.update_or_insert(scope.resp)',
-                         },
-                     'abnormal': spoutcome_form.get_head_context(),
+                       #'ops': [{"fun": 'produce_match_outcome', 'label': '保存', 'editor': 'com-field-op-btn', }, ],
+                       #'produce_match_outcome_director': 'football_produce_match_outcome',
+                       #'after_express': 'rt=scope.ts.update_or_insert(scope.resp)',
+                         #},
+                     #'race-to-first-number-of-points': spoutcome_form.get_head_context(),
                      },
                
                  'visible': self.permit.can_edit(),
@@ -292,21 +299,44 @@ class MatchForm(ModelFields):
 
     def save_form(self):
         super().save_form()
-        
+        msg = []
+        if self.kw.get('meta_type') == 'manul_outcome':
+            specialcategoryid = self.kw.get('specialcategoryid')
+            proc_map = {
+                0: FootBallPoints,
+            }
+            ProcCls = proc_map.get(specialcategoryid)
+            proc_obj = ProcCls(crt_user = self.crt_user)
+            rt_msg =  proc_obj.manul_outcome(self.kw)
+            msg.append(rt_msg)
+            
         self.updateMongo()
         self.proc_redis()
+        return {'msg': msg,}
     
     def updateMongo(self): 
-        inst = self.instance
+        #inst = self.instance
+        #dc = {
+            #'MatchID': inst.matchid,
+            #'IsRecommend': inst.isrecommend,
+            #'IsHidden': inst.ishidden,
+            #'CloseLiveBet': inst.closelivebet, 
+            #'Team1ZH': inst.team1zh,
+            #'Team2ZH': inst.team2zh,
+        #}
+        match =  self.instance
         dc = {
-            'MatchID': inst.matchid,
-            'IsRecommend': inst.isrecommend,
-            'IsHidden': inst.ishidden,
-            'CloseLiveBet': inst.closelivebet, 
-            'Team1ZH': inst.team1zh,
-            'Team2ZH': inst.team2zh,
-            
-        }
+            'MatchID': match.matchid,
+            'IsRecommend': match.isrecommend,
+            'IsHidden': match.ishidden,
+            'CloseLiveBet': match.closelivebet, 
+            'Team1ZH': match.team1zh,
+            'Team2ZH': match.team2zh,
+            'StatusCode': match.statuscode,
+            'Period1Score': match.period1score,
+            'MatchScore': match.matchscore,
+            'Winner': match.winner,
+        }        
         updateMatchMongo(dc)
     
     def proc_redis(self): 
@@ -620,14 +650,7 @@ def produce_match_outcome(row, MatchModel , sportid, half_end_code = 31, updateM
     return rt_dc    
 
 
-class SpOutcome(Fields):
-    def get_heads(self): 
-        return [
-            {'name': 'bbb', 'label': 'bb','editor': 'linetext',}
-        ]
-    
-    def save_form(self): 
-        print('here')
+
 
 
 director.update({
@@ -635,7 +658,6 @@ director.update({
     'match.table.edit': MatchForm,
     'PeriodTypeForm': PeriodTypeForm,
     
-    'sp1': SpOutcome,
 
 })
 
