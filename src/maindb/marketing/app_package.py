@@ -74,6 +74,7 @@ class AppPackageForm(ModelFields):
     def clean_save(self): 
         if self.instance.terminal ==1:
             plist_fl = plist_template % {'ipa_download': settings.CLOUD_STORAGE + self.instance.packageurl, 
+                                         'package_name': settings.PACKAGE_NAME,
                                          'prod_name': settings.PRODUCT_NAME,
                                          'version': self.instance.versionname,}
             fl_path = os.path.join(settings.MEDIA_ROOT, 'public', 'package', self.instance.md5 + '.plist')
@@ -147,7 +148,7 @@ plist_template = """<?xml version="1.0" encoding="UTF-8"?>
                 <key>metadata</key>
                 <dict>
                     <key>bundle-identifier</key>
-                    <string>com.jingbo.DQGuess</string>
+                    <string>%(package_name)s</string>
                     <key>bundle-version</key>
                     <string>%(version)s</string>
                     <key>kind</key>
