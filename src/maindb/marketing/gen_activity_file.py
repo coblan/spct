@@ -26,7 +26,7 @@ def gen_activity_file():
                 
                 unzip(par_path,zip_path)
                 #itm.cover = '/activity/cover/3304314479dd3bdec53a5eb8b395e839.jpg'
-                ls.append({'cover':itm.cover[10: ],
+                ls.append({'cover':itm.indexcover[10: ],
                            'url':'%s/index.html'%mt.group(1)})
     
     index_temp = loader.get_template('maindb/activity_index.html')
