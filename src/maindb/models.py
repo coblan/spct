@@ -150,9 +150,10 @@ class TbAppresource(models.Model):
 
 class TbActivity(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True, verbose_name='编号')  # Field name made lowercase.
+    indexcover = CusPictureField(db_column='IndexCover', verbose_name = '列表封面', max_length=512, null=True, help_text = '活动列表页面使用')  # Field name made lowercas
     cover = CusPictureField(db_column='Cover', max_length=512, null=True, blank = True, 
-                            verbose_name='封面')  # Field name made lowercase.
-    zip = models.CharField(db_column='Zip', max_length=512, blank = True, null=True, verbose_name='压缩包')  # Field name made lowercase.
+                            verbose_name='首页封面', help_text = 'app弹出使用')  # Field name made lowercase.
+    zip = models.CharField(db_column='Zip', max_length=512,  null=True, verbose_name='压缩包')  # Field name made lowercase.
     createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
                                      verbose_name='创建人')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,
@@ -161,7 +162,7 @@ class TbActivity(models.Model):
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
     priority = models.IntegerField(db_column='Priority', blank=True, null=True,
                                    verbose_name='优先级')  # Field name made lowercase.
-
+   
     class Meta:
         managed = False
         db_table = 'TB_Activity'

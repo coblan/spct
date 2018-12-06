@@ -17,7 +17,7 @@ from .gen_activity_file import gen_activity_file
 
 class ActivityPage(TablePage):
     template='jb_admin/table.html'
-    extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
+    #extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
     
     def get_label(self):
         return '活动'
@@ -30,10 +30,10 @@ class ActivityPage(TablePage):
         def dict_head(self, head):
             dc={
                 'cover':190,
+                'indexcover': 190,
                 'zip':160,
                 'createuser':80,
                 'createtime':150,
-            
             }
             if head['name'] == 'status':
                 head['editor'] = 'com-table-bool-shower'
@@ -91,10 +91,10 @@ class ActivityPage(TablePage):
             ])
             return operations
         
-        def get_context(self):
-            ctx = ModelTable.get_context(self)
-            ctx['extra_table_logic'] = 'activity_logic'
-            return ctx
+        #def get_context(self):
+            #ctx = ModelTable.get_context(self)
+            #ctx['extra_table_logic'] = 'activity_logic'
+            #return ctx
 
 @director_view('update_activity_file')
 def update_activity_file(**kws): 
@@ -114,11 +114,14 @@ class ActiveForm(ModelFields):
         return {
             'createtime':row.createtime.strftime('%Y-%m-%d %H:%M:%S') if row.createtime else None,
             '_createuser_label':str(User.objects.get(pk=row.createuser)) if row.createuser else "",
+            '_ui_class': 'success' if row.status else '',
         }   
     
     def dict_head(self, head):
         if head['name']=='cover':
             head['up_url'] = '/d/upload?path=public/activity/cover'
+        if head['name']=='indexcover':
+            head['up_url'] = '/d/upload?path=public/activity/cover'        
    
             #head['editor'] = 'picture'
         if head['name'] == 'zip':
