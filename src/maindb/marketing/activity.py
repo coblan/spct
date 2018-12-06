@@ -50,7 +50,6 @@ class ActivityPage(TablePage):
             return {
                 'createtime':row.createtime.strftime('%Y-%m-%d %H:%M:%S') if row.createtime else None,
                 '_createuser_label':str(User.objects.get(pk=row.createuser)) if row.createuser else "",
-                '_css_class': 'success' if row.status else '',
             }  
         
         def get_operation(self):
@@ -115,7 +114,6 @@ class ActiveForm(ModelFields):
         return {
             'createtime':row.createtime.strftime('%Y-%m-%d %H:%M:%S') if row.createtime else None,
             '_createuser_label':str(User.objects.get(pk=row.createuser)) if row.createuser else "",
-            '_css_class': 'success' if row.status else '',
         }   
     
     def dict_head(self, head):

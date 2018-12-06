@@ -136,7 +136,8 @@ class PcMenu(BaseEngine):
     def custome_ctx(self, ctx):
         ctx['js_stamp'] = js_stamp
         ctx['fast_config_panel'] = True
-        
+        if 'extra_js' not in ctx:
+            ctx['extra_js'] = []
         ctx['extra_js'].append(ctx['js_config']['js_lib']['maindb'])
    
         # ctx['table_fun_config'] ={
