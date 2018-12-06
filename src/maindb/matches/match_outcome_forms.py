@@ -1,5 +1,5 @@
 from helpers.director.shortcut import Fields, get_request_cache
-from ..models import TbMatches
+from ..models import TbMatches, TbMatchesBasketball
 from maindb.mongoInstance import updateMatchMongo
 from helpers.director.model_func.dictfy import to_dict
 import urllib
@@ -11,7 +11,7 @@ from django.conf import settings
 import logging
 op_log = logging.getLogger('operation_log')
 
-# 足球,篮球
+# 足球
 #--------------------------------
 class FootBallPoints(Fields):
     # 0 全场半场比分
@@ -34,7 +34,7 @@ class FootBallPoints(Fields):
     
     def manul_outcome(self, row): 
         match = self.MatchModel.objects.get(matchid = row.get('matchid'))
-        self.org_match = to_dict(match)
+        org_match = to_dict(match)
         
         match.ishidden = True
         crt_settlestatus = 0 if not match.settlestatus else match.settlestatus
@@ -67,10 +67,19 @@ class FootBallPoints(Fields):
             
             raise UserWarning('%s已经结算,请不要重复结算!' % settle_dict.get(settlestatus))
             
-        
         match.save()
-        
-        rt_dc = self.notfiy_service(row)
+        try:
+            self.notfiy_service(row)
+        except UserWarning as e:
+            for k in org_match:
+                if not k.startswith('_'):
+                    setattr(match, k, org_match[k])
+                match.save()
+            op_log.info('手动结算足球比赛%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
+                                                                                        'type': settle_dict.get(match.settlestatus),
+                                                                                        'msg': str(e),
+                                                                                        })
+            raise e
         #self.update_mongo(match)
 
         op_log.info('手动结算%(matchtype)s比赛%(matchid)s的%(type)s，结算后比分为:上半场:%(period1score)s,全场:%(matchscore)s' % {'matchid': match.matchid, 
@@ -91,115 +100,152 @@ class FootBallPoints(Fields):
         url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
         rt = requests.post(url,json=data)
         rt_dc = json.loads( rt.text )
-        if not rt_dc.get('Success'):
-            for k in self.org_match:
-                if not k.startswith('_'):
-                    setattr(match, k, self.org_match[k])
-                match.save()
-            op_log.info('手动结算足球比赛%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
-                                                             'type': settle_dict.get(match.settlestatus),
-                                                            'msg': rt_dc.get('Message',''),})
-                
+        if not rt_dc.get('Success'):   
             raise UserWarning( rt_dc.get('Message', '手动结算后端发生问题'))
         catch['msg'].append(rt_dc.get('Message'))
 
         
-    #def update_mongo(self, match): 
-        #dc = {
-            #'MatchID': match.matchid,
-            #'IsRecommend': match.isrecommend,
-            #'IsHidden': match.ishidden,
-            #'CloseLiveBet': match.closelivebet, 
-            #'Team1ZH': match.team1zh,
-            #'Team2ZH': match.team2zh,
-            #'StatusCode': match.statuscode,
-            #'Period1Score': match.period1score,
-            #'MatchScore': match.matchscore,
-            #'Winner': match.winner,
-        #}
-        #updateMatchMongo(dc)
-        
-        
-
-# 足球
-#--------------------------------
-class NumberOfCorner(Fields):
-    #2  全场半场
+class NumberOfCorner(FootBallPoints):
+    #2  全场半场 角球
     def get_heads(self): 
         return [
+            #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
+            {'name': 'home_half_score', 'label': '半场角球数', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_half_score', 'label': '半场角球数', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            
+            {'name': 'home_score', 'label': '全场角球数', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'away_score', 'label': '全场角球数', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            
+            ]    
 
-            {'name': 'matchscore', 'label': '球队先得<br>多少分','editor': 'sim_select','options': [
-                {'value': '1:0', 'label': '主队',}, 
-                {'value': '0:1', 'label': '客队',}, 
-                {'value': '0:0', 'label': '都不',}
-                ],'required': True,}
-        ]
 
 # 篮球
 #--------------------------------------
 
-class Basket
+class BasketPoints(FootBallPoints):
+    sportid = 1
+    MatchModel = TbMatchesBasketball
+    matchtype = '篮球'
+    half_end_code = 4
+    
 
-class Quarter(Fields):
+class Quarter(BasketPoints):
     # 170  单结比分
     def get_heads(self): 
         return [
-
-            {'name': 'matchscore', 'label': '球队先得<br>多少分','editor': 'sim_select','options': [
-                {'value': '1:0', 'label': '主队',}, 
-                {'value': '0:1', 'label': '客队',}, 
-                {'value': '0:0', 'label': '都不',}
-                ],'required': True,}
+            {'name': 'home_score', 'label': '主队得分','editor': 'com-field-linetext','required': True,'fv_rule': 'integer(+0);length(~6)',}, 
+            {'name': 'away_score', 'label': '客队得分','editor': 'com-field-linetext','required': True,'fv_rule': 'integer(+0);length(~6)',}, 
         ]
+    
+    def manul_outcome(self, row): 
+        match = self.MatchModel.objects.get(matchid = row.get('matchid'))
+        if match.settlestatus and match.settlestatus >= 1:
+            raise UserWarning('单节比分已经结算,请不要重复结算!')    
+        
+        self.org_match = to_dict(match)
+        
+        match.ishidden = True
+        match.homescore = row.get('home_score')
+        match.awayscore = row.get('away_score')
+        match.period1score = ''
+        match.matchscore = '%s:%s' % (match.homescore, match.awayscore)
+        match.settlestatus = 1
+        match.save()
+        
+        row['PeriodType'] = 0
+        try:
+            self.notfiy_service(row)
+        except UserWarning as e:
+            for k in org_match:
+                if not k.startswith('_'):
+                    setattr(match, k, org_match[k])
+                match.save()
+            op_log.info('手动结算篮球比赛%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
+                                                                                        'type': settle_dict.get(match.settlestatus),
+                                                                                        'msg': str(e),
+                                                                                                })
+            raise e
+        op_log.info('手动结算%(matchtype)s比赛%(matchid)s,最终比分%(matchscore)s' % {'matchid': match.matchid, 
+                                                         'matchtype': self.matchtype,
+                                                         'matchscore': match.matchscore,})    
 
-class FirstBasket(Fields):
+class FirstBasket(BasketPoints):
     #171 最先得分  主队，客队  "1:0" "0:1"  homeScore  awayScore
     def get_heads(self): 
         return [
-
-            {'name': 'matchscore', 'label': '球队先得<br>多少分','editor': 'sim_select','options': [
+            {'name': 'matchscore', 'label': '先得分球队','editor': 'sim_select','options': [
                 {'value': '1:0', 'label': '主队',}, 
                 {'value': '0:1', 'label': '客队',}, 
-                {'value': '0:0', 'label': '都不',}
                 ],'required': True,}
         ]
-class LastBasket(Fields):
+    
+    def manul_outcome(self, row): 
+        match = self.MatchModel.objects.get(matchid = row.get('matchid'))
+        if match.settlestatus and match.settlestatus >= 1:
+            raise UserWarning('已经结算,请不要重复结算!')    
+        
+        self.org_match = to_dict(match)
+        
+        match.ishidden = True
+        match.period1score = ''
+        match.settlestatus = 1
+        match.save()
+        
+        row['PeriodType'] = 0
+        try:
+            self.notfiy_service(row)
+        except UserWarning as e:
+            for k in org_match:
+                if not k.startswith('_'):
+                    setattr(match, k, org_match[k])
+                match.save()
+            op_log.info('手动结算篮球比赛%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
+                                                                                        'type': settle_dict.get(match.settlestatus),
+                                                                                        'msg': str(e),
+                                                                                                })
+            raise e
+        op_log.info('手动结算%(matchtype)s比赛%(matchid)s,最终比分%(matchscore)s' % {'matchid': match.matchid, 
+                                                         'matchtype': self.matchtype,
+                                                         'matchscore': match.matchscore,})       
+    
+class LastBasket(FirstBasket):
     #172 最后得分 主队，客队  "1:0" "0:1"
     def get_heads(self): 
         return [
-
-            {'name': 'matchscore', 'label': '球队先得<br>多少分','editor': 'sim_select','options': [
+            {'name': 'matchscore', 'label': '最后得分球队','editor': 'sim_select','options': [
                 {'value': '1:0', 'label': '主队',}, 
                 {'value': '0:1', 'label': '客队',}, 
-                {'value': '0:0', 'label': '都不',}
                 ],'required': True,}
         ]
 
-class HightestQuarterScore(Fields):
-    #174  最高单结得分
-    pass
-
-class TotalPoints(Fields):
-    #175   主队多少分，客队多少分   matchscore
+class HightestQuarterScore(FirstBasket):
+    #174  最高单节得分
     def get_heads(self): 
         return [
-
-            {'name': 'matchscore', 'label': '球队先得<br>多少分','editor': 'sim_select','options': [
-                {'value': '1:0', 'label': '主队',}, 
-                {'value': '0:1', 'label': '客队',}, 
-                {'value': '0:0', 'label': '都不',}
-                ],'required': True,}
+           {'name': 'matchscore', 'label': '最高单节<br>得分球队','editor': 'sim_select','options': [
+               {'value': '1:0', 'label': '主队',}, 
+               {'value': '0:1', 'label': '客队',}, 
+               ],'required': True,}
         ]
 
-class Shot3Points(Fields):
-    #176 三分球 主队 客队 分别填写
+class TotalPoints(Quarter):
+    #175   主队多少分，客队多少分   matchscore
     pass
 
-class FirstScore(Fields):
+class Shot3Points(Quarter):
+    #176 三分球 主队 客队 分别填写
+    def get_heads(self):
+        return [
+            {'name': 'home_score', 'label': '主队三分球','editor': 'com-field-linetext','required': True,'fv_rule': 'integer(+0);length(~6)',}, 
+            {'name': 'away_score', 'label': '客队三分球','editor': 'com-field-linetext','required': True,'fv_rule': 'integer(+0);length(~6)',}, 
+        ]
+    
+
+class FirstReachScore(FirstBasket):
     # 185  谁先得多少分
     def get_heads(self): 
         return [
-            {'name': 'matchscore', 'label': '球队先得<br>多少分','editor': 'sim_select','options': [
+            {'name': 'matchscore', 'label': '球队先得X分','editor': 'sim_select','options': [
                 {'value': '1:0', 'label': '主队',}, 
                 {'value': '0:1', 'label': '客队',}, 
                 {'value': '0:0', 'label': '都不',}

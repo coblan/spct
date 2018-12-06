@@ -15,7 +15,7 @@ import requests
 from django.conf import settings
 from helpers.director.model_func.dictfy import to_dict
 import functools
-from .match_outcome_forms import FootBallPoints
+from .match_outcome_forms import FootBallPoints, NumberOfCorner
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -111,8 +111,10 @@ class MatchsPage(TablePage):
 
         def get_operation(self):
             points_form =  FootBallPoints(crt_user= self.crt_user)
+            corner_form = NumberOfCorner(crt_user= self.crt_user)
             
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
+            
             #spoutcome_form =  SpOutcome(crt_user= self.crt_user)
             ops = [
                 #{'fun': 'express',
@@ -148,17 +150,21 @@ class MatchsPage(TablePage):
                  'ctx_express': 'rt=manul_outcome_panel_ctx(scope.ts.selected[0],scope.kws,scope.ts.selected[0].specialcategoryid)',
                  'play_type': {
                      'normal': [0], 
+                     'corner': [2],
                      'race-to-first-number-of-points': [185],
                      },
                  'row_adapt': {
                      'normal': 'rt=scope.adaptor.parse_score(scope.row)',
+                     'corner': 'rt=scope.adaptor.parse_score(scope.row)',
                      },
                  'panel_map': {
                      'normal': 'com-form-produceMatchOutcomePanel',
+                     'corner': 'com-form-produceMatchOutcomePanel',
                      'race-to-first-number-of-points': 'com-panel-fields',
                      },
                  'ctx_dict': {
                      'normal': points_form.get_head_context(),
+                     'corner': corner_form.get_head_context(),
                      #'normal': {
                         #'heads': [{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
                                   #{'name': 'home_score', 'label': '主队分数', 'editor': 'linetext'},
@@ -280,10 +286,16 @@ def quit_ticket(rows, new_row, sportid = 0):
 
 
 class MatchForm(ModelFields):
+    
+    proc_map = {
+        0: FootBallPoints,
+        2: NumberOfCorner,
+    }
+    
     class Meta:
         model = TbMatches
         exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
-                   'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid']
+                   'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus']
 
     field_sort = ['matchid', 'team1zh', 'team2zh', ]
 
@@ -302,10 +314,7 @@ class MatchForm(ModelFields):
         msg = []
         if self.kw.get('meta_type') == 'manul_outcome':
             specialcategoryid = self.kw.get('specialcategoryid')
-            proc_map = {
-                0: FootBallPoints,
-            }
-            ProcCls = proc_map.get(specialcategoryid)
+            ProcCls = self.proc_map.get(specialcategoryid)
             proc_obj = ProcCls(crt_user = self.crt_user)
             rt_msg =  proc_obj.manul_outcome(self.kw)
             msg.append(rt_msg)
@@ -656,7 +665,7 @@ def produce_match_outcome(row, MatchModel , sportid, half_end_code = 31, updateM
 director.update({
     'match.table': MatchsPage.tableCls,
     'match.table.edit': MatchForm,
-    'PeriodTypeForm': PeriodTypeForm,
+    #'PeriodTypeForm': PeriodTypeForm,
     
 
 })
