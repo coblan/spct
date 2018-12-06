@@ -26,7 +26,7 @@ class ActivityPage(TablePage):
         pop_edit_field='id'
         model = TbActivity
         exclude=[]
-        
+        fields_sort = ['id', 'status', 'priority', 'indexcover', 'cover', 'zip', 'createuser', 'createtime']
         def dict_head(self, head):
             dc={
                 'cover':190,
@@ -102,6 +102,7 @@ def update_activity_file(**kws):
     return {'status': 'success',}
         
 class ActiveForm(ModelFields):
+    hide_fields = ['createuser']
     class Meta:
         model = TbActivity
         exclude=[]
