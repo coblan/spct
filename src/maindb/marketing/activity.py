@@ -102,6 +102,7 @@ def update_activity_file(**kws):
     return {'status': 'success',}
         
 class ActiveForm(ModelFields):
+    hide_fields = ['createuser']
     class Meta:
         model = TbActivity
         exclude=[]
