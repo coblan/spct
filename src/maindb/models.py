@@ -161,6 +161,7 @@ class TbActivity(models.Model):
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
     priority = models.IntegerField(db_column='Priority', blank=True, null=True,
                                    verbose_name='优先级')  # Field name made lowercase.
+    popcover = CusPictureField(db_column='PopCover', verbose_name = '弹出封面', max_length=512, blank=True, null=True)  # Field name made lowercas
 
     class Meta:
         managed = False

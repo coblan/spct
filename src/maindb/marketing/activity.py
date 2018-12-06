@@ -119,6 +119,8 @@ class ActiveForm(ModelFields):
     def dict_head(self, head):
         if head['name']=='cover':
             head['up_url'] = '/d/upload?path=public/activity/cover'
+        if head['name']=='popcover':
+            head['up_url'] = '/d/upload?path=public/activity/cover'        
    
             #head['editor'] = 'picture'
         if head['name'] == 'zip':
