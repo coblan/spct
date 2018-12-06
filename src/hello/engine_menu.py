@@ -96,7 +96,7 @@ class PcMenu(BaseEngine):
                 {'label':_('White IP'),'url':page('white_ip_rangelist'), 'visible': can_touch(TbWhiteiprangelist, crt_user),},
                 {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
                 {'label': '联赛组水位', 'url': page('LeagueGroupPage'), 'visible': can_touch(TbLeagueGroup, crt_user), },
-                {'label': '参数设置', 'url': page('ParameterPage'),'visible': True,}
+                {'label': '参数设置', 'url': page('ParameterPage'),'visible': has_permit(crt_user, 'risk.parameter'),}
              ]},
 
             {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,
@@ -111,7 +111,6 @@ class PcMenu(BaseEngine):
              'submenu': [
                  {'label': '代理用户', 'url': page('agent_user'),'visible': has_permit(crt_user, 'agent'), },
                  {'label': '佣金审核', 'url': page('agent_commission'),'visible': can_touch(TbAgentcommission, crt_user), },
-    
              ]},
 
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,

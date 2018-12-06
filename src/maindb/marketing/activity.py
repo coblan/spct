@@ -26,7 +26,7 @@ class ActivityPage(TablePage):
         pop_edit_field='id'
         model = TbActivity
         exclude=[]
-        
+        fields_sort = ['id', 'status', 'priority', 'indexcover', 'cover', 'zip', 'createuser', 'createtime']
         def dict_head(self, head):
             dc={
                 'cover':190,

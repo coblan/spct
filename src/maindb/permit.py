@@ -112,6 +112,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
           
           ('agent.commission', '', '', 'single'), 
           
+          ('risk.parameter', '', '', 'single'), 
+          
           ('TbAgentcommission', model_read_permit(TbAgentcommission), model_to_name(TbAgentcommission), 'model'), 
           ('TbAgentcommission.edit', model_full_permit(TbAgentcommission), model_to_name(TbAgentcommission), 'model'),
           

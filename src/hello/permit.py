@@ -145,6 +145,7 @@ def get_permit():
                  {'label': '编辑', 'value': 'Whiteuserlist.edit', 'depend': ['Whiteuserlist', 'TbAccount'],}, 
                       ],}, 
              {'label': '联赛组水位', 'value': 'TbLeagueGroup.edit',}, 
+             {'label': '参数设置', 'value': 'risk.parameter',}
              
             
             #{'label': _('Tb RC Filter'), 'value': 'TbRcFilter',}, 
