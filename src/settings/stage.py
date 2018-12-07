@@ -42,7 +42,7 @@ PHONE_MESSAGE_SERVICE = 'http://192.168.40.137:5002/message/send'
 MONGO_SERVER ="mongodb://admin:lishen123@192.168.40.210:27017,192.168.40.211:27017,192.168.40.212:27017/?replicaSet=testrs;slaveok=true"
 
 # RABBITMQ 
-RABBITMQ = '192.168.40.20'
+RABBITMQ = '192.168.40.99'
 RABBITMA_PORT = '5673'
 # RABBITMQ 用户密码
 RAB_USER = 'publisher'
