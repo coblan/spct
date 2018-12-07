@@ -149,7 +149,16 @@ class BasketMatchsPage(MatchsPage):
                   'pre_set': 'rt={PeriodType:2}',
                   #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
                  'fields_ctx': PeriodTypeForm_form.get_head_context(),
-                 'visible': 'ishidden' in self.permit.changeable_fields()},
+                 'visible': 'ishidden' in self.permit.changeable_fields(), 
+                 'show': 'rt=scope.ts.selected.length==0 || ex.isin(scope.ts.selected[0].specialcategoryid,[0])',},
+                {'fun': 'director_call', 'editor': 'com-op-btn', 
+                  'director_name': 'football_quit_ticket',
+                  'label': '退单1', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
+                  'pre_set': 'rt={PeriodType:1}',
+                  #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
+                 #'fields_ctx': PeriodTypeForm_form.get_head_context(),
+                 'visible': 'ishidden' in self.permit.changeable_fields(), 
+                 'show': 'scope.ts.selected.length!=0 && ex.isin(scope.ts.selected[0].specialcategoryid,[170,171,172,174,175,176,185])',},
 
             ]
             return ops

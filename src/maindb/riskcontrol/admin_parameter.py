@@ -12,7 +12,6 @@ class ParameterPage(FieldsPage):
     class fieldsCls(Fields):
         def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
             super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
-            self.crt_user = crt_user
             if not has_permit(self.crt_user, 'risk.parameter'):
                 raise PermissionDenied('没有权限访问参数管理页面')
         

@@ -213,14 +213,7 @@ class MatchsPage(TablePage):
                   #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
                  'fields_ctx': PeriodTypeForm_form.get_head_context(),
                  'visible': 'ishidden' in self.permit.changeable_fields()},
-                #closeHandicap:function(){
-                    #if(self.selected.length !=1){
-                        #cfg.showMsg('请选择一条记录')
-                        #return
-                    #}
-                    #self.op_funs.switch_to_tab({tab_name:'special_bet_value',row:self.selected[0]})
-                #},                      
-                #{'fun': 'closeHandicap', 'editor': 'com-op-btn', 'label': '封盘',  'visible': self.permit.can_edit(),}
+                 
             ]
             return ops
 
@@ -316,7 +309,7 @@ class MatchForm(ModelFields):
             specialcategoryid = self.kw.get('specialcategoryid')
             ProcCls = self.proc_map.get(specialcategoryid)
             proc_obj = ProcCls(crt_user = self.crt_user)
-            rt_msg =  proc_obj.manul_outcome(self.kw)
+            rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
             msg.append(rt_msg)
             
         self.updateMongo()

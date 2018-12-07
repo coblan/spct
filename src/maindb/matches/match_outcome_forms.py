@@ -32,8 +32,8 @@ class FootBallPoints(Fields):
             #{'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
             ]
     
-    def manul_outcome(self, row): 
-        match = self.MatchModel.objects.get(matchid = row.get('matchid'))
+    def manul_outcome(self, row, match): 
+        #match = self.MatchModel.objects.get(matchid = row.get('matchid'))
         org_match = to_dict(match)
         
         match.ishidden = True
@@ -109,7 +109,7 @@ class NumberOfCorner(FootBallPoints):
     #2  全场半场 角球
     def get_heads(self): 
         return [
-            #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
+            {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
             {'name': 'home_half_score', 'label': '半场角球数', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
             {'name': 'away_half_score', 'label': '半场角球数', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
             
@@ -133,12 +133,13 @@ class Quarter(BasketPoints):
     # 170  单结比分
     def get_heads(self): 
         return [
+            {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
             {'name': 'home_score', 'label': '主队得分','editor': 'com-field-linetext','required': True,'fv_rule': 'integer(+0);length(~6)',}, 
             {'name': 'away_score', 'label': '客队得分','editor': 'com-field-linetext','required': True,'fv_rule': 'integer(+0);length(~6)',}, 
         ]
     
-    def manul_outcome(self, row): 
-        match = self.MatchModel.objects.get(matchid = row.get('matchid'))
+    def manul_outcome(self, row, match): 
+        #match = self.MatchModel.objects.get(matchid = row.get('matchid'))
         if match.settlestatus and match.settlestatus >= 1:
             raise UserWarning('单节比分已经结算,请不要重复结算!')    
         
@@ -150,6 +151,7 @@ class Quarter(BasketPoints):
         match.period1score = ''
         match.matchscore = '%s:%s' % (match.homescore, match.awayscore)
         match.settlestatus = 1
+        match.statuscode = 100
         match.save()
         
         row['PeriodType'] = 0
@@ -173,14 +175,15 @@ class FirstBasket(BasketPoints):
     #171 最先得分  主队，客队  "1:0" "0:1"  homeScore  awayScore
     def get_heads(self): 
         return [
+            {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
             {'name': 'matchscore', 'label': '先得分球队','editor': 'sim_select','options': [
                 {'value': '1:0', 'label': '主队',}, 
                 {'value': '0:1', 'label': '客队',}, 
                 ],'required': True,}
         ]
     
-    def manul_outcome(self, row): 
-        match = self.MatchModel.objects.get(matchid = row.get('matchid'))
+    def manul_outcome(self, row, match): 
+        #match = self.MatchModel.objects.get(matchid = row.get('matchid'))
         if match.settlestatus and match.settlestatus >= 1:
             raise UserWarning('已经结算,请不要重复结算!')    
         
@@ -189,6 +192,7 @@ class FirstBasket(BasketPoints):
         match.ishidden = True
         match.period1score = ''
         match.settlestatus = 1
+        match.statuscode = 100
         match.save()
         
         row['PeriodType'] = 0
@@ -212,6 +216,7 @@ class LastBasket(FirstBasket):
     #172 最后得分 主队，客队  "1:0" "0:1"
     def get_heads(self): 
         return [
+            {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
             {'name': 'matchscore', 'label': '最后得分球队','editor': 'sim_select','options': [
                 {'value': '1:0', 'label': '主队',}, 
                 {'value': '0:1', 'label': '客队',}, 
@@ -222,6 +227,7 @@ class HightestQuarterScore(FirstBasket):
     #174  最高单节得分
     def get_heads(self): 
         return [
+            {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
            {'name': 'matchscore', 'label': '最高单节<br>得分球队','editor': 'sim_select','options': [
                {'value': '1:0', 'label': '主队',}, 
                {'value': '0:1', 'label': '客队',}, 
@@ -236,6 +242,7 @@ class Shot3Points(Quarter):
     #176 三分球 主队 客队 分别填写
     def get_heads(self):
         return [
+            {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
             {'name': 'home_score', 'label': '主队三分球','editor': 'com-field-linetext','required': True,'fv_rule': 'integer(+0);length(~6)',}, 
             {'name': 'away_score', 'label': '客队三分球','editor': 'com-field-linetext','required': True,'fv_rule': 'integer(+0);length(~6)',}, 
         ]
@@ -245,6 +252,7 @@ class FirstReachScore(FirstBasket):
     # 185  谁先得多少分
     def get_heads(self): 
         return [
+            {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
             {'name': 'matchscore', 'label': '球队先得X分','editor': 'sim_select','options': [
                 {'value': '1:0', 'label': '主队',}, 
                 {'value': '0:1', 'label': '客队',}, 
