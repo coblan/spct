@@ -14,7 +14,7 @@ class BasekballLeague(League):
 class BasketballForm(LeagueForm):
     class Meta:
         model = TbTournamentBasketball
-        exclude = ['categoryid', 'uniquetournamentid', 'createtime']
+        exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid']
 
 
 field_map.update({

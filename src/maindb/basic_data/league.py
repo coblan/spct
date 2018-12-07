@@ -103,7 +103,7 @@ class LeagueForm(ModelFields):
 
     class Meta:
         model = TbTournament
-        exclude = ['categoryid', 'uniquetournamentid', 'createtime']
+        exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid']
 
 
 field_map.update({

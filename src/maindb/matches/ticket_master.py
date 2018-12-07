@@ -123,7 +123,7 @@ class TicketMasterPage(TablePage):
                 dc['bonus'] = '0.00'
 
             if inst.status != 2:
-                dc['winbet'] = ''
+                dc['winbet'] = None
             return dc
 
         def inn_filter(self, query):
@@ -202,6 +202,13 @@ class TicketMasterPage(TablePage):
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
             names = ['status', 'winbet']
+            
+            def clean_query(self, query): 
+                search_args = self.kw.get('search_args')
+                if search_args.get('winbet', None) != None :
+                    return query.filter(status = 2)
+                else:
+                    return query
 
         class sort(RowSort):
             names = ['stakeamount', 'betamount', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
