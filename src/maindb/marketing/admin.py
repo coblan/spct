@@ -7,5 +7,6 @@ from maindb.basic_data.app_resource import *
 from .app_package import *
 from .agent_notice import *
 from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
+from . import rank
 
 

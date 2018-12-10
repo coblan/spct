@@ -1116,6 +1116,9 @@ class TbParlayrules(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_ParlayRules'
+    
+    def __str__(self):
+        return self.parlayname
 
 
 class TbPasswordResettoken(models.Model):
@@ -1503,7 +1506,7 @@ class TbTournament(models.Model):
     sort = models.IntegerField(db_column='Sort', null=True, verbose_name='排序')  # Field name made lowercase.
     typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True,
                                        verbose_name='已关闭玩法')  # Field name made lowercase.
-    closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True)  # Field name made lowercase.
+    closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True, verbose_name= '关闭滚球')  # Field name made lowercase.
     specialcategoryid = models.IntegerField(db_column='SpecialCategoryID')  # Field name made lowercase.    
 
     class Meta:
@@ -2083,3 +2086,31 @@ class TbTournamentBasketball(models.Model):
     
     def __str__(self):
         return self.tournamentname   
+
+class TbUserConst(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    nickname = models.CharField(db_column='NickName', max_length=32)  # Field name made lowercase.
+    avatar = CusPictureField(db_column='Avatar', max_length=512, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_User_Const'
+        
+    def __str__(self):
+        return self.nickname
+    
+class TbUserRank(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    #userid = models.IntegerField(db_column='UserId')  # Field name made lowercase.
+    userid = models.ForeignKey(to= TbUserConst, db_constraint= False, db_column='UserId', verbose_name = '虚拟用户')  # Field name made lowercase.
+    type = models.IntegerField(db_column='Type', choices= RANK_TYPE, verbose_name= '榜单' )  # Field name made lowercase.
+    period = models.IntegerField(db_column='Period', choices= RANK_PERIAD, verbose_name= '周期')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled', verbose_name = '启用')  # Field name made lowercase.
+    parlayid = models.ForeignKey(to= TbParlayrules, db_constraint= False, default = 0, blank = True, db_column='ParlayId', verbose_name= '类别' )  # Field name made lowercase.
+    #parlayid = models.IntegerField(db_column='ParlayId', verbose_name= '类别' )  # Field name made lowercase.
+    
+    value = models.DecimalField(db_column='Value', max_digits=18, decimal_places=4, verbose_name= '数值')  # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'TB_User_Rank'
+        
