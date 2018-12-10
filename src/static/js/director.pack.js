@@ -3134,6 +3134,8 @@ Vue.component('com-field-single-chosen', field_sigle_chosen);
 "use strict";
 
 
+__webpack_require__(120);
+
 var field_sigle_chosen = {
     props: ['row', 'head'],
     template: '<div  :style="head.style">\n    <select  class="select2 field-single-select2 form-control" >\n         <option  :value="undefined" ></option>\n        <option v-for="option in order_options" :value="option.value" v-text="option.label"></option>\n    </select>\n    </div>',
@@ -3142,18 +3144,20 @@ var field_sigle_chosen = {
         ex.load_css('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css');
         ex.load_js('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js', function () {
 
-            $(self.$el).find('select').select2({
-                placeholder: self.head.placeholder,
-                allowClear: true
-            });
-            self.setValue(self.value);
-            $(self.$el).find('.select2').change(function (e) {
-                var value = $(self.$el).find('.select2').val();
-                if (value == '') {
-                    Vue.delete(self.row, self.head.name);
-                } else {
-                    Vue.set(self.row, self.head.name, value);
-                }
+            setTimeout(function () {
+                $(self.$el).find('select').select2({
+                    placeholder: self.head.placeholder || '请选择',
+                    allowClear: true
+                });
+                self.setValue(self.value);
+                $(self.$el).find('.select2').change(function (e) {
+                    var value = $(self.$el).find('.select2').val();
+                    if (value == '') {
+                        Vue.delete(self.row, self.head.name);
+                    } else {
+                        Vue.set(self.row, self.head.name, value);
+                    }
+                });
             });
         });
     },
@@ -5272,6 +5276,47 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 __webpack_require__(23);
 __webpack_require__(22);
 __webpack_require__(24);
+
+/***/ }),
+/* 118 */,
+/* 119 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".select2-container--open {\n  z-index: 99999999; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(119);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_select2.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_single_select2.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

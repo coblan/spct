@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage, ModelTable, ModelFields, page_dc, director, field_map
-from ..models import TbUserConst, TbUserRank, TbParlayrules
+from ..models import TbUserConst, TbUserRank, TbParlayrules, TbUserConst
 
 class RankUserPage(TablePage):
     def get_label(self):
@@ -43,7 +43,12 @@ class RankForm(ModelFields):
     def dict_head(self, head):
         if head['name'] not in ['value', 'enabled']:
             head['readonly'] = 'rt= scope.row.pk||scope.row.pk==0'
-            
+        
+        if head['name'] == 'userid':
+            head['style'] = 'width:20em;'
+            head['placeholder'] = '选择用户'
+            head['editor'] = 'com-field-single-select2'  #  'com-field-single-chosen'# 
+            head['options'] = [{'value':x.id, 'label':str(x)} for x in TbUserConst.objects.all()]
         if head['name'] == 'parlayid':
             head['show'] = 'rt=scope.row.type==2'
             head['editor'] = 'sim_select'
