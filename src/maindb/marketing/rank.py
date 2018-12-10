@@ -30,6 +30,29 @@ class RankPage(TablePage):
         model = TbUserRank
         exclude = []
         
+        def get_operation(self):
+            ops = super().get_operation()
+            ls = [
+                {
+                    'fun': 'selected_set_and_save',
+                    'pre_set': 'rt={enabled:1}',
+                    'label': '启用',
+                    'row_match': 'many_row',
+                    'editor': 'com-op-btn',
+                    'confirm_msg': '确认启用这些排行记录吗?',
+                }, 
+                {
+                    'fun': 'selected_set_and_save',
+                    'pre_set': 'rt={enabled:0}',
+                    'label': '禁用',
+                     'row_match': 'many_row',
+                     'editor': 'com-op-btn',
+                     'confirm_msg': '确认禁用这些排行记录吗?',
+                   }, 
+            ]    
+            ops.extend(ls)
+            return ops
+        
         class filters(RowFilter):
             names = ['type', 'enabled', 'parlayid', 'period']
         
@@ -112,9 +135,7 @@ class RankForm(ModelFields):
             period = self.kw.get('period')
             if TbUserRank.objects.filter(userid = userid, type = type, parlayid = parlayid, period = period, ).exists():
                 raise UserWarning('用户，榜单，串关类型，周期 相同的记录已经存在')
-            
-        
-        
+     
 
 
 director.update({

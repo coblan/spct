@@ -34,6 +34,11 @@ def update_redis_cache(sender, **kws):
         ls1 = redisInst.keys(pattern='App:BlackList:*')
         if ls1:
             redisInst.delete(*ls1)
+    elif sender == sports_model.TbUserRank:
+        ls1 = redisInst.keys(pattern='App:Cache:Ranking*')
+        if ls1:
+            redisInst.delete(*ls1)     
+            
     #if sender.__module__ == 'maindb.models' :  #in sports_model:
         #ls1 = redisInst.keys(pattern='App:Cache:index:*')
         #if ls1:
