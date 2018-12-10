@@ -2103,13 +2103,13 @@ class TbUserRank(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     #userid = models.IntegerField(db_column='UserId')  # Field name made lowercase.
     userid = models.ForeignKey(to= TbUserConst, db_constraint= False, db_column='UserId', verbose_name = '虚拟用户')  # Field name made lowercase.
-    type = models.IntegerField(db_column='Type', choices= RANK_TYPE, verbose_name= '榜单' )  # Field name made lowercase.
+    type = models.IntegerField(db_column='Type', blank= False, choices= RANK_TYPE, verbose_name= '榜单' )  # Field name made lowercase.
     period = models.IntegerField(db_column='Period', choices= RANK_PERIAD, verbose_name= '周期')  # Field name made lowercase.
-    enabled = models.BooleanField(db_column='Enabled', verbose_name = '启用')  # Field name made lowercase.
-    #parlayid = models.ForeignKey(to= TbParlayrules, db_constraint= False, default = 0, blank = True, db_column='ParlayId', verbose_name= '类别' )  # Field name made lowercase.
-    parlayid = models.IntegerField(db_column='ParlayId', default = 0, verbose_name= '类别' )  # Field name made lowercase.
-    
-    value = models.DecimalField(db_column='Value', max_digits=18, decimal_places=4, verbose_name= '数值')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled', verbose_name = '启用', default = 1)  # Field name made lowercase.
+    parlayid = models.ForeignKey(to= TbParlayrules, db_constraint= False, default = 0, blank = True, db_column='ParlayId', verbose_name= '类别' )  # Field name made lowercase.
+    #parlayid = models.IntegerField(db_column='ParlayId', verbose_name= '类别' )  # Field name made lowercase.
+    value = CusDecimalField(db_column='Value', max_digits=18, decimal_places=4, verbose_name= '数值', digits = 2)  # Field name made lowercase.
+    #value = models.DecimalField(db_column='Value', max_digits=18, decimal_places=4, verbose_name= '数值')  # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'TB_User_Rank'

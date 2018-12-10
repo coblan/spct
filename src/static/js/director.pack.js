@@ -496,7 +496,7 @@ var baseInput = exports.baseInput = {
                 cfg: inn_config
             };
         },
-        template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  class="form-control input-sm">\n                <option v-if="head.placeholder" :value="place_value" disabled selected style=\'display:none;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
+        template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  class="form-control input-sm">\n                <option v-if="head.placeholder" :value="place_value" disabled selected style=\'display:none;color: grey;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
         mounted: function mounted() {
             if (this.head.default && !this.row[this.head.name]) {
                 Vue.set(this.row, this.head.name, this.head.default);
@@ -3026,6 +3026,10 @@ var sim_select = {
         my_value: function my_value() {
             return this.row[this.head.name];
         },
+        is_select: function is_select() {
+            var v = this.row[this.head.name];
+            return v != undefined;
+        },
         place_value: function place_value() {
             var v = this.row[this.head.name];
             if (v === undefined) {
@@ -3138,26 +3142,24 @@ __webpack_require__(120);
 
 var field_sigle_chosen = {
     props: ['row', 'head'],
-    template: '<div  :style="head.style">\n    <select  class="select2 field-single-select2 form-control" >\n         <option  :value="undefined" ></option>\n        <option v-for="option in order_options" :value="option.value" v-text="option.label"></option>\n    </select>\n    </div>',
+    template: '<div  :style="head.style">\n    <span v-if="head.readonly" v-text="label_text" ></span>\n    <input type="text" :name="head.name" style="display: none" v-model="row[head.name]">\n    <div v-show="!head.readonly">\n        <select  class="select2 field-single-select2 form-control" :id="\'id_\'+head.name">\n             <option  :value="undefined" ></option>\n            <option v-for="option in order_options" :value="option.value" v-text="option.label"></option>\n        </select>\n    </div>\n\n    </div>',
     mounted: function mounted() {
         var self = this;
         ex.load_css('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css');
         ex.load_js('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js', function () {
 
-            setTimeout(function () {
-                $(self.$el).find('select').select2({
-                    placeholder: self.head.placeholder || '请选择',
-                    allowClear: true
-                });
-                self.setValue(self.value);
-                $(self.$el).find('.select2').change(function (e) {
-                    var value = $(self.$el).find('.select2').val();
-                    if (value == '') {
-                        Vue.delete(self.row, self.head.name);
-                    } else {
-                        Vue.set(self.row, self.head.name, value);
-                    }
-                });
+            $(self.$el).find('select').select2({
+                placeholder: self.head.placeholder || '请选择',
+                allowClear: true
+            });
+            self.setValue(self.row[self.head.name]);
+            $(self.$el).find('.select2').change(function (e) {
+                var value = $(self.$el).find('.select2').val();
+                if (value == '') {
+                    Vue.delete(self.row, self.head.name);
+                } else {
+                    Vue.set(self.row, self.head.name, value);
+                }
             });
         });
     },
@@ -3167,6 +3169,14 @@ var field_sigle_chosen = {
         //}
     },
     computed: {
+        label_text: function label_text() {
+            var opt = ex.findone(this.head.options, { value: this.row[this.head.name] });
+            if (opt) {
+                return opt.label;
+            } else {
+                return '';
+            }
+        },
         order_options: function order_options() {
             if (this.head.order) {
                 return ex.sortOrder(this.head.options, 'label');
