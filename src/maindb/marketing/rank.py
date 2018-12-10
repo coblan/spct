@@ -100,7 +100,7 @@ class RankForm(ModelFields):
             value = self.kw.get('value')
             if not 0 <= value <= 100:
                 raise ValidationError('请填写0到100')
-        return self.kw.get('type')
+        return self.kw.get('value')
         
         
     
