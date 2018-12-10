@@ -1,5 +1,5 @@
-from helpers.director.shortcut import TablePage, ModelTable, ModelFields, page_dc, director
-from ..models import TbUserConst, TbUserRank
+from helpers.director.shortcut import TablePage, ModelTable, ModelFields, page_dc, director, field_map
+from ..models import TbUserConst, TbUserRank, TbParlayrules
 
 class RankUserPage(TablePage):
     def get_label(self):
@@ -12,12 +12,12 @@ class RankUserPage(TablePage):
         pop_edit_field = 'id'
         model = TbUserConst
         exclude = []
+        
 
 class RankUserForm(ModelFields):
     class Meta:
         model = TbUserConst
         exclude = []
-
 
 class RankPage(TablePage):
     def get_label(self):
@@ -28,6 +28,12 @@ class RankPage(TablePage):
         pop_edit_field = 'id'
         model = TbUserRank
         exclude = []
+        
+        def dict_head(self, head):
+            if head['name'] == 'parlayid':
+                head['editor'] = 'com-table-mapper'
+                head['options'] = [{'value':x.parlayid, 'label':str(x)} for x in TbParlayrules.objects.all()]
+            return head        
 
 class RankForm(ModelFields):
     class Meta:
@@ -40,15 +46,19 @@ class RankForm(ModelFields):
             
         if head['name'] == 'parlayid':
             head['show'] = 'rt=scope.row.type==2'
+            head['editor'] = 'sim_select'
+            head['options'] = [{'value':x.parlayid, 'label':str(x)} for x in TbParlayrules.objects.all()]
         
         return head
     
     def clean_dict(self, dc):
         dc = super().clean_dict(dc)
-        if not dc.get('parlayid', None) and 'parlayid' in dc:
-            del dc['parlayid']
+        if not dc.get('parlayid', None):
+            dc['parlayid'] = 0
         #dc['parlayid'] =  or 0
         return dc
+    
+    
     
     def clean(self):
         if not self.instance.pk:
@@ -60,7 +70,6 @@ class RankForm(ModelFields):
                 raise UserWarning('用户，榜单，串关类型，周期 相同的记录已经存在')
             
         
-    
         
 
 
