@@ -109,7 +109,7 @@ class NumberOfCorner(FootBallPoints):
     #2  全场半场 角球
     def get_heads(self): 
         return [
-            {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
+            #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
             {'name': 'home_half_score', 'label': '半场角球数', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
             {'name': 'away_half_score', 'label': '半场角球数', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
             

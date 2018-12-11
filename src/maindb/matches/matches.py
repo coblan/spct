@@ -289,7 +289,7 @@ class MatchForm(ModelFields):
     class Meta:
         model = TbMatches
         exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
-                   'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus']
+                   'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', ]
 
     field_sort = ['matchid', 'team1zh', 'team2zh', ]
 
