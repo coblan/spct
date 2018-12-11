@@ -664,6 +664,7 @@ class TbMatches(models.Model):
     mainmatchid = models.IntegerField(db_column='MainMatchID')  # Field name made lowercase.
     maineventid = models.CharField(db_column='MainEventID', max_length=100, blank = True)  # Field name made lowercase.    
     settlestatus = models.IntegerField(db_column='SettleStatus', blank=True, null=True)  # Field name made lowercase.
+    settletime = models.DateTimeField(db_column='SettleTime', blank=True, null=True)  # Field name made lowercase.
     
     class Meta:
         managed = False
@@ -1001,7 +1002,7 @@ class TbOddstypes(models.Model):
                                       db_column='OddsTypeGroup', )  # Field name made lowercase.
     # oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
     oddstypeid = models.IntegerField(db_column='OddsTypeID')  # Field name made lowercase.
-    subtype = models.IntegerField(db_column='Subtype', blank=True, null=True)  # Field name made lowercase.
+    periodtype = models.IntegerField(db_column='PeriodType', blank=True, null=True)  # Field name made lowercase.
     oddstypename = models.CharField(db_column='OddsTypeName', max_length=50)  # Field name made lowercase.
     oddstypenamezh = models.CharField(db_column='OddsTypeNameZH', max_length=10)  # Field name made lowercase.
     oddsoutcome = models.CharField(db_column='OddsOutcome', max_length=20)  # Field name made lowercase.
@@ -1015,6 +1016,9 @@ class TbOddstypes(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_OddsTypes'
+    
+    def __str__(self):
+        return self.oddstypenamezh
 
 
 class TbOddstypegroup(models.Model):
@@ -1426,7 +1430,8 @@ class TbTicketstake(models.Model):
     #match = models.ForeignKey(TbMatches, db_constraint=False, db_column='MatchID', to_field='matchid')
     matchid = models.IntegerField(db_column='MatchID',verbose_name='比赛ID')  # Field name made lowercase.
     dangeroustid = models.BigIntegerField(db_column='DangerousTid')  # Field name made lowercase.
-    oddsid = models.BigIntegerField(db_column='OddsID')  # Field name made lowercase.
+    #oddsid = models.BigIntegerField(db_column='OddsID')  # Field name made lowercase.
+    oddsid = models.ForeignKey(verbose_name = '玩法', db_column='OddsID', to= TbOddstypes, to_field = 'oddsid', db_constraint= False)  # Field name made lowercase.
     specialbetvalue = models.CharField(db_column='SpecialBetValue', verbose_name='盘口',
                                        max_length=12)  # Field name made lowercase.
     odds = CusDecimalField(db_column='Odds', verbose_name='赔率', max_digits=18,
@@ -2059,7 +2064,8 @@ class TbMatchesBasketball(models.Model):
     mainmatchid = models.IntegerField(db_column='MainMatchID')  # Field name made lowercase.
     maineventid = models.CharField(db_column='MainEventID', max_length=100)  # Field name made lowercase.
     settlestatus = models.IntegerField(db_column='SettleStatus', blank=True, null=True)  # Field name made lowercase.    
-
+    settletime = models.DateTimeField(db_column='SettleTime', blank=True, null=True)  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_Matches_Basketball'

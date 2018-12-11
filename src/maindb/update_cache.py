@@ -18,7 +18,9 @@ def update_redis_cache(sender, **kws):
     if sender == sports_model.TbBanner:
         redisInst.delete('App:Cache:index:banners')
     elif sender == sports_model.TbMatches:
-        redisInst.delete('App:Cache:index:matches')
+        redisInst.delete('App:Cache:index:matches:Soccer')  # App:Cache:index:matches:Basketball
+    elif sender == sports_model.TbMatchesBasketball:
+        redisInst.delete('App:Cache:index:matches:Basketball') 
     #elif sender == sports_model.TbNotice:
         #redisInst.delete('App:Cache:index:notices')
     elif sender == sports_model.TbMaxpayout:

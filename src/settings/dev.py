@@ -33,8 +33,8 @@ DATABASES = {
         'NAME': 'MainDB',
         'ENGINE': 'sql_server.pyodbc',
         'HOST': '192.168.40.79,1433',
-        'USER': 'sa',
-        'PASSWORD': 'cdqg@1215',
+        'USER': 'Backend',
+        'PASSWORD': 'SSDEVdev@123',
         #'PORT': '1436',
         'OPTIONS': {
             #'driver': 'ODBC Driver 11 for SQL Server',

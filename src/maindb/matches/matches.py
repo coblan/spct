@@ -16,6 +16,7 @@ from django.conf import settings
 from helpers.director.model_func.dictfy import to_dict
 import functools
 from .match_outcome_forms import FootBallPoints, NumberOfCorner
+from django.utils.timezone import datetime
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -309,8 +310,10 @@ class MatchForm(ModelFields):
             specialcategoryid = self.kw.get('specialcategoryid')
             ProcCls = self.proc_map.get(specialcategoryid)
             proc_obj = ProcCls(crt_user = self.crt_user)
+            self.instance.settletime = datetime.now()
             rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
             msg.append(rt_msg)
+            
             
         self.updateMongo()
         self.proc_redis()
