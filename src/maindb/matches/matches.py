@@ -17,6 +17,7 @@ from helpers.director.model_func.dictfy import to_dict
 import functools
 from .match_outcome_forms import FootBallPoints, NumberOfCorner
 from django.utils.timezone import datetime
+from helpers.director.middleware.request_cache import get_request_cache
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -275,7 +276,11 @@ def quit_ticket(rows, new_row, sportid = 0):
     }    
     
     rt = requests.post(url,data=data)
-    dc = json.loads( rt.text )  
+    dc = json.loads( rt.text ) 
+    
+    op_log.info('执行%(type)s Matchid=%(matchid)s退单操作! PeriodType=%(PeriodType)s' % {'type': {0: '足球',1: '篮球',}[sportid],
+                                                            'matchid': row.get('matchid'), 
+                                                            'PeriodType': PeriodType,})
     return {'msg': dc.get('Message'),}
 
 

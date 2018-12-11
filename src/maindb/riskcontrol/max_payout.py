@@ -48,7 +48,7 @@ class MaxPayoutPage(TablePage):
                         'field': 'status',
                         'value': True,
                         'row_match': 'many_row',
-                        'confirm_msg': '确认作废该限制类型吗?', 
+                        'confirm_msg': '确认启用该限制类型吗?', 
                         'visible': 'status' in self.permit.changeable_fields()                    ,
                     }
                     ]
@@ -241,6 +241,7 @@ class MatchSelect(ModelTable):
 
     def inn_filter(self, query): 
         return query.filter(specialcategoryid = 0)
+    
     def dict_head(self, head):
         dc = {
             'matchid': 100,
