@@ -1,6 +1,7 @@
 from helpers.director.shortcut import TablePage, ModelTable, ModelFields, page_dc, director, field_map, RowFilter, RowSearch
 from ..models import TbUserConst, TbUserRank, TbParlayrules, TbUserConst
 from django.core.exceptions import ValidationError
+from django.forms import ValidationError
 
 class RankUserPage(TablePage):
     def get_label(self):
@@ -19,6 +20,14 @@ class RankUserForm(ModelFields):
     class Meta:
         model = TbUserConst
         exclude = []
+    
+    def clean_nickname(self):
+        data = self.cleaned_data['nickname']
+        if 'nickname' in self.changed_data:
+            if TbUserConst.objects.filter(nickname=data).exists():
+                raise ValidationError('用户昵称已经存在')
+        return data
+    
 
 class RankPage(TablePage):
     def get_label(self):

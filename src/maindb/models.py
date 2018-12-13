@@ -2098,7 +2098,7 @@ class TbTournamentBasketball(models.Model):
 
 class TbUserConst(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    nickname = models.CharField(db_column='NickName', max_length=32, verbose_name = '昵称')  # Field name made lowercase.
+    nickname = models.CharField(db_column='NickName', max_length=100, verbose_name = '昵称')  # Field name made lowercase.
     avatar = CusPictureField(db_column='Avatar', max_length=512, blank=True, null=True, verbose_name = '头像')  # Field name made lowercase.
 
     class Meta:

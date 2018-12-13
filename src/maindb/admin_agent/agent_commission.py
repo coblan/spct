@@ -115,7 +115,7 @@ class AgentCommission(TablePage):
             ]
         
         @staticmethod
-        def onekey_audit_all(): 
+        def onekey_audit_all(**kws): 
             url = urllib.parse.urljoin(settings.AGENT_SERVICE, '/comm/audit')
             cache = get_request_cache()
             request = cache['request']

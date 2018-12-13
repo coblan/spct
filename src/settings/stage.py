@@ -35,7 +35,7 @@ STATIC_SERVICE = 'http://103.246.219.202:9004/static'
 CLOUD_STORAGE = 'http://103.246.219.202:9004/static'  #云存储路径，用于生成plist文件的app下载路径
 SELF_URL = 'http://192.168.40.116:9008'   # 后台系统自身的访问url，用户爬取helper，notice页面，生成静态文件
 
-AGENT_SERVICE = 'http://192.168.40.137:8001'
+AGENT_SERVICE = 'http://192.168.40.144:8001'
 #CENTER_SERVICE = 'http://192.168.40.104:9022'
 CENTER_SERVICE = 'http://192.168.40.138:9022'
 

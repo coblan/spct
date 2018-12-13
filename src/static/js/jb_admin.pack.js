@@ -5429,6 +5429,7 @@ var table_page_store = {
     },
     created: function created() {
         var self = this;
+        // 这个不用了，转到 table_store 里面去了
         ex.each(this.childStore_event_slot, function (router) {
             self.$on(router.event, function (e) {
                 var kws = ex.eval(router.kws, e);
@@ -5509,10 +5510,19 @@ var table_store = {
             ops: [],
             crt_row: {},
             selectable: true,
-            changed_rows: []
+            changed_rows: [],
+            event_slots: []
         };
     },
     mixins: [mix_ele_table_adapter],
+    created: function created() {
+        var self = this;
+        ex.each(this.event_slots, function (router) {
+            self.$on(router.event, function (e) {
+                ex.eval(router.express, { event: e, ts: self });
+            });
+        });
+    },
     computed: {
         changed: function changed() {
             return this.changed_rows.length != 0;
@@ -6418,7 +6428,13 @@ var table_parents = {
             parStore: ex.vueParStore(self)
         };
     },
-    template: '<div class="com-table-parents">\n          <ol v-if="parStore.parents.length>0" class="breadcrumb jb-table-parent">\n            <li v-for="par in parStore.parents"><a href="#" @click="parStore.get_childs(par.value)"  v-text="par.label"></a></li>\n        </ol>\n    </div>'
+    template: '<div class="com-table-parents">\n          <ol v-if="parStore.parents.length>0" class="breadcrumb jb-table-parent">\n            <li v-for="par in parStore.parents"><a href="#" @click="on_click(par)"  v-text="par.label"></a></li>\n        </ol>\n    </div>',
+    methods: {
+        on_click: function on_click(par) {
+            this.parStore.$emit('parent_changed', par);
+            this.parStore.get_childs(par.value);
+        }
+    }
 };
 Vue.component('com-table-parents', table_parents);
 

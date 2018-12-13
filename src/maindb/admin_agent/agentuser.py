@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 from ..alg import encode_paswd
 
 class AgentUser(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
     
     def check_permit(self): 
         if not has_permit(self.crt_user, 'agent'):
@@ -239,6 +239,12 @@ class AgentUser(TablePage):
         def getParents(self):
             return self.parent_agents
 
+        def get_event_slots(self):
+            ls = [
+                {'event':'parent_changed','express':'scope.ts.search_args._q=""'}
+              ]      
+            return ls
+        
         def get_context(self):
             ctx = super().get_context()
             ctx['named_ctx'] = account_tab(self)

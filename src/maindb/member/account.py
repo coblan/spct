@@ -402,16 +402,16 @@ class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
     def get_edit_director_name(cls):
         return TicketMasterPage.tableCls.get_edit_director_name()
 
-    def dict_head(self, head):
-        head = super().dict_head(head)
+    #def dict_head(self, head):
+        #head = super().dict_head(head)
 
-        if head['name'] == 'ticketid':
-            head['editor'] = ''
-        return head
+        #if head['name'] == 'ticketid':
+            #head['editor'] = ''
+        #return head
     
     class search(SelectSearch):
             #names = ['accountid__nickname']
-            exact_names = ['orderid', 'tbticketstake__match_id']
+            exact_names = ['orderid', 'tbticketstake__matchid']
 
             def get_option(self, name):
 
@@ -423,14 +423,14 @@ class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
                         #'value': name,
                         #'label': '昵称',
                     #}
-                elif name == 'tbticketstake__match_id':
+                elif name == 'tbticketstake__matchid':
                     return {
                         'value': name,
                         'label': '比赛ID',
                     }
 
             def clean_search(self):
-                if self.qf in ['ticketid', 'tbticketstake__match_id']:
+                if self.qf in ['ticketid', 'tbticketstake__matchid']:
                     if not re.search('^\d*$', self.q):
                         return None
                     else:
