@@ -63,7 +63,24 @@ class MatchsPage(TablePage):
         class filters(RowFilter):
             range_fields = ['matchdate']
             names = ['isrecommend', 'livebet', 'statuscode', 'tournamentid']
-
+            
+            def getExtraHead(self):
+                return [
+                    {'name':'specialcategoryid','editor':'com-filter-select','label':'类型','options':[
+                        {'value':0,'label':'常规'},
+                        {'value':1,'label':'特殊'}
+                    ]}
+                ]
+            
+            
+            def clean_query(self, query):
+                if self.kw.get('specialcategoryid')==0:
+                    return query.filter(specialcategoryid__lte=0)
+                elif self.kw.get('specialcategoryid')==1:
+                    return query.filter(specialcategoryid__gt=0)
+                else:
+                    return query
+                
             def dict_head(self, head):
                 if head['name'] == 'tournamentid':
                     #head['editor'] = 'com-filter-search-select'
