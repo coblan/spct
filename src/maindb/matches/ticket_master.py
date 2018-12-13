@@ -160,7 +160,7 @@ class TicketMasterPage(TablePage):
         def get_operation(self):
             return [
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废',
-                 'pre_set': 'rt={status:30,memo:""}',
+                 'pre_set': 'rt={status:-1,memo:""}',
                  #'field': 'status', 'value': 30,
                  'row_match': 'many_row_match', 'match_field': 'status', 'match_values': [1], 'match_msg': '只能选择未结算的订单',
                  'confirm_msg': '确认作废这些注单吗?', 'fields_ctx': {
@@ -221,8 +221,8 @@ class TicketMasterForm(ModelFields):
         fields = ['status', 'memo']
 
     def save_form(self):
-        if 'status' in self.changed_data and self.cleaned_data['status'] == 30:
-            sql = 'exec [dbo].[SP_CancelTicket] %(ticketid)s,30' % {'ticketid': self.instance.ticketid}
+        if 'status' in self.changed_data and self.cleaned_data['status'] == -1:
+            sql = 'exec [dbo].[SP_CancelTicket] %(ticketid)s,-1' % {'ticketid': self.instance.ticketid}
             cursor = connections['Sports'].cursor()
             cursor.execute(sql)
             cursor.commit()

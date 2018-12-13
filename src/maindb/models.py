@@ -1532,8 +1532,11 @@ class TbBanner(models.Model):
     order = models.IntegerField(db_column='Order', verbose_name=_('Priority'))  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
-    createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
-                                     verbose_name='创建人')  # Field name made lowercase.
+    #createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
+                                     #verbose_name='创建人')  # Field name made lowercase.
+    createuser = CreateUserField(db_column='CreateUser', blank=True, null=True,
+                                     verbose_name='创建人')  # Field name made lowercase.    
+    
     description = models.CharField(db_column='Description', max_length=1024, blank=True,
                                    null=True, verbose_name='描述')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', verbose_name=_('status'), null=True, choices=ONLINE_STATUS,

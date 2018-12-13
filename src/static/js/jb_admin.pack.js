@@ -436,7 +436,7 @@ var com_sim_fields = exports.com_sim_fields = {
     },
     computed: {
         small_srn: function small_srn() {
-            return env.width < 760;
+            return this.env.width < 760;
         },
         normed_heads: function normed_heads() {
             return this.heads;
@@ -3376,21 +3376,19 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+//var table_store={
+//    namespace:true,
+//    state(){
+//        return {
+//            childbus:new Vue(),
+//        }
+//    },
+//    mutations:{
+//    }
+//}
 
+//window.table_store = table_store
 
-var table_store = {
-    namespace: true,
-    state: function state() {
-        return {
-            childbus: new Vue()
-        };
-    },
-
-    mutations: {}
-
-    //window.table_store = table_store
-
-};
 
 /***/ }),
 /* 45 */
@@ -5621,20 +5619,26 @@ var table_store = {
         },
         update_or_insert: function update_or_insert(new_row, old_row) {
             // 如果是更新，不用输入old_row，old_row只是用来判断是否是创建的行为
-
-            if (old_row && !old_row.pk) {
-
-                //var rows = this.rows.splice(0, 0, new_row)
+            // 不用 old_row 了， 只需要判断 pk 是否在rows里面即可。
+            var table_row = ex.findone(this.rows, { pk: new_row.pk });
+            if (table_row) {
+                ex.vueAssign(table_row, new_row);
+            } else {
                 this.rows = [new_row].concat(this.rows);
                 this.row_pages.total += 1;
-            } else {
-                var table_row = ex.findone(this.rows, { pk: new_row.pk });
-                ex.vueAssign(table_row, new_row);
-                //ex.assign(table_row,new_row)
-                //for(var key in new_row){
-                //    Vue.set(table_row,key,new_row[key])
-                //}
             }
+
+            //if(old_row && ! old_row.pk) {
+            //
+            //    //var rows = this.rows.splice(0, 0, new_row)
+            //    this.rows=[new_row].concat(this.rows)
+            //    this.row_pages.total+=1
+            //}else{
+            //    var table_row = ex.findone(this.rows,{pk:new_row.pk})
+            //    if(table_row){
+            //        ex.vueAssign(table_row,new_row)
+            //    }
+            //}
             this.$emit('row.update_or_insert', [new_row]);
         },
         update_rows: function update_rows(rows) {
@@ -5672,7 +5676,10 @@ var table_store = {
                 ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
                     if (!resp.save_rows.errors) {
                         ex.each(resp.save_rows, function (new_row) {
-                            delete new_row._director_name; // [1]  这里还原回去
+                            // [1]  这里还原回去
+                            if (new_row._cache_director_name) {
+                                new_row._director_name = new_row._cache_director_name;
+                            }
                             if (kws.after_save) {
                                 ex.eval(kws.after_save, { new_row: new_row, ts: self });
                             } else {
@@ -5723,7 +5730,7 @@ var table_store = {
                     var win_index = pop_edit_local(one_row, kws.fields_ctx, function (new_row, store) {
                         bb(new_row, function (resp) {
                             if (resp.save_rows.errors) {
-                                store.showError(resp.save_rows.errors);
+                                cfg.showError(JSON.stringify(resp.save_rows.errors));
                                 //self.$store.commit(store_id+'/showErrors',resp.save_rows.errors)
                             } else {
                                 layer.close(win_index);
@@ -5928,24 +5935,37 @@ var row_match = {
             }
         }
     },
+    // 这个函数被 many_row 替代了。 只需要加上 match_express 就可以替换这个函数
     many_row_match: function many_row_match(self, head) {
         // head : @match_field , @match_values ,@match_msg
         if (self.selected.length == 0) {
             cfg.showMsg('请至少选择一行数据！');
             return false;
         } else {
-            var field = head.match_field;
-            var values = head.match_values;
-            var msg = head.match_msg;
+            if (head.match_field) {
+                // 老的用法，准备剔除  ,现在全部改用 match_express
+                var field = head.match_field;
+                var values = head.match_values;
+                var msg = head.match_msg;
 
-            for (var i = 0; i < self.selected.length; i++) {
-                var row = self.selected[i];
-                if (!ex.isin(row[field], values)) {
-                    cfg.showMsg(msg);
-                    return false;
+                for (var i = 0; i < self.selected.length; i++) {
+                    var row = self.selected[i];
+                    if (!ex.isin(row[field], values)) {
+                        cfg.showMsg(msg);
+                        return false;
+                    }
                 }
+                return true;
+            } else {
+                for (var i = 0; i < self.selected.length; i++) {
+                    var row = self.selected[i];
+                    if (!ex.eval(head.match_express)) {
+                        cfg.showMsg(head.match_msg);
+                        return false;
+                    }
+                }
+                return true;
             }
-            return true;
         }
     }
 };
@@ -6080,14 +6100,20 @@ Vue.component('com-panel-pop-fields', com_pop_fields_panel);
 
 var table_panel = {
     props: ['ctx'],
+
     data: function data() {
         var self = this;
         if (this.ctx.selectable == undefined) {
             this.ctx.selectable = true;
         }
-        var this_table_store = {
+        var base_table_store = {
+            props: ['ctx'],
+            propsData: {
+                ctx: self.ctx
+            },
             data: function data() {
                 return {
+                    par_row: self.ctx.par_row || {},
                     heads: self.ctx.heads || [],
                     selectable: self.ctx.selectable,
                     search_args: self.ctx.search_args || {},
@@ -6100,23 +6126,28 @@ var table_panel = {
                     footer: [],
                     selected: []
                 };
-            },
-            mixins: [table_store]
-
+            }
+        };
+        var custom_store = this.get_custom_store();
+        var this_table_store = {
+            mixins: [table_store, base_table_store].concat(custom_store)
         };
         return {
             childStore: new Vue(this_table_store),
             par_row: this.ctx.par_row || {},
-
             del_info: []
         };
     },
     mixins: [mix_table_data, mix_ele_table_adapter],
+
     mounted: function mounted() {
         this.childStore.$on('finish', this.emit_finish);
         this.childStore.search();
     },
     methods: {
+        get_custom_store: function get_custom_store() {
+            return [];
+        },
         emit_finish: function emit_finish(event) {
             this.$emit('finish', event);
         }
@@ -6292,7 +6323,7 @@ var ele_operations = {
 
     //                      :disabled="get_attr(op.disabled)"
     //v-show="! get_attr(op.hide)"
-    template: '<div class="oprations" style="padding: 5px;">\n                <component v-for="op in ops"\n                           :is="op.editor"\n                           :ref="\'op_\'+op.name"\n                           :head="op"\n                           :disabled="eval(op.disabled)"\n                           v-show="is_show(op)"\n                           @operation="on_operation(op)"></component>\n            </div>',
+    template: '<div class="oprations" style="padding: 5px;">\n                <component v-for="(op,index) in ops"\n                           :is="op.editor"\n                           :ref="\'op_\'+op.name"\n                           :head="op"\n                           :key="index"\n                           :disabled="is_disable(op)"\n                           v-show="is_show(op)"\n                           @operation="on_operation(op)"></component>\n            </div>',
     data: function data() {
         var self = this;
         this.parStore = ex.vueParStore(this);
@@ -6302,6 +6333,13 @@ var ele_operations = {
     },
 
     methods: {
+        is_disable: function is_disable(op) {
+            if (op.disabled == undefined) {
+                return false;
+            } else {
+                return ex.eval(op.disabled, { ts: this.parStore });
+            }
+        },
         is_show: function is_show(op) {
             count += 1;
             console.log(count);

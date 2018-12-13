@@ -65,10 +65,10 @@ class BannerPage(TablePage):
 
             return head
 
-        def dict_row(self, inst):
-            return {
-                '_createuser_label': str(User.objects.get(pk=inst.createuser)) if inst.createuser else "",
-            }
+        #def dict_row(self, inst):
+            #return {
+                #'_createuser_label': str(User.objects.get(pk=inst.createuser)) if inst.createuser else "",
+            #}
 
         def get_operation(self):
             ops = [ModelTable.get_operation(self)[0]]

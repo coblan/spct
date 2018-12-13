@@ -3,6 +3,7 @@ from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_valu
 from ..models import TbMatchesBasketball, TbOddsBasketball
 from maindb.mongoInstance import updateMatchBasketMongo
 from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points
+from ..redisInstance import redisInst
 
 class BasketMatchsPage(MatchsPage):
     
@@ -123,11 +124,13 @@ class BasketMatchsPage(MatchsPage):
                 },                 
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
-                 'field': 'isrecommend',
-                 'value': 1, 'visible': 'isrecommend' in self.permit.changeable_fields(),},
+                'pre_set': 'rt={isrecommend:1}', 'row_match': 'many_row', 'match_express': 'scope.row.specialcategoryid <= 0 ',
+                 'match_msg': '只能推荐普通比赛。',
+                 'visible': 'isrecommend' in self.permit.changeable_fields(),},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
-                 'field': 'isrecommend',
-                 'value': 0,  'visible': 'isrecommend' in self.permit.changeable_fields()},
+                 'pre_set': 'rt={isrecommend:0}', 'row_match': 'many_row', 'match_express': 'scope.row.specialcategoryid <= 0 ',
+                 'match_msg': '只能取消推荐普通比赛。',
+                 'visible': 'isrecommend' in self.permit.changeable_fields()},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '走地', 'confirm_msg': '确认打开走地吗？',
                  'field': 'closelivebet',
                  'value': 0,  'visible': 'closelivebet' in self.permit.changeable_fields()},
