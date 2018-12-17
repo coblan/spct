@@ -9,11 +9,11 @@ DATABASES = {
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         },
     'Sports': {
-        'NAME': 'Sports',
+        'NAME': 'Sports_20181214_2',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': '192.168.40.79,1433',
-        'USER': 'sa',
-        'PASSWORD': 'cdqg@1216',
+         'HOST':'192.168.40.6,1433',
+        'USER': 'Backend',
+        'PASSWORD': 'SSDEVdev@123',
         #'PORT': '1436',
         'OPTIONS': {
              

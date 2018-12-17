@@ -46,12 +46,14 @@ DATABASES = {
             },        
        } ,  
     'Sports': {
-        'NAME': 'Sports',
+        'NAME': 'Sports_20181214_2',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': '192.168.40.79,1433',
-        'USER': 'sa',
-        'PASSWORD': 'cdqg@1216',
+        #'HOST': '192.168.40.79,1433',
+        'HOST':'192.168.40.6,1433',
+        'USER': 'Backend',
+        'PASSWORD': 'SSDEVdev@123',
         #'PORT': '1436',
+        #192.168.40.6 Sports_20181214_2
         'OPTIONS': {
             #'driver': 'ODBC Driver 11 for SQL Server',
             #'driver':'SQL Server Native Client 11.0',
