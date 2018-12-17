@@ -57,19 +57,20 @@ class PcMenu(BaseEngine):
              ]},
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,
              'submenu': [
-                 {'label': _('玩法设置'), 'url': page('bet_type'), 'visible': can_touch(TbOddstypegroup, crt_user), },
-                 {'label': _('Currency'), 'url': page('currency'), 'visible': can_touch(TbCurrency, crt_user)},
+                 {'label': '运动类型', 'url': page('sportstype'), 'visible': can_touch(TbSporttypes, crt_user), },
                  {'label': '足球联赛资料', 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},
-                 {'label': '球队资料', 'url': page('teams'), 'visible': can_touch(TbTeams, crt_user), },
                  {'label': '篮球联赛资料', 'url': page('basketball_league'), 'visible': can_touch(TbTournament, crt_user)},
+                 {'label': '足球队资料', 'url': page('teams'), 'visible': can_touch(TbTeams, crt_user), },
                  
+                 {'label': _('玩法设置'), 'url': page('bet_type'), 'visible': can_touch(TbOddstypegroup, crt_user), },
+                 {'label': '充值渠道', 'url': page('paychannel'), 'visible': can_touch(TbPaychannel, crt_user), },
+                  {'label': 'VIP充值渠道', 'url': page('vip_paychannel'),
+                  'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
                  {'label': '银行卡类型', 'url': page('banktypes'), 'visible': can_touch(TbBanktypes, crt_user), },
                  {'label': _('AppResource'), 'url': page('app_resource'),
                   'visible': can_touch(TbAppresource, crt_user), },
-                 {'label': '充值渠道', 'url': page('paychannel'), 'visible': can_touch(TbPaychannel, crt_user), },
-                 {'label': 'VIP充值渠道', 'url': page('vip_paychannel'),
-                  'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
-                {'label': '运动类型', 'url': page('sportstype'), 'visible': can_touch(TbSporttypes, crt_user), },
+                {'label': _('Currency'), 'url': page('currency'), 'visible': can_touch(TbCurrency, crt_user)},
+                
                  
              ]},
 

@@ -12,18 +12,30 @@ class SportsTypesPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbSporttypes
-        exclude =[]
+        exclude =['createtime','status','tid','onlinetime','sort']
         #pop_edit_field='tid'
         def get_operation(self):
             return [
-                {'fun':'selected_set_and_save','label':'启用','editor':'com-op-btn','pre_set':'rt={enabled:true}','match_row':'many_row'},
-                {'fun':'selected_set_and_save','label':'禁用','editor':'com-op-btn','pre_set':'rt={enabled:false}','match_row':'many_row'},
+                {'fun':'selected_set_and_save','label':'启用','editor':'com-op-btn','pre_set':'rt={enabled:true}',
+                 'confirm_msg':'是否【启用】选中运动类型','match_row':'many_row'},
+                {'fun':'selected_set_and_save','label':'禁用','editor':'com-op-btn','pre_set':'rt={enabled:false}',
+                 'confirm_msg':'是否【禁用】选中运动类型','match_row':'many_row'},
             ]
+        
+        def dict_head(self, head):
+            dc={
+                'updatetime':200,
+                'sportnamezh':100,
+            }
+            if dc.get(head['name']):
+                head['width']=dc.get(head['name'])
+            return head
+        
 
 class SportsTypeForm(ModelFields):
     class Meta:
         model = TbSporttypes
-        exclude=[]
+        exclude=['createtime','status','tid','onlinetime','sort']
         
     def dict_row(self, inst):
         return {
