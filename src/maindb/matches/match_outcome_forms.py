@@ -176,7 +176,7 @@ class FirstBasket(BasketPoints):
     def get_heads(self): 
         return [
             {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-            {'name': 'matchscore', 'label': '先得分球队','editor': 'sim_select','options': [
+            {'name': 'matchscore', 'label': '先得分球队','editor': 'com-field-select','options': [
                 {'value': '1:0', 'label': '主队',}, 
                 {'value': '0:1', 'label': '客队',}, 
                 ],'required': True,}
@@ -217,7 +217,7 @@ class LastBasket(FirstBasket):
     def get_heads(self): 
         return [
             {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-            {'name': 'matchscore', 'label': '最后得分球队','editor': 'sim_select','options': [
+            {'name': 'matchscore', 'label': '最后得分球队','editor': 'com-field-select','options': [
                 {'value': '1:0', 'label': '主队',}, 
                 {'value': '0:1', 'label': '客队',}, 
                 ],'required': True,}
@@ -228,7 +228,7 @@ class HightestQuarterScore(FirstBasket):
     def get_heads(self): 
         return [
             {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-           {'name': 'matchscore', 'label': '最高单节<br>得分球队','editor': 'sim_select','options': [
+           {'name': 'matchscore', 'label': '最高单节<br>得分球队','editor': 'com-field-select','options': [
                {'value': '1:0', 'label': '主队',}, 
                {'value': '0:1', 'label': '客队',}, 
                ],'required': True,}
@@ -253,7 +253,7 @@ class FirstReachScore(FirstBasket):
     def get_heads(self): 
         return [
             {'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-            {'name': 'matchscore', 'label': '球队先得X分','editor': 'sim_select','options': [
+            {'name': 'matchscore', 'label': '球队先得X分','editor': 'com-field-select','options': [
                 {'value': '1:0', 'label': '主队',}, 
                 {'value': '0:1', 'label': '客队',}, 
                 {'value': '0:0', 'label': '都不',}

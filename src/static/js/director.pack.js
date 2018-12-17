@@ -2998,6 +2998,9 @@ var sim_select = {
         if (this.head.config) {
             ex.assign(inn_config, this.head.config);
         }
+
+        this.head.placeholder = this.head.placeholder || '请选择';
+
         return {
             model: this.row[this.head.name],
             cfg: inn_config
