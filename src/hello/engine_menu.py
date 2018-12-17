@@ -68,7 +68,9 @@ class PcMenu(BaseEngine):
                   'visible': can_touch(TbAppresource, crt_user), },
                  {'label': '充值渠道', 'url': page('paychannel'), 'visible': can_touch(TbPaychannel, crt_user), },
                  {'label': 'VIP充值渠道', 'url': page('vip_paychannel'),
-                  'visible': can_touch(TbPaychanneljoinlevel, crt_user), }
+                  'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
+                {'label': '运动类型', 'url': page('sportstype'), 'visible': can_touch(TbSporttypes, crt_user), },
+                 
              ]},
 
 

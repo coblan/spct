@@ -14,7 +14,7 @@ from django.contrib.auth.models import User
 from .status_code import *
 from .cus_models_fields import CusPictureField, CusFileField
 from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
-from maindb.create_user import CreateUserField
+from maindb.create_user import CreateUserField,UpdateUserField
 
 
 class Blackiplist(models.Model):
@@ -2123,3 +2123,20 @@ class TbUserRank(models.Model):
         managed = False
         db_table = 'TB_User_Rank'
         
+class TbSporttypes(models.Model):
+    tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID', unique=True,verbose_name='类型ID')  # Field name made lowercase.
+    sportname = models.CharField(db_column='SportName', max_length=100,verbose_name='类型名')  # Field name made lowercase.
+    sportnamezh = models.CharField(db_column='SportNameZH', max_length=100,verbose_name='类型中文名')  # Field name made lowercase.
+    onlinetime = models.DateTimeField(db_column='OnlineTime', blank=True, null=True,verbose_name='上线时间')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',verbose_name='状态')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort', blank=True, null=True,verbose_name='排序')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled',verbose_name='启用')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True,auto_now_add=True, null=True,verbose_name='创建时间')  # Field name made lowercase.
+    #updater = models.CharField(db_column='Updater', max_length=100, blank=True, null=True,verbose_name='更新人')  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True,auto_now=True,verbose_name='更新时间')  # Field name made lowercase.
+    #updateuser = models.IntegerField(db_column='UpdateUser', blank=True, null=True)  # Field name made lowercase.
+    updateuser = UpdateUserField(db_column='UpdateUser',verbose_name='更新人', blank=True, null=True)  # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'TB_SportTypes'

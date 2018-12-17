@@ -16,6 +16,9 @@ from helpers.director.middleware.request_cache import get_request_cache
 class CreateUserField(IntegerField):
     pass
 
+class UpdateUserField(IntegerField):
+    pass
+
 class CreateUserProc(BaseFieldProc):
     
     def to_dict(self,inst,name):
@@ -47,7 +50,18 @@ class CreateUserProc(BaseFieldProc):
             request = catch['request']
             dc[name] = request.user.pk
         return dc.get(name)
-    
+
+class UpdateUserPorc(CreateUserProc):
+    def clean_field(self,dc,name):
+        """ 
+        fields类里，从前端穿过来的row dict数据进行清洗， dc里面有的 字段，才会被调用
+        """
+        catch =  get_request_cache()
+        request = catch['request']
+        dc[name] = request.user.pk
+        return dc.get(name)    
+
 field_map.update({
-    CreateUserField:CreateUserProc
+    CreateUserField:CreateUserProc,
+    UpdateUserField:UpdateUserPorc,
 })
