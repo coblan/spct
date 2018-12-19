@@ -60,6 +60,11 @@ class BalancelogPage(TablePage):
         class filters(RowFilter):
             names = ['categoryid']
             range_fields = ['createtime']
+            
+            def dict_head(self, head):
+                if head['name']=='createtime':
+                    head['editor']='com-filter-datetime-range'
+                return head
 
         class search(SelectSearch):
             names = ['accountid__nickname']

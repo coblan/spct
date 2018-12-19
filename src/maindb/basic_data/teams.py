@@ -18,10 +18,10 @@ from maindb.marketing.proc_image import procImage
 
 
 class TeamsPage(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
 
     def get_label(self):
-        return '球队资料'
+        return '足球队资料'
 
     class tableCls(ModelTable):
         model = TbTeams
@@ -33,7 +33,8 @@ class TeamsPage(TablePage):
             return [super().get_operation()[0]]
 
         class filters(RowFilter):
-            names = ['country', 'leaguename', 'status']
+            names = ['country', 'status']
+            fields_sort=['country', 'leaguename', 'status']
 
             def getExtraHead(self):
                 return [
@@ -43,18 +44,29 @@ class TeamsPage(TablePage):
                         #'editor': 'com-related-select-filter',
                         'editor': 'com-filter-select',
                         'options': [],
-                        'related': 'country',
+                        #'related': 'country',
                         'director_name': 'league-options', 
-                        'update_options_on': ['row.update_or_insert', 'country.changed'],
-                        'clear_value_on': ['country.changed'], # 清除一下，否则 由于当前选中的是别的联赛，新来的联赛不能匹配。
+                        #'update_options_on': ['row.update_or_insert', 'country.changed'],
+                        #'clear_value_on': ['country.changed'], # 清除一下，否则 由于当前选中的是别的联赛，新来的联赛不能匹配。
+                        'event_slots':[
+                            {'par_event':'country.changed','express':'rt=scope.vc.get_options({post_data:{country:scope.event} })'},
+                            {'par_event':'country.changed','express':'rt=scope.vc.clear_value()'},
+                            {'par_event':'row.update_or_insert','express':'rt=scope.vc.get_options({post_data:{} })'},
+                            
+                        ]
                     }
                 ]
 
             def dict_head(self, head):
                 head['order'] = True
                 if head['name'] == 'country':
-                    head['update_options_on'] = 'row.update_or_insert'
-                    head['changed_emit'] = 'country.changed'
+                    head['event_slots']=[
+                        {'event':'input','express':'scope.ts.$emit("country.changed",scope.event)'},
+                        #{'par_event':'row.update_or_insert','express':'rt=scope.vc.get_options({post_data:{} })'},
+                        
+                    ]
+                    #head['update_options_on'] = 'row.update_or_insert'
+                    #head['on_changed_express'] = 'scope.ts.$emit("country.changed",scope.value)'
                     head['director_name'] = 'contry-options'
                 return head
             
@@ -65,8 +77,8 @@ class TeamsPage(TablePage):
                 return options
             
             @staticmethod
-            def getLeagueOptions(search_args):
-                country = search_args.get('country')
+            def getLeagueOptions(country):
+                #country = search_args.get('country')
                 #contry = related  # kws.get('related')
                 query = TbTeams.objects.filter(country=country).values_list('leaguename', flat=True).distinct()
                 options = [{'value': x, 'label': str(x)} for x in query]
@@ -108,10 +120,11 @@ class TeamsFields(ModelFields):
 
 
 class TeamIconProc(PictureProc):
+    icon_dir='team_icon'
     def to_dict(self, inst, name):
         value = getattr(inst, name, None)
         if value:
-            out = '/media/public/team_icon/%(file_path)s' % {'file_path': value}
+            out = '/media/public/%(icon_dir)s/%(file_path)s' % {'icon_dir':self.icon_dir,'file_path': value}
         else:
             out = value
         return {
@@ -123,7 +136,7 @@ class TeamIconProc(PictureProc):
         """
         value = dc.get(name)
         if value:
-            mt = re.search('/media/public/team_icon/(.+)', value)
+            mt = re.search('/media/public/%(icon_dir)s/(.+)'%{'icon_dir':self.icon_dir}, value)
             if mt:
                 return mt.group(1)
         else:
@@ -131,7 +144,7 @@ class TeamIconProc(PictureProc):
 
     def dict_field_head(self, head):
         head['editor'] = 'com-field-picture'
-        head['up_url'] = '/d/upload?path=public/team_icon'
+        head['up_url'] = '/d/upload?path=public/%(icon_dir)s'%{'icon_dir':self.icon_dir}
         return head
 
 

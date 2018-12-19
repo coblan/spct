@@ -61,6 +61,7 @@ class PcMenu(BaseEngine):
                  {'label': '足球联赛资料', 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},
                  {'label': '篮球联赛资料', 'url': page('basketball_league'), 'visible': can_touch(TbTournament, crt_user)},
                  {'label': '足球队资料', 'url': page('teams'), 'visible': can_touch(TbTeams, crt_user), },
+                  {'label': '篮球队资料', 'url': page('teams_basketball'), 'visible': can_touch(TbTeamsBasketball, crt_user), },
                  
                  {'label': _('玩法设置'), 'url': page('bet_type'), 'visible': can_touch(TbOddstypegroup, crt_user), },
                  {'label': '充值渠道', 'url': page('paychannel'), 'visible': can_touch(TbPaychannel, crt_user), },
