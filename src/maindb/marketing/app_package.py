@@ -11,6 +11,7 @@ from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from django.conf import settings
 from helpers.director.model_func.field_proc import BaseFieldProc
 import os
+from subprocess import Popen
 
 class AppPackage(TablePage):
     template='jb_admin/table.html'
@@ -68,9 +69,6 @@ class AppPackageForm(ModelFields):
             
         return head
     
-    #def save_form(self): 
-        #super().save_form()
-        
     def clean_save(self): 
         if self.instance.terminal ==1:
             plist_fl = plist_template % {'ipa_download': settings.CLOUD_STORAGE + self.instance.packageurl, 
@@ -81,7 +79,17 @@ class AppPackageForm(ModelFields):
             with open(fl_path, 'wb') as f:
                 f.write(plist_fl.encode('utf-8'))
             self.instance.plisturl = '/package/%s' % self.instance.md5 + '.plist'
-            
+    
+    def save_form(self): 
+        super().save_form()
+        if 'packageurl' in self.changed_data:
+            plateform = {1:'ios',2:'android'}.get(self.instance.terminal)
+
+            if getattr(settings,'UPLOAD_CLOUD_SHELL',None):
+                shell = getattr(settings,'UPLOAD_CLOUD_SHELL')
+                Popen('%(shell)s %(plateform)s'%{'shell':shell,'plateform':plateform},shell=True)
+                #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})
+            return rt        
     
 
 
