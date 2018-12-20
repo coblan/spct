@@ -27,7 +27,7 @@ def recieve_app_pkg(request):
         arg='ios'
     if getattr(settings,'UPLOAD_CLOUD_SHELL'):
         shell = getattr(settings,'UPLOAD_CLOUD_SHELL')
-        Popen([shell,arg])
+        Popen('%(shell)s %(arg)s'%{'shell':shell,'arg':arg},shell=True)
         #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})
     return rt
 
