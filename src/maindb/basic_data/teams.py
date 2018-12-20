@@ -31,6 +31,18 @@ class TeamsPage(TablePage):
 
         def get_operation(self):
             return [super().get_operation()[0]]
+        
+        def dict_head(self, head):
+            dc = {
+                'enname': 160,
+                'saenname': 160,
+                'leaguename': 150,
+                'icon': 280,
+                'zhname':150
+            }
+            if dc.get(head['name']):
+                head['width'] = dc.get(head['name'])
+            return head
 
         class filters(RowFilter):
             names = ['country', 'status']
@@ -90,16 +102,7 @@ class TeamsPage(TablePage):
         class sort(RowSort):
             names = ['enname', 'zhname', 'saenname']
 
-        def dict_head(self, head):
-            dc = {
-                'enname': 160,
-                'saenname': 160,
-                'leaguename': 150,
-                'icon': 280,
-            }
-            if dc.get(head['name']):
-                head['width'] = dc.get(head['name'])
-            return head
+
 
 
 class TeamsFields(ModelFields):
