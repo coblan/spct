@@ -47,18 +47,3 @@ class AppPackageReciever(BasicReciever):
         m.update(file_data)  
         return  m.hexdigest() 
     
-    #def sendToService(self,file_data,ext):
-        #"""
-        #blob:文件二进制
-        #ext:文件扩展名   .jpg
-        #"""
-        
-        #upload_url =settings.APP_PKG_UPLOAD_URL
-
-        #header={ 'Authorization': '76bbc167ed744ddd9d409b09705ddf13',
-                 #'X-Extension':'.'+ext}
-
-        #rt = requests.post(upload_url,data=file_data,headers=header)
-        #return rt.text
-
-    

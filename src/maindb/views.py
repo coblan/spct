@@ -9,13 +9,27 @@ from .models import TbNotice, TbQa
 import re
 import json
 import time
+from django.conf import settings
+from subprocess import Popen
 
 def test(request):
     gen_help()
     return HttpResponse('ok')
 
 def recieve_app_pkg(request):
-    return AppPackageReciever().asView(request)
+    key_list = list( request.FILES.keys() )
+    file_name = key_list[0]
+        
+    rt =  AppPackageReciever().asView(request)
+    if file_name.endswith('.apk'):
+        arg= 'android'
+    else:
+        arg='ios'
+    if getattr(settings,'UPLOAD_CLOUD_SHELL'):
+        shell = getattr(settings,'UPLOAD_CLOUD_SHELL')
+        Popen([shell,arg])
+        #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})
+    return rt
 
 
 @csrf_exempt

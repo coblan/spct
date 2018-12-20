@@ -12,7 +12,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from .status_code import *
-from .cus_models_fields import CusPictureField, CusFileField
+from .cus_models_fields import CusPictureField, CusFileField,CloudFileField
 from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
 from maindb.create_user import CreateUserField,UpdateUserField
 
