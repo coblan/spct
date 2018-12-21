@@ -325,6 +325,10 @@ class TickmasterTab(TicketMasterPage.tableCls):
     def inn_filter(self, query): 
         query = super().inn_filter(query)
         return query.filter(tbticketstake__mainmatchid = int(self.kw.get('matchid')) )
+    
+    @classmethod
+    def get_director_name(cls):
+        return TicketMasterPage.tableCls.get_director_name()
 
 director.update({
     'match.viewbymatch': MatchesStatisticsPage.tableCls, 
