@@ -2,6 +2,7 @@ from helpers.director.shortcut import page_dc,director,ModelFields,field_map,mod
 from ..models import TbTeamsBasketball
 from .teams import TeamsPage,TeamIconProc
 import os
+from django.conf import settings
 
 class TeamBasketballPage(TeamsPage):
     def get_label(self):
