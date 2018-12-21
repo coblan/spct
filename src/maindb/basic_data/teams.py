@@ -109,19 +109,20 @@ class TeamsPage(TablePage):
 
 
 class TeamsFields(ModelFields):
+    icon_dir='team_icon'
     class Meta:
         model = TbTeams
         exclude = []
     
-    def dict_head(self, head): 
-        if head['name'] == 'enname':
-            head['fv_rule'] = 'length(~20)'
-        return head
+    #def dict_head(self, head): 
+        #if head['name'] == 'enname':
+            #head['fv_rule'] = 'length(~20)'
+        #return head
 
     def save_form(self):
         super().save_form()
         if 'icon' in self.changed_data and self.cleaned_data.get('icon'):
-            flPath = os.path.join(settings.MEDIA_ROOT, 'public', 'team_icon', self.cleaned_data.get('icon'))
+            flPath = os.path.join(settings.MEDIA_ROOT, 'public', self.icon_dir, self.cleaned_data.get('icon'))
             procImage(flPath)
 
 

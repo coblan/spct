@@ -1,6 +1,6 @@
 from helpers.director.shortcut import page_dc,director,ModelFields,field_map,model_to_name,RowFilter,director_view
 from ..models import TbTeamsBasketball
-from .teams import TeamsPage,TeamIconProc
+from .teams import TeamsPage,TeamIconProc,TeamsFields
 import os
 from django.conf import settings
 
@@ -66,21 +66,21 @@ def getLeagueOptions(country):
     return options
 
 
-class TeamsBasketballFields(ModelFields):
+class TeamsBasketballFields(TeamsFields):
     class Meta:
         model = TbTeamsBasketball
         exclude = []
     
-    def dict_head(self, head): 
-        if head['name'] == 'enname':
-            head['fv_rule'] = 'length(~50)'
-        return head
+    #def dict_head(self, head): 
+        #if head['name'] == 'enname':
+            #head['fv_rule'] = 'length(~50)'
+        #return head
 
-    def save_form(self):
-        super().save_form()
-        if 'icon' in self.changed_data and self.cleaned_data.get('icon'):
-            flPath = os.path.join(settings.MEDIA_ROOT, 'public', 'team_basketball_icon', self.cleaned_data.get('icon'))
-            procImage(flPath)
+    #def save_form(self):
+        #super().save_form()
+        #if 'icon' in self.changed_data and self.cleaned_data.get('icon'):
+            #flPath = os.path.join(settings.MEDIA_ROOT, 'public', 'team_basketball_icon', self.cleaned_data.get('icon'))
+            #procImage(flPath)
 
 
 class TeamBasketballIconProc(TeamIconProc):
