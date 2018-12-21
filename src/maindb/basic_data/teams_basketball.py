@@ -67,6 +67,7 @@ def getLeagueOptions(country):
 
 
 class TeamsBasketballFields(TeamsFields):
+    icon_dir='team_basketball_icon'
     class Meta:
         model = TbTeamsBasketball
         exclude = []
