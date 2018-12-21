@@ -29,7 +29,7 @@ class TeamBasketballPage(TeamsPage):
                         'event_slots':[
                             {'par_event':'country.changed','express':'rt=scope.vc.get_options({post_data:{country:scope.event} })'},
                             {'par_event':'country.changed','express':'rt=scope.vc.clear_value()'},
-                            {'par_event':'row.update_or_insert','express':'rt=scope.vc.get_options({post_data:{} })'},
+                            
                             
                         ]
                     }
@@ -40,6 +40,8 @@ class TeamBasketballPage(TeamsPage):
                 if head['name'] == 'country':
                     head['event_slots']=[
                         {'event':'input','express':'scope.ts.$emit("country.changed",scope.event)'},
+                        {'par_event':'row.update_or_insert','express':'rt=scope.vc.get_options({post_data:{} })'},
+                        
                         #{'par_event':'row.update_or_insert','express':'rt=scope.vc.get_options({post_data:{} })'},
                         
                     ]
@@ -70,7 +72,7 @@ class TeamsBasketballFields(ModelFields):
     
     def dict_head(self, head): 
         if head['name'] == 'enname':
-            head['fv_rule'] = 'length(~20)'
+            head['fv_rule'] = 'length(~50)'
         return head
 
     def save_form(self):

@@ -40,7 +40,7 @@ class MatchesStatisticsPage(TablePage):
         def clean_search_args(cls, search_args):
             today = timezone.now()
             sp = timezone.timedelta(days=30)
-            last = today - sp
+            last = today #- sp
             def_start = last.strftime('%Y-%m-%d') + ' 00:00:00'
             def_end = today.strftime('%Y-%m-%d') + ' 23:59:59'
             search_args['_start_matchdate'] = search_args.get('_start_matchdate') or def_start

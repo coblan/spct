@@ -13,6 +13,10 @@ from helpers.director.model_func.field_proc import BaseFieldProc
 import os
 from subprocess import Popen
 
+import logging
+general_log = logging.getLogger('general_log')
+
+
 class AppPackage(TablePage):
     template='jb_admin/table.html'
     extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
@@ -88,10 +92,8 @@ class AppPackageForm(ModelFields):
             if getattr(settings,'UPLOAD_CLOUD_SHELL',None):
                 shell = getattr(settings,'UPLOAD_CLOUD_SHELL')
                 Popen('%(shell)s %(plateform)s'%{'shell':shell,'plateform':plateform},shell=True)
-                #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})
-            return rt        
-    
-
+                general_log.info('执行批处理 %s'%shell)
+                #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})  
 
 class AppPkgUrlProc(BaseFieldProc):
     def to_dict(self,inst,name):

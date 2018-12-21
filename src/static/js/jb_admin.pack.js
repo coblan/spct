@@ -6116,7 +6116,7 @@ var table_panel = {
         if (this.ctx.selectable == undefined) {
             this.ctx.selectable = true;
         }
-        var base_table_store = {
+        var base_table_panel_store = {
             props: ['ctx'],
             propsData: {
                 ctx: self.ctx
@@ -6136,12 +6136,13 @@ var table_panel = {
                     footer: [],
                     selected: []
                 };
-            }
+            },
+            mixins: [table_store]
         };
-        var custom_store = this.get_custom_store();
-        var this_table_store = {
-            mixins: [table_store, base_table_store].concat(custom_store)
-        };
+        var this_table_store = this.get_custom_store(base_table_panel_store);
+        //var this_table_store =  {
+        //    mixins:[table_store,base_table_store].concat(custom_store)
+        //}
         return {
             childStore: new Vue(this_table_store),
             par_row: this.ctx.par_row || {},
@@ -6162,7 +6163,7 @@ var table_panel = {
             this.$emit('finish', event);
         }
     },
-    template: '<div class="com-table-panel" style="height: 100%;padding-left: 10px">\n\n            <div class="rows-block flex-v" style="height: 100%">\n\n\n              <div v-if="childStore.row_filters.length > 0" style="background-color: #fbfbf8;padding: 8px 1em;border-radius: 4px;margin-top: 8px">\n\n                     <com-table-filters></com-table-filters>\n\n               </div>\n\n               <div  v-if="childStore.ops.length>0 && childStore.tab_stack.length ==0">\n                        <com-table-operations></com-table-operations>\n               </div>\n\n                <div class="box box-success flex-v flex-grow" style="margin-bottom: 0">\n                    <div class="table-wraper flex-grow" style="position: relative;">\n\n                        <com-table-grid></com-table-grid>\n                    </div>\n                </div>\n            <div style="background-color: white;">\n                <com-table-pagination></com-table-pagination>\n            </div>\n\n        </div>\n    </div>'
+    template: '<div class="com-table-panel" style="height: 100%;">\n\n            <div class="rows-block flex-v" style="height: 100%">\n\n\n              <div v-if="childStore.row_filters.length > 0" style="background-color: #fbfbf8;padding: 8px 1em;border-radius: 4px;margin-top: 8px">\n\n                     <com-table-filters></com-table-filters>\n\n               </div>\n\n               <div  v-if="childStore.ops.length>0 && childStore.tab_stack.length ==0">\n                        <com-table-operations></com-table-operations>\n               </div>\n\n                <div class="box box-success flex-v flex-grow" style="margin-bottom: 0">\n                    <div class="table-wraper flex-grow" style="position: relative;">\n\n                        <com-table-grid></com-table-grid>\n                    </div>\n                </div>\n            <div style="background-color: white;">\n                <com-table-pagination></com-table-pagination>\n            </div>\n\n        </div>\n    </div>'
 };
 
 window.com_table_panel = table_panel;

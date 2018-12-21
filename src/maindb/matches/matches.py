@@ -18,6 +18,7 @@ import functools
 from .match_outcome_forms import FootBallPoints, NumberOfCorner
 from django.utils.timezone import datetime
 from helpers.director.middleware.request_cache import get_request_cache
+from django.utils import timezone
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -59,7 +60,16 @@ class MatchsPage(TablePage):
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'}, {'name': 'openlivebet', 'label': '开启走地'}]
-
+        
+        @classmethod
+        def clean_search_args(cls, search_args):
+            now = timezone.now()
+            if search_args.get('_start_matchdate')==None and search_args.get('_end_matchdate')==None:
+                search_args['_start_matchdate']=now.strftime("%Y-%m-%d 00:00:00")
+                search_args['_end_matchdate']=now.strftime("%Y-%m-%d 23:59:59")
+            return search_args
+                
+            
         class filters(RowFilter):
             range_fields = ['matchdate']
             names = ['isrecommend', 'livebet', 'statuscode', 'tournamentid']

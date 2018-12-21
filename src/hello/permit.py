@@ -35,26 +35,28 @@ def get_permit():
          }, 
         { 'label': '基本信息',
          'children': [
-             {'label': '玩法设置', 'value': 'TbOddstypegroup',}, 
-             {'label': '金币', 'children': [
-                 {'label': '查看', 'value': 'TbCurrency',}, 
-                 {'label': '编辑', 'value': 'TbCurrency.edit', 'depend': ['TbCurrency'],}
-                 ],}, 
-             {'label': '联赛资料', 'children': [
+             {'label': '运动类型', 'children': [
+                 {'label': '查看', 'value': 'TbSporttypes',}, 
+                 {'label': '编辑', 'value': 'TbSporttypes.edit', 'depend': ['TbSporttypes'],}
+                                 ],}, 
+             {'label': '足球联赛资料', 'children': [
                  {'label': '查看', 'value': 'TbTournament',}, 
                  {'label': '编辑', 'value': 'TbTournament.edit', 'depend': ['TbTournament'],}
                     ],}, 
-             {'label': '球队资料', 'children': [
+             {'label': '篮球联赛资料', 'children': [
+                 {'label': '查看', 'value': 'TbTournamentBasketball',}, 
+                 {'label': '编辑', 'value': 'TbTournamentBasketball.edit', 'depend': ['TbTournamentBasketball'],}
+                            ],}, 
+             
+             {'label': '足球队资料', 'children': [
                  {'label': '查看', 'value': 'TbTeams',}, 
                  {'label': '编辑', 'value': 'TbTeams.edit', 'depend': ['TbTeams'],}
                     ],}, 
-             {'label': '银行卡类型', 'children': [
-                 {'label': '查看', 'value': 'TbBanktypes',}, 
-                 {'label': '编辑', 'value': 'TbBanktypes.edit', 'depend': ['TbBanktypes'],}                       ],}, 
-             {'label': 'APP资源', 'children': [
-                 {'label': '查看', 'value': 'TbAppresource',}, 
-                 {'label': '编辑', 'value': 'TbAppresource.edit', 'depend': ['TbAppresource'],}
-                ],}, 
+             {'label': '篮球队资料', 'children': [
+                 {'label': '查看', 'value': 'TbTeamsBasketball',}, 
+                 {'label': '编辑', 'value': 'TbTeamsBasketball.edit', 'depend': ['TbTeamsBasketball'],}
+                           ],}, 
+
              {'label': '充值渠道', 'children': [
                  {'label': '查看', 'value': 'TbPaychannel',}, 
                  {'label': '编辑', 'value': 'TbPaychannel.edit', 'depend': ['TbPaychannel'],}
@@ -63,7 +65,20 @@ def get_permit():
              {'label': 'VIP充值渠道', 'children': [
                  {'label': '查看', 'value': 'TbPaychanneljoinlevel',}, 
                  {'label': '编辑', 'value': 'TbPaychanneljoinlevel.edit', 'depend': ['TbPaychanneljoinlevel'],}
+                ],},  
+             {'label': '银行卡类型', 'children': [
+                 {'label': '查看', 'value': 'TbBanktypes',}, 
+                 {'label': '编辑', 'value': 'TbBanktypes.edit', 'depend': ['TbBanktypes'],}
+                       ],},              
+             {'label': '玩法设置', 'value': 'TbOddstypegroup',}, 
+             {'label': 'APP资源', 'children': [
+                 {'label': '查看', 'value': 'TbAppresource',}, 
+                 {'label': '编辑', 'value': 'TbAppresource.edit', 'depend': ['TbAppresource'],}
                 ],},              
+             {'label': '金币', 'children': [
+                 {'label': '查看', 'value': 'TbCurrency',}, 
+                 {'label': '编辑', 'value': 'TbCurrency.edit', 'depend': ['TbCurrency'],}
+                              ],}, 
              
              #{'label': _('Tb Balance Log'), 'value': 'TbBalancelog', }, 
           
@@ -105,12 +120,17 @@ def get_permit():
              #{'label': '金流日志', 'value': 'TbChargeflow',}
              ],
         }, 
-        {'label': _('Tb Match'), 
+        {'label': '比赛列表',#_('Tb Match'), 
          'children': [
-             {'label': _('Tb Match'), 'children': [
+             {'label': '足球比赛列表', 'children': [
                  {'label': '查看', 'value': 'TbMatches',}, 
                  {'label': '编辑', 'value': 'TbMatches.edit', 'depend': ['TbMatches'],}
                  ]}, 
+             {'label':'足球比赛列表', 'children': [
+                 {'label': '查看', 'value': 'TbMatchesBasketball',}, 
+                 {'label': '编辑', 'value': 'TbMatchesBasketball.edit', 'depend': ['TbMatchesBasketball'],}
+                 ]}, 
+             
              {'label': _('Tb TicketMaster'), 'children': [
                  {'label': '查看', 'value': 'TbTicketmaster_all_tab_read',}, 
                  {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', 'TbMatches'],}

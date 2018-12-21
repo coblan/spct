@@ -63,8 +63,7 @@ class TeamsPage(TablePage):
                         'event_slots':[
                             {'par_event':'country.changed','express':'rt=scope.vc.get_options({post_data:{country:scope.event} })'},
                             {'par_event':'country.changed','express':'rt=scope.vc.clear_value()'},
-                            {'par_event':'row.update_or_insert','express':'rt=scope.vc.get_options({post_data:{} })'},
-                            
+                           
                         ]
                     }
                 ]
@@ -74,6 +73,10 @@ class TeamsPage(TablePage):
                 if head['name'] == 'country':
                     head['event_slots']=[
                         {'event':'input','express':'scope.ts.$emit("country.changed",scope.event)'},
+                        {'par_event':'row.update_or_insert','express':'rt=scope.vc.clear_value()'},
+                        {'par_event':'row.update_or_insert','express':'rt=scope.vc.get_options({post_data:{} })'},
+                        
+                        
                         #{'par_event':'row.update_or_insert','express':'rt=scope.vc.get_options({post_data:{} })'},
                         
                     ]

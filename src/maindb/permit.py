@@ -35,11 +35,22 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbCurrency', model_read_permit(TbCurrency), model_to_name(TbCurrency), 'model'), 
            ('TbCurrency.edit', model_full_permit(TbCurrency), model_to_name(TbCurrency), 'model'), 
            
+           # 运动类型
+           ('TbSporttypes', model_read_permit(TbSporttypes), model_to_name(TbSporttypes), 'model'), 
+           ('TbSporttypes.edit', model_full_permit(TbSporttypes), model_to_name(TbSporttypes), 'model'),            
+           
+           # 联赛
            ('TbTournament', model_read_permit(TbTournament), model_to_name(TbTournament), 'model'), 
            ('TbTournament.edit', model_full_permit(TbTournament), model_to_name(TbTournament), 'model'), 
            
+           ('TbTournamentBasketball', model_read_permit(TbTournamentBasketball), model_to_name(TbTournamentBasketball), 'model'), 
+           ('TbTournamentBasketball.edit', model_full_permit(TbTournamentBasketball), model_to_name(TbTournamentBasketball), 'model'),            
+           
            ('TbTeams', model_read_permit(TbTeams), model_to_name(TbTeams), 'model'), 
            ('TbTeams.edit', model_full_permit(TbTeams), model_to_name(TbTeams), 'model'), 
+           
+           ('TbTeamsBasketball', model_read_permit(TbTeamsBasketball), model_to_name(TbTeamsBasketball), 'model'), 
+           ('TbTeamsBasketball.edit', model_full_permit(TbTeamsBasketball), model_to_name(TbTeamsBasketball), 'model'),            
            
            ('TbBanktypes', model_read_permit(TbBanktypes), model_to_name(TbBanktypes), 'model'), 
            ('TbBanktypes.edit', model_full_permit(TbBanktypes), model_to_name(TbBanktypes), 'model'), 
@@ -75,6 +86,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            
            ('TbMatches', model_read_permit(TbMatches), model_to_name(TbMatches), 'model'), 
            ('TbMatches.edit', model_full_permit(TbMatches), model_to_name(TbMatches), 'model'),  
+           ('TbMatchesBasketball', model_read_permit(TbMatchesBasketball), model_to_name(TbMatchesBasketball), 'model'), 
+           ('TbMatchesBasketball.edit', model_full_permit(TbMatchesBasketball), model_to_name(TbMatchesBasketball), 'model'),             
            
            ('TbTicketmaster', model_read_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'), 
            ('TbTicketmaster.edit', model_full_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'), 
