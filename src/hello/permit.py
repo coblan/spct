@@ -126,7 +126,7 @@ def get_permit():
                  {'label': '查看', 'value': 'TbMatches',}, 
                  {'label': '编辑', 'value': 'TbMatches.edit', 'depend': ['TbMatches'],}
                  ]}, 
-             {'label':'足球比赛列表', 'children': [
+             {'label':'篮球比赛列表', 'children': [
                  {'label': '查看', 'value': 'TbMatchesBasketball',}, 
                  {'label': '编辑', 'value': 'TbMatchesBasketball.edit', 'depend': ['TbMatchesBasketball'],}
                  ]}, 
