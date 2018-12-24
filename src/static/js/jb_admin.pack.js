@@ -6156,8 +6156,8 @@ var table_panel = {
         this.childStore.search();
     },
     methods: {
-        get_custom_store: function get_custom_store() {
-            return [];
+        get_custom_store: function get_custom_store(base_table_panel_store) {
+            return base_table_panel_store;
         },
         emit_finish: function emit_finish(event) {
             this.$emit('finish', event);

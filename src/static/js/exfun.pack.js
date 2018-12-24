@@ -1015,6 +1015,18 @@ var network = exports.network = {
         return $.get(url, wrap_callback);
     },
     post: function post(url, data, callback) {
+        if (callback) {
+            ex._post(url, data, callback);
+        } else {
+            var p = new Promise(function (resolve, reject) {
+                ex._post(url, data, function (resp) {
+                    resolve(resp);
+                });
+            });
+            return p;
+        }
+    },
+    _post: function _post(url, data, callback) {
         var self = this;
         var wrap_callback = function wrap_callback(resp) {
             var msg = [];
@@ -1119,9 +1131,17 @@ var network = exports.network = {
     },
     director_call: function director_call(director_name, kws, callback) {
         var post_data = [{ fun: "director_call", director_name: director_name, kws: kws }];
-        ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
-            callback(resp.director_call);
-        });
+        if (callback) {
+            ex.post('/d/ajax', JSON.stringify(post_data), function (resp) {
+                callback(resp.director_call);
+            });
+        } else {
+            return new Promise(function (resolve, reject) {
+                ex.post('/d/ajax', JSON.stringify(post_data)).then(function (resp) {
+                    resolve(resp.director_call);
+                });
+            });
+        }
     },
 
     download: function download(strPath) {
