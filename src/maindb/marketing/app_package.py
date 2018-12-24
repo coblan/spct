@@ -54,7 +54,7 @@ class AppPackageForm(ModelFields):
     
     def dict_head(self, head):
 
-        if head['name'] in ['md5','versionid','versionname','size']:
+        if head['name'] in ['md5','size']:
             head['readonly']=True
         if head['name'] == 'plisturl':
             head['show'] = 'scope.row.terminal==1'

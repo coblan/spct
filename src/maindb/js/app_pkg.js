@@ -34,11 +34,11 @@ Vue.component('com-field-app-pkg-uploader',field_file_uploader)
 
 var app_pkg={
     mounted:function(){
-        this.updateReadonly()
+        //this.updateReadonly()
     },
     watch:{
         'row.terminal':function (){
-            this.updateReadonly()
+            //this.updateReadonly()
         }
     },
     methods:{

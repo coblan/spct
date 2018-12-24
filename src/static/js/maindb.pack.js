@@ -449,11 +449,11 @@ Vue.component('com-field-app-pkg-uploader', field_file_uploader);
 
 var app_pkg = {
     mounted: function mounted() {
-        this.updateReadonly();
+        //this.updateReadonly()
     },
     watch: {
         'row.terminal': function rowTerminal() {
-            this.updateReadonly();
+            //this.updateReadonly()
         }
     },
     methods: {
