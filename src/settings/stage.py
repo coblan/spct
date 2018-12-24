@@ -59,3 +59,5 @@ UPLOAD_CLOUD_SHELL='/home/pypro/test_file/upload_test'
 
 
 
+from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
+SET(globals()) 
