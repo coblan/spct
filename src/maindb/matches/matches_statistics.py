@@ -4,11 +4,12 @@ import re
 from django.db import connections
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter
 from helpers.director.table.row_search import SelectSearch
-from ..models import TbMatches, MATCH_STATUS
+from ..models import TbMatches, MATCH_STATUS,TbTicketmaster
 from helpers.director.base_data import director
 from django.utils import timezone
 from helpers.director.table.table import PlainTable
 from .ticket_master import TicketMasterPage
+from helpers.director.engine import BaseEngine, page, fa, can_list, can_touch
 
 class MatchesStatisticsPage(TablePage):
     template = 'jb_admin/table_new.html'
@@ -26,9 +27,10 @@ class MatchesStatisticsPage(TablePage):
                 head['options'] = [{'value': value, 'label': label} for (value, label) in MATCH_STATUS]
                 head['editor'] = 'com-table-mapper'
             if head['name'] == 'matchid':
-                head['editor'] = 'com-table-switch-to-tab'
-                head['tab_name'] = 'detailStatic'
-                head['ctx_name'] = 'match_statistic'
+                if can_touch (TbTicketmaster,self.crt_user):
+                    head['editor'] = 'com-table-switch-to-tab'
+                    head['tab_name'] = 'detailStatic'
+                    head['ctx_name'] = 'match_statistic'
                 #head['named_tabs'] = 'match_statistic'
           
                 #detail_statistic = DetailStatistic(crt_user= self.crt_user)

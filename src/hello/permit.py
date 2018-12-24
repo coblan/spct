@@ -123,17 +123,17 @@ def get_permit():
         {'label': '比赛列表',#_('Tb Match'), 
          'children': [
              {'label': '足球比赛列表', 'children': [
-                 {'label': '查看', 'value': 'TbMatches','depend':['TbTicketmaster_all_tab_read']}, 
+                 {'label': '查看', 'value': 'TbMatches',}, 
                  {'label': '编辑', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],}
                  ]}, 
              {'label':'篮球比赛列表', 'children': [
-                 {'label': '查看', 'value': 'TbMatchesBasketball','depend': ['TbTicketmaster_all_tab_read']}, 
+                 {'label': '查看', 'value': 'TbMatchesBasketball',}, 
                  {'label': '编辑', 'value': 'TbMatchesBasketball.edit', 'depend': ['TbMatchesBasketball'],}
                  ]}, 
              
              {'label': _('Tb TicketMaster'), 'children': [
-                 {'label': '查看', 'value': 'TbTicketmaster_all_tab_read',}, 
-                 {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', 'TbMatches'],}
+                 {'label': '查看', 'value': 'TbTicketmaster_all_tab_read','depend':['TbMatches','TbMatchesBasketball']}, 
+                 {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', ],}
                  ]},              
              ],
         }, 
