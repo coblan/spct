@@ -102,8 +102,8 @@ RAB_PSWD = 'YXNkZmFmc2RmbAo'
 PRODUCT_NAME = '飞球竞猜'
 PACKAGE_NAME = 'com.jingbo.DQGuess'
 
-#from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
-#SET(globals()) 
+from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
+SET(globals()) 
 
 #MIDDLEWARE_CLASSES += ['django_cprofile_middleware.middleware.ProfilerMiddleware']
 

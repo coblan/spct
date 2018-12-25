@@ -1,6 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from .prod_base import * 
+DEBUG=False
 
 DATABASES = {
 
@@ -59,5 +60,5 @@ UPLOAD_CLOUD_SHELL='/home/pypro/test_file/upload_test'
 
 
 
-from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
-SET(globals()) 
+#from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
+#SET(globals()) 
