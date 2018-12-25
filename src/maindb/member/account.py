@@ -319,7 +319,7 @@ class AccoutModifyAmount(ModelFields):
 
     def extra_valid(self):
         dc = {}
-        if self.cleaned_data.get('amount') + Decimal( self.kw.get('add_amount') )< 0:
+        if self.cleaned_data.get('amount') + Decimal( self.kw.get('add_amount',0) )< 0:
             dc['add_amount'] = '叠加值使得余额小于0'
         return dc
 
