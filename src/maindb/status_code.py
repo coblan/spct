@@ -189,3 +189,8 @@ RANK_PERIAD = (
     (2, '周'), 
     (4, '月')
 )
+
+BANNER_DISPLAYTYPE=(
+    (0,'对外'),
+    (1,'对内')
+)

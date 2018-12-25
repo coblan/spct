@@ -1563,6 +1563,8 @@ class TbBanner(models.Model):
                                  default=1)  # Field name made lowercase.
     navigateurl = models.CharField(db_column='NavigateUrl', max_length=512, verbose_name=_('Navigate Url'), blank=True,
                                    null=True)
+    displaytype = models.IntegerField(db_column='DisplayType',default=0,choices=BANNER_DISPLAYTYPE,verbose_name='对内/对外')  # Field name made lowercase.
+    
 
     class Meta:
         managed = False

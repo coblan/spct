@@ -15,7 +15,7 @@ class BannerPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbBanner
-        include = ['title', 'status', 'picturename', 'order', 'createuser', 'createtime', 'description']
+        include = ['title', 'displaytype','status', 'picturename', 'order', 'createuser', 'createtime', 'description']
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
@@ -110,7 +110,7 @@ class BannerPage(TablePage):
 
 class BannerForm(ModelFields):
     readonly = ['createuser']
-    field_sort = ['title', 'navigateurl', 'picturename', 'order', 'description']
+    field_sort = ['title', 'navigateurl', 'picturename', 'order','displaytype', 'description']
 
     class Meta:
         model = TbBanner
