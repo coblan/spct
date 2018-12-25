@@ -1,7 +1,8 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from .prod_base import * 
-#DEBUG=False
+
+DEBUG=False
 
 DATABASES = {
 
