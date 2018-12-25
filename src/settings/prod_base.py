@@ -49,7 +49,15 @@ LOGGING = {
         'operation_log': {
             'level': 'INFO',
             'class': 'hello.operation_log.DBOperationHandler',
-            },        
+            },   
+        'general_log':{
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'maxBytes': 1024*1024*5,
+            'backupCount':3,
+            'formatter':'standard',
+            'filename': os.path.join(LOG_PATH,'general_log.log'),            
+            },         
     },
     'loggers': {
         'django': {
@@ -57,7 +65,7 @@ LOGGING = {
             'level': 'INFO',
             },
         'general_log': {
-            'handlers': ['console', 'djangoout_warning', 'elk_warning', ],
+            'handlers': ['console', 'djangoout_warning', 'elk_warning','general_log' ],
             'level': 'DEBUG',
             'propagate': True,            
             },
