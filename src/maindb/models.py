@@ -898,6 +898,7 @@ class TbNotice(models.Model):
                            verbose_name='链接Url')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
+    displaytype = models.IntegerField(db_column='DisplayType',default=0,choices=BANNER_DISPLAYTYPE,verbose_name='对内/对外')  # Field name made lowercase.
 
     createuser = CreateUserField(db_column='CreateUser', blank=True, null=True,
                                  verbose_name='创建人')  # Field name made lowercase.
@@ -905,7 +906,7 @@ class TbNotice(models.Model):
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
     content = models.TextField(db_column='Content', blank=True, null=True, default='',
                                verbose_name='内容')  # Field name made lowercase.
-
+    
     class Meta:
         managed = False
         db_table = 'TB_Notice'
