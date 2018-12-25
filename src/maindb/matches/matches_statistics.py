@@ -12,7 +12,7 @@ from .ticket_master import TicketMasterPage
 from helpers.director.engine import BaseEngine, page, fa, can_list, can_touch
 
 class MatchesStatisticsPage(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
 
     def get_label(self):
         return '赛事投注状况'
@@ -330,7 +330,7 @@ class TickmasterTab(TicketMasterPage.tableCls):
     
     @classmethod
     def get_director_name(cls):
-        return TicketMasterPage.tableCls.get_director_name()
+        return 'match_statistic.ticket_master'
 
 director.update({
     'match.viewbymatch': MatchesStatisticsPage.tableCls, 
