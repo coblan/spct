@@ -16,7 +16,9 @@ from helpers.func.sim_signal import sim_signal
 def update_redis_cache(sender, **kws): 
     
     if sender == sports_model.TbBanner:
-        redisInst.delete('App:Cache:index:banners')
+        redisInst.delete('App:Cache:index:banners:0')
+        redisInst.delete('App:Cache:index:banners:1')
+        
     elif sender == sports_model.TbMatches:
         redisInst.delete('App:Cache:index:matches:Soccer')  # App:Cache:index:matches:Basketball
     elif sender == sports_model.TbMatchesBasketball:
@@ -60,7 +62,8 @@ post_save.connect(update_redis_cache)
 
 @sim_signal.recieve('notice.static.changed')
 def clear_notice_cache(): 
-    redisInst.delete('App:Cache:index:notices')
+    redisInst.delete('App:Cache:index:notices:0')
+    redisInst.delete('App:Cache:index:notices:1')
 
 @sim_signal.recieve('help.static.changed')
 def clear_help_cache(): 
