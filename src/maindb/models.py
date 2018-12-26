@@ -1453,7 +1453,7 @@ class TbTicketstake(models.Model):
     dangeroustid = models.BigIntegerField(db_column='DangerousTid')  # Field name made lowercase.
     #oddsid = models.BigIntegerField(db_column='OddsID')  # Field name made lowercase.
     oddsid = models.ForeignKey(verbose_name = '玩法', db_column='OddsID', to= TbOddstypes, to_field = 'oddsid', db_constraint= False)  # Field name made lowercase.
-    specialbetvalue = models.CharField(db_column='SpecialBetValue', verbose_name='盘口',
+    specialbetvalue = models.CharField(db_column='SpecialBetValue', verbose_name='盘口值',
                                        max_length=12)  # Field name made lowercase.
     odds = CusDecimalField(db_column='Odds', verbose_name='赔率', max_digits=18,
                            decimal_places=2)  # Field name made lowercase.
@@ -1473,7 +1473,7 @@ class TbTicketstake(models.Model):
     confirmoddstid = models.BigIntegerField(db_column='ConfirmOddsTid')  # Field name made lowercase.
     oddskind = models.IntegerField(db_column='OddsKind')  # Field name made lowercase.
     accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
-    specialbetname = models.CharField(db_column='SpecialBetName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    specialbetname = models.CharField(db_column='SpecialBetName', max_length=50, blank=True, null=True,verbose_name='盘口')  # Field name made lowercase.
     homescore = models.IntegerField(db_column='HomeScore')  # Field name made lowercase.
     awayscore = models.IntegerField(db_column='AwayScore')  # Field name made lowercase.
     parlayrule = models.IntegerField(db_column='ParlayRule', blank=True, null=True)  # Field name made lowercase.

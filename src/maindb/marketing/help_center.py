@@ -16,7 +16,7 @@ from helpers.director.access.permit import has_permit
 from .gen_help_file import gen_help_file
 
 class HelpPage(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
     #extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
@@ -25,11 +25,11 @@ class HelpPage(TablePage):
     def get_context(self):
         ctx = TablePage.get_context(self)
         ctx['named_ctx'] = self.get_named_ctx()
-        ctx['childStore_event_slot'] = [
-            {'event': 'row.update_or_insert', 'fun': 'update_ctx', 
-             'kws': "rt={director_name:'get_mtype_options',ctx_name:'mtype_options'}",}
-            #{'event': 'row.update_or_insert', 'fun': 'update_ctx', 'ctx_name': 'mtype_options', 'director_name': 'get_mtype_options',}
-        ]
+        #ctx['childStore_event_slot'] = [
+            #{'event': 'row.update_or_insert', 'fun': 'update_ctx', 
+             #'kws': "rt={director_name:'get_mtype_options',ctx_name:'mtype_options'}",}
+            ##{'event': 'row.update_or_insert', 'fun': 'update_ctx', 'ctx_name': 'mtype_options', 'director_name': 'get_mtype_options',}
+        #]
             
         
         return ctx

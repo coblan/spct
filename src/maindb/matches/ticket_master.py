@@ -249,14 +249,15 @@ class TicketstakeTable(TicketTabBase):
     """ 子注单 """
     model = TbTicketstake
     exclude = []
-    fields_sort = ['tournament', 'matchid', 'matchname', 'oddsid', 'specialbetvalue', 'odds', 'confirmodds', 'realodds', 
+    fields_sort = ['tournament', 'matchid', 'matchname', 'oddsid','oddsid__outcomedesc','specialbetname', 'odds', 'confirmodds', 'realodds', 
                    'status', 'createtime', 'updatetime']
 
     def getExtraHead(self):
         return [
             #{'name': 'matchid', 'label': 'matchid', },
             {'name': 'matchname', 'label': '比赛', 'width': 200, },
-            {'name': 'tournament', 'label': '联赛', 'width': 120, }
+            {'name': 'tournament', 'label': '联赛', 'width': 120, },
+            {'name': 'oddsid__outcomedesc', 'label': '盘口类型', 'width': 90, },
         ]
 
     def dict_row(self, inst):
@@ -271,6 +272,7 @@ class TicketstakeTable(TicketTabBase):
             '_matchid_form': matchid_form,
             'matchid': match.matchid,
             'tournament': match.tournamentzh,
+            'oddsid__outcomedesc':inst.oddsid.outcomedesc,
             'matchname': '{team1zh} VS {team2zh}'.format(team1zh=match.team1zh, team2zh=match.team2zh)
         }
 
