@@ -84,7 +84,7 @@ AGENT_SERVICE = 'http://192.168.40.144:8001'
 #CENTER_SERVICE = 'http://192.168.40.104:9022'
 CENTER_SERVICE = 'http://192.168.40.138:9022'
 
-SPREAD_SERVICE = 'http://192.168.40.103:9030'
+SPREAD_SERVICE = 'http://192.168.40.138:9030'
 PHONE_MESSAGE_SERVICE = 'http://192.168.40.88:15002/message/send'
 #MONGO_SERVER = "mongodb://192.168.40.104:27017"
 #MONGO_SERVER ="mongodb://192.168.40.104:27017,192.168.40.104:27018,192.168.40.104:27019/?replicaSet=jingbo;slaveok=true"
@@ -102,15 +102,8 @@ RAB_PSWD = 'YXNkZmFmc2RmbAo'
 PRODUCT_NAME = '飞球竞猜'
 PACKAGE_NAME = 'com.jingbo.DQGuess'
 
-
-INTERNAL_IPS = (
-    '127.0.0.1',
-    'localhost',
-)
-
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
-
 
 
 

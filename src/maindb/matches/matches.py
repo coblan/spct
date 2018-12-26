@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
     SelectSearch, Fields, director_view
-from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup
+from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
 from maindb.mongoInstance import updateMatchMongo
@@ -97,7 +97,9 @@ class MatchsPage(TablePage):
                     head['editor'] = 'com-filter-single-select2'
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
-                    head['order'] = True
+                    #head['order'] = False
+                    #head['options']=[{'label':x.get('tournamentname'),'value':x.get('tournamentid')} for x in TbTournament.objects.values('tournamentname','tournamentid').order_by('tournamentname')] 
+                         
                 return head
 
         class search(SelectSearch):
@@ -288,7 +290,6 @@ class MatchsPage(TablePage):
                 'openlivebet': not bool(inst.closelivebet)
             }
         
-
 @director_view('football_quit_ticket')
 def football_quit_ticket(rows, new_row): 
     return quit_ticket(rows, new_row, sportid = 0)
