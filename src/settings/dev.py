@@ -102,6 +102,12 @@ RAB_PSWD = 'YXNkZmFmc2RmbAo'
 PRODUCT_NAME = '飞球竞猜'
 PACKAGE_NAME = 'com.jingbo.DQGuess'
 
+
+INTERNAL_IPS = (
+    '127.0.0.1',
+    'localhost',
+)
+
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
 
