@@ -102,6 +102,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            
             ('TbMaxpayout', model_read_permit(TbMaxpayout), model_to_name(TbMaxpayout), 'model'),
             ('TbMaxpayout.edit', model_full_permit(TbMaxpayout), model_to_name(TbMaxpayout), 'model'),
+            ('TbMaxpayoutBasketball', model_read_permit(TbMaxpayoutBasketball), model_to_name(TbMaxpayoutBasketball), 'model'),
+            ('TbMaxpayoutBasketball.edit', model_full_permit(TbMaxpayoutBasketball), model_to_name(TbMaxpayoutBasketball), 'model'),            
            
             ('TbParameterinfo', model_read_permit(TbParameterinfo), model_to_name(TbParameterinfo), 'model'), 
             ('TbParameterinfo.edit', model_full_permit(TbParameterinfo), model_to_name(TbParameterinfo), 'model'),

@@ -140,10 +140,15 @@ def get_permit():
        
         {'label': _('RiskControl'),
          'children': [
-             {'label': '最大赔付', 'children': [
-                 {'label': '查看', 'value': 'TbMaxpayout',}, 
-                 {'label': '编辑', 'value': 'TbMaxpayout.edit', 'depend': ['TbMaxpayout', 'TbMatches', 'TbTournament', 'TbAccount'],}, 
+             {'label': '足球最大赔付', 'children': [
+                 {'label': '查看', 'value': 'TbMaxpayout','depend': ['TbMatches', 'TbTournament', 'TbAccount']}, 
+                 {'label': '编辑', 'value': 'TbMaxpayout.edit', 'depend': ['TbMaxpayout', ],}, 
                  ],}, 
+             {'label': '篮球最大赔付', 'children': [
+                 {'label': '查看', 'value': 'TbMaxpayoutBasketball','depend': ['TbMatchesBasketball', 'TbTournamentBasketball', 'TbAccount']}, 
+                 {'label': '编辑', 'value': 'TbMaxpayoutBasketball.edit', 'depend': ['TbMaxpayoutBasketball',],}, 
+                             ],}, 
+             
              {'label': '提现控制', 'children': [
                  {'label': '查看', 'value': 'TbParameterinfo',}, 
                  {'label': '编辑', 'value': 'TbParameterinfo.edit', 'depend': ['TbParameterinfo'],}, 
