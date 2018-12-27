@@ -91,6 +91,7 @@ class TbAccount(models.Model):
                                  choices=Account_Source, default=3)  # Field name made lowercase.
     sumwithdrawcount = models.IntegerField(db_column='SumWithdrawCount', blank=True,
                                            default=0, verbose_name='提现次数')  # Field name made lowercase.
+    accounttype = models.IntegerField(db_column='AccountType',verbose_name='账号类型',choices=ACCOUNT_TYPE)  # Field name made lowercase.
 
     class Meta:
         managed = False

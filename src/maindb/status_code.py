@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 
 ACCOUNT_TYPE = (
-    (1, '会员'),
-    (2, '代理')
+    (0, '普通'),
+    (1, '内部')
 )
 
 COMMON_STATUS = (
