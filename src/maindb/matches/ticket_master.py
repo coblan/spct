@@ -8,6 +8,7 @@ from django.db.models import Q, Sum, F, Case, When, FloatField
 import re
 from django.db import connections
 from helpers.director.middleware.request_cache import get_request_cache
+from .. import status_code
 
 class TicketMasterPage(TablePage):
     template = 'jb_admin/table_new.html'  # 'maindb/table_ajax_tab.html'
@@ -201,14 +202,19 @@ class TicketMasterPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
-            names = ['status', 'winbet']
+            names = ['status', 'winbet','accountid__accounttype']
             
+            def getExtraHead(self):
+                return [
+                    {'name':'accountid__accounttype','label':'账号类型','editor':'com-filter-select','options':[{'value':value,'label':label} for value,label in status_code.ACCOUNT_TYPE]}
+                ]
             def clean_query(self, query): 
                 search_args = self.kw.get('search_args')
                 if search_args.get('winbet', None) != None :
-                    return query.filter(status = 2)
-                else:
-                    return query
+                    query= query.filter(status = 2)
+                if search_args.get('accountid__accounttype',None) !=None:
+                    query= query.filter(accountid__accounttype=search_args.get('accountid__accounttype'))
+                return query
 
         class sort(RowSort):
             names = ['stakeamount', 'betamount', 'createtime', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',

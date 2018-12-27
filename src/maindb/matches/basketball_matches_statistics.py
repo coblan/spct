@@ -1,6 +1,8 @@
 from helpers.director.shortcut import page_dc, director
 from .matches_statistics import MatchesStatisticsPage, DetailStatistic, TickmasterTab, TicketMasterPage
 from ..models import TbMatchesBasketball
+from ..status_code import BASKETBALL_MATCH_STATUS
+
 class BasketballMatchesStatisticsPage(MatchesStatisticsPage):
     def get_label(self): 
         return '篮球赛事统计'
@@ -35,7 +37,14 @@ class BasketballMatchesStatisticsPage(MatchesStatisticsPage):
         def get_statistic_sql(self, sql_args): 
             sql = r"exec dbo.SP_MatchesStatistics_Basketball %(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
                   % sql_args
-            return sql       
+            return sql  
+        
+        def dict_head(self, head):
+            head = super().dict_head(head)
+            if head['name'] == 'StatusCode':
+                head['options'] = [{'value': value, 'label': label} for (value, label) in BASKETBALL_MATCH_STATUS]
+                head['editor'] = 'com-table-mapper'
+            return head        
 
 class BasketballDetailStatistic(DetailStatistic):
     sql_fun = 'SP_SingleMatchStatistics_Basketball'
