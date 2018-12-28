@@ -86,14 +86,15 @@ class AppPackageForm(ModelFields):
     
     def save_form(self): 
         super().save_form()
-        if 'packageurl' in self.changed_data:
-            plateform = {1:'ios',2:'android'}.get(self.instance.terminal)
+        #if 'packageurl' in self.changed_data:
+        # 现在要求每次都重传S3服务器
+        plateform = {1:'ios',2:'android'}.get(self.instance.terminal)
 
-            if getattr(settings,'UPLOAD_CLOUD_SHELL',None):
-                shell = getattr(settings,'UPLOAD_CLOUD_SHELL')
-                Popen('%(shell)s %(plateform)s'%{'shell':shell,'plateform':plateform},shell=True)
-                general_log.info('执行批处理 %s'%shell)
-                #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})  
+        if getattr(settings,'UPLOAD_CLOUD_SHELL',None):
+            shell = getattr(settings,'UPLOAD_CLOUD_SHELL')
+            Popen('%(shell)s %(plateform)s'%{'shell':shell,'plateform':plateform},shell=True)
+            general_log.info('执行批处理 %s'%shell)
+            #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})  
 
 class AppPkgUrlProc(BaseFieldProc):
     def to_dict(self,inst,name):
