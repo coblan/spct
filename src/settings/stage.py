@@ -58,7 +58,7 @@ ELASTIC = 'http://192.168.40.217:9200'
 PRODUCT_NAME = '飞球竞猜'
 PACKAGE_NAME = 'com.jingbo.DQGuess'
 
-UPLOAD_CLOUD_SHELL='/home/pypro/test_file/upload_test'
+UPLOAD_CLOUD_SHELL='/pypro/shell/upload-app.sh'
 
 
 
