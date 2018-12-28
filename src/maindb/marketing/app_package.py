@@ -13,9 +13,11 @@ from helpers.director.model_func.field_proc import BaseFieldProc
 import os
 from subprocess import Popen
 
+
 import logging
 general_log = logging.getLogger('general_log')
 
+operation_log = logging.getLogger('operation_log')
 
 class AppPackage(TablePage):
     template='jb_admin/table.html'
@@ -91,9 +93,9 @@ class AppPackageForm(ModelFields):
         plateform = {1:'ios',2:'android'}.get(self.instance.terminal)
 
         if getattr(settings,'UPLOAD_CLOUD_SHELL',None):
-            shell = getattr(settings,'UPLOAD_CLOUD_SHELL')
-            Popen('%(shell)s %(plateform)s'%{'shell':shell,'plateform':plateform},shell=True)
-            general_log.info('执行批处理 %s'%shell)
+            shell_file = getattr(settings,'UPLOAD_CLOUD_SHELL')
+            Popen('%(shell)s %(plateform)s'%{'shell':shell_file,'plateform':plateform},shell=True)
+            general_log.info('执行批处理 %s'%shell_file)
             #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})  
 
 class AppPkgUrlProc(BaseFieldProc):
