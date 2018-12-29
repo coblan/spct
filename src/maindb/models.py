@@ -76,7 +76,7 @@ class TbAccount(models.Model):
     # actimestamp = models.TextField(db_column='AcTimestamp')  # Field name made lowercase. This field type is a guess.
     codeid = models.IntegerField(db_column='CodeID', default=0)  # Field name made lowercase.
     bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4,
-                                    verbose_name='反水比例')  # Field name made lowercase.
+                                    verbose_name='反水比例',default=0)  # Field name made lowercase.
     agentamount = models.DecimalField(db_column='AgentAmount', max_digits=18, decimal_places=4, blank=True, null=True,
                                       verbose_name='代理账户余额')  # Field name made lowercase.
     parentid = models.IntegerField(db_column='ParentID')  # Field name made lowercase.
@@ -100,6 +100,22 @@ class TbAccount(models.Model):
     def __str__(self):
         return self.nickname or ''
 
+
+class TbAgentrules(models.Model):
+    agentruleid = models.AutoField(db_column='AgentRuleID', primary_key=True)  # Field name made lowercase.
+    accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID', blank=True, null=True)  # Field name made lowercase.
+    daus = models.IntegerField(db_column='DAUs', blank=True, null=True)  # Field name made lowercase.
+    minamount = models.DecimalField(db_column='MinAmount', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    maxamount = models.DecimalField(db_column='MaxAmount', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    percentage = models.DecimalField(db_column='Percentage', max_digits=18, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_AgentRules'
+        
 
 class TbAgentqa(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.

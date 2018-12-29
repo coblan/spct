@@ -1,12 +1,15 @@
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, RowFilter, RowSort, RowSearch, Fields, ModelFields
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, RowFilter, RowSort, RowSearch, Fields, ModelFields,director_view
 from helpers.director.table.row_search import SelectSearch
-from ..models import TbAccount
+from ..models import TbAccount,TbAgentrules
 from django.db import connections
 from django.utils import timezone
 from ..member.account import account_tab
 from helpers.director.access.permit import has_permit
 from django.core.exceptions import PermissionDenied
 from ..alg import encode_paswd
+
+import logging
+modelfields_log = logging.getLogger('ModelFields.save_form')
 
 class AgentUser(TablePage):
     template = 'jb_admin/table.html'
@@ -21,7 +24,7 @@ class AgentUser(TablePage):
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid','createtime']
-        fields_sort = ['accountid', 'NickName', 'SumActive',  'BeaeAmount', 'AgentRuleAmount','AgentAmount',
+        fields_sort = ['accountid', 'NickName', 'SumActive',  'BeaeAmount', 'AgentRulePercentage','AgentAmount',
                        'BalanceLostAmount', 'SumLostAmount', 'BonusRate', 'SumBonusAmount', 'SumExpend',
                        'SumRechargeAmount', 'Poundage', 'SumBetAmount', 'SumWithdrawalAmount',
                        'SumTurnover', 'CreateTime']
@@ -47,7 +50,7 @@ class AgentUser(TablePage):
                 return head
 
         class sort(RowSort):
-            names = ['AgentAmount', 'BeaeAmount', 'SumActive', 'AgentRuleAmount', 'BalanceLostAmount', 'SumLostAmount',
+            names = ['AgentAmount', 'BeaeAmount', 'SumActive', 'BalanceLostAmount', 'SumLostAmount',
                      'SumBonusAmount', 'SumWithdrawalAmount', 'SumBetAmount', 'Poundage',
                      'SumTurnover', 'BonusRate', 'SumExpend', 'SumRechargeAmount']
 
@@ -181,7 +184,7 @@ class AgentUser(TablePage):
                 {'name': 'SumActive', 'label': '活跃用户数', 'width': 100, },
                 
                 {'name': 'BeaeAmount', 'label': '佣金计算基数', 'width': 120, },
-                {'name': 'AgentRuleAmount', 'label': '佣金计算比例', 'width': 120, },
+                #{'name': 'AgentRuleAmount', 'label': '佣金计算比例', 'width': 120, },
                 {'name': 'AgentAmount', 'label': '预估佣金', },
                 {'name': 'BalanceLostAmount', 'label': '累计净盈利', 'width': 100, },
                 {'name': 'SumLostAmount', 'label': '本月净盈利', 'width': 100, },
@@ -190,7 +193,7 @@ class AgentUser(TablePage):
                 {'name': 'SumExpend', 'label': '系统红利', 'width': 80, },
                 {'name': 'SumRechargeAmount', 'label': '充值金额', 'width': 100, },
                 {'name': 'Poundage', 'label': '充值手续费', 'width': 100, },
-                #{'name': 'AgentRulePercentage', 'label': '佣金比例', },
+                {'name': 'AgentRulePercentage', 'label': '佣金比例', },
                 {'name': 'SumBetAmount', 'label': '投注金额', 'width': 120, },
                 {'name': 'SumWithdrawalAmount', 'label': '提现金额', 'width': 100, },
                 {'name': 'SumTurnover', 'label': '流水', 'width': 120, },
@@ -205,11 +208,11 @@ class AgentUser(TablePage):
                 row['BeaeAmount'] = round(row['BeaeAmount'] or 0, 2)
                 row['BonusRate'] = round(row['BonusRate'] or 0, 3)
                 row['Poundage'] = round(row['Poundage'] or 0, 2)
-                row['AgentRuleAmount'] = round(row['AgentRuleAmount'] or 0, 2)
+                #row['AgentRuleAmount'] = round(row['AgentRuleAmount'] or 0, 2)
                 row['BalanceLostAmount'] = round(row['BalanceLostAmount'] or 0, 2)
                 row['AgentAmount'] = round(row['AgentAmount'] or 0, 2)
                 row['SumExpend'] = round(row['SumExpend'] or 0, 2)
-                #row['AgentRulePercentage'] = round(row['AgentRulePercentage'] or 0, 3)
+                row['AgentRulePercentage'] = round(row.get('AgentRulePercentage') or 0, 4)
                 row['SumLostAmount'] = round(row['SumLostAmount']or 0, 2)
                 row['SumBonusAmount'] = round(row['SumBonusAmount'] or 0, 2)
                 row['SumBetAmount'] = round(row['SumBetAmount'] or 0, 2)
@@ -252,26 +255,53 @@ class AgentUser(TablePage):
 
         def get_operation(self):
             agent = NewAgentUserForm(crt_user= self.crt_user)
+            yong = YongJingForm(crt_user=self.crt_user)
             return [
-                #{'fun': 'create_child_row', 'par_field': 'parentid','editor': 'com-op-btn' ,
-                 #'after_save': 'refresh',
-                 #'label': '创建下级用户','fields_ctx': agent.get_head_context(),}, 
                 {'fun': 'add_new', 'editor': 'com-op-btn' ,
-                 'after_save': 'rt=scope.search()',
-                 'label': '创建下级用户','fields_ctx': agent.get_head_context(),}, 
+                 'after_save': 'rt=scope.ts.search()','preset':'rt={meta_only_add_root_next_level:1}',
+                 'label': '创建代理用户','fields_ctx': agent.get_head_context(),}, 
+                #{'fun': 'add_new', 'editor': 'com-op-btn' ,
+                 #'after_save': 'rt=scope.search()',
+                 #'label': '创建下级用户','fields_ctx': agent.get_head_context(),}, 
+                 
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn' ,
+                 'after_save': 'rt=scope.ts.search()','row_match':'one_row',
+                 'label': '修改佣金比例','fields_ctx': yong.get_head_context(),}, 
+                 
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
 
+@director_view('YongJingForm')
+class YongJingForm(Fields):
+    def get_heads(self):
+        return [
+            {'name':'AgentRulePercentage','editor':'number','label':'佣金比例','required':True,'fv_rule':'range(0~0.4)'},
+        ]
+    
+    def get_row(self):
+        return self.kw
+        
+    def save_form(self):
+        AgentRulePercentage = self.kw.get('AgentRulePercentage',0)
+        agent_rule,_ = TbAgentrules.objects.get_or_create(accountid=self.kw.get('accountid'))
+        agent_rule.percentage = AgentRulePercentage
+        agent_rule.save()
+        modelfields_log.info('修改账号%(accountid)s的佣金比例为%(percentage)s'%{'accountid':self.kw.get('accountid'),'percentage':AgentRulePercentage})
+
+
 class NewAgentUserForm(ModelFields):
     hide_fields = ['accountid']
+    field_sort=['phone', 'nickname', 'accountid','AgentRulePercentage','pswd','pswd2']
     class Meta:
         model = TbAccount
-        fields = ['phone', 'nickname', 'bonusrate', 'accountid']
+        fields = ['phone', 'nickname', 'accountid']
     
     def getExtraHeads(self): 
         return [
             {'name':'pswd','editor':'password','label':'密码','required':True,'fv_rule':'密码:', 'help_text': '请不要输入过于简单的密码，否则会禁止用户登录',},
             {'name':'pswd2','editor':'password','label':'确认密码','required':True,'fv_rule':'match(pswd)'},
+            
+            {'name':'AgentRulePercentage','editor':'number','label':'佣金比例','required':True,'fv_rule':'range(0~0.4)'},
         ]
     
     def dict_head(self, head): 
@@ -306,13 +336,16 @@ class NewAgentUserForm(ModelFields):
         nickname =  self.cleaned_data.get('nickname')
         if TbAccount.objects.filter(nickname = nickname).exists():
             self.add_error('nickname', '昵称已经存在')
-        parentid = self.kw.get('meta_par', 0)
-        #parentid = self.kw.get('carry_parents')[-1]['value']
-        parent = TbAccount.objects.get(accountid = parentid)
+        if self.kw.get('meta_only_add_root_next_level'):
+            parentid = 0
+            parent = TbAccount.objects.get(accountid = parentid)
+        else:
+            #  老的  创建下级用户的逻辑
+            parentid = self.kw.get('meta_par', 0)
+            parent = TbAccount.objects.get(accountid = parentid)
+            if parent.bonusrate < self.cleaned_data.get('bonusrate'):
+                self.add_error('bonusrate', '反水不能超过上级用户的反水：%s' % parent.bonusrate)
         self.catch_parent = parent
-        
-        if parent.bonusrate < self.cleaned_data.get('bonusrate'):
-            self.add_error('bonusrate', '反水不能超过上级用户的反水：%s' % parent.bonusrate)
         
     def clean_dict(self, dc): 
         dc = super().clean_dict(dc)
@@ -326,12 +359,20 @@ class NewAgentUserForm(ModelFields):
         return dc
     
     def clean_save(self): 
-        parentid = self.kw.get('meta_par', 0)
-        self.instance.parentid = parentid
+        #parentid = self.kw.get('meta_par', 0)
+        self.instance.parentid = self.catch_parent.accountid
         self.instance.account = self.instance.phone
         self.instance.agent = self.catch_parent.agent
         self.instance.password = encode_paswd(self.kw.get('pswd'))
         self.instance.status = 1
+        self.instance.accounttype=1
+        agent_rule,_ = TbAgentrules.objects.get_or_create(accountid=self.instance.accountid)
+        agent_rule.minamount=1
+        agent_rule.maxamount=999999999
+        agent_rule.status=1
+        agent_rule.percentage= self.kw.get('AgentRulePercentage',0)
+        agent_rule.save()
+        modelfields_log.info('创建账号%(accountid)s的佣金比例为%(percentage)s'%{'accountid':agent_rule.accountid,'percentage':agent_rule.percentage})
 
     
 
