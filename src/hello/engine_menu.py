@@ -126,7 +126,7 @@ class PcMenu(BaseEngine):
             {'label': '代理系统', 'icon': fa('fa-street-view'), 'visible': True,
              'submenu': [
                  {'label': '代理用户', 'url': page('agent_user'),'visible': has_permit(crt_user, 'agent'), },
-                 {'label': '佣金审核', 'url': page('agent_commission'),'visible': can_touch(TbAgentcommission, crt_user), },
+                 {'label': '代理佣金', 'url': page('agent_commission'),'visible': can_touch(TbAgentcommission, crt_user), },
              ]},
 
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,

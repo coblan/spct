@@ -88,30 +88,30 @@ class AgentCommission(TablePage):
                     return super().get_option(name)
 
         class filters(RowFilter):
-            names = ['status']
+            names = ['status','settleyear','settlemonth']
 
         def get_operation(self):
             return [
-                {'fun': 'director_call',
-                 'director_name': 'agent_commission.audit',
-                 'editor': 'com-op-btn',
-                 'label': '审核通过',
-                 'row_match': 'many_row_match',
-                 'match_msg': '只能选择待审核的数据！',
-                 'match_field': 'status',
-                 'match_values': [0],
-                 'confirm_msg': '确认审核通过？', 
-                 'visible': self.permit.can_edit(),
-                 },
-                {
-                    'fun': 'director_call',
-                    'editor': 'com-op-btn',
-                    'label': '一键审核',
-                    'director_name': 'agent_commission.onekey_all',
-                    'after_call': 'get_data',
-                    'confirm_msg': '确认审核通过所有订单？',
-                    'visible': self.permit.can_edit(),
-                }
+                #{'fun': 'director_call',
+                 #'director_name': 'agent_commission.audit',
+                 #'editor': 'com-op-btn',
+                 #'label': '审核通过',
+                 #'row_match': 'many_row_match',
+                 #'match_msg': '只能选择待审核的数据！',
+                 #'match_field': 'status',
+                 #'match_values': [0],
+                 #'confirm_msg': '确认审核通过？', 
+                 #'visible': self.permit.can_edit(),
+                 #},
+                #{
+                    #'fun': 'director_call',
+                    #'editor': 'com-op-btn',
+                    #'label': '一键审核',
+                    #'director_name': 'agent_commission.onekey_all',
+                    #'after_call': 'get_data',
+                    #'confirm_msg': '确认审核通过所有订单？',
+                    #'visible': self.permit.can_edit(),
+                #}
             ]
         
         @staticmethod
