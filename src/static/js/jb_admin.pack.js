@@ -1656,7 +1656,11 @@ var pop_table_select = {
             //    Vue.set(self.row,'_'+self.head.name+'_label',foreign_row._label)
             //})
             var win_close = cfg.pop_middle('com-table-panel', this.head.table_ctx, function (foreign_row) {
-                Vue.set(self.row, self.head.name, foreign_row[self.head.name]);
+                if (self.head.select_field) {
+                    Vue.set(self.row, self.head.name, foreign_row[self.head.select_field]);
+                } else {
+                    Vue.set(self.row, self.head.name, foreign_row[self.head.name]);
+                }
                 Vue.set(self.row, '_' + self.head.name + '_label', foreign_row._label);
                 win_close();
             });
@@ -1771,7 +1775,7 @@ var com_plain_fields = {
     },
     components: window._baseInput,
     mixins: [mix_fields_data, mix_nice_validator],
-    template: ' <div class="field-panel plain-field-panel">\n        <div v-for="head in heads">\n            <label for="" v-text="head.label"></label>\n            <span class="req_star" v-if=\'head.required\'>*</span>\n             <span v-if="head.help_text" class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;" @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n              </span>\n              <div class="field-input">\n                <component v-if="head.editor" :is="head.editor"\n                     @field-event="$emit(\'field-event\',$event)"\n                     :head="head" :row="row"></component>\n            </div>\n\n        </div>\n\n        <div class="submit-block">\n            <button @click="panel_submit" type="btn"\n                :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n        </div>\n        </div>',
+    template: ' <div class="field-panel plain-field-panel">\n        <div class="field" v-for="head in heads">\n            <label for="" v-text="head.label"></label>\n            <span class="req_star" v-if=\'head.required\'>*</span>\n             <span v-if="head.help_text" class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;" @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n              </span>\n              <div class="field-input">\n                <component v-if="head.editor" :is="head.editor"\n                     @field-event="$emit(\'field-event\',$event)"\n                     :head="head" :row="row"></component>\n            </div>\n\n        </div>\n\n        <div class="submit-block">\n            <button @click="panel_submit" type="btn"\n                :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n        </div>\n        </div>',
     methods: {
         panel_submit: function panel_submit() {
             if (this.isValid()) {
