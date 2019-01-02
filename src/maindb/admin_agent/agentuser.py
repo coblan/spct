@@ -129,10 +129,13 @@ class AgentUser(TablePage):
                 try:
                     cursor.execute(sql, [nickname])
                 except Exception as e:
-                    print(e)
+        
                     msg = str(e)
-                    if '没有查到这个昵称' in msg:
+                    if  'The nickname was not found' in msg:
                         msg = '没有查到这个昵称'
+
+                    #if '没有查到这个昵称' in msg:
+                        #msg = '没有查到这个昵称'
                     raise UserWarning(msg)
                 
                 #print('顺利走过 execute')
