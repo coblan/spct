@@ -7,6 +7,7 @@ from ..member.account import account_tab
 from helpers.director.access.permit import has_permit
 from django.core.exceptions import PermissionDenied
 from ..alg import encode_paswd
+from ..riskcontrol.black_users import AccountSelect
 
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
@@ -259,9 +260,11 @@ class AgentUser(TablePage):
         def get_operation(self):
             agent = NewAgentUserForm(crt_user= self.crt_user)
             yong = YongJingForm(crt_user=self.crt_user)
+            par_form = ParentForm(crt_user=self.crt_user)
             return [
                 {'fun': 'add_new', 'editor': 'com-op-btn' ,
-                 'after_save': 'rt=scope.ts.search()','preset':'rt={meta_only_add_root_next_level:1}',
+                 'after_save': 'rt=scope.ts.search()', #'preset':'rt={meta_only_add_root_next_level:1}',
+                 'disabled':'scope.ts.parents.length>2',
                  'label': '创建代理用户','fields_ctx': agent.get_head_context(),}, 
                 #{'fun': 'add_new', 'editor': 'com-op-btn' ,
                  #'after_save': 'rt=scope.search()',
@@ -271,7 +274,11 @@ class AgentUser(TablePage):
                  'after_save': 'rt=scope.ts.search()','row_match':'one_row',
                  'label': '修改佣金比例','fields_ctx': yong.get_head_context(),}, 
                  
-                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
+                
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn' ,
+                 'after_save': 'rt=scope.ts.search()','row_match':'many_row',
+                 'label': '变更父级','fields_ctx': par_form.get_head_context(),}, 
             ]
 
 @director_view('YongJingForm')
@@ -290,6 +297,39 @@ class YongJingForm(Fields):
         agent_rule.percentage = AgentRulePercentage
         agent_rule.save()
         modelfields_log.info('修改账号%(accountid)s的佣金比例为%(percentage)s'%{'accountid':self.kw.get('accountid'),'percentage':AgentRulePercentage})
+
+
+@director_view('agent.ParentForm')
+class ParentForm(Fields):
+    #class Meta:
+        #model=TbAccount
+        ##exc=['parentid']
+        #exclude=[]
+    
+    #def dict_head(self, head):
+        
+        #if head['name']=='parentid':
+            #table_obj = AccountSelect(crt_user=self.crt_user)
+            #head['editor']='com-field-pop-table-select'
+            #head['select_field']='account'
+            #head['required']=True
+            #head['table_ctx']=table_obj.get_head_context()
+            #head['options']=[]
+        #return head
+    
+    def get_heads(self):
+        table_obj = AccountSelect(crt_user=self.crt_user)
+        return [
+            {'name':'parentid','editor':'com-field-pop-table-select','label':'父账号','select_field':'account',
+             'required':True,'table_ctx':table_obj.get_head_context(),'options':[]},
+        ]
+    
+    def save_form(self):
+        accout = TbAccount.objects.get(accountid=self.kw.get('AccountID') )
+        accout.parentid = self.kw.get('parentid')
+        accout.save()
+        
+    
 
 
 class NewAgentUserForm(ModelFields):
@@ -339,11 +379,11 @@ class NewAgentUserForm(ModelFields):
         nickname =  self.cleaned_data.get('nickname')
         if TbAccount.objects.filter(nickname = nickname).exists():
             self.add_error('nickname', '昵称已经存在')
-        if self.kw.get('meta_only_add_root_next_level'):
+        if False : #self.kw.get('meta_only_add_root_next_level'):
             parentid = 0
             parent = TbAccount.objects.get(accountid = parentid)
         else:
-            #  老的  创建下级用户的逻辑
+            #  老的  创建下级用户的逻辑 --- 现在又恢复了。
             parentid = self.kw.get('meta_par', 0)
             parent = TbAccount.objects.get(accountid = parentid)
             if parent.bonusrate < self.cleaned_data.get('bonusrate'):
