@@ -386,8 +386,8 @@ class NewAgentUserForm(ModelFields):
             #  老的  创建下级用户的逻辑 --- 现在又恢复了。
             parentid = self.kw.get('meta_par', 0)
             parent = TbAccount.objects.get(accountid = parentid)
-            if parent.bonusrate < self.cleaned_data.get('bonusrate'):
-                self.add_error('bonusrate', '反水不能超过上级用户的反水：%s' % parent.bonusrate)
+            #if parent.bonusrate < self.cleaned_data.get('bonusrate'):
+                #self.add_error('bonusrate', '反水不能超过上级用户的反水：%s' % parent.bonusrate)
         self.catch_parent = parent
         
     def clean_dict(self, dc): 
