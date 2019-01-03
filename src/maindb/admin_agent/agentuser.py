@@ -207,6 +207,7 @@ class AgentUser(TablePage):
         def get_rows(self):
             self.getData()
             for row in self.child_agents:
+                row['pk'] = row['AccountID']
                 row['accountid'] = row['AccountID']
                 row['NickName'] = row['NickName']
                 row['BeaeAmount'] = round(row['BeaeAmount'] or 0, 2)
@@ -283,6 +284,7 @@ class AgentUser(TablePage):
 
 @director_view('YongJingForm')
 class YongJingForm(Fields):
+    """用于修改佣金"""
     def get_heads(self):
         return [
             {'name':'AgentRulePercentage','editor':'number','label':'佣金比例','required':True,'fv_rule':'range(0~0.4)'},
@@ -301,6 +303,7 @@ class YongJingForm(Fields):
 
 @director_view('agent.ParentForm')
 class ParentForm(Fields):
+    """调整父亲"""
     #class Meta:
         #model=TbAccount
         ##exc=['parentid']
@@ -333,6 +336,7 @@ class ParentForm(Fields):
 
 
 class NewAgentUserForm(ModelFields):
+    """新建"""
     hide_fields = ['accountid']
     field_sort=['phone', 'nickname', 'accountid','AgentRulePercentage','pswd','pswd2']
     class Meta:
