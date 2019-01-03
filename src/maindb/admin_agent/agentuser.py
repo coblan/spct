@@ -53,7 +53,7 @@ class AgentUser(TablePage):
         class sort(RowSort):
             names = ['AgentAmount', 'BeaeAmount', 'SumActive', 'BalanceLostAmount', 'SumLostAmount',
                      'SumBonusAmount', 'SumWithdrawalAmount', 'SumBetAmount', 'Poundage',
-                     'SumTurnover', 'BonusRate', 'SumExpend', 'SumRechargeAmount']
+                     'SumTurnover', 'bonusrate', 'SumExpend', 'SumRechargeAmount']
 
         class search(SelectSearch):
             names = ['nickname']
@@ -192,7 +192,7 @@ class AgentUser(TablePage):
                 {'name': 'AgentAmount', 'label': '预估佣金', },
                 {'name': 'BalanceLostAmount', 'label': '累计净盈利', 'width': 100, },
                 {'name': 'SumLostAmount', 'label': '本月净盈利', 'width': 100, },
-                {'name': 'BonusRate', 'label': '返水比例', },
+                {'name': 'bonusrate', 'label': '返水比例', },
                 {'name': 'SumBonusAmount', 'label': '返水', 'width': 80, },
                 {'name': 'SumExpend', 'label': '系统红利', 'width': 80, },
                 {'name': 'SumRechargeAmount', 'label': '充值金额', 'width': 100, },
@@ -211,7 +211,7 @@ class AgentUser(TablePage):
                 row['accountid'] = row['AccountID']
                 row['NickName'] = row['NickName']
                 row['BeaeAmount'] = round(row['BeaeAmount'] or 0, 2)
-                row['BonusRate'] = round(row['BonusRate'] or 0, 3)
+                row['bonusrate'] = round(row['BonusRate'] or 0, 3)
                 row['Poundage'] = round(row['Poundage'] or 0, 2)
                 #row['AgentRuleAmount'] = round(row['AgentRuleAmount'] or 0, 2)
                 row['BalanceLostAmount'] = round(row['BalanceLostAmount'] or 0, 2)
