@@ -26,7 +26,7 @@ class AgentUser(TablePage):
         model = TbAccount
         include = ['accountid','createtime']
         fields_sort = ['accountid', 'NickName', 'SumActive',  'BeaeAmount', 'AgentRulePercentage','AgentAmount',
-                       'BalanceLostAmount', 'SumLostAmount', 'BonusRate', 'SumBonusAmount', 'SumExpend',
+                       'BalanceLostAmount', 'SumLostAmount', 'bonusRate', 'SumBonusAmount', 'SumExpend',
                        'SumRechargeAmount', 'Poundage', 'SumBetAmount', 'SumWithdrawalAmount',
                        'SumTurnover', 'CreateTime']
 
@@ -217,7 +217,7 @@ class AgentUser(TablePage):
                 row['BalanceLostAmount'] = round(row['BalanceLostAmount'] or 0, 2)
                 row['AgentAmount'] = round(row['AgentAmount'] or 0, 2)
                 row['SumExpend'] = round(row['SumExpend'] or 0, 2)
-                row['AgentRulePercentage'] = round(row.get('AgentRulePercentage') or 0, 2)
+                row['AgentRulePercentage'] = round(row['AgentRulePercentage'] or 0, 2)
                 row['SumLostAmount'] = round(row['SumLostAmount']or 0, 2)
                 row['SumBonusAmount'] = round(row['SumBonusAmount'] or 0, 2)
                 row['SumBetAmount'] = round(row['SumBetAmount'] or 0, 2)
