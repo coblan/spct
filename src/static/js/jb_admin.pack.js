@@ -1247,6 +1247,10 @@ var _line_text = __webpack_require__(85);
 
 var line_text = _interopRequireWildcard(_line_text);
 
+var _phone_code = __webpack_require__(146);
+
+var phone_code = _interopRequireWildcard(_phone_code);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
@@ -1348,99 +1352,7 @@ var order_list = {
 Vue.component('com-field-table-list', order_list);
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Vue.component('com-field-phone-code', {
-    props: ['row', 'head'],
-    template: ' <div  style="position: relative;" class="phone-code flex">\n         <input  type="text" class="form-control input-sm" v-model="row[head.name]"\n            :id="\'id_\'+head.name" :name="head.name"\n            :placeholder="head.placeholder" :autofocus="head.autofocus" :maxlength=\'head.maxlength\'>\n\n          <button style="width: 9em" type="button" class="btn btn-default btn-sm"\n              :disabled="vcode_count !=0"\n               @click="sendGetCodeOrder()" v-text="vcodeLabel"></button>\n     </div>\n    ',
-    data: function data() {
-        return {
-            vcode_count: 0
-        };
-    },
-    computed: {
-        vcodeLabel: function vcodeLabel() {
-            if (this.vcode_count != 0) {
-                return '获取验证码(' + this.vcode_count + ')';
-            } else {
-                return '获取验证码';
-            }
-        },
-        hasValidPhone: function hasValidPhone() {
-            var mt = /^1[3-9]\d{9}$/.exec(this.row[this.head.phone_field]);
-            if (mt) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    },
-    methods: {
-        sendGetCodeOrder: function sendGetCodeOrder() {
-            var self = this;
-            if (!$(this.$parent.$el).find('[name=' + this.head.phone_field + ']').isValid()) {
-                return;
-            }
-
-            cfg.show_load();
-            ex.director_call(this.head.fun, { row: this.row }, function (resp) {
-                cfg.hide_load();
-
-                setTimeout(function () {
-                    self.countGetVCodeAgain();
-                }, 1000);
-            });
-
-            //ex.vueParCall(this,'get_phone_code',{com_vcode:this})
-            //this.$emit('field-event',{fun:'get_phone_code'})
-        },
-        //checkImageCode:function(phone,image_key,image_code){
-        //    var self=this
-        //    $(self.$el).find('input').trigger("hidemsg")
-        //
-        //    //if(this.row.image_code && this.hasValidPhone){
-        //    var data={
-        //        Phone:phone,
-        //        Key:image_key,
-        //        Answer:image_code,
-        //    }
-        //    cfg.show_load()
-        //    service_post('/anonymity/vcode/generate',data,function(resp){
-        //        if(resp.error_description){
-        //            $(self.$el).find('input').trigger("showmsg", ["error", resp.error_description ])
-        //        }else if(resp.success){
-        //            //$(self.$el).find('.image_code').trigger("showmsg", ["ok", '正确' ])
-        //            setTimeout(function(){
-        //                //self.image_valid=true
-        //                self.countGetVCodeAgain()
-        //            },1000)
-        //        }
-        //        // else {
-        //        //    $(self.$el).find('.image_code').trigger("showmsg", ["error", resp.error_description ])
-        //        //}
-        //
-        //    },false)
-        //    //}
-        //},
-        countGetVCodeAgain: function countGetVCodeAgain() {
-            var self = this;
-            self.vcode_count = 120;
-            var idx = setInterval(function () {
-                self.vcode_count -= 1;
-                if (self.vcode_count <= 0) {
-                    clearInterval(idx);
-                    self.vcode_count = 0;
-                }
-            }, 1000);
-        }
-    }
-});
-
-/***/ }),
+/* 19 */,
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1778,8 +1690,16 @@ var com_plain_fields = {
     template: ' <div class="field-panel plain-field-panel">\n        <div class="field" v-for="head in heads">\n            <label for="" v-text="head.label"></label>\n            <span class="req_star" v-if=\'head.required\'>*</span>\n             <span v-if="head.help_text" class="help-text clickable">\n                    <i style="color: #3780af;position: relative;top:10px;" @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n              </span>\n              <div class="field-input">\n                <component v-if="head.editor" :is="head.editor"\n                     @field-event="$emit(\'field-event\',$event)"\n                     :head="head" :row="row"></component>\n            </div>\n\n        </div>\n\n        <div class="submit-block">\n            <button @click="panel_submit" type="btn"\n                :class="[\'btn\',btnCls]"><span v-text="okBtn"></span></button>\n        </div>\n        </div>',
     methods: {
         panel_submit: function panel_submit() {
-            if (this.isValid()) {
-                this.$emit('submit');
+            //if(this.isValid()){
+            //    this.$emit('submit')
+            //}
+
+            if (this.$listeners && this.$listeners.submit) {
+                if (this.isValid()) {
+                    this.$emit('submit', this.row);
+                }
+            } else {
+                this.submit();
             }
         },
         show_msg: function show_msg(msg, event) {
@@ -2494,20 +2414,9 @@ var mix_fields_data = {
                     ex.vueAssign(self.row, rt.row);
                     self.after_save(rt.row);
                     self.setErrors({});
+                    self.$emit('finish', rt.row);
                 }
             });
-
-            //self.dataSaver(function(rt){
-            //    if( rt.errors){
-            //        cfg.hide_load()
-            //        self.setErrors(rt.errors)
-            //        self.showErrors(rt.errors)
-            //    }else{
-            //        cfg.hide_load(1000)
-            //        self.after_save(rt.row)
-            //        self.setErrors({})
-            //    }
-            //})
         },
 
         after_save: function after_save(new_row) {
@@ -7670,10 +7579,6 @@ var _order_list_table = __webpack_require__(18);
 
 var order_list_table = _interopRequireWildcard(_order_list_table);
 
-var _phon_code = __webpack_require__(19);
-
-var phon_code = _interopRequireWildcard(_phon_code);
-
 var _ele_tree_depend = __webpack_require__(15);
 
 var ele_tree_depend = _interopRequireWildcard(_ele_tree_depend);
@@ -7799,6 +7704,8 @@ __webpack_require__(78);
 
 // field editor
 
+//import * as phon_code from  './field_editor/phon_code.js'
+
 
 // table operator
 
@@ -7823,6 +7730,152 @@ __webpack_require__(78);
 
 
 // store
+
+/***/ }),
+/* 146 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(148);
+
+Vue.component('com-field-phone-code', {
+    /*
+    parStore.get_phone_code(callback){
+      }
+      * */
+    props: ['row', 'head'],
+    template: ' <div class="com-field-phone-code flex">\n         <input  type="text" class="form-control input-sm" v-model="row[head.name]"\n            :id="\'id_\'+head.name" :name="head.name"\n            :placeholder="head.placeholder" :autofocus="head.autofocus" :maxlength=\'head.maxlength\'>\n\n          <button style="width: 9em" type="button" class="btn btn-sm"\n              :disabled="vcode_count !=0"\n               @click="get_phone_code" v-text="vcodeLabel"></button>\n     </div>\n    ',
+    data: function data() {
+        var parStore = ex.vueParStore(this);
+        return {
+            parStore: parStore,
+            vcode_count: 0
+        };
+    },
+    computed: {
+        vcodeLabel: function vcodeLabel() {
+            if (this.vcode_count != 0) {
+                return '' + this.vcode_count + ' s';
+            } else {
+                return '获取验证码';
+            }
+        }
+    },
+    methods: {
+        get_phone_code: function get_phone_code() {
+            var self = this;
+            this.parStore.get_phone_code(function () {
+                self.vcode_count = self.head.vcode_count || 120;
+                self.countGetVCodeAgain();
+            });
+        },
+        //get_phone_code:function(){
+        //var phone = this.row[this.head.phone_field]
+        //var img_code = this.row[this.head.img_code_field]
+        ////var com_vcode =kws.com_vcode
+        //var ph =$(this.$el).find('#id_'+this.hea).trigger("validate")
+        //var image_code_input_element=$(this.$el).find('[name=image_code]')
+        //var image_code =image_code_input_element.trigger("validate")
+        //
+        //if(ph.isValid() && image_code.isValid()){
+        //    self.checkImageCode(this.row.Phone,this.row.image_key,this.row.image_code,image_code_input_element)
+        //}
+
+        //if(this.head.isValid()){
+        //    self.checkImageCode(self.row.Phone,self.row.image_key,self.row.image_code,image_code_input_element)
+        //}
+
+        //var self=this
+        //this.$emit('trigger-get-code',function(){
+        //    self.checkImageCode(self.row.Phone,self.row.image_key,self.row.image_code,image_code_input_element)
+        //})
+        //},
+
+        //sendGetCodeOrder:function(){
+        //    ex.vueParCall(this,'get_phone_code',{com_vcode:this})
+        //    //this.$emit('field-event',{fun:'get_phone_code'})
+        //
+        //},
+        //checkImageCode:function(phone,image_key,image_code,image_code_input_element){
+        //    var self=this
+        //    $(self.$el).find('input').trigger("hidemsg")
+        //
+        //    //if(this.row.image_code && this.hasValidPhone){
+        //    var data={
+        //        Phone:phone,
+        //        Key:image_key,
+        //        Answer:image_code,
+        //    }
+        //    cfg.show_load()
+        //    service_post('/anonymity/vcode/generate',data,function(resp){
+        //        if(resp.error_description){
+        //            image_code_input_element.trigger("showmsg", ["error", resp.error_description ])
+        //        }else if(resp.success){
+        //            setTimeout(function(){
+        //                self.countGetVCodeAgain()
+        //            },1000)
+        //        }
+        //        // else {
+        //        //    $(self.$el).find('.image_code').trigger("showmsg", ["error", resp.error_description ])
+        //        //}
+        //
+        //    },false)
+        //    //}
+        //},
+        countGetVCodeAgain: function countGetVCodeAgain() {
+            var self = this;
+            var idx = setInterval(function () {
+                self.vcode_count -= 1;
+                if (self.vcode_count <= 0) {
+                    clearInterval(idx);
+                    self.vcode_count = 0;
+                }
+            }, 1000);
+        }
+    }
+});
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-field-phone-code input {\n  flex-grow: 10; }\n\n.com-field-phone-code button {\n  flex-grow: 0; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 148 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(147);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./phone_code.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./phone_code.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

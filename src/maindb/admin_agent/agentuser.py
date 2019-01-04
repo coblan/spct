@@ -265,6 +265,7 @@ class AgentUser(TablePage):
             return [
                 {'fun': 'add_new', 'editor': 'com-op-btn' ,
                  'after_save': 'rt=scope.ts.search()', #'preset':'rt={meta_only_add_root_next_level:1}',
+                 'preset':'rt={meta_par:scope.ts.parents[scope.ts.parents.length-1].value}',
                  'disabled':'scope.ts.parents.length>2',
                  'label': '创建代理用户','fields_ctx': agent.get_head_context(),}, 
                 #{'fun': 'add_new', 'editor': 'com-op-btn' ,
@@ -301,6 +302,10 @@ class YongJingForm(Fields):
         agent_rule.save()
         modelfields_log.info('修改账号%(accountid)s的佣金比例为%(percentage)s'%{'accountid':self.kw.get('accountid'),'percentage':AgentRulePercentage})
 
+@director_view('agent.parentselect')
+class ParentSelect(AccountSelect):
+    def inn_filter(self, query):
+        return query.filter(accounttype=1)
 
 @director_view('agent.ParentForm')
 class ParentForm(Fields):
@@ -322,14 +327,17 @@ class ParentForm(Fields):
         #return head
     
     def get_heads(self):
-        table_obj = AccountSelect(crt_user=self.crt_user)
+        table_obj = ParentSelect(crt_user=self.crt_user)
         return [
             {'name':'parentid','editor':'com-field-pop-table-select','label':'上级账号','select_field':'account',
              'required':True,'table_ctx':table_obj.get_head_context(),'options':[]},
         ]
     
     def save_form(self):
+        
         accout = TbAccount.objects.get(accountid=self.kw.get('AccountID') )
+        if accout.accountid == self.kw.get('parentid'):
+            raise UserWarning('不能选择自己作为自己的上级')
         accout.parentid = self.kw.get('parentid')
         accout.save()
         

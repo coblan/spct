@@ -1046,8 +1046,28 @@ var network = exports.network = {
                     }
                 }
             }
+
+            var success = true;
+            if (resp.success == false) {
+                success = false;
+            }
+            if (resp.status && typeof resp.status == 'string' && resp.status != 'success') {
+                success = false;
+            }
+            //if(! success){
+            //    hide_upload(300)
+            //    if(resp.msg){
+            //        cfg.showError(resp.msg)
+            //    }
+            //}else{
+            //    if(resp.msg){
+            //        cfg.showMsg(resp.msg)
+            //    }
+            //    callback(resp)
+            //}
+
             //if (resp.status && typeof resp.status == 'string' && resp.status != 'success') {
-            if (resp.success === false) {
+            if (!success) {
                 cfg.hide_load(); // sometime
             } else {
                 var rt = callback(resp);
@@ -1057,7 +1077,7 @@ var network = exports.network = {
             }
 
             if (msg.length != 0) {
-                if (resp.success === false) {
+                if (!success) {
                     cfg.showError(msg.join('\n'));
                 } else {
                     cfg.showMsg(msg.join('\n'));
@@ -1867,7 +1887,23 @@ var vuetool = exports.vuetool = {
             }
         }
     },
-
+    vueEventRout: function vueEventRout(self) {
+        if (!self.head.event_slots && self.parStore) {
+            return;
+        }
+        ex.each(self.head.event_slots, function (router) {
+            if (router.event) {
+                self.$on(router.event, function (e) {
+                    ex.eval(router.express, { event: e, ts: self.parStore, vc: self });
+                });
+            }
+            if (router.par_event) {
+                self.parStore.$on(router.par_event, function (e) {
+                    ex.eval(router.express, { event: e, ts: self.parStore, vc: self });
+                });
+            }
+        });
+    },
     vueChildBusOn: function vueChildBusOn(self, event_name, func) {
         var parent = self.$parent;
         while (parent) {
