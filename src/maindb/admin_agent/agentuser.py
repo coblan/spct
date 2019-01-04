@@ -273,6 +273,7 @@ class AgentUser(TablePage):
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn' ,
                  'after_save': 'rt=scope.ts.search()','row_match':'one_row',
+                 'match_express':'scope.row.AccountType == 1','match_msg':'只有代理用户才能修改佣金比例',
                  'label': '修改佣金比例','fields_ctx': yong.get_head_context(),}, 
                  
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
