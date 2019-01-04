@@ -217,7 +217,7 @@ class AgentUser(TablePage):
                 row['BalanceLostAmount'] = round(row['BalanceLostAmount'] or 0, 2)
                 row['AgentAmount'] = round(row['AgentAmount'] or 0, 2)
                 row['SumExpend'] = round(row['SumExpend'] or 0, 2)
-                row['AgentRulePercentage'] = round(row.get('AgentRulePercentage') or 0, 4)
+                row['AgentRulePercentage'] = round(row.get('AgentRulePercentage') or 0, 2)
                 row['SumLostAmount'] = round(row['SumLostAmount']or 0, 2)
                 row['SumBonusAmount'] = round(row['SumBonusAmount'] or 0, 2)
                 row['SumBetAmount'] = round(row['SumBetAmount'] or 0, 2)
@@ -279,7 +279,7 @@ class AgentUser(TablePage):
                 
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn' ,
                  'after_save': 'rt=scope.ts.search()','row_match':'many_row',
-                 'label': '变更父级','fields_ctx': par_form.get_head_context(),}, 
+                 'label': '修改上级','fields_ctx': par_form.get_head_context(),}, 
             ]
 
 @director_view('YongJingForm')
@@ -287,7 +287,7 @@ class YongJingForm(Fields):
     """用于修改佣金"""
     def get_heads(self):
         return [
-            {'name':'AgentRulePercentage','editor':'number','label':'佣金比例','required':True,'fv_rule':'range(0~0.4)'},
+            {'name':'AgentRulePercentage','editor':'number','label':'佣金比例','step':0.01,'required':True,'fv_rule':'range(0~0.4),digit(2)'},
         ]
     
     def get_row(self):
@@ -295,7 +295,7 @@ class YongJingForm(Fields):
         
     def save_form(self):
         AgentRulePercentage = self.kw.get('AgentRulePercentage',0)
-        agent_rule,_ = TbAgentrules.objects.get_or_create(accountid=self.kw.get('accountid'))
+        agent_rule,_ = TbAgentrules.objects.get_or_create(accountid=self.kw.get('accountid'),status=1)
         agent_rule.percentage = AgentRulePercentage
         agent_rule.save()
         modelfields_log.info('修改账号%(accountid)s的佣金比例为%(percentage)s'%{'accountid':self.kw.get('accountid'),'percentage':AgentRulePercentage})
@@ -323,7 +323,7 @@ class ParentForm(Fields):
     def get_heads(self):
         table_obj = AccountSelect(crt_user=self.crt_user)
         return [
-            {'name':'parentid','editor':'com-field-pop-table-select','label':'父账号','select_field':'account',
+            {'name':'parentid','editor':'com-field-pop-table-select','label':'上级账号','select_field':'account',
              'required':True,'table_ctx':table_obj.get_head_context(),'options':[]},
         ]
     
@@ -413,7 +413,7 @@ class NewAgentUserForm(ModelFields):
         self.instance.password = encode_paswd(self.kw.get('pswd'))
         self.instance.status = 1
         self.instance.accounttype=1
-        agent_rule,_ = TbAgentrules.objects.get_or_create(accountid=self.instance.accountid)
+        agent_rule,_ = TbAgentrules.objects.get_or_create(accountid=self.instance.accountid,status=1)
         agent_rule.minamount=1
         agent_rule.maxamount=999999999
         agent_rule.status=1
