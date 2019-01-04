@@ -26,7 +26,7 @@ class AgentUser(TablePage):
         model = TbAccount
         include = ['accountid','createtime']
         fields_sort = ['accountid', 'NickName', 'SumActive',  'BeaeAmount', 'AgentRulePercentage','AgentAmount',
-                       'BalanceLostAmount', 'SumLostAmount', 'bonusRate', 'SumBonusAmount', 'SumExpend',
+                       'BalanceLostAmount', 'SumLostAmount', 'bonusrate', 'SumBonusAmount', 'SumExpend',
                        'SumRechargeAmount', 'Poundage', 'SumBetAmount', 'SumWithdrawalAmount',
                        'SumTurnover', 'CreateTime']
 
