@@ -2,7 +2,9 @@ require('./scss/shou_cun.scss')
 
 Vue.component('com-shouchun',{
     template:`<div class="com-shouchun">
-    <button @click="update_data()">获取</button>
+
+    <!--<button @click="update_data()">获取</button>-->
+
     <table>
     <tr v-for="row in rows">
         <td v-for="head in heads"  :class="head.scls">
@@ -35,13 +37,13 @@ Vue.component('com-shouchun',{
     * */
     mounted:function(){
         var self=this
-        setTimeout(function(){
+        //setTimeout(function(){
             self.update_data()
-        },5000)
+        //},5000)
     },
     methods:{
         update_data:function(){
-            cfg.showMsg('开始更新数据')
+            //cfg.showMsg('开始更新数据')
             var mock_data={
                 data:[
                     {ChargeTime:'04-21 22:30',Amount:'50',Bonus:'50.00',Done:true},
@@ -56,7 +58,9 @@ Vue.component('com-shouchun',{
             cfg.show_load()
             jb_js.get('/activity/charge/list?activityId='+activity.pk,function(resp){
                 cfg.hide_load()
+                //cfg.showMsg('首存数据:'+JSON.stringify(resp))
                 self.rows = resp.data
+
                 var last_done=true
                 for(var i=0;i<self.rows.length;i++){
                     var row = self.rows[i]
@@ -75,7 +79,7 @@ Vue.component('com-shouchun',{
             if(!row.submitable){
                 return
             }
-            var mock_data={}
+            var mock_data={success:1}
             var post_data={
                 ActivityId:activity.pk,
                 Type:row.Type,

@@ -401,7 +401,7 @@ exports.push([module.i, ".com-shouchun {\n  background-color: white;\n  padding:
 
 if (window.jb_app) {
     // android
-    cfg.showMsg('具有555window.jb_app对象');
+    //cfg.showMsg('具有555window.jb_app对象')
 } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.get) {
     // ios
     window.jb_app = {
@@ -416,7 +416,7 @@ if (window.jb_app) {
         ios: true
     };
 } else {
-    cfg.showMsg('没有window.jb_app对象，创建一个虚拟的');
+    //cfg.showMsg('没有window.jb_app对象，创建一个虚拟的')
     window.jb_app = {
         get: function get(key, url, mock_data) {
             var rt_data = mock_data || { data: '顺利GET' };
@@ -434,7 +434,7 @@ if (window.jb_app) {
 
 var jb_js = {
     get: function get(url, callback, mock_data) {
-        cfg.showMsg('调用333jb_js.get');
+        //cfg.showMsg('调用333jb_js.get')
         var fun_key = _uuid();
 
         jb_js['_fun_' + fun_key] = callback;
@@ -460,7 +460,7 @@ var jb_js = {
     dispatch: function dispatch(resp) {
         //var resp= JSON.parse(resp_str)
         //cfg.showMsg('进入dispatch')
-        cfg.showMsg(JSON.stringify(resp));
+        //cfg.showMsg( JSON.stringify(resp))
         var key = resp.key;
         jb_js['_fun_' + key](resp);
         delete jb_js['_fun_' + key];
@@ -537,7 +537,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 __webpack_require__(32);
 
 Vue.component('com-shouchun', {
-    template: '<div class="com-shouchun">\n    <button @click="update_data()">\u83B7\u53D6</button>\n    <table>\n    <tr v-for="row in rows">\n        <td v-for="head in heads"  :class="head.scls">\n            <div   v-if="row[head.name]" v-text="head.top_label"></div>\n            <div v-text="row[head.name]"></div>\n        </td>\n        <td class="mybtn-col">\n            <div :class="[\'mybtn\',{disabled:!row.submitable}]" @click="submit(row)"><span class="center-vh" style="white-space: nowrap">\u53C2\u52A0\u6D3B\u52A8</span></div>\n        </td>\n    </tr>\n    </table>\n    </div>',
+    template: '<div class="com-shouchun">\n\n    <!--<button @click="update_data()">\u83B7\u53D6</button>-->\n\n    <table>\n    <tr v-for="row in rows">\n        <td v-for="head in heads"  :class="head.scls">\n            <div   v-if="row[head.name]" v-text="head.top_label"></div>\n            <div v-text="row[head.name]"></div>\n        </td>\n        <td class="mybtn-col">\n            <div :class="[\'mybtn\',{disabled:!row.submitable}]" @click="submit(row)"><span class="center-vh" style="white-space: nowrap">\u53C2\u52A0\u6D3B\u52A8</span></div>\n        </td>\n    </tr>\n    </table>\n    </div>',
     data: function data() {
         return {
             heads: [{ name: 'label', scls: 'big-col', top_label: '' }, { name: 'ChargeTime', scls: 'data-col', top_label: '存款' }, { name: 'Amount', scls: 'data-col', top_label: '存入' }, { name: 'Bonus', scls: 'data-col green', top_label: '可得红利' }],
@@ -552,13 +552,13 @@ Vue.component('com-shouchun', {
     * */
     mounted: function mounted() {
         var self = this;
-        setTimeout(function () {
-            self.update_data();
-        }, 5000);
+        //setTimeout(function(){
+        self.update_data();
+        //},5000)
     },
     methods: {
         update_data: function update_data() {
-            cfg.showMsg('开始更新数据');
+            //cfg.showMsg('开始更新数据')
             var mock_data = {
                 data: [{ ChargeTime: '04-21 22:30', Amount: '50', Bonus: '50.00', Done: true }, { ChargeTime: '2019-01-21 22:30:30', Amount: '100000', Bonus: '1239999', Done: false }]
             };
@@ -567,7 +567,9 @@ Vue.component('com-shouchun', {
             cfg.show_load();
             jb_js.get('/activity/charge/list?activityId=' + activity.pk, function (resp) {
                 cfg.hide_load();
+                //cfg.showMsg('首存数据:'+JSON.stringify(resp))
                 self.rows = resp.data;
+
                 var last_done = true;
                 for (var i = 0; i < self.rows.length; i++) {
                     var row = self.rows[i];
@@ -586,7 +588,7 @@ Vue.component('com-shouchun', {
             if (!row.submitable) {
                 return;
             }
-            var mock_data = {};
+            var mock_data = { success: 1 };
             var post_data = {
                 ActivityId: activity.pk,
                 Type: row.Type
