@@ -100,6 +100,8 @@ class ActivityV2Form(ModelFields):
     def dict_head(self, head):
         if head['name']=='rules':
             head['editor']='richtext'
+        if head['name']=='banner':
+            head['up_url'] = '/d/upload?path=public/images'               
         return head
     
 class ActivitySettingTable(ModelTable):

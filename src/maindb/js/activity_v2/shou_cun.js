@@ -2,6 +2,7 @@ require('./scss/shou_cun.scss')
 
 Vue.component('com-shouchun',{
     template:`<div class="com-shouchun">
+    <button @click="update_data()">获取</button>
     <table>
     <tr v-for="row in rows">
         <td v-for="head in heads"  :class="head.scls">
@@ -33,10 +34,14 @@ Vue.component('com-shouchun',{
      "Done": true
     * */
     mounted:function(){
-        this.update_data()
+        var self=this
+        setTimeout(function(){
+            self.update_data()
+        },5000)
     },
     methods:{
         update_data:function(){
+            cfg.showMsg('开始更新数据')
             var mock_data={
                 data:[
                     {ChargeTime:'04-21 22:30',Amount:'50',Bonus:'50.00',Done:true},
@@ -52,7 +57,7 @@ Vue.component('com-shouchun',{
             jb_js.get('/activity/charge/list?activityId='+activity.pk,function(resp){
                 cfg.hide_load()
                 self.rows = resp.data
-                var last_done=false
+                var last_done=true
                 for(var i=0;i<self.rows.length;i++){
                     var row = self.rows[i]
                     ex.vueAssign(row,dec_rows[i])
@@ -61,13 +66,14 @@ Vue.component('com-shouchun',{
                         last_done=true
                     }else if(last_done){
                         row.submitable=true
+                        last_done=false
                     }
                 }
             },mock_data)
         },
         submit:function(row){
             if(!row.submitable){
-                return 
+                return
             }
             var mock_data={}
             var post_data={
@@ -76,8 +82,14 @@ Vue.component('com-shouchun',{
             }
             var self=this
             jb_js.post('/activity/charge/do',post_data,function(resp){
-                cfg.showMsg('参加成功！')
-                self.update_data()
+
+                if(resp.success == 1){
+                    cfg.showMsg('参加成功！')
+                    self.update_data()
+                }else{
+                    cfg.showError(resp.error_description)
+                }
+
             },mock_data)
         }
     }

@@ -7,10 +7,10 @@
 
     <title>{{ row.title }} </title>
 
-    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 
-    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
@@ -73,9 +73,16 @@
 
 </script>
 
+<style>
+    .block{
+        width: 96%;
+        margin: 20px auto;
+    }
+</style>
+
 <div id="there">
-    <div v-for="row in rows" @@click="goto(row.url)">
-        <img :src="row.banner" alt="">
+    <div class="block" v-for="row in rows" @click="goto(row.url)">
+        <img :src="row.banner" alt="" width="100%">
     </div>
 
 
