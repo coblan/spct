@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 
 from .status_code import *
 from .cus_models_fields import CusPictureField, CusFileField,CloudFileField
+
+from helpers.director.model_func.cus_fields.cus_picture import PictureField
 from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
 from maindb.create_user import CreateUserField,UpdateUserField
 
@@ -184,6 +186,49 @@ class TbActivity(models.Model):
         managed = False
         db_table = 'TB_Activity'
 
+
+class TbActivityV2(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=128,verbose_name='大标题')  # Field name made lowercase.
+    subtitle = models.CharField(db_column='SubTitle', max_length=128,verbose_name='小标题', blank=True, null=True)  # Field name made lowercase.
+    timedesp = models.CharField(db_column='TimeDesp', max_length=256,verbose_name='时间描述', blank=True, null=True)  # Field name made lowercase.
+    begintime = models.DateTimeField(db_column='BeginTime',verbose_name='开始时间')  # Field name made lowercase.
+    endtime = models.DateTimeField(db_column='EndTime',verbose_name='结束时间')  # Field name made lowercase.
+    target = models.CharField(db_column='Target',verbose_name='活动对象', max_length=256, blank=True, null=True)  # Field name made lowercase.
+    content = models.CharField(db_column='Content', max_length=2048, blank=True, null=True,verbose_name='活动详情')  # Field name made lowercase.
+    rules = models.CharField(db_column='Rules', max_length=3000,verbose_name='规则')  # Field name made lowercase.
+    banner = PictureField(db_column='Banner', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    url = models.CharField(db_column='Url', max_length=512)  # Field name made lowercase.
+    componentname = models.CharField(db_column='ComponentName', max_length=64, blank=True, null=True,verbose_name='组件名',choices=ACTIVITY_COM)  # Field name made lowercase.
+    componentparams = models.CharField(db_column='ComponentParams', max_length=4000, blank=True, null=True,verbose_name='组件参数')  # Field name made lowercase.
+    templateid = models.IntegerField(db_column='TemplateId')  # Field name made lowercase.
+    ismutex = models.BooleanField(db_column='IsMutex')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
+    edittime = models.DateTimeField(db_column='EditTime',auto_now=True,verbose_name='更新时间')  # Field name made lowercase.
+    creatorid = CreateUserField(db_column='CreatorId',verbose_name='创建者')  # Field name made lowercase.
+    editorid= UpdateUserField(db_column='EditorId',verbose_name='修改人')
+    #editorid = models.IntegerField(db_column='EditorId')  # Field name made lowercase.
+    remark = models.CharField(db_column='Remark', max_length=1024, blank=True, null=True,verbose_name='活动备注')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled',verbose_name='启用')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Activity_V2'
+
+
+class TbActivitySettings(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    activityid = models.ForeignKey(db_column='ActivityId',to=TbActivityV2,db_constraint=False)  # Field name made lowercase.
+    #activityid = models.IntegerField(db_column='ActivityId')  # Field name made lowercase.
+    friendlyname = models.CharField(db_column='FriendlyName', max_length=64)  # Field name made lowercase.
+    key = models.CharField(db_column='Key', max_length=64)  # Field name made lowercase.
+    value = models.CharField(db_column='Value', max_length=1024)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=1024, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Activity_Settings'
 
 class TbAreacitycode(models.Model):
     areacitycodeid = models.AutoField(db_column='AreaCityCodeID', primary_key=True)  # Field name made lowercase.

@@ -47,6 +47,8 @@ class PcMenu(BaseEngine):
                 {'label': '代理QA', 'url': page('agent_qa'), 'visible': can_touch(TbAgentqa, crt_user), },
                  
                  {'label': _('Help'), 'url': page('help'), 'visible': can_touch(TbQa, crt_user), },
+                 
+                {'label': '活动V2', 'url': page('activity_v2'), 'visible': can_touch(TbActivityV2, crt_user), },
                  {'label': _('Activity'), 'url': page('activity'), 'visible': can_touch(TbActivity, crt_user), },
                  {'label': '用户留言', 'url': page('feedback'), 'visible': can_touch(TbAgentleavemsg, crt_user), },
                  {'label': '用户排行', 'visible': can_touch(TbAgentleavemsg, crt_user), 

@@ -10,7 +10,8 @@ js_tr_list.append(get_tr)
 
 def get_lib(request): 
     dc = {
-        'maindb': '/static/js/maindb.pack.js?t=%s&t2=123'%js_stamp_dc.get('maindb_pack_js'),
+        'maindb': '/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js'),
+        'activity_v2':'/static/js/activity_v2.pack.js?t=%s&test=12887'%js_stamp_dc.get('activity_v2_pack_js')
     }
     return dc
 

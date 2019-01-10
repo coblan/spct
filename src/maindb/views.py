@@ -5,10 +5,12 @@ from scripts.export_help import gen_help
 from .ckeditor import CusCkeditor
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
-from .models import TbNotice, TbQa
+from .models import TbNotice, TbQa,TbActivityV2
 import re
 import json
 import time
+from helpers.director.model_func.dictfy import sim_dict
+from helpers.director.engine import BaseEngine
 
 def test(request):
     gen_help()
@@ -68,4 +70,43 @@ class Help(Notice):
             real_name = name[:-5]
             page = TbQa.objects.get(pk = real_name)
             return render(request, 'maindb/help_content.html', context= {'page': {'description':page.description,'title':page.title} })
-    
+
+class ActivityIndex(View):
+    def get(self, request): 
+        baseengine = BaseEngine()
+        baseengine.request = self.request
+        rows=[]
+        for row in TbActivityV2.objects.all().order_by('sort'):
+            dc= sim_dict(row)
+            dc['url'] = '%s.html'%row.pk
+            rows.append(dc)
+        ctx = {
+            'rows':rows,
+            'js_config':baseengine.getJsConfig()
+        }        
+        return render(request,'maindb/activity_v2/index.html',context=ctx)
+
+class Activity(View):
+    def get(self, request, pk = None): 
+        act = TbActivityV2.objects.get(pk=pk)
+        baseengine = BaseEngine()
+        baseengine.request = self.request
+        
+        ctx = {
+            'row':sim_dict(act),
+            'js_config':baseengine.getJsConfig()
+        }
+        template = self.get_template()
+        return render(request, template,context=ctx)
+    def get_template(self):
+        return 'maindb/activity_v2/white_template.html'
+
+class TestAppH5View(View):
+    def get(self,request):
+
+        baseengine = BaseEngine()
+        baseengine.request = self.request
+        ctx = {
+            'js_config':baseengine.getJsConfig()
+        }
+        return render(request, 'maindb/activity_v2/h5_app_test.html',context=ctx)        

@@ -1,0 +1,84 @@
+require('./scss/shou_cun.scss')
+
+Vue.component('com-shouchun',{
+    template:`<div class="com-shouchun">
+    <table>
+    <tr v-for="row in rows">
+        <td v-for="head in heads"  :class="head.scls">
+            <div   v-if="row[head.name]" v-text="head.top_label"></div>
+            <div v-text="row[head.name]"></div>
+        </td>
+        <td class="mybtn-col">
+            <div :class="['mybtn',{disabled:!row.submitable}]" @click="submit(row)"><span class="center-vh" style="white-space: nowrap">参加活动</span></div>
+        </td>
+    </tr>
+    </table>
+    </div>`,
+    data:function(){
+        return {
+            heads:[
+                {name:'label',scls:'big-col',top_label:''},
+                {name:'ChargeTime',scls:'data-col',top_label:'存款'},
+                {name:'Amount',scls:'data-col',top_label:'存入'},
+                {name:'Bonus',scls:'data-col green',top_label:'可得红利'},
+
+            ],
+            rows:[]
+        }
+    },
+    /*
+     "ChargeTime": "2019-01-09T11:34:28.207Z",
+     "Amount": 0,
+     "Bonus": 0,
+     "Done": true
+    * */
+    mounted:function(){
+        this.update_data()
+    },
+    methods:{
+        update_data:function(){
+            var mock_data={
+                data:[
+                    {ChargeTime:'04-21 22:30',Amount:'50',Bonus:'50.00',Done:true},
+                    {ChargeTime:'2019-01-21 22:30:30',Amount:'100000',Bonus:'1239999',Done:false},
+                ]
+            }
+            var dec_rows=[
+                {label:'首存',action:'',submitable:false},
+                {label:'再存',action:'',submitable:false},
+            ]
+            var self=this
+            cfg.show_load()
+            jb_js.get('/activity/charge/list?activityId='+activity.pk,function(resp){
+                cfg.hide_load()
+                self.rows = resp.data
+                var last_done=false
+                for(var i=0;i<self.rows.length;i++){
+                    var row = self.rows[i]
+                    ex.vueAssign(row,dec_rows[i])
+                    row.Type=i+1
+                    if(row.Done){
+                        last_done=true
+                    }else if(last_done){
+                        row.submitable=true
+                    }
+                }
+            },mock_data)
+        },
+        submit:function(row){
+            if(!row.submitable){
+                return 
+            }
+            var mock_data={}
+            var post_data={
+                ActivityId:activity.pk,
+                Type:row.Type,
+            }
+            var self=this
+            jb_js.post('/activity/charge/do',post_data,function(resp){
+                cfg.showMsg('参加成功！')
+                self.update_data()
+            },mock_data)
+        }
+    }
+})

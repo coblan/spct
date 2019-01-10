@@ -22,7 +22,7 @@ from hello.engine_menu import PcMenu, ProgramerAdmin
 from django.views.generic import RedirectView 
 from maindb.views import test
 from helpers.authuser.engin_view import AuthEngine
-from maindb.views import Notice, Help
+from maindb.views import Notice, Help,Activity,TestAppH5View,ActivityIndex
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,6 +30,10 @@ urlpatterns = [
     url(r'^accounts/([\w\.]+)/?$',AuthEngine.as_view(),name=AuthEngine.url_name),
     url(r'^notice/(?P<name>[^/]+)/?$', Notice.as_view()), 
     url(r'^help/(?P<name>[^/]+)/?$', Help.as_view()),
+    
+    url(r'^actv2/index?$', ActivityIndex.as_view()),
+    url(r'^actv2/(?P<pk>[^/]+)/?$', Activity.as_view()),
+    url(r'^app_h5/?$', TestAppH5View.as_view()),
      
     url(r'^pc/([\w\.]+)/?$',PcMenu.as_view(),name=PcMenu.url_name),
     url(r'^main/',include('maindb.urls')),

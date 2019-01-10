@@ -1,0 +1,98 @@
+{% load jsonify %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>{{ row.title }} </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <script src="{{ js_config.js_lib.layer }}"></script>
+    <script src="{{ js_config.js_lib.exfun }}"></script>
+    <script src="{{ js_config.js_lib.director }}"></script>
+    <script src="{{ js_config.js_lib.activity_v2 }}"></script>
+
+
+</head>
+<body>
+<script>
+
+    //   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+    row={{ row | jsonify }}
+
+</script>
+
+
+<script>
+    $(function(){
+        new Vue({
+            el:'#there',
+            data:{
+                get_arg:'',
+                post_url:'',
+                post_args:'',
+                name:'jjyy'
+            },
+            methods:{
+                test_get:function(){
+                    var self=this
+                    jb_js.get(this.get_arg,function(resp){
+                        cfg.showMsg('请求成功')
+                        cfg.showMsg(JSON.stringify(resp))
+                        cfg.showMsg(JSON.stringify(resp.data))
+                    })
+                },
+                test_post:function(){
+                    var self=this
+//                    var post_data={name:'boy',age:'18',children:[
+//                            {name:'li',age:'1'},{name:'wa',age:'0'}
+//                        ]}
+                    var post_data = JSON.parse(this.post_args)
+                    jb_js.post(this.post_url,post_data ,function(resp){
+                        cfg.showMsg('请求成功')
+                        cfg.showMsg(JSON.stringify(resp))
+                        cfg.showMsg(JSON.stringify(resp.data))
+                    })
+                }
+            }
+        })
+    })
+
+</script>
+
+<div id="there">
+    <div>
+        <label for="">GET请求url</label>
+        <input type="text" v-model="get_arg"> <button @click="test_get()">GET</button>
+    </div>
+
+<div>
+    <div>
+        <label for="">POST请求url</label>
+        <input type="text" v-model="post_url">
+    </div>
+    <div>
+        <label for="">POST参数</label>
+        <input type="text" v-model="post_args">
+    </div>
+
+    <button @click="test_post()">POST</button>
+
+</div>
+
+    <span>返回name</span>
+    <span v-text="name"></span>
+
+
+</div>
+
+
+</body>
+</html>

@@ -9,6 +9,7 @@ module.exports =
     //context:__dirname,
     entry: {
         maindb:'./main.js',
+        activity_v2:'./activity_v2/main.js'
     },
     output: {
         path:path.resolve(__dirname, '../static/js'),

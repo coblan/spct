@@ -194,3 +194,7 @@ BANNER_DISPLAYTYPE=(
     (0,'对外'),
     (1,'对内')
 )
+
+ACTIVITY_COM=(
+    ('com-shouchun','首存再存'),
+)

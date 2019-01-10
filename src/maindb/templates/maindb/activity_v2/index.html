@@ -1,0 +1,86 @@
+{% load jsonify %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset='utf-8' />
+
+    <title>{{ row.title }} </title>
+
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+    <script src="{{ js_config.js_lib.layer }}"></script>
+    <script src="{{ js_config.js_lib.exfun }}"></script>
+    <script src="{{ js_config.js_lib.director }}"></script>
+    <script src="{{ js_config.js_lib.activity_v2 }}"></script>
+
+</head>
+<body>
+<script>
+
+    //   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
+    rows={{ rows | jsonify }}
+
+</script>
+
+<style>
+    html{
+        font-size: 14px;
+    }
+    body{
+        background-color: #eeeeee;
+    }
+    * {
+        moz-user-select: -moz-none;
+        -moz-user-select: none;
+        -o-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    #there{
+        width: 100vw;
+        overflow-x: hidden;
+    }
+
+
+</style>
+
+<script>
+    $(function(){
+        new Vue({
+            el:'#there',
+            data:{
+                rows:rows,
+            },
+            methods:{
+                goto:function(url){
+                    var path = location.href
+                    var mt = /(.*?)[^\/]+$/.exec(path)
+                    var org_url = mt[1]+url
+                    location='chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
+                }
+            }
+        })
+    })
+
+</script>
+
+<div id="there">
+    <div v-for="row in rows" @@click="goto(row.url)">
+        <img :src="row.banner" alt="">
+    </div>
+
+
+</div>
+
+
+</body>
+</html>

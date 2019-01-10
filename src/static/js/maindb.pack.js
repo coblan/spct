@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 31);
+/******/ 	return __webpack_require__(__webpack_require__.s = 36);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -404,7 +404,9 @@ var activity_logic = {
 window.activity_logic = activity_logic;
 
 /***/ }),
-/* 3 */
+/* 3 */,
+/* 4 */,
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -475,7 +477,7 @@ var app_pkg = {
 window.app_pkg = app_pkg;
 
 /***/ }),
-/* 4 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -512,13 +514,13 @@ var banner_logic = {
 window.banner_logic = banner_logic;
 
 /***/ }),
-/* 5 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(29);
+__webpack_require__(33);
 
 var com_tab_special_bet_value = {
     props: ['tab_head', 'par_row'],
@@ -653,20 +655,20 @@ var com_tab_special_bet_value = {
 Vue.component('com-tab-special-bet-value', com_tab_special_bet_value);
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _bar_chart = __webpack_require__(16);
+var _bar_chart = __webpack_require__(18);
 
 var bar_chart = _interopRequireWildcard(_bar_chart);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
-/* 7 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -711,7 +713,7 @@ var help_logic = {
 window.help_logic = help_logic;
 
 /***/ }),
-/* 8 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1019,7 +1021,7 @@ window.produce_match_outcome = produce_match_outcome;
 window.produceMatchOutcomePanel = produceMatchOutcomePanel;
 
 /***/ }),
-/* 9 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1073,7 +1075,7 @@ var maxpayout = exports.maxpayout = {
 window.maxpayout_form_logic = maxpayout;
 
 /***/ }),
-/* 10 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1118,51 +1120,51 @@ var notice_logic = {
 window.notice_logic = notice_logic;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _turnover = __webpack_require__(25);
+var _turnover = __webpack_require__(27);
 
 var turnover = _interopRequireWildcard(_turnover);
 
-var _multi_line = __webpack_require__(19);
+var _multi_line = __webpack_require__(21);
 
 var multi_line = _interopRequireWildcard(_multi_line);
 
-var _multi_line_edit = __webpack_require__(20);
+var _multi_line_edit = __webpack_require__(22);
 
 var multi_line_edit = _interopRequireWildcard(_multi_line_edit);
 
-var _switch_checkbox = __webpack_require__(24);
+var _switch_checkbox = __webpack_require__(26);
 
 var switch_checkbox = _interopRequireWildcard(_switch_checkbox);
 
-var _plus = __webpack_require__(21);
+var _plus = __webpack_require__(23);
 
 var plus_editor = _interopRequireWildcard(_plus);
 
-var _status = __webpack_require__(23);
+var _status = __webpack_require__(25);
 
 var status_editor = _interopRequireWildcard(_status);
 
-var _specialvalue_turnover = __webpack_require__(22);
+var _specialvalue_turnover = __webpack_require__(24);
 
 var specialvalue_turnover = _interopRequireWildcard(_specialvalue_turnover);
 
-var _favorite = __webpack_require__(18);
+var _favorite = __webpack_require__(20);
 
 var com_favorite = _interopRequireWildcard(_favorite);
 
-var _balance = __webpack_require__(17);
+var _balance = __webpack_require__(19);
 
 var com_balance = _interopRequireWildcard(_balance);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(30);
+__webpack_require__(34);
 
 var ajax_table = {
     props: ['tab_head'], //['heads','row_filters','kw'],
@@ -1256,7 +1258,7 @@ var get_data = {
 };
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1302,7 +1304,7 @@ var oddstypegroup_logic = {
 window.oddstypegroup_logic = oddstypegroup_logic;
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1358,7 +1360,7 @@ var ping_lue = {
 Vue.component('com-field-pinglue', ping_lue);
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1371,13 +1373,13 @@ $.validator.config({
 });
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(27);
+var content = __webpack_require__(30);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1397,7 +1399,7 @@ if(false) {
 }
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1461,7 +1463,7 @@ Vue.component('com-bar-chart', {
 });
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1481,7 +1483,7 @@ var bool_shower = {
 Vue.component('com-odds-balance', bool_shower);
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1505,7 +1507,7 @@ var bool_shower = {
 Vue.component('com-odds-favorite', bool_shower);
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1528,7 +1530,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line', odds_multi_line);
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1571,7 +1573,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line-edit', odds_multi_line);
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1597,7 +1599,7 @@ var odds_multi_line = {
 Vue.component('com-odds-plus', odds_multi_line);
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1647,7 +1649,7 @@ var odds_multi_line = {
 Vue.component('com-odds-special-turnover', odds_multi_line);
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1688,7 +1690,7 @@ Vue.component('com-odds-status-check-btn', {
 });
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1709,7 +1711,7 @@ var odds_multi_line = {
 Vue.component('com-odds-switch-checkbox', odds_multi_line);
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1725,7 +1727,8 @@ var bool_shower = {
 Vue.component('com-odds-turnover', bool_shower);
 
 /***/ }),
-/* 26 */
+/* 28 */,
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1739,7 +1742,7 @@ exports.push([module.i, ".com_tab_special_bet_value .box {\n  width: 250px;\n  h
 
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1753,7 +1756,7 @@ exports.push([module.i, ".home-page .my-panel {\n  background-color: white;\n  p
 
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1767,13 +1770,14 @@ exports.push([module.i, ".odds input::-webkit-outer-spin-button,\n.odds input::-
 
 
 /***/ }),
-/* 29 */
+/* 32 */,
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(26);
+var content = __webpack_require__(29);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1793,13 +1797,13 @@ if(false) {
 }
 
 /***/ }),
-/* 30 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(28);
+var content = __webpack_require__(31);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1819,25 +1823,26 @@ if(false) {
 }
 
 /***/ }),
-/* 31 */
+/* 35 */,
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _match = __webpack_require__(8);
+var _match = __webpack_require__(10);
 
 var match = _interopRequireWildcard(_match);
 
-var _app_pkg = __webpack_require__(3);
+var _app_pkg = __webpack_require__(5);
 
 var app_pkg = _interopRequireWildcard(_app_pkg);
 
-var _help = __webpack_require__(7);
+var _help = __webpack_require__(9);
 
 var help_logic = _interopRequireWildcard(_help);
 
-var _notice = __webpack_require__(10);
+var _notice = __webpack_require__(12);
 
 var notice_logic = _interopRequireWildcard(_notice);
 
@@ -1845,41 +1850,41 @@ var _activity = __webpack_require__(2);
 
 var activity_logic = _interopRequireWildcard(_activity);
 
-var _banner = __webpack_require__(4);
+var _banner = __webpack_require__(6);
 
 var banner_logic = _interopRequireWildcard(_banner);
 
-var _odds = __webpack_require__(11);
+var _odds = __webpack_require__(13);
 
 var odds_editor = _interopRequireWildcard(_odds);
 
-var _com_tab_special_bet_value = __webpack_require__(5);
+var _com_tab_special_bet_value = __webpack_require__(7);
 
 var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
 
-var _oddstypegroup_logic = __webpack_require__(12);
+var _oddstypegroup_logic = __webpack_require__(14);
 
 var oddstypegroup_logic = _interopRequireWildcard(_oddstypegroup_logic);
 
-var _maxpayout = __webpack_require__(9);
+var _maxpayout = __webpack_require__(11);
 
 var maxpayout = _interopRequireWildcard(_maxpayout);
 
-var _validator_rule = __webpack_require__(14);
+var _validator_rule = __webpack_require__(16);
 
 var validator = _interopRequireWildcard(_validator_rule);
 
-var _parameter = __webpack_require__(13);
+var _parameter = __webpack_require__(15);
 
 var parameter = _interopRequireWildcard(_parameter);
 
-var _main = __webpack_require__(6);
+var _main = __webpack_require__(8);
 
 var coms_main = _interopRequireWildcard(_main);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(15);
+__webpack_require__(17);
 
 //table mix
 
