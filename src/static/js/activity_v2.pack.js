@@ -560,7 +560,7 @@ Vue.component('com-shouchun', {
         update_data: function update_data() {
             //cfg.showMsg('开始更新数据')
             var mock_data = {
-                data: [{ ChargeTime: '04-21 22:30', Amount: '50', Bonus: '50.00', Done: true }, { ChargeTime: '2019-01-21 22:30:30', Amount: '100000', Bonus: '1239999', Done: false }]
+                data: [{ ChargeTime: '04-21 22:30', Amount: 50, Bonus: 50, Done: false }]
             };
             var dec_rows = [{ label: '首存', action: '', submitable: false }, { label: '再存', action: '', submitable: false }];
             var self = this;
@@ -596,7 +596,7 @@ Vue.component('com-shouchun', {
             var self = this;
             jb_js.post('/activity/charge/do', post_data, function (resp) {
 
-                if (resp.success == 1) {
+                if (resp.success) {
                     cfg.showMsg('参加成功！');
                     self.update_data();
                 } else {
