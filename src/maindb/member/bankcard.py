@@ -87,15 +87,20 @@ class BankCard(TablePage):
 
 
 class BankCardForm(ModelFields):
+    hide_fields=['active']
+    show_pk=True
     class Meta:
         model = TbBankcard
         #exclude = ['account', 'banktypeid']
-        fields = ['bankcardid','active','bankprovince','bankcity','banksitename']
-
+        fields = ['bankaccountname','active','bankprovince','bankcity','banksitename']
+    
     def dict_head(self, head):
-        if head['name']=='bankcardid': #not in ['active']:
+        if head['name'] in ['bankcardid','bankaccountname']: #not in ['active']:
             head['readonly'] = True
         return head
+    
+
+        
 
 
 director.update({
