@@ -183,13 +183,13 @@ class WithDrawForm(ModelFields):
             # self.instance.save()
             category = 35
             if self.instance.amounttype == 1:
-                self.instance.accountid.amount += self.instance.amount
                 beforamount = self.instance.accountid.amount
-                afteramount = self.instance.accountid.amount + self.instance.amount
+                self.instance.accountid.amount += self.instance.amount
+                afteramount = self.instance.accountid.amount #+ self.instance.amount
             elif self.instance.amounttype == 2:
-                self.instance.accountid.agentamount += self.instance.amount
                 beforamount = self.instance.accountid.agentamount
-                afteramount = self.instance.accountid.agentamount + self.instance.amount
+                self.instance.accountid.agentamount += self.instance.amount
+                afteramount = self.instance.accountid.agentamount #+ self.instance.amount
                 category = 36
             with transaction.atomic():
                 self.instance.accountid.save()

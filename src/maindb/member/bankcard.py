@@ -5,7 +5,7 @@ from django.db.models import Q, fields
 
 
 class BankCard(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
 
     def get_label(self):
         return '银行卡管理'
@@ -15,6 +15,7 @@ class BankCard(TablePage):
         exclude = ['account', 'banktypeid']
         fields_sort = ['bankcardid', 'accountid', 'cardno', 'bankaccountname', 'bankaccountmobil', 'banktypename',
                        'bankprovince', 'bankcity', 'banksitename', 'creattime', 'active']
+        pop_edit_field='bankcardid'
 
         def get_operation(self):
             return [
@@ -89,10 +90,10 @@ class BankCardForm(ModelFields):
     class Meta:
         model = TbBankcard
         #exclude = ['account', 'banktypeid']
-        fields = ['active']
+        fields = ['bankcardid','active','bankprovince','bankcity','banksitename']
 
     def dict_head(self, head):
-        if head['name'] not in ['active']:
+        if head['name']=='bankcardid': #not in ['active']:
             head['readonly'] = True
         return head
 
