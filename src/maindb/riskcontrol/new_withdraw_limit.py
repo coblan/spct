@@ -55,7 +55,8 @@ class WithDrawForm(ModelFields):
         if head['name'] == 'value':
             head['show'] = "scope.row.tag !='IsRapidWithdraw' && scope.row.tag !='IsEnableWithdraw'"
         if head['name'] == 'daysnumber':
-            head['show'] = "scope.row.tag !='IsRapidWithdraw' && scope.row.tag !='IsEnableWithdraw'"        
+            head['show'] = "scope.row.tag !='IsRapidWithdraw' && scope.row.tag !='IsEnableWithdraw'"
+            head['express']='rt={label:scope.row.memo.indexOf("分钟")!=-1 ? "分钟":"天数"}'
         return head
 
 
