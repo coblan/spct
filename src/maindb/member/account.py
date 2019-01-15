@@ -335,7 +335,7 @@ class AccoutModifyAmount(ModelFields):
             before_amount = self.instance.amount
             self.instance.amount = before_amount + Decimal(self.kw.get('add_amount', 0))
             TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
-                                        amount=self.changed_amount, afteramount=self.instance.amount, creater='system',
+                                        amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='system',
                                         memo='调账', accountid=self.instance, categoryid_id=moenycategory,
                                         cashflow=cashflow)
             return {'memo': '调账', 'ex_before': {'amount': before_amount},
