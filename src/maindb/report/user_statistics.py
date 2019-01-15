@@ -51,7 +51,7 @@ class UserStatisticsPage(TablePage):
                 #return [{'name':'date','editor':'com-date-range-filter','label':'日期'}]
                 
                 return [
-                    {'name':'usertype','label':'用户类型','editor':'com-filter-select','options':[
+                    {'name':'AccountType','label':'用户类型','editor':'com-filter-select','options':[
                         {'label':'普通用户','value':0},
                         {'label':'代理用户','value':1},
                         ]},
@@ -117,9 +117,9 @@ class UserStatisticsPage(TablePage):
                 'PageSize': self.search_args.get('_perpage', 20),
                 'Sort': realsort,
                 'SortWay': sortway,
-                'usertype':self.search_args.get('usertype',''),
+                'AccountType':self.search_args.get('AccountType','-1'),
             }
-            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(usertype)s'" \
+            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s'" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql, [nickname])
