@@ -258,7 +258,7 @@ class TicketstakeTable(TicketTabBase):
     """ 子注单 """
     model = TbTicketstake
     exclude = []
-    fields_sort = ['tournament', 'matchid', 'matchname', 'oddsid','oddsid__outcomedesc','specialbetname', 'odds', 'confirmodds', 'realodds', 
+    fields_sort = ['tournament', 'matchid', 'matchname', 'whole_score','oddsid','oddsid__outcomedesc','specialbetname', 'odds', 'confirmodds', 'realodds', 
                    'status', 'createtime', 'updatetime']
 
     def getExtraHead(self):
@@ -266,6 +266,7 @@ class TicketstakeTable(TicketTabBase):
             #{'name': 'matchid', 'label': 'matchid', },
             {'name': 'matchname', 'label': '比赛', 'width': 200, },
             {'name': 'tournament', 'label': '联赛', 'width': 120, },
+            {'name':'whole_score','label':'当时比分','width':100},
             {'name': 'oddsid__outcomedesc', 'label': '盘口类型', 'width': 90, },
         ]
 
@@ -278,6 +279,7 @@ class TicketstakeTable(TicketTabBase):
         else:
             raise UserWarning('子注单%s无法匹配比赛' % inst.tid)
         return {
+            'whole_score':'%s:%s'%(inst.homescore,inst.awayscore),
             '_matchid_form': matchid_form,
             'matchid': match.matchid,
             'tournament': match.tournamentzh,

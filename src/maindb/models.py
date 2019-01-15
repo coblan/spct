@@ -1369,6 +1369,22 @@ class TbStatuscode(models.Model):
         db_table = 'TB_StatusCode'
 
 
+class TbSourcecontrol(models.Model):
+    tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    source = models.IntegerField(db_column='Source', blank=True, null=True)  # Field name made lowercase.
+    sporttype = models.IntegerField(db_column='SportType', blank=True, null=True)  # Field name made lowercase.
+    oddskind = models.IntegerField(db_column='OddsKind', blank=True, null=True)  # Field name made lowercase.
+    sites = models.CharField(db_column='Sites', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    begintime = models.DateTimeField(db_column='BeginTime', blank=True, null=True)  # Field name made lowercase.
+    endtime = models.DateTimeField(db_column='EndTime', blank=True, null=True)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', blank=True, null=True)  # Field name made lowercase.
+    enabled = models.NullBooleanField(db_column='Enabled')  # Field name made lowercase.
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_SourceControl'
+
 class TbTeams(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     zhname = models.CharField(db_column='ZHName', max_length=50, blank=True,

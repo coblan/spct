@@ -249,6 +249,7 @@ class AccountPage(TablePage):
                  'visible': 'fundspassword' in changeable_fields},
                 # selected_pop_set_and_save
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
+                 'after_error':'scope.fs.showErrors(scope.errors)',
                  'fields_ctx': modifyer.get_head_context(), 'visible': 'amount' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '允许提现', 'field': 'isenablewithdraw',
                  'value': 1, 'confirm_msg': '确认允许这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields},

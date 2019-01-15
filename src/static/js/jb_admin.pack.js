@@ -858,7 +858,7 @@ Vue.component('com-field-china-address', function (resolve, reject) {
 
 var lay_datetime = {
     props: ['row', 'head'],
-    template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n                    <input type="text" :id="\'id_\'+head.name" v-model="row[head.name]"  :placeholder="head.placeholder" readonly>\n            \t\t\t<!--<datetime  v-model="row[head.name]" :id="\'id_\'+head.name"-->\n                        \t<!--:placeholder="head.placeholder"></datetime>-->\n               </div>',
+    template: '<div><span v-show=\'head.readonly\' v-text=\'row[head.name]\'></span>\n\n                    <input v-show="!head.readonly" type="text" :id="\'id_\'+head.name" v-model="row[head.name]"  :placeholder="head.placeholder" readonly>\n\n               </div>',
     mounted: function mounted() {
         var self = this;
         laydate.render({
@@ -1954,12 +1954,13 @@ function pop_fields_layer(row, fields_ctx, callback, layerConfig) {
                 var vc = this;
                 this.childStore = new Vue({
                     data: {
-                        fields_obj: vc.$refs.field_panel
+                        fields_obj: vc.$refs.field_panel,
+                        vc: vc
                     },
                     methods: {
                         showErrors: function showErrors(errors) {
-                            vc.fields_obj.setErrors(errors);
-                            vc.fields_obj.showErrors(errors);
+                            this.fields_obj.setErrors(errors);
+                            this.fields_obj.showErrors(errors);
                         }
                     }
 
@@ -5697,10 +5698,63 @@ var table_store = {
                 return;
             }
 
-            function bb(all_set_dict, after_save_callback) {
+            /*
+            弹框确认
+            * */
+            new Promise(function (resolve, reject) {
+                if (kws.confirm_msg) {
+                    layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
+                        layer.close(index);
+                        resolve();
+                    });
+                } else {
+                    resolve();
+                }
+            }).then(function () {
+                //  弹出编辑框/ 或者不弹出
+                var one_row = {};
+                if (kws.field) {
+                    // 兼容老的，新的采用eval形式，
+                    one_row[kws.field] = kws.value;
+                } else {
+                    ex.assign(one_row, ex.eval(kws.pre_set));
+                }
+
+                if (kws.fields_ctx) {
+                    ex.map(kws.fields_ctx.heads, function (head) {
+                        if (!head.name.startsWith('_') && one_row[head.name] == undefined) {
+                            one_row[head.name] = self.selected[0][head.name];
+                        }
+                    });
+                    var win_index = pop_edit_local(one_row, kws.fields_ctx, function (new_row, store) {
+                        //resolve(new_row,function(resp){
+                        //    if(resp.save_rows.errors){
+                        //        if(kws.after_error){
+                        //            ex.eval(kws.after_error,{fs:store,errors:resp.save_rows.errors})
+                        //        }else{
+                        //            cfg.showError(JSON.stringify( resp.save_rows.errors))
+                        //        }
+                        //    }else{
+                        //        layer.close(win_index)
+                        //    }
+                        //})
+                        var dc = { new_row: new_row, field_store: store, pop_fields_win_index: win_index };
+                        after_proc(dc);
+                    });
+                } else {
+                    after_proc({ new_row: one_row });
+                }
+            });
+
+            function after_proc(_ref) {
+                var new_row = _ref.new_row,
+                    field_store = _ref.field_store,
+                    pop_fields_win_index = _ref.pop_fields_win_index;
+
+                // 编辑后，提交
                 var cache_rows = ex.copy(self.selected);
                 ex.each(cache_rows, function (row) {
-                    ex.assign(row, all_set_dict);
+                    ex.assign(row, new_row);
                     if (kws.fields_ctx && kws.fields_ctx.director_name) {
                         row._cache_director_name = row._director_name; // [1] 有可能是用的特殊的 direcotor
                         row._director_name = kws.fields_ctx.director_name;
@@ -5723,68 +5777,48 @@ var table_store = {
                             }
                         });
                         self.clearSelection();
-
+                        if (pop_fields_win_index) {
+                            layer.close(pop_fields_win_index);
+                        }
                         cfg.hide_load(2000);
                     } else {
                         cfg.hide_load();
-                        // 留到下面的field弹出框，按照nicevalidator的方式去显示错误
-                        if (!after_save_callback) {
-                            if (resp.save_rows.msg) {
-                                cfg.showError(resp.save_rows.msg);
-                            } else {
-                                cfg.showError(JSON.stringify(resp.save_rows.errors));
-                            }
+                        if (kws.after_error) {
+                            ex.eval(kws.after_error, { fs: field_store, errors: resp.save_rows.errors });
+                        } else {
+                            cfg.showError(JSON.stringify(resp.save_rows.errors));
                         }
+
+                        // 留到下面的field弹出框，按照nicevalidator的方式去显示错误
+                        //if(!after_save_callback){
+                        //    if(resp.save_rows.msg){
+                        //        cfg.showError(resp.save_rows.msg)
+                        //    }else{
+                        //        cfg.showError(JSON.stringify(resp.save_rows.errors) )
+                        //    }
+                        //}
                         //
                     }
 
                     //self.op_funs.update_or_insert_rows({rows:resp.save_rows} )
 
-                    if (after_save_callback) {
-                        after_save_callback(resp);
-                    }
+                    //if(after_save_callback){
+                    //    after_save_callback(resp)
+                    //}
                 });
             }
 
             //row[kws.field]=kws.value
 
-            function judge_pop_fun() {
-                var one_row = {};
-                if (kws.field) {
-                    // 兼容老的，新的采用eval形式，
-                    one_row[kws.field] = kws.value;
-                } else {
-                    ex.assign(one_row, ex.eval(kws.pre_set));
-                }
 
-                if (kws.fields_ctx) {
-                    ex.map(kws.fields_ctx.heads, function (head) {
-                        if (!head.name.startsWith('_') && one_row[head.name] == undefined) {
-                            one_row[head.name] = self.selected[0][head.name];
-                        }
-                    });
-                    var win_index = pop_edit_local(one_row, kws.fields_ctx, function (new_row, store) {
-                        bb(new_row, function (resp) {
-                            if (resp.save_rows.errors) {
-                                cfg.showError(JSON.stringify(resp.save_rows.errors));
-                                //self.$store.commit(store_id+'/showErrors',resp.save_rows.errors)
-                            } else {
-                                layer.close(win_index);
-                            }
-                        });
-                    });
-                } else {
-                    bb(one_row);
-                }
-            }
-            if (kws.confirm_msg) {
-                layer.confirm(kws.confirm_msg, { icon: 3, title: '提示' }, function (index) {
-                    layer.close(index);
-                    judge_pop_fun();
-                });
-            } else {
-                judge_pop_fun();
-            }
+            //if(kws.confirm_msg){
+            //    layer.confirm(kws.confirm_msg, {icon: 3, title:'提示'}, function(index){
+            //        layer.close(index);
+            //        judge_pop_fun()
+            //    });
+            //}else {
+            //    judge_pop_fun()
+            //}
         },
         export_excel: function export_excel() {
             var self = this;
@@ -5865,11 +5899,11 @@ var table_store = {
                 judge_pop_fun();
             }
         },
-        arraySpanMethod: function arraySpanMethod(_ref) {
-            var row = _ref.row,
-                column = _ref.column,
-                rowIndex = _ref.rowIndex,
-                columnIndex = _ref.columnIndex;
+        arraySpanMethod: function arraySpanMethod(_ref2) {
+            var row = _ref2.row,
+                column = _ref2.column,
+                rowIndex = _ref2.rowIndex,
+                columnIndex = _ref2.columnIndex;
 
             // 计算布局
             if (this.table_layout) {
