@@ -29,8 +29,8 @@ class UserStatisticsPage(TablePage):
             today = timezone.now()
             sp = timezone.timedelta(days=30)
             last = today - sp
-            def_start = last.strftime('%Y-%m-%d')
-            def_end = today.strftime('%Y-%m-%d')
+            def_start = last.strftime('%Y-%m-%d 00:00:00')
+            def_end = today.strftime('%Y-%m-%d %H:%M:%S')
             search_args['_start_date'] = search_args.get('_start_date') or def_start
             search_args['_end_date'] = search_args.get('_end_date') or def_end
             return search_args
@@ -47,15 +47,16 @@ class UserStatisticsPage(TablePage):
         class filters(RowFilter):
             range_fields = ['date']
 
-            def dict_head(self, head):
-                if head['name'] == 'date':
-                    head['label'] = '日期'
-                return head
-
             def getExtraHead(self):
                 #return [{'name':'date','editor':'com-date-range-filter','label':'日期'}]
                 
-                return [{'name':'date','editor':'com-date-datetimefield-range-filter','label':'日期'}]
+                return [
+                    {'name':'usertype','label':'用户类型','editor':'com-filter-select','options':[
+                        {'label':'普通用户','value':0},
+                        {'label':'代理用户','value':1},
+                        ]},
+                    {'name':'date','editor':'com-filter-datetime-range','label':'时间'}
+                ]
 
         class sort(RowSort):
             names = ['Amount', 'GameCoinRechargeAmount', 'CommissionRechargeAmount', 'ReservedAmount',
@@ -115,9 +116,10 @@ class UserStatisticsPage(TablePage):
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
                 'Sort': realsort,
-                'SortWay': sortway
+                'SortWay': sortway,
+                'usertype':self.search_args.get('usertype',''),
             }
-            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s'" \
+            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(usertype)'" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql, [nickname])
@@ -143,14 +145,18 @@ class UserStatisticsPage(TablePage):
         def getExtraHead(self):
             return [
                 {'name': 'NickName', 'label': '昵称 ', 'width': 150},
+                {'name': 'Profit', 'label': '亏盈', 'width': 100},
+                {'name': 'BetAmount', 'label': '投注金额', 'width': 130},
+                {'name': 'BetOutcome', 'label': '派奖金额', 'width': 100},
+                {'name': 'AdjustAmount', 'label': '调账', 'width': 100},
                 {'name': 'Amount', 'label': '余额', 'width': 130},
                 {'name': 'GameCoinRechargeAmount', 'label': '充值金额', 'width': 130},
                 {'name': 'CommissionRechargeAmount', 'label': '佣金充值金额', 'width': 130},
                 {'name': 'ReservedAmount', 'label': '提现金额', 'width': 130},
                 {'name': 'CommissionWithDrawAmount', 'label': '佣金提现金额', 'width': 130},
-                {'name': 'BetAmount', 'label': '投注金额', 'width': 130},
+                
                 {'name': 'Turnover', 'label': '流水', 'width': 100},
-                {'name': 'BetOutcome', 'label': '派奖金额', 'width': 100},
+                
                 {'name': 'BetBonus', 'label': '返水', 'width': 100},
                 {'name': 'OrderCount', 'label': '注数', 'width': 100},
                 {'name': 'WinCount', 'label': '中注数', 'width': 100},
@@ -159,8 +165,8 @@ class UserStatisticsPage(TablePage):
                 {'name': 'SecondRechargeBonus', 'label': '再存红利', 'width': 100},
                 {'name': 'RescueBonus', 'label': '救援金', 'width': 100},
                 {'name': 'BirthdayBonus', 'label': '生日礼金', 'width': 100},
-                {'name': 'AdjustAmount', 'label': '调账', 'width': 100},
-                {'name': 'Profit', 'label': '亏盈', 'width': 100}
+                
+                
             ]
 
         def getRowPages(self):

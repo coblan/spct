@@ -68,15 +68,17 @@ class PlatformProfit(TablePage):
                        'RescueBonus', 'AdjustAmount']
 
         def getRowFilters(self):
-            return [{'name': 'date', 'label': '日期', 'editor': 'com-date-datetimefield-range-filter'}]
+            return [
+                {'name': 'date', 'label': '日期', 'editor': 'com-filter-datetime-range'},
+            ]
 
         @classmethod
         def clean_search_args(cls, search_args):
             today = timezone.now()
             sp = timezone.timedelta(days=30)
             last = today - sp
-            def_start = last.strftime('%Y-%m-%d')
-            def_end = today.strftime('%Y-%m-%d')
+            def_start = last.strftime('%Y-%m-%d 00:00:00')
+            def_end = today.strftime('%Y-%m-%d %H:%M:%S')
             search_args['_start_date'] = search_args.get('_start_date') or def_start
             search_args['_end_date'] = search_args.get('_end_date') or def_end
             return search_args
