@@ -12,7 +12,7 @@ Vue.component('com-shouchun',{
             <div v-text="row[head.name]"></div>
         </td>
         <td class="mybtn-col">
-            <div :class="['mybtn',{disabled:!row.submitable}]" @click="submit(row)"><span class="center-vh" style="white-space: nowrap">参加活动</span></div>
+            <div :class="['mybtn',{disabled:!row.submitable}]" @click="submit(row)"><span class="center-vh" style="white-space: nowrap" v-text="action_label(row)"></span></div>
         </td>
     </tr>
     </table>
@@ -42,12 +42,20 @@ Vue.component('com-shouchun',{
         //},5000)
     },
     methods:{
+        action_label:function(row){
+            var dc ={
+                0:'参加活动',
+                1:'已参加',
+                2:'已发放'
+            }
+            return dc[row.State]
+        },
         update_data:function(){
             //cfg.showMsg('开始更新数据')
             var mock_data={
                 data:[
-                    {ChargeTime:'04-21 22:30',Amount:50,Bonus:50,Done:false},
-                    //{ChargeTime:'2019-01-21 22:30:30',Amount:'100000',Bonus:'1239999',Done:false},
+                    {ChargeTime:'04-21 22:30',Amount:50,Bonus:50,State:2},
+                    {ChargeTime:'2019-01-21 22:30:30',Amount:'100000',Bonus:'1239999',State:1},
                 ]
             }
             var dec_rows=[
@@ -66,7 +74,7 @@ Vue.component('com-shouchun',{
                     var row = self.rows[i]
                     ex.vueAssign(row,dec_rows[i])
                     row.Type=i+1
-                    if(row.Done){
+                    if(row.State != 0){
                         last_done=true
                     }else if(last_done){
                         row.submitable=true

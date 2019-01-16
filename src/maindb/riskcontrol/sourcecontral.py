@@ -4,7 +4,7 @@ class SourceControlPage(TablePage):
     template = 'jb_admin/table.html'
     
     def get_label(self):
-        return '数据源赔付'
+        return '数据源维护'
     
     class tableCls(ModelTable):
         model=TbSourcecontrol

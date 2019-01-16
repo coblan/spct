@@ -115,7 +115,7 @@ class PcMenu(BaseEngine):
                 {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
                 {'label': '联赛组水位', 'url': page('LeagueGroupPage'), 'visible': can_touch(TbLeagueGroup, crt_user), },
                 {'label': '参数设置', 'url': page('ParameterPage'),'visible': has_permit(crt_user, 'risk.parameter'),},
-                {'label': '数据源赔付', 'url': page('sourececontrol'),'visible': has_permit(crt_user, 'risk.parameter'),},
+                #{'label': '数据源维护', 'url': page('sourececontrol'),'visible': has_permit(crt_user, 'risk.parameter'),},
                 
              ]},
 
