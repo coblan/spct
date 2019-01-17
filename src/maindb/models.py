@@ -197,7 +197,7 @@ class TbActivityV2(models.Model):
     target = models.CharField(db_column='Target',verbose_name='活动对象', max_length=256, blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(db_column='Content', max_length=2048, blank=True, null=True,verbose_name='活动详情')  # Field name made lowercase.
     rules = models.CharField(db_column='Rules', max_length=3000,verbose_name='规则')  # Field name made lowercase.
-    banner = PictureField(db_column='Banner', max_length=512, blank=True, null=True,verbose_name='宣传画')  # Field name made lowercase.
+    banner = PictureField(db_column='Banner', max_length=512, blank=True, null=True)  # Field name made lowercase.
     url = models.CharField(db_column='Url', max_length=512)  # Field name made lowercase.
     componentname = models.CharField(db_column='ComponentName', max_length=64, blank=True, null=True,verbose_name='前端组件名',choices=ACTIVITY_COM)  # Field name made lowercase.
     componentparams = models.CharField(db_column='ComponentParams', max_length=4000, blank=True, null=True,verbose_name='前端组件参数')  # Field name made lowercase.

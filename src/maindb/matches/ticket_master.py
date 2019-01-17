@@ -83,7 +83,13 @@ class TicketMasterPage(TablePage):
         fields_sort = ['ticketid', 'orderid', 'accountid__nickname', 'parlayrule', 'status',
                        'winbet', 'stakeamount', 'betamount', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
                        'createtime', 'settletime', 'memo','voidreason']
-
+        
+        @classmethod
+        def clean_search_args(cls, search_args):
+            if not search_args.get('_has_default'):
+                search_args['accountid__accounttype'] = search_args.get('accountid__accounttype',0)
+            return search_args
+        
         def dict_head(self, head):
             if head['name'] in ['createtime', 'settletime']:
                 head['width'] = 140
@@ -258,7 +264,7 @@ class TicketstakeTable(TicketTabBase):
     """ 子注单 """
     model = TbTicketstake
     exclude = []
-    fields_sort = ['tournament', 'matchid', 'matchname', 'whole_score','oddsid','oddsid__outcomedesc','oddskind','specialbetname', 'odds', 'confirmodds', 'realodds', 
+    fields_sort = ['tournament', 'matchid', 'matchname', 'whole_score','oddskind','oddsid','oddsid__outcomedesc','specialbetname', 'odds', 'confirmodds', 'realodds', 
                    'status', 'createtime', 'updatetime']
 
     def getExtraHead(self):

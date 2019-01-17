@@ -46,18 +46,23 @@ class ActiviyV2Page(TablePage):
     
     
     class tableCls(ModelTable):
-        hide_fields=['rules','content','componentname','componentparams','templateid','ismutex']
+        #hide_fields=['rules','content','componentname','componentparams','templateid','ismutex']
+        fields_sort=['id','title','subtitle','enabled','begintime','endtime','banner','target','sort','remark','editorid','creatorid','createtime','edittime']
         model = TbActivityV2
         exclude=['url']
         pop_edit_field = 'id'
         
         def dict_head(self, head):
             dc={
-                'begintime':120,
-                'endtime':120,
+                'id':60,
+                'title':140,
+                
+                'begintime':140,
+                'endtime':140,
                 'banner':120,
-                'createtime':120,
-                'edittime':120,
+                'remark':100,
+                'createtime':140,
+                'edittime':140,
             }
             if dc.get(head['name']):
                 head['width']=dc.get(head['name'])
