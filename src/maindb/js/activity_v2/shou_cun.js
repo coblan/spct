@@ -54,8 +54,8 @@ Vue.component('com-shouchun',{
             //cfg.showMsg('开始更新数据')
             var mock_data={
                 data:[
-                    {ChargeTime:'04-21 22:30',Amount:50,Bonus:50,State:2},
-                    {ChargeTime:'2019-01-21 22:30:30',Amount:'100000',Bonus:'1239999',State:1},
+                    {ChargeTime:'04-21 22:30',Amount:50,Bonus:50,State:1},
+                    {ChargeTime:'2019-01-22 22:30:30',Amount:'100000',Bonus:'1239999',State:0},
                 ]
             }
             var dec_rows=[
