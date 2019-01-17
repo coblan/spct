@@ -194,6 +194,9 @@ class TbActivityV2(models.Model):
     timedesp = models.CharField(db_column='TimeDesp', max_length=256,verbose_name='时间描述', blank=True, null=True)  # Field name made lowercase.
     begintime = models.DateTimeField(db_column='BeginTime',verbose_name='开始时间')  # Field name made lowercase.
     endtime = models.DateTimeField(db_column='EndTime',verbose_name='结束时间')  # Field name made lowercase.
+    
+    displaytype = models.IntegerField(db_column='DisplayType',default=0,choices=BANNER_DISPLAYTYPE,verbose_name='对内/对外')  # Field name made lowercase.
+    
     target = models.CharField(db_column='Target',verbose_name='活动对象', max_length=256, blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(db_column='Content', max_length=2048, blank=True, null=True,verbose_name='活动详情')  # Field name made lowercase.
     rules = models.CharField(db_column='Rules', max_length=3000,verbose_name='规则')  # Field name made lowercase.
@@ -212,7 +215,11 @@ class TbActivityV2(models.Model):
     #editorid = models.IntegerField(db_column='EditorId')  # Field name made lowercase.
     remark = models.CharField(db_column='Remark', max_length=1024, blank=True, null=True,verbose_name='活动备注')  # Field name made lowercase.
     enabled = models.BooleanField(db_column='Enabled',verbose_name='启用')  # Field name made lowercase.
-
+    #image = models.CharField(db_column='Image', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    image = CusPictureField(db_column='Image', max_length=512, blank=True, null=True,verbose_name='首页弹出图')  # Field name made lowercase.
+   
+    
+    
     class Meta:
         managed = False
         db_table = 'TB_Activity_V2'

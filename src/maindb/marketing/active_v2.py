@@ -47,7 +47,7 @@ class ActiviyV2Page(TablePage):
     
     class tableCls(ModelTable):
         #hide_fields=['rules','content','componentname','componentparams','templateid','ismutex']
-        fields_sort=['id','title','subtitle','enabled','begintime','endtime','banner','target','sort','remark','editorid','creatorid','createtime','edittime']
+        fields_sort=['id','title','subtitle','enabled','begintime','endtime','banner','image','target','displaytype','sort','remark','editorid','creatorid','createtime','edittime']
         model = TbActivityV2
         exclude=['url']
         pop_edit_field = 'id'
@@ -56,10 +56,10 @@ class ActiviyV2Page(TablePage):
             dc={
                 'id':60,
                 'title':140,
-                
                 'begintime':140,
                 'endtime':140,
-                'banner':120,
+                'banner':140,
+                'image':140,
                 'remark':100,
                 'createtime':140,
                 'edittime':140,
@@ -153,13 +153,17 @@ class ActivitySettingForm(ModelFields):
 #####################################
 @director_view('update_activity_file_v2')
 def update_activity_file_v2(**kws):
+    has_download_url=[]
+    root_path = os.path.join(settings.MEDIA_ROOT, 'public/activityv2')
     
     index_url = urljoin(settings.SELF_URL, '/actv2/index')
-    
-    root_path = os.path.join(settings.MEDIA_ROOT, 'public/activityv2')
-    has_download_url=[]
     spd = StaticHtmlBuilder(url= index_url, root_path= root_path,downloaded_urls=has_download_url)
     spd.run()
+    
+    index_url = urljoin(settings.SELF_URL, '/actv2/index1')
+    spd = StaticHtmlBuilder(url= index_url, root_path= root_path,downloaded_urls=has_download_url)
+    spd.run()    
+    
     for itm in TbActivityV2.objects.filter(enabled=1):
         page_url =  urljoin(settings.SELF_URL, '/actv2/%s' % itm.pk )
         spd = StaticHtmlBuilder(url= page_url, root_path= root_path,downloaded_urls=has_download_url)

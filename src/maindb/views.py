@@ -26,10 +26,15 @@ def recieve_ckeditor_img(request):
 
 
 class Notice(View):
-    def get(self, request, name = None): 
-        if not name or name == 'index.html':
+    def get(self, request, name = None):
+        name = name or 'index'
+        if name.startswith('index'):
             ls = []
-            for itm in TbNotice.objects.filter(status=1).order_by('-createtime'):
+            if name =='index':
+                query = TbNotice.objects.filter(status=1,displaytype=0).order_by('-createtime')
+            else:
+                query = TbNotice.objects.filter(status=1,displaytype=1).order_by('-createtime')
+            for itm in query:
                 ls.append({'title':itm.title,
                            'url':  '%s.html?t=%s' % (itm.pk , int(time.time()) ), #self.get_html_name(itm.title),
                            'update_date':itm.createtime.strftime('%Y-%m-%d')})      
@@ -88,18 +93,35 @@ class ActivityIndex(View):
 
 class Activity(View):
     def get(self, request, pk = None): 
-        act = TbActivityV2.objects.get(pk=pk)
-        baseengine = BaseEngine()
-        baseengine.request = self.request
+        if pk.startswith('index'):
+            if pk =='index':
+                query = TbActivityV2.objects.filter(displaytype=0).order_by('sort')
+            else:
+                query = TbActivityV2.objects.filter(displaytype=1).order_by('sort')
+            baseengine = BaseEngine()
+            baseengine.request = self.request
+            rows=[]
+            for row in query:
+                dc= sim_dict(row)
+                dc['url'] = '%s.html?%s'%(row.pk,time.time())
+                rows.append(dc)
+            ctx = {
+                'rows':rows,
+                'js_config':baseengine.getJsConfig()
+            }        
+            return render(request,'maindb/activity_v2/index.html',context=ctx)                
+                
+        else:
+            act = TbActivityV2.objects.get(pk=pk)
+            baseengine = BaseEngine()
+            baseengine.request = self.request
+            
+            ctx = {
+                'row':sim_dict(act),
+                'js_config':baseengine.getJsConfig()
+            }
+            return render(request, 'maindb/activity_v2/white_template.html',context=ctx)
         
-        ctx = {
-            'row':sim_dict(act),
-            'js_config':baseengine.getJsConfig()
-        }
-        template = self.get_template()
-        return render(request, template,context=ctx)
-    def get_template(self):
-        return 'maindb/activity_v2/white_template.html'
 
 class TestAppH5View(View):
     def get(self,request):
