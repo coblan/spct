@@ -197,13 +197,14 @@ class TbActivityV2(models.Model):
     target = models.CharField(db_column='Target',verbose_name='活动对象', max_length=256, blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(db_column='Content', max_length=2048, blank=True, null=True,verbose_name='活动详情')  # Field name made lowercase.
     rules = models.CharField(db_column='Rules', max_length=3000,verbose_name='规则')  # Field name made lowercase.
-    banner = PictureField(db_column='Banner', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    banner = PictureField(db_column='Banner', max_length=512, blank=True, null=True,verbose_name='宣传画')  # Field name made lowercase.
     url = models.CharField(db_column='Url', max_length=512)  # Field name made lowercase.
-    componentname = models.CharField(db_column='ComponentName', max_length=64, blank=True, null=True,verbose_name='组件名',choices=ACTIVITY_COM)  # Field name made lowercase.
-    componentparams = models.CharField(db_column='ComponentParams', max_length=4000, blank=True, null=True,verbose_name='组件参数')  # Field name made lowercase.
-    templateid = models.IntegerField(db_column='TemplateId')  # Field name made lowercase.
-    ismutex = models.BooleanField(db_column='IsMutex')  # Field name made lowercase.
-    sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
+    componentname = models.CharField(db_column='ComponentName', max_length=64, blank=True, null=True,verbose_name='前端组件名',choices=ACTIVITY_COM)  # Field name made lowercase.
+    componentparams = models.CharField(db_column='ComponentParams', max_length=4000, blank=True, null=True,verbose_name='前端组件参数')  # Field name made lowercase.
+    #templateid = models.IntegerField(db_column='TemplateId')  # Field name made lowercase.
+    templateid = models.ForeignKey(to='TbActivityTemplate',db_constraint=False,db_column='TemplateId',verbose_name='程序集')  # Field name made lowercase.
+    ismutex = models.BooleanField(db_column='IsMutex',verbose_name='与其他活动互斥')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort',verbose_name='排序')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
     edittime = models.DateTimeField(db_column='EditTime',auto_now=True,verbose_name='更新时间')  # Field name made lowercase.
     creatorid = CreateUserField(db_column='CreatorId',verbose_name='创建者')  # Field name made lowercase.
@@ -229,6 +230,21 @@ class TbActivitySettings(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Activity_Settings'
+
+class TbActivityTemplate(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=128)  # Field name made lowercase.
+    assembly = models.CharField(db_column='Assembly', max_length=128)  # Field name made lowercase.
+    typefullname = models.CharField(db_column='TypeFullName', max_length=128)  # Field name made lowercase.
+    remark = models.CharField(db_column='Remark', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Activity_Template'
+    
+    def __str__(self):
+        return self.title
 
 class TbAreacitycode(models.Model):
     areacitycodeid = models.AutoField(db_column='AreaCityCodeID', primary_key=True)  # Field name made lowercase.
@@ -1549,7 +1565,7 @@ class TbTicketstake(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime', verbose_name='建立时间')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', verbose_name='更新时间')  # Field name made lowercase.
     confirmoddstid = models.BigIntegerField(db_column='ConfirmOddsTid')  # Field name made lowercase.
-    oddskind = models.IntegerField(db_column='OddsKind')  # Field name made lowercase.
+    oddskind = models.IntegerField(db_column='OddsKind',choices=ODDSKIND,verbose_name='早盘/走地')  # Field name made lowercase.
     accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     specialbetname = models.CharField(db_column='SpecialBetName', max_length=50, blank=True, null=True,verbose_name='盘口')  # Field name made lowercase.
     homescore = models.IntegerField(db_column='HomeScore')  # Field name made lowercase.

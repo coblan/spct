@@ -46,11 +46,22 @@ class ActiviyV2Page(TablePage):
     
     
     class tableCls(ModelTable):
+        hide_fields=['rules','content','componentname','componentparams','templateid','ismutex']
         model = TbActivityV2
         exclude=['url']
         pop_edit_field = 'id'
         
         def dict_head(self, head):
+            dc={
+                'begintime':120,
+                'endtime':120,
+                'banner':120,
+                'createtime':120,
+                'edittime':120,
+            }
+            if dc.get(head['name']):
+                head['width']=dc.get(head['name'])
+                
             if head['name']=='id':
                 head['editor']='com-table-switch-to-tab'
                 head['tab_name']='activity_form'
@@ -99,6 +110,8 @@ class ActivityV2Form(ModelFields):
         
     def dict_head(self, head):
         if head['name']=='rules':
+            head['editor']='richtext'
+        if head['name']=='content':
             head['editor']='richtext'
         if head['name']=='banner':
             head['up_url'] = '/d/upload?path=public/images'               

@@ -259,7 +259,8 @@ class AccountPage(TablePage):
 
 
 class AccoutBaseinfo(ModelFields):
-    field_sort = ['account', 'nickname', 'amount', 'agentamount', 'status', 'agent', 'verify', 'viplv', 'bonusrate',
+    #'agentamount', 
+    field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'bonusrate',
                   'isenablewithdraw','accounttype', 'createtime']
     readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount']
 

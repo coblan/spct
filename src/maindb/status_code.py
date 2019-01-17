@@ -198,3 +198,9 @@ BANNER_DISPLAYTYPE=(
 ACTIVITY_COM=(
     ('com-shouchun','首存再存'),
 )
+
+
+ODDSKIND=(
+    (1,'早盘'),
+    (2,'走地')
+)

@@ -258,7 +258,7 @@ class TicketstakeTable(TicketTabBase):
     """ 子注单 """
     model = TbTicketstake
     exclude = []
-    fields_sort = ['tournament', 'matchid', 'matchname', 'whole_score','oddsid','oddsid__outcomedesc','specialbetname', 'odds', 'confirmodds', 'realodds', 
+    fields_sort = ['tournament', 'matchid', 'matchname', 'whole_score','oddsid','oddsid__outcomedesc','oddskind','specialbetname', 'odds', 'confirmodds', 'realodds', 
                    'status', 'createtime', 'updatetime']
 
     def getExtraHead(self):

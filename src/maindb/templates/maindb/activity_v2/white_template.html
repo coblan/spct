@@ -134,7 +134,7 @@
 
     <div class="sect">
         <div class="title">活动详情</div>
-        <div v-text="row.content"></div>
+        <div v-html="row.content"></div>
         <component :is="row.componentname" :ctx="row.componentparams"></component>
         <div v-text="row.remark"></div>
     </div>
