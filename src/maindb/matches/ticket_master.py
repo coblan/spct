@@ -371,7 +371,7 @@ class TicketparlayTable(ModelTable):
 
 
 class MatchForm(ModelFields):
-    field_sort = ['matchdate', 'team1zh', 'team2zh', 'matchscore', 'winner', 'statuscode', 'roundinfo'
+    field_sort = ['matchdate', 'team1zh', 'team2zh', 'period1score','matchscore', 'winner', 'statuscode', 'roundinfo'
                                                                                            'livebet', 'generatedat',
                   'tournamentzh']
     readonly = field_sort

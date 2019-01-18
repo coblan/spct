@@ -46,7 +46,8 @@ Vue.component('com-shouchun',{
             var dc ={
                 0:'参加活动',
                 1:'已参加',
-                2:'已发放'
+                2:'已发放',
+                3:'已过期'
             }
             return dc[row.State]
         },
