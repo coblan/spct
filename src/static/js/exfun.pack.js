@@ -1946,7 +1946,7 @@ var vuetool = exports.vuetool = {
         }
     },
     vueEventRout: function vueEventRout(self) {
-        if (!self.head.event_slots || self.parStore) {
+        if (!self.head.event_slots || !self.parStore) {
             return;
         }
         ex.each(self.head.event_slots, function (router) {

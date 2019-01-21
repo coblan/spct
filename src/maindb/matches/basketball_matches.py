@@ -1,6 +1,6 @@
 from helpers.director.shortcut import page_dc, director, director_view
 from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, quit_ticket
-from ..models import TbMatchesBasketball, TbOddsBasketball
+from ..models import TbMatchesBasketball, TbOddsBasketball,TbTournamentBasketball
 from maindb.mongoInstance import updateMatchBasketMongo
 from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points
 from ..redisInstance import redisInst
@@ -165,7 +165,18 @@ class BasketMatchsPage(MatchsPage):
 
             ]
             return ops
-
+        
+        class filters(MatchsPage.tableCls.filters):
+            def dict_head(self, head):
+                head = super().dict_head(head)
+                if head['name'] == 'tournamentid':
+                    head['director_name']='get_basketball_league_options'
+                return head
+    
+@director_view('get_basketball_league_options')
+def get_basketball_league_options(source=0):
+    ls =[{'label':str(x) ,'value':x.tournamentid} for x in TbTournamentBasketball.objects.filter(source=source)]
+    return ls
 
 class BasketMatchForm(MatchForm):
     proc_map = {

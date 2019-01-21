@@ -18,7 +18,7 @@ class League(TablePage):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
-        fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet', 'sort', 'typegroupswitch']
+        fields_sort = ['tournamentid','source', 'tournamentname', 'issubscribe', 'openlivebet', 'sort', 'typegroupswitch']
 
         # hide_fields = ['tournamentid']
 
@@ -78,7 +78,7 @@ class League(TablePage):
 
 
 class LeagueForm(ModelFields):
-    readonly = ['tournamentid']
+    readonly = ['tournamentid','source']
 
     def dict_head(self, head):
         if head['name'] == 'typegroupswitch':

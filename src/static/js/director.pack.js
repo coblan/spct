@@ -3213,11 +3213,14 @@ var field_sigle_chosen = {
         });
     },
     watch: {
-        //value:function(nv){
-        //    this.setValue(nv)
-        //}
+        value: function value(nv) {
+            this.setValue(nv);
+        }
     },
     computed: {
+        value: function value() {
+            return this.row[this.head.name];
+        },
         label_text: function label_text() {
             var opt = ex.findone(this.head.options, { value: this.row[this.head.name] });
             if (opt) {
@@ -4071,7 +4074,36 @@ Vue.component('com-filter-search-select', com_select);
 
 var com_select = {
     props: ['head', 'search_args'],
-    template: '<com-field-single-select2 :head="head" :row="search_args"></com-field-single-select2>\n    '
+    template: '<com-field-single-select2 ref="select2" :head="head" :row="search_args"></com-field-single-select2>\n    ',
+    data: function data() {
+        var self = this;
+        return {
+            order: this.head.order || false,
+            parStore: ex.vueParStore(this)
+        };
+    },
+    mounted: function mounted() {
+        var self = this;
+        if (this.head.event_slots) {
+            ex.vueEventRout(self);
+        }
+    },
+    methods: {
+        get_options: function get_options(_ref) {
+            var _ref$post_data = _ref.post_data,
+                post_data = _ref$post_data === undefined ? {} : _ref$post_data;
+
+            var self = this;
+            ex.director_call(this.head.director_name, post_data, function (resp) {
+                self.head.options = resp;
+            });
+        },
+        clear_value: function clear_value() {
+            Vue.delete(this.search_args, this.head.name);
+            //this.$refs.select2.setValue(undefined)
+            //delete this.search_args[this.head.name]
+        }
+    }
 };
 
 Vue.component('com-filter-single-select2', com_select);

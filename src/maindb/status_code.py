@@ -204,3 +204,8 @@ ODDSKIND=(
     (1,'早盘'),
     (2,'走地')
 )
+
+DATA_SOURCE=(
+    (1,'Sportative'),
+    (2,'Betrader')
+)
