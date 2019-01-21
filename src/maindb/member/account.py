@@ -140,6 +140,53 @@ class AccountPage(TablePage):
             range_fields = ['createtime']
 
         def inn_filter(self, query):
+            """
+            现在的解决办法是利用 笛卡尔积的特性，用x ，y 轴，相互除，就能得出正确的 聚合值，
+            下面是 使用SQL来获取聚合值，也比较麻烦。
+            
+declare @tb_account table(
+	AccountID bigint
+)
+
+insert into @tb_account
+SELECT
+	AccountID
+FROM 
+	TB_Account
+
+
+declare @tb_recharge table(
+	AccountID bigint,
+	camount DECIMAL
+)
+
+INSERT into @tb_recharge
+SELECT
+	a.AccountID,
+	SUM(ConfirmAmount) as camount
+FROM TB_Recharge a
+	LEFT JOIN @tb_account b
+ON a.AccountID=b.AccountID
+GROUP BY
+	a.AccountID
+	
+
+SELECT
+a.AccountID,
+b.camount,
+SUM(a.amount)
+FROM TB_Withdraw a
+LEFT JOIN @tb_recharge b
+ON a.AccountID=b.AccountID
+GROUP BY
+	a.AccountID,
+	b.camount
+
+
+ 
+ 
+ 
+            """
             #withdraw_query = TbWithdraw.objects.filter(accountid=OuterRef('pk')).order_by().values('accountid')
             #withdraw_query=withdraw_query.annotate(amount_sum=Sum('amount')).values('amount_sum')
             #query= query.annotate(
