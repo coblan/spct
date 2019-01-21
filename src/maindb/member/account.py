@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 import re
 
-from django.db.models import Sum, Case, When, F
+from django.db.models import Sum, Case, When, F,Count,OuterRef,Subquery
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director
@@ -23,7 +23,7 @@ from ..money.withdraw import WithdrawPage
 from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
 from maindb.send_phone_message import send_message_password, send_message_fundspassword
-
+from django.db.models import DecimalField
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -107,7 +107,7 @@ def account_tab(self):
 
 
 class AccountPage(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
 
     def get_label(self):
         return '会员管理'
@@ -140,14 +140,33 @@ class AccountPage(TablePage):
             range_fields = ['createtime']
 
         def inn_filter(self, query):
-            return query.annotate(
-                rechargeamount=Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount')), default=0))) \
-                .annotate(withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
+            #withdraw_query = TbWithdraw.objects.filter(accountid=OuterRef('pk')).order_by().values('accountid')
+            #withdraw_query=withdraw_query.annotate(amount_sum=Sum('amount')).values('amount_sum')
+            #query= query.annotate(
+                #bbb=Count('tbrecharge__confirmamount'),
+                #rechargeamount=Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount') ),output_field=DecimalField(decimal_places=2, max_digits=8),  default=0))
+            #).annotate(
+                #withdrawamount= Subquery(
+                    #withdraw_query
+                                         #)
+                       #)
+                ##withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
+            #return query
+            return query.annotate(rechargeamount_count=Count('tbrecharge__rechargeid',distinct=True),
+                                  withdrawamount_count=Count('tbwithdraw__withdrawid',distinct=True))\
+                   .annotate( rechargeamount_total= Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount')), default=0)),
+                              withdrawamount_total=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)) )\
+                   .annotate( rechargeamount= Case(When(withdrawamount_count=0,then= F('rechargeamount_total') ),output_field=DecimalField(decimal_places=2, max_digits=8) ,default =  F('rechargeamount_total') / F('withdrawamount_count') ),
+                              withdrawamount= Case(When(rechargeamount_count=0,then= F('withdrawamount_total') ),output_field=DecimalField(decimal_places=2, max_digits=8) ,default= F('withdrawamount_total')/ F('rechargeamount_count') ) 
+                              )
+                #rechargeamount=Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount')), default=0))) \
+                #.annotate(withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
 
         def dict_row(self, inst):
             tmp = list(inst.account)
             tmp[0:-4] = '*' * (len(tmp) - 4)
             out_str = ''.join(tmp)
+            
             return {
                 'amount': str(inst.amount),
                 'account': out_str,
@@ -185,18 +204,18 @@ class AccountPage(TablePage):
 
             return head
 
-        def statistics(self, query):
-            dc = query.aggregate(total_amount=Sum('amount'), total_agentamount=Sum('agentamount'))
-            mapper = {
-                'amount': 'total_amount',
-                'agentamount': 'total_agentamount'
-            }
-            for k in dc:
-                dc[k] = str(round(dc.get(k) or 0, 2))
-            footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
-            self.footer = footer
-            self.footer = ['合计'] + self.footer
-            return query.order_by('-pk')
+        #def statistics(self, query):
+            #dc = query.aggregate(total_amount=Sum('amount'), total_agentamount=Sum('agentamount'))
+            #mapper = {
+                #'amount': 'total_amount',
+                #'agentamount': 'total_agentamount'
+            #}
+            #for k in dc:
+                #dc[k] = str(round(dc.get(k) or 0, 2))
+            #footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
+            #self.footer = footer
+            #self.footer = ['合计'] + self.footer
+            #return query.order_by('-pk')
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
