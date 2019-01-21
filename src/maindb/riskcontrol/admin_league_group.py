@@ -185,7 +185,7 @@ class LeagueidInGroupForm(Fields):
 class LeagueGroupSpreadForm(Fields):
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
         super().__init__(dc, pk, crt_user, nolimit, *args, **kw)     
-        self.oddstypes = TbOddstypegroup.objects.all().order_by('periodtype')
+        self.oddstypes = TbOddstypegroup.objects.filter(sportid=0,isspecial=0).order_by('periodtype')
         if self.kw.get('groupid'):
             pass
         

@@ -1122,6 +1122,8 @@ class TbOddstypegroup(models.Model):
     bettype = models.IntegerField(db_column='BetType', verbose_name='编号')  # Field name made lowercase.
     spread = models.DecimalField(db_column='Spread', max_digits=18, decimal_places=4,
                                  verbose_name='水位')  # Field name made lowercase.
+    isspecial = models.BooleanField(db_column='IsSpecial')  # Field name made lowercase.
+    gametypeid = models.IntegerField(db_column='GameTypeId')  # Field name made lowercase.    
 
     class Meta:
         managed = False
