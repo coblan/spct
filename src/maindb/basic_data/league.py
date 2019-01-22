@@ -18,7 +18,7 @@ class League(TablePage):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
-        fields_sort = ['tournamentid','source', 'tournamentname', 'issubscribe', 'openlivebet', 'sort', 'typegroupswitch']
+        fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet', 'sort', 'typegroupswitch']
 
         # hide_fields = ['tournamentid']
 
@@ -26,7 +26,10 @@ class League(TablePage):
             return [{'name': 'openlivebet', 'label': '走地', 'editor': 'com-table-bool-shower'}]
 
         def inn_filter(self, query):
-            return query.order_by('-sort')
+            return query.extra(
+                where=["TB_SportTypes.source= TB_Tournament.source","TB_SportTypes.SportID=0"],
+                tables=['TB_SportTypes']                
+            )
 
         def dict_head(self, head):
             dc = {
@@ -50,7 +53,20 @@ class League(TablePage):
             }
 
         def get_operation(self):
-            return []
+            return [
+                {'fun':'selected_set_and_save','label':'订阅','editor':'com-op-btn',
+                 'confirm_msg':'确认订阅这些联赛?',
+                 'row_match':'many_row','pre_set':'rt={issubscribe:1}'},
+                {'fun':'selected_set_and_save','label':'取消订阅','editor':'com-op-btn',
+                 'confirm_msg':'确认取消订阅这些联赛?',
+                 'row_match':'many_row','pre_set':'rt={issubscribe:0}'},
+                {'fun':'selected_set_and_save','label':'走地','editor':'com-op-btn',
+                 'confirm_msg':'确认开启这些联赛的走地?',
+                 'row_match':'many_row','pre_set':'rt={closelivebet:0}'},
+                {'fun':'selected_set_and_save','label':'取消走地','editor':'com-op-btn',
+                  'confirm_msg':'确认关闭这些联赛的走地?',
+                 'row_match':'many_row','pre_set':'rt={closelivebet:1}'},
+            ]
 
         class sort(RowSort):
             names = ['sort']
@@ -103,7 +119,7 @@ class LeagueForm(ModelFields):
 
     class Meta:
         model = TbTournament
-        exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid']
+        exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid','source']
 
 
 field_map.update({

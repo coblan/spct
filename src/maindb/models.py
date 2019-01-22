@@ -785,20 +785,6 @@ class TbMatchesoddsswitch(models.Model):
         managed = False
         db_table = 'TB_MatchesOddsSwitch'
 
-
-# class TbMatchesoddsswitch(models.Model):
-# matchesoddsswitchid = models.AutoField(db_column='MatchesOddsSwitchID', primary_key=True)  # Field name made lowercase.
-# sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
-# matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
-# oddstypegroup = models.IntegerField(db_column='OddsTypeGroup')  # Field name made lowercase.
-# status = models.IntegerField(db_column='Status')  # Field name made lowercase.
-# createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
-# updatetime = models.DateTimeField(db_column='UpdateTime')  # Field name made lowercase.
-
-# class Meta:
-# managed = False
-# db_table = 'TB_MatchesOddsSwitch'
-
 class TbMatchesturnover(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     match = models.ForeignKey(TbMatches, db_column='MatchID', db_constraint=False, to_field='matchid')
@@ -1638,7 +1624,7 @@ class TbTournament(models.Model):
     sort = models.IntegerField(db_column='Sort', null=True, verbose_name='排序')  # Field name made lowercase.
     typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True,
                                        verbose_name='已关闭玩法')  # Field name made lowercase.
-    closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True, verbose_name= '关闭滚球')  # Field name made lowercase.
+    #closelivebet = models.IntegerField(db_column='CloseLiveBet', blank=True, null=True, verbose_name= '关闭滚球')  # Field name made lowercase.
     specialcategoryid = models.IntegerField(db_column='SpecialCategoryID')  # Field name made lowercase.    
     source = models.IntegerField(db_column='Source',choices=DATA_SOURCE,verbose_name='数据源')  # Field name made lowercase.
     
@@ -2152,8 +2138,8 @@ class TbMatchesBasketball(models.Model):
     sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID')  # Field name made lowercase.
     
-    tournamentid = models.ForeignKey(to='TbTournamentBasketball', db_constraint=False, db_column='TournamentID')
-    #tournamentid = models.IntegerField(db_column='TournamentID')  # Field name made lowercase.
+    #tournamentid = models.ForeignKey(to='TbTournamentBasketball', db_constraint=False, db_column='TournamentID')
+    tournamentid = models.IntegerField(db_column='TournamentID')  # Field name made lowercase.
     tournamentzh = models.CharField(db_column='TournamentZH', max_length=100, blank=True, null=True,verbose_name='联赛')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID', primary_key=True)  # Field name made lowercase.
     prematchdate = models.DateTimeField(db_column='PreMatchDate')  # Field name made lowercase.
@@ -2270,6 +2256,8 @@ class TbSporttypes(models.Model):
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True,auto_now=True,verbose_name='更新时间')  # Field name made lowercase.
     #updateuser = models.IntegerField(db_column='UpdateUser', blank=True, null=True)  # Field name made lowercase.
     updateuser = UpdateUserField(db_column='UpdateUser',verbose_name='更新人', blank=True, null=True)  # Field name made lowercase.
+    source = models.IntegerField(db_column='Source',choices=DATA_SOURCE)  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_SportTypes'

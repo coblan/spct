@@ -142,7 +142,7 @@ class AccountPage(TablePage):
         def inn_filter(self, query):
             """
             现在的解决办法是利用 笛卡尔积的特性，用x ，y 轴，相互除，就能得出正确的 聚合值，
-            下面是 使用SQL来获取聚合值，也比较麻烦。
+            下面是 使用SQL临时表来获取聚合值，留个印记。
             
 declare @tb_account table(
 	AccountID bigint
@@ -181,31 +181,63 @@ ON a.AccountID=b.AccountID
 GROUP BY
 	a.AccountID,
 	b.camount
+---------------------------------------------------------
+下面是 使用SQL 获取聚合值，留个印记。
 
+SELECT 
+a.AccountID,
+SUM(c.ConfirmAmount) as confirmAmount,
+b.total_amount
+FROM TB_Account a
+LEFT JOIN TB_Recharge c
+ON a.AccountID = c.AccountID
+LEFT JOIN (
+SELECT AccountID,
+	SUM(Amount) as total_amount
+FROM TB_Withdraw
+GROUP BY
+	AccountID
+) b 
+ON a.AccountID = b.AccountID
+WHERE
+a.AccountID=1320
+GROUP BY
+a.AccountID,
+b.total_amount
 
- 
- 
- 
             """
-            #withdraw_query = TbWithdraw.objects.filter(accountid=OuterRef('pk')).order_by().values('accountid')
+            #withdraw_query = TbWithdraw.objects.filter(accountid=OuterRef('pk')).values('accountid')
             #withdraw_query=withdraw_query.annotate(amount_sum=Sum('amount')).values('amount_sum')
             #query= query.annotate(
                 #bbb=Count('tbrecharge__confirmamount'),
-                #rechargeamount=Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount') ),output_field=DecimalField(decimal_places=2, max_digits=8),  default=0))
-            #).annotate(
+                #rechargeamount=Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount') ),output_field=DecimalField(decimal_places=2, max_digits=8),  default=0)))
+            #query=query.annotate(
                 #withdrawamount= Subquery(
                     #withdraw_query
                                          #)
                        #)
-                ##withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
-            #return query
-            return query.annotate(rechargeamount_count=Count('tbrecharge__rechargeid',distinct=True),
-                                  withdrawamount_count=Count('tbwithdraw__withdrawid',distinct=True))\
-                   .annotate( rechargeamount_total= Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount')), default=0)),
-                              withdrawamount_total=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)) )\
-                   .annotate( rechargeamount= Case(When(withdrawamount_count=0,then= F('rechargeamount_total') ),output_field=DecimalField(decimal_places=2, max_digits=8) ,default =  F('rechargeamount_total') / F('withdrawamount_count') ),
-                              withdrawamount= Case(When(rechargeamount_count=0,then= F('withdrawamount_total') ),output_field=DecimalField(decimal_places=2, max_digits=8) ,default= F('withdrawamount_total')/ F('rechargeamount_count') ) 
-                              )
+            
+            query=query.extra(
+                           select={
+                               'rechargeamount': 'SELECT SUM(confirmamount) FROM TB_Recharge WHERE TB_Recharge.AccountID = TB_Account.AccountID AND TB_Recharge.status=2  GROUP BY TB_Recharge.AccountID'
+                           },
+                       ) .extra(
+                           select={
+                               'withdrawamount': 'SELECT SUM(amount) FROM TB_Withdraw WHERE TB_Withdraw.AccountID = TB_Account.AccountID AND TB_Withdraw.status=2 GROUP BY TB_Withdraw.AccountID'
+                           },
+                       )            
+            
+                #withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
+            return query
+            
+            #return query.annotate(rechargeamount_count=Count('tbrecharge__rechargeid',distinct=True),
+                                  #withdrawamount_count=Count('tbwithdraw__withdrawid',distinct=True))\
+                   #.annotate( rechargeamount_total= Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount')), default=0)),
+                              #withdrawamount_total=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)) )\
+                   #.annotate( rechargeamount= Case(When(withdrawamount_count=0,then= F('rechargeamount_total') ),output_field=DecimalField(decimal_places=2, max_digits=8) ,default =  F('rechargeamount_total') / F('withdrawamount_count') ),
+                              #withdrawamount= Case(When(rechargeamount_count=0,then= F('withdrawamount_total') ),output_field=DecimalField(decimal_places=2, max_digits=8) ,default= F('withdrawamount_total')/ F('rechargeamount_count') ) 
+                              #)
+        
                 #rechargeamount=Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount')), default=0))) \
                 #.annotate(withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
 

@@ -4,7 +4,7 @@ import re
 from django.db import connections
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter
 from helpers.director.table.row_search import SelectSearch
-from ..models import TbMatches, MATCH_STATUS,TbTicketmaster
+from ..models import TbMatches, MATCH_STATUS,TbTicketmaster,TbTournament
 from helpers.director.base_data import director
 from django.utils import timezone
 from helpers.director.table.table import PlainTable
@@ -31,11 +31,6 @@ class MatchesStatisticsPage(TablePage):
                     head['editor'] = 'com-table-switch-to-tab'
                     head['tab_name'] = 'detailStatic'
                     head['ctx_name'] = 'match_statistic'
-                #head['named_tabs'] = 'match_statistic'
-          
-                #detail_statistic = DetailStatistic(crt_user= self.crt_user)
-                #head['editor'] = 'com-table-pop-table'
-                #head['table_ctx'] = detail_statistic.get_head_context()
             return head
 
         @classmethod
@@ -71,7 +66,13 @@ class MatchesStatisticsPage(TablePage):
                     head['editor'] = 'com-filter-single-select2'
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
-                    head['order'] = True
+                    head['options']=[
+                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.extra(
+                            where=["TB_SportTypes.source= TB_Tournament.source","TB_SportTypes.SportID=0"],
+                            tables=['TB_SportTypes'])
+                    ]                    
+                    #head['order'] = True
+                    
                 return head
 
         class sort(RowSort):

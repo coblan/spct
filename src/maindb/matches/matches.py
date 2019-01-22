@@ -55,7 +55,7 @@ class MatchsPage(TablePage):
         model = TbMatches
         exclude = []  # 'ishidden', 'closelivebet'
         fields_sort = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate', 'period1score', 'matchscore',
-                       'winner', 'statuscode', 'isrecommend', 'livebet', 'isshow', 'openlivebet', 'marketstatus','source']
+                       'winner', 'statuscode', 'isrecommend', 'livebet', 'isshow', 'openlivebet', 'marketstatus']
         pop_edit_field = 'matchid'
 
         def getExtraHead(self):
@@ -69,11 +69,17 @@ class MatchsPage(TablePage):
                 search_args['_end_matchdate']=now.strftime("%Y-%m-%d 23:59:59")
             return search_args
                 
-            
+        
+        def inn_filter(self, query):
+            return query.extra(
+                where=["TB_SportTypes.source= TB_Matches.source","TB_SportTypes.SportID=0"],
+                tables=['TB_SportTypes']
+            )
+        
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['isrecommend', 'livebet', 'source','statuscode','tournamentid']
-            fields_sort=['isrecommend', 'livebet', 'statuscode', 'source','tournamentid']
+            names = ['isrecommend', 'livebet','statuscode','tournamentid']
+            fields_sort=['isrecommend', 'livebet', 'statuscode','tournamentid']
             def getExtraHead(self):
                 return [
                     {'name':'specialcategoryid','editor':'com-filter-select','label':'类型',
@@ -94,21 +100,25 @@ class MatchsPage(TablePage):
                     return query
                 
             def dict_head(self, head):
-                if head['name']=='source':
-                    head['event_slots']=[
-                             {'event':'input','express':'scope.ts.$emit("data-source.changed",scope.event)'},
-                        ]
+                #if head['name']=='source':
+                    #head['event_slots']=[
+                             #{'event':'input','express':'scope.ts.$emit("data-source.changed",scope.event)'},
+                        #]
                 if head['name'] == 'tournamentid':
                     #head['editor'] = 'com-filter-search-select'
                     head['editor'] = 'com-filter-single-select2'
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
-                    head['options']=[]
-                    head['director_name']='get_football_league_options'
-                    head['event_slots']=[
-                        {'par_event':'data-source.changed','express':'rt=scope.vc.clear_value()'},
-                        {'par_event':'data-source.changed','express':'rt=scope.vc.get_options({post_data:{source:scope.event} })'},
-                        ]
+                    head['options']=[
+                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.extra(
+                            where=["TB_SportTypes.source= TB_Tournament.source","TB_SportTypes.SportID=0"],
+                            tables=['TB_SportTypes'])
+                    ]
+                    #head['director_name']='get_football_league_options'
+                    #head['event_slots']=[
+                        #{'par_event':'data-source.changed','express':'rt=scope.vc.clear_value()'},
+                        #{'par_event':'data-source.changed','express':'rt=scope.vc.get_options({post_data:{source:scope.event} })'},
+                        #]
                     #head['order'] = False
                     #head['options']=[{'label':x.get('tournamentname'),'value':x.get('tournamentid')} for x in TbTournament.objects.values('tournamentname','tournamentid').order_by('tournamentname')] 
                          
@@ -302,10 +312,10 @@ class MatchsPage(TablePage):
                 'openlivebet': not bool(inst.closelivebet)
             }
  
-@director_view('get_football_league_options')
-def get_football_league_options(source=0):
-    ls =[{'label':str(x) ,'value':x.tournamentid} for x in TbTournament.objects.filter(source=source)]
-    return ls
+#@director_view('get_football_league_options')
+#def get_football_league_options(source=0):
+    #ls =[{'label':str(x) ,'value':x.tournamentid} for x in TbTournament.objects.filter(source=source)]
+    #return ls
       
   
 @director_view('football_quit_ticket')

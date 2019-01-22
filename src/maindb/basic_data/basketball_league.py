@@ -10,6 +10,11 @@ class BasekballLeague(League):
     
     class tableCls(League.tableCls):
         model = TbTournamentBasketball
+        def inn_filter(self, query):
+            return query.extra(
+                where=["TB_SportTypes.source= TB_Tournament_Basketball.source","TB_SportTypes.SportID=1"],
+                tables=['TB_SportTypes']                
+            )        
 
 class BasketballForm(LeagueForm):
     class Meta:

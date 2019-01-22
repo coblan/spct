@@ -30,6 +30,12 @@ class BasketMatchsPage(MatchsPage):
     class tableCls(MatchsPage.tableCls):
         model = TbMatchesBasketball
         
+        def inn_filter(self, query):
+            return query.extra(
+                where=["TB_SportTypes.source= TB_Matches_Basketball.source","TB_SportTypes.SportID=1"],
+                tables=['TB_SportTypes'],
+            )        
+        
         def get_operation(self):
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
             
@@ -170,13 +176,18 @@ class BasketMatchsPage(MatchsPage):
             def dict_head(self, head):
                 head = super().dict_head(head)
                 if head['name'] == 'tournamentid':
-                    head['director_name']='get_basketball_league_options'
+                    #head['director_name']='get_basketball_league_options'
+                    head['options']=[
+                        {'label':str(x) ,'value':x.tournamentid} for x in TbTournamentBasketball.objects.extra(
+                            where=["TB_SportTypes.source= TB_Tournament_Basketball.source","TB_SportTypes.SportID=1"],
+                            tables=['TB_SportTypes'])                        
+                    ]
                 return head
     
-@director_view('get_basketball_league_options')
-def get_basketball_league_options(source=0):
-    ls =[{'label':str(x) ,'value':x.tournamentid} for x in TbTournamentBasketball.objects.filter(source=source)]
-    return ls
+#@director_view('get_basketball_league_options')
+#def get_basketball_league_options(source=0):
+    #ls =[{'label':str(x) ,'value':x.tournamentid} for x in TbTournamentBasketball.objects.filter(source=source)]
+    #return ls
 
 class BasketMatchForm(MatchForm):
     proc_map = {
