@@ -1616,10 +1616,10 @@ class TbTournament(models.Model):
     tournamentname = models.CharField(db_column='TournamentName', max_length=200,
                                       verbose_name='联赛名')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID',
                                              verbose_name='联赛ID')  # Field name made lowercase.
-    issubscribe = models.IntegerField(db_column='IsSubscribe', verbose_name='已订阅')  # Field name made lowercase.
+    issubscribe = models.IntegerField(db_column='IsSubscribe',default=1, verbose_name='已订阅')  # Field name made lowercase.
     closelivebet = models.IntegerField(db_column='CloseLiveBet', verbose_name='关闭滚球')  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort', null=True, verbose_name='排序')  # Field name made lowercase.
     typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True,
@@ -2199,7 +2199,7 @@ class TbTournamentBasketball(models.Model):
     tournamentid = models.IntegerField(db_column='TournamentID', verbose_name='联赛ID')  # Field name made lowercase.
     tournamentname = models.CharField(db_column='TournamentName', max_length=200, verbose_name = '联赛名称')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID', verbose_name='联赛ID')  # Field name made lowercase.
     issubscribe = models.IntegerField(db_column='IsSubscribe', verbose_name='已订阅')  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort', blank=True, null=True, verbose_name= '排序')  # Field name made lowercase.
