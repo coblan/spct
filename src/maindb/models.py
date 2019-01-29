@@ -428,6 +428,14 @@ class TbBlackuserlistLog(models.Model):
         db_table = 'TB_BlackUserList_Log'
 
 
+class TbBetstopreason(models.Model):
+    id = models.IntegerField(primary_key=True,db_column='ID')
+    description = models.CharField(max_length=2000, db_column='Description',blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'TB_BetStopReason'
+
 class TbCategory(models.Model):
     categoryid = models.IntegerField(db_column='CategoryID', primary_key=True)  # Field name made lowercase.
     categoryname = models.CharField(db_column='CategoryName', max_length=200)  # Field name made lowercase.
@@ -2214,6 +2222,22 @@ class TbTournamentBasketball(models.Model):
     
     def __str__(self):
         return self.tournamentname   
+
+    
+class TbTournamentLivebet(models.Model):
+    tournamentid = models.IntegerField(db_column='TournamentID', primary_key=True)  # Field name made lowercase.
+    tournamentname = models.CharField(db_column='TournamentName', max_length=1000, blank=True, null=True)  # Field name made lowercase.
+    categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID', blank=True, null=True)  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID', blank=True, null=True)  # Field name made lowercase.
+    isfeedon = models.IntegerField(db_column='IsFeedOn', blank=True, null=True)  # Field name made lowercase.
+    weights = models.FloatField(db_column='Weights', blank=True, null=True)  # Field name made lowercase.
+    islivebet = models.IntegerField(db_column='IsLiveBet', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Tournament_LiveBet'
 
 class TbUserConst(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
