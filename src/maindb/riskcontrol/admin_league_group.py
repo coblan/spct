@@ -179,9 +179,17 @@ class LeagueidInGroupForm(Fields):
         for k in new_league_list:
             if k not in self.league_list:
                 new_in.append(k)
+        
+        old_overlap=[]
+        for tie in TbLeagueidInGroup.objects.filter(leagueid__in=new_league_list).extra(select={'label':'SELECT TB_Tournament.TournamentName '},tables=['TB_Tournament'],where=['TB_Tournament.TournamentID =TB_LeagueId_In_Group.LeagueId'])\
+            .exclude(groupid=self.kw.get('groupid')):
+            old_overlap.append(tie.label)
+        if old_overlap:
+            raise UserWarning(','.join(old_overlap)+' 已经被其他联赛组选中')
+            #self.add_error('league_list',','.join(old_overlap)+' 已经被其他联赛组选中')
         self.new_in =new_in
         if TbLeagueidInGroup.objects.filter(leagueid__in=new_in).exists():
-            self.add_error('league_list', '选择的联赛已经被其他联赛组选中')
+            self.add_error('league_list', '新选择的联赛已经被其他联赛组选中')
         self.new_out = [x for x in self.league_list if x not in new_league_list]
         self.new_league_list = new_league_list
     
@@ -202,11 +210,14 @@ class LeagueidInGroupForm(Fields):
 @director_view('league_group.league_options')
 def league_options(row):
     exclude_league =[]
+    already_include_league=[]
+    
     for tie in TbLeagueidInGroup.objects.all():
         if tie.groupid == row.get('groupid'):
-            continue
+            already_include_league.append(tie.leagueid)
         else:
             exclude_league.append(tie.leagueid)
+    exclude_league = list(set(exclude_league)-set(already_include_league))
     options = TbTournament.objects.exclude(tournamentid__in=exclude_league)
     #[x.leagueid for x in TbLeagueidInGroup.objects.filter(groupid = row.get('groupid'))]
     #print('here')
