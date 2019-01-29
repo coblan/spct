@@ -183,9 +183,9 @@ class LeagueidInGroupForm(Fields):
         old_overlap=[]
         for tie in TbLeagueidInGroup.objects.filter(leagueid__in=new_league_list).extra(select={'label':'SELECT TB_Tournament.TournamentName '},tables=['TB_Tournament'],where=['TB_Tournament.TournamentID =TB_LeagueId_In_Group.LeagueId'])\
             .exclude(groupid=self.kw.get('groupid')):
-            old_overlap.append(tie.label)
+            old_overlap.append('【%s】'%tie.label)
         if old_overlap:
-            raise UserWarning(','.join(old_overlap)+' 已经被其他联赛组选中')
+            raise UserWarning(','.join(old_overlap)+' 已经包含在其他联赛组中')
             #self.add_error('league_list',','.join(old_overlap)+' 已经被其他联赛组选中')
         self.new_in =new_in
         if TbLeagueidInGroup.objects.filter(leagueid__in=new_in).exists():
