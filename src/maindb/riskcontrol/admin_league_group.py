@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage, ModelFields, ModelTable, page_dc, director, Fields
+from helpers.director.shortcut import TablePage, ModelFields, ModelTable, page_dc, director, Fields,director_view
 from ..models import TbLeagueGroup, TbLeagueidInGroup,TbLeagueGroupSpread, TbTournament, TbOddstypegroup
 from django.utils.translation import ugettext as _
 from urllib.parse import urljoin
@@ -156,31 +156,72 @@ class LeagueidInGroupForm(Fields):
     
     
     def get_heads(self):
-        options =  TbTournament.objects.all()
+        #options =  TbTournament.objects.all()
         return [
-            {'name': 'league_list','label': '联赛列表','editor': 'field_multi_chosen','style': 'width:300px',
-             'options': [{'value': x.tournamentid, 'label': str(x),} for x in options]
+            {'name': 'league_list',
+             'label': '联赛列表',
+             #'editor': 'field_multi_chosen',
+             'editor':'com-field-multi-chosen',
+             'style': 'width:300px',
+             'options':[],
+             'director_name':'league_group.league_options',
+             'event_slots':[
+                  {'par_event':'row.update_or_insert','express':'rt=scope.vc.update_options({row:scope.event})'},
+             ]
+             #'options': [{'value': x.tournamentid, 'label': str(x),} for x in options]
              }
             ]
     
-    def save_form(self): 
+    def clean(self):
         new_league_list = [int(x) for x in self.kw.get('league_list')]
         new_in = []
         
         for k in new_league_list:
             if k not in self.league_list:
                 new_in.append(k)
-        new_out = [x for x in self.league_list if x not in new_league_list]
         
-        new_in_obj = [TbLeagueidInGroup(groupid = self.kw.get('groupid'), leagueid = x) for x in new_in]
+        old_overlap=[]
+        for tie in TbLeagueidInGroup.objects.filter(leagueid__in=new_league_list).extra(select={'label':'SELECT TB_Tournament.TournamentName '},tables=['TB_Tournament'],where=['TB_Tournament.TournamentID =TB_LeagueId_In_Group.LeagueId'])\
+            .exclude(groupid=self.kw.get('groupid')):
+            old_overlap.append('【%s】'%tie.label)
+        if old_overlap:
+            raise UserWarning(','.join(old_overlap)+' 已经包含在其他联赛组中')
+            #self.add_error('league_list',','.join(old_overlap)+' 已经被其他联赛组选中')
+        self.new_in =new_in
+        if TbLeagueidInGroup.objects.filter(leagueid__in=new_in).exists():
+            self.add_error('league_list', '新选择的联赛已经被其他联赛组选中')
+        self.new_out = [x for x in self.league_list if x not in new_league_list]
+        self.new_league_list = new_league_list
+    
+    def save_form(self): 
+        
+        new_in_obj = [TbLeagueidInGroup(groupid = self.kw.get('groupid'), leagueid = x) for x in self.new_in]
         TbLeagueidInGroup.objects.bulk_create(new_in_obj)
-        TbLeagueidInGroup.objects.filter(leagueid__in = new_out).delete()
+        TbLeagueidInGroup.objects.filter(leagueid__in = self.new_out).delete()
+        abslate_league_tie = TbLeagueidInGroup.objects.raw(r'SELECT a.* FROM TB_LeagueId_In_Group a LEFT JOIN TB_Tournament b ON a.LeagueId=b.TournamentID WHERE b.TournamentID is NULL AND a.GroupId=%s'%self.kw.get('groupid'))
+        for tie in abslate_league_tie:
+            tie.delete()
         
         url = urljoin(settings.SPREAD_SERVICE, 'spread/group/league')
         group = TbLeagueGroup.objects.get(groupid = self.kw.get('groupid'))
-        rt = requests.post(url, json = {"groupName":group.groupname,"leagueGroupId":self.kw.get('groupid'),"leagueIds":new_league_list})
-        self.save_log({'model': 'TbLeagueidInGroup', 'service_return': rt.text, 'leagueIds': new_league_list,})
+        rt = requests.post(url, json = {"groupName":group.groupname,"leagueGroupId":self.kw.get('groupid'),"leagueIds":self.new_league_list})
+        self.save_log({'model': 'TbLeagueidInGroup', 'service_return': rt.text, 'leagueIds': self.new_league_list,})
         
+@director_view('league_group.league_options')
+def league_options(row):
+    exclude_league =[]
+    already_include_league=[]
+    
+    for tie in TbLeagueidInGroup.objects.all():
+        if tie.groupid == row.get('groupid'):
+            already_include_league.append(tie.leagueid)
+        else:
+            exclude_league.append(tie.leagueid)
+    exclude_league = list(set(exclude_league)-set(already_include_league))
+    options = TbTournament.objects.exclude(tournamentid__in=exclude_league)
+    #[x.leagueid for x in TbLeagueidInGroup.objects.filter(groupid = row.get('groupid'))]
+    #print('here')
+    return [{'value': x.tournamentid, 'label': str(x),} for x in options]
 
 class LeagueGroupSpreadForm(Fields):
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 

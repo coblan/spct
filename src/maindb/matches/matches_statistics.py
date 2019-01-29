@@ -8,7 +8,7 @@ from ..models import TbMatches, MATCH_STATUS,TbTicketmaster,TbTournament
 from helpers.director.base_data import director
 from django.utils import timezone
 from helpers.director.table.table import PlainTable
-from .ticket_master import TicketMasterPage
+from .ticket_master import TicketMasterPage,TicketMasterForm
 from helpers.director.engine import BaseEngine, page, fa, can_list, can_touch
 
 class MatchesStatisticsPage(TablePage):
@@ -337,6 +337,7 @@ director.update({
     'match.viewbymatch': MatchesStatisticsPage.tableCls, 
     'DetailStatistic': DetailStatistic,
     'match_statistic.ticket_master': TickmasterTab,
+    'match_statistic.ticket_master.edit': TicketMasterForm,
 })
 
 page_dc.update({
