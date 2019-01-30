@@ -178,12 +178,14 @@ class LeagueidInGroupForm(Fields):
         new_league_list = [int(x) for x in self.kw.get('league_list')]
         new_in = []
         
+        source = TbSporttypes.objects.get(sportid=0,enabled=1).source
+        
         for k in new_league_list:
             if k not in self.league_list:
                 new_in.append(k)
         
         old_overlap=[]
-        for tie in TbLeagueidInGroup.objects.filter(leagueid__in=new_league_list).extra(select={'label':'SELECT TB_Tournament.TournamentName '},tables=['TB_Tournament'],where=['TB_Tournament.TournamentID =TB_LeagueId_In_Group.LeagueId'])\
+        for tie in TbLeagueidInGroup.objects.filter(leagueid__in=new_league_list).extra(select={'label':'SELECT TB_Tournament.TournamentName '},tables=['TB_Tournament'],where=['TB_Tournament.TournamentID =TB_LeagueId_In_Group.LeagueId','TB_Tournament.Source=%s'%source])\
             .exclude(groupid=self.kw.get('groupid')):
             old_overlap.append('【%s】'%tie.label)
         if old_overlap:
