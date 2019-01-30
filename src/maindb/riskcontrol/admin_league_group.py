@@ -160,6 +160,8 @@ class LeagueidInGroupForm(Fields):
         return [
             {'name': 'league_list',
              'label': '联赛列表',
+             'required':True,
+             'validate_showError':'rt=cfg.showError(scope.msg)',
              #'editor': 'field_multi_chosen',
              'editor':'com-field-multi-chosen',
              'style': 'width:300px',
@@ -185,8 +187,8 @@ class LeagueidInGroupForm(Fields):
             .exclude(groupid=self.kw.get('groupid')):
             old_overlap.append('【%s】'%tie.label)
         if old_overlap:
-            raise UserWarning(','.join(old_overlap)+' 已经包含在其他联赛组中')
-            #self.add_error('league_list',','.join(old_overlap)+' 已经被其他联赛组选中')
+            #raise UserWarning(','.join(old_overlap)+' 已经包含在其他联赛组中')
+            self.add_error('league_list',','.join(old_overlap)+' 已经被其他联赛组选中')
         self.new_in =new_in
         if TbLeagueidInGroup.objects.filter(leagueid__in=new_in).exists():
             self.add_error('league_list', '新选择的联赛已经被其他联赛组选中')
