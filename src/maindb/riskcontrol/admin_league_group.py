@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage, ModelFields, ModelTable, page_dc, director, Fields,director_view
-from ..models import TbLeagueGroup, TbLeagueidInGroup,TbLeagueGroupSpread, TbTournament, TbOddstypegroup
+from ..models import TbLeagueGroup, TbLeagueidInGroup,TbLeagueGroupSpread, TbTournament, TbOddstypegroup,TbSporttypes
 from django.utils.translation import ugettext as _
 from urllib.parse import urljoin
 from django.conf import settings
@@ -211,6 +211,8 @@ class LeagueidInGroupForm(Fields):
         
 @director_view('league_group.league_options')
 def league_options(row):
+    source = TbSporttypes.objects.get(sportid=0,enabled=1).source
+    
     exclude_league =[]
     already_include_league=[]
     
@@ -220,7 +222,7 @@ def league_options(row):
         else:
             exclude_league.append(tie.leagueid)
     exclude_league = list(set(exclude_league)-set(already_include_league))
-    options = TbTournament.objects.exclude(tournamentid__in=exclude_league)
+    options = TbTournament.objects.filter(source=source).exclude(tournamentid__in=exclude_league)
     #[x.leagueid for x in TbLeagueidInGroup.objects.filter(groupid = row.get('groupid'))]
     #print('here')
     return [{'value': x.tournamentid, 'label': str(x),} for x in options]
