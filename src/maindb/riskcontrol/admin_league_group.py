@@ -224,7 +224,9 @@ def league_options(row):
         else:
             exclude_league.append(tie.leagueid)
     exclude_league = list(set(exclude_league)-set(already_include_league))
-    options = TbTournament.objects.filter(source=source).exclude(tournamentid__in=exclude_league)
+
+    options = TbTournament.objects.filter(source=source).exclude(tournamentid__in=exclude_league).order_by('tournamentname')
+
     #[x.leagueid for x in TbLeagueidInGroup.objects.filter(groupid = row.get('groupid'))]
     #print('here')
     return [{'value': x.tournamentid, 'label': str(x),} for x in options]
