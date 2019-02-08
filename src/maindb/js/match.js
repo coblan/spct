@@ -358,6 +358,65 @@ var produceMatchOutcomePanel={
 
 Vue.component('com-form-produceMatchOutcomePanel',produceMatchOutcomePanel)
 
-//window.match_logic = match_logic
+
+var produceBasketballMatchOutcomePanel={
+    mixins:[produceMatchOutcomePanel],
+    methods:{
+        submit:function(){
+            var self=this
+            if(!self.isValid()){
+                return
+            }
+            //var rt =ex.vueBroadCall(self.$parent,'isValid')
+            //for(var i=0;i<rt.length;i++){
+            //    if(!rt[i]){
+            //        return
+            //    }
+            //}
+            self.row.PeriodType=0
+
+            var msg=''
+            if( ){
+                cfg.showError('请至少完成一行数据填写！')
+                return
+            }
+            if(half && full){
+                msg='【上半场】&【全场】'
+                if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
+                    cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
+                    return
+                }
+                self.row.PeriodType=2
+            }else{
+                if(half){
+                    msg='【上半场】'
+                    self.row.PeriodType=1
+                }else {
+                    msg='【全场】'
+                    self.row.PeriodType=0
+                }
+            }
+
+
+            var index = layer.confirm(`确认手动结算${msg}?`,function(index){
+                layer.close(index)
+                self.save()
+                //cfg.show_load()
+                //var post_data={
+                //    row:self.row,
+                //    matchid:self.par_row
+                //}
+                //ex.director_call(self.ctx.produce_match_outcome_director,{row:self.row},function(resp){
+                //    cfg.hide_load()
+                //    cfg.showMsg(resp.Message)
+                //    //ex.vueAssign(self.row,resp.produce_match_outcome.row)
+                //    self.$emit('finish',resp.row)
+                //})
+
+            })
+        }
+    }
+}
+
 window.produce_match_outcome = produce_match_outcome
 window.produceMatchOutcomePanel=produceMatchOutcomePanel

@@ -2193,6 +2193,12 @@ class TbMatchesBasketball(models.Model):
     settlestatus = models.IntegerField(db_column='SettleStatus', blank=True, null=True)  # Field name made lowercase.    
     settletime = models.DateTimeField(db_column='SettleTime', blank=True, null=True)  # Field name made lowercase.
     source = models.IntegerField(db_column='Source',choices=DATA_SOURCE)  # Field name made lowercase.
+    liveodds = models.BooleanField(db_column='LiveOdds')  # Field name made lowercase.
+    q1score = models.CharField(db_column='Q1Score', max_length=20)  # Field name made lowercase.
+    q2score = models.CharField(db_column='Q2Score', max_length=20)  # Field name made lowercase.
+    q3score = models.CharField(db_column='Q3Score', max_length=20)  # Field name made lowercase.
+    q4score = models.CharField(db_column='Q4Score', max_length=20)  # Field name made lowercase.
+    overtimescore = models.CharField(db_column='OvertimeScore', max_length=20)  # Field name made lowercase.    
     
     class Meta:
         managed = False

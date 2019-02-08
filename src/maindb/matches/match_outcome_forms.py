@@ -128,6 +128,66 @@ class BasketPoints(FootBallPoints):
     matchtype = '篮球'
     half_end_code = 4
     
+    def get_heads(self): 
+        return [
+            #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
+            {'name': 'home_1_score', 'label': '一小节得分', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_1_score', 'label': '一小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_2_score', 'label': '二小节得分', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_2_score', 'label': '二小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_3_score', 'label': '三小节得分', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_3_score', 'label': '三小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_4_score', 'label': '四小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'away_4_score', 'label': '四小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_5_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'away_5_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            ]     
+    
+    def manul_outcome(self, row, match): 
+        #match = self.MatchModel.objects.get(matchid = row.get('matchid'))
+        if match.settlestatus and match.settlestatus >= 1:
+            raise UserWarning('篮球赛已经结算,请不要重复结算!')    
+        
+        self.org_match = to_dict(match)
+        match.ishidden = True
+        
+        home_half_score= row.get('home_1_score')+row.get('home_2_score')
+        away_half_score= row.get('away_1_score')+row.get('away_2_score')
+        homescore = row.get('home_1_score')+row.get('home_2_score') + row.get('home_3_score')+row.get('home_4_score')+row.get('home_5_score')
+        awayscore = row.get('away_1_score')+row.get('away_2_score') + row.get('away_3_score')+row.get('away_4_score')+row.get('away_5_score')
+        
+        match.q1score='%s:%s'%(row.get('home_1_score'),row.get('away_1_score'))
+        match.q1score='%s:%s'%(row.get('home_2_score'),row.get('away_2_score'))
+        match.q1score='%s:%s'%(row.get('home_3_score'),row.get('away_3_score'))
+        match.q1score='%s:%s'%(row.get('home_4_score'),row.get('away_4_score'))
+        match.overtimescore='%s:%s'%(row.get('home_5_score'),row.get('away_5_score'))
+        
+        match.homescore = homescore
+        match.awayscore = awayscore
+        match.period1score = '%s:%s'%(home_half_score,away_half_score)
+        match.matchscore = '%s:%s' % (match.homescore, match.awayscore)
+        match.settlestatus = 1
+        match.statuscode = 100
+        match.save()
+        
+        row['PeriodType'] = 0
+        try:
+            self.notfiy_service(row)
+        except UserWarning as e:
+            for k in org_match:
+                if not k.startswith('_'):
+                    setattr(match, k, org_match[k])
+                match.save()
+            op_log.info('手动结算篮球比赛%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
+                                                                                        'type': settle_dict.get(match.settlestatus),
+                                                                                        'msg': str(e),
+                                                                                                })
+            raise e
+        op_log.info('手动结算%(matchtype)s比赛%(matchid)s,最终比分%(matchscore)s' % {'matchid': match.matchid, 
+                                                         'matchtype': self.matchtype,
+                                                         'matchscore': match.matchscore,})       
+    
+    
 
 class Quarter(BasketPoints):
     # 170  单结比分
