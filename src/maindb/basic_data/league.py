@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, ModelFields, \
-    RowSort, RowSearch, field_map, model_to_name
+    RowSort, RowSearch, field_map, model_to_name,SelectSearch
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from helpers.director.model_func.field_procs.dotStrArray import DotStrArrayProc
 from helpers.director.table.table import RowFilter
@@ -71,7 +71,7 @@ class League(TablePage):
         class sort(RowSort):
             names = ['sort']
 
-        class search(RowSearch):
+        class search(SelectSearch):
             names = ['tournamentname', 'tournamentid']
 
         class filters(RowFilter):
