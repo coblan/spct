@@ -453,12 +453,12 @@ class ModifyBetFullRecord(ModelFields):
     def clean(self):
         add_amount = self.kw.get('add_amount')
         if not add_amount :
-            self.add_error('add_amount', '调整值不能为0或者空')
+            self._errors['add_amount']= '调整值不能为0或者空'
         else:
             self. betfullrecord_list = TbBetfullrecord.objects.filter(accountid_id=self.kw.get('accountid'),consumestatus=1).order_by('tid')
             total =sum([x.consumeamount for x in  self. betfullrecord_list ] )
             if Decimal( add_amount ) + total < 0 :
-                self.add_error('add_amount', '不能使限额小于0')
+                self._errors['add_amount']= '不能使限额小于0'
     
     def clean_save(self):
         if 'add_amount' in self.kw:
