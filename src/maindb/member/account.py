@@ -221,7 +221,7 @@ GROUP BY
                 'account': out_str,
                 'rechargeamount': inst.rechargeamount,
                 'withdrawamount': inst.withdrawamount,
-                'betfullrecord':sum( [x.consumeamount for x in  inst.tbbetfullrecord_set.all()] ),
+                'betfullrecord':round( sum( [x.consumeamount for x in  inst.tbbetfullrecord_set.all()] ),2),
             }
 
         def dict_head(self, head):
@@ -438,6 +438,11 @@ class ModifyBetFullRecord(ModelFields):
             #self.changed_amount = add_amount
             #dc['amount'] = Decimal(dc['amount']) + add_amount
         #return dc    
+    
+    def dict_row(self, inst):
+        return {
+            'betfullrecord':round( sum( [x.consumeamount for x in  inst.tbbetfullrecord_set.all()] ),2),
+        }
     
     def getExtraHeads(self):
         return [
