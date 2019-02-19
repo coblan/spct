@@ -10,7 +10,7 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelField
 from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
-from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatches
+from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatches,TbBetfullrecord
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
 from helpers.func.random_str import get_str, get_random_number
@@ -126,7 +126,7 @@ class AccountPage(TablePage):
                    'isenablewithdraw', 'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount',
                    'createtime', 'source','accounttype']
         fields_sort = ['accountid', 'account', 'nickname', 'createtime', 'source', 'bonusrate', 'viplv', 'status',
-                       'isenablewithdraw', 'amount', 'agentamount',
+                       'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
                        'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype']
 
         #@classmethod
@@ -206,6 +206,8 @@ GROUP BY
                    .annotate( rechargeamount= Case(When(withdrawamount_count=0,then= F('rechargeamount_total') ),output_field=DecimalField(decimal_places=2, max_digits=8) ,default =  F('rechargeamount_total') / F('withdrawamount_count') ),
                               withdrawamount= Case(When(rechargeamount_count=0,then= F('withdrawamount_total') ),output_field=DecimalField(decimal_places=2, max_digits=8) ,default= F('withdrawamount_total')/ F('rechargeamount_count') ) 
                               )
+                   #.annotate(betfullrecord=Sum('tbbetfullrecord__consumeamount'))
+        
                 #rechargeamount=Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount')), default=0))) \
                 #.annotate(withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
 
@@ -218,7 +220,8 @@ GROUP BY
                 'amount': str(inst.amount),
                 'account': out_str,
                 'rechargeamount': inst.rechargeamount,
-                'withdrawamount': inst.withdrawamount
+                'withdrawamount': inst.withdrawamount,
+                'betfullrecord':sum( [x.consumeamount for x in  inst.tbbetfullrecord_set.all()] ),
             }
 
         def dict_head(self, head):
@@ -270,7 +273,9 @@ GROUP BY
             return ctx
 
         def getExtraHead(self):
-            return [{'name': 'rechargeamount', 'label': '充值金额'}, {'name': 'withdrawamount', 'label': '提现金额'}]
+            return [{'name': 'rechargeamount', 'label': '充值金额'}, 
+                    {'name': 'withdrawamount', 'label': '提现金额'},
+                    {'name': 'betfullrecord', 'label': '提现限额'}]
 
         class search(SelectSearch):
             names = ['nickname']
@@ -301,6 +306,7 @@ GROUP BY
 
         def get_operation(self):
             modifyer = AccoutModifyAmount(crt_user=self.crt_user)
+            betfullmodify = ModifyBetFullRecord(crt_user=self.crt_user)
             changeable_fields = self.permit.changeable_fields()
             return [
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '解冻', 'field': 'status',
@@ -317,6 +323,11 @@ GROUP BY
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
                  'after_error':'scope.fs.showErrors(scope.errors)',
                  'fields_ctx': modifyer.get_head_context(), 'visible': 'amount' in changeable_fields},
+                
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '调整限额',
+                 'after_error':'scope.fs.showErrors(scope.errors)',
+                 'fields_ctx': betfullmodify.get_head_context(), 'visible': 'amount' in changeable_fields},
+                
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '允许提现', 'field': 'isenablewithdraw',
                  'value': 1, 'confirm_msg': '确认允许这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁止提现', 'field': 'isenablewithdraw',
@@ -409,6 +420,72 @@ class AccoutModifyAmount(ModelFields):
             return {'memo': '调账', 'ex_before': {'amount': before_amount},
                     'ex_after': {'amount': self.instance.amount, }}
 
+
+class ModifyBetFullRecord(ModelFields):
+    field_sort = ['accountid', 'nickname', 'betfullrecord', 'add_amount']
+    readonly = ['accountid', 'nickname',]
+    
+    class Meta:
+        model = TbAccount
+        fields = ['nickname', 'accountid']
+    
+    def clean_dict(self, dc):
+        return dc
+        #if dc.get('add_amount'):
+            #self.add_amount = Decimal(dc.get('add_amount', 0))
+            #dc.pop('betfullrecord',None)
+           
+            #self.changed_amount = add_amount
+            #dc['amount'] = Decimal(dc['amount']) + add_amount
+        #return dc    
+    
+    def getExtraHeads(self):
+        return [
+            {'name': 'betfullrecord', 'label': '当前限额', 'editor': 'number', 'readonly':True },
+            {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', }
+        ]    
+    
+    def clean(self):
+        add_amount = self.kw.get('add_amount')
+        if not add_amount :
+            self.add_error('add_amount', '调整值不能为0或者空')
+        else:
+            self. betfullrecord_list = TbBetfullrecord.objects.filter(accountid_id=self.kw.get('accountid'),consumestatus=1).order_by('tid')
+            total =sum([x.consumeamount for x in  self. betfullrecord_list ] )
+            if Decimal( add_amount ) + total < 0 :
+                self.add_error('add_amount', '不能使限额小于0')
+    
+    def clean_save(self):
+        if 'add_amount' in self.kw:
+            add_amount = Decimal( self.kw.get('add_amount') )
+            if add_amount < 0:
+                for item in self.betfullrecord_list:
+                    if item.consumeamount + add_amount <=0:
+                        
+                        item.content = item.content or '' + ';调整数-%s'%  item.consumeamount 
+                        item.consumeamount = 0
+                        item.consumestatus = 2
+                        
+                        item.save()
+                        add_amount += item.consumeamount
+                    else:
+                        item.content =  item.content or '' + ';调整数%s'%  add_amount 
+                        item.consumeamount += add_amount
+                        item.save()
+                        break
+            else:
+                TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,consumeamount = add_amount,consumestatus=1,rftype=3,rfid=0,content='后台管理员限额调整')
+                
+            #cashflow, moenycategory = (1, 4) if self.changed_amount > 0 else (0, 34)
+            #before_amount = self.instance.amount
+            #self.instance.amount = before_amount + Decimal(self.kw.get('add_amount', 0))
+            #TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
+                                        #amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='system',
+                                        #memo='调账', accountid=self.instance, categoryid_id=moenycategory,
+                                        #cashflow=cashflow)
+            after_amount = Decimal(self.kw.get('betfullrecord')) + add_amount
+            return {'memo': '提现限额调整', 'ex_before': {'betfullrecord': self.kw.get('betfullrecord')},
+                    'ex_after': {'betfullrecord': str(after_amount) , }}
 
 class AccountTabBase(ModelTable):
     def __init__(self, *args, **kws):
@@ -532,6 +609,8 @@ director.update({
     'account.edit': AccoutBaseinfo,
     'account.base.edit': AccoutBaseinfo,
     'account.amount.edit': AccoutModifyAmount,
+    'account.betfullmodify':ModifyBetFullRecord,
+    
     'account.bankcard': UserBankCard,
     'account.bankcard.edit': BankCardForm,
     'account.UserRecharge': UserRecharge,
