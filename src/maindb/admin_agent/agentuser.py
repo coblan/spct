@@ -53,6 +53,15 @@ class AgentUser(TablePage):
                     head['editor']='com-filter-month'
                     head['placeholder']='选择月份'
                 return head
+            
+            def getExtraHead(self):
+                return [
+                    {'name':'accounttype','label':'用户类型','editor':'com-filter-select','options':[
+                        #{'value':'NULL','label':'全部'},
+                        {'value':'0','label':'普通'},
+                        {'value':'1','label':'内部'}
+                    ]}
+                ]
 
         class sort(RowSort):
             names = ['AgentAmount', 'BeaeAmount', 'SumActive', 'BalanceLostAmount', 'SumLostAmount',
@@ -76,6 +85,7 @@ class AgentUser(TablePage):
             @BeginDate DATE=NULL,   --查询开始时间 默认上月今天  
             @EndDate DATE=NULL,   --查询结算时间 默认今天  
             @NickName VARCHAR(20) =NULL --帐号查询昵称 默认全部  
+            @AccountType INT (NULL 0 1) 全部/普通/内部
             """
 
             order_by = self.search_args.get('_sort', '')
@@ -117,7 +127,7 @@ class AgentUser(TablePage):
             createdate = timezone.datetime.strptime( self.search_args.get('createtime'),'%Y-%m')
             start_date = createdate.strftime('%Y-%m-%d')
             end_date = (createdate+ relativedelta(months=1) ).strftime('%Y-%m-%d')
-            
+            AccountType = self.search_args.get('accounttype','NULL')
             sql_args = {
                 'AccountID': par,
                 'PageIndex': self.search_args.get('_page', 1),
@@ -125,10 +135,11 @@ class AgentUser(TablePage):
                 'BeginDate':start_date, #self.search_args.get('_start_createtime', ''),
                 'EndDate':end_date, #self.search_args.get('_end_createtime', ''),
                 'NickName': nickname,
+                'AccountType':AccountType,
                 'OrderBy': order_by,
             }
 
-            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s',%%s,'%(OrderBy)s'" \
+            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s',%%s,%(AccountType)s,'%(OrderBy)s'" \
                   % sql_args
             
             #print(sql)
