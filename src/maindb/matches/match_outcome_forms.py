@@ -22,11 +22,11 @@ class FootBallPoints(Fields):
     def get_heads(self): 
         return [
             #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-            {'name': 'home_half_score', 'label': '半场得分', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
-            {'name': 'away_half_score', 'label': '半场得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_half_score', 'label': '半场得分111', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_half_score', 'label': '半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             
-            {'name': 'home_score', 'label': '全场得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
-            {'name': 'away_score', 'label': '全场得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_score', 'label': '全场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'away_score', 'label': '全场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             
             #{'name': 'home_corner', 'label': '主队角球', 'editor': 'linetext'},
             #{'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
@@ -35,37 +35,54 @@ class FootBallPoints(Fields):
     def manul_outcome(self, row, match): 
         #match = self.MatchModel.objects.get(matchid = row.get('matchid'))
         org_match = to_dict(match)
+    
+        if match.settlestatus ==3:
+            raise UserWarning('比赛已经结算,请不要重复结算!')
         
         match.ishidden = True
-        crt_settlestatus = 0 if not match.settlestatus else match.settlestatus
-        settlestatus = crt_settlestatus
-        if crt_settlestatus < 1 and row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
-            match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
-            match.statuscode = self.half_end_code
-            settlestatus = 1
-        if crt_settlestatus < 2 and row.get('home_score', '') != '' and row.get('away_score', '') != '':
-            match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
-            match.homescore = row.get('home_score')
-            match.awayscore = row.get('away_score')   
-            match.statuscode = 100
-            settlestatus += 2
-            if row.get('home_score') > row.get('away_score'):
-                match.winner = 1
-            elif row.get('home_score') < row.get('away_score'):
-                match.winner = 2
-            else:
-                match.winner = 3
+        match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
+        match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
+        match.homescore = row.get('home_score')
+        match.awayscore = row.get('away_score')   
+        match.statuscode = 100
+        match.settlestatus =3
         
-        settle_dict =  {
-                1: '上半场',
-                2: '全场',
-                3: '半场&全场',
-            }
-        if crt_settlestatus < settlestatus:
-            match.settlestatus = settlestatus
+        if row.get('home_score') > row.get('away_score'):
+            match.winner = 1
+        elif row.get('home_score') < row.get('away_score'):
+            match.winner = 2
         else:
+            match.winner = 3        
+        
+        #crt_settlestatus = 0 if not match.settlestatus else match.settlestatus
+        #settlestatus = crt_settlestatus
+        #if crt_settlestatus < 1 and row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
+            #match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
+            #match.statuscode = self.half_end_code
+            #settlestatus = 1
+        #if crt_settlestatus < 2 and row.get('home_score', '') != '' and row.get('away_score', '') != '':
+            #match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
+            #match.homescore = row.get('home_score')
+            #match.awayscore = row.get('away_score')   
+            #match.statuscode = 100
+            #settlestatus += 2
+            #if row.get('home_score') > row.get('away_score'):
+                #match.winner = 1
+            #elif row.get('home_score') < row.get('away_score'):
+                #match.winner = 2
+            #else:
+                #match.winner = 3
+        
+        #settle_dict =  {
+                #1: '上半场',
+                #2: '全场',
+                #3: '半场&全场',
+            #}
+        #if crt_settlestatus < settlestatus:
+            #match.settlestatus = settlestatus
+        #else:
             
-            raise UserWarning('%s已经结算,请不要重复结算!' % settle_dict.get(settlestatus))
+            #raise UserWarning('%s已经结算,请不要重复结算!' % settle_dict.get(settlestatus))
             
         match.save()
         try:
@@ -82,9 +99,9 @@ class FootBallPoints(Fields):
             raise e
         #self.update_mongo(match)
 
-        op_log.info('手动结算%(matchtype)s比赛%(matchid)s的%(type)s，结算后比分为:上半场:%(period1score)s,全场:%(matchscore)s' % {'matchid': match.matchid, 
+        op_log.info('手动结算%(matchtype)s比赛%(matchid)s，结算后比分为:上半场:%(period1score)s,全场:%(matchscore)s' % {'matchid': match.matchid, 
                                                          'matchtype': self.matchtype,
-                                                         'type': settle_dict.get(match.settlestatus),
+                                                         #'type': settle_dict.get(match.settlestatus),
                                                          'period1score': match.period1score,
                                                          'matchscore': match.matchscore,})
         #rt_dc['row'] = to_dict(match)
@@ -94,7 +111,7 @@ class FootBallPoints(Fields):
         data = {
             'SportID': self.sportid, 
             'MatchID': row.get('matchid'),
-            'PeriodType': row.get('PeriodType'),
+            'PeriodType': row.get('PeriodType',2),
             'OrderBack': False,
         }
         url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
@@ -131,21 +148,21 @@ class BasketPoints(FootBallPoints):
     def get_heads(self): 
         return [
             #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-            {'name': 'home_1_score', 'label': '一小节得分', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
-            {'name': 'away_1_score', 'label': '一小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
-            {'name': 'home_2_score', 'label': '二小节得分', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
-            {'name': 'away_2_score', 'label': '二小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
-            {'name': 'home_3_score', 'label': '三小节得分', 'editor': 'com-field-linetext' ,'fv_rule': 'integer(+0);length(~6)',},
-            {'name': 'away_3_score', 'label': '三小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
-            {'name': 'home_4_score', 'label': '四小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
-            {'name': 'away_4_score', 'label': '四小节得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_1_score', 'label': '一小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_1_score', 'label': '一小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_2_score', 'label': '二小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_2_score', 'label': '二小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_3_score', 'label': '三小节得分', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_3_score', 'label': '三小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_4_score', 'label': '四小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'away_4_score', 'label': '四小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             {'name': 'home_5_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
             {'name': 'away_5_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
             ]     
     
     def manul_outcome(self, row, match): 
         #match = self.MatchModel.objects.get(matchid = row.get('matchid'))
-        if match.settlestatus and match.settlestatus >= 1:
+        if match.settlestatus ==3: # and match.settlestatus >= 1:
             raise UserWarning('篮球赛已经结算,请不要重复结算!')    
         
         self.org_match = to_dict(match)

@@ -426,7 +426,21 @@ class TbBlackuserlistLog(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_BlackUserList_Log'
+        
+        
+class TbBetfullrecord(models.Model):
+    tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    rfid = models.BigIntegerField(db_column='RfID', blank=True, null=True)  # Field name made lowercase.
+    rftype = models.IntegerField(db_column='RfType')  # Field name made lowercase.
+    consumeamount = models.DecimalField(db_column='ConsumeAmount', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    consumestatus = models.IntegerField(db_column='ConsumeStatus')  # Field name made lowercase.
+    accountid = models.ForeignKey(to=TbAccount,db_constraint=False, db_column='AccountID')  # Field name made lowercase.
+    #accountid = models.BigIntegerField(db_column='AccountID')  # Field name made lowercase.
+    content = models.CharField(db_column='Content', max_length=150, blank=True, null=True)  # Field name made lowercase.
 
+    class Meta:
+        managed = False
+        db_table = 'TB_BetFullRecord'
 
 class TbBetstopreason(models.Model):
     id = models.IntegerField(primary_key=True,db_column='ID')
@@ -2291,4 +2305,5 @@ class TbSporttypes(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_SportTypes'
+
 

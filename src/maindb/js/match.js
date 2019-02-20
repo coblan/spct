@@ -192,7 +192,6 @@ var produce_match_outcome={
 
 var produceMatchOutcomePanel={
         props:['ctx'],
-        //props:['row','heads','option'],
         mixins:[mix_fields_data,mix_nice_validator,produce_match_outcome],
 
         data:function(){
@@ -244,35 +243,37 @@ var produceMatchOutcomePanel={
                 //        return
                 //    }
                 //}
-                var half=false
-                var full=false
-                if(self.row.home_half_score && self.row.away_half_score){
-                    half=true
-                }
-                if(self.row.home_score && self.row.away_score){
-                    full = true
-                }
+
+
+                //var half=false
+                //var full=false
+                //if(self.row.home_half_score && self.row.away_half_score){
+                //    half=true
+                //}
+                //if(self.row.home_score && self.row.away_score){
+                //    full = true
+                //}
                 var msg=''
-                if( !half && !full ){
-                    cfg.showError('请至少完成一行数据填写！')
-                    return
-                }
-                if(half && full){
-                    msg='【上半场】&【全场】'
-                    if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
-                        cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
-                        return
-                    }
-                    self.row.PeriodType=2
-                }else{
-                    if(half){
-                        msg='【上半场】'
-                        self.row.PeriodType=1
-                    }else {
-                        msg='【全场】'
-                        self.row.PeriodType=0
-                    }
-                }
+                //if( !half && !full ){
+                //    cfg.showError('请至少完成一行数据填写！')
+                //    return
+                //}
+                //if(half && full){
+                //    msg='【上半场】&【全场】'
+                //    if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
+                //        cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
+                //        return
+                //    }
+                //    self.row.PeriodType=2
+                //}else{
+                //    if(half){
+                //        msg='【上半场】'
+                //        self.row.PeriodType=1
+                //    }else {
+                //        msg='【全场】'
+                //        self.row.PeriodType=0
+                //    }
+                //}
 
 
                 var index = layer.confirm(`确认手动结算${msg}?`,function(index){
@@ -306,6 +307,15 @@ var produceMatchOutcomePanel={
         </div>
               <table class="field-panel msg-bottom" style="display: inline-block;">
                     <tr><td></td> <td >主队</td><td>客队</td></tr>
+                    <!--<tr v-for="head in heads">-->
+                        <!--<td>-->
+                                <!--<div class="field-input" style="position: relative">-->
+                                <!--<component :is="head.editor"-->
+                                     <!--@field-event="$emit('field-event',$event)"-->
+                                     <!--:head="head" :row="row"></component>-->
+                                <!--</div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
                     <tr v-for="dh in doubleHeads">
                          <td style="padding: 1em 1em" v-text="dh[0].label"></td>
                          <td>
@@ -313,7 +323,6 @@ var produceMatchOutcomePanel={
                                 <component :is="dh[0].editor"
                                      @field-event="$emit('field-event',$event)"
                                      :head="dh[0]" :row="row"></component>
-
                             </div>
                          </td>
 
@@ -376,26 +385,26 @@ var produceBasketballMatchOutcomePanel={
             self.row.PeriodType=0
 
             var msg=''
-            if( ){
-                cfg.showError('请至少完成一行数据填写！')
-                return
-            }
-            if(half && full){
-                msg='【上半场】&【全场】'
-                if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
-                    cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
-                    return
-                }
-                self.row.PeriodType=2
-            }else{
-                if(half){
-                    msg='【上半场】'
-                    self.row.PeriodType=1
-                }else {
-                    msg='【全场】'
-                    self.row.PeriodType=0
-                }
-            }
+            //if( ){
+            //    cfg.showError('请至少完成一行数据填写！')
+            //    return
+            //}
+            //if(half && full){
+            //    msg='【上半场】&【全场】'
+            //    if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
+            //        cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
+            //        return
+            //    }
+            //    self.row.PeriodType=2
+            //}else{
+            //    if(half){
+            //        msg='【上半场】'
+            //        self.row.PeriodType=1
+            //    }else {
+            //        msg='【全场】'
+            //        self.row.PeriodType=0
+            //    }
+            //}
 
 
             var index = layer.confirm(`确认手动结算${msg}?`,function(index){
