@@ -6,7 +6,7 @@ import urllib
 import requests
 import json
 from django.conf import settings
-
+from django.db import IntegrityError, transaction
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -163,40 +163,39 @@ class BasketPoints(FootBallPoints):
     def manul_outcome(self, row, match): 
         #match = self.MatchModel.objects.get(matchid = row.get('matchid'))
         if match.settlestatus ==3: # and match.settlestatus >= 1:
-            raise UserWarning('篮球赛已经结算,请不要重复结算!')    
+            raise UserWarning('篮球赛已经结算,请不要重复结算!')   
         
-        self.org_match = to_dict(match)
-        match.ishidden = True
-        
-        home_half_score= row.get('home_1_score')+row.get('home_2_score')
-        away_half_score= row.get('away_1_score')+row.get('away_2_score')
-        homescore = row.get('home_1_score')+row.get('home_2_score') + row.get('home_3_score')+row.get('home_4_score')+row.get('home_5_score')
-        awayscore = row.get('away_1_score')+row.get('away_2_score') + row.get('away_3_score')+row.get('away_4_score')+row.get('away_5_score')
-        
-        match.q1score='%s:%s'%(row.get('home_1_score'),row.get('away_1_score'))
-        match.q1score='%s:%s'%(row.get('home_2_score'),row.get('away_2_score'))
-        match.q1score='%s:%s'%(row.get('home_3_score'),row.get('away_3_score'))
-        match.q1score='%s:%s'%(row.get('home_4_score'),row.get('away_4_score'))
-        match.overtimescore='%s:%s'%(row.get('home_5_score'),row.get('away_5_score'))
-        
-        match.homescore = homescore
-        match.awayscore = awayscore
-        match.period1score = '%s:%s'%(home_half_score,away_half_score)
-        match.matchscore = '%s:%s' % (match.homescore, match.awayscore)
-        match.settlestatus = 1
-        match.statuscode = 100
-        match.save()
-        
-        row['PeriodType'] = 0
+        #org_match = to_dict(match)
         try:
-            self.notfiy_service(row)
-        except UserWarning as e:
-            for k in org_match:
-                if not k.startswith('_'):
-                    setattr(match, k, org_match[k])
+            with transaction.atomic():
+                match.ishidden = True
+                home_half_score= row.get('home_1_score')+row.get('home_2_score')
+                away_half_score= row.get('away_1_score')+row.get('away_2_score')
+                homescore = int( row.get('home_1_score') )+int( row.get('home_2_score') )+ int( row.get('home_3_score') )+int( row.get('home_4_score') )+ int( row.get('home_5_score',0))
+                awayscore = int( row.get('away_1_score') )+int( row.get('away_2_score') ) + int( row.get('away_3_score') )+int( row.get('away_4_score') )+int( row.get('away_5_score',0))
+                
+                match.q1score='%s:%s'%(row.get('home_1_score'),row.get('away_1_score'))
+                match.q2score='%s:%s'%(row.get('home_2_score'),row.get('away_2_score'))
+                match.q3score='%s:%s'%(row.get('home_3_score'),row.get('away_3_score'))
+                match.q4score='%s:%s'%(row.get('home_4_score'),row.get('away_4_score'))
+                match.overtimescore='%s:%s'%(row.get('home_5_score',0),row.get('away_5_score',0))
+                
+                match.homescore = homescore
+                match.awayscore = awayscore
+                match.period1score = '%s:%s'%(home_half_score,away_half_score)
+                match.matchscore = '%s:%s' % (match.homescore, match.awayscore)
+                match.settlestatus = 1
+                match.statuscode = 100
                 match.save()
-            op_log.info('手动结算篮球比赛%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
-                                                                                        'type': settle_dict.get(match.settlestatus),
+                row['PeriodType'] = 2      
+                self.notfiy_service(row)
+        except UserWarning as e:
+            #for k in org_match:
+                #if not k.startswith('_'):
+                    #setattr(match, k, org_match[k])
+                #match.save()
+            op_log.info('手动结算篮球比赛%(matchid)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
+                                                                                        #'type': settle_dict.get(match.settlestatus),
                                                                                         'msg': str(e),
                                                                                                 })
             raise e

@@ -382,7 +382,7 @@ var produceBasketballMatchOutcomePanel={
             //        return
             //    }
             //}
-            self.row.PeriodType=0
+            self.row.PeriodType=2
 
             var msg=''
             //if( ){
