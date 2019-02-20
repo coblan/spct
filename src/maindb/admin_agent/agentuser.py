@@ -8,7 +8,7 @@ from helpers.director.access.permit import has_permit
 from django.core.exceptions import PermissionDenied
 from ..alg import encode_paswd
 from ..riskcontrol.black_users import AccountSelect
-
+from dateutil.relativedelta import relativedelta
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
 
@@ -33,21 +33,25 @@ class AgentUser(TablePage):
         @classmethod
         def clean_search_args(cls, search_args):
             today = timezone.now()
-            sp = timezone.timedelta(days=30)
-            last = today - sp
-            def_start = last.strftime('%Y-%m-%d')
-            def_end = today.strftime('%Y-%m-%d')
-            search_args['_start_createtime'] = search_args.get('_start_createtime') or def_start
-            search_args['_end_createtime'] = search_args.get('_end_createtime') or def_end
+            #sp = timezone.timedelta(days=30)
+            #last = today - sp
+            #def_start = last.strftime('%Y-%m-%d')
+            #def_end = today.strftime('%Y-%m-%d')
+            #search_args['_start_createtime'] = search_args.get('_start_createtime') or def_start
+            #search_args['_end_createtime'] = search_args.get('_end_createtime') or def_end
+            search_args['createtime'] = today.strftime('%Y-%m')
             return search_args
         
         
         class filters(RowFilter):
-            range_fields = ['createtime']
+            #range_fields = ['createtime']
+            names=['createtime']
 
             def dict_head(self, head):
                 if head['name'] == 'createtime':
                     head['label'] = '产生时间'
+                    head['editor']='com-filter-month'
+                    head['placeholder']='选择月份'
                 return head
 
         class sort(RowSort):
@@ -109,12 +113,17 @@ class AgentUser(TablePage):
 
             if order_by.startswith('-'):
                 order_by = order_by[1:] + ' DESC'
+            
+            createdate = timezone.datetime.strptime( self.search_args.get('createtime'),'%Y-%m')
+            start_date = createdate.strftime('%Y-%m-%d')
+            end_date = (createdate+ relativedelta(months=1) ).strftime('%Y-%m-%d')
+            
             sql_args = {
                 'AccountID': par,
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
-                'BeginDate': self.search_args.get('_start_createtime', ''),
-                'EndDate': self.search_args.get('_end_createtime', ''),
+                'BeginDate':start_date, #self.search_args.get('_start_createtime', ''),
+                'EndDate':end_date, #self.search_args.get('_end_createtime', ''),
                 'NickName': nickname,
                 'OrderBy': order_by,
             }
