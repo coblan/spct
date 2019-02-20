@@ -189,7 +189,7 @@ class AgentUser(TablePage):
             # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
 
         def dict_head(self, head):
-            if head['name'] == 'SumActive':
+            if head['name'] == 'NickName': #'SumActive':
                 head['editor'] = 'com-table-call-fun'
                 head['fun'] = 'get_childs'
                 head['arg_filter'] = 'field'

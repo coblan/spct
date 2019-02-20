@@ -7964,7 +7964,7 @@ __webpack_require__(77);
 
 var lay_datetime = {
     props: ['row', 'head'],
-    template: '<div><span v-show=\'head.readonly\' v-text=\'row[head.name]\'></span>\n                    <input v-show="!head.readonly" type="text" :id="\'id_\'+head.name" v-model="row[head.name]"  :placeholder="head.placeholder || \'\u9009\u62E9\u6708\u4EFD\'" readonly>\n\n               </div>',
+    template: '<div><span v-show=\'head.readonly\' v-text=\'row[head.name]\'></span>\n                    <input class="form-control input-sm" v-show="!head.readonly" type="text" :id="\'id_\'+head.name" v-model="row[head.name]"  :placeholder="head.placeholder || \'\u9009\u62E9\u6708\u4EFD\'" readonly>\n\n               </div>',
     mounted: function mounted() {
         var self = this;
         laydate.render({
