@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 129);
+/******/ 	return __webpack_require__(__webpack_require__.s = 131);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1770,24 +1770,24 @@ var rabbit = exports.rabbit = {
 "use strict";
 
 
-var _expand_menu = __webpack_require__(70);
+var _expand_menu = __webpack_require__(72);
 
 var f = _interopRequireWildcard(_expand_menu);
 
-var _page_tab = __webpack_require__(71);
+var _page_tab = __webpack_require__(73);
 
 var page = _interopRequireWildcard(_page_tab);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(125);
+__webpack_require__(127);
 //import * as a from './modal.js'
 
+__webpack_require__(125);
 __webpack_require__(123);
-__webpack_require__(121);
-__webpack_require__(122);
-__webpack_require__(127);
-__webpack_require__(126);
+__webpack_require__(124);
+__webpack_require__(129);
+__webpack_require__(128);
 
 /***/ }),
 /* 22 */
@@ -2123,13 +2123,15 @@ function cusParCall(self, fun, kws, rt) {
 /* 67 */,
 /* 68 */,
 /* 69 */,
-/* 70 */
+/* 70 */,
+/* 71 */,
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(124);
+__webpack_require__(126);
 var template_str = '\n<div class=\'_expand_menu\'>\n\t<ul>\n\t\t<li v-for=\'act in normed_menu\'>\n\t\t\t<a :class=\'["menu_item",{"selected":act.selected,"opened_submenu":opened_submenu==act.submenu}]\'\n\t\t\t\t:href=\'act.submenu?"javascript:void(0)":act.url\'\n\t\t\t\t@click=\'main_act_click(act)\'>\n\t\t\t\t<span v-html=\'act.icon\' class=\'_icon\'></span><span v-text=\'act.label\'></span>\n\t\t\t\t<span v-show="act.submenu">\n\t\t\t\t\t<span v-if="opened_submenu==act.submenu ||act.selected" style="float: right;margin-right: 1em;">\n\t\t\t\t\t\t<i class="fa fa-chevron-down"></i>\n\t\t\t\t\t</span>\n\t\t\t\t\t<span v-else style="float: right;margin-right: 1em;"><i class="fa fa-chevron-left"></i></span>\n\t\t\t\t</span>\n\t\t\t\t<!--<span class=\'left-arrow\' v-if=\'act.selected\'></span>-->\n\t\t\t</a>\n\n\t\t\t<ul class=\'submenu\' v-show=\'opened_submenu==act.submenu ||act.selected\' transition="expand">\n\t\t\t\t<li v-for=\'sub_act in act.submenu\' :class=\'{"active":sub_act.active}\'>\n\t\t\t\t\t<a :href=\'sub_act.url\' class=\'sub_item\'>\n\t\t\t\t\t\t<span v-text=\'sub_act.label\'></span>\n\t\t\t\t\t</a>\n\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</li>\n\t</ul>\n</div>\n';
 
 Vue.component('expand_menu', {
@@ -2227,7 +2229,7 @@ Vue.component('expand_menu', {
 //})
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2241,8 +2243,6 @@ Vue.component('page-tab', {
 document.write('\n <style type="text/css" media="screen" id="test">\n.inst-menu{\n\t\tmargin: 30px auto;\n\t\tborder-bottom: 1px solid #DADCDE;\n\t}\n.inst-menu li{\n\tdisplay: inline-block;\n\tpadding: 10px 20px;\n\tfont-size: 16px;\n}\n.inst-menu li:hover{\n\tcursor: pointer;\n}\n.inst-menu .active{\n\tborder-bottom: 5px solid #0092F2;\n\tcolor: #0092F2;\n}\n</style>\n');
 
 /***/ }),
-/* 72 */,
-/* 73 */,
 /* 74 */,
 /* 75 */,
 /* 76 */,
@@ -2264,7 +2264,9 @@ document.write('\n <style type="text/css" media="screen" id="test">\n.inst-menu{
 /* 92 */,
 /* 93 */,
 /* 94 */,
-/* 95 */
+/* 95 */,
+/* 96 */,
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2278,7 +2280,7 @@ exports.push([module.i, "template {\n  display: none; }\n\nhtml, body {\n  heigh
 
 
 /***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2292,7 +2294,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n.center-vh {\n  position: absolute
 
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2306,7 +2308,7 @@ exports.push([module.i, ".checkbox {\n  padding-left: 20px; }\n\n.checkbox label
 
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2320,7 +2322,7 @@ exports.push([module.i, "._expand_menu {\n  background-color: #364150; }\n  ._ex
 
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2334,7 +2336,7 @@ exports.push([module.i, ".flex {\n  display: flex; }\n\n.flex-v {\n  display: fl
 
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2348,7 +2350,7 @@ exports.push([module.i, ".clickable {\n  cursor: pointer;\n  color: #4da8cd; }\n
 
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -2362,8 +2364,6 @@ exports.push([module.i, ".ellipsis {\n  white-space: nowrap;\n  text-overflow: e
 
 
 /***/ }),
-/* 102 */,
-/* 103 */,
 /* 104 */,
 /* 105 */,
 /* 106 */,
@@ -2381,58 +2381,8 @@ exports.push([module.i, ".ellipsis {\n  white-space: nowrap;\n  text-overflow: e
 /* 118 */,
 /* 119 */,
 /* 120 */,
-/* 121 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(95);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./adapt.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./adapt.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 122 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(96);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./aliagn.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./aliagn.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
+/* 121 */,
+/* 122 */,
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2448,8 +2398,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./button.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./button.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./adapt.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./adapt.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -2474,8 +2424,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./expand_menu.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./expand_menu.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./aliagn.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./aliagn.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -2500,8 +2450,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./flex.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./flex.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./button.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./button.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -2526,8 +2476,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss");
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./expand_menu.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./expand_menu.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -2552,6 +2502,58 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./flex.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./flex.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(102);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./link.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(103);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
 		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./text.scss", function() {
 			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./text.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
@@ -2563,8 +2565,8 @@ if(false) {
 }
 
 /***/ }),
-/* 128 */,
-/* 129 */
+/* 130 */,
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
