@@ -22,10 +22,10 @@ class FootBallPoints(Fields):
     def get_heads(self): 
         return [
             #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-            {'name': 'home_half1_score', 'label': '上半场得分', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
-            {'name': 'away_half1_score', 'label': '上半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
-            {'name': 'home_half2_score', 'label': '下半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
-            {'name': 'away_half2_score', 'label': '下半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_half1_score', 'label': '上半场比分', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_half1_score', 'label': '上半场比分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_half2_score', 'label': '下半场比分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'away_half2_score', 'label': '下半场比分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             
             {'name': 'home_half1_corner', 'label': '上半场角球', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
             {'name': 'away_half1_corner', 'label': '上半场角球', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},

@@ -2003,10 +2003,12 @@ class TbAgentleavemsg(models.Model):
 class TbPaychannelblackaccount(models.Model):
     blackaccountid = models.AutoField(db_column='BlackAccountID', primary_key=True)  # Field name made lowercase.
     #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
-    accountid = models.ForeignKey(db_column='AccountID',to=TbAccount, blank=True, null=True) 
-    account = models.CharField(db_column='Account', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    iswork = models.BooleanField(db_column='IsWork',default=True)  # Field name made lowercase.
-    paychannelid = models.IntegerField(db_column='PayChannelID')  # Field name made lowercase.
+    accountid = models.ForeignKey(db_column='AccountID',to=TbAccount, blank=True, null=True,verbose_name='账号ID') 
+    account = models.CharField(db_column='Account', max_length=255, blank=True, null=True,verbose_name='账号')  # Field name made lowercase.
+    iswork = models.BooleanField(db_column='IsWork',default=True,verbose_name='启用')  # Field name made lowercase.
+    #paychannelid = models.IntegerField(db_column='PayChannelID')  # Field name made lowercase.
+    paychannelid = models.ForeignKey(to=TbPaychannel, db_column='PayChannelID', db_constraint=False,
+                                     verbose_name='充值渠道')  # Field name made lo    wercase.
 
     class Meta:
         managed = False
