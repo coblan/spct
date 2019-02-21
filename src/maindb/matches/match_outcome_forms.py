@@ -27,8 +27,8 @@ class FootBallPoints(Fields):
             {'name': 'home_half2_score', 'label': '下半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             {'name': 'away_half2_score', 'label': '下半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             
-            {'name': 'home_half1_corner', 'label': '半场角球', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
-            {'name': 'away_half1_corner', 'label': '半场角球', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_half1_corner', 'label': '上半场角球', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_half1_corner', 'label': '上半场角球', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             {'name': 'home_half2_corner', 'label': '下半场角球', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
             {'name': 'away_half2_corner', 'label': '下半场角球', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             
