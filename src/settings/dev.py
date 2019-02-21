@@ -102,6 +102,9 @@ RAB_PSWD = 'YXNkZmFmc2RmbAo'
 PRODUCT_NAME = '飞球竞猜'
 PACKAGE_NAME = 'com.jingbo.DQGuess'
 
+BET_DATA_SOURCE=2
+
+
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
 

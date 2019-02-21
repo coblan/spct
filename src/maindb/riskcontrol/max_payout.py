@@ -9,7 +9,7 @@ from ..riskcontrol.black_users import AccountSelect
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from helpers.director.model_func.field_procs.foreignproc import ForeignProc
-
+from django.conf import settings
 from django import forms
 
 
@@ -207,7 +207,8 @@ class LeagueSelect(ModelTable):
     selectable = False
 
     def inn_filter(self, query): 
-        return query.filter(specialcategoryid__lte = 0)
+        #specialcategoryid__lte = 0,
+        return query.filter(source=settings.BET_DATA_SOURCE)
     
     def dict_head(self, head):
         dc = {
@@ -242,7 +243,7 @@ class MatchSelect(ModelTable):
     include = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate']
 
     def inn_filter(self, query): 
-        return query.filter(specialcategoryid = 0)
+        return query.filter(source=settings.BET_DATA_SOURCE)
     
     def dict_head(self, head):
         dc = {
@@ -265,57 +266,6 @@ class MatchSelect(ModelTable):
     class filters(RowFilter):
         range_fields = ['matchdate']
 
-#class MatchProc(ForeignProc):
-    ##def to_dict(self, inst, name):
-        ##field = inst._meta.get_field(name)
-        ##fpk=getattr(inst,'%s_id'%name)
-        ##try:
-            ##value = getattr(inst,name)
-        ##except field.related_model.DoesNotExist:
-            ##value = fpk        
-            
-        ##if fpk==0:
-            ##return {
-                ##'_%s_label'%name:'---',
-                ##name:fpk
-            ##}
-        ##elif not value:
-            ##return {
-                ##'_%s_label'%name:'',
-                 ##name: fpk                
-            ##}
-        ##else:
-            ##return {
-                ##'_%s_label'%name:str( value ),
-                 ##name: fpk
-            ##}
-    
-    #def dict_field_head(self, head):
-        #table_obj = MatchSelect(crt_user=self.crt_user)
-        #head['editor'] = 'com-field-pop-table-select'
-        #head['table_ctx'] = table_obj.get_head_context()
-        #head['options'] = []
-        #return head
-    #def dict_table_head(self, head):
-        #head['editor']='com-table-label-shower'
-        #head['options']=[]
-        #return head
-    
-#class AccoutProc(MatchProc):
-    #def dict_field_head(self, head):
-        #table_obj = AccountSelect(crt_user=self.crt_user)
-        #head['editor'] = 'com-field-pop-table-select'
-        #head['table_ctx'] = table_obj.get_head_context()
-        #head['options'] = []    
-        #return head
-
-#class LeagueProc(MatchProc):
-    #def dict_field_head(self, head):
-        #table_obj = LeagueSelect(crt_user=self.crt_user)
-        #head['editor'] = 'com-field-pop-table-select'
-        #head['table_ctx'] = table_obj.get_head_context()
-        #head['options'] = []
-        #return head
 
 field_map.update({
     model_to_name(TbMaxpayout) + '.status': IntBoolProc,

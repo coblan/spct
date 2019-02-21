@@ -22,11 +22,15 @@ class FootBallPoints(Fields):
     def get_heads(self): 
         return [
             #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
-            {'name': 'home_half_score', 'label': '半场得分111', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
-            {'name': 'away_half_score', 'label': '半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_half1_score', 'label': '上半场得分', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_half1_score', 'label': '上半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_half2_score', 'label': '下半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'away_half2_score', 'label': '下半场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             
-            {'name': 'home_score', 'label': '全场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
-            {'name': 'away_score', 'label': '全场得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_half1_corner', 'label': '半场角球', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_half1_corner', 'label': '半场角球', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_half2_corner', 'label': '下半场角球', 'editor': 'com-field-linetext' ,'required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_half2_corner', 'label': '下半场角球', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
             
             #{'name': 'home_corner', 'label': '主队角球', 'editor': 'linetext'},
             #{'name': 'away_corner', 'label': '客队角球', 'editor': 'linetext'},
@@ -40,10 +44,24 @@ class FootBallPoints(Fields):
             raise UserWarning('比赛已经结算,请不要重复结算!')
         
         match.ishidden = True
-        match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
-        match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
-        match.homescore = row.get('home_score')
-        match.awayscore = row.get('away_score')   
+        
+        home_half1_score = int( row.get('home_half1_score') )
+        away_half1_score = int( row.get('away_half1_score') )
+        home_half2_score = int( row.get('home_half2_score'))
+        away_half2_score = int( row.get('away_half2_score'))
+        
+        home_half1_corner=int( row.get('home_half1_corner') )
+        away_half1_corner=int( row.get('away_half1_corner'))
+        home_half2_corner=int( row.get('home_half2_corner'))
+        away_half2_corner=int( row.get('away_half2_corner'))
+        
+        match.period1score = '%s:%s' % (home_half1_score,away_half1_score )
+        match.matchscore = '%s:%s' % (home_half1_score + home_half2_score, away_half1_score + away_half2_score )
+        match.homescore = home_half1_score + home_half2_score
+        match.awayscore = away_half1_score + away_half2_score 
+        
+        match.period1cornerkicks='%s:%s'%(home_half1_corner,away_half1_corner)
+        match.cornerkicks = '%s:%s'%(home_half1_corner+away_half1_corner,away_half1_corner+away_half2_corner)
         match.statuscode = 100
         match.settlestatus =3
         
