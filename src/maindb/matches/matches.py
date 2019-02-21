@@ -66,10 +66,7 @@ class MatchsPage(TablePage):
             now = timezone.now()
             if search_args.get('_start_matchdate')==None and search_args.get('_end_matchdate')==None:
                 search_args['_start_matchdate']=now.strftime("%Y-%m-%d 00:00:00")
-                search_args['_end_matchdate']=now.strftime("%Y-%m-%d 23:59:59")
-            if search_args.get('_qf')=='matchid' and search_args.get('_q'):
-                search_args.pop('_start_matchdate')
-                search_args.pop('_end_matchdate')        
+                search_args['_end_matchdate']=now.strftime("%Y-%m-%d 23:59:59")       
             return search_args
                 
         
