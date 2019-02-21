@@ -774,9 +774,9 @@ class TbMatches(models.Model):
     settletime = models.DateTimeField(db_column='SettleTime', blank=True, null=True)  # Field name made lowercase.
     source = models.IntegerField(db_column='Source',choices=DATA_SOURCE,verbose_name='数据源')  # Field name made lowercase.
     liveodds = models.BooleanField(db_column='LiveOdds')  # Field name made lowercase.
-    overtimescore = models.CharField(db_column='OvertimeScore', max_length=20)  # Field name made lowercase.
-    cornerkicks = models.CharField(db_column='CornerKicks', max_length=255)  # Field name made lowercase.
-    period1cornerkicks = models.CharField(db_column='Period1CornerKicks', max_length=255)  # Field name made lowercase.    
+    overtimescore = models.CharField(db_column='OvertimeScore', max_length=20,blank=True)  # Field name made lowercase.
+    cornerkicks = models.CharField(db_column='CornerKicks', max_length=255,blank=True)  # Field name made lowercase.
+    period1cornerkicks = models.CharField(db_column='Period1CornerKicks', max_length=255,blank=True)  # Field name made lowercase.    
     
     class Meta:
         managed = False
@@ -2000,6 +2000,19 @@ class TbAgentleavemsg(models.Model):
         db_table = 'TB_AgentLeaveMsg'
 
 
+class TbPaychannelblackaccount(models.Model):
+    blackaccountid = models.AutoField(db_column='BlackAccountID', primary_key=True)  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
+    accountid = models.ForeignKey(db_column='AccountID',to=TbAccount, blank=True, null=True) 
+    account = models.CharField(db_column='Account', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    iswork = models.BooleanField(db_column='IsWork',default=True)  # Field name made lowercase.
+    paychannelid = models.IntegerField(db_column='PayChannelID')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_PayChannelBlackAccount'
+
+
 class TbPaychannelblackiprange(models.Model):
     blackiprangelistid = models.AutoField(db_column='BlackIpRangeListID', primary_key=True,
                                           verbose_name=_('ID'))  # Field name made lowercase.
@@ -2007,7 +2020,7 @@ class TbPaychannelblackiprange(models.Model):
                                verbose_name=_('StartIp'))  # Field name made lowercase.
     startipnum = models.BigIntegerField(db_column='StartIpNum',
                                         verbose_name=_('StartIpNum'))  # Field name made lowercase.
-    endip = models.CharField(db_column='EndIp', max_length=16, verbose_name=_('EndIp'))  # Field name made lowercase.
+    endip = models.CharField(db_column='EndIp', max_length=16, verbose_name=_('EndIp'),help_text='起始ip相同则表示控制单个ip')  # Field name made lowercase.
     endipnum = models.BigIntegerField(db_column='EndIpNum', verbose_name=_('EndIpNum'))  # Field name made lowercase.
 
     iswork = models.BooleanField(db_column='IsWork', verbose_name=_('IsWork'),
