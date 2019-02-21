@@ -411,7 +411,7 @@ class AccoutModifyAmount(ModelFields):
         desp_options = [{'value':x.pk,'label':x.categoryname} for x in  TbMoneyCategories.objects.all()]
         return [
             {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', },
-            {'name':'moenycategory','label':'备注','editor':'com-field-select','required':True,'options':desp_options},
+            {'name':'moenycategory','label':'类型','editor':'com-field-select','required':True,'options':desp_options},
         ]
 
     def clean_dict(self, dc):

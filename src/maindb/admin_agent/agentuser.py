@@ -8,7 +8,7 @@ from helpers.director.access.permit import has_permit
 from django.core.exceptions import PermissionDenied
 from ..alg import encode_paswd
 from ..riskcontrol.black_users import AccountSelect
-
+from dateutil.relativedelta import relativedelta
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
 
@@ -33,22 +33,35 @@ class AgentUser(TablePage):
         @classmethod
         def clean_search_args(cls, search_args):
             today = timezone.now()
-            sp = timezone.timedelta(days=30)
-            last = today - sp
-            def_start = last.strftime('%Y-%m-%d')
-            def_end = today.strftime('%Y-%m-%d')
-            search_args['_start_createtime'] = search_args.get('_start_createtime') or def_start
-            search_args['_end_createtime'] = search_args.get('_end_createtime') or def_end
+            #sp = timezone.timedelta(days=30)
+            #last = today - sp
+            #def_start = last.strftime('%Y-%m-%d')
+            #def_end = today.strftime('%Y-%m-%d')
+            #search_args['_start_createtime'] = search_args.get('_start_createtime') or def_start
+            #search_args['_end_createtime'] = search_args.get('_end_createtime') or def_end
+            search_args['createtime'] = today.strftime('%Y-%m')
             return search_args
         
         
         class filters(RowFilter):
-            range_fields = ['createtime']
+            #range_fields = ['createtime']
+            names=['createtime']
 
             def dict_head(self, head):
                 if head['name'] == 'createtime':
                     head['label'] = '产生时间'
+                    head['editor']='com-filter-month'
+                    head['placeholder']='选择月份'
                 return head
+            
+            def getExtraHead(self):
+                return [
+                    {'name':'accounttype','label':'用户类型','editor':'com-filter-select','options':[
+                        #{'value':'NULL','label':'全部'},
+                        {'value':'0','label':'普通'},
+                        {'value':'1','label':'内部'}
+                    ]}
+                ]
 
         class sort(RowSort):
             names = ['AgentAmount', 'BeaeAmount', 'SumActive', 'BalanceLostAmount', 'SumLostAmount',
@@ -72,6 +85,7 @@ class AgentUser(TablePage):
             @BeginDate DATE=NULL,   --查询开始时间 默认上月今天  
             @EndDate DATE=NULL,   --查询结算时间 默认今天  
             @NickName VARCHAR(20) =NULL --帐号查询昵称 默认全部  
+            @AccountType INT (NULL 0 1) 全部/普通/内部
             """
 
             order_by = self.search_args.get('_sort', '')
@@ -109,17 +123,23 @@ class AgentUser(TablePage):
 
             if order_by.startswith('-'):
                 order_by = order_by[1:] + ' DESC'
+            
+            createdate = timezone.datetime.strptime( self.search_args.get('createtime'),'%Y-%m')
+            start_date = createdate.strftime('%Y-%m-%d')
+            end_date = (createdate+ relativedelta(months=1) ).strftime('%Y-%m-%d')
+            AccountType = self.search_args.get('accounttype','NULL')
             sql_args = {
                 'AccountID': par,
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
-                'BeginDate': self.search_args.get('_start_createtime', ''),
-                'EndDate': self.search_args.get('_end_createtime', ''),
+                'BeginDate':start_date, #self.search_args.get('_start_createtime', ''),
+                'EndDate':end_date, #self.search_args.get('_end_createtime', ''),
                 'NickName': nickname,
+                'AccountType':AccountType,
                 'OrderBy': order_by,
             }
 
-            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s',%%s,'%(OrderBy)s'" \
+            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s',%%s,%(AccountType)s,'%(OrderBy)s'" \
                   % sql_args
             
             #print(sql)
@@ -169,7 +189,7 @@ class AgentUser(TablePage):
             # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
 
         def dict_head(self, head):
-            if head['name'] == 'SumActive':
+            if head['name'] == 'NickName': #'SumActive':
                 head['editor'] = 'com-table-call-fun'
                 head['fun'] = 'get_childs'
                 head['arg_filter'] = 'field'
