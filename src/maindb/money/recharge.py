@@ -20,7 +20,7 @@ class RechargePage(TablePage):
         model = TbRecharge
         sort = ['createtime']
         exclude = ['account', 'apolloinfo', 'apollomsg']
-        fields_sort = ['rechargeid', 'accountid', 'orderid', 'amount', 'confirmamount', 'status', 'createtime',
+        fields_sort = ['rechargeid', 'accountid', 'orderid','bankcardno','accountip', 'amount', 'confirmamount', 'status', 'createtime',
                        'confirmtime', 'channelid', 'amounttype', 'isauto','apolloinfo', 'apollomsg', 'memo']
 
         def dict_head(self, head):

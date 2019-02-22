@@ -357,7 +357,7 @@ var produceMatchOutcomePanel={
         <!--<div class="field-panel msg-hide" >-->
             <!--<field  v-for="head in heads" :key="head.name" :head="head" :row="row"></field>-->
         <!--</div>-->
-      <div style="height: 15em;">
+      <div style="height: 1em;">
       </div>
     </div>
      <div style="text-align: right;padding: 8px 3em;">

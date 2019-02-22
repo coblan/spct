@@ -2,7 +2,9 @@ from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowF
 from ..models import TbAccount
 from django.utils import timezone
 from django.db import connections
-from ..member.account import UserRecharge
+from ..member.account import UserRecharge,account_tab
+
+
 
 class RechargeReport(TablePage):
     def get_label(self):
@@ -54,6 +56,7 @@ class RechargeReport(TablePage):
                                  'visible': True #can_touch(TbRecharge, self.crt_user),
                     }]
             }
+            ctx['named_ctx'] .update( account_tab(self))
             return ctx
         
         def getExtraHead(self):
