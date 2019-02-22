@@ -252,8 +252,8 @@ class BasketTwosection(FootBallPoints):
                 match.ishidden = True
                 home_half_score= int(row.get('home_half_score'))
                 away_half_score= int(row.get('away_half_score'))
-                homescore = int( row.get('home_half_score') )+int( row.get('home_half2_score') )+int(row.get('home_overtime_score'))
-                awayscore = int( row.get('away_half_score') )+int( row.get('away_half2_score') )+int(row.get('away_overtime_score'))
+                homescore = int( row.get('home_half_score') )+int( row.get('home_half2_score') )+int(row.get('home_overtime_score',0))
+                awayscore = int( row.get('away_half_score') )+int( row.get('away_half2_score') )+int(row.get('away_overtime_score',0))
                 
                 #match.q1score='%s:%s'%(row.get('home_1_score'),row.get('away_1_score'))
                 #match.q2score='%s:%s'%(row.get('home_2_score'),row.get('away_2_score'))
