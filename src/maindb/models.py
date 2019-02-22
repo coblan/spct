@@ -1814,6 +1814,7 @@ class TbPaychannel(models.Model):
                             blank=True)  # Field name made lowercase.
     channelgroupid = models.ForeignKey(to='TbPaychannelgroup', db_constraint=False, db_column='ChannelGroupID',
                                        verbose_name='分组')  # Field name made lowercase.
+    isonline = models.BooleanField(db_column='IsOnline',verbose_name='是否三方')  # Field name made lowercase.
 
     class Meta:
         managed = False
