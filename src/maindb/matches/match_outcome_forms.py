@@ -234,8 +234,8 @@ class BasketTwosection(FootBallPoints):
             #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
             {'name': 'home_half_score', 'label': '上半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)',},
             {'name': 'away_half_score', 'label': '上半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)'},
-            {'name': 'home_half_score', 'label': '下半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)',},
-            {'name': 'away_half_score', 'label': '下半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)'},
+            {'name': 'home_half2_score', 'label': '下半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)',},
+            {'name': 'away_half2_score', 'label': '下半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)'},
 
             {'name': 'home_overtime_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~3)'},
             {'name': 'away_overtime_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~3)'},
@@ -252,8 +252,8 @@ class BasketTwosection(FootBallPoints):
                 match.ishidden = True
                 home_half_score= int(row.get('home_half_score'))
                 away_half_score= int(row.get('away_half_score'))
-                homescore = int( row.get('home_half_score') )+int( row.get('home_half_score') )+int(row.get('home_overtime_score'))
-                awayscore = int( row.get('away_half_score') )+int( row.get('away_half_score') )+int(row.get('away_overtime_score'))
+                homescore = int( row.get('home_half_score') )+int( row.get('home_half2_score') )+int(row.get('home_overtime_score'))
+                awayscore = int( row.get('away_half_score') )+int( row.get('away_half2_score') )+int(row.get('away_overtime_score'))
                 
                 #match.q1score='%s:%s'%(row.get('home_1_score'),row.get('away_1_score'))
                 #match.q2score='%s:%s'%(row.get('home_2_score'),row.get('away_2_score'))

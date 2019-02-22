@@ -2,6 +2,7 @@ from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowF
 from ..models import TbAccount
 from django.utils import timezone
 from django.db import connections
+from ..member.account import UserRecharge
 
 class RechargeReport(TablePage):
     def get_label(self):
@@ -16,12 +17,7 @@ class RechargeReport(TablePage):
         
         class search(RowSearch):
             names = ['accountid']
-    
-            #def get_option(self, name):
-                #if name == 'nickname':
-                    #return {'value': 'nickname', 'label': '用户昵称', }
-                #else:
-                    #return super().get_option(name)        
+         
         
         class filters(RowFilter):
             range_fields = ['date']
@@ -32,7 +28,7 @@ class RechargeReport(TablePage):
                 ]        
         
         class sort(RowSort):
-            names = ['RequestAmount','FinishPer']        
+            names = ['RequestAmount','DangerLevel','RequestTotal','FinishTotal','FinishAmount','UseCardTotal','OnlineTotal']        
         
         @classmethod
         def clean_search_args(cls, search_args):
@@ -47,9 +43,22 @@ class RechargeReport(TablePage):
                 
             return search_args        
         
+        def get_context(self):
+            ctx = super().get_context()
+            ctx['named_ctx'] =  {
+                'recharge_tabs':[{'name': 'UserRecharge',
+                                 'label': '充值记录',
+                                 'com': 'com-tab-table',
+                                 'par_field': 'accountid',
+                                 'table_ctx': UserRecharge(crt_user=self.crt_user).get_head_context(),
+                                 'visible': True #can_touch(TbRecharge, self.crt_user),
+                    }]
+            }
+            return ctx
+        
         def getExtraHead(self):
             return [
-                {'name': 'Account', 'label': '账号 ', 'width': 150},
+                {'name': 'Account', 'label': '账号 ', 'width': 150,'editor':'com-table-switch-to-tab','ctx_name':'recharge_tabs','tab_name':'UserRecharge'},
                 {'name': 'DangerLevel', 'label': '用户安全等级', 'width': 100,'editor':'com-table-style-block', 'style_express':"""
                 var style_map={'高危':'background-color:red;color:white;'};
                 rt=style_map[scope.row.DangerLevel]
@@ -65,9 +74,7 @@ class RechargeReport(TablePage):
                 {'name': 'UseCardTotal', 'label': '转卡充值次数', 'width': 100},
                 
                 {'name': 'OnlineTotal', 'label': '第三方充值次数', 'width': 100},
-              
-               
-                                                        
+                                           
             ]    
         
         def get_rows(self):
@@ -92,14 +99,14 @@ class RechargeReport(TablePage):
             return self.data_rows  
         
         def getData(self):
-            nickname = ""
-            if self.search_args.get('_qf') == 'nickname':
-                nickname = self.search_args.get('_q', '')
-            sort = self.search_args.get('_sort') or '-Profit'
-            sortway = 'asc'
-            if sort.startswith('-'):
-                sort = sort[1:]
-                sortway = 'desc'
+            #nickname = ""
+            #if self.search_args.get('_qf') == 'nickname':
+                #nickname = self.search_args.get('_q', '')
+            #sort = self.search_args.get('_sort') or '-Profit'
+            #sortway = 'asc'
+            #if sort.startswith('-'):
+                #sort = sort[1:]
+                #sortway = 'desc'
  
             #sort_dc = {
                 #'FirstRechargeBonus':'1stRCBonus',
@@ -113,7 +120,7 @@ class RechargeReport(TablePage):
                 #'AdjustAmount':'AdjAmount'
             #}
             realsort = self.search_args.get('_sort') or 'NULL' #sort_dc.get(sort) or sort;
-            order_d = 'Desc' if realsort.startswith('-') else ''
+            order_d = 'Desc' if realsort.startswith('-') else 'Asc'
             realsort = realsort[1:] if realsort.startswith('-') else realsort
             AccountID = self.search_args.get('_q') or 'NULL'
             sql_args = {
