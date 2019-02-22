@@ -202,7 +202,7 @@ class BasketPoints(FootBallPoints):
                 match.awayscore = awayscore
                 match.period1score = '%s:%s'%(home_half_score,away_half_score)
                 match.matchscore = '%s:%s' % (match.homescore, match.awayscore)
-                match.settlestatus = 1
+                match.settlestatus = 3
                 match.statuscode = 100
                 match.save()
                 row['PeriodType'] = 2      
@@ -265,7 +265,7 @@ class BasketTwosection(FootBallPoints):
                 match.awayscore = awayscore
                 match.period1score = '%s:%s'%(home_half_score,away_half_score)
                 match.matchscore = '%s:%s' % (match.homescore, match.awayscore)
-                match.settlestatus = 1
+                match.settlestatus = 3
                 match.statuscode = 100
                 match.save()
                 row['PeriodType'] = 2      

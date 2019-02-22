@@ -112,6 +112,7 @@ class PcMenu(BaseEngine):
                 {'label': '充值IP黑名单', 'url': page('paychannel_blackip'),'visible': can_touch(TbPaychannelblackiprange, crt_user), },
                 {'label': '充值地区黑名单', 'url': page('paychannel_area_blacklist'),
                  'visible': can_touch(TbRechargeareablacklist, crt_user), },
+                {'label':'充值统计','url':page('recharge_reports'),},
                 {'label':_('White IP'),'url':page('white_ip_rangelist'), 'visible': can_touch(TbWhiteiprangelist, crt_user),},
                 {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
                 {'label': '联赛组水位', 'url': page('LeagueGroupPage'), 'visible': can_touch(TbLeagueGroup, crt_user), },
