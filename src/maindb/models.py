@@ -724,7 +724,7 @@ class TbMatches(models.Model):
     superteam2id = models.BigIntegerField(db_column='SuperTeam2Id')  # Field name made lowercase.
     team2zh = models.CharField(db_column='Team2ZH', verbose_name=_('Away Team'),
                                max_length=100)  # Field name made lowercase.
-    matchscore = models.CharField(db_column='MatchScore', max_length=8, verbose_name='全场比分',
+    matchscore = models.CharField(db_column='MatchScore', max_length=20, verbose_name='全场比分',
                                   blank=True)  # Field name made lowercase.
     winner = models.IntegerField(db_column='Winner', verbose_name=_('Winner'),
                                  choices=WINNER)  # Field name made lowercase.
@@ -2192,7 +2192,7 @@ class TbMatchesBasketball(models.Model):
     team2id = models.IntegerField(db_column='Team2ID')  # Field name made lowercase.
     superteam2id = models.BigIntegerField(db_column='SuperTeam2Id')  # Field name made lowercase.
     team2zh = models.CharField(db_column='Team2ZH', max_length=100, blank=True, null=True,verbose_name='客队')  # Field name made lowercase.
-    matchscore = models.CharField(db_column='MatchScore', max_length=8,verbose_name='比分', blank = True)  # Field name made lowercase.
+    matchscore = models.CharField(db_column='MatchScore', max_length=20,verbose_name='比分', blank = True)  # Field name made lowercase.
     winner = models.IntegerField(db_column='Winner',verbose_name='获胜者',choices=WINNER)  # Field name made lowercase.
     statuscode = models.IntegerField(db_column='StatusCode',verbose_name='状态',choices=BASKETBALL_MATCH_STATUS)  # Field name made lowercase.
     roundinfo = models.IntegerField(db_column='RoundInfo')  # Field name made lowercase.

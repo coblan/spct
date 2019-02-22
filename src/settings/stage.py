@@ -60,6 +60,7 @@ PACKAGE_NAME = 'com.jingbo.DQGuess'
 
 UPLOAD_CLOUD_SHELL='/pypro/shell/upload-app.sh'
 
+BET_DATA_SOURCE=2
 
 
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET

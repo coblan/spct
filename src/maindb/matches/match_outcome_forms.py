@@ -223,6 +223,70 @@ class BasketPoints(FootBallPoints):
     
     
 
+class BasketTwosection(FootBallPoints):
+    sportid = 1
+    MatchModel = TbMatchesBasketball
+    matchtype = '篮球'
+    half_end_code = 4
+    
+    def get_heads(self): 
+        return [
+            #{'name': 'matchid', 'label': '比赛', 'editor': 'com-field-label-shower', 'readonly': True},
+            {'name': 'home_half_score', 'label': '上半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_half_score', 'label': '上半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'home_half_score', 'label': '下半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)',},
+            {'name': 'away_half_score', 'label': '下半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~6)'},
+
+            {'name': 'home_overtime_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            {'name': 'away_overtime_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~6)'},
+            ]     
+    
+    def manul_outcome(self, row, match): 
+        #match = self.MatchModel.objects.get(matchid = row.get('matchid'))
+        if match.settlestatus ==3: # and match.settlestatus >= 1:
+            raise UserWarning('篮球赛已经结算,请不要重复结算!')   
+        
+        #org_match = to_dict(match)
+        try:
+            with transaction.atomic():
+                match.ishidden = True
+                home_half_score= row.get('home_half_score')
+                away_half_score= row.get('away_half_score')
+                homescore = int( row.get('home_half_score') )+int( row.get('home_half_score') )+int(row.get('home_overtime_score'))
+                awayscore = int( row.get('away_half_score') )+int( row.get('away_half_score') )+int(row.get('away_overtime_score'))
+                
+                #match.q1score='%s:%s'%(row.get('home_1_score'),row.get('away_1_score'))
+                #match.q2score='%s:%s'%(row.get('home_2_score'),row.get('away_2_score'))
+                #match.q3score='%s:%s'%(row.get('home_3_score'),row.get('away_3_score'))
+                #match.q4score='%s:%s'%(row.get('home_4_score'),row.get('away_4_score'))
+                match.overtimescore='%s:%s'%(row.get('home_overtime_score',0),row.get('away_overtime_score',0))
+                
+                match.homescore = homescore
+                match.awayscore = awayscore
+                match.period1score = '%s:%s'%(home_half_score,away_half_score)
+                match.matchscore = '%s:%s' % (match.homescore, match.awayscore)
+                match.settlestatus = 1
+                match.statuscode = 100
+                match.save()
+                row['PeriodType'] = 2      
+                self.notfiy_service(row)
+        except UserWarning as e:
+            #for k in org_match:
+                #if not k.startswith('_'):
+                    #setattr(match, k, org_match[k])
+                #match.save()
+            op_log.info('手动结算篮球比赛%(matchid)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
+                                                                                        #'type': settle_dict.get(match.settlestatus),
+                                                                                        'msg': str(e),
+                                                                                                })
+            raise e
+        op_log.info('手动结算%(matchtype)s比赛%(matchid)s,最终比分%(matchscore)s' % {'matchid': match.matchid, 
+                                                         'matchtype': self.matchtype,
+                                                         'matchscore': match.matchscore,})  
+
+
+
+
 class Quarter(BasketPoints):
     # 170  单结比分
     def get_heads(self): 

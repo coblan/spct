@@ -2,7 +2,7 @@ from helpers.director.shortcut import page_dc, director, director_view
 from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, quit_ticket
 from ..models import TbMatchesBasketball, TbOddsBasketball,TbTournamentBasketball
 from maindb.mongoInstance import updateMatchBasketMongo
-from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points
+from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points,BasketTwosection
 from ..redisInstance import redisInst
 
 class BasketMatchsPage(MatchsPage):
@@ -40,54 +40,57 @@ class BasketMatchsPage(MatchsPage):
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
             
             points_form = BasketPoints(crt_user= self.crt_user)
-            quarter = Quarter(crt_user= self.crt_user)
-            firstbasket = FirstBasket(crt_user= self.crt_user)
-            lastbasket = LastBasket(crt_user= self.crt_user)
-            highest_quarter_score_team =  HightestQuarterScore(crt_user= self.crt_user)
-            totalpoint = TotalPoints(crt_user= self.crt_user)
-            shot3 = Shot3Points(crt_user= self.crt_user)
-            first_score = FirstReachScore(crt_user= self.crt_user)
+            #quarter = Quarter(crt_user= self.crt_user)
+            #firstbasket = FirstBasket(crt_user= self.crt_user)
+            #lastbasket = LastBasket(crt_user= self.crt_user)
+            #highest_quarter_score_team =  HightestQuarterScore(crt_user= self.crt_user)
+            #totalpoint = TotalPoints(crt_user= self.crt_user)
+            #shot3 = Shot3Points(crt_user= self.crt_user)
+            #first_score = FirstReachScore(crt_user= self.crt_user)
+            towsection = BasketTwosection(crt_user=self.crt_user)
             ops = [
                  {'fun': 'pop_panel',
                 'editor': 'com-op-btn',
-                'panel_express': 'rt=manul_outcome_panel_express_parse(scope.kws.panel_map,scope.kws.play_type,scope.ts.selected[0].specialcategoryid)',
+                'panel_express':'rt="com-form-produceMatchOutcomePanel"',
+                #'panel_express': 'rt=manul_outcome_panel_express_parse(scope.kws.panel_map,scope.kws.play_type,scope.ts.selected[0].specialcategoryid)',
                 'label': '手动结算',
                 'row_match': 'one_row',
-                'ctx_express': 'rt=manul_outcome_panel_ctx(scope.ts.selected[0],scope.kws,scope.ts.selected[0].specialcategoryid)',
-                'play_type': {
-                    'normal': [0], 
-                    'Quarter': [170],
-                    'firstBasket': [171],  #  哪个球队先得分
-                    'lastBasket': [172],
-                    'highest_score': [174],
-                    'totalpoint': [175],
-                    'shot3': [176],
-                    'race-to-first-number-of-points': [185],
-                    },
-                'row_adapt': {
-                    'normal': 'rt=scope.adaptor.parse_score(scope.row)',
-                    'Quarter': 'rt=scope.adaptor.parse_score(scope.row)',
-                    },
-                'panel_map': {
-                    'normal': 'com-form-produceMatchOutcomePanel',
-                    'Quarter': 'com-panel-pop-fields',
-                    'firstBasket': 'com-panel-pop-fields',
-                    'lastBasket': 'com-panel-pop-fields',
-                    'highest_score': 'com-panel-pop-fields',
-                    'totalpoint': 'com-panel-pop-fields',
-                    'shot3': 'com-panel-pop-fields',
-                    'race-to-first-number-of-points': 'com-panel-pop-fields',
-                    },
+                'ctx_express': 'var row =ex.copy(scope.ts.selected[0]); var ctx =row.tournamentid==698?scope.kws.ctx_dict.towsection:scope.kws.ctx_dict.normal;ctx.row=row;ctx.row.meta_type="manul_outcome";rt=ctx',
+                #'ctx_express': 'rt=manul_outcome_panel_ctx(scope.ts.selected[0],scope.kws,scope.ts.selected[0].specialcategoryid)',
+                #'play_type': {
+                    #'normal': [0], 
+                    #'Quarter': [170],
+                    #'firstBasket': [171],  #  哪个球队先得分
+                    #'lastBasket': [172],
+                    #'highest_score': [174],
+                    #'totalpoint': [175],
+                    #'shot3': [176],
+                    #'race-to-first-number-of-points': [185],
+                    #},
+                #'row_adapt': {
+                    #'normal': 'rt=scope.adaptor.parse_score(scope.row)',
+                    #'Quarter': 'rt=scope.adaptor.parse_score(scope.row)',
+                    #},
+                #'panel_map': {
+                    #'normal': 'com-form-produceMatchOutcomePanel',
+                    #'Quarter': 'com-panel-pop-fields',
+                    #'firstBasket': 'com-panel-pop-fields',
+                    #'lastBasket': 'com-panel-pop-fields',
+                    #'highest_score': 'com-panel-pop-fields',
+                    #'totalpoint': 'com-panel-pop-fields',
+                    #'shot3': 'com-panel-pop-fields',
+                    #'race-to-first-number-of-points': 'com-panel-pop-fields',
+                    #},
                 'ctx_dict': {
                     'normal': points_form.get_head_context(),
-                    'Quarter': quarter.get_head_context(),
-                    'firstBasket': firstbasket.get_head_context(),
-                    'lastBasket': lastbasket.get_head_context(),
-                    'highest_score': highest_quarter_score_team.get_head_context(),
-                    'totalpoint': totalpoint.get_head_context(),
-                    'shot3': shot3.get_head_context(),
-                    'race-to-first-number-of-points': first_score.get_head_context(),
-                    #'corner': corner_form.get_head_context(),
+                    #'Quarter': quarter.get_head_context(),
+                    #'firstBasket': firstbasket.get_head_context(),
+                    #'lastBasket': lastbasket.get_head_context(),
+                    #'highest_score': highest_quarter_score_team.get_head_context(),
+                    #'totalpoint': totalpoint.get_head_context(),
+                    #'shot3': shot3.get_head_context(),
+                    #'race-to-first-number-of-points': first_score.get_head_context(),
+                    'towsection':towsection.get_head_context(),
                     },
               
                 'visible': self.permit.can_edit(),
@@ -148,10 +151,6 @@ class BasketMatchsPage(MatchsPage):
                     ]
                 return head
     
-#@director_view('get_basketball_league_options')
-#def get_basketball_league_options(source=0):
-    #ls =[{'label':str(x) ,'value':x.tournamentid} for x in TbTournamentBasketball.objects.filter(source=source)]
-    #return ls
 
 class BasketMatchForm(MatchForm):
     proc_map = {
@@ -165,6 +164,8 @@ class BasketMatchForm(MatchForm):
         185: FirstReachScore,
         #2: NumberOfCorner,
     }    
+    #tournamentid=698
+    
     class Meta(MatchForm.Meta):
         model = TbMatchesBasketball
         #exclude = ['marketstatus', 'maineventid']
@@ -191,7 +192,26 @@ class BasketMatchForm(MatchForm):
                 redisInst.delete('Backend:Basketball:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid})
             else:
                 redisInst.set('Backend:Basketball:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
-                              60 * 1000 * 60 * 24 * 7)    
+                              60 * 1000 * 60 * 24 * 7)
+                
+    def save_form(self):
+        super().save_form()
+        msg = []
+        if self.kw.get('meta_type') == 'manul_outcome':
+            #specialcategoryid = self.kw.get('specialcategoryid')
+            #ProcCls = self.proc_map.get(specialcategoryid)
+            if self.kw.get('tournamentid')==698:
+                ProcCls=BasketTwosection
+            else:
+                ProcCls=BasketPoints
+            proc_obj = ProcCls(crt_user = self.crt_user)
+            self.instance.settletime = datetime.now()
+            rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
+            msg.append(rt_msg)
+            
+        self.updateMongo()
+        self.proc_redis()
+        return {'msg': msg,}    
 
 
 @director_view('basketball_quit_ticket')

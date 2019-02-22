@@ -27,6 +27,9 @@ function manul_outcome_panel_ctx(row,kws,sp_id){
     }
     return cus_ctx
 }
+
+
+
 var row_adaper={
     parse_score:function (row){
         var crt_row = row
