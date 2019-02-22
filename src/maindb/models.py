@@ -733,7 +733,7 @@ class TbMatches(models.Model):
     roundinfo = models.IntegerField(db_column='RoundInfo', verbose_name=_('Round'))  # 轮数 Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',
                                       verbose_name=_('IsRecommend'))  # 推介 Field name made lowercase.
-    livebet = models.BooleanField(db_column='LiveBet', verbose_name='走地盘')  # 滚球 Field name made lowercase.
+    livebet = models.BooleanField(db_column='LiveBet', verbose_name='走地')  # 滚球 Field name made lowercase.
     generatedat = models.DateTimeField(db_column='GeneratedAt',
                                        verbose_name=_('Create Time'))  # 生成日期 Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
@@ -773,7 +773,7 @@ class TbMatches(models.Model):
     settlestatus = models.IntegerField(db_column='SettleStatus', blank=True, null=True)  # Field name made lowercase.
     settletime = models.DateTimeField(db_column='SettleTime', blank=True, null=True)  # Field name made lowercase.
     source = models.IntegerField(db_column='Source',choices=DATA_SOURCE,verbose_name='数据源')  # Field name made lowercase.
-    liveodds = models.BooleanField(db_column='LiveOdds')  # Field name made lowercase.
+    liveodds = models.BooleanField(db_column='LiveOdds',verbose_name='走地盘')  # Field name made lowercase.
     overtimescore = models.CharField(db_column='OvertimeScore', max_length=20,blank=True)  # Field name made lowercase.
     cornerkicks = models.CharField(db_column='CornerKicks', max_length=255,blank=True)  # Field name made lowercase.
     period1cornerkicks = models.CharField(db_column='Period1CornerKicks', max_length=255,blank=True)  # Field name made lowercase.    
