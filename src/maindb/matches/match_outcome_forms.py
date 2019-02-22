@@ -187,8 +187,8 @@ class BasketPoints(FootBallPoints):
         try:
             with transaction.atomic():
                 match.ishidden = True
-                home_half_score= row.get('home_1_score')+row.get('home_2_score')
-                away_half_score= row.get('away_1_score')+row.get('away_2_score')
+                home_half_score= int(row.get('home_1_score'))+int(row.get('home_2_score'))
+                away_half_score= int(row.get('away_1_score'))+int(row.get('away_2_score'))
                 homescore = int( row.get('home_1_score') )+int( row.get('home_2_score') )+ int( row.get('home_3_score') )+int( row.get('home_4_score') )+ int( row.get('home_5_score',0))
                 awayscore = int( row.get('away_1_score') )+int( row.get('away_2_score') ) + int( row.get('away_3_score') )+int( row.get('away_4_score') )+int( row.get('away_5_score',0))
                 
@@ -250,8 +250,8 @@ class BasketTwosection(FootBallPoints):
         try:
             with transaction.atomic():
                 match.ishidden = True
-                home_half_score= row.get('home_half_score')
-                away_half_score= row.get('away_half_score')
+                home_half_score= int(row.get('home_half_score'))
+                away_half_score= int(row.get('away_half_score'))
                 homescore = int( row.get('home_half_score') )+int( row.get('home_half_score') )+int(row.get('home_overtime_score'))
                 awayscore = int( row.get('away_half_score') )+int( row.get('away_half_score') )+int(row.get('away_overtime_score'))
                 
