@@ -174,8 +174,8 @@ class BasketPoints(FootBallPoints):
             {'name': 'away_3_score', 'label': '三小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)'},
             {'name': 'home_4_score', 'label': '四小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)'},
             {'name': 'away_4_score', 'label': '四小节得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)'},
-            {'name': 'home_5_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~3)'},
-            {'name': 'away_5_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~3)'},
+            {'name': 'home_5_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3);'},
+            {'name': 'away_5_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3);'}, #required(#id_home_5_score:filled)
             ]     
     
     def manul_outcome(self, row, match): 
@@ -237,8 +237,8 @@ class BasketTwosection(FootBallPoints):
             {'name': 'home_half2_score', 'label': '下半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)',},
             {'name': 'away_half2_score', 'label': '下半场', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)'},
 
-            {'name': 'home_overtime_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~3)'},
-            {'name': 'away_overtime_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','fv_rule': 'integer(+0);length(~3)'},
+            {'name': 'home_overtime_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)'},
+            {'name': 'away_overtime_score', 'label': '加时赛得分', 'editor': 'com-field-linetext','required':True,'fv_rule': 'integer(+0);length(~3)'},
             ]     
     
     def manul_outcome(self, row, match): 

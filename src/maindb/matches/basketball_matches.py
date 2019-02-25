@@ -56,7 +56,7 @@ class BasketMatchsPage(MatchsPage):
                 #'panel_express': 'rt=manul_outcome_panel_express_parse(scope.kws.panel_map,scope.kws.play_type,scope.ts.selected[0].specialcategoryid)',
                 'label': '手动结算',
                 'row_match': 'one_row',
-                'ctx_express': 'var row =ex.copy(scope.ts.selected[0]); var ctx =row.tournamentid==698?scope.kws.ctx_dict.towsection:scope.kws.ctx_dict.normal;ctx.row=row;ctx.row.meta_type="manul_outcome";rt=ctx',
+                'ctx_express': 'var row =ex.copy(scope.ts.selected[0]); var ctx =ex.isin(row.tournamentid,[698,7557])?scope.kws.ctx_dict.towsection:scope.kws.ctx_dict.normal;ctx.row=row;ctx.row.meta_type="manul_outcome";rt=ctx',
                 #'ctx_express': 'rt=manul_outcome_panel_ctx(scope.ts.selected[0],scope.kws,scope.ts.selected[0].specialcategoryid)',
                 #'play_type': {
                     #'normal': [0], 
