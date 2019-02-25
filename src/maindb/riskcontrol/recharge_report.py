@@ -35,7 +35,7 @@ class RechargeReport(TablePage):
         @classmethod
         def clean_search_args(cls, search_args):
             today = timezone.now()
-            sp = timezone.timedelta(days=300)
+            sp = timezone.timedelta(days=30)
             last = today - sp
             def_start = last.strftime('%Y-%m-%d 00:00:00')
             def_end = today.strftime('%Y-%m-%d %H:%M:%S')
