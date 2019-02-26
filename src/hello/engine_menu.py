@@ -112,7 +112,6 @@ class PcMenu(BaseEngine):
                 {'label': '充值IP黑名单', 'url': page('paychannel_blackip'),'visible': can_touch(TbPaychannelblackiprange, crt_user), },
                 {'label': '充值地区黑名单', 'url': page('paychannel_area_blacklist'),
                  'visible': can_touch(TbRechargeareablacklist, crt_user), },
-                {'label':'充值统计','url':page('recharge_reports'),},
                 {'label':_('White IP'),'url':page('white_ip_rangelist'), 'visible': can_touch(TbWhiteiprangelist, crt_user),},
                 {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
                 {'label': '联赛组水位', 'url': page('LeagueGroupPage'), 'visible': can_touch(TbLeagueGroup, crt_user), },
@@ -123,10 +122,11 @@ class PcMenu(BaseEngine):
 
             {'label': '报表中心', 'icon': fa('fa-bar-chart'), 'visible': True,
              'submenu': [
-                 {'label': '会员统计', 'url': page('user_statistics'),
+                {'label': '会员统计', 'url': page('user_statistics'),
                   'visible': has_permit(crt_user, 'member_statistic'), },
-                 {'label': '平台亏盈', 'url': page('platform_profit'),
+                {'label': '平台亏盈', 'url': page('platform_profit'),
                   'visible': has_permit(crt_user, 'platform_profit'), },
+                {'label':'充值安全统计','url':page('recharge_reports'),},
              ]},
             
             {'label': '代理系统', 'icon': fa('fa-street-view'), 'visible': True,
