@@ -10,5 +10,6 @@ from . import active_v2
 
 from helpers.director.shortcut import model_to_name, model_full_permit, add_permits
 from . import rank
+from . import bonus_dispatch
 
 
