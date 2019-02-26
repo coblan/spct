@@ -70,11 +70,11 @@ class MatchsPage(TablePage):
             return search_args
                 
         
-        #def inn_filter(self, query):
-            #return query.extra(
-                #where=["TB_SportTypes.source= TB_Matches.source","TB_SportTypes.SportID=0"],
-                #tables=['TB_SportTypes']
-            #)
+        def inn_filter(self, query):
+            return query.extra(
+                where=["TB_SportTypes.source= TB_Matches.source","TB_SportTypes.SportID=0"],
+                tables=['TB_SportTypes']
+            )
         
         class filters(RowFilter):
             range_fields = ['matchdate']
