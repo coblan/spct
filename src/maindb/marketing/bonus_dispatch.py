@@ -202,7 +202,7 @@ class BonusTypeForm(ModelFields):
     
     def dict_row(self, inst):
         return {
-            'createtime':inst.createtime.stftime('%Y-%m-%d %H:%M:%S')
+            'createtime': inst.createtime.strftime('%Y-%m-%d %H:%M:%S') if inst.createtime else ''
         }
 
 
