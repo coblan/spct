@@ -229,10 +229,10 @@ class TbActivitySettings(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     activityid = models.ForeignKey(db_column='ActivityId',to=TbActivityV2,db_constraint=False)  # Field name made lowercase.
     #activityid = models.IntegerField(db_column='ActivityId')  # Field name made lowercase.
-    friendlyname = models.CharField(db_column='FriendlyName', max_length=64)  # Field name made lowercase.
-    key = models.CharField(db_column='Key', max_length=64)  # Field name made lowercase.
-    value = models.CharField(db_column='Value', max_length=1024)  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=1024, blank=True, null=True)  # Field name made lowercase.
+    friendlyname = models.CharField(db_column='FriendlyName', max_length=64,verbose_name='名称')  # Field name made lowercase.
+    key = models.CharField(db_column='Key', max_length=64,verbose_name='键')  # Field name made lowercase.
+    value = models.CharField(db_column='Value', max_length=1024,verbose_name='值')  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=1024, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
 
     class Meta:
         managed = False
