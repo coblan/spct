@@ -71,7 +71,7 @@ class BonuslogForm(ModelFields):
             bonustype = TbBonustype.objects.get(bonustypeid=dc.get('bonustypeid'))
             multi = bonustype.withdrawlimitmultiple
             total_mount = Decimal(amount)  * multi
-            dc['withdrawlimitamount'] =  total_mount 
+            dc['withdrawlimitamount'] = round( total_mount ,4)
         return dc
     
     def dict_head(self, head):
