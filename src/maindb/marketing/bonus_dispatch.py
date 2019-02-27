@@ -1,9 +1,12 @@
 from helpers.director.shortcut import TablePage,ModelFields,page_dc,ModelTable,director,RowFilter,RowSearch
-from ..models import TbBonuslog,TbBonustype
+from ..models import TbBonuslog,TbBonustype,TbBalancelog
 from ..riskcontrol.black_users import AccountSelect
 from decimal import Decimal
 from django.contrib.auth.models import User
 from django.db.models import Q
+import json
+import logging
+modelfields_log = logging.getLogger('ModelFields.save_form')
 
 class BonusPage(object):
     def __init__(self,request,engin):
@@ -90,6 +93,25 @@ class BonuslogForm(ModelFields):
 
         return ops
     
+    def clean_save(self):
+        account = self.instance.accountid
+        before = account.amount
+        account.amount += self.instance.withdrawlimitamount
+        account.save()
+        ban = TbBalancelog.objects.create(accountid=self.instance.accountid,
+                                    categoryid_id=37,
+                                    cashflow=1,
+                                    account=self.instance.accountid.account,
+                                    beforeamount=before,
+                                    afteramount = account.amount,amount=self.instance.withdrawlimitamount,
+                                    creater=str(self.crt_user),
+                                    memo='红利发放'
+                                    )
+        self.op_log.update({
+            'clean_save_desp':'生成了对应的TbBalancelog.pk=%s,计算了用户余额'%ban.pk
+        })
+    
+    
 
 class BonuslogTable(ModelTable):
     model = TbBonuslog
@@ -138,6 +160,11 @@ class BonusTypeTable(ModelTable):
     model = TbBonustype
     exclude=[]
     pop_edit_field='bonustypeid'
+    
+    def dict_row(self, inst):
+        return {
+            'createtime':str(inst.createtime)
+        }
     
 
 class BonusTypeForm(ModelFields):
