@@ -32,13 +32,6 @@ class BonusPage(object):
                         'row_express':'rt={_director_name:"bonuslog_list.edit"}',
                         'after_save_express':'rt=scope.vc.row={_director_name:"bonuslog_list.edit"}'
                     },
-                    #{
-                        #'name':'bonus-type-form',
-                        #'label':'红利类型',
-                        #'com': 'com-tab-fields',
-                        #'heads': bonus_type_form.get_heads(),
-                        #'ops': bonus_type_form.get_operations()                        
-                    #},
                     {'name': 'bonustype-list',
                      'label': '红利类型',
                      'com': 'com-tab-table',
@@ -116,6 +109,7 @@ class BonuslogForm(ModelFields):
 class BonuslogTable(ModelTable):
     model = TbBonuslog
     exclude=[]
+    selectable=False
     
     def get_operation(self):
         return []
@@ -179,7 +173,7 @@ class BonusTypeTable(ModelTable):
     model = TbBonustype
     exclude=[]
     pop_edit_field='bonustypeid'
-    
+    selectable=False
     
     def dict_head(self, head):
         dc={
@@ -203,6 +197,7 @@ class BonusTypeForm(ModelFields):
         
     def clean_dict(self, dc):
         dc['createuser']=self.crt_user.pk
+        dc.pop('createtime',None)
         return super().clean_dict(dc)   
     
     def dict_row(self, inst):
