@@ -188,6 +188,10 @@ class BonusTypeTable(ModelTable):
             head['width']=dc.get(head['name'])
         return head    
     
+    def get_operation(self):
+        ops = super().get_operation()
+        return ops[:1]
+    
 
 class BonusTypeForm(ModelFields):
     hide_fields=['createuser']

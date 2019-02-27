@@ -143,6 +143,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
         
         ('Bonuse-dispatch', ';'.join(['TbBonustype', 'TbBonuslog',]), '', 'set'), 
         ('Bonuse-dispatch.edit', ';'.join(['TbBonuslog.edit', 'TbBonustype.edit',]), '', 'set'), 
+        
+         ('report.recharge_reports', '', '', 'single'),
 
            ]
 

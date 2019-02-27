@@ -128,7 +128,7 @@ class PcMenu(BaseEngine):
                   'visible': has_permit(crt_user, 'member_statistic'), },
                 {'label': '平台亏盈', 'url': page('platform_profit'),
                   'visible': has_permit(crt_user, 'platform_profit'), },
-                {'label':'充值安全统计','url':page('recharge_reports'),},
+                {'label':'充值安全统计','url':page('recharge_reports'),'visible': has_permit(crt_user, 'report.recharge_reports')},
              ]},
             
             {'label': '代理系统', 'icon': fa('fa-street-view'), 'visible': True,

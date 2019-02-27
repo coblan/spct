@@ -193,7 +193,8 @@ def get_permit():
         {'label': '报表中心', 
          'children': [
              {'label': '会员统计', 'value': 'member_statistic', 'depend': ['TbAccount'],}, 
-             {'label': '平台亏盈', 'value': 'platform_profit',},     
+             {'label': '平台亏盈', 'value': 'platform_profit',}, 
+             {'label':'充值安全统计','value':'report.recharge_reports'},
                      ],
         }, 
         {'label': '代理平台', 'children': [

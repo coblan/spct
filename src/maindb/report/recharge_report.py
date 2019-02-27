@@ -4,9 +4,11 @@ from django.utils import timezone
 from django.db import connections
 from ..member.account import UserRecharge,account_tab
 
-
-
 class RechargeReport(TablePage):
+    def check_permit(self): 
+        if not has_permit(self.crt_user, 'report.recharge_reports'):
+            raise PermissionDenied('没有权限访问充值安全统计')
+           
     def get_label(self):
         return '充值统计'
     
