@@ -33,7 +33,7 @@ def get_permit():
            
             { 'label': '红利发放', 'children': [
                 {'label': '查看', 'value': 'Bonuse-dispatch',}, 
-                {'label': '编辑', 'value': 'Bonuse-dispatch.edit', 'depend': ['Bonuse-dispatch'],}, 
+                {'label': '编辑', 'value': 'Bonuse-dispatch.edit', 'depend': ['Bonuse-dispatch','TbAccount'],}, 
                          ]}, 
              ]
          }, 

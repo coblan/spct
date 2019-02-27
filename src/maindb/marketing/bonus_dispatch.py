@@ -174,10 +174,6 @@ class BonusTypeTable(ModelTable):
     exclude=[]
     pop_edit_field='bonustypeid'
     
-    def dict_row(self, inst):
-        return {
-            'createtime':str(inst.createtime)
-        }
     
     def dict_head(self, head):
         dc={
@@ -201,7 +197,12 @@ class BonusTypeForm(ModelFields):
         
     def clean_dict(self, dc):
         dc['createuser']=self.crt_user.pk
-        return super().clean_dict(dc)    
+        return super().clean_dict(dc)   
+    
+    def dict_row(self, inst):
+        return {
+            'createtime':str(inst.createtime)
+        }
 
 director.update({
     'bonuslog_list':BonuslogTable,
