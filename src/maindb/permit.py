@@ -134,7 +134,15 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
           
            ('TbLeagueGroup.edit', model_full_permit(TbLeagueGroup), model_to_name(TbLeagueGroup), 'model'), 
            #('Account_list_write', ';'.join(['TbAccount.edit', 'TbBalancelog.edit', 'TbBankcard.edit', 'TbRecharge.edit', 'TbWithdraw.edit'
-                                           #'TbTicketmaster.edit', 'TbLoginlog.edit', 'TbMatches.edit']), '', 'set'),            
+                                           #'TbTicketmaster.edit', 'TbLoginlog.edit', 'TbMatches.edit']), '', 'set'),  
+        ('TbBonuslog', model_read_permit(TbBonuslog), model_to_name(TbBonuslog), 'model'), 
+        ('TbBonuslog.edit', model_full_permit(TbBonuslog), model_to_name(TbBonuslog), 'model'),
+        
+        ('TbBonustype', model_read_permit(TbBonustype), model_to_name(TbBonustype), 'model'), 
+        ('TbBonustype.edit', model_full_permit(TbBonustype), model_to_name(TbBonustype), 'model'),
+        
+        ('Bonuse-dispatch', ';'.join(['TbBonustype', 'TbBonuslog',]), '', 'set'), 
+        ('Bonuse-dispatch.edit', ';'.join(['TbBonuslog.edit', 'TbBonustype.edit',]), '', 'set'), 
 
            ]
 

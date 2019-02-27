@@ -56,7 +56,7 @@ class PcMenu(BaseEngine):
                      {'label': '虚拟用户', 'url': page('rankuser'), 'visible': can_touch(TbUserConst, crt_user), },
                      {'label': '虚拟排行', 'url': page('rank'), 'visible': can_touch(TbUserRank, crt_user), },                      
                      ],},
-                {'label': '红利发放', 'url': page('bonuspage'), },
+                {'label': '红利发放', 'url': page('bonuspage'),'visible': can_touch(TbBonuslog, crt_user), },
                 
              ]},
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,

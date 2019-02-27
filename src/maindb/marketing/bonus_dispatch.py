@@ -81,11 +81,12 @@ class BonuslogForm(ModelFields):
     
     def get_operations(self):
         ops = super().get_operations()
-        ops[0].update({
-            'label':'发放红利',
-            'class':'btn btn-sm btn-primary',
-            'icon':'',
-        })
+        if ops:
+            ops[0].update({
+                'label':'发放红利',
+                'class':'btn btn-sm btn-primary',
+                'icon':'',
+            })
 
         return ops
     

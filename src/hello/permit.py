@@ -30,7 +30,11 @@ def get_permit():
                  {'label': '更新缓存', 'value': 'TbActivity.update_cache', 'depend': ['TbActivity', 'TbActivity.edit', ],}
                  ]}, 
             { 'label': '代理用户留言', 'value': 'TbAgentleavemsg',}, 
-            #{ 'label': _('AppResource'), 'value': 'TbAppresource',}, 
+           
+            { 'label': '红利发放', 'children': [
+                {'label': '查看', 'value': 'Bonuse-dispatch',}, 
+                {'label': '编辑', 'value': 'Bonuse-dispatch.edit', 'depend': ['Bonuse-dispatch'],}, 
+                         ]}, 
              ]
          }, 
         { 'label': '基本信息',
