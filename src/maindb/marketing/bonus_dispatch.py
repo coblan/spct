@@ -116,6 +116,8 @@ class BonuslogForm(ModelFields):
 class BonuslogTable(ModelTable):
     model = TbBonuslog
     exclude=[]
+    def get_operation(self):
+        return []
     
     class filters(RowFilter):
         names=['bonustypeid','createuser']
