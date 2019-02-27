@@ -131,18 +131,24 @@ class BonuslogTable(ModelTable):
         return head
     
     class filters(RowFilter):
-        names=['bonustypeid','createuser']
+        names=['bonustypeid']#,'createuser']
         range_fields=['createtime']
         
-        def dict_head(self, head):
-            if head['name']=='createuser':
-                for user_dc in TbBonuslog.objects.values('createuser').distinct():
-                    user = User.objects.get(pk = user_dc.get('createuser'))
-                    head['options'].append(
-                        {'value':user.pk,'label':str(user)}
-                    )
-                    head['label']='创建人'
-            return head
+        #def dict_head(self, head):
+            #if head['name']=='createuser':
+                #for user_dc in TbBonuslog.objects.values('createuser').distinct():
+                    #try:
+                        #user = User.objects.get(pk = user_dc.get('createuser'))
+                        #value=user.pk
+                        #label=str(user)
+                    #except:
+                        #value=user_dc.get('createuser')
+                        #label=user_dc.get('createuser')
+                    #head['options'].append(
+                        #{'value':value,'label':label}
+                    #)
+                    #head['label']='创建人'
+            #return head
     
     class search(RowSearch):
         names = [ 'accountid__nickname']
@@ -203,6 +209,7 @@ class BonusTypeForm(ModelFields):
         return {
             'createtime':str(inst.createtime)
         }
+
 
 director.update({
     'bonuslog_list':BonuslogTable,
