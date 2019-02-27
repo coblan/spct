@@ -116,8 +116,19 @@ class BonuslogForm(ModelFields):
 class BonuslogTable(ModelTable):
     model = TbBonuslog
     exclude=[]
+    
     def get_operation(self):
         return []
+    
+    def dict_head(self, head):
+        dc={
+            'bonustypeid':200,
+            'createtime':160,
+            'accountid':120,
+        }
+        if dc.get(head['name']):
+            head['width']=dc.get(head['name'])
+        return head
     
     class filters(RowFilter):
         names=['bonustypeid','createuser']
@@ -167,6 +178,15 @@ class BonusTypeTable(ModelTable):
         return {
             'createtime':str(inst.createtime)
         }
+    
+    def dict_head(self, head):
+        dc={
+            'bonustypename':250,
+            'createtime':160,
+        }
+        if dc.get(head['name']):
+            head['width']=dc.get(head['name'])
+        return head    
     
 
 class BonusTypeForm(ModelFields):
