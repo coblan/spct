@@ -1627,7 +1627,7 @@ Vue.component('com-field-validate-code', validate_code);
 
 Vue.component('com-field-op-btn', {
     props: ['head'],
-    template: '<button @click="operation_call()" class="btn btn-default">\n        <i v-if="head.icon" :class="[\'fa\',head.icon]"></i><span v-text="head.label"></span>\n        </button>',
+    template: '<button @click="operation_call()" :class="head.class?head.class:\'btn btn-default\'">\n        <i v-if="head.icon" :class="[\'fa\',head.icon]"></i><span v-text="head.label"></span>\n        </button>',
     methods: {
         operation_call: function operation_call() {
             this.$emit('operation', this.head.name);
@@ -6769,37 +6769,33 @@ var tab_fields = {
 
         data_getter: function data_getter() {
             var self = this;
-            var fun = get_data[self.tab_head.get_data.fun];
-            var kws = self.tab_head.get_data.kws;
-            fun(self, function (row) {
-                //ex.assign(self.row,row)
-                self.row = row;
-                self.childStore.$emit('row.update_or_insert', row);
-            }, kws);
-
-            //var self=this
-            //cfg.show_load()
-            //var dt = {fun:'get_row',model_name:this.model_name}
-            //dt[this.relat_field] = this.par_row[this.relat_field]
-            //var post_data=[dt]
-            //$.post('/d/ajax',JSON.stringify(post_data),function(resp){
-            //    self.row=resp.get_row
-            //    cfg.hide_load()
-            //})
+            if (self.tab_head.get_data) {
+                var fun = get_data[self.tab_head.get_data.fun];
+                var kws = self.tab_head.get_data.kws;
+                fun(self, function (row) {
+                    //ex.assign(self.row,row)
+                    self.row = row;
+                    self.childStore.$emit('row.update_or_insert', row);
+                }, kws);
+            }
+            if (self.tab_head.row_express) {
+                var row_dc = ex.eval(self.tab_head.row_express);
+                ex.vueAssign(self.row, row_dc);
+            }
         },
         after_save: function after_save(new_row) {
-            if (this.tab_head.after_save) {
-                var fun = _after_save[this.tab_head.after_save.fun];
-                var kws = this.tab_head.after_save.kws;
-                // new_row ,old_row
-                fun(this, new_row, kws);
-
-                //if(  self.par_row._director_name == row._director_name){
-                //    // ，应该将新的属性值 去更新par_row
-                //    ex.vueAssign(self.par_row,row)
-                //}
+            if (this.tab_head.after_save_express) {
+                ex.eval(this.tab_head.after_save_express, { vc: this });
+            } else {
+                // 为了兼容老的
+                if (this.tab_head.after_save) {
+                    var fun = _after_save[this.tab_head.after_save.fun];
+                    var kws = this.tab_head.after_save.kws;
+                    // new_row ,old_row
+                    fun(this, new_row, kws);
+                }
+                this.row = new_row;
             }
-            this.row = new_row;
         }
         // data_getter  回调函数，获取数据,
 
@@ -6895,7 +6891,7 @@ var tab_table = {
                     } else if (vc.tab_head.tab_field) {
                         // 下面是老的调用，
                         this.search_args[vc.tab_head.tab_field] = vc.par_row[vc.tab_head.par_field];
-                    } else {
+                    } else if (vc.tab_head.par_field) {
                         this.search_args[vc.tab_head.par_field] = vc.par_row[vc.tab_head.par_field];
                     }
                     table_store.methods.getRows.call(this);

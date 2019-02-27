@@ -452,24 +452,30 @@ class TbBetstopreason(models.Model):
 
 
 class TbBonustype(models.Model):
-    bonustypeid = models.AutoField(db_column='BonusTypeID',primary_key=True,)  # Field name made lowercase.
-    bonustypename = models.CharField(db_column='BonusTypeName', max_length=50)  # Field name made lowercase.
-    withdrawlimitmultiple = models.DecimalField(db_column='WithdrawLimitMultiple', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    createuser = models.IntegerField(db_column='CreateUser')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    bonustypeid = models.AutoField(db_column='BonusTypeID',primary_key=True,verbose_name='红利ID')  # Field name made lowercase.
+    bonustypename = models.CharField(db_column='BonusTypeName', max_length=50,verbose_name='红利名称')  # Field name made lowercase.
+    withdrawlimitmultiple = models.DecimalField(db_column='WithdrawLimitMultiple', max_digits=18, decimal_places=4,verbose_name='倍数')  # Field name made lowercase.
+    #createuser = models.IntegerField(db_column='CreateUser')  # Field name made lowercase.
+    createuser = CreateUserField(db_column='CreateUser',verbose_name='创建人',blank=True,null=True)  #
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'TB_BonusType'
+    
+    def __str__(self):
+        return self.bonustypename
 
 class TbBonuslog(models.Model):
     id = models.AutoField(db_column='Id',primary_key=True,)  # Field name made lowercase.
-    accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
-    bonustypeid = models.IntegerField(db_column='BonusTypeID')  # Field name made lowercase.
-    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    withdrawlimitamount = models.DecimalField(db_column='WithdrawLimitAmount', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    createuser = models.IntegerField(db_column='CreateUser')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountID',verbose_name='账号')  # Field name made lowercase.
+    accountid = models.ForeignKey(to=TbAccount,db_constraint=False,db_column='AccountID',verbose_name='昵称')  # Field name made lowercase
+    bonustypeid = models.ForeignKey(to=TbBonustype,db_column='BonusTypeID',verbose_name='红利类型')  # Field name made lowercase.
+    #bonustypeid = models.IntegerField(db_column='BonusTypeID')  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4,verbose_name='金额')  # Field name made lowercase.
+    withdrawlimitamount = models.DecimalField(db_column='WithdrawLimitAmount', max_digits=18, decimal_places=4,verbose_name='提款限额增加')  # Field name made lowercase.
+    createuser = CreateUserField(db_column='CreateUser',verbose_name='操作人',blank=True,null=True) # models.IntegerField(db_column='CreateUser')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='时间')  # Field name made lowercase.
 
     class Meta:
         managed = False
