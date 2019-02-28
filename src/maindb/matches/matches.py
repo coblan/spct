@@ -70,11 +70,11 @@ class MatchsPage(TablePage):
             return search_args
                 
         
-        def inn_filter(self, query):
-            return query.extra(
-                where=["TB_SportTypes.source= TB_Matches.source","TB_SportTypes.SportID=0"],
-                tables=['TB_SportTypes']
-            )
+        #def inn_filter(self, query):
+            #return query.extra(
+                #where=["TB_SportTypes.source= TB_Matches.source","TB_SportTypes.SportID=0"],
+                #tables=['TB_SportTypes']
+            #)
         
         class filters(RowFilter):
             range_fields = ['matchdate']
@@ -315,7 +315,7 @@ class MatchForm(ModelFields):
         exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
                    'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', ]
 
-    field_sort = ['matchid', 'team1zh', 'team2zh', ]
+    field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate']
 
     def dict_head(self, head):
         if head['name'] == 'matchid':
@@ -324,11 +324,16 @@ class MatchForm(ModelFields):
 
     def dict_row(self, inst):
         return {'isshow': not bool(inst.ishidden),
-                'openlivebet': not bool(inst.closelivebet)
+                'openlivebet': not bool(inst.closelivebet),
+                '_matchdate_label':inst.matchdate.strftime('%Y-%m-%d %H:%M'),
                 }
-
+    
+    def clean_save(self):
+        if 'matchdate' in self.changed_data:
+            self.instance.prematchdate = self.instance.matchdate - timezone.timedelta(minutes=15)
+            
+    
     def save_form(self):
-       
         msg = []
         if self.kw.get('meta_type') == 'manul_outcome':
             specialcategoryid = self.kw.get('specialcategoryid')
@@ -366,6 +371,8 @@ class MatchForm(ModelFields):
             'Period1Score': match.period1score,
             'MatchScore': match.matchscore,
             'Winner': match.winner,
+            'MatchDate':match.matchdate.strftime('%Y-%m-%d %H:%M:%S'),
+            'PreMatchDate':match.prematchdate.strftime('%Y-%m-%d %H:%M:%S')
         }        
         updateMatchMongo(dc)
     

@@ -31,11 +31,11 @@ class BasketMatchsPage(MatchsPage):
     class tableCls(MatchsPage.tableCls):
         model = TbMatchesBasketball
         
-        def inn_filter(self, query):
-            return query.extra(
-                where=["TB_SportTypes.source= TB_Matches_Basketball.source","TB_SportTypes.SportID=1"],
-                tables=['TB_SportTypes'],
-            )        
+        #def inn_filter(self, query):
+            #return query.extra(
+                #where=["TB_SportTypes.source= TB_Matches_Basketball.source","TB_SportTypes.SportID=1"],
+                #tables=['TB_SportTypes'],
+            #)        
         
         def get_operation(self):
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
@@ -183,6 +183,8 @@ class BasketMatchForm(MatchForm):
             'Period1Score': match.period1score,
             'MatchScore': match.matchscore,
             'Winner': match.winner,
+            'MatchDate':match.matchdate.strftime('%Y-%m-%d %H:%M:%S'),
+            'PreMatchDate':match.prematchdate.strftime('%Y-%m-%d %H:%M:%S')            
         }
         
         updateMatchBasketMongo(dc) 
