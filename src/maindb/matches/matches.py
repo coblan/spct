@@ -16,9 +16,11 @@ from django.conf import settings
 from helpers.director.model_func.dictfy import to_dict
 import functools
 from .match_outcome_forms import FootBallPoints, NumberOfCorner
-from django.utils.timezone import datetime
 from helpers.director.middleware.request_cache import get_request_cache
-from django.utils import timezone
+#from datetime import timezone as org_timezone
+#from django.utils.timezone import datetime
+#from django.utils import timezone
+import datetime
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -63,7 +65,7 @@ class MatchsPage(TablePage):
         
         @classmethod
         def clean_search_args(cls, search_args):
-            now = timezone.now()
+            now = datetime.datetime.now()
             if search_args.get('_start_matchdate')==None and search_args.get('_end_matchdate')==None:
                 search_args['_start_matchdate']=now.strftime("%Y-%m-%d 00:00:00")
                 search_args['_end_matchdate']=now.strftime("%Y-%m-%d 23:59:59")       
@@ -330,7 +332,7 @@ class MatchForm(ModelFields):
     
     def clean_save(self):
         if 'matchdate' in self.changed_data:
-            self.instance.prematchdate = self.instance.matchdate - timezone.timedelta(minutes=15)
+            self.instance.prematchdate = self.instance.matchdate - datetime.timedelta(minutes=15)
             
     
     def save_form(self):
@@ -339,7 +341,7 @@ class MatchForm(ModelFields):
             specialcategoryid = self.kw.get('specialcategoryid')
             ProcCls = self.proc_map.get(specialcategoryid)
             proc_obj = ProcCls(crt_user = self.crt_user)
-            self.instance.settletime = datetime.now()
+            self.instance.settletime = datetime.datetime.now()
             rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
             msg.append(rt_msg)
         else:
@@ -371,8 +373,8 @@ class MatchForm(ModelFields):
             'Period1Score': match.period1score,
             'MatchScore': match.matchscore,
             'Winner': match.winner,
-            'MatchDate':match.matchdate.strftime('%Y-%m-%d %H:%M:%S'),
-            'PreMatchDate':match.prematchdate.strftime('%Y-%m-%d %H:%M:%S')
+            'MatchDate':match.matchdate.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
+            'PreMatchDate':match.prematchdate.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc)
         }        
         updateMatchMongo(dc)
     

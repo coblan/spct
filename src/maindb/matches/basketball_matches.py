@@ -4,7 +4,10 @@ from ..models import TbMatchesBasketball, TbOddsBasketball,TbTournamentBasketbal
 from maindb.mongoInstance import updateMatchBasketMongo
 from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points,BasketTwosection
 from ..redisInstance import redisInst
-from django.utils.timezone import datetime
+#from datetime import timezone as org_timezone
+#from django.utils.timezone import datetime
+import datetime
+
 
 class BasketMatchsPage(MatchsPage):
     
@@ -183,8 +186,8 @@ class BasketMatchForm(MatchForm):
             'Period1Score': match.period1score,
             'MatchScore': match.matchscore,
             'Winner': match.winner,
-            'MatchDate':match.matchdate.strftime('%Y-%m-%d %H:%M:%S'),
-            'PreMatchDate':match.prematchdate.strftime('%Y-%m-%d %H:%M:%S')            
+            'MatchDate':match.matchdate.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
+            'PreMatchDate':match.prematchdate.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),            
         }
         
         updateMatchBasketMongo(dc) 
@@ -207,7 +210,7 @@ class BasketMatchForm(MatchForm):
             else:
                 ProcCls=BasketPoints
             proc_obj = ProcCls(crt_user = self.crt_user)
-            self.instance.settletime = datetime.now()
+            self.instance.settletime = datetime.datetime.now()
             rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
             msg.append(rt_msg)
         else:
