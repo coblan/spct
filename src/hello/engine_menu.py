@@ -64,8 +64,8 @@ class PcMenu(BaseEngine):
                  {'label': '运动类型', 'url': page('sportstype'), 'visible': can_touch(TbSporttypes, crt_user), },
                  {'label': '足球联赛资料', 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},
                  {'label': '篮球联赛资料', 'url': page('basketball_league'), 'visible': can_touch(TbTournament, crt_user)},
-                 {'label': '足球队资料', 'url': page('teams'), 'visible': can_touch(TbTeams, crt_user), },
-                  {'label': '篮球队资料', 'url': page('teams_basketball'), 'visible': can_touch(TbTeamsBasketball, crt_user), },
+                 #{'label': '足球队资料', 'url': page('teams'), 'visible': can_touch(TbTeams, crt_user), },
+                  #{'label': '篮球队资料', 'url': page('teams_basketball'), 'visible': can_touch(TbTeamsBasketball, crt_user), },
                  
                  {'label': _('玩法设置'), 'url': page('bet_type'), 'visible': can_touch(TbOddstypegroup, crt_user), },
                  {'label': '充值渠道', 'url': page('paychannel'), 'visible': can_touch(TbPaychannel, crt_user), },
@@ -116,7 +116,7 @@ class PcMenu(BaseEngine):
                  'visible': can_touch(TbRechargeareablacklist, crt_user), },
                 {'label':_('White IP'),'url':page('white_ip_rangelist'), 'visible': can_touch(TbWhiteiprangelist, crt_user),},
                 {'label':'用户白名单','url':page('white_users'), 'visible': can_touch(Whiteuserlist, crt_user),},
-                {'label': '联赛组水位', 'url': page('LeagueGroupPage'), 'visible': can_touch(TbLeagueGroup, crt_user), },
+                #{'label': '联赛组水位', 'url': page('LeagueGroupPage'), 'visible': can_touch(TbLeagueGroup, crt_user), },
                 {'label': '参数设置', 'url': page('ParameterPage'),'visible': has_permit(crt_user, 'risk.parameter'),},
                 #{'label': '数据源维护', 'url': page('sourececontrol'),'visible': has_permit(crt_user, 'risk.parameter'),},
                 

@@ -21,7 +21,8 @@ class ParameterPage(FieldsPage):
                 {'name': 'MinStakeAmount','label': '单注最低投注','editor': 'number','required': True,'fv_rule': 'range(0~)',}, 
                 {'name': 'MaxSinglePayout','label': '单注最高赔付','editor': 'number','required': True,'fv_rule': 'range(0~)'}, 
                 {'name': 'MaxMatchPayout','label': '单场最高赔付','editor': 'number','required': True,'fv_rule': 'range(0~)'}, 
-                {'name': 'SeriesMaxSinglePayout','label': '串关最大赔付','editor': 'number','required': True,'fv_rule': 'range(0~)'}
+                {'name': 'SeriesMaxSinglePayout','label': '串关最大赔付','editor': 'number','required': True,'fv_rule': 'range(0~)'},
+                {'name':'MaxUserMatchPayout','label':'用户单场<br>最大赔付','editor':'number','required': True,'fv_rule': 'range(0~)'},
             ]
         
         def get_row(self): 
@@ -41,7 +42,7 @@ class ParameterPage(FieldsPage):
             TbSetting.objects.filter(settingname = 'Static:QuickAmount').update(settingvalue = quickamount_str)
             sim_signal.send('tbsetting.quickamount.changed')
             payout = {}
-            for k in ['MinStakeAmount', 'MaxSinglePayout', 'MaxMatchPayout', 'SeriesMaxSinglePayout']:
+            for k in ['MinStakeAmount', 'MaxSinglePayout', 'MaxMatchPayout', 'SeriesMaxSinglePayout','MaxUserMatchPayout']:
                 payout[k] = float(self.kw.get(k))
             TbSetting.objects.filter(settingname = 'Static:SinglePayout').update(settingvalue = json.dumps(payout))
             sim_signal.send('tbsetting.maxpayout.changed')

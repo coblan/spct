@@ -25,8 +25,8 @@ class BetTypePage(TablePage):
     class tableCls(ModelTable):
         model = TbOddstypegroup
         exclude = []
-        fields_sort = ['bettype', 'sportid', 'oddstypenamezh', 'periodtype', 'spread', 'enabled']
-        pop_edit_field = 'oddstypenamezh'
+        fields_sort = ['bettype', 'sportid', 'oddstypenamezh', 'periodtype', 'enabled'] # spread
+        #pop_edit_field = 'oddstypenamezh'
 
         #def inn_filter(self, query):
             #return query.filter(enabled = 1)
