@@ -1885,7 +1885,7 @@ class TbWithdraw(models.Model):
         db_table = 'TB_Withdraw'
     
     def __str__(self):
-        return self.withdrawid
+        return str(self.withdrawid)
 
 
 class TbRecharge(models.Model):
@@ -1925,7 +1925,7 @@ class TbRecharge(models.Model):
         db_table = 'TB_Recharge'
     
     def __str__(self):
-        return self.rechargeid
+        return str(self.rechargeid)
 
 
 class TbParameterinfo(models.Model):
