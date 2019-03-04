@@ -164,7 +164,7 @@ class WithDrawForm(ModelFields):
     def clean_save(self):
         # super().save_form()
         if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
-            self.instance.memo += '\r\n' + self.kw.get('fakememo')
+            self.instance.memo = (self.instance.memo or '') + '\r\n' + self.kw.get('fakememo')
             self.instance.confirmtime = datetime.now()
             self.instance.save()
             ex_log = {'memo': self.kw.get('fakememo'), }
