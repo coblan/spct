@@ -372,8 +372,7 @@ class TicketparlayTable(ModelTable):
 
 class MatchForm(ModelFields):
     field_sort = ['matchdate', 'team1zh', 'team2zh', 'period1score','matchscore', 'winner', 'statuscode', 'roundinfo'
-                                                                                           'livebet', 'generatedat',
-                  'tournamentzh']
+                    'livebet', 'generatedat','tournamentzh']
     readonly = field_sort
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
         if kw.get('matchid'):
@@ -408,6 +407,9 @@ class MatchForm(ModelFields):
 
 
 class BasketballMatchForm(MatchForm):
+    field_sort = ['matchdate', 'team1zh', 'team2zh', 'period1score','matchscore', 'winner', 'statuscode', 'roundinfo'
+                    'livebet', 'generatedat','tournamentzh','q1score','q2score','q3score','q4score','overtimescore'] 
+    readonly=field_sort
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
         if kw.get('matchid'):
             instance = TbMatchesBasketball.objects.get(matchid = kw.get('matchid'))
