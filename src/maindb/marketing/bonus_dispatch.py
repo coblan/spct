@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelFields,page_dc,ModelTable,director,RowFilter,RowSearch
-from ..models import TbBonuslog,TbBonustype,TbBalancelog
+from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord
 from ..riskcontrol.black_users import AccountSelect
 from decimal import Decimal
 from django.contrib.auth.models import User
@@ -89,17 +89,24 @@ class BonuslogForm(ModelFields):
     def clean_save(self):
         account = self.instance.accountid
         before = account.amount
-        account.amount += self.instance.withdrawlimitamount
+        account.amount +=  self.instance.amount #self.instance.withdrawlimitamount
         account.save()
         ban = TbBalancelog.objects.create(accountid=self.instance.accountid,
                                     categoryid_id=37,
                                     cashflow=1,
                                     account=self.instance.accountid.account,
                                     beforeamount=before,
-                                    afteramount = account.amount,amount=self.instance.withdrawlimitamount,
+                                    afteramount = account.amount,
+                                    amount=self.instance.amount,
                                     creater=str(self.crt_user),
-                                    memo='红利发放'
+                                    memo=self.instance.memo
                                     )
+        TbBetfullrecord.objects.create(consumeamount=self.instance.withdrawlimitamount,
+                                       consumestatus=1,
+                                       content=self.instance.memo,
+                                       rfid=self.instance.pk,
+                                       rftype=37,
+                                       accountid=self.instance.accountid)
         self.op_log.update({
             'clean_save_desp':'生成了对应的TbBalancelog.pk=%s,计算了用户余额'%ban.pk
         })
@@ -119,6 +126,7 @@ class BonuslogTable(ModelTable):
             'bonustypeid':200,
             'createtime':160,
             'accountid':120,
+            'memo':200,
         }
         if dc.get(head['name']):
             head['width']=dc.get(head['name'])

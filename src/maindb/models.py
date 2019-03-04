@@ -476,6 +476,7 @@ class TbBonuslog(models.Model):
     withdrawlimitamount = models.DecimalField(db_column='WithdrawLimitAmount', max_digits=18, decimal_places=4,verbose_name='提款限额增加')  # Field name made lowercase.
     createuser = CreateUserField(db_column='CreateUser',verbose_name='操作人',blank=True,null=True) # models.IntegerField(db_column='CreateUser')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='时间')  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=100, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
 
     class Meta:
         managed = False
