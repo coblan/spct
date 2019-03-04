@@ -11,7 +11,7 @@ from helpers.director.middleware.request_cache import get_request_cache
 from .. import status_code
 
 class TicketMasterPage(TablePage):
-    template = 'jb_admin/table_new.html'  # 'maindb/table_ajax_tab.html'
+    template = 'jb_admin/table.html'  # 'maindb/table_ajax_tab.html'
 
     def get_label(self):
         return _('Tb Trans')  # '注单列表'
