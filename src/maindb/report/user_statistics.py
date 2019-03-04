@@ -23,7 +23,12 @@ class UserStatisticsPage(TablePage):
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid','date']
-
+        
+        def dict_head(self, head):
+            if head['name']=='accountid':
+                head['fixed']=True
+            return head
+        
         @classmethod
         def clean_search_args(cls, search_args):
             today = timezone.now()
@@ -148,8 +153,8 @@ class UserStatisticsPage(TablePage):
 
         def getExtraHead(self):
             return [
-                {'name': 'NickName', 'label': '昵称 ', 'width': 150,},
-                {'name': 'Profit', 'label': '亏盈', 'width': 100},
+                {'name': 'NickName', 'label': '昵称 ', 'width': 150,'fixed':True},
+                {'name': 'Profit', 'label': '亏盈', 'width': 100,},
                 {'name': 'BetAmount', 'label': '投注金额', 'width': 130},
                 {'name': 'BetOutcome', 'label': '派奖金额', 'width': 100},
                 {'name': 'AdjustAmount', 'label': '调账', 'width': 100},

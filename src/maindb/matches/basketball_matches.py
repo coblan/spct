@@ -173,6 +173,9 @@ class BasketMatchForm(MatchForm):
     class Meta(MatchForm.Meta):
         model = TbMatchesBasketball
         #exclude = ['marketstatus', 'maineventid']
+    field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','q1score','q2score','q3score','q4score','overtimescore']
+    readonly=['q1score','q2score','q3score','q4score','overtimescore']
+    
     def updateMongo(self): 
         match = self.instance
         dc = {
