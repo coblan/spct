@@ -157,12 +157,16 @@ class WithDrawForm(ModelFields):
             head['readonly'] = True
         return head
 
+    def after_save(self):
+        if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
+            notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
+    
     def clean_save(self):
         # super().save_form()
         if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
             self.instance.memo += '\r\n' + self.kw.get('fakememo')
             self.instance.confirmtime = datetime.now()
-            notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
+            self.instance.save()
             ex_log = {'memo': self.kw.get('fakememo'), }
             # self.instance.save()
         elif 'status' in self.changed_data and self.instance.status == 2:  # 确认到账
