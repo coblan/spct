@@ -73,6 +73,8 @@ class BonuslogForm(ModelFields):
             head['editor'] = 'com-field-pop-table-select'
             head['table_ctx'] = table_obj.get_head_context()
             head['options'] = []
+        if head['name']=='memo':  
+            head['required']=True        
         return head
     
     def get_operations(self):
@@ -202,7 +204,7 @@ class BonusTypeForm(ModelFields):
     class Meta:
         model = TbBonustype
         exclude=[]
-        
+    
     def clean_dict(self, dc):
         dc['createuser']=self.crt_user.pk
         dc.pop('createtime',None)

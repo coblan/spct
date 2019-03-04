@@ -186,8 +186,8 @@ class BasketMatchForm(MatchForm):
             'Period1Score': match.period1score,
             'MatchScore': match.matchscore,
             'Winner': match.winner,
-            'MatchDate':match.matchdate.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
-            'PreMatchDate':match.prematchdate.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),            
+            'MatchDate':match.matchdate.replace(tzinfo=datetime.timezone.utc) ,#datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
+            'PreMatchDate':match.prematchdate.replace(tzinfo=datetime.timezone.utc) , #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),            
         }
         
         updateMatchBasketMongo(dc) 
