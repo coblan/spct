@@ -15,7 +15,7 @@ import logging
 req_log = logging.getLogger('general_log')
 
 class AgentCommission(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
 
     def get_label(self):
         return '代理佣金'

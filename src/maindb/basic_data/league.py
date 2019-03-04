@@ -9,7 +9,7 @@ from maindb.redisInstance import redisInst
 
 
 class League(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
 
     def get_label(self):
         return '足球联赛资料'

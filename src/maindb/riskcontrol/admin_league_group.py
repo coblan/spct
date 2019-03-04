@@ -8,7 +8,7 @@ import json
 from django.core.exceptions import ValidationError
 
 class LeagueGroupPage(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
     def get_label(self): 
         return '联赛组'
     

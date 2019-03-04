@@ -11,7 +11,7 @@ from maindb.rabbitmq_instance import notifyWithdraw
 
 
 class WithdrawPage(TablePage):
-    template = 'jb_admin/table_new.html'
+    template = 'jb_admin/table.html'
 
     def get_label(self):
         return '提现管理'
