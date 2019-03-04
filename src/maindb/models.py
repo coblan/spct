@@ -1883,6 +1883,9 @@ class TbWithdraw(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Withdraw'
+    
+    def __str__(self):
+        return self.withdrawid
 
 
 class TbRecharge(models.Model):
@@ -1920,6 +1923,9 @@ class TbRecharge(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Recharge'
+    
+    def __str__(self):
+        return self.rechargeid
 
 
 class TbParameterinfo(models.Model):
