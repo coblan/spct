@@ -32,14 +32,15 @@ class AgentUser(TablePage):
 
         @classmethod
         def clean_search_args(cls, search_args):
-            today = timezone.now()
-            #sp = timezone.timedelta(days=30)
-            #last = today - sp
-            #def_start = last.strftime('%Y-%m-%d')
-            #def_end = today.strftime('%Y-%m-%d')
-            #search_args['_start_createtime'] = search_args.get('_start_createtime') or def_start
-            #search_args['_end_createtime'] = search_args.get('_end_createtime') or def_end
-            search_args['createtime'] = today.strftime('%Y-%m')
+            if not search_args.get('createtime'):
+                today = timezone.now()
+                #sp = timezone.timedelta(days=30)
+                #last = today - sp
+                #def_start = last.strftime('%Y-%m-%d')
+                #def_end = today.strftime('%Y-%m-%d')
+                #search_args['_start_createtime'] = search_args.get('_start_createtime') or def_start
+                #search_args['_end_createtime'] = search_args.get('_end_createtime') or def_end
+                search_args['createtime'] = today.strftime('%Y-%m')
             return search_args
         
         
