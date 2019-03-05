@@ -516,18 +516,18 @@ class TbLivescoutTable(ModelTable):
 def match_livescout_status(matchid,**kws):
     live = TbLivescout.objects.filter(matchid=matchid,eventtypeid__in=[33,34]).order_by('-createtime').first()
     if live and live.eventtypeid ==33:    
-        return True
-    else:
         return False
+    else:
+        return True
 
 @director_view('match.add_livescout')
 def add_livescout(new_row,**kws):
     match = TbMatches.objects.get(matchid=new_row.get('matchid'))
     #TbLivescout.objects.order_by('-createtime').first()
     if new_row.get('is_danger'):
-        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=33,typeid=1010,betstatus=2,scoutfeedtype=2,eventdesc='BetStart')
-    else:
         TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=34,typeid=1011,betstatus=3,scoutfeedtype=2,eventdesc='BetStop')
+    else:
+        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=33,typeid=1010,betstatus=2,scoutfeedtype=2,eventdesc='BetStart')
     return {'success':True}
         
 @director_view('football_get_special_bet_value')
