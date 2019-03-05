@@ -125,8 +125,8 @@ class AccountPage(TablePage):
         model = TbAccount
         include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
                    'isenablewithdraw', 'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount',
-                   'createtime', 'source','accounttype','weight']
-        fields_sort = ['accountid', 'account', 'nickname', 'createtime', 'source','weight', 'bonusrate', 'viplv', 'status',
+                   'createtime', 'source','accounttype','weight','groupid']
+        fields_sort = ['accountid', 'account', 'nickname', 'createtime', 'source','weight','groupid', 'bonusrate', 'viplv', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
                        'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype']
 
@@ -137,7 +137,7 @@ class AccountPage(TablePage):
             #return search_args
 
         class filters(RowFilter):
-            names=['accounttype']
+            names=['accounttype','groupid']
             range_fields = ['createtime']
 
         def inn_filter(self, query):
