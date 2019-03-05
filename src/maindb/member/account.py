@@ -130,12 +130,6 @@ class AccountPage(TablePage):
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
                        'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype']
 
-        #@classmethod
-        #def clean_search_args(cls, search_args):
-            #if not search_args.get('_sort'):
-                #search_args['_sort'] = '-withdrawamount'
-            #return search_args
-
         class filters(RowFilter):
             names=['accounttype','groupid']
             range_fields = ['createtime']

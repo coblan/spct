@@ -413,15 +413,6 @@ class MatchForm(ModelFields):
         return {'msg': msg,}
     
     def updateMongo(self): 
-        #inst = self.instance
-        #dc = {
-            #'MatchID': inst.matchid,
-            #'IsRecommend': inst.isrecommend,
-            #'IsHidden': inst.ishidden,
-            #'CloseLiveBet': inst.closelivebet, 
-            #'Team1ZH': inst.team1zh,
-            #'Team2ZH': inst.team2zh,
-        #}
         match =  self.instance
         dc = {
             'MatchID': match.matchid,
@@ -478,7 +469,8 @@ class TbLivescoutTable(ModelTable):
             #'pre_set':'', # 预先设置的字
             'active_color':'red',
             'op_confirm_msg':'scope.value?"是否开启危险球?":"是否关闭危险球?"',
-            'after_save':'rt=scope.ts.search()'
+            'after_save':'rt=scope.ts.search()',
+            'init_value':''
             },
               {
                   'name':'search',
