@@ -458,7 +458,7 @@ class TbLivescoutTable(ModelTable):
     """危险球表格"""
     model = TbLivescout
     exclude=[]
-    
+    fields_sort=['id','matchid','betstatus','matchtime','matchscore','stopreason','eventdesc','servertime','createtime']
     def get_operation(self):
         return [
             {'name':'director_call',
@@ -480,9 +480,19 @@ class TbLivescoutTable(ModelTable):
             },
         ]
     
+    def dict_head(self, head):
+        width_dc={
+            'servertime':150,
+            'createtime':150,
+            'stopreason':150,
+        }
+        if width_dc.get(head['name']):
+            head['width']=width_dc.get(head['name'])
+        return head
+    
     def getExtraHead(self):
         return [
-            {'name':'stopreason','label':'产生原因'}
+            {'name':'stopreason','label':'危险球原因'}
         ]
     
     def inn_filter(self, query):
@@ -506,9 +516,9 @@ def add_livescout(new_row,**kws):
     match = TbMatches.objects.get(matchid=new_row.get('matchid'))
     #TbLivescout.objects.order_by('-createtime').first()
     if new_row.get('is_danger'):
-        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=33,typeid=1010,betstatus=2,scoutfeedtype=2)
+        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=33,typeid=1010,betstatus=2,scoutfeedtype=2,eventdesc='BetStart')
     else:
-        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=34,typeid=1011,betstatus=3,scoutfeedtype=2)
+        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=34,typeid=1011,betstatus=3,scoutfeedtype=2,eventdesc='BetStop')
     return {'success':True}
         
 @director_view('football_get_special_bet_value')

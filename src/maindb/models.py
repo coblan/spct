@@ -747,26 +747,26 @@ class TbLimit(models.Model):
 
 class TbLivescout(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    servertime = models.DateTimeField(db_column='ServerTime',auto_now_add=True)  # Field name made lowercase.
-    matchid = models.BigIntegerField(db_column='MatchId')  # Field name made lowercase.
+    servertime = models.DateTimeField(db_column='ServerTime',auto_now_add=True,verbose_name='服务器时间')  # Field name made lowercase.
+    matchid = models.BigIntegerField(db_column='MatchId',verbose_name='比赛ID')  # Field name made lowercase.
     eventid = models.CharField(db_column='EventId', max_length=50)  # Field name made lowercase.
     matchstatus = models.CharField(db_column='MatchStatus', max_length=50)  # Field name made lowercase.
     matchstatusid = models.IntegerField(db_column='MatchStatusId')  # Field name made lowercase.
     scoutfeedtype = models.IntegerField(db_column='ScoutFeedType')  # Field name made lowercase.
-    betstatus = models.IntegerField(db_column='BetStatus')  # Field name made lowercase.
+    betstatus = models.IntegerField(db_column='BetStatus',verbose_name='投注状态')  # Field name made lowercase.
     side = models.IntegerField(db_column='Side',default=0)  # Field name made lowercase.
     typeid = models.IntegerField(db_column='TypeId')  # Field name made lowercase.
-    matchtime = models.CharField(db_column='MatchTime', max_length=50, blank=True, null=True)  # Field name made lowercase.
-    matchscore = models.CharField(db_column='MatchScore', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    matchtime = models.CharField(db_column='MatchTime', max_length=50, blank=True, null=True,verbose_name='比赛时间')  # Field name made lowercase.
+    matchscore = models.CharField(db_column='MatchScore', max_length=50, blank=True, null=True,verbose_name='比赛分数')  # Field name made lowercase.
     player1 = models.BigIntegerField(db_column='Player1',default=0)  # Field name made lowercase.
     player2 = models.BigIntegerField(db_column='Player2',default=0)  # Field name made lowercase.
     posx = models.IntegerField(db_column='PosX',default=0)  # Field name made lowercase.
     posy = models.IntegerField(db_column='PosY',default=0)  # Field name made lowercase.
-    brextrainfo = models.CharField(db_column='BrExtraInfo', max_length=150)  # Field name made lowercase.
+    brextrainfo = models.CharField(db_column='BrExtraInfo', max_length=150,verbose_name='产生原因')  # Field name made lowercase.
     eventtypeid = models.IntegerField(db_column='EventTypeId')  # Field name made lowercase.
     extrainfo = models.IntegerField(db_column='ExtraInfo',default=0)  # Field name made lowercase.
-    eventdesc = models.CharField(db_column='EventDesc', max_length=150, blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
+    eventdesc = models.CharField(db_column='EventDesc', max_length=150, blank=True, null=True,verbose_name='事件描述')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
     remainingtimeinperiod = models.CharField(db_column='RemainingTimeInPeriod', max_length=20, blank=True, null=True)  # Field name made lowercase.
     periodnumber = models.IntegerField(db_column='PeriodNumber', blank=True, null=True)  # Field name made lowercase.
     periodscore = models.CharField(db_column='PeriodScore', max_length=20, blank=True, null=True)  # Field name made lowercase.
