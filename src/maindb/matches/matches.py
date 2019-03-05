@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
     SelectSearch, Fields, director_view
-from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament
+from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,TbLivescout
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
 from maindb.mongoInstance import updateMatchMongo
@@ -20,6 +20,7 @@ from helpers.director.middleware.request_cache import get_request_cache
 #from datetime import timezone as org_timezone
 #from django.utils.timezone import datetime
 #from django.utils import timezone
+
 import datetime
 
 import logging
@@ -35,8 +36,56 @@ class MatchsPage(TablePage):
 
     def get_context(self):
         ctx = super().get_context()
-        #ctx['extra_table_logic'] = 'match_logic'
-        ls = [
+        #ls = [
+            #{'name': 'special_bet_value',
+             #'label': '盘口',
+             #'com': 'com-tab-special-bet-value',
+             #'ops': [
+                 #{'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
+                 #{'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
+             #]
+             #}
+        #]
+        
+        #ls = [
+            #{'name': 'special_bet_value',
+             #'label': '盘口',
+             #'com': 'com-tab-special-bet-value',
+             #'update_director': 'football_get_special_bet_value',
+             #'save_director': 'football_save_special_bet_value',
+             #'ops': [
+                 #{'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
+                 #{'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
+             #]
+             #}
+        #]
+        
+        match_form = MatchForm(crt_user=self.crt_user)
+        match_tabs=[
+            {'name':'match_base_info',
+             'label':'比赛基本信息',
+             'com':'com-tab-fields',
+             'get_data': {
+                 'fun': 'get_row',
+                 'kws': {
+                     'director_name': match_form.get_director_name(),
+                     'relat_field': 'matchid',
+                 }
+             },
+             'after_save': {
+                 'fun': 'update_or_insert'
+             },
+             'heads': match_form.get_heads(),
+             'ops': match_form.get_operations()             
+            },
+            {
+                'name':'danger_football',
+                'label':'危险球',
+                'com':'com-tab-table',
+                'par_field': 'matchid',
+                'table_ctx': TbLivescoutTable(crt_user=self.crt_user).get_head_context(),
+                #'visible': can_touch(TbLivescout, self.crt_user), 
+                },
             {'name': 'special_bet_value',
              'label': '盘口',
              'com': 'com-tab-special-bet-value',
@@ -47,10 +96,13 @@ class MatchsPage(TablePage):
                  {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
              ]
              }
+                  
         ]
+        
         ctx['named_ctx'] = {
-            'match_closelivebet_tabs': ls,
-        }
+            #'match_closelivebet_tabs': ls,
+            'match_tabs':match_tabs,
+            }
         return ctx
     
     class tableCls(ModelTable):
@@ -58,7 +110,7 @@ class MatchsPage(TablePage):
         exclude = []  # 'ishidden', 'closelivebet'
         fields_sort = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate', 'period1score', 'matchscore',
                        'winner', 'statuscode', 'isrecommend', 'liveodds','livebet', 'isshow', 'openlivebet', 'marketstatus']
-        pop_edit_field = 'matchid'
+        #pop_edit_field = 'matchid'
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'}, {'name': 'openlivebet', 'label': '开启走地'}]
@@ -106,6 +158,7 @@ class MatchsPage(TablePage):
                     #head['event_slots']=[
                              #{'event':'input','express':'scope.ts.$emit("data-source.changed",scope.event)'},
                         #]
+
                 if head['name'] == 'tournamentid':
                     #head['editor'] = 'com-filter-search-select'
                     head['editor'] = 'com-filter-single-select2'
@@ -148,19 +201,7 @@ class MatchsPage(TablePage):
         def get_context(self):
             ctx = ModelTable.get_context(self)
             #ctx['extra_table_logic'] = 'match_logic'
-            ls = [
-                {'name': 'special_bet_value',
-                 'label': '盘口',
-                 'com': 'com-tab-special-bet-value',
-                 'ops': [
-                     {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
-                     {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
-                 ]
-                 }
-            ]
-            ctx['named_ctx'] = {
-                'match_closelivebet_tabs': ls,
-            }
+ 
             return ctx
 
 
@@ -221,9 +262,9 @@ class MatchsPage(TablePage):
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '隐藏', 'confirm_msg': '确认隐藏比赛吗？',
                  'field': 'ishidden',
                  'value': 1, 'visible': 'ishidden' in self.permit.changeable_fields()},
-                {'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
-                    'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_closelivebet_tabs",par_row:scope.ts.selected[0]})',
-                            'visible': self.permit.can_edit(),}, 
+                #{'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
+                    #'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_closelivebet_tabs",par_row:scope.ts.selected[0]})',
+                            #'visible': self.permit.can_edit(),}, 
                  {'fun': 'director_call', 'editor': 'com-op-btn', 
                   'director_name': 'football_quit_ticket',
                   'label': '退单', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
@@ -234,7 +275,7 @@ class MatchsPage(TablePage):
                  
             ]
             return ops
-
+        
         def dict_head(self, head):
             dc = {
                 'matchid': 70,
@@ -261,10 +302,22 @@ class MatchsPage(TablePage):
                 head['editor'] = 'com-table-label-shower'
             if head['name'] in ('closelivebet', 'openlivebet', 'isshow'):
                 head['editor'] = 'com-table-bool-shower'
-            # if head['name'] == 'matchid':
-            # head['editor'] = 'com-table-switch-to-tab'
-            # head['tab_name']='special_bet_value'
-
+            
+            if head['name']=='matchid':
+                head['editor']='com-table-switch-to-tab'
+                head['ctx_name']='match_tabs'
+                head['tab_name']='match_base_info'            
+            
+            # 弹出 table 框
+            #if head['name']=='tournamentzh':
+                #mytable = TbLivescoutTable(crt_user=self.crt_user)
+                #director_name = mytable.get_director_name()
+                #head.update({
+                    #'editor':'com-table-pop-table',
+                    #'table_ctx':mytable.get_head_context(),
+                    
+                #})
+              
             return head
 
         def dict_row(self, inst):
@@ -319,6 +372,14 @@ class MatchForm(ModelFields):
 
     field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate']
 
+    def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
+        if kw.get('matchid'):
+            matchid = kw.get('matchid')
+            match = self.Meta.model.objects.get(matchid=matchid)
+            super().__init__(dc, pk, crt_user, nolimit,instance=match, *args, **kw)
+        else:
+            super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
+        
     def dict_head(self, head):
         if head['name'] == 'matchid':
             head['readonly'] = True
@@ -402,7 +463,61 @@ class PeriodTypeForm(Fields):
         }
     
 
+class TbLivescoutTable(ModelTable):
+    """危险球表格"""
+    model = TbLivescout
+    exclude=[]
+    
+    def get_operation(self):
+        return [
+            {'name':'director_call',
+             'director_name':'match.add_livescout',
+             'editor':'com-op-switch',
+            'label':'危险球',
+            'pre_set':'rt={matchid:scope.ps.crt_row.matchid,is_danger:scope.head.value}',
+            #'pre_set':'', # 预先设置的字
+            'active_color':'red',
+            'op_confirm_msg':'scope.value?"是否开启危险球?":"是否关闭危险球?"',
+            'after_save':'rt=scope.ts.search()'
+            },
+              {
+                  'name':'search',
+                  'editor':'com-op-btn',
+                  'label':'刷新',
         
+            },
+        ]
+    
+    def getExtraHead(self):
+        return [
+            {'name':'stopreason','label':'产生原因'}
+        ]
+    
+    def inn_filter(self, query):
+        query = super().inn_filter(query)
+        query = query.extra(select={'stopreason':'SELECT TB_BetStopReason.description'},
+                    where=['TB_BetStopReason.id =TB_LiveScout.BrExtraInfo'],
+                    tables =['TB_BetStopReason'])
+        if self.kw.get('matchid'):
+            return query.filter(matchid=self.kw.get('matchid'),eventtypeid__in=[33,34]).order_by('-createtime')
+        else:
+            return query  
+    
+    def dict_row(self, inst):
+        return {
+            'stopreason':inst.stopreason
+        }
+
+
+@director_view('match.add_livescout')
+def add_livescout(new_row,**kws):
+    match = TbMatches.objects.get(matchid=new_row.get('matchid'))
+    #TbLivescout.objects.order_by('-createtime').first()
+    if new_row.get('is_danger'):
+        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=33,typeid=1010,betstatus=2,scoutfeedtype=2)
+    else:
+        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=34,typeid=1011,betstatus=3,scoutfeedtype=2)
+    return {'success':True}
         
 @director_view('football_get_special_bet_value')
 def football_get_special_bet_value(matchid): 
@@ -697,7 +812,7 @@ director.update({
     'match.table.edit': MatchForm,
     #'PeriodTypeForm': PeriodTypeForm,
     
-
+    'TbLivescout.table':TbLivescoutTable,
 })
 
 # model_dc[TbMatches]={'fields':MatchForm,'table':MatchsPage}

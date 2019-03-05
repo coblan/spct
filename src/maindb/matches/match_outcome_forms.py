@@ -71,37 +71,7 @@ class FootBallPoints(Fields):
             match.winner = 2
         else:
             match.winner = 3        
-        
-        #crt_settlestatus = 0 if not match.settlestatus else match.settlestatus
-        #settlestatus = crt_settlestatus
-        #if crt_settlestatus < 1 and row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
-            #match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
-            #match.statuscode = self.half_end_code
-            #settlestatus = 1
-        #if crt_settlestatus < 2 and row.get('home_score', '') != '' and row.get('away_score', '') != '':
-            #match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
-            #match.homescore = row.get('home_score')
-            #match.awayscore = row.get('away_score')   
-            #match.statuscode = 100
-            #settlestatus += 2
-            #if row.get('home_score') > row.get('away_score'):
-                #match.winner = 1
-            #elif row.get('home_score') < row.get('away_score'):
-                #match.winner = 2
-            #else:
-                #match.winner = 3
-        
-        #settle_dict =  {
-                #1: '上半场',
-                #2: '全场',
-                #3: '半场&全场',
-            #}
-        #if crt_settlestatus < settlestatus:
-            #match.settlestatus = settlestatus
-        #else:
-            
-            #raise UserWarning('%s已经结算,请不要重复结算!' % settle_dict.get(settlestatus))
-            
+  
         match.save()
         try:
             self.notfiy_service(row)

@@ -18,7 +18,7 @@ class League(TablePage):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
-        fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet', 'sort', 'typegroupswitch']
+        fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet', 'sort', 'typegroupswitch','weight']
 
         # hide_fields = ['tournamentid']
 
@@ -100,6 +100,8 @@ class LeagueForm(ModelFields):
         if head['name'] == 'typegroupswitch':
             head['options'] = [{'value': str(x.oddstypegroup), 'label': x.oddstypenamezh, } for x in
                                TbOddstypegroup.objects.all()]
+        if head['name']=='weight':
+            head['fv_rule']='range(0.001~500)'
         return head
 
 

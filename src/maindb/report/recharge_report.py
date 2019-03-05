@@ -11,7 +11,7 @@ class RechargeReport(TablePage):
             raise PermissionDenied('没有权限访问充值安全统计')
            
     def get_label(self):
-        return '充值统计'
+        return '充值安全统计'
     
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'

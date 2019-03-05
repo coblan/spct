@@ -125,8 +125,8 @@ class AccountPage(TablePage):
         model = TbAccount
         include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
                    'isenablewithdraw', 'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount',
-                   'createtime', 'source','accounttype']
-        fields_sort = ['accountid', 'account', 'nickname', 'createtime', 'source', 'bonusrate', 'viplv', 'status',
+                   'createtime', 'source','accounttype','weight']
+        fields_sort = ['accountid', 'account', 'nickname', 'createtime', 'source','weight', 'bonusrate', 'viplv', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
                        'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype']
 
@@ -142,70 +142,6 @@ class AccountPage(TablePage):
 
         def inn_filter(self, query):
             """
-            现在的解决办法是利用 笛卡尔积的特性，用x ，y 轴，相互除，就能得出正确的 聚合值，
-            下面是 使用SQL临时表来获取聚合值，留个印记。
-            
-declare @tb_account table(
-	AccountID bigint
-)
-
-insert into @tb_account
-SELECT
-	AccountID
-FROM 
-	TB_Account
-
-
-declare @tb_recharge table(
-	AccountID bigint,
-	camount DECIMAL
-)
-
-INSERT into @tb_recharge
-SELECT
-	a.AccountID,
-	SUM(ConfirmAmount) as camount
-FROM TB_Recharge a
-	LEFT JOIN @tb_account b
-ON a.AccountID=b.AccountID
-GROUP BY
-	a.AccountID
-	
-
-SELECT
-a.AccountID,
-b.camount,
-SUM(a.amount)
-FROM TB_Withdraw a
-LEFT JOIN @tb_recharge b
-ON a.AccountID=b.AccountID
-GROUP BY
-	a.AccountID,
-	b.camount
----------------------------------------------------------
-下面是 使用SQL 获取聚合值，留个印记。
-
-SELECT 
-a.AccountID,
-SUM(c.ConfirmAmount) as confirmAmount,
-b.total_amount
-FROM TB_Account a
-LEFT JOIN TB_Recharge c
-ON a.AccountID = c.AccountID
-LEFT JOIN (
-SELECT AccountID,
-	SUM(Amount) as total_amount
-FROM TB_Withdraw
-GROUP BY
-	AccountID
-) b 
-ON a.AccountID = b.AccountID
-WHERE
-a.AccountID=1320
-GROUP BY
-a.AccountID,
-b.total_amount
-
             """
             #withdraw_query = TbWithdraw.objects.filter(accountid=OuterRef('pk')).values('accountid')
             #withdraw_query=withdraw_query.annotate(amount_sum=Sum('amount')).values('amount_sum')
@@ -362,7 +298,7 @@ b.total_amount
 class AccoutBaseinfo(ModelFields):
     #'agentamount', 
     field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'bonusrate',
-                  'isenablewithdraw','accounttype', 'createtime']
+                  'isenablewithdraw','accounttype', 'groupid','weight','createtime']
     readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount']
 
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
@@ -373,6 +309,8 @@ class AccoutBaseinfo(ModelFields):
     def dict_head(self, head):
         if head['name'] == 'bonusrate':
             head['step'] = 0.001
+        if head['name']=='weight':
+            head['fv_rule']='range(0.001~500)'
         return head
 
     def dict_row(self, inst):

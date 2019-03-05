@@ -15,8 +15,32 @@ class BasketMatchsPage(MatchsPage):
         ctx = super().get_context()
         #ctx['extra_table_logic'] = 'match_logic'
         ls = [
+       
+        ]
+        ctx['named_ctx'] = {
+            'match_closelivebet_tabs': ls,
+        }
+        
+        match_form = BasketMatchForm(crt_user=self.crt_user)
+        match_tabs=[
+            {'name':'match_base_info',
+             'label':'比赛基本信息',
+             'com':'com-tab-fields',
+             'get_data': {
+                 'fun': 'get_row',
+                 'kws': {
+                     'director_name': match_form.get_director_name(),
+                     'relat_field': 'matchid',
+                 }
+             },
+             'after_save': {
+                 'fun': 'update_or_insert'
+             },
+             'heads': match_form.get_heads(),
+             'ops': match_form.get_operations()             
+            },
             {'name': 'special_bet_value',
-             'label': '盘口',
+             'label': '封盘',
              'com': 'com-tab-special-bet-value',
              'update_director': 'basketball_get_special_bet_value',
              'save_director': 'basketball_save_special_bet_value',
@@ -24,11 +48,14 @@ class BasketMatchsPage(MatchsPage):
                  {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
                  {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
              ]
-             }
+            }
+                  
         ]
+        
         ctx['named_ctx'] = {
-            'match_closelivebet_tabs': ls,
-        }
+            #'match_closelivebet_tabs': ls,
+            'match_tabs':match_tabs,
+                    }
         return ctx
     
     class tableCls(MatchsPage.tableCls):

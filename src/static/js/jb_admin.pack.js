@@ -5544,7 +5544,8 @@ var table_page_store = {
                 par_row: kws.par_row
 
             });
-            self.crt_row = kws.row;
+            self.crt_row = kws.par_row;
+            //self.crt_row= kws.row
         },
         pop_tab_stack: function pop_tab_stack() {
 
@@ -5902,7 +5903,7 @@ var table_store = {
                 return;
             }
 
-            function bb(new_row, callback) {
+            function do_director_call(new_row, callback) {
                 cfg.show_load();
                 ex.director_call(kws.director_name, { rows: self.selected, new_row: new_row }, function (resp) {
                     if (!resp.msg) {
@@ -5910,10 +5911,6 @@ var table_store = {
                     } else {
                         cfg.hide_load();
                     }
-                    //if(resp.msg){
-                    //    cfg.showMsg(resp.msg)
-                    //}
-
                     if (kws.after_save) {
                         ex.eval(kws.after_save, { resp: resp, ts: self });
                     } else {
@@ -5936,7 +5933,7 @@ var table_store = {
 
             function judge_pop_fun() {
                 var one_row = {};
-                ex.assign(one_row, ex.eval(kws.pre_set));
+                ex.assign(one_row, ex.eval(kws.pre_set, { head: kws, ps: self.parStore }));
                 if (kws.fields_ctx) {
                     ex.map(kws.fields_ctx.heads, function (head) {
                         if (!head.name.startsWith('_') && one_row[head.name] == undefined) {
@@ -5944,12 +5941,12 @@ var table_store = {
                         }
                     });
                     var win_index = pop_edit_local(one_row, kws.fields_ctx, function (new_row, store) {
-                        bb(new_row, function (resp) {
+                        do_director_call(new_row, function (resp) {
                             layer.close(win_index);
                         });
                     });
                 } else {
-                    bb(one_row);
+                    do_director_call(one_row);
                 }
             }
 
@@ -6773,7 +6770,6 @@ var tab_fields = {
                 var fun = get_data[self.tab_head.get_data.fun];
                 var kws = self.tab_head.get_data.kws;
                 fun(self, function (row) {
-                    //ex.assign(self.row,row)
                     self.row = row;
                     self.childStore.$emit('row.update_or_insert', row);
                 }, kws);
@@ -7973,6 +7969,10 @@ var _main7 = __webpack_require__(76);
 
 var tabs_main = _interopRequireWildcard(_main7);
 
+var _main8 = __webpack_require__(150);
+
+var operator_main = _interopRequireWildcard(_main8);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 __webpack_require__(78);
@@ -8016,6 +8016,101 @@ __webpack_require__(77);
 
 
 // store
+
+/***/ }),
+/* 150 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _switch = __webpack_require__(151);
+
+var switch_btn = _interopRequireWildcard(_switch);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ }),
+/* 151 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(153);
+
+Vue.component('com-op-switch', {
+    props: ['head'],
+    data: function data() {
+        return {
+            myvalue: false
+        };
+    },
+    template: '<div class="com-op-switch">\n    <span v-text="head.label"></span>\n    <el-switch @click.native="trig_switch()"\n      v-model="myvalue"\n      :active-color="head.active_color || \'#13ce66\'"\n      inactive-color="#888">\n    </el-switch>\n    </div>',
+    methods: {
+        trig_switch: function trig_switch() {
+            var self = this;
+            if (this.head.op_confirm_msg) {
+                var mymsg = ex.eval(this.head.op_confirm_msg, { value: this.myvalue });
+                layer.confirm(mymsg, { icon: 3, title: '提示', closeBtn: 0 }, function (index) {
+                    layer.close(index);
+                    self.do_switch();
+                }, function () {
+                    self.myvalue = !self.myvalue;
+                });
+            } else {
+                self.do_switch();
+            }
+        },
+        do_switch: function do_switch() {
+            this.head.value = this.myvalue;
+            this.$emit('operation', this.head.name);
+        }
+        //operation_call:function(){
+        //    this.$emit('operation',this.head.name)
+        //},
+    }
+});
+
+/***/ }),
+/* 152 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-op-switch {\n  display: inline-block; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 153 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(152);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./switch.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./switch.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

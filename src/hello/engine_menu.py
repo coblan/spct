@@ -105,8 +105,8 @@ class PcMenu(BaseEngine):
 
             {'label': _('RiskControl'), 'icon': fa('fa-lock'), 'visible': True,
              'submenu': [
-                {'label': '足球最大赔付', 'url': page('maxpayout'), 'visible': can_touch(TbMaxpayout, crt_user), },
-                {'label': '篮球最大赔付','url': page('maxpayout_basketball'),'visible': can_touch(TbMaxpayoutBasketball, crt_user)}, 
+                #{'label': '足球最大赔付', 'url': page('maxpayout'), 'visible': can_touch(TbMaxpayout, crt_user), },
+                #{'label': '篮球最大赔付','url': page('maxpayout_basketball'),'visible': can_touch(TbMaxpayoutBasketball, crt_user)}, 
                 {'label': '提现控制', 'url': page('parameterinfo'), 'visible': can_touch(TbParameterinfo, crt_user), },
                 {'label':'登录IP黑名单','url':page('blackip_range'), 'visible': can_touch(Blackiprangelist, crt_user),},
                 {'label': '登录地区黑名单', 'url': page('area_blacklist'), 'visible': can_touch(TbAreablacklist, crt_user), },
@@ -119,6 +119,7 @@ class PcMenu(BaseEngine):
                 #{'label': '联赛组水位', 'url': page('LeagueGroupPage'), 'visible': can_touch(TbLeagueGroup, crt_user), },
                 {'label': '参数设置', 'url': page('ParameterPage'),'visible': has_permit(crt_user, 'risk.parameter'),},
                 #{'label': '数据源维护', 'url': page('sourececontrol'),'visible': has_permit(crt_user, 'risk.parameter'),},
+                  {'label': '用户限额分组', 'url': page('limitusergroup'),'visible': has_permit(crt_user, 'risk.parameter'),},
                 
              ]},
 
