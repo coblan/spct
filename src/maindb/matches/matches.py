@@ -470,12 +470,14 @@ class TbLivescoutTable(ModelTable):
             'active_color':'red',
             'op_confirm_msg':'scope.value?"是否开启危险球?":"是否关闭危险球?"',
             'after_save':'rt=scope.ts.search()',
-            'init_value':''
+            'init_express':'rt=ex.director_call("match.livescout_status",{matchid:scope.ps.vc.par_row.matchid}).then((resp)=>scope.vc.myvalue=resp)'
             },
               {
                   'name':'search',
                   'editor':'com-op-btn',
                   'label':'刷新',
+                  'icon':'fa-refresh',
+                  'class':'btn btn-sm btn-success',
         
             },
         ]
@@ -510,6 +512,13 @@ class TbLivescoutTable(ModelTable):
             'stopreason':inst.stopreason
         }
 
+@director_view('match.livescout_status')
+def match_livescout_status(matchid,**kws):
+    live = TbLivescout.objects.filter(matchid=matchid,eventtypeid__in=[33,34]).order_by('-createtime').first()
+    if live and live.eventtypeid ==33:    
+        return True
+    else:
+        return False
 
 @director_view('match.add_livescout')
 def add_livescout(new_row,**kws):
