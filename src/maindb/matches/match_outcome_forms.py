@@ -65,10 +65,14 @@ class FootBallPoints(Fields):
         match.statuscode = 100
         match.settlestatus =3
         
-        if row.get('home_score') > row.get('away_score'):
+        #if row.get('home_score') > row.get('away_score'):
+            #match.winner = 1
+        #elif row.get('home_score') < row.get('away_score'):
+            #match.winner = 2
+        if match.homescore > match.awayscore:
             match.winner = 1
-        elif row.get('home_score') < row.get('away_score'):
-            match.winner = 2
+        elif match.homescore < match.awayscore:
+            match.winner = 2            
         else:
             match.winner = 3        
   
