@@ -97,8 +97,8 @@ class TbAccount(models.Model):
     #groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
     groupid = models.ForeignKey(to='TbLimitusergroup',db_constraint=False,db_column='GroupID',verbose_name='用户组') 
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
-    risklevel = models.IntegerField(db_column='RiskLevel')  # Field name made lowercase.
-    isriskleveldown = models.BooleanField(db_column='IsRiskLevelDown')  # Field name made lowercase.
+    #risklevel = models.IntegerField(db_column='RiskLevel')  # Field name made lowercase.
+    #isriskleveldown = models.BooleanField(db_column='IsRiskLevelDown')  # Field name made lowercase.
 
     class Meta:
         managed = False

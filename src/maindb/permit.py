@@ -145,6 +145,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
         ('Bonuse-dispatch.edit', ';'.join(['TbBonuslog.edit', 'TbBonustype.edit',]), '', 'set'), 
         
          ('report.recharge_reports', '', '', 'single'),
+         ('TbLimitusergroup',model_read_permit(TbLimitusergroup),model_to_name(TbLimitusergroup),'model'),
+         ('TbLimitusergroup.edit',model_full_permit(TbLimitusergroup),model_to_name(TbLimitusergroup),'model'),
 
            ]
 

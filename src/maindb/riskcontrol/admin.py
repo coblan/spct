@@ -6,6 +6,7 @@ from . import max_payout_baskeball
 from . import sourcecontral
 from . import paychannel_blackaccount
 from . import limitusergroup
+from . import riskcontrol_setting
 
 #from helpers.director.access.permit_data import model_full_permit, model_to_name, add_permits
 

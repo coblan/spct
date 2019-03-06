@@ -119,7 +119,9 @@ class PcMenu(BaseEngine):
                 #{'label': '联赛组水位', 'url': page('LeagueGroupPage'), 'visible': can_touch(TbLeagueGroup, crt_user), },
                 {'label': '参数设置', 'url': page('ParameterPage'),'visible': has_permit(crt_user, 'risk.parameter'),},
                 #{'label': '数据源维护', 'url': page('sourececontrol'),'visible': has_permit(crt_user, 'risk.parameter'),},
-                  {'label': '用户限额分组', 'url': page('limitusergroup'),'visible': has_permit(crt_user, 'risk.parameter'),},
+                {'label': '用户限额分组', 'url': page('limitusergroup'),'visible': can_touch(TbLimitusergroup, crt_user),},
+                #{'label': '风险控制设置', 'url': page('RiskcontrolSetting'),'visible': has_permit(crt_user, 'risk.parameter'),},
+                  
                 
              ]},
 

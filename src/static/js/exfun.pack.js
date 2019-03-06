@@ -402,6 +402,15 @@ window.cfg = {
     showError: function showError(msg) {
         layer.alert(msg, { icon: 5, title: '错误' });
     },
+    showTip: function showTip(msg) {
+        var _layer;
+
+        for (var _len = arguments.length, parm = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+            parm[_key - 1] = arguments[_key];
+        }
+
+        (_layer = layer).msg.apply(_layer, [msg].concat(parm));
+    },
     tr: {
         'picture_size_excceed': '图片尺寸不能超过{maxsize}'
     },
