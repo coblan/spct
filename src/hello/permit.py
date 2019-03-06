@@ -178,7 +178,8 @@ def get_permit():
              {'label':'用户限额分组','children':[
                  {'label':'查看','value':'TbLimitusergroup'},
                  {'label':'编辑','value':'TbLimitusergroup.edit','depend':['TbLimitusergroup']}
-             ]}
+             ]},
+             {'label':'风险控制设置','value':'risk.RiskcontrolSetting'},
              
             
             #{'label': _('Tb RC Filter'), 'value': 'TbRcFilter',}, 

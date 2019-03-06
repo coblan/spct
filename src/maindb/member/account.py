@@ -24,7 +24,8 @@ from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
 from maindb.send_phone_message import send_message_password, send_message_fundspassword
 from django.db.models import DecimalField
-from ..models import TbMoneyCategories
+from ..models import TbMoneyCategories,TbSetting,TbRisklevellog
+import json
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -292,19 +293,28 @@ class AccountPage(TablePage):
 class AccoutBaseinfo(ModelFields):
     #'agentamount', 
     field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'bonusrate',
-                  'isenablewithdraw','accounttype', 'groupid','weight','createtime']
+                  'isenablewithdraw','accounttype', 'groupid','weight','risklevel','cashchannel','createtime']
     readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount']
 
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('accountid'):
             pk = kw.get('accountid')
         super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
+        self.orgin_risklevel= self.instance.risklevel
 
     def dict_head(self, head):
         if head['name'] == 'bonusrate':
             head['step'] = 0.001
         if head['name']=='weight':
             head['fv_rule']='range(0.001~500)'
+        if head['name']=='risklevel':
+            head['editor']='com-field-select'
+            inst = TbSetting.objects.get(settingname='RiskControlLevel')
+            head['options']=[{'value':x['Level'],'label':x['Memo']} for x in json.loads(inst.settingvalue)]
+        if head['name']=='cashchannel':
+            head['editor']='com-field-select'
+            inst = TbSetting.objects.get(settingname='CashChannel')
+            head['options']=[{'value':x['Channel'],'label':x['Memo']} for x in json.loads(inst.settingvalue)]            
         return head
 
     def dict_row(self, inst):
@@ -324,6 +334,18 @@ class AccoutBaseinfo(ModelFields):
             text_pswd, self.instance.fundspassword = gen_money_pswd()
             send_message_fundspassword(self.instance.phone, text_pswd)
             return {'memo': '重置资金密码', }
+        if 'risklevel' in self.changed_data:
+            # 用户风险控制。
+            risklevel = self.cleaned_data.get('risklevel')
+            if risklevel > self.orgin_risklevel:
+                # 升
+                self.instance.isriskleveldown = 0
+                TbRisklevellog.objects.create(upordown=1,createuser=self.crt_user.username,accountid=self.instance.accountid,oldrisklevel=self.orgin_risklevel,newrisklevel=risklevel,)
+            else:
+                # 降
+                self.instance.isriskleveldown = 1
+                TbRisklevellog.objects.create(upordown=2,createuser=self.crt_user.username,accountid=self.instance.accountid,oldrisklevel=self.orgin_risklevel,newrisklevel=risklevel,)
+                
 
     class Meta:
         model = TbAccount

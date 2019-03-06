@@ -1,6 +1,8 @@
 from helpers.director.shortcut import FieldsPage,Fields,page_dc,director,TablePage,ModelTable,PlainTable
 from ..models import TbSetting
 import json
+from helpers.director.access.permit import has_permit
+from django.core.exceptions import PermissionDenied
 
 class RiskcontrolSetting(TablePage):
     def get_template(self, prefer=None):
@@ -11,15 +13,20 @@ class RiskcontrolSetting(TablePage):
     
     class tableCls(PlainTable):
         
+        def custom_permit(self):
+            if not has_permit(self.crt_user, 'risk.RiskcontrolSetting'):
+                raise PermissionDenied('没有权限访问风险控制设置')
+            
         def get_heads(self):
             riskform=RiskcontrolForm(crt_user=self.crt_user)
             
             return [
-                {'name':'Level','label':'用户等级','editor':'com-table-pop-fields',
+                {'name':'Level','label':'风控等级','editor':'com-table-pop-fields',
                  'fields_ctx':riskform.get_head_context(),'get_row':{'fun':'get_table_row'},'after_save':{'fun':'update_or_insert'}},
                 {'name':'Memo','label':'备注'},
-                {'name':'Sort','label':'排序'},
                 {'name':'RechargeDays','label':'充值天数'},
+                {'name':'RechargeCount','label':'充值次数'},
+                {'name':'RechargeAmount','label':'充值金额'},
             ]
         
         def get_rows(self):
@@ -27,15 +34,17 @@ class RiskcontrolSetting(TablePage):
             ls = json.loads(inst.settingvalue)
             for row in ls:
                 row['_director_name']='RiskcontrolForm'
+                row['pk']=row['Level']
             return ls
 
 class RiskcontrolForm(Fields):
     def get_heads(self):
         return [
-            {'name':'Level','label':'用户等级','editor':'number'},
-            {'name':'Memo','label':'备注','editor':'linetext'},
-            {'name':'Sort','label':'排序','editor':'number'},
+            {'name':'Level','label':'风控等级','editor':'number','readonly':True},
+            {'name':'Memo','label':'备注','editor':'linetext','readonly':True},
             {'name':'RechargeDays','label':'充值天数','editor':'number'},
+            {'name':'RechargeCount','label':'充值次数','editor':'number'},
+            {'name':'RechargeAmount','label': '充值金额','editor':'number'},
         ]
     
     def save_form(self):
@@ -45,8 +54,14 @@ class RiskcontrolForm(Fields):
         for item in ls:
             if item['Level']==self.kw.get('Level'):
                 item.update(self.kw)
-        inst.settingvalue=json.dumps('')
-        print('here')
+                self.rt_value =item
+        inst.settingvalue=json.dumps(ls)
+        inst.save()
+        self.instance = inst
+    
+    def get_row(self):
+        return self.rt_value
+    
     
     #class fieldsCls(Fields):
         #def get_heads(self): 

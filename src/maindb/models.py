@@ -97,8 +97,9 @@ class TbAccount(models.Model):
     #groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
     groupid = models.ForeignKey(to='TbLimitusergroup',db_constraint=False,db_column='GroupID',verbose_name='用户组') 
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
-    #risklevel = models.IntegerField(db_column='RiskLevel')  # Field name made lowercase.
-    #isriskleveldown = models.BooleanField(db_column='IsRiskLevelDown')  # Field name made lowercase.
+    risklevel = models.IntegerField(db_column='RiskLevel',verbose_name='风控等级')  # Field name made lowercase.
+    isriskleveldown = models.BooleanField(db_column='IsRiskLevelDown')  # Field name made lowercase.
+    cashchannel = models.IntegerField(db_column='CashChannel',verbose_name='允许提款渠道')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1433,6 +1434,18 @@ class TbReturnmessage(models.Model):
         db_table = 'TB_ReturnMessage'
         unique_together = (('spid', 'language', 'code'),)
 
+class TbRisklevellog(models.Model):
+    tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    accountid = models.BigIntegerField(db_column='AccountID')  # Field name made lowercase.
+    oldrisklevel = models.IntegerField(db_column='OldRiskLevel')  # Field name made lowercase.
+    newrisklevel = models.IntegerField(db_column='NewRiskLevel')  # Field name made lowercase.
+    upordown = models.IntegerField(db_column='UpOrDown')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
+    createuser = models.CharField(db_column='CreateUser', max_length=50, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_RiskLevelLog'
 
 class TbSplist(models.Model):
     spid = models.IntegerField(db_column='SPID', primary_key=True)  # Field name made lowercase.
