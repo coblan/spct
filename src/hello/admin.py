@@ -30,19 +30,23 @@ class Home(object):
         # {"RegNum": 1, "BetNum": 232, "SumBetAmount": "180123", "SumPrizeAmount": "140617", "SumLostAmount": "49071"}
         today_heads = [
             {'name': 'RegNum', 'label': '注册人数',}, 
+            {'name':'BetUserNum','label':'投注人数'},
             {'name': 'BetNum', 'label': '注单数',}, 
             {'name': 'SumBetAmount', 'label': '投注金额',}, 
             {'name': 'SumPrizeAmount', 'label': '派彩金额',}, 
-            {'name': 'SumLostAmount', 'label': '亏盈金额',}
+            {'name': 'SumLostAmount', 'label': '亏盈金额',},
+            
         ]
         
         trend = [
+            {'key': '7','label': '投注人数', }, 
             {'key': '1','label': '投注', }, 
             {'key': '2','label': '派奖', }, 
             {'key': '3','label': '流水', }, 
             {'key': '4','label': '平台亏盈',}, 
             {'key': '5','label': '充值', }, 
             {'key': '6','label': '提现', }, 
+            
         ]
         
         sql = "exec  SP_TodayStatistics"
