@@ -176,8 +176,8 @@ def get_permit():
              {'label': '联赛组水位', 'value': 'TbLeagueGroup.edit',}, 
              {'label': '参数设置', 'value': 'risk.parameter',},
              {'label':'用户限额分组','children':[
-                 {'label':'查看','value':['TbLimitusergroup']},
-                 {'label':'编辑','value':['TbLimitusergroup.edit'],'depend':['TbLimitusergroup']}
+                 {'label':'查看','value':'TbLimitusergroup'},
+                 {'label':'编辑','value':'TbLimitusergroup.edit','depend':['TbLimitusergroup']}
              ]}
              
             
