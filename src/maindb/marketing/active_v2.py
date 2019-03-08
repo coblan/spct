@@ -170,7 +170,7 @@ def update_activity_file_v2(**kws):
     spd = StaticHtmlBuilder(url= index_url, root_path= root_path,downloaded_urls=has_download_url)
     spd.run()    
     
-    for itm in TbActivityV2.objects.filter(enabled=1):
+    for itm in TbActivityV2.objects.filter(enabled=True):
         page_url =  urljoin(settings.SELF_URL, '/actv2/%s' % itm.pk )
         spd = StaticHtmlBuilder(url= page_url, root_path= root_path,downloaded_urls=has_download_url)
         spd.run()        

@@ -77,11 +77,12 @@ class Help(Notice):
             return render(request, 'maindb/help_content.html', context= {'page': {'description':page.description,'title':page.title} })
 
 class ActivityIndex(View):
+    """这个的功能移到 下面的 Activity  view 去了"""
     def get(self, request): 
         baseengine = BaseEngine()
         baseengine.request = self.request
         rows=[]
-        for row in TbActivityV2.objects.all().order_by('sort'):
+        for row in TbActivityV2.objects.filter(enabled=True).order_by('sort'):
             dc= sim_dict(row)
             dc['url'] = '%s.html'%row.pk
             rows.append(dc)
@@ -95,9 +96,9 @@ class Activity(View):
     def get(self, request, pk = None): 
         if pk.startswith('index'):
             if pk =='index':
-                query = TbActivityV2.objects.filter(displaytype=0).order_by('sort')
+                query = TbActivityV2.objects.filter(enabled=True,displaytype=0).order_by('sort')
             else:
-                query = TbActivityV2.objects.filter(displaytype=1).order_by('sort')
+                query = TbActivityV2.objects.filter(enabled=True,displaytype=1).order_by('sort')
             baseengine = BaseEngine()
             baseengine.request = self.request
             rows=[]
