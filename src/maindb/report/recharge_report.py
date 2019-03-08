@@ -32,8 +32,15 @@ class RechargeReport(TablePage):
                     {'name':'date','editor':'com-filter-datetime-range','label':'时间'}
                 ]        
         
-        class sort(RowSort):
-            names = ['RequestAmount','DangerLevel','RequestTotal','FinishTotal','FinishAmount','UseCardTotal','OnlineTotal']        
+        #class sort(RowSort):
+            #names = ['RequestAmount','DangerLevel','RequestTotal','FinishTotal','FinishAmount','UseCardTotal','OnlineTotal']        
+        
+        def getRowSort(self):
+            return {
+                'sortable':['RequestTotal','FinishTotal','RequestAmount','FinishAmount','UseCardTotal','FinishUseCardTotal',
+                            'UseCardAmount','FinishUseCardAmount','OnlineTotal','FinishOnlineTotal','OnlineAmount',
+                            'FinishOnlineAmount'],
+                 'sort_str':self.search_args.get('_sort')}
         
         @classmethod
         def clean_search_args(cls, search_args):
@@ -66,22 +73,31 @@ class RechargeReport(TablePage):
         def getExtraHead(self):
             return [
                 {'name': 'NickName', 'label': '昵称', 'width': 150,'editor':'com-table-switch-to-tab','ctx_name':'recharge_tabs','tab_name':'UserRecharge'},
-                {'name': 'DangerLevel', 'label': '用户安全等级', 'width': 100,'editor':'com-table-style-block', 'style_express':"""
-                var style_map={'高危':'background-color:red;color:white;'};
-                rt=style_map[scope.row.DangerLevel]
-                """},
-                {'name': 'FinishPer', 'label': '充值完成率', 'width': 100},
+                #{'name': 'DangerLevel', 'label': '用户安全等级', 'width': 100,'editor':'com-table-style-block', 'style_express':"""
+                #var style_map={'高危':'background-color:red;color:white;'};
+                #rt=style_map[scope.row.DangerLevel]
+                #"""},
                 
-                {'name': 'RequestTotal', 'label': '申请充值次数', 'width': 100},
-                {'name': 'FinishTotal', 'label': '完成充值次数', 'width': 100},
-                         
-                {'name': 'RequestAmount', 'label': '申请充值金额', 'width': 100},
-                                         
-                {'name': 'FinishAmount', 'label': '完成充值金额', 'width': 100},
-                {'name': 'UseCardTotal', 'label': '转卡充值次数', 'width': 100},
+                 {'name': 'RequestTotal', 'label': '申请充值总次数', 'width': 130},
+                {'name': 'FinishTotal', 'label': '完成充值总次数', 'width': 130},
+                {'name': 'RequestAmount', 'label': '申请充值总金额', 'width': 130},
+                {'name': 'FinishAmount', 'label': '完成充值总金额', 'width': 130},
+                 {'name': 'FinishPer', 'label': '充值完成率', 'width': 100},
+                 
+                 
+                 {'name': 'UseCardTotal', 'label': '申请转卡充值次数', 'width': 140},
+                 {'name': 'FinishUseCardTotal', 'label': '转卡完成次数', 'width': 130},
+                  {'name': 'UseCardAmount', 'label': '申请转卡金额', 'width': 130},
+                  {'name': 'FinishUseCardAmount', 'label': '转卡完成金额', 'width': 130},
+                {'name': 'FinishUseCardPer', 'label': '转卡完成率', 'width': 100},
                 
-                {'name': 'OnlineTotal', 'label': '第三方充值次数', 'width': 100},
-                                           
+                {'name': 'OnlineTotal', 'label': '申请第三方充值次数', 'width': 160},
+                 {'name': 'FinishOnlineTotal', 'label': '第三方完成次数', 'width': 130},
+                  {'name': 'OnlineAmount', 'label': '申请第三方金额', 'width': 130},
+                   {'name': 'FinishOnlineAmount', 'label': '第三方完成金额', 'width': 130},
+                {'name': 'FinishOnlineCardPer', 'label': '第三方完成率', 'width': 100},
+                 
+      
             ]    
         
         def get_rows(self):
