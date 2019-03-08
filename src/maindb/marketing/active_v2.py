@@ -79,9 +79,10 @@ class ActiviyV2Page(TablePage):
                 {
                     'fun': 'selected_set_and_save',
                     'editor': 'com-op-btn',
-                    'label': '在线',
+                    'label': '启用',
                     #'field': 'status',
                     #'value': 1,
+                    'pre_set':'rt={enabled:1}',
                     'row_match': 'many_row',
                     'confirm_msg': '确认修改为在线吗?', 
                     'visible': True,#'status' in self.permit.changeable_fields(),
@@ -89,9 +90,10 @@ class ActiviyV2Page(TablePage):
                 {
                     'fun': 'selected_set_and_save',
                     'editor': 'com-op-btn',
-                    'label': '离线',
-                    'field': 'status',
-                    'value': 0,
+                    'label': '禁用',
+                    #'field': 'status',
+                    #'value': 0,
+                     'pre_set':'rt={enabled:0}',
                     'row_match': 'many_row',
                     'confirm_msg': '确认修改为离线吗?', 
                      'visible': True,#'status' in self.permit.changeable_fields(),
@@ -121,6 +123,10 @@ class ActivityV2Form(ModelFields):
         if head['name']=='banner':
             head['up_url'] = '/d/upload?path=public/images'               
         return head
+    
+    def clean_save(self):
+        if not self.instance.templateid_id:
+            self.instance.templateid_id=0
     
 class ActivitySettingTable(ModelTable):
     model=TbActivitySettings

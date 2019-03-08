@@ -3241,7 +3241,7 @@ var sim_select = {
             parStore: ex.vueParStore(this)
         };
     },
-    template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  class="form-control input-sm">\n                <option v-if="head.placeholder" :value="place_value" disabled selected style=\'display:none;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
+    template: '<div>\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  class="form-control input-sm">\n                <option v-if="head.required"  :value="null" disabled selected style=\'display:none;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
     mounted: function mounted() {
         // 如果有默认值，
         if (this.head.default && !this.row[this.head.name]) {
@@ -3950,7 +3950,7 @@ __webpack_require__(118);
 
 var com_select = {
     props: ['head', 'search_args', 'config'],
-    template: '<select v-model=\'search_args[head.name]\' class="form-control input-sm com-filter-select" >\n        <option v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option :value="null" disabled >---</option>\n        <option v-for=\'option in orderBy(options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
+    template: '<select v-model=\'search_args[head.name]\' :class="[\'form-control input-sm com-filter-select\',{novalue:search_args[head.name]==undefined}]" >\n        <option class="fake-placeholder" v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option class="fake-placeholder" v-else :value="undefined" v-text=\'head.label\' ></option>\n        <!--<option :value="null" disabled >-&#45;&#45;</option>-->\n        <option v-for=\'option in orderBy(options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
         var self = this;
         return {
@@ -5247,7 +5247,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-filter-select {\n  max-width: 25em; }\n", ""]);
+exports.push([module.i, ".com-filter-select {\n  max-width: 25em; }\n  .com-filter-select.novalue {\n    color: #aaaaaa; }\n  .com-filter-select .fake-placeholder {\n    color: #aaaaaa; }\n  .com-filter-select option {\n    color: black; }\n", ""]);
 
 // exports
 
