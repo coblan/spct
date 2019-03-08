@@ -7357,7 +7357,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.el-table .success {\n  background: #f0f9eb; }\n\n.el-table .row-select {\n  background: #fff0ef; }\n\n.el-table--striped .el-table__body tr.el-table__row--striped.row-select td {\n  background: #fff0ef; }\n\n.el-table__fixed {\n  /*由于element.table的bug造成固定列覆盖层 覆盖了滚动条，造成无法滚动。所以去掉覆盖层的事件获取能力，再加上内部元素的事件获取能力*/\n  pointer-events: none; }\n  .el-table__fixed * {\n    pointer-events: auto; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.el-table .success {\n  background: #f0f9eb; }\n\n.el-table .row-select {\n  background-color: #ffe5d2; }\n  .el-table .row-select td:hover {\n    background: #ffe9eb; }\n\n.el-table--striped .el-table__body tr.el-table__row--striped.row-select td {\n  background: #ffe5d2; }\n\n.el-table--enable-row-hover .el-table__body tr.row-select:hover > td {\n  background: #ffe9eb; }\n\n.el-table__fixed {\n  /*由于element.table的bug造成固定列覆盖层 覆盖了滚动条，造成无法滚动。所以去掉覆盖层的事件获取能力，再加上内部元素的事件获取能力*/\n  pointer-events: none; }\n  .el-table__fixed * {\n    pointer-events: auto; }\n", ""]);
 
 // exports
 
