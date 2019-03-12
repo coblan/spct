@@ -61,7 +61,7 @@ class FootBallPoints(Fields):
         match.awayscore = away_half1_score + away_half2_score 
         
         match.period1cornerkicks='%s:%s'%(home_half1_corner,away_half1_corner)
-        match.cornerkicks = '%s:%s'%(home_half1_corner+away_half1_corner,away_half1_corner+away_half2_corner)
+        match.cornerkicks = '%s:%s'%(home_half1_corner+home_half2_corner,away_half1_corner+away_half2_corner)
         match.statuscode = 100
         match.settlestatus =3
         
