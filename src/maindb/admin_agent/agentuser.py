@@ -368,10 +368,10 @@ class ParentForm(Fields):
 class NewAgentUserForm(ModelFields):
     """新建"""
     hide_fields = ['accountid']
-    field_sort=['phone', 'nickname', 'accountid','AgentRulePercentage','pswd','pswd2']
+    field_sort=['phone', 'nickname', 'accountid','AgentRulePercentage','groupid','pswd','pswd2']
     class Meta:
         model = TbAccount
-        fields = ['phone', 'nickname', 'accountid']
+        fields = ['phone', 'nickname', 'accountid','groupid']
     
     def getExtraHeads(self): 
         return [

@@ -95,11 +95,11 @@ class TbAccount(models.Model):
                                            default=0, verbose_name='提现次数')  # Field name made lowercase.
     accounttype = models.IntegerField(db_column='AccountType',verbose_name='账号类型',choices=ACCOUNT_TYPE)  # Field name made lowercase.
     #groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
-    groupid = models.ForeignKey(to='TbLimitusergroup',db_constraint=False,db_column='GroupID',verbose_name='用户组') 
-    weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
-    risklevel = models.IntegerField(db_column='RiskLevel',verbose_name='风控等级')  # Field name made lowercase.
-    isriskleveldown = models.BooleanField(db_column='IsRiskLevelDown')  # Field name made lowercase.
-    cashchannel = models.IntegerField(db_column='CashChannel',verbose_name='允许提款渠道')  # Field name made lowercase.
+    groupid = models.ForeignKey(to='TbLimitusergroup',db_constraint=False,db_column='GroupID',verbose_name='用户组',default=0) 
+    weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重',default=1)  # Field name made lowercase.
+    risklevel = models.IntegerField(db_column='RiskLevel',verbose_name='风控等级',default=1)  # Field name made lowercase.
+    isriskleveldown = models.BooleanField(db_column='IsRiskLevelDown',default=False)  # Field name made lowercase.
+    cashchannel = models.IntegerField(db_column='CashChannel',verbose_name='允许提款渠道',default=0)  # Field name made lowercase.
 
     class Meta:
         managed = False
