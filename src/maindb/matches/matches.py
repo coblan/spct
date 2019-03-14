@@ -17,6 +17,7 @@ from helpers.director.model_func.dictfy import to_dict
 import functools
 from .match_outcome_forms import FootBallPoints, NumberOfCorner
 from helpers.director.middleware.request_cache import get_request_cache
+from django.db import connections
 #from datetime import timezone as org_timezone
 #from django.utils.timezone import datetime
 #from django.utils import timezone
@@ -528,6 +529,13 @@ def add_livescout(new_row,**kws):
         TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=34,typeid=1011,betstatus=3,scoutfeedtype=2,eventdesc='BetStop')
     else:
         TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=33,typeid=1010,betstatus=2,scoutfeedtype=2,eventdesc='BetStart')
+        with connections['Sports'].cursor() as cursor:
+            sql_args = {
+                'MatchID':new_row.get('matchid')
+            }
+            sql = r"exec dbo.SP_DangerousBack_V1 %(MatchID)s" \
+                  % sql_args
+            cursor.execute(sql)        
     return {'success':True}
         
 @director_view('football_get_special_bet_value')
