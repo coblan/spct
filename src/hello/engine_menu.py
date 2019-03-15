@@ -187,13 +187,8 @@ class ProgramerAdmin(BaseEngine):
     @property
     def menu(self):
         menu = [
-            {'label': _('DashBoard'), 'url': page('home'), 'icon': fa('fa-home')},
-            {'label': '账号', 'url': page('user'), 'icon': fa('fa-users'), 'visible': can_list((User, Group)),
-             'submenu': [
-                 {'label': '账号管理', 'url': page('jb_user'), 'visible': can_touch(User)},
-                 {'label': '角色管理', 'url': page('jb_group'), 'visible': can_touch(Group)},
-                 {'label': '权限分组', 'url': page('group_human'), 'visible': can_touch(Group)},
-             ]},
+            {'label': '比赛组', 'url': page('marketgroup'), 'icon': fa('fa-home')},
+    
         ]
         return menu
 

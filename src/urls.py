@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^d/',include('helpers.director.urls'),name='director'),
     
     url(r'^pa/([\w\.]+)/?$', ProgramerAdmin.as_view(), name= ProgramerAdmin.url_name), 
-    url(r'^pa/?$', RedirectView.as_view(url='/pa/group_human')), 
+    url(r'^pa/?$', RedirectView.as_view(url='/pa/marketgroup')), 
     
     url(r'^$',RedirectView.as_view(url='/pc/home')) ,
     #url(r'test',test)

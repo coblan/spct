@@ -53,3 +53,5 @@ from .riskcontrol import new_withdraw_limit
 from . import permit
 
 from . import js_cfg
+
+from .programer import admin

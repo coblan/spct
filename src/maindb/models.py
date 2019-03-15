@@ -1065,6 +1065,54 @@ class TbMoneyCategories(models.Model):
         return self.categoryname
 
 
+class TbMarketgroup(models.Model):
+    groupid = models.IntegerField(db_column='GroupID', primary_key=True)  # Field name made lowercase.
+    groupname = models.CharField(db_column='GroupName', max_length=100)  # Field name made lowercase.
+    groupnamezh = models.CharField(db_column='GroupNameZH', max_length=100)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_MarketGroup'
+    
+    def __str__(self):
+        return self.groupnamezh
+
+class TbMarketgroupwithmarket(models.Model):
+    tid = models.AutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
+    groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID',choices=SPORTID_OPTION_2)  # Field name made lowercase.
+    #marketid = models.IntegerField(db_column='MarketID')  # Field name made lowercase.
+    marketid = models.ForeignKey(to='TbMarkets',db_constraint=False, db_column='MarketID')
+    #templateid = models.IntegerField(db_column='TemplateID')  # Field name made lowercase.
+    templateid = models.ForeignKey(to='TbTemplate',db_constraint=False,db_column='TemplateID')  # Field name made lowercase.
+    groupsort = models.IntegerField(db_column='GroupSort')  # Field name made lowercase.
+    marketsort = models.IntegerField(db_column='MarketSort')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled')  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_MarketGroupWithMarket'     
+
+
+class TbMarkets(models.Model):
+    marketid = models.IntegerField(db_column='MarketID', primary_key=True)  # Field name made lowercase.
+    marketname = models.CharField(db_column='MarketName', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    marketnamezh = models.CharField(db_column='MarketNameZH', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    includesoutcomestype = models.CharField(db_column='IncludesOutcomesType', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    outcometype = models.CharField(db_column='OutcomeType', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Markets'
+    
+    def __str__(self):
+        return '%s:%s'%(self.marketid ,self.marketnamezh)
+
+
 class TbNetworkerror(models.Model):
     networkerrorid = models.AutoField(db_column='NetworkErrorID', primary_key=True)  # Field name made lowercase.
     clientip = models.CharField(db_column='ClientIp', max_length=64)  # Field name made lowercase.
@@ -1568,6 +1616,19 @@ class TbTeamsBasketball(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Teams_Basketball'
+
+
+class TbTemplate(models.Model):
+    templateid = models.IntegerField(db_column='TemplateID', primary_key=True)  # Field name made lowercase.
+    templatename = models.CharField(db_column='TemplateName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Template'
+        
+    def __str__(self):
+        return self.templatename
+
 
 class TbTicketmaster(models.Model):
     "注单列表"
