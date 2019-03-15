@@ -1,4 +1,4 @@
-from helpers.director.shortcut import page_dc,ModelTable,ModelFields,TablePage,director
+from helpers.director.shortcut import page_dc,ModelTable,ModelFields,TablePage,director,RowSearch
 from ..models import TbMarketgroup,TbMarketgroupwithmarket
 
 class MarketGroupPage(TablePage):
@@ -56,6 +56,9 @@ class MarketGroupPage(TablePage):
                 head['ctx_name']='marketgroup-tabs'
                 head['tab_name']='marketgroup'
             return head
+        
+        class search(RowSearch):
+            names=['groupname','groupnamezh']
 
 class MarketGroupForm(ModelFields):
     class Meta:

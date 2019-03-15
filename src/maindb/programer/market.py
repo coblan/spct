@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowSearch,RowFilter
 from ..models import TbMarkets
 
 class MarketPage(TablePage):
@@ -16,7 +16,7 @@ class MarketPage(TablePage):
         def dict_head(self, head):
             width_dc ={
                 'marketname':140,
-                'marketnamezh':180,
+                'marketnamezh':200,
                 'includesoutcomestype':150,
                 'outcometype':130,
             }
@@ -25,12 +25,20 @@ class MarketPage(TablePage):
             return head
         
         def get_operation(self):
-            return []        
+            return []
+        
+        class search(RowSearch):
+            names=['marketname','marketnamezh']
+        
+        class filters(RowFilter):
+            names=['includesoutcomestype','outcometype','enabled']
+        
 
 class MarketForm(ModelFields):
     class Meta:
         model = TbMarkets
         exclude = []
+        
         
     def dict_head(self, head):
         if head['name']=='marketid':
