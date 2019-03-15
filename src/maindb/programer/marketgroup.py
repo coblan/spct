@@ -3,7 +3,7 @@ from ..models import TbMarketgroup,TbMarketgroupwithmarket
 
 class MarketGroupPage(TablePage):
     def get_label(self):
-        return '市场组管理'
+        return '玩法组管理'
     
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
@@ -29,7 +29,7 @@ class MarketGroupPage(TablePage):
                 },
                 {
                     'name':'Marketgroupwithmarket',
-                    'label':'市场分组市场',
+                    'label':'玩法组关联',
                     'com':'com-tab-table',
                     'pre_get':'rt={marketgroup:scope.par_row.groupid}',
                     'table_ctx': marketwithmarket.get_head_context(),
@@ -61,6 +61,11 @@ class MarketGroupForm(ModelFields):
     class Meta:
         model = TbMarketgroup
         exclude = []
+    
+    def dict_head(self, head):
+        if head['name']=='groupid':
+            head['readonly']='Boolean(scope.row.pk)'
+        return head
 
 
 class MarketgroupwithmarketTable(ModelTable):
