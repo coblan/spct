@@ -1101,7 +1101,7 @@ class TbMarkets(models.Model):
     marketid = models.IntegerField(db_column='MarketID', primary_key=True,verbose_name='玩法ID')  # Field name made lowercase.
     marketname = models.CharField(db_column='MarketName', max_length=200, blank=True, null=True,verbose_name='玩法名称')  # Field name made lowercase.
     marketnamezh = models.CharField(db_column='MarketNameZH', max_length=200, blank=True, null=True,verbose_name='玩法中文名')  # Field name made lowercase.
-    includesoutcomestype = models.CharField(db_column='IncludesOutcomesType', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    includesoutcomestype = models.CharField(db_column='IncludesOutcomesType', max_length=200, blank=True, null=True,)  # Field name made lowercase.
     outcometype = models.CharField(db_column='OutcomeType', max_length=200, blank=True, null=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
     enabled = models.BooleanField(db_column='Enabled',verbose_name='启用')  # Field name made lowercase.

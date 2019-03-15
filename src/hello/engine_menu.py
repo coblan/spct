@@ -187,8 +187,8 @@ class ProgramerAdmin(BaseEngine):
     @property
     def menu(self):
         menu = [
-            {'label': '比赛组', 'url': page('marketgroup'), 'icon': fa('fa-home')},
-    
+            {'label': '玩法组', 'url': page('marketgroup'), 'icon': fa('fa-superpowers')},
+            {'label': '玩法', 'url': page('marketpage'), 'icon': fa('fa-superpowers')},
         ]
         return menu
 
