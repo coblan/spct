@@ -255,8 +255,9 @@ class TicketTabBase(ModelTable):
 
     def inn_filter(self, query):
         if self.ticketid:
-            return query.filter(ticket_master_id=self.ticketid).extra(select={'oddsid__outcomedesc':
-                'SELECT TB_OddsTypes.OutcomeDesc'
+            return query.filter(ticket_master_id=self.ticketid).extra(select={
+                'oddsid__outcomedesc':'SELECT TB_OddsTypes.OutcomeDesc',
+                'oddsid':'SELECT TB_OddsTypes.oddstypenamezh',
             },where=['TB_OddsTypes.OddsID=TB_TicketStake.OddsID AND TB_OddsTypes.SportID=TB_TicketStake.SportID'],
                                                                       tables=['TB_OddsTypes'])
         else:
@@ -303,6 +304,7 @@ class TicketstakeTable(TicketTabBase):
             'match': 250,
             'specialbetvalue': 80,
             'odds': 80,
+            'oddsid':130,
             'confirmodds': 80,
             'realodds': 80,
             'confirmoddsid_ori': 80,

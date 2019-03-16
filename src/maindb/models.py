@@ -1672,7 +1672,7 @@ class TbTicketstake(models.Model):
     #match = models.ForeignKey(TbMatches, db_constraint=False, db_column='MatchID', to_field='matchid')
     matchid = models.IntegerField(db_column='MatchID',verbose_name='比赛ID')  # Field name made lowercase.
     dangeroustid = models.BigIntegerField(db_column='DangerousTid')  # Field name made lowercase.
-    oddsid = models.BigIntegerField(db_column='OddsID')  # Field name made lowercase.
+    oddsid = models.BigIntegerField(db_column='OddsID',verbose_name='玩法')  # Field name made lowercase.
     #oddsid = models.ForeignKey(verbose_name = '玩法', db_column='OddsID', to= TbOddstypes, to_field = 'oddsid', db_constraint= False)  # Field name made lowercase.
     specialbetvalue = models.CharField(db_column='SpecialBetValue', verbose_name='盘口值',
                                        max_length=12)  # Field name made lowercase.
