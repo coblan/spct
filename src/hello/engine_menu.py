@@ -30,13 +30,15 @@ class PcMenu(BaseEngine):
             {'label': _('DashBoard'), 'url': page('home'), 'icon': fa('fa-home'), 'visible': True},
             {'label': _('Member'), 'icon': fa('fa-users'), 'visible': True,
              'submenu': [
-                 {'label': _('Tb Account'), 'url': page('account'), 'visible': can_touch(TbAccount, crt_user), },
-                 {'label': _('Tb Balance Log'), 'url': page('balancelog'),
-                  'visible': can_touch(TbBalancelog, crt_user), },
-                 {'label': _('Tb Login Log'), 'url': page('loginlog'),
-                  'visible': can_touch(TbLoginlog, crt_user), },
-                 {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbBankcard, crt_user), },
+                {'label': _('Tb Account'), 'url': page('account'), 'visible': can_touch(TbAccount, crt_user), },
+                {'label': _('Tb Balance Log'), 'url': page('balancelog'),
+                 'visible': can_touch(TbBalancelog, crt_user), },
+                {'label': _('Tb Login Log'), 'url': page('loginlog'),
+                 'visible': can_touch(TbLoginlog, crt_user), },
+                {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbBankcard, crt_user), },
                 {'label': '相关用户', 'url': page('ReleventUser'), 'visible': can_touch(TbBankcard, crt_user), },
+                {'label': '流失用户', 'url': page('chum_user'), 'visible': has_permit( crt_user,'member.chum_user'), },
+                
                  
              ]},
             {'label': '市场活动', 'icon': fa('fa-image'), 'visible': True,

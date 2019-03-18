@@ -107,6 +107,8 @@ def get_permit():
                 {'label': '查看', 'value': 'TbBankcard',}, 
                 {'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
                 ],}, 
+             {'label': '流失用户', 'value': 'member.chum_user', }, 
+             
              ],
          }, 
         {'label': _('MoneyFlow'),
