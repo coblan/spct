@@ -1259,6 +1259,10 @@ var _month = __webpack_require__(86);
 
 var month = _interopRequireWildcard(_month);
 
+var _radio = __webpack_require__(154);
+
+var radio = _interopRequireWildcard(_radio);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
@@ -1654,7 +1658,13 @@ var _suit_fields_local = __webpack_require__(89);
 
 var suit_fields_local = _interopRequireWildcard(_suit_fields_local);
 
+var _table_block = __webpack_require__(155);
+
+var blocks_table_block = _interopRequireWildcard(_table_block);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+__webpack_require__(159);
 
 /***/ }),
 /* 24 */
@@ -3267,6 +3277,10 @@ var _switch = __webpack_require__(93);
 
 var switch_btn = _interopRequireWildcard(_switch);
 
+var _plain_btn = __webpack_require__(156);
+
+var plain_btn = _interopRequireWildcard(_plain_btn);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
@@ -3997,6 +4011,10 @@ var _style_block = __webpack_require__(102);
 
 var style_block = _interopRequireWildcard(_style_block);
 
+var _ops_cell = __webpack_require__(157);
+
+var ops_cell = _interopRequireWildcard(_ops_cell);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
@@ -4048,50 +4066,7 @@ var mapper = {
 Vue.component('com-table-mapper', mapper);
 
 /***/ }),
-/* 64 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/*
- 额外的点击列，例如“详情”
- * */
-
-/*
-* head={
-*
-* }
-* */
-var operations = {
-    props: ['rowData', 'field', 'index'],
-    template: '<div>\n        <span style="margin-right: 1em" v-for="op in head.operations" v-show="! rowData[\'_op_\'+op.name+\'_hide\']" class="clickable" v-text="op.label" @click="on_click()"></span>\n    </div>',
-    created: function created() {
-        // find head from parent table
-        var table_par = this.$parent;
-        while (true) {
-            if (table_par.heads) {
-                break;
-            }
-            table_par = table_par.$parent;
-            if (!table_par) {
-                break;
-            }
-        }
-        this.table_par = table_par;
-        this.head = ex.findone(this.table_par.heads, { name: this.field });
-    },
-    methods: {
-        on_click: function on_click() {
-            this.$emit('on-custom-comp', { name: this.head.extra_fun, row: this.rowData });
-        }
-
-    }
-};
-
-Vue.component('com-table-operations', operations);
-
-/***/ }),
+/* 64 */,
 /* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6832,7 +6807,7 @@ var tab_fields = {
         };
     },
     mixins: [mix_fields_data, mix_nice_validator],
-    template: '<div class="com-tab-fields flex-v"  style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;">\n\n   <div class="oprations" >\n        <component v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </div>\n    <div style="overflow: auto;" class="flex-grow">\n        <div class=\'field-panel suit\' id="form" >\n            <field  v-for=\'head in normed_heads\' :key="head.name" :head="head" :row=\'row\'></field>\n        </div>\n    </div>\n    </div>',
+    template: '<div class="com-tab-fields flex-v"  style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;">\n\n   <div class="oprations" >\n        <component v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </div>\n    <div style="overflow: auto;" class="flex-grow fields-area">\n        <div v-if="heads[0].name !=\'_meta_head\'" class=\'field-panel suit\' id="form" >\n            <field  v-for=\'head in normed_heads\' :key="head.name" :head="head" :row=\'row\'></field>\n        </div>\n        <template v-else>\n               <div v-if="heads[0].fields_group" :class="heads[0].class">\n                    <div v-for="group in heads[0].fields_group" :class="\'group_\'+group.name">\n                        <div class="fields-group-title" v-html="group.label"></div>\n                        <com-fields-table-block v-if="heads[0].table_grid"\n                            :heads="group_filter_heads(group)" :meta-head="heads[0]" :row="row">\n                            </com-fields-table-block>\n                         <div v-else class=\'field-panel suit\' id="form" >\n                            <field  v-for=\'head in group_filter_heads(group)\' :key="head.name" :head="head" :row=\'row\'></field>\n                       </div>\n                    </div>\n                </div>\n                <div v-else :class="heads[0].class">\n                    <com-fields-table-block v-if="heads[0].table_grid"\n                        :heads="normed_heads.slice(1)" :row="row" :metaHead="heads[0]"></com-fields-table-block>\n                </div>\n        </template>\n\n\n    </div>\n    </div>',
 
     //created:function(){
     //    // find head from parent table
@@ -6850,19 +6825,27 @@ var tab_fields = {
     //},
 
     mounted: function mounted() {
+        if (this.heads[0] && this.heads[0].name == '_meta_head' && this.heads[0].style) {
+            ex.append_css(this.heads[0].style);
+        }
         if (!this.tab_head.row) {
             this.get_data();
         }
     },
-    methods: {
 
+    methods: {
+        group_filter_heads: function group_filter_heads(group) {
+            return ex.filter(this.normed_heads, function (head) {
+                return ex.isin(head.name, group.head_names);
+            });
+        },
         data_getter: function data_getter() {
             var self = this;
             if (self.tab_head.get_data) {
                 var fun = get_data[self.tab_head.get_data.fun];
                 var kws = self.tab_head.get_data.kws;
                 fun(self, function (row) {
-                    self.row = row;
+                    self.row = ex.copy(row);
                     self.childStore.$emit('row.update_or_insert', row);
                 }, kws);
             }
@@ -6973,8 +6956,8 @@ var tab_table = {
                     this.parStore.switch_to_tab(kws);
                 },
                 getRows: function getRows() {
-                    if (vc.tab_head.pre_get) {
-                        var pre_set = ex.eval(vc.tab_head.pre_get, { par_row: vc.par_row });
+                    if (vc.tab_head.pre_set) {
+                        var pre_set = ex.eval(vc.tab_head.pre_set, { par_row: vc.par_row });
                         ex.assign(this.search_args, pre_set);
                     } else if (vc.tab_head.tab_field) {
                         // 下面是老的调用，
@@ -7371,7 +7354,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-tab-fields .oprations {\n  background: #fbfbf8;\n  padding: 0.2rem 1rem;\n  margin: 0.2rem 0; }\n", ""]);
+exports.push([module.i, ".com-tab-fields .oprations {\n  background: #fbfbf8;\n  padding: 0.2rem 1rem;\n  margin: 0.2rem 0; }\n\n.fields-group-title {\n  padding: 1.5rem 1rem .5rem 1rem;\n  font-weight: 500; }\n", ""]);
 
 // exports
 
@@ -7913,10 +7896,6 @@ var _array_mapper = __webpack_require__(46);
 
 var array_mapper = _interopRequireWildcard(_array_mapper);
 
-var _operations = __webpack_require__(64);
-
-var operations = _interopRequireWildcard(_operations);
-
 var _bool_shower = __webpack_require__(50);
 
 var bool_shower = _interopRequireWildcard(_bool_shower);
@@ -8148,6 +8127,196 @@ __webpack_require__(78);
 
 
 // store
+
+/***/ }),
+/* 154 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var field_bool = {
+    props: ['row', 'head'],
+    template: '<div class="com-field-radio">\n            <input type="text" v-model=\'row[head.name]\' style="display: none" :name="head.name">\n\t        <span v-if="head.readonly" v-text="mylabel"></span>\n\t        <template v-else>\n                <div v-for="op in head.options" style="display: inline-block;margin: 0 3px">\n                      <input type="radio" :id="\'_radio\'+head.name+op.value"\n                        :value="op.value" v-model=\'row[head.name]\'>\n                     <label :for="\'_radio\'+head.name+op.value" v-text="op.label" style="font-weight: 400;"></label>\n                </div>\n\t        </template>\n\t\t</div>',
+    computed: {
+        mylabel: function mylabel() {
+            var one = ex.findone(this.head.options, { value: this.row[this.head.name] });
+            if (one) {
+                return one.label;
+            } else {
+                return '';
+            }
+        }
+    }
+
+};
+Vue.component('com-field-radio', field_bool);
+
+/***/ }),
+/* 155 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Vue.component('com-fields-table-block', {
+    props: ['heads', 'row', 'metaHead'],
+    template: '<div class="table-fields field-panel msg-bottom">\n           <table >\n            <tr v-for="heads_row in table_grid_heads">\n                <template v-for="head in heads_row">\n                    <td class="field-label-td"  >\n                        <div class="field-label">\n                            <span class="label-content">\n                                 <span v-text="head.label"></span>\n                                 <span class="req_star" v-if=\'head.required\'>*</span>\n                            </span>\n                        </div>\n                    </td>\n                    <td class="field-input-td" :colspan="head.colspan" :rowspan="head.rowspan">\n                        <div class="field-input">\n                            <component v-if="head.editor" :is="head.editor"\n                                 @field-event="$emit(\'field-event\',$event)"\n                                 :head="head" :row="row"></component>\n                            <span v-if="head.help_text" class="help-text clickable">\n                                 <i style="color: #3780af;position: relative;top:10px;"   @click="show_msg(head.help_text,$event)" class="fa fa-question-circle" ></i>\n                            </span>\n                        </div>\n                    </td>\n                </template>\n            </tr>\n        </table>\n       </div>',
+    computed: {
+        table_grid_heads: function table_grid_heads() {
+            var self = this;
+            var table_grid = this.metaHead.table_grid;
+            var heads_bucket = [];
+            ex.each(table_grid, function (name_row) {
+                var heads_row = [];
+                ex.each(self.heads, function (head) {
+                    if (ex.isin(head.name, name_row)) {
+                        heads_row.push(head);
+                    }
+                });
+                if (heads_row) {
+                    heads_bucket.push(heads_row);
+                }
+            });
+            return heads_bucket;
+        }
+    }
+});
+
+/***/ }),
+/* 156 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var op_a = {
+    props: ['head', 'disabled'],
+    template: '<button :class="norm_class"  :style="head.style" :disabled="disabled" @click="operation_call">\n        <i v-if="head.icon" :class=\'["fa",head.icon]\'></i>\n        <span  v-text="head.label"></span>\n    </button>',
+    data: function data() {
+        return {
+            enable: true
+        };
+    },
+    computed: {
+        norm_class: function norm_class() {
+            if (this.head.class) {
+                return 'btn btn-sm ' + this.head.class;
+            } else {
+                return 'btn btn-sm btn-default';
+            }
+        }
+    },
+    methods: {
+        operation_call: function operation_call() {
+            this.$emit('operation', this.head);
+        },
+        set_enable: function set_enable(yes) {
+            this.enable = yes;
+        }
+    }
+};
+Vue.component('com-op-plain-btn', op_a);
+
+/***/ }),
+/* 157 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*
+ 额外的点击列，例如“详情”
+ * */
+
+/*
+* head={
+*
+* }
+* */
+var operations = {
+    props: ['rowData', 'field', 'index'],
+    template: '<div class="com-table-ops-cell">\n        <!--<span style="margin-right: 1em" v-for="op in head.operations" v-show="! rowData[\'_op_\'+op.name+\'_hide\']" class="clickable" v-text="op.label" @click="on_click()"></span>-->\n        <component v-for="op in head.ops" :is="op.editor" :head="op" @operation="on_operation($event)"></component>\n    </div>',
+    created: function created() {
+        // find head from parent table
+        var table_par = this.$parent;
+        while (true) {
+            if (table_par.heads) {
+                break;
+            }
+            table_par = table_par.$parent;
+            if (!table_par) {
+                break;
+            }
+        }
+        this.table_par = table_par;
+        this.head = ex.findone(this.table_par.heads, { name: this.field });
+    },
+    //data:function(){
+    //var self=this
+    //return {
+    //    parStore:ex.vueParStore(self)
+    //}
+    //},
+    mounted: function mounted() {
+        this.parStore = ex.vueParStore(this);
+    },
+    methods: {
+        on_operation: function on_operation(op) {
+            if (op.action) {
+                ex.eval(op.action, { ps: this.parStore, head: this.head, row: this.rowData });
+            }
+        }
+        //on_click:function(op){
+        //    if(op.action){
+        //        ex.eval(op.action,{ps:this.parStore,head:this.head,row:this.rowData})
+        //    }
+        //}
+
+    }
+};
+
+Vue.component('com-table-ops-cell', operations);
+
+/***/ }),
+/* 158 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".table-fields.field-panel {\n  background-color: #F5F5F5;\n  padding: 20px 30px;\n  position: relative;\n  border: 1px solid #f6f6f6; }\n  .table-fields.field-panel td {\n    padding: 8px 5px;\n    position: relative; }\n    .table-fields.field-panel td .field-label {\n      text-align: right; }\n  .table-fields.field-panel .msg-box.n-right {\n    bottom: 7px; }\n  .table-fields.field-panel .req_star {\n    top: 6px;\n    right: 0;\n    color: red; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 159 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(158);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./table_fields.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

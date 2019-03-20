@@ -436,17 +436,21 @@ class TbBlackuserlistLog(models.Model):
         managed = False
         db_table = 'TB_BlackUserList_Log'
         
-        
+RFTYPE=((1,'充值'),(2,'后台调整'),(3,'活动赠送'))
+CONSUMSTATUS=((1,'已消耗完毕'),(2,'等待消耗'))
 class TbBetfullrecord(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     rfid = models.BigIntegerField(db_column='RfID', blank=True, null=True)  # Field name made lowercase.
-    rftype = models.IntegerField(db_column='RfType')  # Field name made lowercase.
-    consumeamount = models.DecimalField(db_column='ConsumeAmount', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    consumestatus = models.IntegerField(db_column='ConsumeStatus')  # Field name made lowercase.
+    rftype = models.IntegerField(db_column='RfType',verbose_name='类型',choices=RFTYPE)  # Field name made lowercase.
+    consumeamount = models.DecimalField(db_column='ConsumeAmount',verbose_name='剩余限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    consumestatus = models.IntegerField(db_column='ConsumeStatus',verbose_name='消费状态',choices=CONSUMSTATUS)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount,db_constraint=False, db_column='AccountID')  # Field name made lowercase.
     #accountid = models.BigIntegerField(db_column='AccountID')  # Field name made lowercase.
-    content = models.CharField(db_column='Content', max_length=150, blank=True, null=True)  # Field name made lowercase.
-
+    content = models.CharField(db_column='Content',verbose_name='详细说明', max_length=150, blank=True, null=True)  # Field name made lowercase.
+    
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间', blank=True, null=True)  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount',verbose_name='原始限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_BetFullRecord'
