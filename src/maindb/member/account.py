@@ -603,6 +603,10 @@ class BetFullRecordTab(WithAccoutInnFilter):
     model = TbBetfullrecord
     exclude = []
     fields_sort=['consumeamount','amount','rftype','consumestatus','content','createtime',]
+    
+    class filters(RowFilter):
+        range_fields=['createtime']
+    
     def dict_head(self, head):
         width_dc = {
             'createtime':150,
