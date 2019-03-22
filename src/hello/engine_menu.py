@@ -36,7 +36,7 @@ class PcMenu(BaseEngine):
                 {'label': _('Tb Login Log'), 'url': page('loginlog'),
                  'visible': can_touch(TbLoginlog, crt_user), },
                 {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbBankcard, crt_user), },
-                {'label': '相关用户', 'url': page('ReleventUser'), 'visible': can_touch(TbBankcard, crt_user), },
+                {'label': '关联用户', 'url': page('ReleventUser'), 'visible': can_touch(TbBankcard, crt_user), },
                 {'label': '流失用户', 'url': page('chum_user'), 'visible': has_permit( crt_user,'member.chum_user'), },
                 
                  

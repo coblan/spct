@@ -4,7 +4,7 @@ from .account import account_tab
 
 class ReleventUserPage(TablePage):
     def get_label(self):
-        return '相关用户'
+        return '关联用户'
     
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
@@ -25,8 +25,8 @@ class ReleventUserPage(TablePage):
                  'ctx_name':'account_tabs',
                  'tab_name':'baseinfo'},              
                 {'name':'NickName','label':'昵称','width':140},
-                {'name':'Relevant','label':'关联条件','width':150},
-                {'name':'Reason','label':'原因',},
+                {'name':'Relevant','label':'关联条件','width':280},
+                {'name':'Reason','label':'原因','width':220},
                 
             ]
         
