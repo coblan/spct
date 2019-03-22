@@ -437,7 +437,7 @@ class TbBlackuserlistLog(models.Model):
         db_table = 'TB_BlackUserList_Log'
         
 RFTYPE=((1,'充值'),(2,'后台调整'),(3,'活动赠送'))
-CONSUMSTATUS=((1,'已消耗完毕'),(2,'等待消耗'))
+CONSUMSTATUS=((1,'等待消耗'),(2,'消耗完毕'))
 class TbBetfullrecord(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     rfid = models.BigIntegerField(db_column='RfID', blank=True, null=True)  # Field name made lowercase.
