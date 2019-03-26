@@ -1,5 +1,6 @@
 from helpers.director.shortcut import page_dc,ModelTable,ModelFields,TablePage,director,RowSearch
 from ..models import TbMarketgroup,TbMarketgroupwithmarket,TbMarkets
+from django.db.models import Q
 
 class MarketGroupPage(TablePage):
     def get_label(self):
@@ -99,7 +100,11 @@ class MarketgroupwithmarketForm(ModelFields):
         if head['name']=='marketid':
             #head['editor']='com-field-search-select'
             head['editor']='com-field-single-select2'
-            head['options']=[{'value':x.pk,'label':str(x) } for x in TbMarkets.objects.filter(enabled=True)]
+            head['options']=[]
+            head['dyn_options']='rt=scope.vc.update_options("get_market_options",scope.row)'
+            head['style']=".jjyy .select2-container{width:300px}"
+            head['class']='jjyy'
+            #head['options']=[{'value':x.pk,'label':str(x) } for x in TbMarkets.objects.filter(enabled=True)]
 
         return head
     
@@ -110,13 +115,21 @@ class MarketgroupwithmarketForm(ModelFields):
         return dc
     
 
-    
-
+def get_market_options(**kws): 
+    groupid= kws.get('groupid')
+    exclude_ls = [x.marketid.marketid for x in TbMarketgroupwithmarket.objects.filter(groupid=groupid)]
+    marketid = kws.get('marketid')
+    if marketid:
+        exclude_ls=list(filter(lambda x:x!=marketid,exclude_ls))
+    return [{'value':x.pk,'label':str(x) } for x in TbMarkets.objects.filter(enabled=True).exclude(marketid__in=exclude_ls)]
+ 
 director.update({
     'marketgroup':MarketGroupPage.tableCls,
     'marketgroup.edit':MarketGroupForm,
     'Marketgroupwithmarket':MarketgroupwithmarketTable,
-    'Marketgroupwithmarket.edit':MarketgroupwithmarketForm
+    'Marketgroupwithmarket.edit':MarketgroupwithmarketForm,
+    
+    'get_market_options':get_market_options,
 })
 
 page_dc.update({
