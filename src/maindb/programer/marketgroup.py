@@ -81,6 +81,14 @@ class MarketgroupwithmarketTable(ModelTable):
         if self.kw.get('marketgroup'):
             return query.filter(groupid=self.kw.get('marketgroup')) 
     
+    def dict_head(self, head):
+        width_dc ={
+            'marketid':250
+        }
+        if head['name'] in width_dc:
+            head['width'] = width_dc.get(head['name'])
+        return head
+    
     def get_operation(self):
         ops = super().get_operation()
         for op in ops:
@@ -102,7 +110,7 @@ class MarketgroupwithmarketForm(ModelFields):
             head['editor']='com-field-single-select2'
             head['options']=[]
             head['dyn_options']='rt=scope.vc.update_options("get_market_options",scope.row)'
-            head['style']=".jjyy .select2-container{width:300px}"
+            head['style']=".jjyy select{width:300px}"
             head['class']='jjyy'
             #head['options']=[{'value':x.pk,'label':str(x) } for x in TbMarkets.objects.filter(enabled=True)]
 
