@@ -64,8 +64,8 @@ class PcMenu(BaseEngine):
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,
              'submenu': [
                  {'label': '运动类型', 'url': page('sportstype'), 'visible': can_touch(TbSporttypes, crt_user), },
-                 {'label': '足球联赛资料', 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},
-                 {'label': '篮球联赛资料', 'url': page('basketball_league'), 'visible': can_touch(TbTournament, crt_user)},
+                 {'label': '联赛资料', 'url': page('league'), 'visible': can_touch(TbTournament, crt_user)},
+                 #{'label': '篮球联赛资料', 'url': page('basketball_league'), 'visible': can_touch(TbTournament, crt_user)},
                  #{'label': '足球队资料', 'url': page('teams'), 'visible': can_touch(TbTeams, crt_user), },
                   #{'label': '篮球队资料', 'url': page('teams_basketball'), 'visible': can_touch(TbTeamsBasketball, crt_user), },
                  

@@ -31,7 +31,7 @@ class MarketGroupPage(TablePage):
                     'name':'Marketgroupwithmarket',
                     'label':'玩法组关联',
                     'com':'com-tab-table',
-                    'pre_get':'rt={marketgroup:scope.par_row.groupid}',
+                    'pre_set':'rt={marketgroup:scope.par_row.groupid}',
                     'table_ctx': marketwithmarket.get_head_context(),
                     
                 }

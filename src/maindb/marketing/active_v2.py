@@ -35,7 +35,7 @@ class ActiviyV2Page(TablePage):
                  'label':'设置',
                  'com':'com-tab-table',
                  #'par_field': 'pk',
-                 'pre_get':'rt={meta_par_pk:scope.par_row.pk}',
+                 'pre_set':'rt={meta_par_pk:scope.par_row.pk}',
                  'table_ctx': act_setting.get_head_context(),
                  'visible': True,                 
                  }

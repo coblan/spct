@@ -67,9 +67,10 @@ class MatchesStatisticsPage(TablePage):
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
                     head['options']=[
-                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.extra(
-                            where=["TB_SportTypes.source= TB_Tournament.source","TB_SportTypes.SportID=0"],
-                            tables=['TB_SportTypes'])
+                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(sportid=1)
+                        #{'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.extra(
+                            #where=["TB_SportTypes.source= TB_Tournament.source","TB_SportTypes.SportID=0"],
+                            #tables=['TB_SportTypes'])
                     ]                    
                     #head['order'] = True
                     

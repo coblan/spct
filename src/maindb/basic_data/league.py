@@ -12,24 +12,19 @@ class League(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return '足球联赛资料'
+        return '联赛资料'
 
     class tableCls(ModelTable):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
-        fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet', 'weight','sort', 'typegroupswitch']
+        fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet', 'weight','sportid','sort', 'typegroupswitch',]
 
         # hide_fields = ['tournamentid']
 
         def getExtraHead(self):
             return [{'name': 'openlivebet', 'label': '走地', 'editor': 'com-table-bool-shower'}]
 
-        def inn_filter(self, query):
-            return query.extra(
-                where=["TB_SportTypes.source= TB_Tournament.source","TB_SportTypes.SportID=0"],
-                tables=['TB_SportTypes']                
-            )
 
         def dict_head(self, head):
             dc = {
@@ -75,7 +70,7 @@ class League(TablePage):
             names = ['tournamentname', 'tournamentid']
 
         class filters(RowFilter):
-            names = ['issubscribe',]
+            names = ['issubscribe','sportid']
             def getExtraHead(self): 
                 return [
                     {'name': 'openlivebet','label': '走地',
@@ -121,7 +116,7 @@ class LeagueForm(ModelFields):
 
     class Meta:
         model = TbTournament
-        exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid','source']
+        exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid']
 
 
 field_map.update({

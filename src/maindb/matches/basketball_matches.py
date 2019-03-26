@@ -1,13 +1,13 @@
 from helpers.director.shortcut import page_dc, director, director_view
-from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, quit_ticket
-from ..models import TbMatchesBasketball, TbOddsBasketball,TbTournamentBasketball
+from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, \
+     save_special_bet_value_proc, quit_ticket,PeriodScoreTab
+from ..models import TbMatchesBasketball, TbOddsBasketball,TbTournamentBasketball,TbMatch,TbTournament
 from maindb.mongoInstance import updateMatchBasketMongo
 from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points,BasketTwosection
 from ..redisInstance import redisInst
 #from datetime import timezone as org_timezone
 #from django.utils.timezone import datetime
 import datetime
-
 
 class BasketMatchsPage(MatchsPage):
     
@@ -24,7 +24,7 @@ class BasketMatchsPage(MatchsPage):
         match_form = BasketMatchForm(crt_user=self.crt_user)
         match_tabs=[
             {'name':'match_base_info',
-             'label':'比赛基本信息',
+             'label':'基本信息',
              'com':'com-tab-fields',
              'get_data': {
                  'fun': 'get_row',
@@ -39,6 +39,14 @@ class BasketMatchsPage(MatchsPage):
              'heads': match_form.get_heads(),
              'ops': match_form.get_operations()             
             },
+            {
+                'name':'peroidscore',
+                'label':'比分',
+                'com':'com-tab-table',
+                'pre_set':'rt={matchid:scope.par_row.matchid}',
+                'table_ctx': PeriodScoreTab(crt_user=self.crt_user).get_head_context(),
+                #'visible': can_touch(TbLivescout, self.crt_user), 
+             },
             {'name': 'special_bet_value',
              'label': '封盘',
              'com': 'com-tab-special-bet-value',
@@ -59,14 +67,9 @@ class BasketMatchsPage(MatchsPage):
         return ctx
     
     class tableCls(MatchsPage.tableCls):
-        model = TbMatchesBasketball
-        
-        #def inn_filter(self, query):
-            #return query.extra(
-                #where=["TB_SportTypes.source= TB_Matches_Basketball.source","TB_SportTypes.SportID=1"],
-                #tables=['TB_SportTypes'],
-            #)        
-        
+        sportid = 2
+        model = TbMatch
+         
         def get_operation(self):
             PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
             
@@ -172,16 +175,16 @@ class BasketMatchsPage(MatchsPage):
         
         class filters(MatchsPage.tableCls.filters):
             def dict_head(self, head):
-                head = super().dict_head(head)
+                #head = super().dict_head(head)
+                
+                if head['name']=='statuscode':
+                    head['options']=list( filter(lambda x:x['value'] in [0,13,14,15,16,31,40,100,110],head['options']) )
                 if head['name'] == 'tournamentid':
-                    #head['director_name']='get_basketball_league_options'
                     head['options']=[
-                        {'label':str(x) ,'value':x.tournamentid} for x in TbTournamentBasketball.objects.extra(
-                            where=["TB_SportTypes.source= TB_Tournament_Basketball.source","TB_SportTypes.SportID=1"],
-                            tables=['TB_SportTypes'])                        
+                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(sportid=2)                    
                     ]
                 return head
-    
+            
 
 class BasketMatchForm(MatchForm):
     proc_map = {
@@ -198,7 +201,7 @@ class BasketMatchForm(MatchForm):
     #tournamentid=698
     
     class Meta(MatchForm.Meta):
-        model = TbMatchesBasketball
+        model = TbMatch
         #exclude = ['marketstatus', 'maineventid']
     field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','q1score','q2score','q3score','q4score','overtimescore']
     readonly=['q1score','q2score','q3score','q4score','overtimescore']
@@ -254,7 +257,7 @@ class BasketMatchForm(MatchForm):
 
 @director_view('basketball_quit_ticket')
 def basketball_quit_ticket(rows, new_row): 
-    return quit_ticket(rows, new_row, sportid = 1)
+    return quit_ticket(rows, new_row, sportid = 2)
 
 @director_view('basketball_get_special_bet_value')
 def basketball_get_special_bet_value(matchid): 
