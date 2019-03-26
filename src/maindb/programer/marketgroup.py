@@ -1,5 +1,5 @@
 from helpers.director.shortcut import page_dc,ModelTable,ModelFields,TablePage,director,RowSearch
-from ..models import TbMarketgroup,TbMarketgroupwithmarket
+from ..models import TbMarketgroup,TbMarketgroupwithmarket,TbMarkets
 
 class MarketGroupPage(TablePage):
     def get_label(self):
@@ -94,10 +94,13 @@ class MarketgroupwithmarketForm(ModelFields):
         model = TbMarketgroupwithmarket
         exclude = []
     
+    
     def dict_head(self, head):
         if head['name']=='marketid':
             #head['editor']='com-field-search-select'
             head['editor']='com-field-single-select2'
+            head['options']=[{'value':x.pk,'label':str(x) } for x in TbMarkets.objects.filter(enabled=True)]
+
         return head
     
     def dict_row(self, inst):
