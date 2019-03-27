@@ -248,39 +248,52 @@ class TicketMasterForm(ModelFields):
             super().save_form()
 
 
-class TicketTabBase(ModelTable):
-    def __init__(self, *args, **kws):
-        ModelTable.__init__(self, *args, **kws)
-        self.ticketid = self.kw.get('ticketid')
+#class TicketTabBase(ModelTable):
+    #def __init__(self, *args, **kws):
+        #ModelTable.__init__(self, *args, **kws)
+        #self.ticketid = self.kw.get('ticketid')
 
-    def inn_filter(self, query):
-        if self.ticketid:
-            return query.filter(ticket_master_id=self.ticketid).extra(select={'oddsid__outcomedesc':
-                'SELECT TB_OddsTypes.OutcomeDesc'
-            },where=['TB_OddsTypes.OddsID=TB_TicketStake.OddsID AND TB_OddsTypes.SportID=TB_TicketStake.SportID'],
-                                                                      tables=['TB_OddsTypes'])
-        else:
-            return query
+    #def inn_filter(self, query):
+        #if self.ticketid:
+            #return query.filter(ticket_master_id=self.ticketid).extra(select={'oddsid__outcomedesc':
+                #'SELECT TB_OddsTypes.OutcomeDesc'
+            #},where=['TB_OddsTypes.OddsID=TB_TicketStake.OddsID AND TB_OddsTypes.SportID=TB_TicketStake.SportID'],
+                                                                      #tables=['TB_OddsTypes'])
+        #else:
+            #return query
 
 
-class TicketstakeTable(TicketTabBase):
+class TicketstakeTable(ModelTable):
     """ 子注单 """
     model = TbTicketstake
     exclude = []
-    fields_sort = ['tournament', 'matchid', 'matchname', 'whole_score','oddskind','oddsid','oddsid__outcomedesc','specialbetname', 'odds', 'confirmodds', 'realodds', 
+    fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketid','specialbetname', 'odds', 'confirmodds', 'realodds', 
                    'status', 'createtime', 'updatetime']
+
+    def inn_filter(self, query):
+        ticketid = self.kw.get('ticketid')
+        query = query.extra(select={
+            'tournament':'select TB_Tournament.tournamentnamezh'},
+                            tables=['TB_Tournament','TB_Match'],
+                            where=['TB_Tournament.tournamentid=TB_Match.tournamentid and TB_Match.sportid=TB_Tournament.sportid',
+                                   'TB_Match.matchid=TB_TicketStake.matchid']
+                            )
+        if ticketid:
+            return query.filter(ticket_master_id = ticketid)
+        else:
+            return query
 
     def getExtraHead(self):
         return [
             #{'name': 'matchid', 'label': 'matchid', },
             {'name': 'matchname', 'label': '比赛', 'width': 200, },
             {'name': 'tournament', 'label': '联赛', 'width': 120, },
-            {'name':'whole_score','label':'当时比分','width':100},
-            {'name': 'oddsid__outcomedesc', 'label': '盘口类型', 'width': 90, },
+            #{'name':'whole_score','label':'当时比分','width':100},
+            #{'name': 'oddsid__outcomedesc', 'label': '盘口类型', 'width': 90, },
         ]
 
     def dict_row(self, inst):
-        match = inst.match  # TbMatches.objects.get(matchid =  inst.matchid)
+        #match = inst.match  # TbMatches.objects.get(matchid =  inst.matchid)
         if inst.sportid == 0:
             matchid_form = 'match_form_ctx'
         elif inst.sportid == 1:
@@ -288,13 +301,13 @@ class TicketstakeTable(TicketTabBase):
         else:
             raise UserWarning('子注单%s无法匹配比赛' % inst.tid)
         return {
-            'whole_score':'%s:%s'%(inst.homescore,inst.awayscore),
+            #'whole_score':'%s:%s'%(inst.homescore,inst.awayscore),
             '_matchid_form': matchid_form,
-            'matchid': match.matchid,
-            'tournament': match.tournamentzh,
+            'matchid': inst.matchid.matchid,
+            'tournament': inst.tournament,
             #'oddsid__outcomedesc':inst.oddsid.outcomedesc,
-            'oddsid__outcomedesc':inst.oddsid__outcomedesc,
-            'matchname': '{team1zh} VS {team2zh}'.format(team1zh=match.team1zh, team2zh=match.team2zh)
+            #'oddsid__outcomedesc':inst.oddsid__outcomedesc,
+            'matchname': '{team1zh} VS {team2zh}'.format(team1zh=inst.matchid.team1zh, team2zh=inst.matchid.team2zh)
         }
 
     def dict_head(self, head):
@@ -356,8 +369,8 @@ class TicketparlayTable(ModelTable):
         dc = {}
         for i in range(1, 7):
             field_name = 'parlay%stid' % i
-            if getattr(inst, field_name + '_id', 0) != 0:
-                parlay = getattr(inst, field_name)
+            parlay = getattr(inst, field_name)
+            if parlay:
                 dc[field_name] = '{team1zh}VS{team2zh}'.format(team1zh=parlay.match.team1zh,
                                                                team2zh=parlay.match.team2zh)
             else:

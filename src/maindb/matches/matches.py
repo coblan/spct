@@ -2,7 +2,8 @@
 from __future__ import unicode_literals
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
     SelectSearch, Fields, director_view
-from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,TbLivescout,TbMatch,TbPeriodscore
+from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,\
+     TbLivescout,TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
 from maindb.mongoInstance import updateMatchMongo
@@ -69,11 +70,13 @@ class MatchsPage(TablePage):
             {'name': 'special_bet_value',
              'label': '盘口',
              'com': 'com-tab-special-bet-value',
-             'update_director': 'football_get_special_bet_value',
-             'save_director': 'football_save_special_bet_value',
+             'update_director': 'get_special_bet_value',
+             'save_director': 'save_special_bet_value',
              'ops': [
-                 {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
-                 {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
+                 {'fun': 'save', 'label': '保存', 'editor': 'com-op-plain-btn', 'icon': 'fa-save', },
+                 {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-plain-btn', 'icon': 'fa-refresh', }, 
+                 {'fun':'filter_name','label':'玩法过滤','editor':'com-op-search',
+                  'icon':'fa-refresh','btn_text':False},
              ]
              }
                   
@@ -513,19 +516,230 @@ def add_livescout(new_row,**kws):
     return {'success':True}
  
 
-class OddOp(object):
-    sportid = 1
+@director_view('get_special_bet_value')
+def getSpecialbetValue(matchid):
+    """
+    获取封盘状态数据
+    """
+    try:
+        #TbMatchesoddsswitch.objects.get(matchid=matchid,sportid = sportid, status=1, oddstypegroup_id=0)
+        match_opened = True
+    except:
+        match_opened = True
+        
+    markets =[]
+    specialbetvalue = []
+    # 填充玩法
+    for market in TbMarkets.objects.filter(enabled=1):
+        markets.append({
+            'name':market.marketnamezh,
+            'marketid':market.marketid,
+            'sort':market.sort,
+            'opened':True,
+        })
     
-    @classmethod
-    def get_special_bet_value(cls,matchid):
-        return get_special_bet_value(matchid,sportid = cls.sportid )
+    # 填充盘口   
+            #.values('marketname', 'specialbetvalue','specifiers',
+                    #'handicapkey')
+    for odd in TbOdds.objects.filter(matchid=matchid, status=1,):
+        if odd.specialbetvalue != '':
+            name = "%s %s" % (odd.marketname, odd.specialbetvalue)
+            specialbetvalue.append(
+                {
+                    'name':name,
+                    'market': odd.marketname,
+                    'marketid':odd.marketid,
+                    #'oddstypegroup': odd['oddstype__oddstypegroup'],
+                    'specialbetvalue': odd.specialbetvalue,
+                    'specifiers':odd.specifiers,
+                    'opened': True,
+                    #'Handicapkey': odd['handicapkey'],
+                }
+            )    
+    
+    # 把 以前操作过的 盘口 加进来。因为这时通过tbOdds 已经查不到这些 sp value了
+    for switch in TbMarkethcpswitch.objects.filter(matchid=matchid,type=3, status = 1).select_related('marketid'):
+        name = "%s %s" % (switch.marketid.marketnamezh, switch.specialbetvalue)
+        specialbetvalue.append(
+            {
+                'name': name,
+                'marketid':switch.marketid_id,
+                #'oddstypegroup': switch.oddstypegroup_id,
+                'specialbetvalue': switch.specialbetvalue,
+                'specifiers':switch.specifiers,
+                'opened': switch.status == 0,
+                #'Handicapkey': switch.handicapkey,
+                #'BetTypeId': switch.bettypeid,
+                #'PeriodType': switch.periodtype,
+            }
+        )
 
-director.update({
-    'football_get_special_bet_value':OddOp.get_special_bet_value
-})
-#@director_view('football_get_special_bet_value')
-#def football_get_special_bet_value(matchid): 
-    #return get_special_bet_value(matchid,sportid = 1 )
+        # 去重
+    tmp_dc = {}
+    tmp_ls = []
+    for i in specialbetvalue:
+        name = "%s_%s" % (i['specialbetvalue'], i['marketid'])
+        if name not in tmp_dc:
+            tmp_dc[name] = ''
+            tmp_ls.append(i)
+    specialbetvalue = tmp_ls
+
+    for oddsswitch in TbMarkethcpswitch.objects.filter(matchid=matchid,status=1, marketid__enabled=1):
+        # 1 封盘 比赛 这个 OddsTypeGroup =0 所以这里筛选条件里面没有它
+        # if oddsswitch.types==1:
+        # match_opened =False
+        # 2 封盘 玩法
+        if oddsswitch.type == 2:
+            for i in markets:
+                if i['marketid'] == oddsswitch.marketid_id:
+                    i['opened'] = False
+        # 3 封盘 值 specialbetvalue
+        elif oddsswitch.type == 3:
+            for i in specialbetvalue:
+                if i['marketid'] == oddsswitch.marketid_id and \
+                   i['specialbetvalue'] == oddsswitch.specialbetvalue:
+                    i['opened'] = False
+
+    return {
+        'match_opened': match_opened,
+        'markets': markets,
+        'specialbetvalue': specialbetvalue,
+    }
+
+
+
+@director_view('save_special_bet_value')
+def save_special_bet_value_proc(matchid, markets, specialbetvalue):
+    """
+    存储封盘操作
+    """
+    # TbMatchesoddsswitch.objects.filter(matchid=matchid,status=1).delete()
+    log_msg = '封盘操作：'
+    batchOperationSwitch = []
+
+    #matchSwitch, created = TbMarkethcpswitch.objects.get_or_create(matchid=matchid, types=1, defaults={'status': 0})
+
+    #if not match_opened:
+        #if matchSwitch.status == 0:
+            #matchSwitch.status = 1
+            #matchSwitch.save()
+            #log_msg += '开启比赛%s;' % matchid
+            #batchOperationSwitch.append(matchSwitch)
+    #else:
+        #if matchSwitch.status == 1:
+            #matchSwitch.status = 0
+            #matchSwitch.save()
+            #log_msg += '关闭比赛%s;' % matchid
+            #batchOperationSwitch.append(matchSwitch)
+    
+    dbOddSwitchs = list( TbMarkethcpswitch.objects.filter(matchid=matchid) )
+    
+    changedSwitch=[]
+    for market in markets:
+        #oddSwitch, created = TbMarkethcpswitch.objects.get_or_create(matchid=matchid, type=2,
+                                                                        #marketid_id=market['marketid'],
+        oddSwitch=None                                       #defaults={'status': 0})
+        for item in dbOddSwitchs:
+            if item.type==2 and item.marketid_id==market['marketid']:
+                oddSwitch = item
+                dbOddSwitchs.remove(item)
+                break
+        if not oddSwitch:
+            oddSwitch = TbMarkethcpswitch(matchid=matchid, type=2,marketid_id=market['marketid'],status=100)
+        
+        if not market['opened']:
+            if oddSwitch.status != 1:
+                oddSwitch.status = 1
+                log_msg += '屏蔽玩法：%s' % market['name']
+                batchOperationSwitch.append(oddSwitch)
+        else:
+            if oddSwitch.status != 0:
+                oddSwitch.status = 0
+                log_msg += '开启玩法：%s' % market['name']
+                batchOperationSwitch.append(oddSwitch)
+
+    for spbt in specialbetvalue:
+        for market in markets:
+            if spbt['marketid'] == market['marketid']:
+                par_market = market
+                break
+        
+        spSwitch=None                                       
+        for item in dbOddSwitchs:
+            if item.type==3 and item.marketid_id==spbt['marketid'] and \
+               item.specialbetvalue == spbt['specialbetvalue']:
+                spSwitch = item
+                dbOddSwitchs.remove(item)
+                break
+        if not spSwitch:
+            spSwitch = TbMarkethcpswitch(matchid=matchid, type=3,marketid_id=market['marketid'],
+                                         specialbetvalue=spbt['specialbetvalue'],specifiers=spbt['specifiers'],status=100)     
+ 
+        #spSwitch, created = TbMarkethcpswitch.objects.get_or_create(matchid=matchid,  type=3,
+                                                                      #marketid_id=par_market['marketid'],
+                                                                      #specialbetvalue=spbt['specialbetvalue'],
+                                                                      #defaults={'status': 0})
+                                                                      
+        if par_market['opened']:
+            if not spbt['opened']:
+                if spSwitch.status != 1:
+                    spSwitch.status = 1
+                    log_msg += '屏蔽盘口：%s' % spbt['specialbetvalue']
+                    batchOperationSwitch.append(spSwitch)
+            else:
+                if spSwitch.status != 0:
+                    spSwitch.status = 0
+                    log_msg += '开启盘口：%s' % spbt['specialbetvalue']
+                    batchOperationSwitch.append(spSwitch)
+                        
+    ls = []
+    for switch in batchOperationSwitch:
+        ls.append({
+            'MatchID': switch.matchid,
+            'Type': switch.type,
+            'Marketid': switch.marketid_id,
+            'SpecialBetValue': switch.specialbetvalue,
+            'Specifiers':switch.specifiers,
+            'Status': switch.status,
+        })        
+        #ls.append({
+            #'MatchID': switch.matchid,
+            #'SportID': sportid,
+            #'Types': switch.types,
+            #'OddsTypeGroup': switch.oddstypegroup_id,
+            #'SpecialBetValue': switch.specialbetvalue,
+            #'Status': switch.status,
+            #'BetTypeId': switch.bettypeid,
+            #'PeriodType': switch.periodtype,
+            #'Handicapkey': switch.handicapkey,
+        #})
+    closeHandicap(json.dumps(ls))
+    
+    catch_list = []
+    for item in [x for x in batchOperationSwitch]:
+        if item.tid is None:
+            if item.status==1:
+                catch_list.append(item)
+        elif  item.status==1:
+            item.save()
+        else:
+            item.delete()
+    TbMarkethcpswitch.objects.bulk_create(catch_list)    
+    op_log.info(log_msg)
+    
+    # 请求service，关闭盘口
+    #match = TbMatches.objects.get(matchid=matchid)
+    #msg = ['TbMatchesoddsswitch操作成功']
+
+
+    return {'success': True}  # ,'msg':msg}
+
+
+
+
+@director_view('football_get_special_bet_value')
+def football_get_special_bet_value(matchid): 
+    return get_special_bet_value(matchid,sportid = 1 )
 
 def get_special_bet_value(matchid, sportid = 1 , oddsModel = TbOdds):
     """

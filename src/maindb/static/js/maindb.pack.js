@@ -525,19 +525,6 @@ __webpack_require__(33);
 var com_tab_special_bet_value = {
     props: ['tab_head', 'par_row'],
     data: function data() {
-        return {
-            match_opened: true,
-            oddstype: [],
-            specialbetvalue: [],
-
-            ops: this.tab_head.ops || []
-        };
-    },
-    //mixins:[mix_fields_data],
-    template: '<div class="com_tab_special_bet_value" style="position: absolute;top:0;right:0;left:0;bottom: 0;overflow: auto">\n    <div style="text-align: center;">\n        <span v-text="par_row.matchdate"></span>/\n        <span v-text="par_row.matchid"></span>/\n        <span v-text="par_row.team1zh"></span>\n        <span>VS</span>\n        <span v-text="par_row.team2zh"></span>\n\n    </div>\n    <div>\n           <div class="box">\n\n                <el-switch\n                      v-model="match_opened"\n                      active-color="#13ce66"\n                      inactive-color="#ff4949">\n                </el-switch>\n                <span>\u6574\u573A\u6BD4\u8D5B</span>\n            </div>\n            <div class="box">\n                <div v-for="odtp in normed_oddstype">\n                    <el-switch\n                          v-model="odtp.opened"\n                          active-color="#13ce66"\n                          inactive-color="#ff4949">\n                    </el-switch>\n                    <span v-text="odtp.name"></span>\n                     <!--<span v-text="odtp.oddstypeid"></span>-->\n                      <!--<span v-text="odtp.oddstypegroup"></span>-->\n                </div>\n            </div>\n            <div class="box">\n                <div v-for="spbet in normed_specailbetvalue" :class="spbet.cls">\n                    <el-switch\n                          v-model="spbet.opened"\n                          active-color="#13ce66"\n                          inactive-color="#ff4949">\n                    </el-switch>\n                    <span v-text="spbet.name"></span>\n                    <!--<span v-text="spbet.specialbetvalue"></span>-->\n                     <!--<span v-text="spbet.oddsid"></span>-->\n                </div>\n            </div>\n\n             <div class="oprations">\n                <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.fun" :head="op" @operation="on_operation(op)"></component>\n            </div>\n    </div>\n\n\n    </div>',
-    mounted: function mounted() {
-        this.getRowData();
-
         var self = this;
         var vc = this;
         this.childStore = new Vue({
@@ -547,43 +534,80 @@ var com_tab_special_bet_value = {
                 },
                 save: function save() {
                     vc.save();
+                },
+                filter_name: function filter_name(head) {
+                    vc.market_filter_name = head.value;
                 }
             }
         });
+
+        return {
+            match_opened: true,
+            oddstype: [],
+            specialbetvalue: [],
+            market_filter_name: '',
+            ops: this.tab_head.ops || []
+        };
+    },
+    //mixins:[mix_fields_data],
+    template: '<div class="com_tab_special_bet_value" style="position: absolute;top:0;right:0;left:0;bottom: 0;">\n    <div class="oprations">\n                <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.fun" :head="op" @operation="on_operation($event)"></component>\n    </div>\n        <div style="text-align: center;">\n            <span v-text="par_row.matchdate"></span>/\n            <span v-text="par_row.matchid"></span>/\n            <span v-text="par_row.team1zh"></span>\n            <span>VS</span>\n            <span v-text="par_row.team2zh"></span>\n\n        </div>\n        <div class="content-wrap">\n            <div class="inn-wrap">\n            <!--<div class="box">-->\n\n                    <!--<el-switch-->\n                          <!--v-model="match_opened"-->\n                          <!--active-color="#13ce66"-->\n                          <!--inactive-color="#ff4949">-->\n                    <!--</el-switch>-->\n                    <!--<span>\u6574\u573A\u6BD4\u8D5B</span>-->\n                <!--</div>-->\n                <div class="box">\n                    <div style="text-align: center">\n                        <b>\u73A9\u6CD5</b>\n                    </div>\n                    <div class="box-content">\n                          <div v-for="odtp in normed_oddstype" >\n                            <el-switch\n                                  v-model="odtp.opened"\n                                  active-color="#13ce66"\n                                  inactive-color="#ff4949">\n                            </el-switch>\n                            <span v-text="odtp.name"></span>\n                        </div>\n                    </div>\n\n                </div>\n                <div class="box"  style="width: 500px;overflow-x: hidden">\n                    <div style="text-align: center">\n                        <b>\u76D8\u53E3</b>\n                    </div>\n                      <div class="box-content">\n                            <div v-for="spbet in normed_specailbetvalue" :class="spbet.cls">\n                                <el-switch\n                                      v-model="spbet.opened"\n                                      active-color="#13ce66"\n                                      inactive-color="#ff4949">\n                                </el-switch>\n                                <span v-text="spbet.market"></span> /\n                                <span v-text="spbet.specialbetvalue"></span>\n                                <!--<span v-text="spbet.specialbetvalue"></span>-->\n                                 <!--<span v-text="spbet.oddsid"></span>-->\n                            </div>\n                    </div>\n                </div>\n            </div>\n\n\n        <div>\n\n    </div>\n\n    </div>\n\n\n    </div>',
+    mounted: function mounted() {
+        this.getRowData();
     },
     computed: {
         normed_oddstype: function normed_oddstype() {
+            var _this = this;
+
             if (!this.match_opened) {
                 return [];
             } else {
-                return ex.sortOrder(this.oddstype, 'sort');
+                if (this.market_filter_name) {
+                    var ls = ex.filter(this.oddstype, function (market) {
+                        return market.name.indexOf(_this.market_filter_name) != -1;
+                    });
+                } else {
+                    var ls = this.oddstype;
+                }
+
+                return ex.sortOrder(ls, 'sort');
             }
         },
         normed_specailbetvalue: function normed_specailbetvalue() {
+            var _this2 = this;
+
             if (!this.match_opened) {
                 return [];
             }
             var self = this;
-            var ss = ex.filter(this.specialbetvalue, function (bet) {
-                var oddtyps = ex.findone(self.oddstype, { oddstypegroup: bet.oddstypegroup });
-                bet.sort = oddtyps.sort;
-                return oddtyps.opened;
+
+            if (this.market_filter_name) {
+                var filtered_list = ex.filter(this.specialbetvalue, function (market) {
+                    return market.name.indexOf(_this2.market_filter_name) != -1;
+                });
+            } else {
+                var filtered_list = this.specialbetvalue;
+            }
+
+            var ordered_spval = ex.filter(filtered_list, function (spval) {
+                var market = ex.findone(self.oddstype, { marketid: spval.marketid });
+                spval.sort = market.sort;
+                return market.opened;
             });
-            var ss = ex.sortOrder(ss, 'name');
-            var ss = ex.sortOrder(ss, 'sort');
+            var sorted_spval = ex.sortOrder(ordered_spval, 'name');
+            var sorted_spval = ex.sortOrder(sorted_spval, 'sort');
 
             var crt = '';
             var cls = 'oven';
-            ex.each(ss, function (bet) {
-                var name = bet.name.split(' ')[0];
+            ex.each(sorted_spval, function (spval) {
+                var name = spval.name.split(' ')[0];
                 if (name != crt) {
                     crt = name;
                     cls = cls == 'oven' ? 'even' : 'oven';
                 }
-                bet.cls = cls;
+                spval.cls = cls;
             });
 
-            return ss;
+            return sorted_spval;
         }
     },
     methods: {
@@ -592,60 +616,29 @@ var com_tab_special_bet_value = {
         },
         save: function save() {
             var self = this;
-            //var post_data=[{fun:'save_special_bet_value',
-            //    matchid:this.par_row.matchid,
-            //    match_opened:this.match_opened,
-            //    oddstype:this.oddstype,
-            //    specialbetvalue:this.specialbetvalue,
-            //}]
-            //cfg.show_load()
-            //ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
-            //    //cfg.hide_load(2000,'封盘成功')
-            //    if(resp.save_special_bet_value.status=='success'){
-            //        cfg.hide_load(2000,'封盘成功')
-            //       setTimeout(function(){
-            //           self.getRowData()
-            //       },10)
-            //    }else{
-            //        cfg.showMsg('error')
-            //    }
-            //})
             var data = {
                 matchid: this.par_row.matchid,
-                match_opened: this.match_opened,
-                oddstype: this.oddstype,
+                //match_opened:this.match_opened,
+                markets: this.oddstype,
                 specialbetvalue: this.specialbetvalue
             };
             cfg.show_load();
             ex.director_call(this.tab_head.save_director, data, function (resp) {
-                //cfg.hide_load(2000,'封盘成功')
-                if (resp.status == 'success') {
+                if (resp.success == true) {
                     cfg.hide_load(2000, '封盘成功');
                     setTimeout(function () {
                         self.getRowData();
                     }, 10);
                 }
-                //else{
-                //    cfg.showMsg('封盘出现问题')
-                //}
             });
         },
         on_show: function on_show() {},
         getRowData: function getRowData() {
             var self = this;
-            //var post_data=[{fun:'update_special_bet_value',matchid:this.par_row.matchid}]
-            //cfg.show_load()
-            //ex.post('/d/ajax/maindb',JSON.stringify(post_data),function(resp){
-            //    self.match_opened=resp.update_special_bet_value.match_opened
-            //    self.oddstype= resp.update_special_bet_value.oddstype
-            //    self.specialbetvalue= resp.update_special_bet_value.specialbetvalue
-            //    cfg.hide_load()
-            //
-            //})
             cfg.show_load();
             ex.director_call(this.tab_head.update_director, { matchid: this.par_row.matchid }, function (resp) {
                 self.match_opened = resp.match_opened;
-                self.oddstype = resp.oddstype;
+                self.oddstype = resp.markets;
                 self.specialbetvalue = resp.specialbetvalue;
                 cfg.hide_load();
             });
@@ -1796,7 +1789,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com_tab_special_bet_value .box {\n  width: 250px;\n  height: 400px;\n  padding: 1em;\n  border: 1px solid black;\n  margin-right: 1em;\n  position: relative;\n  overflow: auto;\n  display: inline-block; }\n\n.oven {\n  background-color: #e9ebe9;\n  margin-left: -10px;\n  padding-left: 10px;\n  margin-right: -10px;\n  padding-right: 10px; }\n", ""]);
+exports.push([module.i, ".com_tab_special_bet_value {\n  display: flex;\n  flex-direction: column; }\n  .com_tab_special_bet_value .oprations {\n    padding: 5px;\n    background-color: #f8f8f8; }\n  .com_tab_special_bet_value .box {\n    float: left;\n    text-align: left;\n    width: 350px;\n    height: 100%;\n    padding: 1em;\n    border: 1px solid black;\n    margin-right: 1em;\n    position: relative;\n    display: flex;\n    flex-direction: column; }\n    .com_tab_special_bet_value .box .box-content {\n      overflow: auto;\n      flex-grow: 10; }\n  .com_tab_special_bet_value .content-wrap {\n    flex-grow: 10;\n    position: relative; }\n  .com_tab_special_bet_value .inn-wrap {\n    position: absolute;\n    top: 0;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    overflow: auto; }\n\n.oven {\n  background-color: #eff1ef;\n  margin-left: -10px;\n  padding-left: 10px;\n  margin-right: -10px;\n  padding-right: 10px; }\n", ""]);
 
 // exports
 

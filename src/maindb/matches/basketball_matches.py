@@ -50,11 +50,13 @@ class BasketMatchsPage(MatchsPage):
             {'name': 'special_bet_value',
              'label': '封盘',
              'com': 'com-tab-special-bet-value',
-             'update_director': 'basketball_get_special_bet_value',
-             'save_director': 'basketball_save_special_bet_value',
+             'update_director': 'get_special_bet_value',
+             'save_director': 'save_special_bet_value',
              'ops': [
-                 {'fun': 'save', 'label': '保存', 'editor': 'com-op-btn', 'icon': 'fa-save', },
-                 {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-btn', 'icon': 'fa-refresh', }, 
+                 {'fun': 'save', 'label': '保存', 'editor': 'com-op-plain-btn', 'icon': 'fa-save','class':'btn-primary' },
+                 {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-plain-btn', 'icon': 'fa-refresh', }, 
+                 {'fun':'filter_name','label':'玩法过滤','editor':'com-op-search',
+                  'icon':'fa-refresh','btn_text':False},
              ]
             }
                   

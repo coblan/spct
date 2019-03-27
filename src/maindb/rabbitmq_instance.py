@@ -10,7 +10,7 @@ def closeHandicap(msg):
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, port= rabbitPort, credentials = credentials))    
     channel = connection.channel()
     channel.basic_publish(exchange='center.topic',
-                          routing_key= 'match.closehandicap',
+                          routing_key= 'backend.close.markethcp',
                           body=msg)
 
 def updateSpread(msg): 

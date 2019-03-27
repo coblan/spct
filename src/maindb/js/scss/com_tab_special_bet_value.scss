@@ -1,19 +1,43 @@
 .com_tab_special_bet_value{
+  display: flex;
+  flex-direction: column;
+  .oprations{
+    padding: 5px;
+    background-color: #f8f8f8;
+  }
   .box{
-    width: 250px;
-    height: 400px;
+    float: left;
+    text-align: left;
+    width: 350px;
+    height:100%;
     padding: 1em;
     border: 1px solid black;
-    //float: left;
     margin-right: 1em;
     position: relative;
-    overflow: auto;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    .box-content{
+        overflow: auto;
+        flex-grow: 10;
+    }
+
+  }
+    .content-wrap{
+        flex-grow: 10;
+        position: relative;
+    }
+  .inn-wrap{
+      position: absolute;
+      top:0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      overflow: auto;
   }
 }
 
 .oven{
-  background-color: #e9ebe9;
+  background-color: #eff1ef;
   margin-left: -10px;
   padding-left: 10px;
   margin-right: -10px;
