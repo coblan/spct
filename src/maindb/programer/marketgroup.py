@@ -83,7 +83,9 @@ class MarketgroupwithmarketTable(ModelTable):
     
     def dict_head(self, head):
         width_dc ={
-            'marketid':250
+            'marketid':250,
+            'marketsort':130,
+            'sort':130,
         }
         if head['name'] in width_dc:
             head['width'] = width_dc.get(head['name'])
