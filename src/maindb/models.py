@@ -1107,6 +1107,7 @@ class TbMoneyCategories(models.Model):
 
 class TbMarketgroup(models.Model):
     groupid = models.IntegerField(db_column='GroupID', primary_key=True,verbose_name='组ID')  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID',choices=SPORTID_OPTION_2,verbose_name='体育类型')  # Field name made lowercase.
     groupname = models.CharField(db_column='GroupName', max_length=100,verbose_name='组名')  # Field name made lowercase.
     groupnamezh = models.CharField(db_column='GroupNameZH', max_length=100,verbose_name='中文名')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
