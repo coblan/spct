@@ -3976,7 +3976,7 @@ __webpack_require__(122);
 
 var com_select = {
     props: ['head', 'search_args', 'config'],
-    template: '<select v-model=\'search_args[head.name]\' :class="[\'form-control input-sm com-filter-select\',{novalue:search_args[head.name]==undefined}]" >\n        <option class="fake-placeholder" v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option class="fake-placeholder" v-else :value="undefined" v-text=\'head.label\' ></option>\n        <!--<option :value="null" disabled >-&#45;&#45;</option>-->\n        <option v-for=\'option in orderBy(options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
+    template: '<select v-model=\'search_args[head.name]\' :class="[\'form-control input-sm com-filter-select\',{novalue:search_args[head.name]==undefined}]" >\n        <option class="fake-placeholder" v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option class="fake-placeholder" v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option v-for=\'option in orderBy(options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
         var self = this;
         return {

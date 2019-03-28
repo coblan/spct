@@ -2358,6 +2358,16 @@ var mix_fields_data = {
         }
     },
     methods: {
+        get_row: function get_row(director_name, data) {
+            var _this = this;
+
+            // 后端可以控制，直接更新row数据
+            cfg.show_load();
+            ex.director_call(director_name, data).then(function (resp) {
+                cfg.hide_load();
+                ex.vueAssign(_this.row, resp);
+            });
+        },
         on_operation: function on_operation(op) {
             var fun_name = op.fun || op.name;
             this.op_funs[fun_name](op.kws);
@@ -3592,7 +3602,7 @@ Vue.component('com-table-bool-editor', bool_shower);
 
 var bool_shower = {
     props: ['rowData', 'field', 'index'],
-    template: '<span>\n    <i v-if="rowData[field]" style="color: green" class="fa fa-check-circle"></i>\n    <i v-else style="color: red" class="fa fa-times-circle"></i>\n    </span>'
+    template: '<span class="com-table-bool-shower">\n    <i v-if="rowData[field]" style="color: green" class="fa fa-check-circle"></i>\n    <i v-else-if="rowData[field]==false" style="color: red" class="fa fa-times-circle"></i>\n    </span>'
 
 };
 
@@ -7083,9 +7093,9 @@ var tab_fields = {
                     self.childStore.$emit('row.update_or_insert', row);
                 }, kws);
             }
-            if (self.tab_head.row_express) {
-                var row_dc = ex.eval(self.tab_head.row_express);
-                ex.vueAssign(self.row, row_dc);
+            if (self.tab_head.get_row) {
+                ex.eval(self.tab_head.get_row, { vc: self });
+                //ex.vueAssign(self.row,row_dc)
             }
         },
         after_save: function after_save(new_row) {

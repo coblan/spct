@@ -1,4 +1,4 @@
-from helpers.director.shortcut import page_dc,ModelTable,ModelFields,TablePage,director,RowSearch
+from helpers.director.shortcut import page_dc,ModelTable,ModelFields,TablePage,director,RowSearch,director_view
 from ..models import TbMarketgroup,TbMarketgroupwithmarket,TbMarkets
 from django.db.models import Q
 
@@ -19,9 +19,10 @@ class MarketGroupPage(TablePage):
                     'name':'marketgroup',
                     'label':'基本信息',
                     'com':'com-tab-fields',
-                    'get_data': {
-                        'fun': 'table_row',
-                    },
+                    'get_row':'rt=scope.vc.get_row("marketgroup.edit",{pk:scope.vc.par_row.pk})',
+                    #'get_data': {
+                        #'fun': 'table_row',
+                    #},
                     'after_save': {
                         'fun': 'update_or_insert'
                     },
@@ -66,11 +67,32 @@ class MarketGroupForm(ModelFields):
         model = TbMarketgroup
         exclude = []
     
+    def getExtraHeads(self):
+        return [
+            {'name':'group_sort','label':'组排序','editor':'com-field-number'}
+        ]
+    
+    def dict_row(self, inst):
+        
+        obj = TbMarketgroupwithmarket.objects.filter(groupid=inst.groupid).first()
+        if obj:
+            group_sort=obj.groupsort
+        else:
+            group_sort=0
+        return {
+            'group_sort':group_sort,
+            'meta_group_sort':group_sort,
+        }
+    
     def dict_head(self, head):
         if head['name']=='groupid':
             head['readonly']='Boolean(scope.row.pk)'
         return head
-
+    
+    def clean_save(self):
+        if self.kw['group_sort'] !=self.kw['meta_group_sort']:
+            TbMarketgroupwithmarket.objects.filter(groupid=self.instance.groupid).update(groupsort=self.kw['group_sort'])
+    
 
 class MarketgroupwithmarketTable(ModelTable):
     model = TbMarketgroupwithmarket
