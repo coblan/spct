@@ -1970,19 +1970,24 @@ var vuetool = exports.vuetool = {
             }
         }
     },
-    vueEventRout: function vueEventRout(self) {
-        if (!self.head.event_slots) {
+    vueEventRout: function vueEventRout(self, event_slots) {
+        if (!event_slots) {
+            if (self.head && self.head.event_slots) {
+                event_slots = event_slots;
+            }
+        }
+        if (!event_slots) {
             return;
         }
-        ex.each(self.head.event_slots, function (router) {
+        ex.each(event_slots, function (router) {
             if (router.event) {
                 self.$on(router.event, function (e) {
-                    ex.eval(router.express, { event: e, ts: self.parStore, vc: self });
+                    ex.eval(router.express, { event: e, ts: self.parStore, vc: self, ps: self.parStore });
                 });
             }
             if (router.par_event) {
                 self.parStore.$on(router.par_event, function (e) {
-                    ex.eval(router.express, { event: e, ts: self.parStore, vc: self });
+                    ex.eval(router.express, { event: e, ts: self.parStore, vc: self, ps: self.parStore });
                 });
             }
         });

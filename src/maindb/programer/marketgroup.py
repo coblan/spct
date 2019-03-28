@@ -27,7 +27,10 @@ class MarketGroupPage(TablePage):
                         'fun': 'update_or_insert'
                     },
                     'heads': marketgroup_form.get_heads(),
-                    'ops': marketgroup_form.get_operations()                        
+                    'ops': marketgroup_form.get_operations(),
+                     'event_slots':[
+                        {'event':'finish','express':'scope.ps.$emit("group-changed")'},
+                    ]
                 },
                 {
                     'name':'Marketgroupwithmarket',
@@ -35,7 +38,10 @@ class MarketGroupPage(TablePage):
                     'com':'com-tab-table',
                     'pre_set':'rt={marketgroup:scope.par_row.groupid}',
                     'table_ctx': marketwithmarket.get_head_context(),
-                    
+                    'event_slots':[
+                       {'par_event':'group-changed','express':'scope.vc.loaded=false'},
+                    ]
+                   
                 }
             ]
         }

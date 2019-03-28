@@ -1838,9 +1838,9 @@ Vue.component('com-widget-el-tab', {
     props: ['ctx'],
     template: '<div class="tab-full active-tab-hightlight-top" style="position: absolute;bottom: 0;top: 0;left: 0;right: 0;" >\n     <el-tabs  v-if="ctx.tabs.length >1" type="border-card"\n                           @tab-click="handleClick"\n                           style="width: 100%;height: 100%;"\n                           :value="ctx.crt_tab_name" >\n\n                    <!--<el-tab-pane v-for="tab in normed_tab( tabgroup.tabs )"-->\n                    <el-tab-pane v-for="tab in normed_tab"\n                                lazy\n                                 :key="tab.name"\n                                 :name="tab.name">\n                        <span slot="label" v-text="tab.label" ></span>\n\n                        <component :is="tab.com" :tab_head="tab"\n                                   :par_row="ctx.par_row"\n                                   :ref="\'_tab_\'+tab.name" @tab-event="up_event($event)"></component>\n\n\n                    </el-tab-pane>\n                </el-tabs>\n\n                <component v-else v-for="tab in ctx.tabs"  :is="tab.com" :tab_head="tab"\n                           :par_row="ctx.par_row"\n                           :ref="\'_tab_\'+tab.name" @tab-event="up_event($event)"></component>\n    </div>',
     watch: {
-        'ctx.crt_tab_name': function ctxCrt_tab_name(v) {
-            this.show_tab(v);
-        }
+        //'ctx.crt_tab_name':function (v){
+        //     this.show_tab(v)
+        // }
     },
     mounted: function mounted() {
         this.show_tab(this.ctx.crt_tab_name);
@@ -1864,10 +1864,13 @@ Vue.component('com-widget-el-tab', {
         show_tab: function show_tab(name) {
             this.ctx.crt_tab_name = name;
             //this.crt_tab_name = name
-            //var self =this
-            //Vue.nextTick(function(){
-            //    self.$refs['_tab_'+name][0].on_show()
-            //})
+            // 当tab页面点击进入时
+            var self = this;
+            Vue.nextTick(function () {
+                if (self.$refs['_tab_' + name][0].on_show) {
+                    self.$refs['_tab_' + name][0].on_show();
+                }
+            });
         },
         handleClick: function handleClick(tab, event) {
             this.show_tab(tab.name);
@@ -2365,6 +2368,7 @@ var mix_fields_data = {
             cfg.show_load();
             ex.director_call(director_name, data).then(function (resp) {
                 cfg.hide_load();
+                ex.vueAssign(_this.org_row, resp);
                 ex.vueAssign(_this.row, resp);
             });
         },
@@ -7041,12 +7045,15 @@ var tab_fields = {
                 vc: self
             }
         });
+        var parStore = ex.vueParStore(this);
         return {
             heads: this.tab_head.heads,
             ops: this.tab_head.ops,
             errors: {},
             row: data_row,
-            childStore: childStore
+            org_row: data_row,
+            childStore: childStore,
+            parStore: parStore
         };
     },
     mixins: [mix_fields_data, mix_nice_validator],
@@ -7074,6 +7081,7 @@ var tab_fields = {
         if (!this.tab_head.row) {
             this.get_data();
         }
+        ex.vueEventRout(this, this.tab_head.event_slots);
     },
 
     methods: {
@@ -7215,24 +7223,20 @@ var tab_table = {
             }
         };
         return {
-            childStore: new Vue(my_table_store)
-            //return {
-            //    parents:parents,
-            //    page_label:page_label,
-            //    heads:heads,
-            //    rows:rows,
-            //    row_filters:row_filters,
-            //    row_sort:row_sort,
-            //    row_pages:row_pages,
-            //    director_name:director_name,
-            //    footer:footer,
-            //    ops:ops,
-            //    search_args:search_args,
-            //}
+            childStore: new Vue(my_table_store),
+            parStore: ex.vueParStore(vc),
+            loaded: false
         };
     },
     mounted: function mounted() {
-        this.childStore.search();
+        ex.vueEventRout(this, this.tab_head.event_slots);
+    },
+    methods: {
+        on_show: function on_show() {
+            if (!this.loaded) {
+                this.childStore.search();
+            }
+        }
     },
 
     template: '<div class="com-tab-table flex-v" style="position: absolute;top:0;left:0;bottom: 0;right:0;overflow: auto;padding-bottom: 1em;">\n       <div v-if="childStore.row_filters.length > 0" style="background-color: #fbfbf8;padding: 8px 1em;border-radius: 4px;margin-top: 8px">\n            <com-table-filters></com-table-filters>\n        </div>\n        <div  v-if="childStore.ops.length>0 ">\n            <com-table-operations></com-table-operations>\n        </div>\n\n        <div v-if="childStore.parents.length>0">\n            <com-table-parents></com-table-parents>\n        </div>\n\n        <!--<ol v-if="parents.length>0" class="breadcrumb jb-table-parent">-->\n            <!--<li v-for="par in parents"><a href="#" @click="get_childs(par)"  v-text="par.label"></a></li>-->\n        <!--</ol>-->\n\n        <div class="box box-success flex-v flex-grow" style="margin-bottom: 0">\n            <div class="table-wraper flex-grow" style="position: relative;">\n                <com-table-grid></com-table-grid>\n               </div>\n        </div>\n        <div style="background-color: white;">\n            <com-table-pagination></com-table-pagination>\n        </div>\n    </div>'
