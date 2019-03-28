@@ -812,7 +812,7 @@ class TbMatch(models.Model):
                                        verbose_name='市场状态')  # Field name made lowercase.
     statuscode = models.IntegerField(db_column='StatusCode',verbose_name='状态',
                                      choices=NEW_MATCH_STATUS)  # Field name made lowercase.
-    score = models.CharField(db_column='Score', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    score = models.CharField(db_column='Score', max_length=20, blank=True, null=True,verbose_name='比分')  # Field name made lowercase.
     hasliveodds = models.BooleanField(db_column='HasLiveOdds',verbose_name='走地盘')  # Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name='推介')  # Field name made lowercase.
     ishidden = models.BooleanField(db_column='IsHidden',verbose_name='隐藏')  # Field name made lowercase.
@@ -1146,7 +1146,7 @@ class TbMarkets(models.Model):
     outcometype = models.CharField(db_column='OutcomeType', max_length=200, blank=True, null=True)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
-    enabled = models.NullBooleanField(db_column='Enabled',verbose_name='启用')  # Field name made lowercase.
+    enabled = models.NullBooleanField(db_column='Enabled',verbose_name='启用',blank=False)  # Field name made lowercase.
     isasian = models.NullBooleanField(db_column='IsAsian')  # Field name made lowercase.    
 
     class Meta:

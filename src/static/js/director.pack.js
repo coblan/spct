@@ -3243,7 +3243,7 @@ var sim_select = {
             parStore: ex.vueParStore(this)
         };
     },
-    template: '<div class="com-field-select">\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  :class="[\'form-control input-sm\',{novalue:row[head.name]==null}] ">\n                <option v-if="head.required"  :value="null" disabled selected style=\'display:none;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-else  :value="null" selected style="color: #b8b8b8" class="placeholder" v-text="head.placeholder"></option>\n\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
+    template: '<div class="com-field-select">\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  :class="[\'form-control input-sm\',{ novalue: ! is_select}] ">\n                <option v-if="head.required"  :value="undefined" disabled selected style=\'display:none;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-else  :value="undefined" selected style="color: #b8b8b8" class="placeholder" v-text="head.placeholder"></option>\n\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
     mounted: function mounted() {
         // 如果有默认值，
         if (this.head.default && !this.row[this.head.name]) {
@@ -3267,12 +3267,6 @@ var sim_select = {
     watch: {
         my_value: function my_value(v) {
             this.$emit('input', v);
-            //if(this.head.remote_options){
-            //    var self=this
-            //    ex.director_call(this.head.remote_options,{row:self.row},function(data){
-            //        Vue.set(self.head,'options' ,data)
-            //    })
-            //}
         }
     },
 
@@ -3282,7 +3276,7 @@ var sim_select = {
         },
         is_select: function is_select() {
             var v = this.row[this.head.name];
-            return v != undefined;
+            return v !== undefined;
         },
         place_value: function place_value() {
             var v = this.row[this.head.name];
@@ -3976,7 +3970,7 @@ __webpack_require__(122);
 
 var com_select = {
     props: ['head', 'search_args', 'config'],
-    template: '<select v-model=\'search_args[head.name]\' :class="[\'form-control input-sm com-filter-select\',{novalue:search_args[head.name]==undefined}]" >\n        <option class="fake-placeholder" v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option class="fake-placeholder" v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option v-for=\'option in orderBy(options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
+    template: '<select v-model=\'search_args[head.name]\' :class="[\'form-control input-sm com-filter-select\',{novalue:search_args[head.name]===undefined}]" >\n        <option class="fake-placeholder" v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option class="fake-placeholder" v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option v-for=\'option in orderBy(options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
         var self = this;
         return {
