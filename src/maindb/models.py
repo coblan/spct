@@ -1434,6 +1434,18 @@ class TbOutrightevent(models.Model):
         db_table = 'TB_OutRightEvent'
 
 
+class TbOutcomes(models.Model):
+    uniqueoutcomid = models.IntegerField(db_column='UniqueOutcomID', primary_key=True)  # Field name made lowercase.
+    outcomeid = models.CharField(db_column='OutcomeID', max_length=200)  # Field name made lowercase.
+    outcomename = models.CharField(db_column='OutcomeName', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    outcomenamezh = models.CharField(db_column='OutcomeNameZH', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Outcomes'
+
+
 class TbParlayrules(models.Model):
     parlayid = models.IntegerField(db_column='ParlayID', primary_key=True)  # Field name made lowercase.
     parlaycount = models.SmallIntegerField(db_column='ParlayCount')  # Field name made lowercase.

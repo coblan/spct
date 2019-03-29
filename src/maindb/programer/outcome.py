@@ -1,0 +1,43 @@
+from helpers.director.shortcut import ModelFields,ModelTable,TablePage,page_dc,director
+from ..models import TbOutcomes
+
+class OutcomePage(TablePage):
+    def get_label(self):
+        return '投注结果'
+    
+    def get_template(self, prefer=None):
+        return 'jb_admin/table.html'
+    
+    class tableCls(ModelTable):
+        pop_edit_field='uniqueoutcomid'
+        model = TbOutcomes
+        exclude = []
+        
+        def dict_head(self, head):
+            width_dc ={
+                'uniqueoutcomid':120,
+                'outcomeid':280,
+                'outcomename':120,
+                'outcomenamezh':140,
+            }
+            if head['name'] in width_dc:
+                head['width'] = width_dc.get(head['name'])
+            return head
+        
+
+class OutcomeForm(ModelFields):
+    readonly=['uniqueoutcomid','outcomeid','description']
+
+    class Meta:
+        model = TbOutcomes
+        exclude =[]
+
+director.update({
+    'outcome':OutcomePage.tableCls,
+    'outcome.edit':OutcomeForm
+    
+})
+
+page_dc.update({
+    'outcome':OutcomePage
+})

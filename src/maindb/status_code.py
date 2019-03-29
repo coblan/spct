@@ -196,6 +196,7 @@ SPORTID_OPTION = (
 SPORTID_OPTION_2=(
     (1,'足球'),
     (2,'篮球'),
+    (110,'英雄联盟'),
 )
 
 
