@@ -28,7 +28,7 @@ class OutcomePage(TablePage):
             return []
         
         class search(RowSearch):
-            names =['outcomeid','outcomename']
+            names =['outcomeid','outcomename','outcomenamezh']
 
 class OutcomeForm(ModelFields):
     readonly=['uniqueoutcomid','outcomeid','description']
