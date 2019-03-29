@@ -3402,8 +3402,10 @@ var field_sigle_chosen = {
     props: ['row', 'head'],
     template: '<div :class="[\'com-field-single-select2\',head.class]" >\n    <span v-if="head.readonly" v-text="label_text" ></span>\n    <input type="text" :name="head.name" style="display: none" v-model="row[head.name]">\n    <div v-show="!head.readonly">\n        <select  class="select2 field-single-select2 form-control" :id="\'id_\'+head.name">\n             <option  :value="undefined" ></option>\n            <option v-for="option in inn_options" :value="option.value" v-text="option.label"></option>\n        </select>\n    </div>\n\n    </div>',
     data: function data() {
+        var self = this;
         return {
-            inn_options: this.head.options
+            inn_options: this.head.options,
+            parStore: ex.vueParStore(self)
         };
     },
     mounted: function mounted() {
@@ -3413,7 +3415,6 @@ var field_sigle_chosen = {
             ex.append_css(this.head.style);
         }
         ex.load_css('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css');
-
         var prom1 = ex.load_js('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js');
         if (this.head.dyn_options) {
             var prom2 = ex.eval(this.head.dyn_options, { row: this.row, vc: this });
@@ -3435,6 +3436,8 @@ var field_sigle_chosen = {
                 }
             });
         });
+
+        ex.vueEventRout(this);
     },
     watch: {
         value: function value(nv) {
@@ -3466,6 +3469,7 @@ var field_sigle_chosen = {
             $(this.$el).find('.select2').val(val);
             $(this.$el).find('.select2').trigger('change');
             Vue.set(this.row, this.head.name, val);
+            this.$emit('input', val);
         },
         update_options: function update_options(director_name, data) {
             var self = this;

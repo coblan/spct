@@ -4037,6 +4037,10 @@ var _span = __webpack_require__(106);
 
 var table_span = _interopRequireWildcard(_span);
 
+var _array_shower = __webpack_require__(163);
+
+var array_shower = _interopRequireWildcard(_array_shower);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
@@ -5777,6 +5781,45 @@ var table_store = {
                 }
             });
         },
+        pop_edit: function pop_edit(_ref) {
+            var row = _ref.row,
+                fields_ctx = _ref.fields_ctx,
+                after_save = _ref.after_save;
+
+            var self = this;
+            var win_index = pop_fields_layer(row, fields_ctx, function (new_row) {
+                if (after_save) {
+                    ex.eval(after_save, { new_row: new_row, ps: self });
+                } else {
+                    self.update_or_insert(new_row);
+                }
+                //var fun = after_save[self.head.after_save.fun]
+                //fun(self, new_row, pop_row)
+
+                layer.close(win_index);
+            });
+            //var fun= get_row[this.head.get_row.fun]
+            //if(this.head.get_row.kws){
+            //    //  这个是兼顾老的调用，新的调用，参数直接写在get_row里面，与fun平级
+            //    var kws= this.head.get_row.kws
+            //}else{
+            //    var kws= this.head.get_row
+            //}
+            //kws.director_name = this.head.fields_ctx.director_name
+
+            //fun(function(pop_row){
+            //    //pop_fields_layer(pop_row,self.head.fields_heads,ops,self.head.extra_mixins,function(kws){
+            //    var win_index =  pop_fields_layer(pop_row,self.head.fields_ctx,function(new_row){
+            //
+            //        var fun = after_save[self.head.after_save.fun]
+            //        fun(self,new_row,pop_row)
+            //
+            //        layer.close(win_index)
+            //
+            //    })
+            //},this.rowData,kws)
+        },
+
         clearSelection: function clearSelection() {
             this.selected = [];
             // 在mix_ele_table_adaptor 中会触发 element table 自动清除选择。
@@ -5877,10 +5920,10 @@ var table_store = {
                 }
             });
 
-            function after_proc(_ref) {
-                var new_row = _ref.new_row,
-                    field_store = _ref.field_store,
-                    pop_fields_win_index = _ref.pop_fields_win_index;
+            function after_proc(_ref2) {
+                var new_row = _ref2.new_row,
+                    field_store = _ref2.field_store,
+                    pop_fields_win_index = _ref2.pop_fields_win_index;
 
                 // 编辑后，提交
                 var cache_rows = ex.copy(self.selected);
@@ -6026,11 +6069,11 @@ var table_store = {
                 judge_pop_fun();
             }
         },
-        arraySpanMethod: function arraySpanMethod(_ref2) {
-            var row = _ref2.row,
-                column = _ref2.column,
-                rowIndex = _ref2.rowIndex,
-                columnIndex = _ref2.columnIndex;
+        arraySpanMethod: function arraySpanMethod(_ref3) {
+            var row = _ref3.row,
+                column = _ref3.column,
+                rowIndex = _ref3.rowIndex,
+                columnIndex = _ref3.columnIndex;
 
             // 计算布局
             if (this.table_layout) {
@@ -6643,6 +6686,9 @@ var after_save = {
 "use strict";
 
 
+/*
+* 用于 表格最左侧的 序号显示。。。
+* */
 var com_table_sequence = {
     props: ['rowData', 'field', 'index'],
     template: '<div><span v-text="show_text" ></span></div>',
@@ -8456,6 +8502,49 @@ __webpack_require__(77);
 
 
 // store
+
+/***/ }),
+/* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/*
+将数据  [1,2,3,4]   显示为 1;2;3;4
+
+ * */
+var array_mapper = {
+    props: ['rowData', 'field', 'index'],
+    template: '<span v-text="show_data"></span>',
+    created: function created() {
+        // find head from parent table
+        var table_par = this.$parent;
+        while (true) {
+            if (table_par.heads) {
+                break;
+            }
+            table_par = table_par.$parent;
+            if (!table_par) {
+                break;
+            }
+        }
+        this.table_par = table_par;
+        this.head = ex.findone(this.table_par.heads, { name: this.field });
+    },
+    computed: {
+        show_data: function show_data() {
+            if (this.rowData[this.field]) {
+                return this.rowData[this.field].join(';');
+            } else {
+                return '';
+            }
+        }
+
+    }
+};
+
+Vue.component('com-table-array-shower', array_mapper);
 
 /***/ })
 /******/ ]);

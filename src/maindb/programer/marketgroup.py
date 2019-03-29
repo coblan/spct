@@ -81,17 +81,17 @@ class MarketGroupForm(ModelFields):
             {'name':'group_sort','label':'组排序','editor':'com-field-number'}
         ]
     
-    def dict_row(self, inst):
+    #def dict_row(self, inst):
         
-        obj = TbMarketgroupwithmarket.objects.filter(groupid=inst.groupid).first()
-        if obj:
-            group_sort=obj.groupsort
-        else:
-            group_sort=0
-        return {
-            'group_sort':group_sort,
-            'meta_group_sort':group_sort,
-        }
+        #obj = TbMarketgroupwithmarket.objects.filter(groupid=inst.groupid).first()
+        #if obj:
+            #group_sort=obj.groupsort
+        #else:
+            #group_sort=0
+        #return {
+            #'group_sort':group_sort,
+            #'meta_group_sort':group_sort,
+        #}
     
     def dict_head(self, head):
         if head['name']=='groupid':
@@ -146,7 +146,9 @@ class MarketgroupwithmarketForm(ModelFields):
             head['style']=".jjyy select{width:300px}"
             head['class']='jjyy'
             #head['options']=[{'value':x.pk,'label':str(x) } for x in TbMarkets.objects.filter(enabled=True)]
-
+            #head['event_slots']=[
+                #{'event':'input','express':'alert("jjyy")'},
+            #]
         return head
     
     def dict_row(self, inst):

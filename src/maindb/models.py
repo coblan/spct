@@ -1111,6 +1111,7 @@ class TbMarketgroup(models.Model):
     groupname = models.CharField(db_column='GroupName', max_length=100,verbose_name='组名')  # Field name made lowercase.
     groupnamezh = models.CharField(db_column='GroupNameZH', max_length=100,verbose_name='中文名')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort',verbose_name='组排序')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1123,14 +1124,14 @@ class TbMarketgroup(models.Model):
 class TbMarketgroupwithmarket(models.Model):
     tid = models.AutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
     groupid = models.IntegerField(db_column='GroupID',verbose_name='玩法组')  # Field name made lowercase.
-    sportid = models.IntegerField(db_column='SportID',choices=SPORTID_OPTION_2,verbose_name='体育类型')  # Field name made lowercase.
+    #sportid = models.IntegerField(db_column='SportID',choices=SPORTID_OPTION_2,verbose_name='体育类型')  # Field name made lowercase.
     #marketid = models.IntegerField(db_column='MarketID')  # Field name made lowercase.
     marketid = models.ForeignKey(to='TbMarkets',db_constraint=False, db_column='MarketID',verbose_name='玩法')
     #templateid = models.IntegerField(db_column='TemplateID')  # Field name made lowercase.
-    templateid = models.ForeignKey(to='TbTemplate',db_constraint=False,db_column='TemplateID',verbose_name='模板')  # Field name made lowercase.
-    groupsort = models.IntegerField(db_column='GroupSort',verbose_name='组排序')  # Field name made lowercase.
+    #templateid = models.ForeignKey(to='TbTemplate',db_constraint=False,db_column='TemplateID',verbose_name='模板')  # Field name made lowercase.
+    #groupsort = models.IntegerField(db_column='GroupSort',verbose_name='组排序')  # Field name made lowercase.
     marketsort = models.IntegerField(db_column='MarketSort',verbose_name='组内玩法排序')  # Field name made lowercase.
-    sort = models.IntegerField(db_column='Sort',verbose_name='全部玩法排序')  # Field name made lowercase.
+    #sort = models.IntegerField(db_column='Sort',verbose_name='全部玩法排序')  # Field name made lowercase.
     enabled = models.BooleanField(db_column='Enabled',verbose_name='启用')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
 
