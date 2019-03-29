@@ -76,10 +76,10 @@ class MarketGroupForm(ModelFields):
         model = TbMarketgroup
         exclude = []
     
-    def getExtraHeads(self):
-        return [
-            {'name':'group_sort','label':'组排序','editor':'com-field-number'}
-        ]
+    #def getExtraHeads(self):
+        #return [
+            #{'name':'group_sort','label':'组排序','editor':'com-field-number'}
+        #]
     
     #def dict_row(self, inst):
         
@@ -98,9 +98,9 @@ class MarketGroupForm(ModelFields):
             head['readonly']='Boolean(scope.row.pk)'
         return head
     
-    def clean_save(self):
-        if self.kw['group_sort'] !=self.kw['meta_group_sort']:
-            TbMarketgroupwithmarket.objects.filter(groupid=self.instance.groupid).update(groupsort=self.kw['group_sort'])
+    #def clean_save(self):
+        #if self.kw['group_sort'] !=self.kw['meta_group_sort']:
+            #TbMarketgroupwithmarket.objects.filter(groupid=self.instance.groupid).update(groupsort=self.kw['group_sort'])
     
 
 class MarketgroupwithmarketTable(ModelTable):
