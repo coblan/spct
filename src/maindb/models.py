@@ -1149,7 +1149,9 @@ class TbMarkets(models.Model):
     sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
     enabled = models.NullBooleanField(db_column='Enabled',verbose_name='启用',blank=False)  # Field name made lowercase.
     isasian = models.NullBooleanField(db_column='IsAsian')  # Field name made lowercase.    
-
+    #templateid = models.IntegerField(db_column='TemplateID', blank=True, null=True)  # Field name made lowercase.
+    templateid = models.ForeignKey(to='TbTemplate',db_constraint=False,db_column='TemplateID',verbose_name='模板',null=True)  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_Markets'

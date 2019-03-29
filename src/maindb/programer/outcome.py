@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelFields,ModelTable,TablePage,page_dc,director
+from helpers.director.shortcut import ModelFields,ModelTable,TablePage,page_dc,director,RowSearch
 from ..models import TbOutcomes
 
 class OutcomePage(TablePage):
@@ -16,14 +16,19 @@ class OutcomePage(TablePage):
         def dict_head(self, head):
             width_dc ={
                 'uniqueoutcomid':120,
-                'outcomeid':280,
-                'outcomename':120,
-                'outcomenamezh':140,
+                'outcomeid':300,
+                'outcomename':180,
+                'outcomenamezh':190,
             }
             if head['name'] in width_dc:
                 head['width'] = width_dc.get(head['name'])
             return head
         
+        def get_operation(self):
+            return []
+        
+        class search(RowSearch):
+            names =['outcomeid','outcomename']
 
 class OutcomeForm(ModelFields):
     readonly=['uniqueoutcomid','outcomeid','description']

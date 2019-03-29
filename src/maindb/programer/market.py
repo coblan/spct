@@ -43,7 +43,7 @@ class MarketForm(ModelFields):
     def dict_head(self, head):
         if head['name']=='marketid':
             head['readonly']='Boolean(scope.row.pk)'
-        if head['name'] not in ['marketnamezh','enabled','description','isasian']:
+        if head['name'] not in ['marketnamezh','enabled','description','isasian','templateid']:
             head['readonly']=True
         return head   
     
