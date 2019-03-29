@@ -9,11 +9,12 @@ def updateMatchMongo(dc):
         #'CloseLiveBet': bool(dc['CloseLiveBet']),
     #})
     matchID = dc.pop('MatchID')
-    match_col = mydb["Matches"]
+    match_col = mydb["Match"]
     match_col.update({'MatchID': matchID}, {'$set': dc})
     
 
 def updateMatchBasketMongo(dc): 
+    """篮球现在与足球用一张表了，这个函数无用了"""
     #dc.update({
         #'CloseLiveBet': bool(dc['CloseLiveBet']),
     #})    

@@ -1,4 +1,5 @@
-from helpers.director.shortcut import page_dc,ModelTable,ModelFields,TablePage,director,RowSearch,director_view
+from helpers.director.shortcut import page_dc,ModelTable,ModelFields,TablePage,director,RowSearch,\
+     director_view,RowFilter
 from ..models import TbMarketgroup,TbMarketgroupwithmarket,TbMarkets
 from django.db.models import Q
 
@@ -67,6 +68,8 @@ class MarketGroupPage(TablePage):
         
         class search(RowSearch):
             names=['groupname','groupnamezh']
+        class filters(RowFilter):
+            names=['sportid']
 
 class MarketGroupForm(ModelFields):
     class Meta:
