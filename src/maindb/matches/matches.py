@@ -90,8 +90,8 @@ class MatchsPage(TablePage):
     class tableCls(ModelTable):
         sportid=1
         model = TbMatch
-        exclude = []  # 'ishidden', 'closelivebet'
-        fields_sort = ['matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'period1score', 'score',
+        exclude = []  # 'ishidden', 'iscloseliveodds'
+        fields_sort = ['matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'openlivebet', 'marketstatus']
 
         def getExtraHead(self):
@@ -203,21 +203,21 @@ class MatchsPage(TablePage):
                
                  'visible': self.permit.can_edit(),
                  },
-                 
+                 #'match_express': 'scope.row.specialcategoryid <= 0 ',
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
-                 'pre_set': 'rt={isrecommend:1}', 'row_match': 'many_row', 'match_express': 'scope.row.specialcategoryid <= 0 ',
+                 'pre_set': 'rt={isrecommend:1}', 'row_match': 'many_row', 
                  'match_msg': '只能推荐常规比赛。',
                  'visible': 'isrecommend' in self.permit.changeable_fields(),},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
-                 'pre_set': 'rt={isrecommend:0}', 'row_match': 'many_row', 'match_express': 'scope.row.specialcategoryid <= 0 ',
+                 'pre_set': 'rt={isrecommend:0}', 'row_match': 'many_row',
                  'match_msg': '只能取消推荐常规比赛。',
                  'visible': 'isrecommend' in self.permit.changeable_fields()},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '走地', 'confirm_msg': '确认打开走地吗？',
-                 'field': 'closelivebet',
-                 'value': 0,  'visible': 'closelivebet' in self.permit.changeable_fields()},
+                 'field': 'iscloseliveodds',
+                 'value': 0,  'visible': 'iscloseliveodds' in self.permit.changeable_fields()},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消走地', 'confirm_msg': '确认取消走地吗？',
-                 'field': 'closelivebet',
-                 'value': 1, 'visible': 'closelivebet' in self.permit.changeable_fields()},
+                 'field': 'iscloseliveodds',
+                 'value': 1, 'visible': 'iscloseliveodds' in self.permit.changeable_fields()},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '显示', 'confirm_msg': '确认显示比赛吗？',
                  'field': 'ishidden',
                  'value': 0, 'visible': 'ishidden' in self.permit.changeable_fields()},
@@ -225,7 +225,7 @@ class MatchsPage(TablePage):
                  'field': 'ishidden',
                  'value': 1, 'visible': 'ishidden' in self.permit.changeable_fields()},
                 #{'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
-                    #'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_closelivebet_tabs",par_row:scope.ts.selected[0]})',
+                    #'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_iscloseliveodds_tabs",par_row:scope.ts.selected[0]})',
                             #'visible': self.permit.can_edit(),}, 
                  {'fun': 'director_call', 'editor': 'com-op-btn', 
                   'director_name': 'football_quit_ticket',
@@ -245,7 +245,7 @@ class MatchsPage(TablePage):
                 'tournamentid': 160,
                 'team1zh': 120,
                 'team2zh': 120,
-                'matchscore': 80,
+                'score': 80,
                 'winner': 60,
                 'statuscode': 70,
                 'roundinfo': 60,
@@ -256,13 +256,13 @@ class MatchsPage(TablePage):
                 'currentperiodstart': 150,
                 'maxsinglepayout': 120,
                 'marketstatus': 70,
-                'closelivebet': 70
+                'iscloseliveodds': 70
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             if head['name'] == 'matchdate':
                 head['editor'] = 'com-table-label-shower'
-            if head['name'] in ('closelivebet', 'openlivebet', 'isshow'):
+            if head['name'] in ('iscloseliveodds', 'openlivebet', 'isshow'):
                 head['editor'] = 'com-table-bool-shower'
             
             if head['name']=='matchid':
@@ -383,12 +383,12 @@ class MatchForm(ModelFields):
             'MatchID': match.matchid,
             'IsRecommend': match.isrecommend,
             'IsHidden': match.ishidden,
-            'CloseLiveBet': match.closelivebet, 
+            'IsCloseLiveOdds': match.iscloseliveodds, 
             'Team1ZH': match.team1zh,
             'Team2ZH': match.team2zh,
             'StatusCode': match.statuscode,
-            'Period1Score': match.period1score,
-            'MatchScore': match.matchscore,
+            #'Period1Score': match.period1score,
+            'MatchScore': match.score,
             'Winner': match.winner,
             'MatchDate':match.matchdate.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
             'PreMatchDate':match.prematchdate.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc)
@@ -396,11 +396,11 @@ class MatchForm(ModelFields):
         updateMatchMongo(dc)
     
     def proc_redis(self): 
-        if 'closelivebet' in self.changed_data:
-            if self.instance.closelivebet == 0:
-                redisInst.delete('Backend:Soccer:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid})
+        if 'iscloseliveodds' in self.changed_data:
+            if self.instance.iscloseliveodds == 0:
+                redisInst.delete('backend:match:iscloseliveodds:%(matchid)s' % {'matchid': self.instance.eventid})
             else:
-                redisInst.set('Backend:Soccer:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
+                redisInst.set('backend:match:iscloseliveodds:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
                               60 * 1000 * 60 * 24 * 7)
 
 class PeriodTypeForm(Fields):
@@ -503,9 +503,9 @@ def add_livescout(new_row,**kws):
     match = TbMatches.objects.get(matchid=new_row.get('matchid'))
     #TbLivescout.objects.order_by('-createtime').first()
     if new_row.get('is_danger'):
-        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=34,typeid=1011,betstatus=3,scoutfeedtype=2,eventdesc='BetStop')
+        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.score,eventtypeid=34,typeid=1011,betstatus=3,scoutfeedtype=2,eventdesc='BetStop')
     else:
-        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.matchscore,eventtypeid=33,typeid=1010,betstatus=2,scoutfeedtype=2,eventdesc='BetStart')
+        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.score,eventtypeid=33,typeid=1010,betstatus=2,scoutfeedtype=2,eventdesc='BetStart')
         with connections['Sports'].cursor() as cursor:
             sql_args = {
                 'MatchID':new_row.get('matchid')
@@ -1005,12 +1005,12 @@ def produce_match_outcome(row, MatchModel , sportid, half_end_code = 31, updateM
         'MatchID': match.matchid,
         'IsRecommend': match.isrecommend,
         'IsHidden': match.ishidden,
-        'CloseLiveBet': match.closelivebet, 
+        'iscloseliveodds': match.iscloseliveodds, 
         'Team1ZH': match.team1zh,
         'Team2ZH': match.team2zh,
         'StatusCode': match.statuscode,
-        'Period1Score': match.period1score,
-        'MatchScore': match.matchscore,
+        #'Period1Score': match.period1score,
+        'Score': match.score,
         'Winner': match.winner,
     }
     updateMongo(dc)    
