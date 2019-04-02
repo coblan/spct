@@ -525,6 +525,7 @@ def getSpecialbetValue(matchid):
     for odd in TbOdds.objects.filter(matchid=matchid, status=1,):
         if odd.specialbetvalue != '':
             name = "%s %s" % (odd.marketname, odd.specialbetvalue)
+            spbetname = '±%s'%odd.specialbetname[1:] if odd.specialbetname.startswith( ('+','-')) else odd.specialbetname
             specialbetvalue.append(
                 {
                     'name':name,
@@ -532,7 +533,7 @@ def getSpecialbetValue(matchid):
                     'marketid':odd.marketid,
                     #'oddstypegroup': odd['oddstype__oddstypegroup'],
                     'specialbetvalue': odd.specialbetvalue,
-                    'specialbetname':odd.specialbetname,
+                    'specialbetname':spbetname,
                     'specifiers':odd.specifiers,
                     'opened': True,
                     #'Handicapkey': odd['handicapkey'],
@@ -542,6 +543,7 @@ def getSpecialbetValue(matchid):
     # 把 以前操作过的 盘口 加进来。因为这时通过tbOdds 已经查不到这些 sp value了
     for switch in TbMarkethcpswitch.objects.filter(matchid=matchid,type=3, status = 1).select_related('marketid'):
         name = "%s %s" % (switch.marketid.marketnamezh, switch.specialbetvalue)
+        
         specialbetvalue.append(
             {
                 'name': name,
