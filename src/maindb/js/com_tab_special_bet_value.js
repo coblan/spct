@@ -72,17 +72,27 @@ var com_tab_special_bet_value={
                         <b>盘口</b>
                     </div>
                       <div class="box-content">
-                            <div v-for="spbet in normed_specailbetvalue" :class="spbet.cls">
+                            <table class="table">
+                            <tr v-for="spbet in normed_specailbetvalue" :class="spbet.cls">
+                                <td>
                                 <el-switch
                                       v-model="spbet.opened"
                                       active-color="#13ce66"
                                       inactive-color="#ff4949">
                                 </el-switch>
-                                <span v-text="spbet.market"></span> /
-                                <span v-text="spbet.specialbetvalue"></span>
+                                </td>
+                                <td>
+                                 <span v-text="spbet.marketname"></span>
+                                </td>
+                                <td>
+                                  <span v-text="spbet.specialbetname"></span>
+                                </td>
+
                                 <!--<span v-text="spbet.specialbetvalue"></span>-->
                                  <!--<span v-text="spbet.oddsid"></span>-->
-                            </div>
+                            </tr>
+                            </table>
+
                     </div>
                 </div>
             </div>

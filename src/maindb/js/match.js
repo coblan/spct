@@ -65,6 +65,111 @@ var row_adaper={
 window.manul_outcome_panel_express_parse = manul_outcome_panel_express_parse
 window.manul_outcome_panel_ctx=manul_outcome_panel_ctx
 
+window.out_come_save=function(rows){
+    var maped_row = ex.map(rows,function(row){
+        return row.outcome
+    })
+    cfg.show_load()
+    ex.director_call('out_com_save',{rows:maped_row}).then(res=>{
+        cfg.hide_load(2000)
+    })
+}
+
+
+Vue.component('com-outcome-score',{
+    props:['ctx'],
+    template:`<div class="com-outcome-score flex-v" style="margin: 0;height: 100%;">
+    <div class = "flex-grow" style="overflow: auto;margin: 0;">
+        <div style="width: 40em;margin: auto;">
+              <table class="field-panel msg-bottom" style="display: inline-block;">
+                    <tr><td></td> <td >主队</td><td>客队</td></tr>
+                    <tr v-for="dh in doubleHeads">
+                         <td style="padding: 1em 1em" v-text="dh[0].label"></td>
+                         <td>
+                            <div class="field-input" style="position: relative">
+                                <component :is="dh[0].editor"
+                                     @field-event="$emit('field-event',$event)"
+                                     :head="dh[0]" :row="row"></component>
+                            </div>
+                         </td>
+
+                         <td>
+                            <div class="field-input" style="position: relative">
+                                <component :is="dh[1].editor"
+                                     @field-event="$emit('field-event',$event)"
+                                     :head="dh[1]" :row="row"></component>
+                            </div>
+                         </td>
+                     </tr>
+              </table>
+        </div>
+      <div style="height: 1em;">
+      </div>
+    </div>
+     <div style="text-align: right;padding: 8px 3em;">
+        <component v-for="op in ctx.ops" :is="op.editor" :head="op"></component>
+    </div>
+
+    </div>`,
+    data:function(){
+        var self=this
+        var childStore=new Vue({
+            data:function(){
+                return {
+                    vc:self
+                }
+            },
+            methods:{
+                record_row:function(){
+                    //this.vc.ctx.row.outcome = this.vc.row
+                    var pp  = JSON.stringify(this.vc.row)
+                    this.vc.$emit('finish',pp)
+                },
+
+            }
+        })
+        var row = {}
+        ex.each(this.ctx.heads,function(head){
+            row[head.name] = ''
+        })
+        if(this.ctx.row.outcome){
+            var org_outcome  = JSON.parse(this.ctx.row.outcome)
+            ex.vueAssign(row ,org_outcome)
+        }
+        return {
+            row:row,
+            childStore:childStore,
+        }
+    },
+    mounted:function(){
+        if(! this.ctx.row.outcome && this.ctx.init_express){
+            ex.eval(this.ctx.init_express,{par_row:this.ctx.par_row,row:this.row})
+        }
+    },
+    computed:{
+        doubleHeads:function(){
+            var ls =[]
+            var pair=[]
+            var count =0
+            ex.each(this.ctx.heads,function(head){
+                pair.push(head)
+                if(count==1){
+                    count=0
+                    ls.push(pair)
+                    pair=[]
+                }else{
+                    count+=1
+                }
+            })
+            return ls
+        }
+    },
+
+})
+
+
+
+
 var manual_end_money=function(self,kws){
     //if(self.selected.length!=1){
     //    cfg.showMsg('请选择一条记录')
@@ -224,75 +329,16 @@ var produceMatchOutcomePanel={
         }
     },
         methods:{
-            //update_nice:function(){
-            //    this.nice_validator= $(this.$el).validator({
-            //        msgClass:'n-bottom'
-            //    });
-            //},
-
-            //isValid:function(){
-            //    var nice_rt = this.nice_validator.isValid()
-            //    return nice_rt
-            //},
-
             submit:function(){
                 var self=this
                 if(!self.isValid()){
                     return
                 }
-                //var rt =ex.vueBroadCall(self.$parent,'isValid')
-                //for(var i=0;i<rt.length;i++){
-                //    if(!rt[i]){
-                //        return
-                //    }
-                //}
-
-
-                //var half=false
-                //var full=false
-                //if(self.row.home_half_score && self.row.away_half_score){
-                //    half=true
-                //}
-                //if(self.row.home_score && self.row.away_score){
-                //    full = true
-                //}
                 var msg=''
-                //if( !half && !full ){
-                //    cfg.showError('请至少完成一行数据填写！')
-                //    return
-                //}
-                //if(half && full){
-                //    msg='【上半场】&【全场】'
-                //    if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
-                //        cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
-                //        return
-                //    }
-                //    self.row.PeriodType=2
-                //}else{
-                //    if(half){
-                //        msg='【上半场】'
-                //        self.row.PeriodType=1
-                //    }else {
-                //        msg='【全场】'
-                //        self.row.PeriodType=0
-                //    }
-                //}
-
 
                 var index = layer.confirm(`确认手动结算${msg}?`,function(index){
                     layer.close(index)
                     self.save()
-                    //cfg.show_load()
-                    //var post_data={
-                    //    row:self.row,
-                    //    matchid:self.par_row
-                    //}
-                    //ex.director_call(self.ctx.produce_match_outcome_director,{row:self.row},function(resp){
-                    //    cfg.hide_load()
-                    //    cfg.showMsg(resp.Message)
-                    //    //ex.vueAssign(self.row,resp.produce_match_outcome.row)
-                    //    self.$emit('finish',resp.row)
-                    //})
 
                 })
             },
@@ -379,52 +425,13 @@ var produceBasketballMatchOutcomePanel={
             if(!self.isValid()){
                 return
             }
-            //var rt =ex.vueBroadCall(self.$parent,'isValid')
-            //for(var i=0;i<rt.length;i++){
-            //    if(!rt[i]){
-            //        return
-            //    }
-            //}
             self.row.PeriodType=2
 
             var msg=''
-            //if( ){
-            //    cfg.showError('请至少完成一行数据填写！')
-            //    return
-            //}
-            //if(half && full){
-            //    msg='【上半场】&【全场】'
-            //    if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
-            //        cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
-            //        return
-            //    }
-            //    self.row.PeriodType=2
-            //}else{
-            //    if(half){
-            //        msg='【上半场】'
-            //        self.row.PeriodType=1
-            //    }else {
-            //        msg='【全场】'
-            //        self.row.PeriodType=0
-            //    }
-            //}
-
 
             var index = layer.confirm(`确认手动结算${msg}?`,function(index){
                 layer.close(index)
                 self.save()
-                //cfg.show_load()
-                //var post_data={
-                //    row:self.row,
-                //    matchid:self.par_row
-                //}
-                //ex.director_call(self.ctx.produce_match_outcome_director,{row:self.row},function(resp){
-                //    cfg.hide_load()
-                //    cfg.showMsg(resp.Message)
-                //    //ex.vueAssign(self.row,resp.produce_match_outcome.row)
-                //    self.$emit('finish',resp.row)
-                //})
-
             })
         }
     }

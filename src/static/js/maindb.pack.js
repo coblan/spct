@@ -550,7 +550,7 @@ var com_tab_special_bet_value = {
         };
     },
     //mixins:[mix_fields_data],
-    template: '<div class="com_tab_special_bet_value" style="position: absolute;top:0;right:0;left:0;bottom: 0;">\n    <div class="oprations">\n                <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.fun" :head="op" @operation="on_operation($event)"></component>\n    </div>\n        <div style="text-align: center;">\n            <span v-text="par_row.matchdate"></span>/\n            <span v-text="par_row.matchid"></span>/\n            <span v-text="par_row.team1zh"></span>\n            <span>VS</span>\n            <span v-text="par_row.team2zh"></span>\n\n        </div>\n        <div class="content-wrap">\n            <div class="inn-wrap">\n            <!--<div class="box">-->\n\n                    <!--<el-switch-->\n                          <!--v-model="match_opened"-->\n                          <!--active-color="#13ce66"-->\n                          <!--inactive-color="#ff4949">-->\n                    <!--</el-switch>-->\n                    <!--<span>\u6574\u573A\u6BD4\u8D5B</span>-->\n                <!--</div>-->\n                <div class="box">\n                    <div style="text-align: center">\n                        <b>\u73A9\u6CD5</b>\n                    </div>\n                    <div class="box-content">\n                          <div v-for="odtp in normed_oddstype" >\n                            <el-switch\n                                  v-model="odtp.opened"\n                                  active-color="#13ce66"\n                                  inactive-color="#ff4949">\n                            </el-switch>\n                            <span v-text="odtp.name"></span>\n                        </div>\n                    </div>\n\n                </div>\n                <div class="box"  style="width: 500px;overflow-x: hidden">\n                    <div style="text-align: center">\n                        <b>\u76D8\u53E3</b>\n                    </div>\n                      <div class="box-content">\n                            <div v-for="spbet in normed_specailbetvalue" :class="spbet.cls">\n                                <el-switch\n                                      v-model="spbet.opened"\n                                      active-color="#13ce66"\n                                      inactive-color="#ff4949">\n                                </el-switch>\n                                <span v-text="spbet.market"></span> /\n                                <span v-text="spbet.specialbetvalue"></span>\n                                <!--<span v-text="spbet.specialbetvalue"></span>-->\n                                 <!--<span v-text="spbet.oddsid"></span>-->\n                            </div>\n                    </div>\n                </div>\n            </div>\n\n\n        <div>\n\n    </div>\n\n    </div>\n\n\n    </div>',
+    template: '<div class="com_tab_special_bet_value" style="position: absolute;top:0;right:0;left:0;bottom: 0;">\n    <div class="oprations">\n                <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.fun" :head="op" @operation="on_operation($event)"></component>\n    </div>\n        <div style="text-align: center;">\n            <span v-text="par_row.matchdate"></span>/\n            <span v-text="par_row.matchid"></span>/\n            <span v-text="par_row.team1zh"></span>\n            <span>VS</span>\n            <span v-text="par_row.team2zh"></span>\n\n        </div>\n        <div class="content-wrap">\n            <div class="inn-wrap">\n            <!--<div class="box">-->\n\n                    <!--<el-switch-->\n                          <!--v-model="match_opened"-->\n                          <!--active-color="#13ce66"-->\n                          <!--inactive-color="#ff4949">-->\n                    <!--</el-switch>-->\n                    <!--<span>\u6574\u573A\u6BD4\u8D5B</span>-->\n                <!--</div>-->\n                <div class="box">\n                    <div style="text-align: center">\n                        <b>\u73A9\u6CD5</b>\n                    </div>\n                    <div class="box-content">\n                          <div v-for="odtp in normed_oddstype" >\n                            <el-switch\n                                  v-model="odtp.opened"\n                                  active-color="#13ce66"\n                                  inactive-color="#ff4949">\n                            </el-switch>\n                            <span v-text="odtp.name"></span>\n                        </div>\n                    </div>\n\n                </div>\n                <div class="box"  style="width: 500px;overflow-x: hidden">\n                    <div style="text-align: center">\n                        <b>\u76D8\u53E3</b>\n                    </div>\n                      <div class="box-content">\n                            <table class="table">\n                            <tr v-for="spbet in normed_specailbetvalue" :class="spbet.cls">\n                                <td>\n                                <el-switch\n                                      v-model="spbet.opened"\n                                      active-color="#13ce66"\n                                      inactive-color="#ff4949">\n                                </el-switch>\n                                </td>\n                                <td>\n                                 <span v-text="spbet.marketname"></span>\n                                </td>\n                                <td>\n                                  <span v-text="spbet.specialbetname"></span>\n                                </td>\n\n                                <!--<span v-text="spbet.specialbetvalue"></span>-->\n                                 <!--<span v-text="spbet.oddsid"></span>-->\n                            </tr>\n                            </table>\n\n                    </div>\n                </div>\n            </div>\n\n\n        <div>\n\n    </div>\n\n    </div>\n\n\n    </div>',
     mounted: function mounted() {
         this.getRowData();
     },
@@ -775,6 +775,75 @@ var row_adaper = {
 window.manul_outcome_panel_express_parse = manul_outcome_panel_express_parse;
 window.manul_outcome_panel_ctx = manul_outcome_panel_ctx;
 
+window.out_come_save = function (rows) {
+    var maped_row = ex.map(rows, function (row) {
+        return row.outcome;
+    });
+    cfg.show_load();
+    ex.director_call('out_com_save', { rows: maped_row }).then(function (res) {
+        cfg.hide_load(2000);
+    });
+};
+
+Vue.component('com-outcome-score', {
+    props: ['ctx'],
+    template: '<div class="com-outcome-score flex-v" style="margin: 0;height: 100%;">\n    <div class = "flex-grow" style="overflow: auto;margin: 0;">\n        <div style="width: 40em;margin: auto;">\n              <table class="field-panel msg-bottom" style="display: inline-block;">\n                    <tr><td></td> <td >\u4E3B\u961F</td><td>\u5BA2\u961F</td></tr>\n                    <tr v-for="dh in doubleHeads">\n                         <td style="padding: 1em 1em" v-text="dh[0].label"></td>\n                         <td>\n                            <div class="field-input" style="position: relative">\n                                <component :is="dh[0].editor"\n                                     @field-event="$emit(\'field-event\',$event)"\n                                     :head="dh[0]" :row="row"></component>\n                            </div>\n                         </td>\n\n                         <td>\n                            <div class="field-input" style="position: relative">\n                                <component :is="dh[1].editor"\n                                     @field-event="$emit(\'field-event\',$event)"\n                                     :head="dh[1]" :row="row"></component>\n                            </div>\n                         </td>\n                     </tr>\n              </table>\n        </div>\n      <div style="height: 1em;">\n      </div>\n    </div>\n     <div style="text-align: right;padding: 8px 3em;">\n        <component v-for="op in ctx.ops" :is="op.editor" :head="op"></component>\n    </div>\n\n    </div>',
+    data: function data() {
+        var self = this;
+        var childStore = new Vue({
+            data: function data() {
+                return {
+                    vc: self
+                };
+            },
+            methods: {
+                record_row: function record_row() {
+                    //this.vc.ctx.row.outcome = this.vc.row
+                    var pp = JSON.stringify(this.vc.row);
+                    this.vc.$emit('finish', pp);
+                }
+
+            }
+        });
+        var row = {};
+        ex.each(this.ctx.heads, function (head) {
+            row[head.name] = '';
+        });
+        if (this.ctx.row.outcome) {
+            var org_outcome = JSON.parse(this.ctx.row.outcome);
+            ex.vueAssign(row, org_outcome);
+        }
+        return {
+            row: row,
+            childStore: childStore
+        };
+    },
+    mounted: function mounted() {
+        if (!this.ctx.row.outcome && this.ctx.init_express) {
+            ex.eval(this.ctx.init_express, { par_row: this.ctx.par_row, row: this.row });
+        }
+    },
+    computed: {
+        doubleHeads: function doubleHeads() {
+            var ls = [];
+            var pair = [];
+            var count = 0;
+            ex.each(this.ctx.heads, function (head) {
+                pair.push(head);
+                if (count == 1) {
+                    count = 0;
+                    ls.push(pair);
+                    pair = [];
+                } else {
+                    count += 1;
+                }
+            });
+            return ls;
+        }
+    }
+
+});
+
 var manual_end_money = function manual_end_money(self, kws) {
     //if(self.selected.length!=1){
     //    cfg.showMsg('请选择一条记录')
@@ -929,75 +998,16 @@ var produceMatchOutcomePanel = {
         }
     },
     methods: {
-        //update_nice:function(){
-        //    this.nice_validator= $(this.$el).validator({
-        //        msgClass:'n-bottom'
-        //    });
-        //},
-
-        //isValid:function(){
-        //    var nice_rt = this.nice_validator.isValid()
-        //    return nice_rt
-        //},
-
         submit: function submit() {
             var self = this;
             if (!self.isValid()) {
                 return;
             }
-            //var rt =ex.vueBroadCall(self.$parent,'isValid')
-            //for(var i=0;i<rt.length;i++){
-            //    if(!rt[i]){
-            //        return
-            //    }
-            //}
-
-
-            //var half=false
-            //var full=false
-            //if(self.row.home_half_score && self.row.away_half_score){
-            //    half=true
-            //}
-            //if(self.row.home_score && self.row.away_score){
-            //    full = true
-            //}
             var msg = '';
-            //if( !half && !full ){
-            //    cfg.showError('请至少完成一行数据填写！')
-            //    return
-            //}
-            //if(half && full){
-            //    msg='【上半场】&【全场】'
-            //    if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
-            //        cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
-            //        return
-            //    }
-            //    self.row.PeriodType=2
-            //}else{
-            //    if(half){
-            //        msg='【上半场】'
-            //        self.row.PeriodType=1
-            //    }else {
-            //        msg='【全场】'
-            //        self.row.PeriodType=0
-            //    }
-            //}
-
 
             var index = layer.confirm('\u786E\u8BA4\u624B\u52A8\u7ED3\u7B97' + msg + '?', function (index) {
                 layer.close(index);
                 self.save();
-                //cfg.show_load()
-                //var post_data={
-                //    row:self.row,
-                //    matchid:self.par_row
-                //}
-                //ex.director_call(self.ctx.produce_match_outcome_director,{row:self.row},function(resp){
-                //    cfg.hide_load()
-                //    cfg.showMsg(resp.Message)
-                //    //ex.vueAssign(self.row,resp.produce_match_outcome.row)
-                //    self.$emit('finish',resp.row)
-                //})
             });
         },
         after_save: function after_save(new_row) {
@@ -1020,51 +1030,13 @@ var produceBasketballMatchOutcomePanel = {
             if (!self.isValid()) {
                 return;
             }
-            //var rt =ex.vueBroadCall(self.$parent,'isValid')
-            //for(var i=0;i<rt.length;i++){
-            //    if(!rt[i]){
-            //        return
-            //    }
-            //}
             self.row.PeriodType = 2;
 
             var msg = '';
-            //if( ){
-            //    cfg.showError('请至少完成一行数据填写！')
-            //    return
-            //}
-            //if(half && full){
-            //    msg='【上半场】&【全场】'
-            //    if(parseInt(self.row.home_score) < parseInt(self.row.home_half_score) || parseInt(self.row.away_score) < parseInt(self.row.away_half_score)){
-            //        cfg.showError('全场得分不能少于半场得分，请纠正后再提交！')
-            //        return
-            //    }
-            //    self.row.PeriodType=2
-            //}else{
-            //    if(half){
-            //        msg='【上半场】'
-            //        self.row.PeriodType=1
-            //    }else {
-            //        msg='【全场】'
-            //        self.row.PeriodType=0
-            //    }
-            //}
-
 
             var index = layer.confirm('\u786E\u8BA4\u624B\u52A8\u7ED3\u7B97' + msg + '?', function (index) {
                 layer.close(index);
                 self.save();
-                //cfg.show_load()
-                //var post_data={
-                //    row:self.row,
-                //    matchid:self.par_row
-                //}
-                //ex.director_call(self.ctx.produce_match_outcome_director,{row:self.row},function(resp){
-                //    cfg.hide_load()
-                //    cfg.showMsg(resp.Message)
-                //    //ex.vueAssign(self.row,resp.produce_match_outcome.row)
-                //    self.$emit('finish',resp.row)
-                //})
             });
         }
     }

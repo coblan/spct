@@ -472,15 +472,6 @@ var baseInput = exports.baseInput = {
         props: ['name', 'row', 'kw'],
         template: '<logo-input :up_url="kw.up_url" :web_url.sync="row[name]" :id="\'id_\'+name"></logo-input>'
     },
-    'com-field-picture': {
-        props: ['row', 'head'],
-        template: '<div class="picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></img-uploador></div>',
-        methods: {
-            on_uploader_click: function on_uploader_click() {
-                $(this.$el).find('.virtual_input').focus();
-            }
-        }
-    },
     sim_select: {
         props: ['row', 'head'],
         data: function data() {
@@ -701,6 +692,14 @@ var multi_select2 = _interopRequireWildcard(_multi_select);
 var _multi_chosen = __webpack_require__(27);
 
 var multi_chosen = _interopRequireWildcard(_multi_chosen);
+
+var _field_picture = __webpack_require__(142);
+
+var field_picture = _interopRequireWildcard(_field_picture);
+
+var _field_multi_picture = __webpack_require__(141);
+
+var field_multi_picture = _interopRequireWildcard(_field_multi_picture);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -6024,6 +6023,174 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 __webpack_require__(25);
 __webpack_require__(24);
 __webpack_require__(26);
+
+/***/ }),
+/* 140 */,
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(144);
+
+Vue.component('com-field-multi-picture', {
+    props: ['row', 'head'],
+    template: '<div class="com-field-multi-picture">\n    <textarea style="display: none;" :name="head.name" id="" cols="30" rows="10" v-model="row[head.name]"></textarea>\n\n        <div style="vertical-align: top" >\n            <div v-if="!head.readonly" class="add-btn" @click="open_select_images()" style="width: 100px;height: 100px;position: relative;display: inline-block;padding: 10px">\n                <div class="inn-btn"  style="">\n                    <span class="center-vh" style="font-size: 300%;">+</span>\n                </div>\n            </div>\n            <div class="img-wrap" v-for="(imgsrc,index) in row[head.name]" @click="big_win(imgsrc)">\n                <img class="center-vh" :src="imgsrc" alt="\u56FE\u7247\u4E0D\u80FD\u52A0\u8F7D">\n                <div v-if="!head.readonly" class="close" @click=\'remove_image(index)\'><i class="fa fa-times-circle" aria-hidden="true" style="color:red;position:relative;left:30px;"></i></div>\n            </div>\n        </div>\n         <file-input v-if="!head.readonly" style="display: none"  v-model=\'img_files\'\n            accept=\'image/*\'  multiple></file-input>\n       \t</div>',
+    data: function data() {
+        return {
+            img_files: []
+        };
+    },
+    watch: {
+        img_files: function img_files(v, old) {
+            if (!v) {
+                return;
+            }
+            var self = this;
+            console.log('start upload');
+            if (v == "") {
+                return;
+            }
+            if (!self.validate(v)) {
+                return;
+            }
+            var up_url = this.head.up_url || '/d/upload?path=general_upload/images';
+            fl.uploads(v, up_url, function (url_list) {
+                if (!self.row[self.head.name]) {
+                    self.row[self.head.name] = url_list;
+                } else {
+                    self.row[self.head.name] = self.row[self.head.name].concat(url_list);
+                }
+                self.img_files = [];
+                //self.$emit('input',self.img_files)
+                self.$emit('select');
+            });
+        }
+    },
+    methods: {
+        big_win: function big_win(imgsrc) {
+            var ctx = { imgsrc: imgsrc };
+            pop_layer(ctx, 'com-pop-image', function () {}, {
+                title: false,
+                area: ['90%', '90%'],
+                shade: 0.8,
+                skin: 'img-shower',
+                shadeClose: true
+            });
+        },
+        remove_image: function remove_image(index) {
+            var image_list = this.row[this.head.name];
+            image_list.splice(index, 1);
+        },
+        validate: function validate(image_files) {
+            //重载该函数，验证文件
+
+            //if(this.cfg.maxsize){
+            //    if(img_fl.size > this.cfg.maxsize){
+            //        var msg = ex.template(cfg.tr.picture_size_excceed,{maxsize:this.cfg.maxsize})
+            //        cfg.showMsg(msg)
+            //        this.clear()
+            //        return false
+            //    }
+            //}
+            return true;
+        },
+        open_select_images: function open_select_images() {
+            console.log('before select');
+            var self = this;
+            if (!this.disable) {
+                $(this.$el).find('input[type=file]').click();
+                this.disable = true;
+                setTimeout(function () {
+                    self.disable = false;
+                }, 3000);
+            }
+            console.log('after select');
+        },
+        on_uploader_click: function on_uploader_click() {
+            $(this.$el).find('.virtual_input').focus();
+        }
+    }
+});
+
+Vue.component('com-pop-image', {
+    props: ['ctx'],
+    data: function data() {
+        return {
+            crt_view: '2d',
+            read_3d: ''
+        };
+    },
+    computed: {
+        wraped_3d: function wraped_3d() {
+            return '/3d_wrap?d3_url=' + encodeURIComponent(this.ctx.floor.img_3d);
+        }
+    },
+    methods: {
+        start_read: function start_read() {
+            this.read_3d = this.wraped_3d;
+        }
+    },
+    template: '<div class="com-pop-image"  style="position: absolute;top:0;left: 0;bottom: 0;right: 0;">\n             <img  class="center-vh" :src="ctx.imgsrc" style="max-width: 95%;max-height:95%" alt="">\n    </div>'
+});
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Vue.component('com-field-picture', {
+    props: ['row', 'head'],
+    template: '<div class="com-field-picture picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></img-uploador></div>',
+    methods: {
+        on_uploader_click: function on_uploader_click() {
+            $(this.$el).find('.virtual_input').focus();
+        }
+    }
+});
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-field-multi-picture .img-wrap {\n  display: inline-block;\n  position: relative;\n  width: 100px;\n  height: 100px;\n  vertical-align: top;\n  margin: 20px; }\n\n.com-field-multi-picture .img-wrap img {\n  max-width: 100%;\n  max-height: 100%; }\n\n.com-field-multi-picture .add-btn {\n  margin: 20px; }\n  .com-field-multi-picture .add-btn .inn-btn {\n    background-color: #e2e2e2;\n    border: 1px solid #e2e2e2;\n    width: 80px;\n    height: 80px;\n    position: relative; }\n  .com-field-multi-picture .add-btn .inn-btn:hover {\n    background-color: #efefef;\n    cursor: pointer; }\n\n.layui-layer.img-shower {\n  background-color: rgba(0, 0, 0, 0.3); }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(143);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_multi_picture.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_multi_picture.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

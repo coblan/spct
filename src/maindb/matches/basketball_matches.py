@@ -1,6 +1,5 @@
 from helpers.director.shortcut import page_dc, director, director_view
-from .matches import MatchsPage, MatchForm, PeriodTypeForm, get_special_bet_value, produce_match_outcome, \
-     save_special_bet_value_proc, quit_ticket,PeriodScoreTab
+from .matches import MatchsPage, MatchForm, PeriodTypeForm ,quit_ticket,PeriodScoreTab#get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, 
 from ..models import TbMatchesBasketball, TbOddsBasketball,TbTournamentBasketball,TbMatch,TbTournament
 from maindb.mongoInstance import updateMatchBasketMongo
 from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points,BasketTwosection
@@ -231,13 +230,13 @@ class BasketMatchForm(MatchForm):
 def basketball_quit_ticket(rows, new_row): 
     return quit_ticket(rows, new_row, sportid = 2)
 
-@director_view('basketball_get_special_bet_value')
-def basketball_get_special_bet_value(matchid): 
-    return get_special_bet_value(matchid,sportid = 1,oddsModel = TbOddsBasketball )
+#@director_view('basketball_get_special_bet_value')
+#def basketball_get_special_bet_value(matchid): 
+    #return get_special_bet_value(matchid,sportid = 1,oddsModel = TbOddsBasketball )
 
-@director_view('basketball_save_special_bet_value')
-def basketball_save_special_bet_value(matchid, match_opened, oddstype, specialbetvalue): 
-    return save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue, sportid = 1)
+#@director_view('basketball_save_special_bet_value')
+#def basketball_save_special_bet_value(matchid, match_opened, oddstype, specialbetvalue): 
+    #return save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue, sportid = 1)
 
 @director_view('basketball_produce_match_outcome')
 def basketball_produce_match_outcome(row): 

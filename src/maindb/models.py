@@ -1172,6 +1172,8 @@ class TbMarkethcpswitch(models.Model):
     status = models.IntegerField(db_column='Status')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime',auto_now=True)  # Field name made lowercase.
+    marketname = models.CharField(db_column='MarketName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    specialbetname = models.CharField(db_column='SpecialBetName', max_length=50, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
