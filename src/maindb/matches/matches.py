@@ -20,6 +20,7 @@ from .match_outcome_forms import FootBallPoints, NumberOfCorner
 from helpers.director.middleware.request_cache import get_request_cache
 from django.db import connections
 import datetime
+from maindb.rabbitmq_instance import notifyManulOutcome
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -701,11 +702,12 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
             'MatchID': switch.matchid,
             'Type': switch.type,
             'Marketid': switch.marketid_id,
-            'SpecialBetValue': switch.specialbetvalue,
-            'Specifiers':switch.specifiers,
+            'SpecialBetValue': switch.specialbetvalue or '',
+            'Specifiers':switch.specifiers or '',
             'Status': switch.status,
-        })        
-    closeHandicap(json.dumps(ls))
+        })  
+    if ls:
+        closeHandicap(json.dumps(ls))
     
     # 请求service，关闭盘口
     #match = TbMatches.objects.get(matchid=matchid)
@@ -732,6 +734,10 @@ class OutcomeTab(ModelTable):
         return bf+rows
     
     def dict_head(self, head):
+        pop_edit_ops=[
+             {'name':'save','label':'确定','editor':'com-op-btn','action':'rt=scope.ps.vc.isValid()?scope.ps.vc.$emit("finish",scope.ps.vc.row):""'}
+        ]
+        
         width={
             'marketname':240,
             'marketnamezh':250,
@@ -746,22 +752,22 @@ class OutcomeTab(ModelTable):
             head.update({
                 'panel_map':{
                     -1:{
-                        'heads': [   # get_score_heads([6,7])+
-                            {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-linetext','required':True},
+                        'heads': [ 
+                            {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True},
                             {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True},
                             {'name':'home_7_1','label':'主队下半场得分','editor':'com-field-number','required':True},
                             {'name':'away_7_1','label':'客队下半场得分','editor':'com-field-number','required':True},
-                            {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','show':'scope.row.has_overtime'},
-                            {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','show':'scope.row.has_overtime'},
-                            {'name':'home_50_1','label':'主队点球大战得分','editor':'com-field-number','show':'scope.row.has_penalty'},
-                            {'name':'away_50_1','label':'客队点球大战得分','editor':'com-field-number','show':'scope.row.has_penalty'},
+                            {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                            {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                            {'name':'home_50_1','label':'主队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty'},
+                            {'name':'away_50_1','label':'客队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty'},
                             
-                            {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number',},
-                            {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number',},
-                            {'name':'home_7_5','label':'主队下半场角球','editor':'com-field-number',},
-                            {'name':'away_7_5','label':'客队下半场角球','editor':'com-field-number',},
-                            {'name':'home_40_5','label':'主队加时赛角球','editor':'com-field-number','show':'scope.row.has_overtime'},
-                            {'name':'away_40_5','label':'客队加时赛角球','editor':'com-field-number','show':'scope.row.has_overtime'},
+                            {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number','required':True,},
+                            {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number','required':True,},
+                            {'name':'home_7_5','label':'主队下半场角球','editor':'com-field-number','required':True,},
+                            {'name':'away_7_5','label':'客队下半场角球','editor':'com-field-number','required':True,},
+                            {'name':'home_40_5','label':'主队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                            {'name':'away_40_5','label':'客队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
                             
                             
                             {'name':'has_overtime','label':'加时赛','editor':'com-field-bool'},
@@ -769,15 +775,15 @@ class OutcomeTab(ModelTable):
                             ],
                         'editor':'com-form-one', #'com-outcome-score',
                         'layout':{
-                            #'table_grid':[['has_overtime','has_penalty'],
-                                          #['home_6_1','away_6_1'],
-                                          #['home_7_1','away_7_1'],
-                                          #['home_40_1','away_40_1'],
-                                          #['home_50_1','away_50_1'],
-                                          #['home_6_5','away_6_5'],
-                                          #['home_7_5','away_7_5'],
-                                          #['home_40_5','away_40_5'],
-                                          #],
+                            'table_grid':[['has_overtime','has_penalty'],
+                                          ['home_6_1','away_6_1'],
+                                          ['home_7_1','away_7_1'],
+                                          ['home_40_1','away_40_1'],
+                                          ['home_50_1','away_50_1'],
+                                          ['home_6_5','away_6_5'],
+                                          ['home_7_5','away_7_5'],
+                                          ['home_40_5','away_40_5'],
+                                          ],
                             'fields_group':[
                                 {'name':'huji','label':'基本控制','head_names':['has_overtime','has_penalty']},
                                 {'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
@@ -785,21 +791,301 @@ class OutcomeTab(ModelTable):
                             ]
                             },
                         'ops_loc':'down',
-                        'ops':[
-                            {'name':'save','label':'确定','editor':'com-op-btn','action':'rt=scope.ps.vc.isValid()?scope.ps.vc.$emit("finish",scope.ps.vc.row):""'}
-                        ],
+                        'ops':pop_edit_ops,
                         'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
-                        }
+                        },
+                     291:{
+                        'heads':[
+                             {'name':'content','label':'谁先得X分','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                  {'name':'Specifiers','label':'分数','editor':'com-table-span', 'width': 200,}, 
+                                  {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
+                                   'options':[
+                                     {'value':4,'label':'主队'},
+                                     {'value':5,'label':'客队'},
+                                     ]}, 
+                                  #{'name':'order','label':'','editor':'com-table-change-order'}
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers','label':'分数','editor':'com-field-number', }, 
+                                 {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'options':[
+                                     {'value':4,'label':'主队'},
+                                     {'value':5,'label':'客队'},
+                                     ]}, 
+                             ]}
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     },
+                     174:{
+                        'heads':[
+                             {'name':'content','label':'上半场谁发X角球','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
+                                  {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
+                                   'options':[
+                                     {'value':6,'label':'主队'},
+                                     {'value':7,'label':'都不'},
+                                     {'value':8,'label':'客队'},
+                                     ]}, 
+                                  #{'name':'order','label':'','editor':'com-table-change-order'}
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
+                                 {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'options':[
+                                     {'value':6,'label':'主队'},
+                                     {'value':7,'label':'都不'},
+                                     {'value':8,'label':'客队'},
+                                     ]}, 
+                             ]}
+                        ],
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     },
+                     163:{
+                        'heads':[
+                             {'name':'content','label':'常规时间第X角球','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
+                                  {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
+                                   'options':[
+                                     {'value':6,'label':'主队'},
+                                     {'value':7,'label':'都不'},
+                                     {'value':8,'label':'客队'},
+                                     ]}, 
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
+                                 {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'options':[
+                                     {'value':6,'label':'主队'},
+                                     {'value':7,'label':'都不'},
+                                     {'value':8,'label':'客队'},
+                                     ]}, 
+                             ]}
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                         
+                     },
+                     8:{
+                       'heads':[
+                             {'name':'content','label':'常规时间谁先进第X球','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
+                                  {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
+                                   'options':[
+                                     {'value':6,'label':'主队'},
+                                     {'value':7,'label':'都不'},
+                                     {'value':8,'label':'客队'},
+                                     ]}, 
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
+                                 {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'options':[
+                                     {'value':6,'label':'主队'},
+                                     {'value':7,'label':'都不'},
+                                     {'value':8,'label':'客队'},
+                                     ]}, 
+                             ]}
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     },
+                     9:{
+                       'heads':[
+                             {'name':'content','label':'谁进最后一个球','editor':'com-field-select','required':True,  
+                              'options':[
+                                     {'value':6,'label':'主队'},
+                                     {'value':7,'label':'都不'},
+                                     {'value':8,'label':'客队'},
+                                     ]
+                              }
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     },
+                     100:{
+                        'heads':[
+                             {'name':'content','label':'15分钟','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
+                                  {'name':'OutcomeId','label':'时间段','editor':'com-table-mapper', 'width': 200,
+                                   'options':[
+                                       {'value':584,'label':'1-15'},
+                                       {'value':586,'label':'16-30'},
+                                       {'value':588,'label':'31-45'},
+                                       {'value':590,'label':'46-60'},
+                                       {'value':592,'label':'61-75'},
+                                       {'value':594,'label':'76-90'},
+                                       {'value':596,'label':'默认'},
+                                     ]}, 
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
+                                 {'name':'OutcomeId','label':'时间段','editor':'com-field-select', 'options':[
+                                     {'value':584,'label':'1-15'},
+                                     {'value':586,'label':'16-30'},
+                                     {'value':588,'label':'31-45'},
+                                     {'value':590,'label':'46-60'},
+                                     {'value':592,'label':'61-75'},
+                                     {'value':594,'label':'76-90'},
+                                     {'value':596,'label':'默认'},
+                                     ]}, 
+                             ]}
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     },
+                     101:{
+                        'heads':[
+                             {'name':'content','label':'10分钟','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
+                                  {'name':'OutcomeId','label':'时间段','editor':'com-table-mapper', 'width': 200,
+                                   'options':[
+                                       {'value':598,'label':"1-10"},
+                                       {'value':600,'label':"11-20"},
+                                       {'value':602,'label':"21-30"},
+                                       {'value':604,'label':"31-40"},
+                                       {'value':606,'label':"41-50"},
+                                       {'value':608,'label':"51-60"},
+                                       {'value':610,'label':"61-70"},
+                                       {'value':612,'label':"71-80"},
+                                       {'value':614,'label':"81-90"},
+                                       {'value':616,'label':"默认"},
+                                     ], }
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
+                                 {'name':'OutcomeId','label':'时间段','editor':'com-field-select', 'options':[
+                                       {'value':598,'label':"1-10"},
+                                       {'value':600,'label':"11-20"},
+                                       {'value':602,'label':"21-30"},
+                                       {'value':604,'label':"31-40"},
+                                       {'value':606,'label':"41-50"},
+                                       {'value':608,'label':"51-60"},
+                                       {'value':610,'label':"61-70"},
+                                       {'value':612,'label':"71-80"},
+                                       {'value':614,'label':"81-90"},
+                                       {'value':616,'label':"默认"},
+                                     ]}, 
+                             ]}
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     },
+                     102:{
+                        'heads':[
+                             {'name':'content','label':'15分钟1X2','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                
+                                  {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
+                                   'options':[
+                                       {'value':'from=1|to=15' ,'label':'1-15' },
+                                       {'value':'from=16|to=30','label':'16-30'},
+                                       {'value':'from=31|to=45','label':'31-45'},
+                                       {'value':'from=46|to=60','label':'46-60'},
+                                       {'value':'from=61|to=75','label':'61-75'},
+                                       {'value':'from=76|to=90','label':'76-90'},
+                                     ], },
+                                    {'name':'OutcomeId','label':'胜平负','editor':'com-table-mapper', 'width': 200,
+                                     'options':[
+                                          {'value':1 ,'label':'主赢' },
+                                          {'value':2,'label':'平局'},
+                                          {'value':3,'label':'客赢'},
+                                         ]}, 
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers','label':'时间段','editor':'com-field-select', 'options':[
+                                        {'value':'from=1|to=15' ,'label':'1-15' },
+                                       {'value':'from=16|to=30','label':'16-30'},
+                                       {'value':'from=31|to=45','label':'31-45'},
+                                       {'value':'from=46|to=60','label':'46-60'},
+                                       {'value':'from=61|to=75','label':'61-75'},
+                                       {'value':'from=76|to=90','label':'76-90'},
+                                     ]}, 
+                                {'name':'OutcomeId','label':'个数','editor':'com-field-select', 
+                                  'options':[
+                                          {'value':1 ,'label':'主赢' },
+                                          {'value':2,'label':'平局'},
+                                          {'value':3,'label':'客赢'},
+                                         ]}, 
+                             ]}
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     },
+                     103:{
+                        'heads':[
+                             {'name':'content','label':'15分钟进球','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                {'name':'Specifiers_1','label':'第几粒球','editor':'com-table-span'},
+                                {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
+                                   'options':[
+                                       {'value':'|from=1|to=15','label':'1-15'},
+                                       {'value':'|from=16|to=30','label':'16-30'},
+                                       {'value':'|from=31|to=45','label':'31-45'},
+                                       {'value':'|from=46|to=60','label':'46-60'},
+                                       {'value':'|from=61|to=75','label':'61-75'},
+                                       {'value':'|from=76|to=90','label':'76-90'},
+                                     ], },
+                                {'name':'OutcomeId','label':'胜平负','editor':'com-table-mapper', 'width': 200,
+                                 'options':[
+                                      {'value':6,'label':'主赢' },
+                                      {'value':7,'label':'平局'},
+                                      {'value':8,'label':'客赢'},
+                                     ]}, 
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers_1','label':'第几粒球','editor':'com-field-number'},
+                                 {'name':'Specifiers','label':'时间段','editor':'com-field-select', 'options':[
+                                       {'value':'|from=1|to=15','label':'1-15'},
+                                       {'value':'|from=16|to=30','label':'16-30'},
+                                       {'value':'|from=31|to=45','label':'31-45'},
+                                       {'value':'|from=46|to=60','label':'46-60'},
+                                       {'value':'|from=61|to=75','label':'61-75'},
+                                       {'value':'|from=76|to=90','label':'76-90'},
+                                     ]}, 
+                                {'name':'OutcomeId','label':'个数','editor':'com-field-select', 
+                                  'options':[
+                                           {'value':6,'label':'主赢' },
+                                           {'value':7,'label':'平局'},
+                                           {'value':8,'label':'客赢'},
+                                         ]}, 
+                             ]}
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     }
+    
                 }
             })
         return head
+
     
     def inn_filter(self, query):
         return query.filter(enabled=True,marketid__in = [8,9,100,101,102,103,104,105,106,107,108,109,110,163,174,291])
     
     def get_operation(self):
         return [
-            {'name':'outcome','label':'结算','editor':'com-op-btn','action':'out_come_save(scope.ps.rows)'},
+            {'name':'outcome','label':'结算','editor':'com-op-btn','action':'out_come_save(scope.ps.rows,scope.ps.vc.par_row.matchid)'},
         ]
     
 def get_score_heads(ls):
@@ -820,14 +1106,6 @@ def get_score_heads(ls):
     bb = {1:'得分',5:'角球'} # ,2: '黄牌',3: '红牌' , 4:'黄红'
     tm = {1:[6,7,40,50],5:[6,7,40],} #2:[6,7,40,],3:[6,7,40],4:[6,7,40]
     out_heads =[]
-    #for item in [6,7,40,100,50,]:
-        #out_heads.append(
-            #{'name':'home_%s_1'%item,'label':dc.get(item)+'比分','editor':'com-field-number'}
-        #)
-        #out_heads.append(
-            #{'name':'away_%s_1'%item,'label':dc.get(item)+'比分','editor':'com-field-number'}
-        #)
-    
     for k,v1 in bb.items():
         for item in tm.get(k):
             out_heads.append(
@@ -845,370 +1123,92 @@ def get_score_heads(ls):
 def get_match_outcome_info(matchid):
    
     row ={}
-    for score in TbPeriodscore.objects.filter(matchid=matchid):
-        if score.statuscode in [6,7,13,14,15,16,40,50,]:
-            row['home_%s_1'%score.statuscode] = score.home
-            row['away_%s_1'%score.statuscode] = score.away
+    for score in TbPeriodscore.objects.filter(matchid=matchid,statuscode__in=[6,7,40,50],scoretype__in=[1,5]):
+        row['home_%s_%s'%(score.statuscode,score.scoretype)] = score.home
+        row['away_%s_%s'%(score.statuscode,score.scoretype)] = score.away
+        
     return row
 
 @director_view('out_com_save')
-def out_com_save(rows):
-    periodnumber_map ={
-       6:1,
-       7:2,
-       13:1,
-       14:2,
-       15:3,
-       16:4,
+def out_com_save(rows,matchid):
+
+    send_dc = {
+        'MatchID':matchid,
+        'SendTime':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'Source':'AdminBackend',
+        'IsSettleByScore':False,
+        'Special':[],
+        #public long MatchID { get; set; }
+        #public DateTime SendTime { get; set; }
+        #public string Source { get; set; }
+        #public bool IsSettleByScore { get; set; }
+        #public List<SpecialEntity> Special { get; set; }
     }
-    scoretype_map={
-        6:1,
-        7:1,
-        13:1,
-        14:1,
-        15:1,
-        16:1,
-    }
+
+    which_map= {
+                291:'pointnr=%(org_sp)s',
+                174:'cornernr=%(org_sp)s',
+                163:'cornernr=%(org_sp)s',
+                8:'goalnr=%(org_sp)s',
+                100:'goalnr=%(org_sp)s',
+                101:'goalnr=%(org_sp)s',
+                102:'%(org_sp)s',
+      }
     
+    batch_create=[]
     for row in rows:
-        if row['pk'] == '-1':
-            outcome = row['outcome']
+        if row['pk'] == -1:
+            send_dc['IsSettleByScore']=True
             dc = {}
-            for k,v in outcome.item():
-                statuscode = k[5:]
-                if statuscode not in dc:
-                    dc[statuscode] = {'statuscode':statuscode}
-                if k.startswith('home_'):
-                    dc[statuscode].update({'home':v})
-                elif k.startswith('away_'):
-                    dc[statuscode].update({'away':v})
-            for k,v in dc.items():
-                TbPeriodscore.objects.update_or_create()
-                
-        
-
-
-
-        #{'fun': 'pop_panel',
-                 #'editor': 'com-op-btn',
-                 ##'panel':  'com-panel-fields', #'com-form-produceMatchOutcomePanel',
-                 #'panel_express': 'rt=manul_outcome_panel_express_parse(scope.kws.panel_map,scope.kws.play_type,scope.ts.selected[0].specialcategoryid)',
-                 #'label': '手动结算',
-                 #'row_match': 'one_row',
-                 #'ctx_express': 'rt=manul_outcome_panel_ctx(scope.ts.selected[0],scope.kws,scope.ts.selected[0].specialcategoryid)',
-                 #'play_type': {
-                     #'normal': [0], 
-                     #'corner': [2],
-                     #'race-to-first-number-of-points': [185],
-                     #},
-                 #'row_adapt': {
-                     #'normal': 'rt=scope.adaptor.parse_score(scope.row)',
-                     #'corner': 'rt=scope.adaptor.parse_score(scope.row)',
-                     #},
-                 #'panel_map': {
-                     #'normal': 'com-form-produceMatchOutcomePanel',
-                     #'corner': 'com-form-produceMatchOutcomePanel',
-                     #'race-to-first-number-of-points': 'com-panel-fields',
-                     #},
-                 #'ctx_dict': {
-                     #'normal': points_form.get_head_context(),
-                     #'corner': corner_form.get_head_context(),
-                     #},
-               
-                 #'visible': self.permit.can_edit(),
-                 #},
-    
-    
-    
-
-#@director_view('football_get_special_bet_value')
-#def football_get_special_bet_value(matchid): 
-    #return get_special_bet_value(matchid,sportid = 1 )
-
-#def get_special_bet_value(matchid, sportid = 1 , oddsModel = TbOdds):
-    #"""
-    #获取封盘状态数据
-    #"""
-    #try:
-        #TbMatchesoddsswitch.objects.get(matchid=matchid,sportid = sportid, status=1, oddstypegroup_id=0)
-        #match_opened = False
-    #except:
-        #match_opened = True
-
-    #oddstype = []
-    #specialbetvalue = []
-
-    #for odtp in TbOddstypegroup.objects.filter(enabled=1, sportid = sportid):
-        #oddstype.append(
-            #{
-                #'name': odtp.oddstypenamezh,
-                ## 'oddsid':odd.oddstype.oddsid,
-                #'oddstypegroup': odtp.oddstypegroup,
-                ## 'oddstypeid':odd.oddstype.oddstypeid,
-                #'opened': True,
-                #'sort': odtp.sort,
-            #}
-        #)
-
-    #for odd in oddsModel.objects.filter(matchid=matchid, status=1,) \
-            #.values('marketname', 'specialbetvalue',
-                    #'handicapkey', 'oddstype__oddstypegroup__periodtype'):
-        ## print(odd.specialbetvalue)
-        #if odd['specialbetvalue'] != '':
-            #name = "%s %s" % (odd['marketname'], odd['specialbetvalue'])
-            #specialbetvalue.append(
-                #{
-                    #'name': name,
-                    ##'oddstypegroup': odd['oddstype__oddstypegroup'],
-                    #'specialbetvalue': odd['specialbetvalue'],
-                    #'opened': True,
-                    #'Handicapkey': odd['handicapkey'],
-                    ##'BetTypeId': odd['oddstype__oddstypeid'],
-                    #'PeriodType': odd['oddstype__oddstypegroup__periodtype'],
-                #}
-            #)
-
-    ## 把 以前操作过的 spvalue 加进来。因为这时通过tbOdds 已经查不到这些 sp value了
-    #for switch in TbMatchesoddsswitch.objects.filter(matchid=matchid, sportid = sportid,types=3, status = 1):
-        #name = "%s %s" % (switch.oddstypegroup.oddstypenamezh, switch.specialbetvalue)
-        #specialbetvalue.append(
-            #{
-                #'name': name,
-                #'oddstypegroup': switch.oddstypegroup_id,
-                #'specialbetvalue': switch.specialbetvalue,
-                #'opened': switch.status == 0,
-                #'Handicapkey': switch.handicapkey,
-                #'BetTypeId': switch.bettypeid,
-                #'PeriodType': switch.periodtype,
-            #}
-        #)
-
-        ## 去重
-    #tmp_dc = {}
-    #tmp_ls = []
-    #for i in specialbetvalue:
-        #name = "%s_%s" % (i['specialbetvalue'], i['oddstypegroup'])
-        #if name not in tmp_dc:
-            #tmp_dc[name] = ''
-            #tmp_ls.append(i)
-    #specialbetvalue = tmp_ls
-
-    #for oddsswitch in TbMatchesoddsswitch.objects.select_related('oddstypegroup').filter(matchid=matchid, status=1,sportid = sportid,
-                                                                                         #oddstypegroup__enabled=1):
-        ## 1 封盘 比赛 这个 OddsTypeGroup =0 所以这里筛选条件里面没有它
-        ## if oddsswitch.types==1:
-        ## match_opened =False
-        ## 2 封盘 玩法
-        #if oddsswitch.types == 2:
-            #for i in oddstype:
-                #if i['oddstypegroup'] == oddsswitch.oddstypegroup_id:
-                    #i['opened'] = False
-        ## 3 封盘 值 specialbetvalue
-        #elif oddsswitch.types == 3:
-            #for i in specialbetvalue:
-                #if i['oddstypegroup'] == oddsswitch.oddstypegroup_id and i[
-                    #'specialbetvalue'] == oddsswitch.specialbetvalue:
-                    #i['opened'] = False
-
-    #return {
-        #'match_opened': match_opened,
-        #'oddstype': oddstype,
-        #'specialbetvalue': specialbetvalue,
-    #}
-
-#@director_view('football_save_special_bet_value')
-#def football_save_special_bet_value(matchid, match_opened, oddstype, specialbetvalue): 
-    #return save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue, sportid = 0)
-
-#def save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue, sportid = 0):
-    #"""
-    #存储封盘操作
-    #"""
-    ## TbMatchesoddsswitch.objects.filter(matchid=matchid,status=1).delete()
-    #log_msg = '封盘操作：'
-    #batchOperationSwitch = []
-
-    #matchSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = sportid, types=1, defaults={'status': 0})
-
-    #if not match_opened:
-        #if matchSwitch.status == 0:
-            #matchSwitch.status = 1
-            #matchSwitch.save()
-            #log_msg += '开启比赛%s;' % matchid
-            #batchOperationSwitch.append(matchSwitch)
-        ## obj, created = TbMatchesoddsswitch.objects.update_or_create(matchid=matchid,types=1, defaults = { 'status': 1})
-    #else:
-        #if matchSwitch.status == 1:
-            #matchSwitch.status = 0
-            #matchSwitch.save()
-            #log_msg += '关闭比赛%s;' % matchid
-            #batchOperationSwitch.append(matchSwitch)
-
-        #for odtp in oddstype:
-            #playMethod, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = sportid, types=2,
-                                                                            #oddstypegroup_id=odtp['oddstypegroup'],
-                                                                            #defaults={'status': 0})
-
-            #if not odtp['opened']:
-
-                #if playMethod.status == 0:
-                    #playMethod.status = 1
-                    #playMethod.save()
-                    #log_msg += '屏蔽玩法：%s' % odtp['oddstypegroup']
-                    #batchOperationSwitch.append(playMethod)
-            #else:
-                #if playMethod.status == 1:
-                    #playMethod.status = 0
-                    #playMethod.save()
-                    #log_msg += '开启玩法：%s' % odtp['oddstypegroup']
-                    #batchOperationSwitch.append(playMethod)
-
-        #for spbt in specialbetvalue:
-            #oddstypegroup = spbt['oddstypegroup']
-            #par_odd = None
-            #for i in oddstype:
-                #if oddstypegroup == i['oddstypegroup']:
-                    #par_odd = i
-                    #break
-            #spSwitch, created = TbMatchesoddsswitch.objects.get_or_create(matchid=matchid, sportid = sportid, types=3,
-                                                                          #oddstypegroup_id=par_odd['oddstypegroup'],
-                                                                          #bettypeid=spbt['BetTypeId'],
-                                                                          #periodtype=spbt['PeriodType'],
-                                                                          #handicapkey=spbt['Handicapkey'],
-                                                                          #specialbetvalue=spbt['specialbetvalue'],
-                                                                          #defaults={'status': 0})
-            #if par_odd['opened']:
-                #if not spbt['opened']:
-                    #if spSwitch.status == 0:
-                        #spSwitch.status = 1
-                        #spSwitch.save()
-                        #log_msg += '屏蔽盘口：%s' % spbt['specialbetvalue']
-                        #batchOperationSwitch.append(spSwitch)
-                #else:
-                    #if spSwitch.status == 1:
-                        #spSwitch.status = 0
-                        #spSwitch.save()
-                        #log_msg += '开启盘口：%s' % spbt['specialbetvalue']
-                        #batchOperationSwitch.append(spSwitch)
-                        ## TbMatchesoddsswitch.objects.create(matchid=matchid,types=3,status=1,
-                        ## oddstypegroup_id=par_odd['oddstypegroup'],
-                        ## specialbetvalue=spbt['specialbetvalue'])
-    #ls = []
-    #for switch in batchOperationSwitch:
-        #ls.append({
-            #'MatchID': switch.matchid,
-            #'SportID': sportid,
-            #'Types': switch.types,
-            #'OddsTypeGroup': switch.oddstypegroup_id,
-            #'SpecialBetValue': switch.specialbetvalue,
-            #'Status': switch.status,
-            #'BetTypeId': switch.bettypeid,
-            #'PeriodType': switch.periodtype,
-            #'Handicapkey': switch.handicapkey,
-        #})
-    #closeHandicap(json.dumps(ls))
-
-    #op_log.info(log_msg)
-    
-    ## 请求service，关闭盘口
-    ##match = TbMatches.objects.get(matchid=matchid)
-    ##msg = ['TbMatchesoddsswitch操作成功']
-
-
-    #return {'status': 'success'}  # ,'msg':msg}
-
-    
-#@director_view('football_produce_match_outcome')
-#def football_produce_match_outcome(row): 
-    #return produce_match_outcome(row, MatchModel = TbMatches, sportid = 0, half_end_code = 31, updateMongo= updateMatchMongo)
-
-#def produce_match_outcome(row, MatchModel , sportid, half_end_code = 31, updateMongo = updateMatchMongo):
-    #"""
-    #手动结算
-    #""" 
-    
-    #match = MatchModel.objects.get(matchid = row.get('matchid'))
-    #match.ishidden = True
-    
-    #crt_settlestatus = 0 if not match.settlestatus else match.settlestatus
-    #settlestatus = crt_settlestatus
-    #if crt_settlestatus < 1 and row.get('home_half_score', '') != '' and row.get('away_half_score', '') != '':
-        #match.period1score = '%s:%s' % (row.get('home_half_score'), row.get('away_half_score'))
-        #match.statuscode = half_end_code
-        #settlestatus = 1
-    #if crt_settlestatus < 2 and row.get('home_score', '') != '' and row.get('away_score', '') != '':
-        #match.matchscore = '%s:%s' % (row.get('home_score'), row.get('away_score'))
-        #match.homescore = row.get('home_score')
-        #match.awayscore = row.get('away_score')   
-        #match.statuscode = 100
-        #settlestatus += 2
-        #if row.get('home_score') > row.get('away_score'):
-            #match.winner = 1
-        #elif row.get('home_score') < row.get('away_score'):
-            #match.winner = 2
-        #else:
-            #match.winner = 3
-    
-    #settle_dict =  {
-            #1: '上半场',
-            #2: '全场',
-            #3: '半场&全场',
-        #}
-    #if crt_settlestatus < settlestatus:
-        #match.settlestatus = settlestatus
-    #else:
-        
-        #raise UserWarning('%s已经结算,请不要重复结算!' % settle_dict.get(settlestatus))
-        
-    #data = {
-        #'SportID': sportid, 
-        #'MatchID': row.get('matchid'),
-        #'PeriodType': row.get('PeriodType'),
-        #'OrderBack': False,
-    #}
-    #org_match = to_dict(match)
-    #match.save()
-    
-    #url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
-    #rt = requests.post(url,json=data)
-    #rt_dc = json.loads( rt.text )
-    #if not rt_dc.get('Success'):
-        #for k in org_match:
-            #if not k.startswith('_'):
-                #setattr(match, k, org_match[k])
-            #match.save()
-        #op_log.info('手动结算足球比赛%(matchid)s的%(type)s，未成功,错误消息:%(msg)s' % {'matchid': match.matchid, 
-                                                         #'type': settle_dict.get(match.settlestatus),
-                                                        #'msg': rt_dc.get('Message',''),})
+            has_overtime = row.pop('has_overtime',False)
+            has_penalty = row.pop('has_penalty',False)
+            TbPeriodscore.objects.filter(matchid=matchid,scoretype__in=[1,5]).delete()
             
-        #raise UserWarning( rt_dc.get('Message', '手动结算后端发生问题'))
+            if has_overtime:
+                home = row.pop('home_40_1')
+                away = row.pop('away_40_1')
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home,away=away)) 
+                home = row.pop('home_40_5')
+                away = row.pop('away_40_5')
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=5,type=1,home=home,away=away) )
+
+            if has_penalty:
+                home = row.pop('home_50_1')
+                away = row.pop('away_50_1')
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=50,scoretype=1,home=home,away=away ,type=2) )
+                          
+            home = row.get('home_6_1')
+            away = row.get('away_6_1')
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home,away=away ,type=0) )
+            home = row.get('home_7_1')
+            away = row.get('away_7_1')
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home,away=away ,type=0) )
+            home = row.get('home_6_5')
+            away = row.get('away_6_5')
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=5,home=home,away=away ,type=0) )
+            home = row.get('home_7_5')
+            away = row.get('away_7_5')
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=5,home=home,away=away ,type=0) )
+        
+        if row['pk'] in which_map:
+            
+            outcome_list = json.loads(row.get('content') ) 
+            for item in outcome_list:
+                item['Specifiers'] = which_map[row['pk']]%{'org_sp':item['Specifiers']}
+                item['MarketId']= row['pk']
+                send_dc['Special'].append(item)
+        if row['pk'] in [103]:
+            outcome_list = json.loads(row.get('content') ) 
+            for item in outcome_list:
+                item['Specifiers'] = 'goalnr='+item.pop('Specifiers_1')+item['Specifiers']
+                item['MarketId']= row['pk']
+                send_dc['Special'].append(item)
+        
+        
+                
+    TbPeriodscore.objects.bulk_create(batch_create)
+    notifyManulOutcome(json.dumps(send_dc))
     
-    #rt_dc['row'] = to_dict(match)
-    
-    #dc = {
-        #'MatchID': match.matchid,
-        #'IsRecommend': match.isrecommend,
-        #'IsHidden': match.ishidden,
-        #'iscloseliveodds': match.iscloseliveodds, 
-        #'Team1ZH': match.team1zh,
-        #'Team2ZH': match.team2zh,
-        #'StatusCode': match.statuscode,
-        ##'Period1Score': match.period1score,
-        #'Score': match.score,
-        #'Winner': match.winner,
-    #}
-    #updateMongo(dc)    
-    
-    #op_log.info('手动结算足球比赛%(matchid)s的%(type)s，结算后比分为:上半场:%(period1score)s,全场:%(matchscore)s' % {'matchid': match.matchid, 
-                                                     #'type': settle_dict.get(match.settlestatus),
-                                                     #'period1score': match.period1score,
-                                                     #'matchscore': match.matchscore,})
-    #return rt_dc    
-
-
-
-
-
 director.update({
     'match.table': MatchsPage.tableCls,
     'match.table.edit': MatchForm,

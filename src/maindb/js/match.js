@@ -65,12 +65,19 @@ var row_adaper={
 window.manul_outcome_panel_express_parse = manul_outcome_panel_express_parse
 window.manul_outcome_panel_ctx=manul_outcome_panel_ctx
 
-window.out_come_save=function(rows){
-    var maped_row = ex.map(rows,function(row){
-        return row.outcome
+// 只有这个函数有用，其他都无用了。
+window.out_come_save=function(rows,matchid){
+    var maped_row =[]
+    ex.each(rows,function(row){
+        if(row.outcome){
+            let dc ={pk:row.pk}
+            ex.assign(dc,row.outcome)
+            //row.outcome.pk=row.pk
+            maped_row.push(dc)
+        }
     })
     cfg.show_load()
-    ex.director_call('out_com_save',{rows:maped_row}).then(res=>{
+    ex.director_call('out_com_save',{rows:maped_row,matchid:matchid}).then(res=>{
         cfg.hide_load(2000)
     })
 }

@@ -2494,7 +2494,50 @@ var nice_validator = {
     mounted: function mounted() {
         this.update_nice();
     },
+    //watch:{
+    //    heads:function(new_heads,old_heads){
+    //        for(let i=0;i<new_heads.length;i++){
+    //            let new_head = new_heads[i]
+    //            let old_head = old_heads[i]
+    //            if(new_head!=old_head){
+    //                let new_rule = this.get_head_fv_rule(new_head)
+    //                let old_rule = this.get_head_fv_rule(old_head)
+    //                if(new_rule != old_rule){
+    //                    this.nice_validator.setField(new_head.name,new_rule)
+    //                }
+    //            }
+    //        }
+    //    }
+    //},
     methods: {
+        get_head_fv_rule: function get_head_fv_rule(head) {
+            var ls = [];
+            if (head.fv_rule) {
+                ls.push(head.fv_rule);
+            }
+            if (head.required) {
+                if (!head.fv_rule || head.fv_rule.search('required') == -1) {
+                    // 规则不包含 required的时候，再添加上去
+                    ls.push('required');
+                }
+            }
+            if (head.validate_showError) {
+                return {
+                    rule: ls.join(';'),
+                    msg: head.fv_msg,
+                    msgClass: 'hide',
+                    invalid: function invalid(e, b) {
+                        var label = head.label;
+                        ex.eval(head.validate_showError, { msg: label + ' : ' + b.msg });
+                    }
+                };
+            } else {
+                return {
+                    rule: ls.join(';'),
+                    msg: head.fv_msg
+                };
+            }
+        },
         update_nice: function update_nice() {
             var self = this;
             var validate_fields = {};
@@ -2528,25 +2571,34 @@ var nice_validator = {
                     };
                 }
             });
-            if ($(this.$el).hasClass('field-panel')) {
-                this.nice_validator = $(this.$el).validator({
-                    fields: validate_fields
-                    //msgShow:function($msgbox, type){
-                    //    alert('aajjyy')
-                    //},validation: function(element, result){
-                    //   alert('aaabbbb')
-                    //}
-                });
-            } else {
-                this.nice_validator = $(this.$el).find('.field-panel').validator({
-                    fields: validate_fields
-                    //msgShow:function($msgbox, type){
-                    //    alert('jjyybbb')
-                    //},validation: function(element, result){
-                    //    alert('bccbbbb')
-                    //}
-                });
-            }
+            this.nice_validator = $(this.$el).validator({
+                fields: validate_fields
+                //msgShow:function($msgbox, type){
+                //    alert('aajjyy')
+                //},validation: function(element, result){
+                //   alert('aaabbbb')
+                //}
+            });
+
+            //if($(this.$el).hasClass('field-panel')){
+            //    this.nice_validator =$(this.$el).validator({
+            //        fields: validate_fields,
+            //        //msgShow:function($msgbox, type){
+            //        //    alert('aajjyy')
+            //        //},validation: function(element, result){
+            //        //   alert('aaabbbb')
+            //        //}
+            //    });
+            //}else{
+            //    this.nice_validator =$(this.$el).find('.field-panel').validator({
+            //        fields: validate_fields,
+            //        //msgShow:function($msgbox, type){
+            //        //    alert('jjyybbb')
+            //        //},validation: function(element, result){
+            //        //    alert('bccbbbb')
+            //        //}
+            //    });
+            //}
         },
         isValid: function isValid() {
             var nice_rt = this.nice_validator.isValid();
@@ -5623,7 +5675,7 @@ __webpack_require__(155);
 var big_fields = {
     props: ['ctx'],
     data: function data() {
-        var data_row = this.ctx.row || {};
+        var data_row = ex.copy(this.ctx.row || {});
         var self = this;
         var childStore = new Vue({
             data: {
@@ -5644,7 +5696,7 @@ var big_fields = {
         };
     },
     mixins: [mix_fields_data, mix_nice_validator],
-    template: '<div class="com-form-one flex-v">\n   <div class="oprations" v-if="ops_loc==\'up\'">\n        <component v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </div>\n    <div style="overflow: auto;" class="flex-grow fields-area">\n        <div v-if="! layout" class=\'field-panel suit\' id="form" >\n            <field  v-for=\'head in normed_heads\' :key="head.name" :head="head" :row=\'row\'></field>\n        </div>\n        <template v-else>\n               <div v-if="layout.fields_group" :class="layout.class">\n                    <div v-for="group in grouped_heads_bucket" :class="\'group_\'+group.name" v-if="group.heads.length > 0">\n\n                             <div class="fields-group-title"  v-html="group.label"></div>\n                            <com-fields-table-block v-if="layout.table_grid"\n                                :heads="group.heads" :meta-head="layout" :row="row">\n                             </com-fields-table-block>\n                             <div v-else class=\'field-panel suit\' >\n                                <field  v-for=\'head in group.heads\' :key="head.name" :head="head" :row=\'row\'></field>\n                            </div>\n                    </div>\n                </div>\n                <div v-else :class="layout.class">\n                    <com-fields-table-block v-if="layout.table_grid"\n                        :heads="normed_heads" :row="row" :metaHead="layout"></com-fields-table-block>\n                </div>\n        </template>\n    </div>\n    <div class="oprations bottom" v-if="ops_loc==\'bottom\'">\n        <component v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </div>\n    </div>',
+    template: '<div class="com-form-one flex-v">\n   <div class="oprations" v-if="ops_loc==\'up\'">\n        <component v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </div>\n    <div style="overflow: auto;" class="flex-grow fields-area">\n        <div v-if="! layout" class=\'field-panel suit\' id="form" >\n            <field  v-for=\'head in normed_heads\' :key="head.name" :head="head" :row=\'row\'></field>\n        </div>\n        <template v-else>\n               <div class="" v-if="layout.fields_group" :class="layout.class">\n                    <div v-for="group in grouped_heads_bucket" :class="\'group_\'+group.name" v-if="group.heads.length > 0">\n\n                             <div class="fields-group-title"  v-html="group.label"></div>\n                            <com-fields-table-block v-if="layout.table_grid"\n                                :heads="group.heads" :meta-head="layout" :row="row">\n                             </com-fields-table-block>\n                             <div v-else class=\'field-panel suit\' >\n                                <field  v-for=\'head in group.heads\' :key="head.name" :head="head" :row=\'row\'></field>\n                            </div>\n                    </div>\n                </div>\n                <div v-else :class="layout.class">\n                    <com-fields-table-block v-if="layout.table_grid"\n                        :heads="normed_heads" :row="row" :metaHead="layout"></com-fields-table-block>\n                </div>\n        </template>\n    </div>\n    <div class="oprations bottom" v-if="ops_loc==\'bottom\'">\n        <component v-for="op in ops" :is="op.editor" :ref="\'op_\'+op.name" :head="op" @operation="on_operation(op)"></component>\n    </div>\n    </div>',
 
     //created:function(){
     //    // find head from parent table

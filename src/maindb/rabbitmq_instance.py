@@ -25,4 +25,11 @@ def notifyWithdraw(accountid, orderid):
     channel = connection.channel()
     channel.basic_publish(exchange='center.topic',
                           routing_key= 'user.withdraw',
-                          body= json.dumps({'accountid': accountid, 'orderid': orderid,}))    
+                          body= json.dumps({'accountid': accountid, 'orderid': orderid,}))   
+
+def notifyManulOutcome(msg):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
+    channel = connection.channel()
+    channel.basic_publish(exchange='center.topic',
+                          routing_key= 'backend.betclear',
+                          body=msg)

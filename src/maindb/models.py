@@ -1516,7 +1516,7 @@ class TbPeriodscore(models.Model):
     away = models.IntegerField(db_column='Away', blank=True, null=True,verbose_name='客队')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
     type = models.IntegerField(db_column='Type', blank=True, null=True)  # Field name made lowercase.
-    periodtype = models.IntegerField(db_column='PeriodType', blank=True, null=True)  # Field name made lowercase.
+    #periodtype = models.IntegerField(db_column='PeriodType', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
