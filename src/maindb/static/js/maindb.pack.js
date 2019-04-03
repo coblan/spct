@@ -1405,6 +1405,7 @@ $.validator.config({
             //return /^1[3458]\d{9}$/.test($(elem).val()) || '请检查手机号格式';
             var keys = param;
             var value = $(elem).val();
+            if (!value) return true;
             var rows = JSON.parse(value);
             var dc = {};
             ex.each(keys, function (key) {
@@ -1426,6 +1427,7 @@ $.validator.config({
         group_unique: function group_unique(elem, param) {
             var keys = param;
             var value = $(elem).val();
+            if (!value) return true;
             var rows = JSON.parse(value);
             var ls = [];
             for (var i = 0; i < rows.length; i++) {

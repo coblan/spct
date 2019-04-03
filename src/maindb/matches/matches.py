@@ -85,7 +85,7 @@ class MatchsPage(TablePage):
                 'name':'manul_outcome',
                 'label':'手动结算',
                 'com':'com-tab-table',
-                'par_field': 'matchid',
+                'pre_set': 'rt={matchid:scope.par_row.matchid}',
                 'table_ctx': OutcomeTab(crt_user=self.crt_user).get_head_context(),
                 #'visible': can_touch(TbLivescout, self.crt_user), 
             },
@@ -846,7 +846,8 @@ def out_com_save(rows,matchid):
             has_overtime = row.pop('has_overtime',False)
             has_penalty = row.pop('has_penalty',False)
             TbPeriodscore.objects.filter(matchid=matchid,scoretype__in=[1,5]).delete()
-            
+            total_home=0
+            total_away=0
             if has_overtime:
                 home = row.pop('home_40_1')
                 away = row.pop('away_40_1')
@@ -862,9 +863,13 @@ def out_com_save(rows,matchid):
                           
             home = row.get('home_6_1')
             away = row.get('away_6_1')
+            total_home += home
+            total_away += away
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_7_1')
             away = row.get('away_7_1')
+            total_home += home
+            total_away += away
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_6_5')
             away = row.get('away_6_5')
@@ -872,7 +877,9 @@ def out_com_save(rows,matchid):
             home = row.get('home_7_5')
             away = row.get('away_7_5')
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=5,home=home,away=away ,type=0) )
-        
+            
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=5,home=total_home,away=total_away ,type=0) )
+
         if row['pk'] in which_map:
             
             outcome_list = json.loads(row.get('content') ) 
@@ -893,9 +900,69 @@ def out_com_save(rows,matchid):
                 item['MarketId']= row['pk']
                 item['Score'] = '%s:%s'%(item.pop('OutcomeId'),item.pop('OutcomeId_1') )
                 send_dc['Special'].append(item)
-        
-        
-                
+        if row['pk'] == -2:
+            send_dc['IsSettleByScore']=True
+            dc = {}
+            has_overtime = row.pop('has_overtime',False)
+     
+            TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
+            total_home += 0
+            total_away += 0
+            if has_overtime:
+                home = row.pop('home_40_1')
+                away = row.pop('away_40_1')
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home,away=away)) 
+                                      
+            home = row.get('home_13_1')
+            away = row.get('away_13_1')
+            total_home += home
+            total_away += away
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=13,scoretype=1,home=home,away=away ,type=0) )
+            home = row.get('home_14_1')
+            away = row.get('away_14_1')
+            total_home += home
+            total_away += away
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=14,scoretype=1,home=home,away=away ,type=0) )
+            
+            home = row.get('home_15_1')
+            away = row.get('away_15_1')
+            total_home += home
+            total_away += away
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=15,scoretype=1,home=home,away=away ,type=0) )
+            home = row.get('home_16_1')
+            away = row.get('away_16_1')
+            total_home += home
+            total_away += away
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=16,scoretype=1,home=home,away=away ,type=0) )
+            
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
+
+        if row['pk'] == -3:
+            send_dc['IsSettleByScore']=True
+            dc = {}
+            has_overtime = row.pop('has_overtime',False)
+           
+            TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
+            total_home += 0
+            total_away += 0
+            if has_overtime:
+                home = row.pop('home_40_1')
+                away = row.pop('away_40_1')
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home,away=away)) 
+                                
+            home = row.get('home_6_1')
+            away = row.get('away_6_1')
+            total_home += home
+            total_away += away
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home,away=away ,type=0) )
+            home = row.get('home_7_1')
+            away = row.get('away_7_1')
+            total_home += home
+            total_away += away
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home,away=away ,type=0) )
+            
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
+
     TbPeriodscore.objects.bulk_create(batch_create)
     notifyManulOutcome(json.dumps(send_dc))
     

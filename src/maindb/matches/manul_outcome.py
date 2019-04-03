@@ -4,6 +4,72 @@ pop_edit_ops=[
 
 outcome_header = {
     'panel_map':{
+        -3:{
+            'heads':[
+                {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True},
+                {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True},
+                {'name':'home_7_1','label':'主队下半场得分','editor':'com-field-number','required':True},
+                {'name':'away_7_1','label':'客队下半场得分','editor':'com-field-number','required':True},
+                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                        
+                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool'},
+    
+            ],
+            'editor':'com-form-one', 
+            'layout':{
+                'table_grid':[['has_overtime'],
+                              ['home_6_1','away_6_1'],
+                              ['home_7_1','away_7_1'],
+                              ['home_40_1','away_40_1'],
+                              ],
+                #'fields_group':[
+                    #{'name':'huji','label':'基本控制','head_names':['has_overtime','has_penalty']},
+                    #{'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
+                    #{'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
+                #]
+                },
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+            'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
+        },
+        -2:{
+            'heads':[
+                {'name':'home_13_1','label':'主队第一节得分','editor':'com-field-number','required':True},
+                {'name':'away_13_1','label':'客队第一节得分','editor':'com-field-number','required':True},
+                {'name':'home_14_1','label':'主队第二节得分','editor':'com-field-number','required':True},
+                {'name':'away_14_1','label':'客队第二节得分','editor':'com-field-number','required':True},
+                {'name':'home_15_1','label':'主队第三节得分','editor':'com-field-number','required':True},
+                {'name':'away_15_1','label':'客队第三节得分','editor':'com-field-number','required':True},
+                {'name':'home_16_1','label':'主队第四节得分','editor':'com-field-number','required':True},
+                {'name':'away_16_1','label':'客队第四节得分','editor':'com-field-number','required':True},
+                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                  
+                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool'},
+               
+                
+            ],
+            'editor':'com-form-one', 
+            'layout':{
+                'table_grid':[['has_overtime'],
+                              ['home_13_1','away_13_1'],
+                              ['home_14_1','away_14_1'],
+                              ['home_15_1','away_15_1'],
+                              ['home_16_1','away_16_1'],
+                              ['home_40_1','away_40_1'],
+                              ],
+                #'fields_group':[
+                    #{'name':'huji','label':'基本控制','head_names':['has_overtime','has_penalty']},
+                    #{'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
+                    #{'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
+                #]
+                },
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+            'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
+            
+           },
         -1:{
             'heads': [ 
                 {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True},

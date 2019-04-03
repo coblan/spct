@@ -4,9 +4,8 @@ from ..models import TbMatchesBasketball, TbOddsBasketball,TbTournamentBasketbal
 from maindb.mongoInstance import updateMatchBasketMongo
 from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points,BasketTwosection
 from ..redisInstance import redisInst
-#from datetime import timezone as org_timezone
-#from django.utils.timezone import datetime
 import datetime
+from .matches import OutcomeTab
 
 class BasketMatchsPage(MatchsPage):
     
@@ -57,7 +56,14 @@ class BasketMatchsPage(MatchsPage):
                  {'fun':'filter_name','label':'玩法过滤','editor':'com-op-search',
                   'icon':'fa-refresh','btn_text':False},
              ]
-            }
+            }, {
+                'name':'manul_outcome',
+                'label':'手动结算',
+                'com':'com-tab-table',
+                'par_field': 'matchid',
+                'table_ctx': BasketOutcome(crt_user=self.crt_user).get_head_context(),
+
+            },
                   
         ]
         
@@ -70,80 +76,7 @@ class BasketMatchsPage(MatchsPage):
     class tableCls(MatchsPage.tableCls):
         sportid = 2
         model = TbMatch
-         
-        #def get_operation(self):
-            #PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
-            
-            #points_form = BasketPoints(crt_user= self.crt_user)
-
-            #towsection = BasketTwosection(crt_user=self.crt_user)
-            #ops = [
-                 #{'fun': 'pop_panel',
-                #'editor': 'com-op-btn',
-                #'panel_express':'rt="com-form-produceMatchOutcomePanel"',
-                ##'panel_express': 'rt=manul_outcome_panel_express_parse(scope.kws.panel_map,scope.kws.play_type,scope.ts.selected[0].specialcategoryid)',
-                #'label': '手动结算',
-                #'row_match': 'one_row',
-                #'ctx_express': 'var row =ex.copy(scope.ts.selected[0]); var ctx =ex.isin(row.tournamentid,[698,7557])?scope.kws.ctx_dict.towsection:scope.kws.ctx_dict.normal;ctx.row=row;ctx.row.meta_type="manul_outcome";rt=ctx',
-  
-                #'ctx_dict': {
-                    #'normal': points_form.get_head_context(),
-                    ##'Quarter': quarter.get_head_context(),
-                    ##'firstBasket': firstbasket.get_head_context(),
-                    ##'lastBasket': lastbasket.get_head_context(),
-                    ##'highest_score': highest_quarter_score_team.get_head_context(),
-                    ##'totalpoint': totalpoint.get_head_context(),
-                    ##'shot3': shot3.get_head_context(),
-                    ##'race-to-first-number-of-points': first_score.get_head_context(),
-                    #'towsection':towsection.get_head_context(),
-                    #},
-              
-                #'visible': self.permit.can_edit(),
-                #},                 
-                 
-                #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
-                #'pre_set': 'rt={isrecommend:1}', 'row_match': 'many_row', 'match_express': 'scope.row.specialcategoryid <= 0 ',
-                 #'match_msg': '只能推荐常规比赛。',
-                 #'visible': 'isrecommend' in self.permit.changeable_fields(),},
-                #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
-                 #'pre_set': 'rt={isrecommend:0}', 'row_match': 'many_row', 'match_express': 'scope.row.specialcategoryid <= 0 ',
-                 #'match_msg': '只能取消推荐常规比赛。',
-                 #'visible': 'isrecommend' in self.permit.changeable_fields()},
-                #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '走地', 'confirm_msg': '确认打开走地吗？',
-                 #'field': 'closelivebet',
-                 #'value': 0,  'visible': 'closelivebet' in self.permit.changeable_fields()},
-                #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消走地', 'confirm_msg': '确认取消走地吗？',
-                 #'field': 'closelivebet',
-                 #'value': 1, 'visible': 'closelivebet' in self.permit.changeable_fields()},
-                #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '显示', 'confirm_msg': '确认显示比赛吗？',
-                 #'field': 'ishidden',
-                 #'value': 0, 'visible': 'ishidden' in self.permit.changeable_fields()},
-                #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '隐藏', 'confirm_msg': '确认隐藏比赛吗？',
-                 #'field': 'ishidden',
-                 #'value': 1, 'visible': 'ishidden' in self.permit.changeable_fields()},
-                #{'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
-                    #'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_closelivebet_tabs",par_row:scope.ts.selected[0]})',
-                            #'visible': self.permit.can_edit(),}, 
-                 #{'fun': 'director_call', 'editor': 'com-op-btn', 
-                  #'director_name': 'basketball_quit_ticket',
-                  #'label': '退单', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
-                  #'pre_set': 'rt={PeriodType:2}',
-                  ##'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
-                 #'fields_ctx': PeriodTypeForm_form.get_head_context(),
-                 #'visible': 'ishidden' in self.permit.changeable_fields(), 
-                 #'show': 'rt=scope.ts.selected.length==0 || ex.isin(scope.ts.selected[0].specialcategoryid,[0])',},
-                #{'fun': 'director_call', 'editor': 'com-op-btn', 
-                  #'director_name': 'football_quit_ticket',
-                  #'label': '退单1', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
-                  #'pre_set': 'rt={PeriodType:1}',
-                  ##'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
-                 ##'fields_ctx': PeriodTypeForm_form.get_head_context(),
-                 #'visible': 'ishidden' in self.permit.changeable_fields(), 
-                 #'show': 'scope.ts.selected.length!=0 && ex.isin(scope.ts.selected[0].specialcategoryid,[170,171,172,174,175,176,185])',},
-
-            #]
-            #return ops
-        
+ 
         class filters(MatchsPage.tableCls.filters):
             def dict_head(self, head):
                 #head = super().dict_head(head)
@@ -158,52 +91,7 @@ class BasketMatchsPage(MatchsPage):
             
 
 class BasketMatchForm(MatchForm):
-    proc_map = {
-        0: BasketPoints,
-        170: Quarter,
-        171: FirstBasket,
-        172: LastBasket,
-        174: HightestQuarterScore,
-        175: TotalPoints,
-        176: Shot3Points,
-        185: FirstReachScore,
-        #2: NumberOfCorner,
-    }    
-    #tournamentid=698
-    
-    #class Meta(MatchForm.Meta):
-        #model = TbMatch
-        #exclude = ['marketstatus', 'maineventid']
-    #field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','q1score','q2score','q3score','q4score','overtimescore']
-    #readonly=['q1score','q2score','q3score','q4score','overtimescore']
-    
-    #def updateMongo(self): 
-        #match = self.instance
-        #dc = {
-            #'MatchID': match.matchid,
-            #'IsRecommend': match.isrecommend,
-            #'IsHidden': match.ishidden,
-            #'CloseLiveBet': match.closelivebet, 
-            #'Team1ZH': match.team1zh,
-            #'Team2ZH': match.team2zh,
-            #'StatusCode': match.statuscode,
-            #'Period1Score': match.period1score,
-            #'MatchScore': match.matchscore,
-            #'Winner': match.winner,
-            #'MatchDate':match.matchdate.replace(tzinfo=datetime.timezone.utc) ,#datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
-            #'PreMatchDate':match.prematchdate.replace(tzinfo=datetime.timezone.utc) , #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),            
-        #}
-        
-        #updateMatchBasketMongo(dc) 
-    
-    #def proc_redis(self): 
-        #if 'closelivebet' in self.changed_data:
-            #if self.instance.closelivebet == 0:
-                #redisInst.delete('Backend:Basketball:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid})
-            #else:
-                #redisInst.set('Backend:Basketball:match:closelivebet:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
-                              #60 * 1000 * 60 * 24 * 7)
-                
+          
     def save_form(self):
         msg = []
         if self.kw.get('meta_type') == 'manul_outcome':
@@ -224,7 +112,25 @@ class BasketMatchForm(MatchForm):
         self.proc_redis()
         return {'msg': msg,}  
    
-
+@director_view('basketball.manul_outcome')
+class BasketOutcome(OutcomeTab):
+    def inn_filter(self, query):
+        # 291 是篮球的
+        return query.filter(enabled=True,marketid__in = [291])
+    
+    def get_rows(self):
+        if self.kw.get('matchid'):
+            match = TbMatch.objects.get(matchid = self.kw.get('matchid'))
+            if match.tournamentid == 698:
+                bf = [
+                    {'marketid':'','pk':-3,'marketname':'score','marketnamezh':'比分型'}
+                ]
+            else:
+                bf = [
+                    {'marketid':'','pk':-2,'marketname':'score','marketnamezh':'比分型'}
+                ]
+        rows = super(OutcomeTab,self).get_rows()
+        return bf+rows
 
 @director_view('basketball_quit_ticket')
 def basketball_quit_ticket(rows, new_row): 
