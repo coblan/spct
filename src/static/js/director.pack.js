@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 137);
+/******/ 	return __webpack_require__(__webpack_require__.s = 139);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -472,15 +472,6 @@ var baseInput = exports.baseInput = {
         props: ['name', 'row', 'kw'],
         template: '<logo-input :up_url="kw.up_url" :web_url.sync="row[name]" :id="\'id_\'+name"></logo-input>'
     },
-    'com-field-picture': {
-        props: ['row', 'head'],
-        template: '<div class="picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></img-uploador></div>',
-        methods: {
-            on_uploader_click: function on_uploader_click() {
-                $(this.$el).find('.virtual_input').focus();
-            }
-        }
-    },
     sim_select: {
         props: ['row', 'head'],
         data: function data() {
@@ -702,6 +693,14 @@ var _multi_chosen = __webpack_require__(27);
 
 var multi_chosen = _interopRequireWildcard(_multi_chosen);
 
+var _field_picture = __webpack_require__(142);
+
+var field_picture = _interopRequireWildcard(_field_picture);
+
+var _field_multi_picture = __webpack_require__(141);
+
+var field_multi_picture = _interopRequireWildcard(_field_multi_picture);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
@@ -799,7 +798,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 //import {use_color} from '../dosome/color.js'
 //import {load_js,load_css} from '../dosome/pkg.js'
-__webpack_require__(108);
+__webpack_require__(109);
 //import * as fb from './field_base.js'
 //import * as js from './adapt.js'
 
@@ -894,8 +893,8 @@ var field_single_select2 = _interopRequireWildcard(_field_single_select);
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 __webpack_require__(3);
-__webpack_require__(113);
 __webpack_require__(114);
+__webpack_require__(115);
 
 /***/ }),
 /* 7 */
@@ -938,8 +937,8 @@ var filter_main = _interopRequireWildcard(_main);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(124);
-__webpack_require__(123);
+__webpack_require__(126);
+__webpack_require__(125);
 
 /***/ }),
 /* 8 */
@@ -954,8 +953,8 @@ var auto_more = _interopRequireWildcard(_auto_more);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(127);
-__webpack_require__(128);
+__webpack_require__(129);
+__webpack_require__(130);
 
 /***/ }),
 /* 9 */,
@@ -1905,7 +1904,7 @@ img-uploador
 <<<<
 */
 
-__webpack_require__(109);
+__webpack_require__(110);
 
 var fl = {
     read: function read(file, callback) {
@@ -2574,7 +2573,7 @@ popUrlListen:
 <-<
  */
 
-__webpack_require__(110);
+__webpack_require__(111);
 
 var ln = {
     history_handle: function history_handle(obj) {
@@ -2929,7 +2928,7 @@ function order_by_key(array, key) {
 
 var _basic = __webpack_require__(2);
 
-__webpack_require__(111);
+__webpack_require__(112);
 
 var table_fields = {
     props: ['heads', 'row', 'inputWidth', 'labelWidth'],
@@ -3158,7 +3157,7 @@ Vue.component('datetime', {
 "use strict";
 
 
-__webpack_require__(112);
+__webpack_require__(113);
 
 /***/ }),
 /* 43 */
@@ -3222,7 +3221,7 @@ Vue.component('com-field-search-select', search_select);
 "use strict";
 
 
-__webpack_require__(115);
+__webpack_require__(116);
 
 var sim_select = {
     props: ['row', 'head'],
@@ -3243,7 +3242,7 @@ var sim_select = {
             parStore: ex.vueParStore(this)
         };
     },
-    template: '<div class="com-field-select">\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  :class="[\'form-control input-sm\',{novalue:row[head.name]==null}] ">\n                <option v-if="head.required"  :value="null" disabled selected style=\'display:none;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-else  :value="null" selected style="color: #b8b8b8" class="placeholder" v-text="head.placeholder"></option>\n\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
+    template: '<div class="com-field-select">\n            <span v-if=\'head.readonly\' v-text=\'get_label(head.options,row[head.name])\'></span>\n            <select v-else v-model=\'row[head.name]\'  :id="\'id_\'+head.name" :name="head.name"  :class="[\'form-control input-sm\',{ novalue: ! is_select}] ">\n                <option v-if="head.required"  :value="undefined" disabled selected style=\'display:none;\' class="placeholder" v-text="head.placeholder"></option>\n            \t<option v-else  :value="undefined" selected style="color: #b8b8b8" class="placeholder" v-text="head.placeholder"></option>\n\n            \t<option v-for=\'opt in normed_options\' :value=\'opt.value\' v-text=\'opt.label\'></option>\n            </select>\n            </div>',
     mounted: function mounted() {
         // 如果有默认值，
         if (this.head.default && !this.row[this.head.name]) {
@@ -3267,12 +3266,6 @@ var sim_select = {
     watch: {
         my_value: function my_value(v) {
             this.$emit('input', v);
-            //if(this.head.remote_options){
-            //    var self=this
-            //    ex.director_call(this.head.remote_options,{row:self.row},function(data){
-            //        Vue.set(self.head,'options' ,data)
-            //    })
-            //}
         }
     },
 
@@ -3282,7 +3275,7 @@ var sim_select = {
         },
         is_select: function is_select() {
             var v = this.row[this.head.name];
-            return v != undefined;
+            return v !== undefined;
         },
         place_value: function place_value() {
             var v = this.row[this.head.name];
@@ -3347,7 +3340,7 @@ Vue.component('com-field-select', sim_select);
 "use strict";
 
 
-__webpack_require__(116);
+__webpack_require__(117);
 
 var field_sigle_chosen = {
     props: ['row', 'head'],
@@ -3402,16 +3395,32 @@ Vue.component('com-field-single-chosen', field_sigle_chosen);
 "use strict";
 
 
-__webpack_require__(117);
+__webpack_require__(118);
 
 var field_sigle_chosen = {
     props: ['row', 'head'],
-    template: '<div  :style="head.style">\n    <span v-if="head.readonly" v-text="label_text" ></span>\n    <input type="text" :name="head.name" style="display: none" v-model="row[head.name]">\n    <div v-show="!head.readonly">\n        <select  class="select2 field-single-select2 form-control" :id="\'id_\'+head.name">\n             <option  :value="undefined" ></option>\n            <option v-for="option in order_options" :value="option.value" v-text="option.label"></option>\n        </select>\n    </div>\n\n    </div>',
+    template: '<div :class="[\'com-field-single-select2\',head.class]" >\n    <span v-if="head.readonly" v-text="label_text" ></span>\n    <input type="text" :name="head.name" style="display: none" v-model="row[head.name]">\n    <div v-show="!head.readonly">\n        <select  class="select2 field-single-select2 form-control" :id="\'id_\'+head.name">\n             <option  :value="undefined" ></option>\n            <option v-for="option in inn_options" :value="option.value" v-text="option.label"></option>\n        </select>\n    </div>\n\n    </div>',
+    data: function data() {
+        var self = this;
+        return {
+            inn_options: this.head.options,
+            parStore: ex.vueParStore(self)
+        };
+    },
     mounted: function mounted() {
         var self = this;
-        ex.load_css('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css');
-        ex.load_js('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js', function () {
 
+        if (this.head.style) {
+            ex.append_css(this.head.style);
+        }
+        ex.load_css('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css');
+        var prom1 = ex.load_js('https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js');
+        if (this.head.dyn_options) {
+            var prom2 = ex.eval(this.head.dyn_options, { row: this.row, vc: this });
+        } else {
+            var prom2 = 1;
+        }
+        Promise.all([prom1, prom2]).then(function () {
             $(self.$el).find('select').select2({
                 placeholder: self.head.placeholder || '请选择',
                 allowClear: true
@@ -3426,6 +3435,8 @@ var field_sigle_chosen = {
                 }
             });
         });
+
+        ex.vueEventRout(this);
     },
     watch: {
         value: function value(nv) {
@@ -3437,26 +3448,36 @@ var field_sigle_chosen = {
             return this.row[this.head.name];
         },
         label_text: function label_text() {
-            var opt = ex.findone(this.head.options, { value: this.row[this.head.name] });
+            var opt = ex.findone(this.inn_options, { value: this.row[this.head.name] });
             if (opt) {
                 return opt.label;
             } else {
                 return '';
             }
-        },
-        order_options: function order_options() {
-            if (this.head.order) {
-                return ex.sortOrder(this.head.options, 'label');
-            } else {
-                return this.head.options;
-            }
         }
+        //order_options:function(){
+        //    if (this.head.order){
+        //        return ex.sortOrder(this.inn_options,'label')
+        //    }else{
+        //        return this.inn_options
+        //    }
+        //}
     },
     methods: {
         setValue: function setValue(val) {
             $(this.$el).find('.select2').val(val);
             $(this.$el).find('.select2').trigger('change');
             Vue.set(this.row, this.head.name, val);
+            this.$emit('input', val);
+        },
+        update_options: function update_options(director_name, data) {
+            var self = this;
+            return new Promise(function (resolve, reject) {
+                ex.director_call(director_name, data).then(function (resp) {
+                    self.inn_options = resp;
+                    resolve();
+                });
+            });
         }
     }
 };
@@ -3685,7 +3706,7 @@ Vue.component('com-field-int-bool', field_bool);
 "use strict";
 
 
-__webpack_require__(118);
+__webpack_require__(119);
 
 var multi_chosen = {
     props: ['value', 'options', 'placeholder'],
@@ -3844,7 +3865,7 @@ Vue.component('com-table', com_table);
 "use strict";
 
 
-__webpack_require__(119);
+__webpack_require__(120);
 
 var com_date_range = {
     props: ['head', 'search_args'],
@@ -3907,7 +3928,7 @@ Vue.component('com-search-filter', com_search);
 "use strict";
 
 
-__webpack_require__(120);
+__webpack_require__(121);
 
 var com_search = {
     props: ['head', 'search_args'],
@@ -3948,11 +3969,11 @@ Vue.component('com-search-select', com_search);
 "use strict";
 
 
-__webpack_require__(121);
+__webpack_require__(122);
 
 var com_select = {
     props: ['head', 'search_args', 'config'],
-    template: '<select v-model=\'search_args[head.name]\' :class="[\'form-control input-sm com-filter-select\',{novalue:search_args[head.name]==undefined}]" >\n        <option class="fake-placeholder" v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option class="fake-placeholder" v-else :value="undefined" v-text=\'head.label\' ></option>\n        <!--<option :value="null" disabled >-&#45;&#45;</option>-->\n        <option v-for=\'option in orderBy(options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
+    template: '<select v-model=\'search_args[head.name]\' :class="[\'form-control input-sm com-filter-select\',{novalue:search_args[head.name]===undefined}]" >\n        <option class="fake-placeholder" v-if="head.forbid_select_null" :value="undefined" disabled v-text=\'head.label\'></option>\n        <option class="fake-placeholder" v-else :value="undefined" v-text=\'head.label\' ></option>\n        <option v-for=\'option in orderBy(options,"label")\' :value="option.value" v-text=\'option.label\'></option>\n    </select>\n    ',
     data: function data() {
         var self = this;
         return {
@@ -4284,9 +4305,11 @@ Vue.component('com-filter-search-select', com_select);
 "use strict";
 
 
+__webpack_require__(123);
+
 var com_select = {
     props: ['head', 'search_args'],
-    template: '<com-field-single-select2 ref="select2" :head="head" :row="search_args"></com-field-single-select2>\n    ',
+    template: '<div class="com-filter-single-select2">\n        <com-field-single-select2 ref="select2" :head="head" :row="search_args"></com-field-single-select2>\n    </div>\n    ',
     data: function data() {
         var self = this;
         return {
@@ -4412,7 +4435,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 "use strict";
 
 
-__webpack_require__(122);
+__webpack_require__(124);
 
 var com_month = {
     props: ['head', 'search_args'],
@@ -4713,7 +4736,7 @@ var filter_single_select2 = _interopRequireWildcard(_filter_single_select);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(125); /**
+__webpack_require__(127); /**
                                       >5>front/table.rst>
                                      
                                       table的过滤器
@@ -4978,7 +5001,7 @@ window.table_fun = table_fun;
 "use strict";
 
 
-__webpack_require__(126);
+__webpack_require__(128);
 
 Vue.component('com-auto-more', {
     props: ['orgHeight'],
@@ -5277,7 +5300,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-filter-month .form-control[readonly] {\n  background-color: transparent; }\n", ""]);
+exports.push([module.i, ".com-filter-single-select2 select {\n  max-width: 300px; }\n", ""]);
 
 // exports
 
@@ -5291,7 +5314,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "table.fake-suit {\n  border: 1px solid #DDD;\n  border-radius: 6px; }\n  table.fake-suit th {\n    font-weight: bold;\n    background-color: #e5e5e5;\n    background-image: linear-gradient(to bottom, #f3f3f3, #e5e5e5); }\n  table.fake-suit td {\n    border-left: 1px solid #F5F5F5; }\n  table.fake-suit tr > td:first-child {\n    border-left: none; }\n  table.fake-suit tbody tr {\n    background-color: white; }\n  table.fake-suit tbody td {\n    border-top: 1px solid #E7E7E7;\n    padding-top: 3px;\n    padding-bottom: 3px; }\n  table.fake-suit tbody tr:nth-child(even) {\n    background-color: #FAFAFA; }\n  table.fake-suit tbody tr:hover {\n    background-color: #F5F5F5; }\n\n.paginator input {\n  width: 20px; }\n\n.paginator .page-input-block {\n  display: inline-block; }\n\n.paginator button {\n  vertical-align: top; }\n\n.sort-mark img {\n  width: 10px; }\n\nul.pagination li {\n  display: inline;\n  cursor: pointer; }\n\nul.pagination li span {\n  color: black;\n  float: left;\n  padding: 4px 10px;\n  text-decoration: none;\n  border: 1px solid #ddd; }\n\nul.pagination li span.active {\n  background-color: #4CAF50;\n  color: white; }\n\nul.pagination li span:hover:not(.active) {\n  background-color: #ddd; }\n\n.sortmark {\n  color: #d9d9de; }\n  .sortmark.sort-col {\n    color: black; }\n", ""]);
+exports.push([module.i, ".com-filter-month .form-control[readonly] {\n  background-color: transparent; }\n", ""]);
 
 // exports
 
@@ -5305,7 +5328,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".table-btn-group {\n  min-width: 9em; }\n", ""]);
+exports.push([module.i, "table.fake-suit {\n  border: 1px solid #DDD;\n  border-radius: 6px; }\n  table.fake-suit th {\n    font-weight: bold;\n    background-color: #e5e5e5;\n    background-image: linear-gradient(to bottom, #f3f3f3, #e5e5e5); }\n  table.fake-suit td {\n    border-left: 1px solid #F5F5F5; }\n  table.fake-suit tr > td:first-child {\n    border-left: none; }\n  table.fake-suit tbody tr {\n    background-color: white; }\n  table.fake-suit tbody td {\n    border-top: 1px solid #E7E7E7;\n    padding-top: 3px;\n    padding-bottom: 3px; }\n  table.fake-suit tbody tr:nth-child(even) {\n    background-color: #FAFAFA; }\n  table.fake-suit tbody tr:hover {\n    background-color: #F5F5F5; }\n\n.paginator input {\n  width: 20px; }\n\n.paginator .page-input-block {\n  display: inline-block; }\n\n.paginator button {\n  vertical-align: top; }\n\n.sort-mark img {\n  width: 10px; }\n\nul.pagination li {\n  display: inline;\n  cursor: pointer; }\n\nul.pagination li span {\n  color: black;\n  float: left;\n  padding: 4px 10px;\n  text-decoration: none;\n  border: 1px solid #ddd; }\n\nul.pagination li span.active {\n  background-color: #4CAF50;\n  color: white; }\n\nul.pagination li span:hover:not(.active) {\n  background-color: #ddd; }\n\n.sortmark {\n  color: #d9d9de; }\n  .sortmark.sort-col {\n    color: black; }\n", ""]);
 
 // exports
 
@@ -5319,7 +5342,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".filter-item {\n  margin: auto 0.3em; }\n\n.row-filter .bootstrap-select {\n  min-width: 10em; }\n", ""]);
+exports.push([module.i, ".table-btn-group {\n  min-width: 9em; }\n", ""]);
 
 // exports
 
@@ -5333,7 +5356,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-auto-more {\n  position: relative;\n  flex-shrink: 0;\n  flex-grow: 10; }\n  .com-auto-more .outer-wrap {\n    padding: 0.2rem;\n    transition: height .3s;\n    z-index: 100;\n    position: absolute;\n    overflow: hidden;\n    width: 100%;\n    background-color: white; }\n  .com-auto-more .inn-wrap {\n    width: 100%;\n    background-color: white;\n    padding: 0 3rem 1rem 1rem; }\n  .com-auto-more .toggle-btn {\n    display: none;\n    position: absolute;\n    z-index: 101; }\n  .com-auto-more.has-overflow .toggle-btn {\n    display: block;\n    position: absolute;\n    right: 1rem;\n    top: 0.7rem; }\n  .com-auto-more.expanded .outer-wrap {\n    border-top: 1px solid #f2f2f2;\n    box-shadow: 0px 2px 4px #9c9c9c;\n    -moz-box-shadow: 0px 2px 4px #9c9c9c;\n    -webkit-box-shadow: 0px 2px 4px #9c9c9c; }\n", ""]);
+exports.push([module.i, ".filter-item {\n  margin: auto 0.3em; }\n\n.row-filter .bootstrap-select {\n  min-width: 10em; }\n", ""]);
 
 // exports
 
@@ -5347,7 +5370,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.no-scroll-bar {\n  -ms-overflow-style: none;\n  overflow: -moz-scrollbars-none; }\n  .no-scroll-bar::-webkit-scrollbar {\n    width: 0;\n    /* 滚动条宽度为0 */\n    height: 0;\n    /* 滚动条高度为0 */\n    display: none;\n    /* 滚动条隐藏 */ }\n", ""]);
+exports.push([module.i, ".com-auto-more {\n  position: relative;\n  flex-shrink: 0;\n  flex-grow: 10; }\n  .com-auto-more .outer-wrap {\n    padding: 0.2rem;\n    transition: height .3s;\n    z-index: 100;\n    position: absolute;\n    overflow: hidden;\n    width: 100%;\n    background-color: white; }\n  .com-auto-more .inn-wrap {\n    width: 100%;\n    background-color: white;\n    padding: 0 3rem 1rem 1rem; }\n  .com-auto-more .toggle-btn {\n    display: none;\n    position: absolute;\n    z-index: 101; }\n  .com-auto-more.has-overflow .toggle-btn {\n    display: block;\n    position: absolute;\n    right: 1rem;\n    top: 0.7rem; }\n  .com-auto-more.expanded .outer-wrap {\n    border-top: 1px solid #f2f2f2;\n    box-shadow: 0px 2px 4px #9c9c9c;\n    -moz-box-shadow: 0px 2px 4px #9c9c9c;\n    -webkit-box-shadow: 0px 2px 4px #9c9c9c; }\n", ""]);
 
 // exports
 
@@ -5361,13 +5384,26 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
+exports.push([module.i, "@charset \"UTF-8\";\n.no-scroll-bar {\n  -ms-overflow-style: none;\n  overflow: -moz-scrollbars-none; }\n  .no-scroll-bar::-webkit-scrollbar {\n    width: 0;\n    /* 滚动条宽度为0 */\n    height: 0;\n    /* 滚动条高度为0 */\n    display: none;\n    /* 滚动条隐藏 */ }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
 exports.push([module.i, ".fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 100 */,
 /* 101 */,
 /* 102 */,
 /* 103 */,
@@ -5375,7 +5411,8 @@ exports.push([module.i, ".fade-enter-active, .fade-leave-active {\n  transition:
 /* 105 */,
 /* 106 */,
 /* 107 */,
-/* 108 */
+/* 108 */,
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5401,7 +5438,7 @@ if(false) {
 }
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5427,7 +5464,7 @@ if(false) {
 }
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5453,7 +5490,7 @@ if(false) {
 }
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5479,7 +5516,7 @@ if(false) {
 }
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5505,7 +5542,7 @@ if(false) {
 }
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5531,7 +5568,7 @@ if(false) {
 }
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5557,7 +5594,7 @@ if(false) {
 }
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5583,7 +5620,7 @@ if(false) {
 }
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5609,7 +5646,7 @@ if(false) {
 }
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5635,7 +5672,7 @@ if(false) {
 }
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5661,7 +5698,7 @@ if(false) {
 }
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5687,7 +5724,7 @@ if(false) {
 }
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5713,7 +5750,7 @@ if(false) {
 }
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -5739,13 +5776,39 @@ if(false) {
 }
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
 var content = __webpack_require__(93);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./filter_single_select2.scss", function() {
+			var newContent = require("!!../../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./filter_single_select2.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(94);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5765,13 +5828,13 @@ if(false) {
 }
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(94);
+var content = __webpack_require__(95);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5791,13 +5854,13 @@ if(false) {
 }
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(95);
+var content = __webpack_require__(96);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5817,13 +5880,13 @@ if(false) {
 }
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(96);
+var content = __webpack_require__(97);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5843,13 +5906,13 @@ if(false) {
 }
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(97);
+var content = __webpack_require__(98);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5869,13 +5932,13 @@ if(false) {
 }
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(98);
+var content = __webpack_require__(99);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5895,13 +5958,13 @@ if(false) {
 }
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(99);
+var content = __webpack_require__(100);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5921,15 +5984,15 @@ if(false) {
 }
 
 /***/ }),
-/* 129 */,
-/* 130 */,
 /* 131 */,
 /* 132 */,
 /* 133 */,
 /* 134 */,
 /* 135 */,
 /* 136 */,
-/* 137 */
+/* 137 */,
+/* 138 */,
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5960,6 +6023,174 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 __webpack_require__(25);
 __webpack_require__(24);
 __webpack_require__(26);
+
+/***/ }),
+/* 140 */,
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(144);
+
+Vue.component('com-field-multi-picture', {
+    props: ['row', 'head'],
+    template: '<div class="com-field-multi-picture">\n    <textarea style="display: none;" :name="head.name" id="" cols="30" rows="10" v-model="row[head.name]"></textarea>\n\n        <div style="vertical-align: top" >\n            <div v-if="!head.readonly" class="add-btn" @click="open_select_images()" style="width: 100px;height: 100px;position: relative;display: inline-block;padding: 10px">\n                <div class="inn-btn"  style="">\n                    <span class="center-vh" style="font-size: 300%;">+</span>\n                </div>\n            </div>\n            <div class="img-wrap" v-for="(imgsrc,index) in row[head.name]" @click="big_win(imgsrc)">\n                <img class="center-vh" :src="imgsrc" alt="\u56FE\u7247\u4E0D\u80FD\u52A0\u8F7D">\n                <div v-if="!head.readonly" class="close" @click=\'remove_image(index)\'><i class="fa fa-times-circle" aria-hidden="true" style="color:red;position:relative;left:30px;"></i></div>\n            </div>\n        </div>\n         <file-input v-if="!head.readonly" style="display: none"  v-model=\'img_files\'\n            accept=\'image/*\'  multiple></file-input>\n       \t</div>',
+    data: function data() {
+        return {
+            img_files: []
+        };
+    },
+    watch: {
+        img_files: function img_files(v, old) {
+            if (!v) {
+                return;
+            }
+            var self = this;
+            console.log('start upload');
+            if (v == "") {
+                return;
+            }
+            if (!self.validate(v)) {
+                return;
+            }
+            var up_url = this.head.up_url || '/d/upload?path=general_upload/images';
+            fl.uploads(v, up_url, function (url_list) {
+                if (!self.row[self.head.name]) {
+                    self.row[self.head.name] = url_list;
+                } else {
+                    self.row[self.head.name] = self.row[self.head.name].concat(url_list);
+                }
+                self.img_files = [];
+                //self.$emit('input',self.img_files)
+                self.$emit('select');
+            });
+        }
+    },
+    methods: {
+        big_win: function big_win(imgsrc) {
+            var ctx = { imgsrc: imgsrc };
+            pop_layer(ctx, 'com-pop-image', function () {}, {
+                title: false,
+                area: ['90%', '90%'],
+                shade: 0.8,
+                skin: 'img-shower',
+                shadeClose: true
+            });
+        },
+        remove_image: function remove_image(index) {
+            var image_list = this.row[this.head.name];
+            image_list.splice(index, 1);
+        },
+        validate: function validate(image_files) {
+            //重载该函数，验证文件
+
+            //if(this.cfg.maxsize){
+            //    if(img_fl.size > this.cfg.maxsize){
+            //        var msg = ex.template(cfg.tr.picture_size_excceed,{maxsize:this.cfg.maxsize})
+            //        cfg.showMsg(msg)
+            //        this.clear()
+            //        return false
+            //    }
+            //}
+            return true;
+        },
+        open_select_images: function open_select_images() {
+            console.log('before select');
+            var self = this;
+            if (!this.disable) {
+                $(this.$el).find('input[type=file]').click();
+                this.disable = true;
+                setTimeout(function () {
+                    self.disable = false;
+                }, 3000);
+            }
+            console.log('after select');
+        },
+        on_uploader_click: function on_uploader_click() {
+            $(this.$el).find('.virtual_input').focus();
+        }
+    }
+});
+
+Vue.component('com-pop-image', {
+    props: ['ctx'],
+    data: function data() {
+        return {
+            crt_view: '2d',
+            read_3d: ''
+        };
+    },
+    computed: {
+        wraped_3d: function wraped_3d() {
+            return '/3d_wrap?d3_url=' + encodeURIComponent(this.ctx.floor.img_3d);
+        }
+    },
+    methods: {
+        start_read: function start_read() {
+            this.read_3d = this.wraped_3d;
+        }
+    },
+    template: '<div class="com-pop-image"  style="position: absolute;top:0;left: 0;bottom: 0;right: 0;">\n             <img  class="center-vh" :src="ctx.imgsrc" style="max-width: 95%;max-height:95%" alt="">\n    </div>'
+});
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Vue.component('com-field-picture', {
+    props: ['row', 'head'],
+    template: '<div class="com-field-picture picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></img-uploador></div>',
+    methods: {
+        on_uploader_click: function on_uploader_click() {
+            $(this.$el).find('.virtual_input').focus();
+        }
+    }
+});
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-field-multi-picture .img-wrap {\n  display: inline-block;\n  position: relative;\n  width: 100px;\n  height: 100px;\n  vertical-align: top;\n  margin: 20px; }\n\n.com-field-multi-picture .img-wrap img {\n  max-width: 100%;\n  max-height: 100%; }\n\n.com-field-multi-picture .add-btn {\n  margin: 20px; }\n  .com-field-multi-picture .add-btn .inn-btn {\n    background-color: #e2e2e2;\n    border: 1px solid #e2e2e2;\n    width: 80px;\n    height: 80px;\n    position: relative; }\n  .com-field-multi-picture .add-btn .inn-btn:hover {\n    background-color: #efefef;\n    cursor: pointer; }\n\n.layui-layer.img-shower {\n  background-color: rgba(0, 0, 0, 0.3); }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(143);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_multi_picture.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_multi_picture.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);
