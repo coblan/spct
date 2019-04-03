@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 139);
+/******/ 	return __webpack_require__(__webpack_require__.s = 143);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -659,7 +659,7 @@ window._baseInput = baseInput;
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(85);
+var content = __webpack_require__(88);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -685,19 +685,19 @@ if(false) {
 "use strict";
 
 
-var _multi_select = __webpack_require__(28);
+var _multi_select = __webpack_require__(30);
 
 var multi_select2 = _interopRequireWildcard(_multi_select);
 
-var _multi_chosen = __webpack_require__(27);
+var _multi_chosen = __webpack_require__(29);
 
 var multi_chosen = _interopRequireWildcard(_multi_chosen);
 
-var _field_picture = __webpack_require__(142);
+var _field_picture = __webpack_require__(28);
 
 var field_picture = _interopRequireWildcard(_field_picture);
 
-var _field_multi_picture = __webpack_require__(141);
+var _field_multi_picture = __webpack_require__(27);
 
 var field_multi_picture = _interopRequireWildcard(_field_multi_picture);
 
@@ -710,39 +710,39 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 "use strict";
 
 
-var _ajax_fun = __webpack_require__(29);
+var _ajax_fun = __webpack_require__(31);
 
-var _file = __webpack_require__(34);
+var _file = __webpack_require__(36);
 
 var f = _interopRequireWildcard(_file);
 
-var _ckeditor = __webpack_require__(30);
+var _ckeditor = __webpack_require__(32);
 
 var ck = _interopRequireWildcard(_ckeditor);
 
-var _multi_sel = __webpack_require__(37);
+var _multi_sel = __webpack_require__(39);
 
 var multi = _interopRequireWildcard(_multi_sel);
 
-var _inputs = __webpack_require__(35);
+var _inputs = __webpack_require__(37);
 
 var inputs = _interopRequireWildcard(_inputs);
 
-var _link = __webpack_require__(36);
+var _link = __webpack_require__(38);
 
 var ln = _interopRequireWildcard(_link);
 
-var _com_form_btn = __webpack_require__(31);
+var _com_form_btn = __webpack_require__(33);
 
 var form_btn = _interopRequireWildcard(_com_form_btn);
 
-var _fields_base = __webpack_require__(33);
+var _fields_base = __webpack_require__(35);
 
-var _field_fun = __webpack_require__(32);
+var _field_fun = __webpack_require__(34);
 
-var _order = __webpack_require__(38);
+var _order = __webpack_require__(40);
 
-var _table_fields = __webpack_require__(39);
+var _table_fields = __webpack_require__(41);
 
 var _table_fields2 = _interopRequireDefault(_table_fields);
 
@@ -798,7 +798,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 //import {use_color} from '../dosome/color.js'
 //import {load_js,load_css} from '../dosome/pkg.js'
-__webpack_require__(109);
+__webpack_require__(113);
 //import * as fb from './field_base.js'
 //import * as js from './adapt.js'
 
@@ -842,59 +842,59 @@ window.order_by_key = _order.order_by_key;
 "use strict";
 
 
-var _date = __webpack_require__(41);
+var _date = __webpack_require__(43);
 
 var date = _interopRequireWildcard(_date);
 
-var _file_uploader = __webpack_require__(48);
+var _file_uploader = __webpack_require__(50);
 
 var file_uploaer = _interopRequireWildcard(_file_uploader);
 
-var _multi_chosen = __webpack_require__(50);
+var _multi_chosen = __webpack_require__(52);
 
 var multi_chosen = _interopRequireWildcard(_multi_chosen);
 
-var _bool = __webpack_require__(40);
+var _bool = __webpack_require__(42);
 
 var field_bool = _interopRequireWildcard(_bool);
 
-var _int_bool = __webpack_require__(49);
+var _int_bool = __webpack_require__(51);
 
 var int_bool = _interopRequireWildcard(_int_bool);
 
-var _number = __webpack_require__(51);
+var _number = __webpack_require__(53);
 
 var number = _interopRequireWildcard(_number);
 
-var _field_blocktext = __webpack_require__(42);
+var _field_blocktext = __webpack_require__(44);
 
 var field_blocktext = _interopRequireWildcard(_field_blocktext);
 
-var _field_search_select = __webpack_require__(44);
+var _field_search_select = __webpack_require__(46);
 
 var field_search_select = _interopRequireWildcard(_field_search_select);
 
-var _field_single_chosen = __webpack_require__(46);
+var _field_single_chosen = __webpack_require__(48);
 
 var field_single_chosen = _interopRequireWildcard(_field_single_chosen);
 
-var _field_select = __webpack_require__(45);
+var _field_select = __webpack_require__(47);
 
 var field_select = _interopRequireWildcard(_field_select);
 
-var _field_date = __webpack_require__(43);
+var _field_date = __webpack_require__(45);
 
 var field_date = _interopRequireWildcard(_field_date);
 
-var _field_single_select = __webpack_require__(47);
+var _field_single_select = __webpack_require__(49);
 
 var field_single_select2 = _interopRequireWildcard(_field_single_select);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 __webpack_require__(3);
-__webpack_require__(114);
-__webpack_require__(115);
+__webpack_require__(118);
+__webpack_require__(119);
 
 /***/ }),
 /* 7 */
@@ -903,42 +903,42 @@ __webpack_require__(115);
 "use strict";
 
 
-var _com_table = __webpack_require__(52);
+var _com_table = __webpack_require__(54);
 
 var com_table = _interopRequireWildcard(_com_table);
 
-var _table_fun = __webpack_require__(71);
+var _table_fun = __webpack_require__(73);
 
 var table_fun = _interopRequireWildcard(_table_fun);
 
-var _table_filter = __webpack_require__(70);
+var _table_filter = __webpack_require__(72);
 
 var table_filter = _interopRequireWildcard(_table_filter);
 
-var _table_btn = __webpack_require__(69);
+var _table_btn = __webpack_require__(71);
 
 var table_btn = _interopRequireWildcard(_table_btn);
 
-var _pagenator = __webpack_require__(67);
+var _pagenator = __webpack_require__(69);
 
 var pagenator = _interopRequireWildcard(_pagenator);
 
-var _sort_mark = __webpack_require__(68);
+var _sort_mark = __webpack_require__(70);
 
 var sort_mark = _interopRequireWildcard(_sort_mark);
 
-var _first_col = __webpack_require__(66);
+var _first_col = __webpack_require__(68);
 
 var first_col = _interopRequireWildcard(_first_col);
 
-var _main = __webpack_require__(63);
+var _main = __webpack_require__(65);
 
 var filter_main = _interopRequireWildcard(_main);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(126);
-__webpack_require__(125);
+__webpack_require__(130);
+__webpack_require__(129);
 
 /***/ }),
 /* 8 */
@@ -947,14 +947,14 @@ __webpack_require__(125);
 "use strict";
 
 
-var _auto_more = __webpack_require__(72);
+var _auto_more = __webpack_require__(74);
 
 var auto_more = _interopRequireWildcard(_auto_more);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(129);
-__webpack_require__(130);
+__webpack_require__(133);
+__webpack_require__(134);
 
 /***/ }),
 /* 9 */,
@@ -978,7 +978,7 @@ __webpack_require__(130);
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(87);
+var content = __webpack_require__(90);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1004,7 +1004,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(88);
+var content = __webpack_require__(91);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1030,7 +1030,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(89);
+var content = __webpack_require__(92);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1051,6 +1051,133 @@ if(false) {
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(112);
+
+Vue.component('com-field-multi-picture', {
+    props: ['row', 'head'],
+    template: '<div class="com-field-multi-picture">\n    <textarea style="display: none;" :name="head.name" id="" cols="30" rows="10" v-model="row[head.name]"></textarea>\n\n        <div style="vertical-align: top" >\n            <div v-if="!head.readonly" class="add-btn" @click="open_select_images()" style="width: 100px;height: 100px;position: relative;display: inline-block;padding: 10px">\n                <div class="inn-btn"  style="">\n                    <span class="center-vh" style="font-size: 300%;">+</span>\n                </div>\n            </div>\n            <div class="img-wrap" v-for="(imgsrc,index) in row[head.name]" @click="big_win(imgsrc)">\n                <img class="center-vh" :src="imgsrc" alt="\u56FE\u7247\u4E0D\u80FD\u52A0\u8F7D">\n                <div v-if="!head.readonly" class="close" @click=\'remove_image(index)\'><i class="fa fa-times-circle" aria-hidden="true" style="color:red;position:relative;left:30px;"></i></div>\n            </div>\n        </div>\n         <file-input v-if="!head.readonly" style="display: none"  v-model=\'img_files\'\n            accept=\'image/*\'  multiple></file-input>\n       \t</div>',
+    data: function data() {
+        return {
+            img_files: []
+        };
+    },
+    watch: {
+        img_files: function img_files(v, old) {
+            if (!v) {
+                return;
+            }
+            var self = this;
+            console.log('start upload');
+            if (v == "") {
+                return;
+            }
+            if (!self.validate(v)) {
+                return;
+            }
+            var up_url = this.head.up_url || '/d/upload?path=general_upload/images';
+            fl.uploads(v, up_url, function (url_list) {
+                if (!self.row[self.head.name]) {
+                    self.row[self.head.name] = url_list;
+                } else {
+                    self.row[self.head.name] = self.row[self.head.name].concat(url_list);
+                }
+                self.img_files = [];
+                //self.$emit('input',self.img_files)
+                self.$emit('select');
+            });
+        }
+    },
+    methods: {
+        big_win: function big_win(imgsrc) {
+            var ctx = { imgsrc: imgsrc };
+            pop_layer(ctx, 'com-pop-image', function () {}, {
+                title: false,
+                area: ['90%', '90%'],
+                shade: 0.8,
+                skin: 'img-shower',
+                shadeClose: true
+            });
+        },
+        remove_image: function remove_image(index) {
+            var image_list = this.row[this.head.name];
+            image_list.splice(index, 1);
+        },
+        validate: function validate(image_files) {
+            //重载该函数，验证文件
+
+            //if(this.cfg.maxsize){
+            //    if(img_fl.size > this.cfg.maxsize){
+            //        var msg = ex.template(cfg.tr.picture_size_excceed,{maxsize:this.cfg.maxsize})
+            //        cfg.showMsg(msg)
+            //        this.clear()
+            //        return false
+            //    }
+            //}
+            return true;
+        },
+        open_select_images: function open_select_images() {
+            console.log('before select');
+            var self = this;
+            if (!this.disable) {
+                $(this.$el).find('input[type=file]').click();
+                this.disable = true;
+                setTimeout(function () {
+                    self.disable = false;
+                }, 3000);
+            }
+            console.log('after select');
+        },
+        on_uploader_click: function on_uploader_click() {
+            $(this.$el).find('.virtual_input').focus();
+        }
+    }
+});
+
+Vue.component('com-pop-image', {
+    props: ['ctx'],
+    data: function data() {
+        return {
+            crt_view: '2d',
+            read_3d: ''
+        };
+    },
+    computed: {
+        wraped_3d: function wraped_3d() {
+            return '/3d_wrap?d3_url=' + encodeURIComponent(this.ctx.floor.img_3d);
+        }
+    },
+    methods: {
+        start_read: function start_read() {
+            this.read_3d = this.wraped_3d;
+        }
+    },
+    template: '<div class="com-pop-image"  style="position: absolute;top:0;left: 0;bottom: 0;right: 0;">\n             <img  class="center-vh" :src="ctx.imgsrc" style="max-width: 95%;max-height:95%" alt="">\n    </div>'
+});
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Vue.component('com-field-picture', {
+    props: ['row', 'head'],
+    template: '<div class="com-field-picture picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></img-uploador></div>',
+    methods: {
+        on_uploader_click: function on_uploader_click() {
+            $(this.$el).find('.virtual_input').focus();
+        }
+    }
+});
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1173,7 +1300,7 @@ var multi_chosen = {
 Vue.component('com-field-multi-chosen', multi_chosen);
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1241,7 +1368,7 @@ var field_sigle_chosen = {
 Vue.component('com-field-multi-select2', field_sigle_chosen);
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1358,7 +1485,7 @@ if (!window.__uploading_mark) {
 }
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1580,7 +1707,7 @@ var edit_level = {
 };
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1610,7 +1737,7 @@ Vue.component('com-form-btn', {
 });
 
 /***/ }),
-/* 32 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1742,7 +1869,7 @@ var field_fun = exports.field_fun = {
 window.field_fun = field_fun;
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1800,7 +1927,7 @@ var field_base = exports.field_base = {
 };
 
 /***/ }),
-/* 34 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1904,7 +2031,7 @@ img-uploador
 <<<<
 */
 
-__webpack_require__(110);
+__webpack_require__(114);
 
 var fl = {
     read: function read(file, callback) {
@@ -2339,7 +2466,7 @@ Vue.component('logo-input', {
 window.fl = fl;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2495,7 +2622,7 @@ var check_box = {
 Vue.component('com-check-box', check_box);
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2573,7 +2700,7 @@ popUrlListen:
 <-<
  */
 
-__webpack_require__(111);
+__webpack_require__(115);
 
 var ln = {
     history_handle: function history_handle(obj) {
@@ -2795,7 +2922,7 @@ var ln = {
 window.ln = ln;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2882,7 +3009,7 @@ Vue.component('tow-col-sel', {
 });
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2920,7 +3047,7 @@ function order_by_key(array, key) {
 }
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2928,7 +3055,7 @@ function order_by_key(array, key) {
 
 var _basic = __webpack_require__(2);
 
-__webpack_require__(112);
+__webpack_require__(116);
 
 var table_fields = {
     props: ['heads', 'row', 'inputWidth', 'labelWidth'],
@@ -2944,7 +3071,7 @@ var table_fields = {
 Vue.component('com-table-fields', table_fields);
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2966,7 +3093,7 @@ var field_bool = {
 Vue.component('com-field-bool', field_bool);
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3151,16 +3278,16 @@ Vue.component('datetime', {
 });
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(113);
+__webpack_require__(117);
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3173,7 +3300,7 @@ var field_date = {
 Vue.component('com-field-date', field_date);
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3215,13 +3342,13 @@ var search_select = {
 Vue.component('com-field-search-select', search_select);
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(116);
+__webpack_require__(120);
 
 var sim_select = {
     props: ['row', 'head'],
@@ -3334,13 +3461,13 @@ var sim_select = {
 Vue.component('com-field-select', sim_select);
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(117);
+__webpack_require__(121);
 
 var field_sigle_chosen = {
     props: ['row', 'head'],
@@ -3389,13 +3516,13 @@ var field_sigle_chosen = {
 Vue.component('com-field-single-chosen', field_sigle_chosen);
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(118);
+__webpack_require__(122);
 
 var field_sigle_chosen = {
     props: ['row', 'head'],
@@ -3485,7 +3612,7 @@ var field_sigle_chosen = {
 Vue.component('com-field-single-select2', field_sigle_chosen);
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3666,7 +3793,7 @@ Vue.component('com-file-uploader', com_file_uploader);
 Vue.component('field-file-uploader', field_file_uploader);
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3700,13 +3827,13 @@ var field_bool = {
 Vue.component('com-field-int-bool', field_bool);
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(119);
+__webpack_require__(123);
 
 var multi_chosen = {
     props: ['value', 'options', 'placeholder'],
@@ -3747,7 +3874,7 @@ var multi_chosen = {
 Vue.component('multi-chosen', multi_chosen);
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3762,7 +3889,7 @@ var number = {
 Vue.component('com-field-number', number);
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3859,13 +3986,13 @@ var com_table = {
 Vue.component('com-table', com_table);
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(120);
+__webpack_require__(124);
 
 var com_date_range = {
     props: ['head', 'search_args'],
@@ -3903,7 +4030,7 @@ Vue.component('com-date-range-filter', com_date_range);
 //}
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3922,13 +4049,13 @@ var com_search = {
 Vue.component('com-search-filter', com_search);
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(121);
+__webpack_require__(125);
 
 var com_search = {
     props: ['head', 'search_args'],
@@ -3963,13 +4090,13 @@ var com_search = {
 Vue.component('com-search-select', com_search);
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(122);
+__webpack_require__(126);
 
 var com_select = {
     props: ['head', 'search_args', 'config'],
@@ -4097,7 +4224,7 @@ function compare(temp1, temp2) {
 }
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4189,7 +4316,7 @@ window.com_date_datetimefield_range = com_date_datetimefield_range;
 Vue.component('com-date-datetimefield-range-filter', com_date_datetimefield_range);
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4271,7 +4398,7 @@ var com_datetime_range = {
 Vue.component('com-filter-datetime-range', com_datetime_range);
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4285,7 +4412,7 @@ var com_date = {
 Vue.component('com-filter-date', com_date);
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4299,13 +4426,13 @@ var com_select = {
 Vue.component('com-filter-search-select', com_select);
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(123);
+__webpack_require__(127);
 
 var com_select = {
     props: ['head', 'search_args'],
@@ -4344,7 +4471,7 @@ var com_select = {
 Vue.component('com-filter-single-select2', com_select);
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4408,34 +4535,34 @@ var filter_input = {
 Vue.component('com-filter-text', filter_input);
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _datetime_range = __webpack_require__(58);
+var _datetime_range = __webpack_require__(60);
 
 var datetime_range = _interopRequireWildcard(_datetime_range);
 
-var _month = __webpack_require__(64);
+var _month = __webpack_require__(66);
 
 var month = _interopRequireWildcard(_month);
 
-var _filter_text = __webpack_require__(62);
+var _filter_text = __webpack_require__(64);
 
 var filter_text = _interopRequireWildcard(_filter_text);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(124);
+__webpack_require__(128);
 
 var com_month = {
     props: ['head', 'search_args'],
@@ -4445,7 +4572,7 @@ var com_month = {
 Vue.component('com-filter-month', com_month);
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4523,7 +4650,7 @@ function compare(temp1, temp2) {
 }
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4554,7 +4681,7 @@ var first_col = {
 Vue.component('first-col', first_col);
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4592,7 +4719,7 @@ Vue.component('paginator', {
 });
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4672,7 +4799,7 @@ Vue.component('sort-mark', {
     } });
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4692,51 +4819,51 @@ var com_table_btn = {
 Vue.component('com-table-btn', com_table_btn);
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _com_search = __webpack_require__(54);
+var _com_search = __webpack_require__(56);
 
 var com_search = _interopRequireWildcard(_com_search);
 
-var _com_search_select = __webpack_require__(55);
+var _com_search_select = __webpack_require__(57);
 
 var com_search_select = _interopRequireWildcard(_com_search_select);
 
-var _com_select = __webpack_require__(56);
+var _com_select = __webpack_require__(58);
 
 var com_select = _interopRequireWildcard(_com_select);
 
-var _com_date_range = __webpack_require__(53);
+var _com_date_range = __webpack_require__(55);
 
 var com_date_range = _interopRequireWildcard(_com_date_range);
 
-var _related_select = __webpack_require__(65);
+var _related_select = __webpack_require__(67);
 
 var related_select = _interopRequireWildcard(_related_select);
 
-var _date_datetimefield_range = __webpack_require__(57);
+var _date_datetimefield_range = __webpack_require__(59);
 
 var date_datetimefield_range = _interopRequireWildcard(_date_datetimefield_range);
 
-var _filter_search_select = __webpack_require__(60);
+var _filter_search_select = __webpack_require__(62);
 
 var filter_search_select = _interopRequireWildcard(_filter_search_select);
 
-var _filter_date = __webpack_require__(59);
+var _filter_date = __webpack_require__(61);
 
 var filter_date = _interopRequireWildcard(_filter_date);
 
-var _filter_single_select = __webpack_require__(61);
+var _filter_single_select = __webpack_require__(63);
 
 var filter_single_select2 = _interopRequireWildcard(_filter_single_select);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(127); /**
+__webpack_require__(131); /**
                                       >5>front/table.rst>
                                      
                                       table的过滤器
@@ -4828,7 +4955,7 @@ var sim_filter_with_search = {
 Vue.component('sel-search-filter', sim_filter_with_search);
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4995,13 +5122,13 @@ var table_fun = exports.table_fun = {
 window.table_fun = table_fun;
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(128);
+__webpack_require__(132);
 
 Vue.component('com-auto-more', {
     props: ['orgHeight'],
@@ -5038,36 +5165,8 @@ Vue.component('com-auto-more', {
 });
 
 /***/ }),
-/* 73 */,
-/* 74 */,
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "@charset \"UTF-8\";\n/*\r\nclass的用法：\r\n================\r\nfield-panel  用于nice validator 捕捉\r\n\r\nsuit 模仿django-suit的样式，例如有线条\r\nplain 普通模式，没有线条\r\n\r\nmsg-bottom  nice validator的位置在下面，默认在右侧\r\n\r\n*/\n.error {\n  color: red; }\n\n.field_input {\n  position: relative; }\n\n.field-panel.no-label label {\n  display: none; }\n\n.field-panel.suit {\n  background-color: #F5F5F5;\n  margin: auto;\n  padding: 20px 30px;\n  position: relative;\n  border: 1px solid #D9D9D9; }\n  .field-panel.suit:after {\n    content: '';\n    display: block;\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    bottom: 0px;\n    width: 210px;\n    border-radius: 6px;\n    background-color: #fff;\n    z-index: 0; }\n  .field-panel.suit .form-group.field {\n    display: flex;\n    align-items: stretch;\n    margin-bottom: 0; }\n    .field-panel.suit .form-group.field .help-text {\n      padding: 13px 3px;\n      color: #999;\n      font-style: italic;\n      font-size: 0.9em; }\n    .field-panel.suit .form-group.field .label-content {\n      word-break: break-all; }\n    .field-panel.suit .form-group.field .field_input {\n      flex-grow: 0;\n      align-self: center;\n      padding: 5px 20px;\n      /*.ckeditor{*/\n      /*padding: 20px;*/\n      /*}*/ }\n      .field-panel.suit .form-group.field .field_input input[type=text], .field-panel.suit .form-group.field .field_input input[type=number] {\n        width: 23rem; }\n      .field-panel.suit .form-group.field .field_input input {\n        /*max-width:25em;*/ }\n      .field-panel.suit .form-group.field .field_input .multi-chosen {\n        width: 30em; }\n    .field-panel.suit .form-group.field:first-child .control-label {\n      border-top: 5px solid #FFF; }\n    .field-panel.suit .form-group.field .control-label {\n      width: 180px;\n      text-align: right;\n      padding: 5px 30px 5px 0;\n      z-index: 100;\n      flex-shrink: 0;\n      border-top: 1px solid #EEE;\n      padding-top: 10px; }\n\n.field-panel.plain {\n  background-color: white;\n  margin: auto;\n  padding: 20px 30px;\n  position: relative; }\n  .field-panel.plain .form-group.field {\n    display: flex;\n    align-items: flex-start;\n    margin-bottom: 10px; }\n  .field-panel.plain .field_input {\n    flex-grow: 0;\n    padding: 5px 10px;\n    width: 20em; }\n  .field-panel.plain .control-label {\n    min-width: 8em;\n    text-align: right;\n    padding: 5px 10px;\n    padding-top: 8px;\n    flex-shrink: 0;\n    font-weight: 400; }\n\n.field-panel .msg-box.n-right {\n  position: absolute;\n  left: 100%;\n  transform: translateX(40px); }\n\n.field-panel.msg-bottom .msg-box.n-right {\n  position: absolute;\n  left: 3px;\n  bottom: 0;\n  transform: translateX(0); }\n\n.field_input {\n  position: relative; }\n\n._tow-col-sel select {\n  min-height: 7em; }\n\nimg.img-uploador {\n  max-width: 100px;\n  max-height: 100px; }\n\n.req_star {\n  color: red;\n  position: absolute; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 76 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".img-uploader input {\n  display: none !important; }\n\n.img-uploader.disable {\n  background-color: #e3e2e1; }\n\n.up_wrap {\n  position: relative;\n  text-align: center;\n  border: 2px dashed #ccc;\n  background: #FDFDFD;\n  width: 200px; }\n\n.closeDiv {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  background-color: #ffffff; }\n\n.choose {\n  display: inline-block;\n  text-decoration: none;\n  padding: 5px;\n  border: 1px solid #0092F2;\n  border-radius: 4px;\n  font-size: 14px;\n  color: #0092F2;\n  cursor: pointer; }\n\n.choose:hover, .choose:active {\n  text-decoration: none;\n  color: #0092F2; }\n\n.close {\n  position: absolute;\n  top: 5px;\n  right: 10px;\n  cursor: pointer;\n  font-size: 14px;\n  color: #242424; }\n\n.logoImg {\n  max-height: 100% !important;\n  max-width: 100% !important;\n  /*margin-top: 5px;*/\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%); }\n\n.img-crop .total-wrap {\n  padding: 30px; }\n\n.img-crop .crop-wrap {\n  max-width: 100%;\n  max-height: 90%;\n  overflow: hidden; }\n\n.img-crop .crop-img {\n  max-width: 100%;\n  max-height: 100%; }\n", ""]);
-
-// exports
-
-
-/***/ }),
+/* 75 */,
+/* 76 */,
 /* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5076,7 +5175,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n#_load_frame_wrap {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  display: none;\n  z-index: 1000;\n  background: rgba(88, 88, 88, 0.2); }\n\n#_load_frame {\n  width: 100%;\n  height: 100%;\n  border-top: 1px solid #b6b6b6; }\n\n.imiddle {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  -ms-transform: translate(-50%, -50%);\n  /* IE 9 */\n  -moz-transform: translate(-50%, -50%);\n  /* Firefox */\n  -webkit-transform: translate(-50%, -50%);\n  /* Safari 和 Chrome */\n  -o-transform: translate(-50%, -50%);\n  text-align: center;\n  /*display: table;*/\n  z-index: 10000; }\n\n.popframe {\n  max-width: 90vw;\n  max-height: 90vh;\n  min-width: 40em;\n  min-height: 30em;\n  border: 2px solid #8e8e8e;\n  -moz-box-shadow: 2px 2px 20px #d0d0d0;\n  -webkit-box-shadow: 2px 2px 20px #b7b698;\n  box-shadow: 2px 2px 20px #828282;\n  border-radius: 1em;\n  padding-top: 3em;\n  background-color: white; }\n  .popframe .close-btn {\n    position: absolute;\n    right: 0.5em;\n    top: 0.4em;\n    cursor: pointer; }\n  .popframe .title {\n    position: absolute;\n    top: 0.5em;\n    left: 50%;\n    transform: translate(-50%, 0); }\n", ""]);
+exports.push([module.i, ".com-field-multi-picture .img-wrap {\n  display: inline-block;\n  position: relative;\n  width: 100px;\n  height: 100px;\n  vertical-align: top;\n  margin: 20px; }\n\n.com-field-multi-picture .img-wrap img {\n  max-width: 100%;\n  max-height: 100%; }\n\n.com-field-multi-picture .add-btn {\n  margin: 20px; }\n  .com-field-multi-picture .add-btn .inn-btn {\n    background-color: #e2e2e2;\n    border: 1px solid #e2e2e2;\n    width: 80px;\n    height: 80px;\n    position: relative; }\n  .com-field-multi-picture .add-btn .inn-btn:hover {\n    background-color: #efefef;\n    cursor: pointer; }\n\n.layui-layer.img-shower {\n  background-color: rgba(0, 0, 0, 0.3); }\n", ""]);
 
 // exports
 
@@ -5090,7 +5189,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".table-fields {\n  /*.field-input{*/\n  /*margin-bottom: 1em;*/\n  /*position: relative;*/\n  /*}*/ }\n  .table-fields td.field-label {\n    padding-bottom: 1em;\n    padding-right: 1em;\n    text-align: right; }\n  .table-fields .help-text {\n    position: absolute;\n    right: -1.2em;\n    top: -0.2em; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n/*\r\nclass的用法：\r\n================\r\nfield-panel  用于nice validator 捕捉\r\n\r\nsuit 模仿django-suit的样式，例如有线条\r\nplain 普通模式，没有线条\r\n\r\nmsg-bottom  nice validator的位置在下面，默认在右侧\r\n\r\n*/\n.error {\n  color: red; }\n\n.field_input {\n  position: relative; }\n\n.field-panel.no-label label {\n  display: none; }\n\n.field-panel.suit {\n  background-color: #F5F5F5;\n  margin: auto;\n  padding: 20px 30px;\n  position: relative;\n  border: 1px solid #D9D9D9; }\n  .field-panel.suit:after {\n    content: '';\n    display: block;\n    position: absolute;\n    top: 0px;\n    left: 0px;\n    bottom: 0px;\n    width: 210px;\n    border-radius: 6px;\n    background-color: #fff;\n    z-index: 0; }\n  .field-panel.suit .form-group.field {\n    display: flex;\n    align-items: stretch;\n    margin-bottom: 0; }\n    .field-panel.suit .form-group.field .help-text {\n      padding: 13px 3px;\n      color: #999;\n      font-style: italic;\n      font-size: 0.9em; }\n    .field-panel.suit .form-group.field .label-content {\n      word-break: break-all; }\n    .field-panel.suit .form-group.field .field_input {\n      flex-grow: 0;\n      align-self: center;\n      padding: 5px 20px;\n      /*.ckeditor{*/\n      /*padding: 20px;*/\n      /*}*/ }\n      .field-panel.suit .form-group.field .field_input input[type=text], .field-panel.suit .form-group.field .field_input input[type=number] {\n        width: 23rem; }\n      .field-panel.suit .form-group.field .field_input input {\n        /*max-width:25em;*/ }\n      .field-panel.suit .form-group.field .field_input .multi-chosen {\n        width: 30em; }\n    .field-panel.suit .form-group.field:first-child .control-label {\n      border-top: 5px solid #FFF; }\n    .field-panel.suit .form-group.field .control-label {\n      width: 180px;\n      text-align: right;\n      padding: 5px 30px 5px 0;\n      z-index: 100;\n      flex-shrink: 0;\n      border-top: 1px solid #EEE;\n      padding-top: 10px; }\n\n.field-panel.plain {\n  background-color: white;\n  margin: auto;\n  padding: 20px 30px;\n  position: relative; }\n  .field-panel.plain .form-group.field {\n    display: flex;\n    align-items: flex-start;\n    margin-bottom: 10px; }\n  .field-panel.plain .field_input {\n    flex-grow: 0;\n    padding: 5px 10px;\n    width: 20em; }\n  .field-panel.plain .control-label {\n    min-width: 8em;\n    text-align: right;\n    padding: 5px 10px;\n    padding-top: 8px;\n    flex-shrink: 0;\n    font-weight: 400; }\n\n.field-panel .msg-box.n-right {\n  position: absolute;\n  left: 100%;\n  transform: translateX(40px); }\n\n.field-panel.msg-bottom .msg-box.n-right {\n  position: absolute;\n  left: 3px;\n  bottom: 0;\n  transform: translateX(0); }\n\n.field_input {\n  position: relative; }\n\n._tow-col-sel select {\n  min-height: 7em; }\n\nimg.img-uploador {\n  max-width: 100px;\n  max-height: 100px; }\n\n.req_star {\n  color: red;\n  position: absolute; }\n", ""]);
 
 // exports
 
@@ -5104,7 +5203,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".field_input textarea {\n  width: 400px;\n  height: 100px; }\n", ""]);
+exports.push([module.i, ".img-uploader input {\n  display: none !important; }\n\n.img-uploader.disable {\n  background-color: #e3e2e1; }\n\n.up_wrap {\n  position: relative;\n  text-align: center;\n  border: 2px dashed #ccc;\n  background: #FDFDFD;\n  width: 200px; }\n\n.closeDiv {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  background-color: #ffffff; }\n\n.choose {\n  display: inline-block;\n  text-decoration: none;\n  padding: 5px;\n  border: 1px solid #0092F2;\n  border-radius: 4px;\n  font-size: 14px;\n  color: #0092F2;\n  cursor: pointer; }\n\n.choose:hover, .choose:active {\n  text-decoration: none;\n  color: #0092F2; }\n\n.close {\n  position: absolute;\n  top: 5px;\n  right: 10px;\n  cursor: pointer;\n  font-size: 14px;\n  color: #242424; }\n\n.logoImg {\n  max-height: 100% !important;\n  max-width: 100% !important;\n  /*margin-top: 5px;*/\n  position: absolute;\n  left: 50%;\n  top: 50%;\n  transform: translate(-50%, -50%); }\n\n.img-crop .total-wrap {\n  padding: 30px; }\n\n.img-crop .crop-wrap {\n  max-width: 100%;\n  max-height: 90%;\n  overflow: hidden; }\n\n.img-crop .crop-img {\n  max-width: 100%;\n  max-height: 100%; }\n", ""]);
 
 // exports
 
@@ -5118,7 +5217,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-field {\n  max-width: 30em; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n#_load_frame_wrap {\n  position: fixed;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  display: none;\n  z-index: 1000;\n  background: rgba(88, 88, 88, 0.2); }\n\n#_load_frame {\n  width: 100%;\n  height: 100%;\n  border-top: 1px solid #b6b6b6; }\n\n.imiddle {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -50%);\n  -ms-transform: translate(-50%, -50%);\n  /* IE 9 */\n  -moz-transform: translate(-50%, -50%);\n  /* Firefox */\n  -webkit-transform: translate(-50%, -50%);\n  /* Safari 和 Chrome */\n  -o-transform: translate(-50%, -50%);\n  text-align: center;\n  /*display: table;*/\n  z-index: 10000; }\n\n.popframe {\n  max-width: 90vw;\n  max-height: 90vh;\n  min-width: 40em;\n  min-height: 30em;\n  border: 2px solid #8e8e8e;\n  -moz-box-shadow: 2px 2px 20px #d0d0d0;\n  -webkit-box-shadow: 2px 2px 20px #b7b698;\n  box-shadow: 2px 2px 20px #828282;\n  border-radius: 1em;\n  padding-top: 3em;\n  background-color: white; }\n  .popframe .close-btn {\n    position: absolute;\n    right: 0.5em;\n    top: 0.4em;\n    cursor: pointer; }\n  .popframe .title {\n    position: absolute;\n    top: 0.5em;\n    left: 50%;\n    transform: translate(-50%, 0); }\n", ""]);
 
 // exports
 
@@ -5132,7 +5231,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-field-date {\n  max-width: 20em; }\n", ""]);
+exports.push([module.i, ".table-fields {\n  /*.field-input{*/\n  /*margin-bottom: 1em;*/\n  /*position: relative;*/\n  /*}*/ }\n  .table-fields td.field-label {\n    padding-bottom: 1em;\n    padding-right: 1em;\n    text-align: right; }\n  .table-fields .help-text {\n    position: absolute;\n    right: -1.2em;\n    top: -0.2em; }\n", ""]);
 
 // exports
 
@@ -5146,7 +5245,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-field-select .novalue {\n  color: #b7b7b7; }\n\n.com-field-select option {\n  color: black; }\n", ""]);
+exports.push([module.i, ".field_input textarea {\n  width: 400px;\n  height: 100px; }\n", ""]);
 
 // exports
 
@@ -5160,7 +5259,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".chosen-container-single a.chosen-single {\n  height: 30px;\n  line-height: 28px;\n  border: 1px solid #d2d6de;\n  border-radius: 0; }\n", ""]);
+exports.push([module.i, ".com-field {\n  max-width: 30em; }\n", ""]);
 
 // exports
 
@@ -5174,7 +5273,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".select2-container--open {\n  z-index: 99999999; }\n", ""]);
+exports.push([module.i, ".com-field-date {\n  max-width: 20em; }\n", ""]);
 
 // exports
 
@@ -5188,7 +5287,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".file-uploader .item img {\n  max-width: 300px;\n  cursor: pointer; }\n\n.file-uploader .wrap {\n  display: inline-block; }\n\n.file-uploader .sortable {\n  display: flex;\n  flex-wrap: wrap; }\n  .file-uploader .sortable li {\n    display: block;\n    margin: 0.5em;\n    padding: 0.3em;\n    position: relative; }\n    .file-uploader .sortable li:hover .remove-btn {\n      visibility: visible; }\n    .file-uploader .sortable li .file-wrap {\n      width: 10em;\n      height: 12em;\n      border: 2em solid #68abff;\n      text-align: center;\n      padding: 1em 0;\n      background-color: white;\n      box-shadow: 10px 10px 5px #888888;\n      color: #68abff;\n      display: table-cell;\n      vertical-align: middle;\n      cursor: pointer; }\n      .file-uploader .sortable li .file-wrap .file-type {\n        font-size: 250%;\n        font-weight: 700;\n        text-transform: uppercase; }\n\n.file-uploader .remove-btn {\n  font-size: 2em;\n  position: absolute;\n  top: -1em;\n  right: 0.3em;\n  visibility: hidden; }\n  .file-uploader .remove-btn i {\n    color: red; }\n\n.file-uploader-btn-plus {\n  display: inline-block;\n  vertical-align: top; }\n  .file-uploader-btn-plus .inn-btn {\n    width: 5em;\n    height: 5em;\n    display: table-cell;\n    text-align: center;\n    vertical-align: middle;\n    border: 1px solid #e1e1e1;\n    cursor: pointer; }\n    .file-uploader-btn-plus .inn-btn span {\n      font-size: 300%; }\n    .file-uploader-btn-plus .inn-btn:hover {\n      background-color: #e1e1e1; }\n", ""]);
+exports.push([module.i, ".com-field-select .novalue {\n  color: #b7b7b7; }\n\n.com-field-select option {\n  color: black; }\n", ""]);
 
 // exports
 
@@ -5202,7 +5301,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "div.chosen-drop > ul.chosen-results > li.result-selected {\n  display: none; }\n\n.chosen-container-multi {\n  width: 420px; }\n", ""]);
+exports.push([module.i, ".chosen-container-single a.chosen-single {\n  height: 30px;\n  line-height: 28px;\n  border: 1px solid #d2d6de;\n  border-radius: 0; }\n", ""]);
 
 // exports
 
@@ -5216,7 +5315,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".head-item {\n  display: inline-block; }\n  .head-item.brand {\n    font-size: 150%;\n    width: 10em;\n    padding: 0.3em 1em; }\n\n#menu ._expand_menu {\n  margin-top: 1em; }\n  #menu ._expand_menu > ul > li {\n    margin-bottom: 0.2em; }\n", ""]);
+exports.push([module.i, ".select2-container--open {\n  z-index: 99999999; }\n", ""]);
 
 // exports
 
@@ -5230,7 +5329,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".scss-comment {\n  content: 'director/scss/tab_group.scss'; }\n\n.nav.tabs {\n  align-items: center; }\n  .nav.tabs li {\n    display: inline-block;\n    margin-left: 5px;\n    vertical-align: bottom; }\n    .nav.tabs li:first-child {\n      margin-left: 15px; }\n    .nav.tabs li > a {\n      padding: 8px 18px 5px 18px;\n      background-color: #f6f7f8;\n      border: 1px solid #dddddd;\n      border-bottom: none;\n      position: relative;\n      margin-bottom: 1px;\n      font-weight: 400; }\n      .nav.tabs li > a:hover {\n        text-underline: blue;\n        text-decoration: underline; }\n  .nav.tabs li.active > a:after {\n    content: ' ';\n    position: absolute;\n    width: 100%;\n    height: 4px;\n    bottom: -4px;\n    left: 0;\n    background-color: #eee; }\n  .nav.tabs li.active a {\n    text-decoration: none;\n    background-color: #eeeeee;\n    font-weight: 500; }\n  .nav.tabs li.active a:hover {\n    border-bottom: none;\n    text-decoration: none;\n    color: #a2a2a2;\n    font-weight: 500;\n    background-color: #eeeeee; }\n", ""]);
+exports.push([module.i, ".file-uploader .item img {\n  max-width: 300px;\n  cursor: pointer; }\n\n.file-uploader .wrap {\n  display: inline-block; }\n\n.file-uploader .sortable {\n  display: flex;\n  flex-wrap: wrap; }\n  .file-uploader .sortable li {\n    display: block;\n    margin: 0.5em;\n    padding: 0.3em;\n    position: relative; }\n    .file-uploader .sortable li:hover .remove-btn {\n      visibility: visible; }\n    .file-uploader .sortable li .file-wrap {\n      width: 10em;\n      height: 12em;\n      border: 2em solid #68abff;\n      text-align: center;\n      padding: 1em 0;\n      background-color: white;\n      box-shadow: 10px 10px 5px #888888;\n      color: #68abff;\n      display: table-cell;\n      vertical-align: middle;\n      cursor: pointer; }\n      .file-uploader .sortable li .file-wrap .file-type {\n        font-size: 250%;\n        font-weight: 700;\n        text-transform: uppercase; }\n\n.file-uploader .remove-btn {\n  font-size: 2em;\n  position: absolute;\n  top: -1em;\n  right: 0.3em;\n  visibility: hidden; }\n  .file-uploader .remove-btn i {\n    color: red; }\n\n.file-uploader-btn-plus {\n  display: inline-block;\n  vertical-align: top; }\n  .file-uploader-btn-plus .inn-btn {\n    width: 5em;\n    height: 5em;\n    display: table-cell;\n    text-align: center;\n    vertical-align: middle;\n    border: 1px solid #e1e1e1;\n    cursor: pointer; }\n    .file-uploader-btn-plus .inn-btn span {\n      font-size: 300%; }\n    .file-uploader-btn-plus .inn-btn:hover {\n      background-color: #e1e1e1; }\n", ""]);
 
 // exports
 
@@ -5244,7 +5343,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "[v-cloak] {\n  display: none; }\n", ""]);
+exports.push([module.i, "div.chosen-drop > ul.chosen-results > li.result-selected {\n  display: none; }\n\n.chosen-container-multi {\n  width: 420px; }\n", ""]);
 
 // exports
 
@@ -5258,7 +5357,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-date-range-filter {\n  width: 30rem;\n  position: relative; }\n  .com-date-range-filter .com-date {\n    width: 14rem; }\n", ""]);
+exports.push([module.i, ".head-item {\n  display: inline-block; }\n  .head-item.brand {\n    font-size: 150%;\n    width: 10em;\n    padding: 0.3em 1em; }\n\n#menu ._expand_menu {\n  margin-top: 1em; }\n  #menu ._expand_menu > ul > li {\n    margin-bottom: 0.2em; }\n", ""]);
 
 // exports
 
@@ -5272,7 +5371,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".search-select {\n  width: 200px; }\n  .search-select .el-input-group__append {\n    padding-left: 1px;\n    padding-right: 4px; }\n  .search-select .input-with-select input {\n    height: 30px; }\n\n.el-dropdown-menu .active-search-item {\n  color: blue; }\n", ""]);
+exports.push([module.i, ".scss-comment {\n  content: 'director/scss/tab_group.scss'; }\n\n.nav.tabs {\n  align-items: center; }\n  .nav.tabs li {\n    display: inline-block;\n    margin-left: 5px;\n    vertical-align: bottom; }\n    .nav.tabs li:first-child {\n      margin-left: 15px; }\n    .nav.tabs li > a {\n      padding: 8px 18px 5px 18px;\n      background-color: #f6f7f8;\n      border: 1px solid #dddddd;\n      border-bottom: none;\n      position: relative;\n      margin-bottom: 1px;\n      font-weight: 400; }\n      .nav.tabs li > a:hover {\n        text-underline: blue;\n        text-decoration: underline; }\n  .nav.tabs li.active > a:after {\n    content: ' ';\n    position: absolute;\n    width: 100%;\n    height: 4px;\n    bottom: -4px;\n    left: 0;\n    background-color: #eee; }\n  .nav.tabs li.active a {\n    text-decoration: none;\n    background-color: #eeeeee;\n    font-weight: 500; }\n  .nav.tabs li.active a:hover {\n    border-bottom: none;\n    text-decoration: none;\n    color: #a2a2a2;\n    font-weight: 500;\n    background-color: #eeeeee; }\n", ""]);
 
 // exports
 
@@ -5286,7 +5385,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-filter-select {\n  max-width: 25em; }\n  .com-filter-select.novalue {\n    color: #aaaaaa; }\n  .com-filter-select .fake-placeholder {\n    color: #aaaaaa; }\n  .com-filter-select option {\n    color: black; }\n", ""]);
+exports.push([module.i, "[v-cloak] {\n  display: none; }\n", ""]);
 
 // exports
 
@@ -5300,7 +5399,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-filter-single-select2 select {\n  max-width: 300px; }\n", ""]);
+exports.push([module.i, ".com-date-range-filter {\n  width: 30rem;\n  position: relative; }\n  .com-date-range-filter .com-date {\n    width: 14rem; }\n", ""]);
 
 // exports
 
@@ -5314,7 +5413,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-filter-month .form-control[readonly] {\n  background-color: transparent; }\n", ""]);
+exports.push([module.i, ".search-select {\n  width: 200px; }\n  .search-select .el-input-group__append {\n    padding-left: 1px;\n    padding-right: 4px; }\n  .search-select .input-with-select input {\n    height: 30px; }\n\n.el-dropdown-menu .active-search-item {\n  color: blue; }\n", ""]);
 
 // exports
 
@@ -5328,7 +5427,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "table.fake-suit {\n  border: 1px solid #DDD;\n  border-radius: 6px; }\n  table.fake-suit th {\n    font-weight: bold;\n    background-color: #e5e5e5;\n    background-image: linear-gradient(to bottom, #f3f3f3, #e5e5e5); }\n  table.fake-suit td {\n    border-left: 1px solid #F5F5F5; }\n  table.fake-suit tr > td:first-child {\n    border-left: none; }\n  table.fake-suit tbody tr {\n    background-color: white; }\n  table.fake-suit tbody td {\n    border-top: 1px solid #E7E7E7;\n    padding-top: 3px;\n    padding-bottom: 3px; }\n  table.fake-suit tbody tr:nth-child(even) {\n    background-color: #FAFAFA; }\n  table.fake-suit tbody tr:hover {\n    background-color: #F5F5F5; }\n\n.paginator input {\n  width: 20px; }\n\n.paginator .page-input-block {\n  display: inline-block; }\n\n.paginator button {\n  vertical-align: top; }\n\n.sort-mark img {\n  width: 10px; }\n\nul.pagination li {\n  display: inline;\n  cursor: pointer; }\n\nul.pagination li span {\n  color: black;\n  float: left;\n  padding: 4px 10px;\n  text-decoration: none;\n  border: 1px solid #ddd; }\n\nul.pagination li span.active {\n  background-color: #4CAF50;\n  color: white; }\n\nul.pagination li span:hover:not(.active) {\n  background-color: #ddd; }\n\n.sortmark {\n  color: #d9d9de; }\n  .sortmark.sort-col {\n    color: black; }\n", ""]);
+exports.push([module.i, ".com-filter-select {\n  max-width: 25em; }\n  .com-filter-select.novalue {\n    color: #aaaaaa; }\n  .com-filter-select .fake-placeholder {\n    color: #aaaaaa; }\n  .com-filter-select option {\n    color: black; }\n", ""]);
 
 // exports
 
@@ -5342,7 +5441,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".table-btn-group {\n  min-width: 9em; }\n", ""]);
+exports.push([module.i, ".com-filter-single-select2 select {\n  max-width: 300px; }\n", ""]);
 
 // exports
 
@@ -5356,7 +5455,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".filter-item {\n  margin: auto 0.3em; }\n\n.row-filter .bootstrap-select {\n  min-width: 10em; }\n", ""]);
+exports.push([module.i, ".com-filter-month .form-control[readonly] {\n  background-color: transparent; }\n", ""]);
 
 // exports
 
@@ -5370,7 +5469,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-auto-more {\n  position: relative;\n  flex-shrink: 0;\n  flex-grow: 10; }\n  .com-auto-more .outer-wrap {\n    padding: 0.2rem;\n    transition: height .3s;\n    z-index: 100;\n    position: absolute;\n    overflow: hidden;\n    width: 100%;\n    background-color: white; }\n  .com-auto-more .inn-wrap {\n    width: 100%;\n    background-color: white;\n    padding: 0 3rem 1rem 1rem; }\n  .com-auto-more .toggle-btn {\n    display: none;\n    position: absolute;\n    z-index: 101; }\n  .com-auto-more.has-overflow .toggle-btn {\n    display: block;\n    position: absolute;\n    right: 1rem;\n    top: 0.7rem; }\n  .com-auto-more.expanded .outer-wrap {\n    border-top: 1px solid #f2f2f2;\n    box-shadow: 0px 2px 4px #9c9c9c;\n    -moz-box-shadow: 0px 2px 4px #9c9c9c;\n    -webkit-box-shadow: 0px 2px 4px #9c9c9c; }\n", ""]);
+exports.push([module.i, "table.fake-suit {\n  border: 1px solid #DDD;\n  border-radius: 6px; }\n  table.fake-suit th {\n    font-weight: bold;\n    background-color: #e5e5e5;\n    background-image: linear-gradient(to bottom, #f3f3f3, #e5e5e5); }\n  table.fake-suit td {\n    border-left: 1px solid #F5F5F5; }\n  table.fake-suit tr > td:first-child {\n    border-left: none; }\n  table.fake-suit tbody tr {\n    background-color: white; }\n  table.fake-suit tbody td {\n    border-top: 1px solid #E7E7E7;\n    padding-top: 3px;\n    padding-bottom: 3px; }\n  table.fake-suit tbody tr:nth-child(even) {\n    background-color: #FAFAFA; }\n  table.fake-suit tbody tr:hover {\n    background-color: #F5F5F5; }\n\n.paginator input {\n  width: 20px; }\n\n.paginator .page-input-block {\n  display: inline-block; }\n\n.paginator button {\n  vertical-align: top; }\n\n.sort-mark img {\n  width: 10px; }\n\nul.pagination li {\n  display: inline;\n  cursor: pointer; }\n\nul.pagination li span {\n  color: black;\n  float: left;\n  padding: 4px 10px;\n  text-decoration: none;\n  border: 1px solid #ddd; }\n\nul.pagination li span.active {\n  background-color: #4CAF50;\n  color: white; }\n\nul.pagination li span:hover:not(.active) {\n  background-color: #ddd; }\n\n.sortmark {\n  color: #d9d9de; }\n  .sortmark.sort-col {\n    color: black; }\n", ""]);
 
 // exports
 
@@ -5384,7 +5483,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.no-scroll-bar {\n  -ms-overflow-style: none;\n  overflow: -moz-scrollbars-none; }\n  .no-scroll-bar::-webkit-scrollbar {\n    width: 0;\n    /* 滚动条宽度为0 */\n    height: 0;\n    /* 滚动条高度为0 */\n    display: none;\n    /* 滚动条隐藏 */ }\n", ""]);
+exports.push([module.i, ".table-btn-group {\n  min-width: 9em; }\n", ""]);
 
 // exports
 
@@ -5398,27 +5497,95 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
+exports.push([module.i, ".filter-item {\n  margin: auto 0.3em; }\n\n.row-filter .bootstrap-select {\n  min-width: 10em; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-auto-more {\n  position: relative;\n  flex-shrink: 0;\n  flex-grow: 10; }\n  .com-auto-more .outer-wrap {\n    padding: 0.2rem;\n    transition: height .3s;\n    z-index: 100;\n    position: absolute;\n    overflow: hidden;\n    width: 100%;\n    background-color: white; }\n  .com-auto-more .inn-wrap {\n    width: 100%;\n    background-color: white;\n    padding: 0 3rem 1rem 1rem; }\n  .com-auto-more .toggle-btn {\n    display: none;\n    position: absolute;\n    z-index: 101; }\n  .com-auto-more.has-overflow .toggle-btn {\n    display: block;\n    position: absolute;\n    right: 1rem;\n    top: 0.7rem; }\n  .com-auto-more.expanded .outer-wrap {\n    border-top: 1px solid #f2f2f2;\n    box-shadow: 0px 2px 4px #9c9c9c;\n    -moz-box-shadow: 0px 2px 4px #9c9c9c;\n    -webkit-box-shadow: 0px 2px 4px #9c9c9c; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, "@charset \"UTF-8\";\n.no-scroll-bar {\n  -ms-overflow-style: none;\n  overflow: -moz-scrollbars-none; }\n  .no-scroll-bar::-webkit-scrollbar {\n    width: 0;\n    /* 滚动条宽度为0 */\n    height: 0;\n    /* 滚动条高度为0 */\n    display: none;\n    /* 滚动条隐藏 */ }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
 exports.push([module.i, ".fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 101 */,
-/* 102 */,
-/* 103 */,
 /* 104 */,
 /* 105 */,
 /* 106 */,
 /* 107 */,
 /* 108 */,
-/* 109 */
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(75);
+var content = __webpack_require__(77);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_multi_picture.scss", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_multi_picture.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(78);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5438,13 +5605,13 @@ if(false) {
 }
 
 /***/ }),
-/* 110 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(76);
+var content = __webpack_require__(79);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5464,13 +5631,13 @@ if(false) {
 }
 
 /***/ }),
-/* 111 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(77);
+var content = __webpack_require__(80);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5490,13 +5657,13 @@ if(false) {
 }
 
 /***/ }),
-/* 112 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(78);
+var content = __webpack_require__(81);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5516,13 +5683,13 @@ if(false) {
 }
 
 /***/ }),
-/* 113 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(79);
+var content = __webpack_require__(82);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5542,13 +5709,13 @@ if(false) {
 }
 
 /***/ }),
-/* 114 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(80);
+var content = __webpack_require__(83);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5568,13 +5735,13 @@ if(false) {
 }
 
 /***/ }),
-/* 115 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(81);
+var content = __webpack_require__(84);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5594,13 +5761,13 @@ if(false) {
 }
 
 /***/ }),
-/* 116 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(82);
+var content = __webpack_require__(85);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5620,13 +5787,13 @@ if(false) {
 }
 
 /***/ }),
-/* 117 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(83);
+var content = __webpack_require__(86);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5646,13 +5813,13 @@ if(false) {
 }
 
 /***/ }),
-/* 118 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(84);
+var content = __webpack_require__(87);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5672,13 +5839,13 @@ if(false) {
 }
 
 /***/ }),
-/* 119 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(86);
+var content = __webpack_require__(89);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5698,13 +5865,13 @@ if(false) {
 }
 
 /***/ }),
-/* 120 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(90);
+var content = __webpack_require__(93);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5724,13 +5891,13 @@ if(false) {
 }
 
 /***/ }),
-/* 121 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(91);
+var content = __webpack_require__(94);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5750,13 +5917,13 @@ if(false) {
 }
 
 /***/ }),
-/* 122 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(92);
+var content = __webpack_require__(95);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5776,13 +5943,13 @@ if(false) {
 }
 
 /***/ }),
-/* 123 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(93);
+var content = __webpack_require__(96);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5802,13 +5969,13 @@ if(false) {
 }
 
 /***/ }),
-/* 124 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(94);
+var content = __webpack_require__(97);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5828,13 +5995,13 @@ if(false) {
 }
 
 /***/ }),
-/* 125 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(95);
+var content = __webpack_require__(98);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5854,13 +6021,13 @@ if(false) {
 }
 
 /***/ }),
-/* 126 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(96);
+var content = __webpack_require__(99);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5880,13 +6047,13 @@ if(false) {
 }
 
 /***/ }),
-/* 127 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(97);
+var content = __webpack_require__(100);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5906,13 +6073,13 @@ if(false) {
 }
 
 /***/ }),
-/* 128 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(98);
+var content = __webpack_require__(101);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5932,13 +6099,13 @@ if(false) {
 }
 
 /***/ }),
-/* 129 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(99);
+var content = __webpack_require__(102);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5958,13 +6125,13 @@ if(false) {
 }
 
 /***/ }),
-/* 130 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(100);
+var content = __webpack_require__(103);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5984,15 +6151,15 @@ if(false) {
 }
 
 /***/ }),
-/* 131 */,
-/* 132 */,
-/* 133 */,
-/* 134 */,
 /* 135 */,
 /* 136 */,
 /* 137 */,
 /* 138 */,
-/* 139 */
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6023,174 +6190,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 __webpack_require__(25);
 __webpack_require__(24);
 __webpack_require__(26);
-
-/***/ }),
-/* 140 */,
-/* 141 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-__webpack_require__(144);
-
-Vue.component('com-field-multi-picture', {
-    props: ['row', 'head'],
-    template: '<div class="com-field-multi-picture">\n    <textarea style="display: none;" :name="head.name" id="" cols="30" rows="10" v-model="row[head.name]"></textarea>\n\n        <div style="vertical-align: top" >\n            <div v-if="!head.readonly" class="add-btn" @click="open_select_images()" style="width: 100px;height: 100px;position: relative;display: inline-block;padding: 10px">\n                <div class="inn-btn"  style="">\n                    <span class="center-vh" style="font-size: 300%;">+</span>\n                </div>\n            </div>\n            <div class="img-wrap" v-for="(imgsrc,index) in row[head.name]" @click="big_win(imgsrc)">\n                <img class="center-vh" :src="imgsrc" alt="\u56FE\u7247\u4E0D\u80FD\u52A0\u8F7D">\n                <div v-if="!head.readonly" class="close" @click=\'remove_image(index)\'><i class="fa fa-times-circle" aria-hidden="true" style="color:red;position:relative;left:30px;"></i></div>\n            </div>\n        </div>\n         <file-input v-if="!head.readonly" style="display: none"  v-model=\'img_files\'\n            accept=\'image/*\'  multiple></file-input>\n       \t</div>',
-    data: function data() {
-        return {
-            img_files: []
-        };
-    },
-    watch: {
-        img_files: function img_files(v, old) {
-            if (!v) {
-                return;
-            }
-            var self = this;
-            console.log('start upload');
-            if (v == "") {
-                return;
-            }
-            if (!self.validate(v)) {
-                return;
-            }
-            var up_url = this.head.up_url || '/d/upload?path=general_upload/images';
-            fl.uploads(v, up_url, function (url_list) {
-                if (!self.row[self.head.name]) {
-                    self.row[self.head.name] = url_list;
-                } else {
-                    self.row[self.head.name] = self.row[self.head.name].concat(url_list);
-                }
-                self.img_files = [];
-                //self.$emit('input',self.img_files)
-                self.$emit('select');
-            });
-        }
-    },
-    methods: {
-        big_win: function big_win(imgsrc) {
-            var ctx = { imgsrc: imgsrc };
-            pop_layer(ctx, 'com-pop-image', function () {}, {
-                title: false,
-                area: ['90%', '90%'],
-                shade: 0.8,
-                skin: 'img-shower',
-                shadeClose: true
-            });
-        },
-        remove_image: function remove_image(index) {
-            var image_list = this.row[this.head.name];
-            image_list.splice(index, 1);
-        },
-        validate: function validate(image_files) {
-            //重载该函数，验证文件
-
-            //if(this.cfg.maxsize){
-            //    if(img_fl.size > this.cfg.maxsize){
-            //        var msg = ex.template(cfg.tr.picture_size_excceed,{maxsize:this.cfg.maxsize})
-            //        cfg.showMsg(msg)
-            //        this.clear()
-            //        return false
-            //    }
-            //}
-            return true;
-        },
-        open_select_images: function open_select_images() {
-            console.log('before select');
-            var self = this;
-            if (!this.disable) {
-                $(this.$el).find('input[type=file]').click();
-                this.disable = true;
-                setTimeout(function () {
-                    self.disable = false;
-                }, 3000);
-            }
-            console.log('after select');
-        },
-        on_uploader_click: function on_uploader_click() {
-            $(this.$el).find('.virtual_input').focus();
-        }
-    }
-});
-
-Vue.component('com-pop-image', {
-    props: ['ctx'],
-    data: function data() {
-        return {
-            crt_view: '2d',
-            read_3d: ''
-        };
-    },
-    computed: {
-        wraped_3d: function wraped_3d() {
-            return '/3d_wrap?d3_url=' + encodeURIComponent(this.ctx.floor.img_3d);
-        }
-    },
-    methods: {
-        start_read: function start_read() {
-            this.read_3d = this.wraped_3d;
-        }
-    },
-    template: '<div class="com-pop-image"  style="position: absolute;top:0;left: 0;bottom: 0;right: 0;">\n             <img  class="center-vh" :src="ctx.imgsrc" style="max-width: 95%;max-height:95%" alt="">\n    </div>'
-});
-
-/***/ }),
-/* 142 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Vue.component('com-field-picture', {
-    props: ['row', 'head'],
-    template: '<div class="com-field-picture picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></img-uploador></div>',
-    methods: {
-        on_uploader_click: function on_uploader_click() {
-            $(this.$el).find('.virtual_input').focus();
-        }
-    }
-});
-
-/***/ }),
-/* 143 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".com-field-multi-picture .img-wrap {\n  display: inline-block;\n  position: relative;\n  width: 100px;\n  height: 100px;\n  vertical-align: top;\n  margin: 20px; }\n\n.com-field-multi-picture .img-wrap img {\n  max-width: 100%;\n  max-height: 100%; }\n\n.com-field-multi-picture .add-btn {\n  margin: 20px; }\n  .com-field-multi-picture .add-btn .inn-btn {\n    background-color: #e2e2e2;\n    border: 1px solid #e2e2e2;\n    width: 80px;\n    height: 80px;\n    position: relative; }\n  .com-field-multi-picture .add-btn .inn-btn:hover {\n    background-color: #efefef;\n    cursor: pointer; }\n\n.layui-layer.img-shower {\n  background-color: rgba(0, 0, 0, 0.3); }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 144 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(143);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_multi_picture.scss", function() {
-			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/sass-loader/lib/loader.js!./field_multi_picture.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
 
 /***/ })
 /******/ ]);
