@@ -148,6 +148,7 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
          ('TbLimitusergroup',model_read_permit(TbLimitusergroup),model_to_name(TbLimitusergroup),'model'),
          ('TbLimitusergroup.edit',model_full_permit(TbLimitusergroup),model_to_name(TbLimitusergroup),'model'),
          ('risk.RiskcontrolSetting','','','single'),
+         ('member.chum_user','','','single'), # 流失用户
 
            ]
 

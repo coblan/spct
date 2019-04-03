@@ -100,6 +100,12 @@ def account_tab(self):
          'par_field': 'accountid',
          'table_ctx': MatchesStatisticsTab(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbMatches, self.crt_user)},
+        {'name':'BetFullRecordTab',
+         'label':'限额记录',
+         'com':'com-tab-table',
+         'pre_set':'rt={accountid:scope.par_row.accountid}',
+         'table_ctx': BetFullRecordTab(crt_user=self.crt_user).get_head_context(),
+         }
     ]
     dc = {
         'account_tabs':evalue_container(ls)
@@ -463,7 +469,7 @@ class ModifyBetFullRecord(ModelFields):
                         item.save()
                         break
             else:
-                TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,consumeamount = add_amount,consumestatus=1,rftype=3,rfid=0,content='后台管理员限额调整')
+                TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,consumeamount = add_amount,consumestatus=1,rftype=3,rfid=0,content='后台管理员限额调整')
                 
             #cashflow, moenycategory = (1, 4) if self.changed_amount > 0 else (0, 34)
             #before_amount = self.instance.amount
@@ -593,6 +599,26 @@ class MatchesStatisticsTab(MatchesStatisticsPage.tableCls):
         names = []
 
 
+class BetFullRecordTab(WithAccoutInnFilter):
+    model = TbBetfullrecord
+    exclude = []
+    fields_sort=['consumeamount','amount','rftype','consumestatus','content','createtime',]
+    
+    class filters(RowFilter):
+        range_fields=['createtime']
+    
+    def dict_head(self, head):
+        width_dc = {
+            'createtime':150,
+            'content':200,
+        }
+        if width_dc.get(head['name']):
+            head['width'] = width_dc.get(head['name'])
+        return head
+
+
+
+
 director.update({
     'account': AccountPage.tableCls,
     'account.edit': AccoutBaseinfo,
@@ -608,7 +634,8 @@ director.update({
     'account.ticketmaster': AccountTicketTable,
     'account.balancelog': AccountBalanceTable,
     'account.statistc': UserStatisticsTab,
-    'account.matches_statistics': MatchesStatisticsTab
+    'account.matches_statistics': MatchesStatisticsTab,
+    'account.betfullrecordtab':BetFullRecordTab,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
