@@ -1073,8 +1073,94 @@ class OutcomeTab(ModelTable):
                         'editor':'com-form-one',
                         'ops_loc':'down',
                         'ops':pop_edit_ops,
-                     }
-    
+                     },
+                     104:{
+                        'heads':[
+                             {'name':'content','label':'15分钟大小','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                {'name':'Specifiers_1','label':'盘口','editor':'com-table-pop-fields-local'},
+                                {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 80,
+                                   'options':[
+                                       {'value':'|from=1|to=15','label':'1-15'},
+                                       {'value':'|from=16|to=30','label':'16-30'},
+                                       {'value':'|from=31|to=45','label':'31-45'},
+                                       {'value':'|from=46|to=60','label':'46-60'},
+                                       {'value':'|from=61|to=75','label':'61-75'},
+                                       {'value':'|from=76|to=90','label':'76-90'},
+                                     ], },
+                                {'name':'OutcomeId','label':'主队','editor':'com-table-span', 'width': 80,}, 
+                                {'name':'OutcomeId_1','label':'客队','editor':'com-table-span', 'width': 80,}, 
+                                
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers_1','label':'盘口','editor':'com-field-number','required':True},
+                                 {'name':'Specifiers','label':'时间段','editor':'com-field-select','required':True, 'options':[
+                                       {'value':'|from=1|to=15','label':'1-15'},
+                                       {'value':'|from=16|to=30','label':'16-30'},
+                                       {'value':'|from=31|to=45','label':'31-45'},
+                                       {'value':'|from=46|to=60','label':'46-60'},
+                                       {'value':'|from=61|to=75','label':'61-75'},
+                                       {'value':'|from=76|to=90','label':'76-90'},
+                                     ]}, 
+                                {'name':'OutcomeId','label':'主队','editor':'com-field-number', 'required':True}, 
+                                {'name':'OutcomeId_1','label':'客队','editor':'com-field-number', 'required':True}, 
+                             ]}
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     },
+                     105:{
+                        'heads':[
+                             {'name':'content','label':'10分钟1X2','editor':'com-field-table-list','required':True,
+                              'table_heads':[
+                                
+                                  {'name':'Specifiers','label':'时间段','editor':'com-table-pop-fields-local', 'width': 200,
+                                   'options':[
+                                       {'value':"from=1|to=10",'label':"1-10"},
+                                       {'value':"from=11|to=20",'label':"11-20"},
+                                       {'value':"from=21|to=30",'label':"21-30"},
+                                       {'value':"from=31|to=40",'label':"31-40"},
+                                       {'value':"from=41|to=50",'label':"41-50"},
+                                       {'value':"from=51|to=60",'label':"51-60"},
+                                       {'value':"from=61|to=70",'label':"61-70"},
+                                       {'value':"from=71|to=80",'label':"71-80"},
+                                       {'value':"from=81|to=90",'label':"81-90"},
+                                     ], },
+                                    {'name':'OutcomeId','label':'胜平负','editor':'com-table-mapper', 'width': 200,
+                                     'options':[
+                                          {'value':1 ,'label':'主赢' },
+                                          {'value':2,'label':'平局'},
+                                          {'value':3,'label':'客赢'},
+                                         ]}, 
+                                  ],
+                             'fields_heads':[
+                                 {'name':'Specifiers','label':'时间段','editor':'com-field-select', 'options':[
+                                     {'value':"from=1|to=10",'label':"1-10"},
+                                       {'value':"from=11|to=20",'label':"11-20"},
+                                       {'value':"from=21|to=30",'label':"21-30"},
+                                       {'value':"from=31|to=40",'label':"31-40"},
+                                       {'value':"from=41|to=50",'label':"41-50"},
+                                       {'value':"from=51|to=60",'label':"51-60"},
+                                       {'value':"from=61|to=70",'label':"61-70"},
+                                       {'value':"from=71|to=80",'label':"71-80"},
+                                       {'value':"from=81|to=90",'label':"81-90"},
+                                     ]}, 
+                                {'name':'OutcomeId','label':'个数','editor':'com-field-select', 
+                                  'options':[
+                                          {'value':1 ,'label':'主赢' },
+                                          {'value':2,'label':'平局'},
+                                          {'value':3,'label':'客赢'},
+                                         ]}, 
+                             ]}
+                        ],
+                        
+                        'editor':'com-form-one',
+                        'ops_loc':'down',
+                        'ops':pop_edit_ops,
+                     },
+             
                 }
             })
         return head
@@ -1153,8 +1239,9 @@ def out_com_save(rows,matchid):
                 100:'goalnr=%(org_sp)s',
                 101:'goalnr=%(org_sp)s',
                 102:'%(org_sp)s',
+                105:'%(org_sp)s',
       }
-    
+
     batch_create=[]
     for row in rows:
         if row['pk'] == -1:
@@ -1202,6 +1289,13 @@ def out_com_save(rows,matchid):
             for item in outcome_list:
                 item['Specifiers'] = 'goalnr='+item.pop('Specifiers_1')+item['Specifiers']
                 item['MarketId']= row['pk']
+                send_dc['Special'].append(item)
+        if row['pk'] in [104]:
+            outcome_list = json.loads(row.get('content') ) 
+            for item in outcome_list:
+                item['Specifiers'] = 'total='+item.pop('Specifiers_1')+item['Specifiers']
+                item['MarketId']= row['pk']
+                item['Score'] = '%s:%s'%(item.pop('OutcomeId'),item.pop('OutcomeId_1') )
                 send_dc['Special'].append(item)
         
         
