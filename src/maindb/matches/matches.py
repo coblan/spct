@@ -724,8 +724,16 @@ class OutcomeTab(ModelTable):
     
     def getExtraHead(self):
         return [
-            {'name':'outcome','label':'结算结果','editor':'com-table-json','width':250},
-            {'name':'ops','label':'','editor':'com-table-ops-cell','width':50,},
+            {'name':'outcome','label':'结果','editor':'com-table-json','width':250},
+            {'name':'ops','label':'','editor':'com-table-ops-cell','width':50,
+             'ops':[
+                 {
+                         'editor':'com-op-plain-btn',
+                         'label':'清空',
+                         'class':'btn btn-primary btn-xs',
+                         'action':"""rt=scope.row.outcome=''"""}
+                 ]},
+
         ]
     
     def get_rows(self):

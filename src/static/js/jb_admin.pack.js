@@ -1312,6 +1312,13 @@ var order_list = {
             } else {
                 this.rows = [];
             }
+        },
+        rows: function rows(v) {
+            if (v.length > 0) {
+                this.row[this.head.name] = JSON.stringify(v);
+            } else {
+                this.row[this.head.name] = '';
+            }
         }
     },
     methods: {
@@ -1336,7 +1343,7 @@ var order_list = {
                 ex.vueAssign(self.crt_row, new_row);
                 self.rows.push(self.crt_row);
                 //self.crt_row.append(resp.new_row)
-                self.row[self.head.name] = JSON.stringify(self.rows);
+                //self.row[self.head.name] = JSON.stringify(self.rows)
                 layer.close(win);
             });
 
@@ -1349,7 +1356,6 @@ var order_list = {
                 ex.remove(self.rows, function (row) {
                     return self.selected.indexOf(row) != -1;
                 });
-
                 layer.close(index);
             });
             //alert(this.selected.length)
