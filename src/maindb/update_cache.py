@@ -16,8 +16,11 @@ from helpers.func.sim_signal import sim_signal
 def update_redis_cache(sender, **kws): 
     
     if sender == sports_model.TbBanner:
-        redisInst.delete('App:Cache:index:banners:0')
-        redisInst.delete('App:Cache:index:banners:1')
+        ls1 = redisInst.keys(pattern='cmmon:*')
+        if ls1:
+            redisInst.delete(*ls1)
+        #redisInst.delete('App:Cache:index:banners:0')
+        #redisInst.delete('App:Cache:index:banners:1')
         
     elif sender == sports_model.TbMatches:
         redisInst.delete('App:Cache:index:matches:Soccer')  # App:Cache:index:matches:Basketball
