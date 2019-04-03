@@ -21,6 +21,7 @@ from helpers.director.middleware.request_cache import get_request_cache
 from django.db import connections
 import datetime
 from maindb.rabbitmq_instance import notifyManulOutcome
+from . manul_outcome import outcome_header
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -723,7 +724,8 @@ class OutcomeTab(ModelTable):
     
     def getExtraHead(self):
         return [
-            {'name':'outcome','label':'结算结果','editor':'com-table-json','width':250}
+            {'name':'outcome','label':'结算结果','editor':'com-table-json','width':250},
+            #{'name':'ops','label':'','editor':'com-table-ops-cell','width':50,},
         ]
     
     def get_rows(self):
@@ -734,9 +736,6 @@ class OutcomeTab(ModelTable):
         return bf+rows
     
     def dict_head(self, head):
-        pop_edit_ops=[
-             {'name':'save','label':'确定','editor':'com-op-btn','action':'rt=scope.ps.vc.isValid()?scope.ps.vc.$emit("finish",scope.ps.vc.row):""'}
-        ]
         
         width={
             'marketname':240,
@@ -749,425 +748,13 @@ class OutcomeTab(ModelTable):
             head['action'] = 'var panel=scope.head.panel_map[scope.row.pk],\
             rt=cfg.pop_vue_com({editor:panel.editor,ctx:{row:scope.row.outcome,init_express:panel.init_express,layout:panel.layout,ops_loc:"bottom",heads:panel.heads,ops:panel.ops,par_row:scope.ps.vc.par_row,init_express:panel.init_express}})\
             .then(res=>Vue.set(scope.row,"outcome",res))'
-            head.update({
-                'panel_map':{
-                    -1:{
-                        'heads': [ 
-                            {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True},
-                            {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True},
-                            {'name':'home_7_1','label':'主队下半场得分','editor':'com-field-number','required':True},
-                            {'name':'away_7_1','label':'客队下半场得分','editor':'com-field-number','required':True},
-                            {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
-                            {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
-                            {'name':'home_50_1','label':'主队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty'},
-                            {'name':'away_50_1','label':'客队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty'},
-                            
-                            {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number','required':True,},
-                            {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number','required':True,},
-                            {'name':'home_7_5','label':'主队下半场角球','editor':'com-field-number','required':True,},
-                            {'name':'away_7_5','label':'客队下半场角球','editor':'com-field-number','required':True,},
-                            {'name':'home_40_5','label':'主队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
-                            {'name':'away_40_5','label':'客队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
-                            
-                            
-                            {'name':'has_overtime','label':'加时赛','editor':'com-field-bool'},
-                            {'name':'has_penalty','label':'点球大战','editor':'com-field-bool'},
-                            ],
-                        'editor':'com-form-one', #'com-outcome-score',
-                        'layout':{
-                            'table_grid':[['has_overtime','has_penalty'],
-                                          ['home_6_1','away_6_1'],
-                                          ['home_7_1','away_7_1'],
-                                          ['home_40_1','away_40_1'],
-                                          ['home_50_1','away_50_1'],
-                                          ['home_6_5','away_6_5'],
-                                          ['home_7_5','away_7_5'],
-                                          ['home_40_5','away_40_5'],
-                                          ],
-                            'fields_group':[
-                                {'name':'huji','label':'基本控制','head_names':['has_overtime','has_penalty']},
-                                {'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
-                                {'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
-                            ]
-                            },
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                        'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
-                        },
-                     291:{
-                        'heads':[
-                             {'name':'content','label':'谁先得X分','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                  {'name':'Specifiers','label':'分数','editor':'com-table-span', 'width': 200,}, 
-                                  {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
-                                   'options':[
-                                     {'value':4,'label':'主队'},
-                                     {'value':5,'label':'客队'},
-                                     ]}, 
-                                  #{'name':'order','label':'','editor':'com-table-change-order'}
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers','label':'分数','editor':'com-field-number', }, 
-                                 {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'options':[
-                                     {'value':4,'label':'主队'},
-                                     {'value':5,'label':'客队'},
-                                     ]}, 
-                             ]}
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-                     174:{
-                        'heads':[
-                             {'name':'content','label':'上半场谁发X角球','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
-                                  {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
-                                   'options':[
-                                     {'value':6,'label':'主队'},
-                                     {'value':7,'label':'都不'},
-                                     {'value':8,'label':'客队'},
-                                     ]}, 
-                                  #{'name':'order','label':'','editor':'com-table-change-order'}
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
-                                 {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'options':[
-                                     {'value':6,'label':'主队'},
-                                     {'value':7,'label':'都不'},
-                                     {'value':8,'label':'客队'},
-                                     ]}, 
-                             ]}
-                        ],
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-                     163:{
-                        'heads':[
-                             {'name':'content','label':'常规时间第X角球','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
-                                  {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
-                                   'options':[
-                                     {'value':6,'label':'主队'},
-                                     {'value':7,'label':'都不'},
-                                     {'value':8,'label':'客队'},
-                                     ]}, 
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
-                                 {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'options':[
-                                     {'value':6,'label':'主队'},
-                                     {'value':7,'label':'都不'},
-                                     {'value':8,'label':'客队'},
-                                     ]}, 
-                             ]}
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                         
-                     },
-                     8:{
-                       'heads':[
-                             {'name':'content','label':'常规时间谁先进第X球','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
-                                  {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
-                                   'options':[
-                                     {'value':6,'label':'主队'},
-                                     {'value':7,'label':'都不'},
-                                     {'value':8,'label':'客队'},
-                                     ]}, 
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
-                                 {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'options':[
-                                     {'value':6,'label':'主队'},
-                                     {'value':7,'label':'都不'},
-                                     {'value':8,'label':'客队'},
-                                     ]}, 
-                             ]}
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-                     9:{
-                       'heads':[
-                             {'name':'content','label':'谁进最后一个球','editor':'com-field-select','required':True,  
-                              'options':[
-                                     {'value':6,'label':'主队'},
-                                     {'value':7,'label':'都不'},
-                                     {'value':8,'label':'客队'},
-                                     ]
-                              }
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-                     100:{
-                        'heads':[
-                             {'name':'content','label':'15分钟','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
-                                  {'name':'OutcomeId','label':'时间段','editor':'com-table-mapper', 'width': 200,
-                                   'options':[
-                                       {'value':584,'label':'1-15'},
-                                       {'value':586,'label':'16-30'},
-                                       {'value':588,'label':'31-45'},
-                                       {'value':590,'label':'46-60'},
-                                       {'value':592,'label':'61-75'},
-                                       {'value':594,'label':'76-90'},
-                                       {'value':596,'label':'默认'},
-                                     ]}, 
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
-                                 {'name':'OutcomeId','label':'时间段','editor':'com-field-select', 'options':[
-                                     {'value':584,'label':'1-15'},
-                                     {'value':586,'label':'16-30'},
-                                     {'value':588,'label':'31-45'},
-                                     {'value':590,'label':'46-60'},
-                                     {'value':592,'label':'61-75'},
-                                     {'value':594,'label':'76-90'},
-                                     {'value':596,'label':'默认'},
-                                     ]}, 
-                             ]}
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-                     101:{
-                        'heads':[
-                             {'name':'content','label':'10分钟','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                  {'name':'Specifiers','label':'个数','editor':'com-table-span', 'width': 200,}, 
-                                  {'name':'OutcomeId','label':'时间段','editor':'com-table-mapper', 'width': 200,
-                                   'options':[
-                                       {'value':598,'label':"1-10"},
-                                       {'value':600,'label':"11-20"},
-                                       {'value':602,'label':"21-30"},
-                                       {'value':604,'label':"31-40"},
-                                       {'value':606,'label':"41-50"},
-                                       {'value':608,'label':"51-60"},
-                                       {'value':610,'label':"61-70"},
-                                       {'value':612,'label':"71-80"},
-                                       {'value':614,'label':"81-90"},
-                                       {'value':616,'label':"默认"},
-                                     ], }
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers','label':'个数','editor':'com-field-number', }, 
-                                 {'name':'OutcomeId','label':'时间段','editor':'com-field-select', 'options':[
-                                       {'value':598,'label':"1-10"},
-                                       {'value':600,'label':"11-20"},
-                                       {'value':602,'label':"21-30"},
-                                       {'value':604,'label':"31-40"},
-                                       {'value':606,'label':"41-50"},
-                                       {'value':608,'label':"51-60"},
-                                       {'value':610,'label':"61-70"},
-                                       {'value':612,'label':"71-80"},
-                                       {'value':614,'label':"81-90"},
-                                       {'value':616,'label':"默认"},
-                                     ]}, 
-                             ]}
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-                     102:{
-                        'heads':[
-                             {'name':'content','label':'15分钟1X2','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                
-                                  {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
-                                   'options':[
-                                       {'value':'from=1|to=15' ,'label':'1-15' },
-                                       {'value':'from=16|to=30','label':'16-30'},
-                                       {'value':'from=31|to=45','label':'31-45'},
-                                       {'value':'from=46|to=60','label':'46-60'},
-                                       {'value':'from=61|to=75','label':'61-75'},
-                                       {'value':'from=76|to=90','label':'76-90'},
-                                     ], },
-                                    {'name':'OutcomeId','label':'胜平负','editor':'com-table-mapper', 'width': 200,
-                                     'options':[
-                                          {'value':1 ,'label':'主赢' },
-                                          {'value':2,'label':'平局'},
-                                          {'value':3,'label':'客赢'},
-                                         ]}, 
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers','label':'时间段','editor':'com-field-select', 'options':[
-                                        {'value':'from=1|to=15' ,'label':'1-15' },
-                                       {'value':'from=16|to=30','label':'16-30'},
-                                       {'value':'from=31|to=45','label':'31-45'},
-                                       {'value':'from=46|to=60','label':'46-60'},
-                                       {'value':'from=61|to=75','label':'61-75'},
-                                       {'value':'from=76|to=90','label':'76-90'},
-                                     ]}, 
-                                {'name':'OutcomeId','label':'个数','editor':'com-field-select', 
-                                  'options':[
-                                          {'value':1 ,'label':'主赢' },
-                                          {'value':2,'label':'平局'},
-                                          {'value':3,'label':'客赢'},
-                                         ]}, 
-                             ]}
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-                     103:{
-                        'heads':[
-                             {'name':'content','label':'15分钟进球','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                {'name':'Specifiers_1','label':'第几粒球','editor':'com-table-span'},
-                                {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
-                                   'options':[
-                                       {'value':'|from=1|to=15','label':'1-15'},
-                                       {'value':'|from=16|to=30','label':'16-30'},
-                                       {'value':'|from=31|to=45','label':'31-45'},
-                                       {'value':'|from=46|to=60','label':'46-60'},
-                                       {'value':'|from=61|to=75','label':'61-75'},
-                                       {'value':'|from=76|to=90','label':'76-90'},
-                                     ], },
-                                {'name':'OutcomeId','label':'胜平负','editor':'com-table-mapper', 'width': 200,
-                                 'options':[
-                                      {'value':6,'label':'主赢' },
-                                      {'value':7,'label':'平局'},
-                                      {'value':8,'label':'客赢'},
-                                     ]}, 
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers_1','label':'第几粒球','editor':'com-field-number'},
-                                 {'name':'Specifiers','label':'时间段','editor':'com-field-select', 'options':[
-                                       {'value':'|from=1|to=15','label':'1-15'},
-                                       {'value':'|from=16|to=30','label':'16-30'},
-                                       {'value':'|from=31|to=45','label':'31-45'},
-                                       {'value':'|from=46|to=60','label':'46-60'},
-                                       {'value':'|from=61|to=75','label':'61-75'},
-                                       {'value':'|from=76|to=90','label':'76-90'},
-                                     ]}, 
-                                {'name':'OutcomeId','label':'个数','editor':'com-field-select', 
-                                  'options':[
-                                           {'value':6,'label':'主赢' },
-                                           {'value':7,'label':'平局'},
-                                           {'value':8,'label':'客赢'},
-                                         ]}, 
-                             ]}
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-                     104:{
-                        'heads':[
-                             {'name':'content','label':'15分钟大小','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                {'name':'Specifiers_1','label':'盘口','editor':'com-table-pop-fields-local'},
-                                {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 80,
-                                   'options':[
-                                       {'value':'|from=1|to=15','label':'1-15'},
-                                       {'value':'|from=16|to=30','label':'16-30'},
-                                       {'value':'|from=31|to=45','label':'31-45'},
-                                       {'value':'|from=46|to=60','label':'46-60'},
-                                       {'value':'|from=61|to=75','label':'61-75'},
-                                       {'value':'|from=76|to=90','label':'76-90'},
-                                     ], },
-                                {'name':'OutcomeId','label':'主队','editor':'com-table-span', 'width': 80,}, 
-                                {'name':'OutcomeId_1','label':'客队','editor':'com-table-span', 'width': 80,}, 
-                                
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers_1','label':'盘口','editor':'com-field-number','required':True},
-                                 {'name':'Specifiers','label':'时间段','editor':'com-field-select','required':True, 'options':[
-                                       {'value':'|from=1|to=15','label':'1-15'},
-                                       {'value':'|from=16|to=30','label':'16-30'},
-                                       {'value':'|from=31|to=45','label':'31-45'},
-                                       {'value':'|from=46|to=60','label':'46-60'},
-                                       {'value':'|from=61|to=75','label':'61-75'},
-                                       {'value':'|from=76|to=90','label':'76-90'},
-                                     ]}, 
-                                {'name':'OutcomeId','label':'主队','editor':'com-field-number', 'required':True}, 
-                                {'name':'OutcomeId_1','label':'客队','editor':'com-field-number', 'required':True}, 
-                             ]}
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-                     105:{
-                        'heads':[
-                             {'name':'content','label':'10分钟1X2','editor':'com-field-table-list','required':True,
-                              'table_heads':[
-                                
-                                  {'name':'Specifiers','label':'时间段','editor':'com-table-pop-fields-local', 'width': 200,
-                                   'options':[
-                                       {'value':"from=1|to=10",'label':"1-10"},
-                                       {'value':"from=11|to=20",'label':"11-20"},
-                                       {'value':"from=21|to=30",'label':"21-30"},
-                                       {'value':"from=31|to=40",'label':"31-40"},
-                                       {'value':"from=41|to=50",'label':"41-50"},
-                                       {'value':"from=51|to=60",'label':"51-60"},
-                                       {'value':"from=61|to=70",'label':"61-70"},
-                                       {'value':"from=71|to=80",'label':"71-80"},
-                                       {'value':"from=81|to=90",'label':"81-90"},
-                                     ], },
-                                    {'name':'OutcomeId','label':'胜平负','editor':'com-table-mapper', 'width': 200,
-                                     'options':[
-                                          {'value':1 ,'label':'主赢' },
-                                          {'value':2,'label':'平局'},
-                                          {'value':3,'label':'客赢'},
-                                         ]}, 
-                                  ],
-                             'fields_heads':[
-                                 {'name':'Specifiers','label':'时间段','editor':'com-field-select', 'options':[
-                                     {'value':"from=1|to=10",'label':"1-10"},
-                                       {'value':"from=11|to=20",'label':"11-20"},
-                                       {'value':"from=21|to=30",'label':"21-30"},
-                                       {'value':"from=31|to=40",'label':"31-40"},
-                                       {'value':"from=41|to=50",'label':"41-50"},
-                                       {'value':"from=51|to=60",'label':"51-60"},
-                                       {'value':"from=61|to=70",'label':"61-70"},
-                                       {'value':"from=71|to=80",'label':"71-80"},
-                                       {'value':"from=81|to=90",'label':"81-90"},
-                                     ]}, 
-                                {'name':'OutcomeId','label':'个数','editor':'com-field-select', 
-                                  'options':[
-                                          {'value':1 ,'label':'主赢' },
-                                          {'value':2,'label':'平局'},
-                                          {'value':3,'label':'客赢'},
-                                         ]}, 
-                             ]}
-                        ],
-                        
-                        'editor':'com-form-one',
-                        'ops_loc':'down',
-                        'ops':pop_edit_ops,
-                     },
-             
-                }
-            })
+            head.update(outcome_header)
         return head
 
     
     def inn_filter(self, query):
-        return query.filter(enabled=True,marketid__in = [8,9,100,101,102,103,104,105,106,107,108,109,110,163,174,291])
+        # 291 是篮球的
+        return query.filter(enabled=True,marketid__in = [8,9,100,101,102,103,104,105,106,107,108,109,110,163,174,])
     
     def get_operation(self):
         return [
@@ -1240,6 +827,7 @@ def out_com_save(rows,matchid):
                 101:'goalnr=%(org_sp)s',
                 102:'%(org_sp)s',
                 105:'%(org_sp)s',
+                108:'%(org_sp)s',
       }
 
     batch_create=[]
@@ -1284,13 +872,13 @@ def out_com_save(rows,matchid):
                 item['Specifiers'] = which_map[row['pk']]%{'org_sp':item['Specifiers']}
                 item['MarketId']= row['pk']
                 send_dc['Special'].append(item)
-        if row['pk'] in [103]:
+        if row['pk'] in [103,106,109]:
             outcome_list = json.loads(row.get('content') ) 
             for item in outcome_list:
                 item['Specifiers'] = 'goalnr='+item.pop('Specifiers_1')+item['Specifiers']
                 item['MarketId']= row['pk']
                 send_dc['Special'].append(item)
-        if row['pk'] in [104]:
+        if row['pk'] in [104,107,110]:
             outcome_list = json.loads(row.get('content') ) 
             for item in outcome_list:
                 item['Specifiers'] = 'total='+item.pop('Specifiers_1')+item['Specifiers']
