@@ -73,6 +73,12 @@ var com_tab_special_bet_value={
                     </div>
                       <div class="box-content">
                             <table class="table">
+                            <tr>
+                            <td></td>
+                            <td>玩法名</td>
+                            <td>盘口值</td>
+                            <td>盘口名</td>
+                            </tr>
                             <tr v-for="spbet in normed_specailbetvalue" :class="spbet.cls">
                                 <td>
                                 <el-switch
@@ -83,6 +89,9 @@ var com_tab_special_bet_value={
                                 </td>
                                 <td>
                                  <span v-text="spbet.marketname"></span>
+                                </td>
+                                <td>
+                                <span v-text="spbet.specialbetvalue"></span>
                                 </td>
                                 <td>
                                   <span v-text="spbet.specialbetname"></span>
