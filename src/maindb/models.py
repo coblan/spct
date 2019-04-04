@@ -1869,9 +1869,6 @@ class TbTicketstake(models.Model):
     ticket_master = models.ForeignKey(TbTicketmaster, db_column='TicketID',
                                       db_constraint=False, verbose_name=_('ticket master'))
     stakeid = models.SmallIntegerField(db_column='StakeID')  # Field name made lowercase.
-    # accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
-    #match = models.ForeignKey(TbMatches, db_constraint=False, db_column='MatchID', to_field='matchid')
-    #matchid = models.BigIntegerField(db_column='MatchID',verbose_name='比赛ID')  # Field name made lowercase.
     matchid = models.ForeignKey(to=TbMatch,db_constraint=False,db_column='MatchID',verbose_name='比赛ID')  # Field name made lowercase.
     dangeroustid = models.BigIntegerField(db_column='DangerousTid')  # Field name made lowercase.
     #marketid = models.IntegerField(db_column='MarketID', blank=True, null=True)  # Field name made lowercase.
