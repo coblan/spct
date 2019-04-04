@@ -1274,7 +1274,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var order_list = {
     props: ['row', 'head'],
-    template: '<div>\n    <button @click="add_new()">+</button>\n    <button @click="delete_rows()">-</button>\n                    <el-table ref="core_table" class="table"\n                              :data="rows"\n                              border\n                              :stripe="true"\n                              size="mini"\n                              :summary-method="getSum"\n                               @selection-change="handleSelectionChange"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="col in heads">\n\n                            <el-table-column v-if="col.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(col) "\n                                             :label="col.label"\n                                             :prop="col.name.toString()"\n                                             :width="col.width">\n                                <template slot-scope="scope">\n                                    <component :is="col.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="col.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(col) "\n                                             :prop="col.name.toString()"\n                                             :label="col.label"\n\n                                             :width="col.width">\n                            </el-table-column>\n\n\n                        </template>\n\n                    </el-table>\n          </div>',
+    template: '<div class="com-field-table-list">\n    <div>\n        <button @click="add_new()">+</button>\n        <button @click="delete_rows()">-</button>\n        <div style="display: inline-block;position: relative;vertical-align: top">\n            <textarea :name="head.name" v-model="row[head.name]" id="" cols="1" rows="1" style="display: none"></textarea>\n        </div>\n    </div>\n\n\n                    <el-table ref="core_table" class="table"\n                              :data="rows"\n                              border\n                              :stripe="true"\n                              size="mini"\n                              :summary-method="getSum"\n                               @selection-change="handleSelectionChange"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="col in heads">\n\n                            <el-table-column v-if="col.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(col) "\n                                             :label="col.label"\n                                             :prop="col.name.toString()"\n                                             :width="col.width">\n                                <template slot-scope="scope">\n                                    <component :is="col.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="col.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(col) "\n                                             :prop="col.name.toString()"\n                                             :label="col.label"\n                                             :width="col.width">\n                            </el-table-column>\n                        </template>\n                    </el-table>\n              </div>',
     mixins: [mix_table_data, mix_ele_table_adapter],
     data: function data() {
         if (this.row[this.head.name]) {
@@ -1312,6 +1312,13 @@ var order_list = {
             } else {
                 this.rows = [];
             }
+        },
+        rows: function rows(v) {
+            if (v.length > 0) {
+                this.row[this.head.name] = JSON.stringify(v);
+            } else {
+                this.row[this.head.name] = '';
+            }
         }
     },
     methods: {
@@ -1336,7 +1343,7 @@ var order_list = {
                 ex.vueAssign(self.crt_row, new_row);
                 self.rows.push(self.crt_row);
                 //self.crt_row.append(resp.new_row)
-                self.row[self.head.name] = JSON.stringify(self.rows);
+                //self.row[self.head.name] = JSON.stringify(self.rows)
                 layer.close(win);
             });
 
@@ -1349,7 +1356,6 @@ var order_list = {
                 ex.remove(self.rows, function (row) {
                     return self.selected.indexOf(row) != -1;
                 });
-
                 layer.close(index);
             });
             //alert(this.selected.length)
@@ -2460,10 +2466,35 @@ var mix_fields_data = {
             });
         },
 
-        after_save: function after_save(new_row) {
+        after_save: function (_after_save) {
+            function after_save(_x) {
+                return _after_save.apply(this, arguments);
+            }
+
+            after_save.toString = function () {
+                return _after_save.toString();
+            };
+
+            return after_save;
+        }(function (new_row) {
             //ex.assign(this.row,new_row)
-            console.log('mix_fields_data.after_save');
-        },
+            if (this.tab_head.after_save) {
+                if (typeof this.tab_head.after_save == 'string') {
+                    ex.eval(this.tab_head.after_save, { vc: this });
+                } else {
+                    // 为了兼容老的
+                    if (this.tab_head.after_save) {
+                        var fun = after_save[this.tab_head.after_save.fun];
+                        var kws = this.tab_head.after_save.kws;
+                        // new_row ,old_row
+                        fun(this, new_row, kws);
+                    }
+                    ex.vueAssign(this.org_row, new_row);
+                }
+            } else if (this.tab_head.after_save_express) {
+                ex.eval(this.tab_head.after_save_express, { vc: this });
+            }
+        }),
         showErrors: function showErrors(errors) {
             // 落到 nice validator去
         },
@@ -4232,7 +4263,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var pop_fields = exports.pop_fields = {
-    template: '<span v-text="show_text" @click="edit_me()" class="clickable"></span>',
+    template: '<div class="com-table-pop-fields-local">\n        <span  @click="edit_me()" class="clickable">\n        <component v-if="head.inn_editor" :is="head.inn_editor" :rowData="rowData" :field="field" :index="index"></component>\n         <span v-else v-text="show_text"></span>\n         </span>\n    </div>',
     props: ['rowData', 'field', 'index'],
     created: function created() {
         // find head from parent table
@@ -5760,21 +5791,6 @@ var big_fields = {
                 ex.eval(self.tab_head.get_row, { vc: self });
                 //ex.vueAssign(self.row,row_dc)
             }
-        },
-        after_save: function after_save(new_row) {
-            if (this.tab_head.after_save_express) {
-                ex.eval(this.tab_head.after_save_express, { vc: this });
-            } else {
-                // 为了兼容老的
-                if (this.tab_head.after_save) {
-                    var fun = _after_save[this.tab_head.after_save.fun];
-                    var kws = this.tab_head.after_save.kws;
-                    // new_row ,old_row
-                    fun(this, new_row, kws);
-                }
-                ex.vueAssign(this.org_row, new_row);
-                //this.row=new_row
-            }
         }
         // data_getter  回调函数，获取数据,
 
@@ -5802,7 +5818,7 @@ var get_data = {
     }
 };
 
-var _after_save = {
+var after_save = {
     update_or_insert: function update_or_insert(self, new_row, kws) {
         var old_row = self.old_row;
         var parStore = ex.vueParStore(self);
@@ -7496,6 +7512,7 @@ var tab_fields = {
         },
         data_getter: function data_getter() {
             var self = this;
+            // 兼容老调用,废弃
             if (self.tab_head.get_data) {
                 var fun = get_data[self.tab_head.get_data.fun];
                 var kws = self.tab_head.get_data.kws;
@@ -7508,21 +7525,6 @@ var tab_fields = {
             if (self.tab_head.get_row) {
                 ex.eval(self.tab_head.get_row, { vc: self });
                 //ex.vueAssign(self.row,row_dc)
-            }
-        },
-        after_save: function after_save(new_row) {
-            if (this.tab_head.after_save_express) {
-                ex.eval(this.tab_head.after_save_express, { vc: this });
-            } else {
-                // 为了兼容老的
-                if (this.tab_head.after_save) {
-                    var fun = _after_save[this.tab_head.after_save.fun];
-                    var kws = this.tab_head.after_save.kws;
-                    // new_row ,old_row
-                    fun(this, new_row, kws);
-                }
-                ex.vueAssign(this.org_row, new_row);
-                //this.row=new_row
             }
         }
         // data_getter  回调函数，获取数据,
@@ -7551,7 +7553,7 @@ var get_data = {
     }
 };
 
-var _after_save = {
+var after_save = {
     update_or_insert: function update_or_insert(self, new_row, kws) {
         var old_row = self.old_row;
         var parStore = ex.vueParStore(self);
