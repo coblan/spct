@@ -2466,10 +2466,35 @@ var mix_fields_data = {
             });
         },
 
-        after_save: function after_save(new_row) {
+        after_save: function (_after_save) {
+            function after_save(_x) {
+                return _after_save.apply(this, arguments);
+            }
+
+            after_save.toString = function () {
+                return _after_save.toString();
+            };
+
+            return after_save;
+        }(function (new_row) {
             //ex.assign(this.row,new_row)
-            console.log('mix_fields_data.after_save');
-        },
+            if (this.tab_head.after_save) {
+                if (typeof this.tab_head.after_save == 'string') {
+                    ex.eval(this.tab_head.after_save, { vc: this });
+                } else {
+                    // 为了兼容老的
+                    if (this.tab_head.after_save) {
+                        var fun = after_save[this.tab_head.after_save.fun];
+                        var kws = this.tab_head.after_save.kws;
+                        // new_row ,old_row
+                        fun(this, new_row, kws);
+                    }
+                    ex.vueAssign(this.org_row, new_row);
+                }
+            } else if (this.tab_head.after_save_express) {
+                ex.eval(this.tab_head.after_save_express, { vc: this });
+            }
+        }),
         showErrors: function showErrors(errors) {
             // 落到 nice validator去
         },
@@ -5766,21 +5791,6 @@ var big_fields = {
                 ex.eval(self.tab_head.get_row, { vc: self });
                 //ex.vueAssign(self.row,row_dc)
             }
-        },
-        after_save: function after_save(new_row) {
-            if (this.tab_head.after_save_express) {
-                ex.eval(this.tab_head.after_save_express, { vc: this });
-            } else {
-                // 为了兼容老的
-                if (this.tab_head.after_save) {
-                    var fun = _after_save[this.tab_head.after_save.fun];
-                    var kws = this.tab_head.after_save.kws;
-                    // new_row ,old_row
-                    fun(this, new_row, kws);
-                }
-                ex.vueAssign(this.org_row, new_row);
-                //this.row=new_row
-            }
         }
         // data_getter  回调函数，获取数据,
 
@@ -5808,7 +5818,7 @@ var get_data = {
     }
 };
 
-var _after_save = {
+var after_save = {
     update_or_insert: function update_or_insert(self, new_row, kws) {
         var old_row = self.old_row;
         var parStore = ex.vueParStore(self);
@@ -7502,6 +7512,7 @@ var tab_fields = {
         },
         data_getter: function data_getter() {
             var self = this;
+            // 兼容老调用,废弃
             if (self.tab_head.get_data) {
                 var fun = get_data[self.tab_head.get_data.fun];
                 var kws = self.tab_head.get_data.kws;
@@ -7514,21 +7525,6 @@ var tab_fields = {
             if (self.tab_head.get_row) {
                 ex.eval(self.tab_head.get_row, { vc: self });
                 //ex.vueAssign(self.row,row_dc)
-            }
-        },
-        after_save: function after_save(new_row) {
-            if (this.tab_head.after_save_express) {
-                ex.eval(this.tab_head.after_save_express, { vc: this });
-            } else {
-                // 为了兼容老的
-                if (this.tab_head.after_save) {
-                    var fun = _after_save[this.tab_head.after_save.fun];
-                    var kws = this.tab_head.after_save.kws;
-                    // new_row ,old_row
-                    fun(this, new_row, kws);
-                }
-                ex.vueAssign(this.org_row, new_row);
-                //this.row=new_row
             }
         }
         // data_getter  回调函数，获取数据,
@@ -7557,7 +7553,7 @@ var get_data = {
     }
 };
 
-var _after_save = {
+var after_save = {
     update_or_insert: function update_or_insert(self, new_row, kws) {
         var old_row = self.old_row;
         var parStore = ex.vueParStore(self);

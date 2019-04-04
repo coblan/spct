@@ -29,8 +29,9 @@ class BonusPage(object):
                         'com': 'com-tab-fields',
                         'heads': bonus_form.get_heads(),
                         'ops': bonus_form.get_operations(),
-                        'row_express':'rt={_director_name:"bonuslog_list.edit"}',
-                        'after_save_express':'rt=scope.vc.row={_director_name:"bonuslog_list.edit"}'
+                        'get_row':'rt=scope.vc.row= {_director_name:"bonuslog_list.edit"}',
+                        #'row_express':
+                        'after_save':'rt= scope.vc.row={_director_name:"bonuslog_list.edit"}'
                     },
                     {'name': 'bonustype-list',
                      'label': '红利类型',
@@ -108,6 +109,7 @@ class BonuslogForm(ModelFields):
                                        content=self.instance.memo,
                                        rfid=self.instance.pk,
                                        rftype=37,
+                                       amount=self.instance.amount,
                                        accountid=self.instance.accountid)
         self.op_log.update({
             'clean_save_desp':'生成了对应的TbBalancelog.pk=%s,计算了用户余额'%ban.pk
