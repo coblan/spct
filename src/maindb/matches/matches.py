@@ -477,7 +477,7 @@ class PeriodScoreTab(ModelTable):
     
     @classmethod
     def clean_search_args(cls, search_args):
-        search_args['_sort']= search_args.get('_sort','statuscode')
+        search_args['_sort']= search_args.get('_sort') or 'statuscode'
         return search_args
     
     def inn_filter(self, query):

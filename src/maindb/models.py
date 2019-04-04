@@ -1875,17 +1875,15 @@ class TbTicketstake(models.Model):
     matchid = models.ForeignKey(to=TbMatch,db_constraint=False,db_column='MatchID',verbose_name='比赛ID')  # Field name made lowercase.
     dangeroustid = models.BigIntegerField(db_column='DangerousTid')  # Field name made lowercase.
     #marketid = models.IntegerField(db_column='MarketID', blank=True, null=True)  # Field name made lowercase.
-    marketid = models.ForeignKey(to=TbMarkets,db_constraint=False,db_column='MarketID', blank=True, null=True)  # Field name made lowercase.
+    marketid = models.ForeignKey(to=TbMarkets,db_constraint=False,db_column='MarketID', blank=True, null=True,verbose_name='玩法')  # Field name made lowercase.
     
     specifiers = models.CharField(db_column='Specifiers', max_length=100, blank=True, null=True)  # Field name made lowercase.
     uniqueoutcomeid = models.IntegerField(db_column='UniqueOutcomeID', blank=True, null=True)  # Field name made lowercase.
     outcomeid = models.CharField(db_column='OutcomeID', max_length=100, blank=True, null=True)  # Field name made lowercase.
        
-    #oddsid = models.BigIntegerField(db_column='OddsID')  # Field name made lowercase.
-    #oddsid = models.ForeignKey(verbose_name = '玩法', db_column='OddsID', to= TbOddstypes, to_field = 'oddsid', db_constraint= False)  # Field name made lowercase.
     specialbetvalue = models.CharField(db_column='SpecialBetValue', verbose_name='盘口值',
                                        max_length=12)  # Field name made lowercase.
-    specialbetname = models.CharField(db_column='SpecialBetName', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    specialbetname = models.CharField(db_column='SpecialBetName', max_length=50, blank=True, null=True,verbose_name='盘口')  # Field name made lowercase.
     odds = CusDecimalField(db_column='Odds', verbose_name='赔率', max_digits=18,
                            decimal_places=2)  # Field name made lowercase.
     confirmodds = CusDecimalField(db_column='ConfirmOdds', verbose_name='确认赔率', max_digits=18,
