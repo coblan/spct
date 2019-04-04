@@ -253,7 +253,7 @@ class TicketstakeTable(ModelTable):
     """ 子注单 """
     model = TbTicketstake
     exclude = []
-    fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketid','specialbetname', 'odds', 'confirmodds', 'realodds', 
+    fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketid','specialbetname','outcomename', 'odds', 'confirmodds', 'realodds', 
                    'status', 'createtime', 'updatetime']
 
     def inn_filter(self, query):
