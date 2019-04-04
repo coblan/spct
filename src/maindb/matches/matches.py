@@ -211,11 +211,11 @@ class MatchsPage(TablePage):
                     #'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_iscloseliveodds_tabs",par_row:scope.ts.selected[0]})',
                             #'visible': self.permit.can_edit(),}, 
                  {'fun': 'director_call', 'editor': 'com-op-btn', 
-                  'director_name': 'football_quit_ticket',
+                  'director_name': 'match.quit_ticket',
                   'label': '退单', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
-                  'pre_set': 'rt={PeriodType:2}',
+                  #'pre_set': 'rt={PeriodType:2}',
                   #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
-                 'fields_ctx': PeriodTypeForm_form.get_head_context(),
+                 #'fields_ctx': PeriodTypeForm_form.get_head_context(),
                  'visible': 'ishidden' in self.permit.changeable_fields()},
                  
             ]
@@ -282,28 +282,37 @@ class MatchsPage(TablePage):
     #return ls
       
   
-@director_view('football_quit_ticket')
-def football_quit_ticket(rows, new_row): 
-    return quit_ticket(rows, new_row, sportid = 1)
+#@director_view('football_quit_ticket')
+#def football_quit_ticket(rows, new_row): 
+    #return quit_ticket(rows, new_row, sportid = 1)
 
-def quit_ticket(rows, new_row, sportid = 1): 
-    PeriodType = new_row.get('PeriodType')
+@director_view('match.quit_ticket')
+def quit_ticket(rows,**kws ): 
     row = rows[0]
-    url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
-    data ={
-        'MatchID':row.get('matchid'),
-        'SportID': sportid, 
-        'OrderBack': True,
-        'PeriodType': PeriodType,  # 1上半场 0全场 2 上半场+ 全场
-    }    
+    send_dc = {
+        'MatchID':row['matchid'],
+        'SendTime':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'Source':'AdminBackend',
+        'IsSettleByScore':False,
+        'Special':[],
+        'Unsubscribe':True,
+    }
     
-    rt = requests.post(url,data=data)
-    dc = json.loads( rt.text ) 
+    #PeriodType = new_row.get('PeriodType')
+    #row = rows[0]
+    #url = urllib.parse.urljoin( settings.CENTER_SERVICE, '/Match/ManualResulting')
+    #data ={
+        #'MatchID':row.get('matchid'),
+        #'SportID': sportid, 
+        #'OrderBack': True,
+        #'PeriodType': PeriodType,  # 1上半场 0全场 2 上半场+ 全场
+    #}    
     
-    op_log.info('执行%(type)s Matchid=%(matchid)s退单操作! PeriodType=%(PeriodType)s' % {'type': {0: '足球',1: '篮球',}[sportid],
-                                                            'matchid': row.get('matchid'), 
-                                                            'PeriodType': PeriodType,})
-    return {'msg': dc.get('Message'),}
+    #rt = requests.post(url,data=data)
+    #dc = json.loads( rt.text ) 
+    notifyManulOutcome(json.dumps(send_dc))
+    op_log.info('执行 Matchid=%(matchid)s 退单操作!' % {'matchid': row.get('matchid'), })
+    return {'msg': '指令发送成功',}
 
 
 class MatchForm(ModelFields):
@@ -819,6 +828,7 @@ def out_com_save(rows,matchid):
         'Source':'AdminBackend',
         'IsSettleByScore':False,
         'Special':[],
+        'Unsubscribe':False,
         #public long MatchID { get; set; }
         #public DateTime SendTime { get; set; }
         #public string Source { get; set; }

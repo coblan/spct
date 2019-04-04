@@ -132,9 +132,9 @@ class BasketOutcome(OutcomeTab):
         rows = super(OutcomeTab,self).get_rows()
         return bf+rows
 
-@director_view('basketball_quit_ticket')
-def basketball_quit_ticket(rows, new_row): 
-    return quit_ticket(rows, new_row, sportid = 2)
+#@director_view('basketball_quit_ticket')
+#def basketball_quit_ticket(rows, new_row): 
+    #return quit_ticket(rows, new_row, sportid = 2)
 
 #@director_view('basketball_get_special_bet_value')
 #def basketball_get_special_bet_value(matchid): 
@@ -144,9 +144,9 @@ def basketball_quit_ticket(rows, new_row):
 #def basketball_save_special_bet_value(matchid, match_opened, oddstype, specialbetvalue): 
     #return save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue, sportid = 1)
 
-@director_view('basketball_produce_match_outcome')
-def basketball_produce_match_outcome(row): 
-    return produce_match_outcome(row, MatchModel = TbMatchesBasketball, sportid = 1, half_end_code = 4, updateMongo= updateMatchBasketMongo)
+#@director_view('basketball_produce_match_outcome')
+#def basketball_produce_match_outcome(row): 
+    #return produce_match_outcome(row, MatchModel = TbMatchesBasketball, sportid = 1, half_end_code = 4, updateMongo= updateMatchBasketMongo)
 
 director.update({
     'basketball_matchs': BasketMatchsPage.tableCls,
