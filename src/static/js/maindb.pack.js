@@ -778,6 +778,7 @@ window.manul_outcome_panel_ctx = manul_outcome_panel_ctx;
 // 只有这个函数有用，其他都无用了。
 window.out_come_save = function (rows, matchid) {
     var maped_row = [];
+
     ex.each(rows, function (row) {
         if (row.outcome) {
             var dc = { pk: row.pk };
@@ -786,10 +787,14 @@ window.out_come_save = function (rows, matchid) {
             maped_row.push(dc);
         }
     });
-    cfg.show_load();
-    ex.director_call('out_com_save', { rows: maped_row, matchid: matchid }).then(function (res) {
-        cfg.hide_load(2000);
-    });
+    if (maped_row.length > 0) {
+        cfg.show_load();
+        ex.director_call('out_com_save', { rows: maped_row, matchid: matchid }).then(function (res) {
+            cfg.hide_load(2000);
+        });
+    } else {
+        cfg.showError('请至少填写一条结算信息!');
+    }
 };
 
 Vue.component('com-outcome-score', {
@@ -1405,6 +1410,7 @@ $.validator.config({
             //return /^1[3458]\d{9}$/.test($(elem).val()) || '请检查手机号格式';
             var keys = param;
             var value = $(elem).val();
+            if (!value) return true;
             var rows = JSON.parse(value);
             var dc = {};
             ex.each(keys, function (key) {
@@ -1426,6 +1432,7 @@ $.validator.config({
         group_unique: function group_unique(elem, param) {
             var keys = param;
             var value = $(elem).val();
+            if (!value) return true;
             var rows = JSON.parse(value);
             var ls = [];
             for (var i = 0; i < rows.length; i++) {

@@ -783,7 +783,7 @@ class OutcomeTab(ModelTable):
     
     def get_operation(self):
         return [
-            {'name':'outcome','label':'结算','editor':'com-op-btn','action':'out_come_save(scope.ps.rows,scope.ps.vc.par_row.matchid)'},
+            {'name':'outcome','label':'结算','editor':'com-op-btn','action':'rt=cfg.confirm("确定发送手动结算信息?").then(()=>out_come_save(scope.ps.rows,scope.ps.vc.par_row.matchid))'},
         ]
     
 def get_score_heads(ls):
@@ -881,13 +881,13 @@ def out_com_save(rows,matchid):
                           
             home = row.get('home_6_1')
             away = row.get('away_6_1')
-            total_home += home
-            total_away += away
+            total_home += int( home )
+            total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_7_1')
             away = row.get('away_7_1')
-            total_home += home
-            total_away += away
+            total_home += int(home)
+            total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_6_5')
             away = row.get('away_6_5')
@@ -933,24 +933,24 @@ def out_com_save(rows,matchid):
                                       
             home = row.get('home_13_1')
             away = row.get('away_13_1')
-            total_home += home
-            total_away += away
+            total_home += int(home)
+            total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=13,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_14_1')
             away = row.get('away_14_1')
-            total_home += home
-            total_away += away
+            total_home += int(home)
+            total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=14,scoretype=1,home=home,away=away ,type=0) )
             
             home = row.get('home_15_1')
             away = row.get('away_15_1')
-            total_home += home
-            total_away += away
+            total_home += int(home)
+            total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=15,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_16_1')
             away = row.get('away_16_1')
-            total_home += home
-            total_away += away
+            total_home += int(home)
+            total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=16,scoretype=1,home=home,away=away ,type=0) )
             
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
@@ -970,13 +970,13 @@ def out_com_save(rows,matchid):
                                 
             home = row.get('home_6_1')
             away = row.get('away_6_1')
-            total_home += home
-            total_away += away
+            total_home += int(home)
+            total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_7_1')
             away = row.get('away_7_1')
-            total_home += home
-            total_away += away
+            total_home += int(home)
+            total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home,away=away ,type=0) )
             
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
