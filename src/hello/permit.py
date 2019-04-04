@@ -97,7 +97,7 @@ def get_permit():
                 
                 {'label': '所有标签(全功能)', 'value': 'TbAccount.all_tab', 'depend': ['TbAccount.edit', 
                                 'TbBalancelog', 'TbLoginlog', 'TbBankcard', 'TbBankcard.edit', 'TbRecharge.edit',
-                                'TbWithdraw.edit'],}, 
+                                'TbWithdraw.edit','TbBetfullrecord','TbBetfullrecord.edit'],}, 
                
                 ],}, 
              
@@ -107,7 +107,12 @@ def get_permit():
                 {'label': '查看', 'value': 'TbBankcard',}, 
                 {'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
                 ],}, 
-             {'label': '流失用户', 'value': 'member.chum_user', }, 
+            {'label': '限额记录', 'children': [
+                {'label': '查看', 'value': 'TbBetfullrecord',}, 
+                {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
+                ],}, 
+             
+             {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
              
              ],
          }, 

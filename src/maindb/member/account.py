@@ -105,6 +105,7 @@ def account_tab(self):
          'com':'com-tab-table',
          'pre_set':'rt={accountid:scope.par_row.accountid}',
          'table_ctx': BetFullRecordTab(crt_user=self.crt_user).get_head_context(),
+         'visible': can_touch(TbBetfullrecord, self.crt_user)
          }
     ]
     dc = {
