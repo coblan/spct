@@ -471,16 +471,24 @@ class TbLivescoutTable(ModelTable):
 
 @director_view('PeriodScoreTab')
 class PeriodScoreTab(ModelTable):
+    hide_fields=['tid']
     model = TbPeriodscore
-    exclude=[]
+    exclude=['createtime']
+    
+    @classmethod
+    def clean_search_args(cls, search_args):
+        search_args['_sort']= search_args.get('_sort','statuscode')
+        return search_args
     
     def inn_filter(self, query):
-        return query.filter(matchid = self.kw.get('matchid')).order_by('periodnumber')
+        return query.filter(matchid = self.kw.get('matchid'))
     
     def dict_head(self, head):
         if head['name']=='statuscode':
             head['editor']='com-table-mapper'
         return head
+    class sort(RowSort):
+        names=['statuscode']
 
 @director_view('match.livescout_status')
 def match_livescout_status(matchid,**kws):

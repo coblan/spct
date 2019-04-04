@@ -66,6 +66,12 @@ class MarketGroupPage(TablePage):
                 head['tab_name']='marketgroup'
             return head
         
+        def get_operation(self):
+            ops = super().get_operation()
+            out_ops =[x for x in ops if x['name'] != 'delete_selected']
+            return out_ops
+            
+        
         class search(RowSearch):
             names=['groupname','groupnamezh']
         class filters(RowFilter):

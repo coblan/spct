@@ -35,6 +35,7 @@ class MarketPage(TablePage):
         
 
 class MarketForm(ModelFields):
+    field_sort=['marketid','marketname','marketnamezh','description','enabled','templateid','isasian','sort',]
     class Meta:
         model = TbMarkets
         exclude = []

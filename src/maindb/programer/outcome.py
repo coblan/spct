@@ -3,7 +3,7 @@ from ..models import TbOutcomes
 
 class OutcomePage(TablePage):
     def get_label(self):
-        return '投注结果'
+        return '投注项'
     
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
@@ -31,7 +31,7 @@ class OutcomePage(TablePage):
             names =['outcomeid','outcomename','outcomenamezh']
 
 class OutcomeForm(ModelFields):
-    readonly=['uniqueoutcomid','outcomeid','description']
+    readonly=['uniqueoutcomid','outcomeid','description','outcomename']
 
     class Meta:
         model = TbOutcomes

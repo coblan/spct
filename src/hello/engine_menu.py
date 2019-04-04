@@ -191,7 +191,7 @@ class ProgramerAdmin(BaseEngine):
         menu = [
             {'label': '玩法组', 'url': page('marketgroup'), 'icon': fa('fa-superpowers')},
             {'label': '玩法', 'url': page('marketpage'), 'icon': fa('fa-superpowers')},
-            {'label': '投注结果', 'url': page('outcome'), 'icon': fa('fa-superpowers')},
+            {'label': '投注项', 'url': page('outcome'), 'icon': fa('fa-superpowers')},
             
         ]
         return menu

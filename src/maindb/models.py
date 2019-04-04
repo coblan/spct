@@ -446,7 +446,8 @@ class TbBetfullrecord(models.Model):
     accountid = models.ForeignKey(to=TbAccount,db_constraint=False, db_column='AccountID')  # Field name made lowercase.
     #accountid = models.BigIntegerField(db_column='AccountID')  # Field name made lowercase.
     content = models.CharField(db_column='Content', max_length=150, blank=True, null=True)  # Field name made lowercase.
-
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间', blank=True, null=True)  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount',verbose_name='原始限额', max_digits=18, decimal_places=4)
     class Meta:
         managed = False
         db_table = 'TB_BetFullRecord'
@@ -792,6 +793,12 @@ class TbMaintournament(models.Model):
         db_table = 'TB_MainTournament'
         unique_together = (('uniquetournamentid', 'sportid', 'categoryid'),)
 
+WINNER_TYPE=(
+    (0,''),
+    (1,'主胜'),
+    (2,'客胜'),
+    (3,'平局'),
+)
 
 class TbMatch(models.Model):
     sportid = models.IntegerField(db_column='SportID',verbose_name='比赛类型')  # Field name made lowercase.
@@ -817,7 +824,7 @@ class TbMatch(models.Model):
     isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name='推介')  # Field name made lowercase.
     ishidden = models.BooleanField(db_column='IsHidden',verbose_name='隐藏')  # Field name made lowercase.
     iscloseliveodds = models.IntegerField(db_column='IsCloseLiveOdds', blank=True, null=True)  # Field name made lowercase.
-    winner = models.IntegerField(db_column='Winner',verbose_name='胜者')  # Field name made lowercase.
+    winner = models.IntegerField(db_column='Winner',verbose_name='胜者',choices=WINNER_TYPE)  # Field name made lowercase.
     terminator = models.CharField(db_column='Terminator', max_length=20, blank=True, null=True)  # Field name made lowercase.
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=2,verbose_name='权重')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
@@ -1505,17 +1512,30 @@ class TbPlayers(models.Model):
         managed = False
         db_table = 'TB_Players'
 
+P_TYPE=(
+    (1,'比分'),
+    (2,'黄牌'),
+    (3,'红牌'),
+    (4,'红黄牌'),
+    (5,'角球'),
+)
 
+PERIOD_TYP=(
+    (0,'常规时间'),
+    (1,'加时'),
+    (2,'点球大战'),
+    (3,'其他')
+)
 class TbPeriodscore(models.Model):
     tid = models.BigAutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID', blank=True, null=True)  # Field name made lowercase.
-    statuscode = models.IntegerField(db_column='StatusCode', blank=True, null=True,verbose_name='比赛状态',choices=NEW_MATCH_STATUS)  # Field name made lowercase.
-    scoretype = models.IntegerField(db_column='ScoreType', blank=True, null=True)  # Field name made lowercase.
-    periodnumber = models.IntegerField(db_column='PeriodNumber', blank=True, null=True,verbose_name='小结数')  # Field name made lowercase.
+    statuscode = models.IntegerField(db_column='StatusCode', blank=True, null=True,verbose_name='阶段',choices=NEW_MATCH_STATUS)  # Field name made lowercase.
+    scoretype = models.IntegerField(db_column='ScoreType', blank=True, null=True,verbose_name='记分类型',choices=P_TYPE)  # Field name made lowercase.
+    periodnumber = models.IntegerField(db_column='PeriodNumber', blank=True, null=True,verbose_name='阶段')  # Field name made lowercase.
     home = models.IntegerField(db_column='Home', blank=True, null=True,verbose_name='主队')  # Field name made lowercase.
     away = models.IntegerField(db_column='Away', blank=True, null=True,verbose_name='客队')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
-    type = models.IntegerField(db_column='Type', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True,verbose_name='创建时间')  # Field name made lowercase.
+    type = models.IntegerField(db_column='Type', blank=True, null=True,verbose_name='常规/加时',choices=PERIOD_TYP)  # Field name made lowercase.
     #periodtype = models.IntegerField(db_column='PeriodType', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
