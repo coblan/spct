@@ -1914,7 +1914,7 @@ class TbTicketstake(models.Model):
     accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
     #mainmatchid = models.IntegerField(db_column='MainMatchID')  # Field name made lowercase.
-    marketname = models.CharField(db_column='MarketName', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    marketname = models.CharField(db_column='MarketName', max_length=100, blank=True, null=True,verbose_name='玩法')  # Field name made lowercase.
     outcomename = models.CharField(db_column='OutcomeName', max_length=50, blank=True, null=True,verbose_name='投注项')  # Field name made lowercase.    
     
     #@property

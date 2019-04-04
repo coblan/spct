@@ -252,8 +252,8 @@ class TicketMasterForm(ModelFields):
 class TicketstakeTable(ModelTable):
     """ 子注单 """
     model = TbTicketstake
-    exclude = []
-    fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketid','specialbetname','outcomename', 'odds', 'confirmodds', 'realodds', 
+    exclude = ['marketid']
+    fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketname','specialbetname','outcomename', 'odds', 'confirmodds', 'realodds', 
                    'status', 'createtime', 'updatetime']
 
     def inn_filter(self, query):
@@ -276,13 +276,7 @@ class TicketstakeTable(ModelTable):
         ]
 
     def dict_row(self, inst):
-        #match = inst.match  # TbMatches.objects.get(matchid =  inst.matchid)
-        #if inst.sportid == 0:
-            #matchid_form = 'match_form_ctx'
-        #elif inst.sportid == 1:
-            #matchid_form = 'basketball_match_form_ctx'
-        #else:
-            #raise UserWarning('子注单%s无法匹配比赛' % inst.tid)
+
         return {
             '_matchid_form': 'match_form_ctx',#  matchid_form,
             'matchid': inst.matchid.matchid,
@@ -294,7 +288,7 @@ class TicketstakeTable(ModelTable):
         dc = {
             'tid': 80,
             'match': 250,
-            'marketid':160,
+            'marketname':160,
             'specialbetvalue': 80,
             'odds': 80,
             'confirmodds': 80,
