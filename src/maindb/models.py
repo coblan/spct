@@ -210,8 +210,8 @@ class TbActivityV2(models.Model):
     url = models.CharField(db_column='Url', max_length=512)  # Field name made lowercase.
     componentname = models.CharField(db_column='ComponentName', max_length=64, blank=True, null=True,verbose_name='前端组件名',choices=ACTIVITY_COM)  # Field name made lowercase.
     componentparams = models.CharField(db_column='ComponentParams', max_length=4000, blank=True, null=True,verbose_name='前端组件参数')  # Field name made lowercase.
-    #templateid = models.IntegerField(db_column='TemplateId')  # Field name made lowercase.
-    templateid = models.ForeignKey(to='TbActivityTemplate',db_constraint=False,db_column='TemplateId',verbose_name='程序集',blank=True)  # Field name made lowercase.
+    templateid = models.IntegerField(db_column='TemplateId',verbose_name='程序集',default=0)  # Field name made lowercase.
+    #templateid = models.ForeignKey(to='TbActivityTemplate',db_constraint=False,db_column='TemplateId',verbose_name='程序集',blank=True)  # Field name made lowercase.
     ismutex = models.BooleanField(db_column='IsMutex',verbose_name='与其他活动互斥')  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort',verbose_name='排序')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.

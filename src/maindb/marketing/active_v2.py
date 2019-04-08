@@ -1,5 +1,5 @@
 from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc ,director,director_view
-from ..models import TbActivityV2,TbActivitySettings
+from ..models import TbActivityV2,TbActivitySettings,TbActivityTemplate
 from ..static_html_builder import StaticHtmlBuilder
 from urllib.parse import urljoin
 from helpers.func.sim_signal import sim_signal
@@ -121,12 +121,17 @@ class ActivityV2Form(ModelFields):
         if head['name']=='content':
             head['editor']='richtext'
         if head['name']=='banner':
-            head['up_url'] = '/d/upload?path=public/images'               
+            head['up_url'] = '/d/upload?path=public/images'      
+        if head['name'] =='templateid':
+            head['editor']='com-field-select'
+            head['options']=[ {'value':0,'label':'缺省值'}]+[
+                {'value':x.pk ,'label':str(x)} for x in TbActivityTemplate.objects.all()
+            ]
         return head
     
     def clean_save(self):
-        if not self.instance.templateid_id:
-            self.instance.templateid_id=0
+        if not self.instance.templateid:
+            self.instance.templateid=0
     
 class ActivitySettingTable(ModelTable):
     model=TbActivitySettings
