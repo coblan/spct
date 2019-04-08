@@ -1367,7 +1367,7 @@ class TbQa(models.Model):
     type = models.IntegerField(db_column='Type')  # Field name made lowercase.
     priority = models.SmallIntegerField(db_column='Priority', default=0, blank=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=100, verbose_name='标题')  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=1500)  # Field name made lowercase.
+    description = models.TextField(db_column='Description',verbose_name='详细')  # Field name made lowercase.
     status = models.SmallIntegerField(db_column='Status', default=1,
                                       choices=ONLINE_STATUS)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
