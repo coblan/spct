@@ -210,8 +210,8 @@ class TbActivityV2(models.Model):
     url = models.CharField(db_column='Url', max_length=512)  # Field name made lowercase.
     componentname = models.CharField(db_column='ComponentName', max_length=64, blank=True, null=True,verbose_name='前端组件名',choices=ACTIVITY_COM)  # Field name made lowercase.
     componentparams = models.CharField(db_column='ComponentParams', max_length=4000, blank=True, null=True,verbose_name='前端组件参数')  # Field name made lowercase.
-    #templateid = models.IntegerField(db_column='TemplateId')  # Field name made lowercase.
-    templateid = models.ForeignKey(to='TbActivityTemplate',db_constraint=False,db_column='TemplateId',verbose_name='程序集',blank=True)  # Field name made lowercase.
+    templateid = models.IntegerField(db_column='TemplateId',verbose_name='程序集',default=0)  # Field name made lowercase.
+    #templateid = models.ForeignKey(to='TbActivityTemplate',db_constraint=False,db_column='TemplateId',verbose_name='程序集',blank=True)  # Field name made lowercase.
     ismutex = models.BooleanField(db_column='IsMutex',verbose_name='与其他活动互斥')  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort',verbose_name='排序')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
@@ -1557,7 +1557,7 @@ class TbQa(models.Model):
     type = models.IntegerField(db_column='Type')  # Field name made lowercase.
     priority = models.SmallIntegerField(db_column='Priority', default=0, blank=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=100, verbose_name='标题')  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=1500)  # Field name made lowercase.
+    description = models.TextField(db_column='Description',verbose_name='详细')  # Field name made lowercase.
     status = models.SmallIntegerField(db_column='Status', default=1,
                                       choices=ONLINE_STATUS)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
