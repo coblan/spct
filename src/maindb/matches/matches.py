@@ -859,6 +859,7 @@ def out_com_save(rows,matchid):
     batch_create=[]
     for row in rows:
         if row['pk'] == -1:
+            # 足球手动输入比分
             send_dc['IsSettleByScore']=True
             dc = {}
             has_overtime = row.pop('has_overtime',False)
@@ -927,6 +928,7 @@ def out_com_save(rows,matchid):
                 item['Score'] = '%s:%s'%(item.pop('OutcomeId'),item.pop('OutcomeId_1') )
                 send_dc['Special'].append(item)
         if row['pk'] == -2:
+            # 普通篮球手动输入比分 （有四小节）
             send_dc['IsSettleByScore']=True
             dc = {}
             has_overtime = row.pop('has_overtime',False)
@@ -963,6 +965,7 @@ def out_com_save(rows,matchid):
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
 
         if row['pk'] == -3:
+            # NCAA 篮球手动输入比分 （只有上下半场,有加时赛）
             send_dc['IsSettleByScore']=True
             dc = {}
             has_overtime = row.pop('has_overtime',False)
@@ -988,6 +991,17 @@ def out_com_save(rows,matchid):
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
 
     TbPeriodscore.objects.bulk_create(batch_create)
+    if send_dc.get('IsSettleByScore'):
+        home_score =0
+        away_score =0
+        for inst in batch_create:
+            if inst.scoretype==1 and inst.statuscode in [6,7,40,13,14,15,16,50]:
+                home_score += inst.home
+                away_score += inst.away
+            
+        match = TbMatch.objects.get(matchid=matchid)
+        match.score = '%s:%s'%(home_score,away_score)
+        match.save()
     notifyManulOutcome(json.dumps(send_dc))
     
 director.update({

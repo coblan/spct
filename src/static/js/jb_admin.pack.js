@@ -2466,17 +2466,7 @@ var mix_fields_data = {
             });
         },
 
-        after_save: function (_after_save) {
-            function after_save(_x) {
-                return _after_save.apply(this, arguments);
-            }
-
-            after_save.toString = function () {
-                return _after_save.toString();
-            };
-
-            return after_save;
-        }(function (new_row) {
+        after_save: function after_save(new_row) {
             //ex.assign(this.row,new_row)
             if (this.tab_head.after_save) {
                 if (typeof this.tab_head.after_save == 'string') {
@@ -2484,17 +2474,20 @@ var mix_fields_data = {
                 } else {
                     // 为了兼容老的
                     if (this.tab_head.after_save) {
-                        var fun = after_save[this.tab_head.after_save.fun];
-                        var kws = this.tab_head.after_save.kws;
-                        // new_row ,old_row
-                        fun(this, new_row, kws);
+                        //var fun = after_save[this.tab_head.after_save.fun]
+                        //var kws = this.tab_head.after_save.kws
+                        //// new_row ,old_row
+                        //fun(this,new_row,kws)
+                        if (this.parStore) {
+                            this.parStore.update_or_insert(new_row);
+                        }
                     }
                     ex.vueAssign(this.org_row, new_row);
                 }
             } else if (this.tab_head.after_save_express) {
                 ex.eval(this.tab_head.after_save_express, { vc: this });
             }
-        }),
+        },
         showErrors: function showErrors(errors) {
             // 落到 nice validator去
         },
@@ -7564,6 +7557,7 @@ var tab_fields = {
     },
 
     methods: {
+
         group_filter_heads: function group_filter_heads(group) {
             return ex.filter(this.normed_heads, function (head) {
                 return ex.isin(head.name, group.head_names);
