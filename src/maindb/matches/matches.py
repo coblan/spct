@@ -611,8 +611,6 @@ def getSpecialbetValue(matchid):
         'specialbetvalue': specialbetvalue,
     }
 
-
-
 @director_view('save_special_bet_value')
 def save_special_bet_value_proc(matchid, markets, specialbetvalue):
     """
@@ -737,6 +735,7 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
 
 class OutcomeTab(ModelTable):
     model = TbMarkets
+    selectable=False
     include =['marketid','marketname','marketnamezh']
     
     def getExtraHead(self):
@@ -934,8 +933,8 @@ def out_com_save(rows,matchid):
             has_overtime = row.pop('has_overtime',False)
      
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
-            total_home += 0
-            total_away += 0
+            total_home = 0
+            total_away = 0
             if has_overtime:
                 home = row.pop('home_40_1')
                 away = row.pop('away_40_1')
@@ -971,8 +970,8 @@ def out_com_save(rows,matchid):
             has_overtime = row.pop('has_overtime',False)
            
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
-            total_home += 0
-            total_away += 0
+            total_home = 0
+            total_away = 0
             if has_overtime:
                 home = row.pop('home_40_1')
                 away = row.pop('away_40_1')
@@ -996,11 +995,13 @@ def out_com_save(rows,matchid):
         away_score =0
         for inst in batch_create:
             if inst.scoretype==1 and inst.statuscode in [6,7,40,13,14,15,16,50]:
-                home_score += inst.home
-                away_score += inst.away
+                home_score += int(inst.home)
+                away_score += int(inst.away)
             
         match = TbMatch.objects.get(matchid=matchid)
         match.score = '%s:%s'%(home_score,away_score)
+        match.marketstatus=3
+        match.statuscode = 100
         match.save()
     notifyManulOutcome(json.dumps(send_dc))
     

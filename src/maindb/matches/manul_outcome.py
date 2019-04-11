@@ -114,7 +114,7 @@ outcome_header = {
             },
          291:{
             'heads':[
-                 {'name':'content','label':'谁先得X分','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers)',
+                 {'name':'content','label':'谁先得X分','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)',
                   'table_heads':[
                       {'name':'Specifiers','label':'分数','editor':'com-table-pop-fields-local', 'width': 200,}, 
                       {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
@@ -138,7 +138,7 @@ outcome_header = {
          },
          174:{
             'heads':[
-                 {'name':'content','label':'上半场谁发X角球','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers)',
+                 {'name':'content','label':'上半场谁发X角球','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)',
                   'table_heads':[
                       {'name':'Specifiers','label':'个数','editor':'com-table-pop-fields-local', 'width': 200,}, 
                       {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
@@ -164,7 +164,7 @@ outcome_header = {
          },
          163:{
             'heads':[
-                 {'name':'content','label':'常规时间第X角球','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers)',
+                 {'name':'content','label':'常规时间第X角球','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)',
                   'table_heads':[
                       {'name':'Specifiers','label':'个数','editor':'com-table-pop-fields-local', 'width': 200,}, 
                       {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
@@ -191,7 +191,7 @@ outcome_header = {
          },
          8:{
            'heads':[
-                 {'name':'content','label':'常规时间谁先进第X球','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers)',
+                 {'name':'content','label':'常规时间谁先进第X球','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)',
                   'table_heads':[
                       {'name':'Specifiers','label':'个数','editor':'com-table-pop-fields-local', 'width': 200,}, 
                       {'name':'OutcomeId','label':'主队/客队','editor':'com-table-mapper', 'width': 200,
@@ -217,7 +217,7 @@ outcome_header = {
          },
          9:{
            'heads':[
-                 {'name':'content','label':'谁进最后一个球','editor':'com-field-select','required':True,  
+                 {'name':'content','label':'谁进最后一个球','editor':'com-field-select',  
                   'options':[
                          {'value':6,'label':'主队'},
                          {'value':7,'label':'都不'},
@@ -232,7 +232,7 @@ outcome_header = {
          },
          100:{
             'heads':[
-                 {'name':'content','label':'15分钟','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers)',
+                 {'name':'content','label':'15分钟','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)',
                   'table_heads':[
                       {'name':'Specifiers','label':'个数','editor':'com-table-pop-fields-local', 'width': 200,}, 
                       {'name':'OutcomeId','label':'时间段','editor':'com-table-mapper', 'width': 200,
@@ -266,7 +266,7 @@ outcome_header = {
          },
          101:{
             'heads':[
-                 {'name':'content','label':'10分钟','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers)',
+                 {'name':'content','label':'10分钟','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)',
                   'table_heads':[
                       {'name':'Specifiers','label':'个数','editor':'com-table-pop-fields-local', 'width': 200,}, 
                       {'name':'OutcomeId','label':'时间段','editor':'com-table-mapper', 'width': 200,
@@ -306,7 +306,7 @@ outcome_header = {
          },
          102:{
             'heads':[
-                 {'name':'content','label':'15分钟1X2','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers)',
+                 {'name':'content','label':'15分钟1X2','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)',
                   'table_heads':[
                     
                       {'name':'Specifiers','label':'时间段','editor':'com-table-pop-fields-local', 'inn_editor':'com-table-mapper', 'width': 200,
@@ -349,7 +349,7 @@ outcome_header = {
          },
          103:{
             'heads':[
-                 {'name':'content','label':'15分钟进球','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers_1)',
+                 {'name':'content','label':'15分钟进球','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers_1)',
                   'table_heads':[
                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-table-pop-fields-local'},
                     {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
@@ -393,7 +393,7 @@ outcome_header = {
          },
          104:{
             'heads':[
-                 {'name':'content','label':'15分钟大小','editor':'com-field-table-list','required':True,'fv_rule':'group_unique(Specifiers_1, Specifiers)',
+                 {'name':'content','label':'15分钟大小','editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)',
                   'table_heads':[
                     {'name':'Specifiers_1','label':'盘口','editor':'com-table-pop-fields-local'},
                     {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 80,
@@ -430,7 +430,7 @@ outcome_header = {
          },
          105:{
             'heads':[
-                 {'name':'content','label':'10分钟1X2','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers)',
+                 {'name':'content','label':'10分钟1X2','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)',
                   'table_heads':[
                     
                       {'name':'Specifiers','label':'时间段','editor':'com-table-pop-fields-local','inn_editor':'com-table-mapper', 'width': 200,
@@ -479,7 +479,7 @@ outcome_header = {
          },
          106:{
             'heads':[
-                 {'name':'content','label':'10分钟进球','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers_1)',
+                 {'name':'content','label':'10分钟进球','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers_1)',
                   'table_heads':[
                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-table-pop-fields-local'},
                     {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
@@ -529,7 +529,7 @@ outcome_header = {
          },
          107:{
             'heads':[
-                 {'name':'content','label':'10分钟大小','editor':'com-field-table-list','required':True,'fv_rule':'group_unique(Specifiers_1, Specifiers)',
+                 {'name':'content','label':'10分钟大小','editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)',
                   'table_heads':[
                     {'name':'Specifiers_1','label':'盘口','editor':'com-table-pop-fields-local'},
                     {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 80,
@@ -572,7 +572,7 @@ outcome_header = {
          },
          108:{
             'heads':[
-                 {'name':'content','label':'10分钟1X2','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers)',
+                 {'name':'content','label':'10分钟1X2','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)',
                   'table_heads':[
                     
                       {'name':'Specifiers','label':'时间段','editor':'com-table-pop-fields-local','inn_editor':'com-table-mapper', 'width': 200,
@@ -640,7 +640,7 @@ outcome_header = {
          },
          109:{
             'heads':[
-                 {'name':'content','label':'5分钟进球','editor':'com-field-table-list','required':True,'fv_rule':'key_unique(Specifiers_1)',
+                 {'name':'content','label':'5分钟进球','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers_1)',
                   'table_heads':[
                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-table-pop-fields-local'},
                     {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
@@ -708,7 +708,7 @@ outcome_header = {
          },
          110:{
             'heads':[
-                 {'name':'content','label':'5分钟大小','editor':'com-field-table-list','required':True,'fv_rule':'group_unique(Specifiers_1, Specifiers)',
+                 {'name':'content','label':'5分钟大小','editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)',
                   'table_heads':[
                     {'name':'Specifiers_1','label':'盘口','editor':'com-table-pop-fields-local'},
                     {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 80,

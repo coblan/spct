@@ -570,7 +570,7 @@ var pop_fields = exports.pop_fields = {
             fun(function (pop_row) {
                 //pop_fields_layer(pop_row,self.head.fields_heads,ops,self.head.extra_mixins,function(kws){
                 var win_index = pop_fields_layer(pop_row, self.head.fields_ctx, function (new_row) {
-
+                    //TODO 配合 tab_fields ，mix_fields_data 统一处理 after_save的问题
                     var fun = after_save[self.head.after_save.fun];
                     fun(self, new_row, pop_row);
 
@@ -1274,7 +1274,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var order_list = {
     props: ['row', 'head'],
-    template: '<div class="com-field-table-list">\n    <div>\n        <button @click="add_new()" class="btn btn-default btn-xs">\n            <i style="color: green" class="fa fa-plus-circle"></i>\n        </button>\n        <button @click="delete_rows()" class="btn btn-default btn-xs">\n            <i style="color: red" class="fa fa-minus-circle"></i>\n        </button>\n        <div style="display: inline-block;position: relative;vertical-align: top">\n            <textarea :name="head.name" v-model="row[head.name]" id="" cols="1" rows="1" style="display: none"></textarea>\n        </div>\n    </div>\n\n\n                    <el-table ref="core_table" class="table"\n                              :data="rows"\n                              border\n                              :stripe="true"\n                              size="mini"\n                              :summary-method="getSum"\n                               @selection-change="handleSelectionChange"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="col in heads">\n\n                            <el-table-column v-if="col.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(col) "\n                                             :label="col.label"\n                                             :prop="col.name.toString()"\n                                             :width="col.width">\n                                <template slot-scope="scope">\n                                    <component :is="col.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="col.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(col) "\n                                             :prop="col.name.toString()"\n                                             :label="col.label"\n                                             :width="col.width">\n                            </el-table-column>\n                        </template>\n                    </el-table>\n              </div>',
+    template: '<div class="com-field-table-list">\n    <div>\n        <button @click="add_new()" class="btn btn-default btn-xs">\n            <i style="color: green" class="fa fa-plus-circle"></i>\n        </button>\n        <button @click="delete_rows()" class="btn btn-default btn-xs">\n            <i style="color: red" class="fa fa-minus-circle"></i>\n        </button>\n        <div style="display: inline-block;position: relative;vertical-align: top">\n            <textarea :name="head.name" v-model="row[head.name]"  style="display: none"></textarea>\n        </div>\n    </div>\n\n\n                    <el-table ref="core_table" class="table"\n                              :data="rows"\n                              border\n                              :stripe="true"\n                              size="mini"\n                              :summary-method="getSum"\n                               @selection-change="handleSelectionChange"\n                              style="width: 100%">\n                        <el-table-column\n                                type="selection"\n                                width="55">\n                        </el-table-column>\n\n                        <template  v-for="col in heads">\n\n                            <el-table-column v-if="col.editor"\n                                             :show-overflow-tooltip="is_show_tooltip(col) "\n                                             :label="col.label"\n                                             :prop="col.name.toString()"\n                                             :width="col.width">\n                                <template slot-scope="scope">\n                                    <component :is="col.editor"\n                                               @on-custom-comp="on_td_event($event)"\n                                               :row-data="scope.row" :field="col.name" :index="scope.$index">\n                                    </component>\n\n                                </template>\n\n                            </el-table-column>\n                            <el-table-column v-else\n                                             :show-overflow-tooltip="is_show_tooltip(col) "\n                                             :prop="col.name.toString()"\n                                             :label="col.label"\n                                             :width="col.width">\n                            </el-table-column>\n                        </template>\n                    </el-table>\n              </div>',
     mixins: [mix_table_data, mix_ele_table_adapter],
     data: function data() {
         if (this.row[this.head.name]) {
@@ -1313,13 +1313,19 @@ var order_list = {
                 this.rows = [];
             }
         },
-        rows: function rows(v) {
-            if (v.length > 0) {
-                this.row[this.head.name] = JSON.stringify(v);
-            } else {
-                this.row[this.head.name] = '';
-            }
+        rows: {
+            handler: function handler(v) {
+                if (v.length > 0) {
+                    Vue.set(this.row, this.head.name, JSON.stringify(v));
+                    //this.row[this.head.name] = JSON.stringify(v)
+                } else {
+                    Vue.set(this.row, this.head.name, '');
+                    //this.row[this.head.name] = ''
+                }
+            },
+            deep: true
         }
+
     },
     methods: {
         commit: function commit() {
@@ -1346,12 +1352,10 @@ var order_list = {
                 //self.row[self.head.name] = JSON.stringify(self.rows)
                 layer.close(win);
             });
-
-            //this.row[this.head].append({})
         },
         delete_rows: function delete_rows() {
             var self = this;
-            layer.confirm('真的删除吗?', { icon: 3, title: '提示' }, function (index) {
+            layer.confirm('确定删除?', { icon: 3, title: '提示' }, function (index) {
                 //do something
                 ex.remove(self.rows, function (row) {
                     return self.selected.indexOf(row) != -1;
@@ -2468,24 +2472,26 @@ var mix_fields_data = {
 
         after_save: function after_save(new_row) {
             //ex.assign(this.row,new_row)
-            if (this.tab_head.after_save) {
-                if (typeof this.tab_head.after_save == 'string') {
-                    ex.eval(this.tab_head.after_save, { vc: this });
-                } else {
-                    // 为了兼容老的
-                    if (this.tab_head.after_save) {
-                        //var fun = after_save[this.tab_head.after_save.fun]
-                        //var kws = this.tab_head.after_save.kws
-                        //// new_row ,old_row
-                        //fun(this,new_row,kws)
-                        if (this.parStore) {
-                            this.parStore.update_or_insert(new_row);
+            //TODO 配合 table_pop_fields ，tab-fields 统一处理 after_save的问题
+            if (this.tab_head) {
+                // 如果表单在一个tab 下,
+                if (this.tab_head.after_save) {
+                    if (typeof this.tab_head.after_save == 'string') {
+                        ex.eval(this.tab_head.after_save, { vc: this });
+                    } else {
+                        // 为了兼容老的
+                        if (this.tab_head.after_save) {
+                            if (this.parStore) {
+                                this.parStore.update_or_insert(new_row);
+                            }
                         }
+                        ex.vueAssign(this.org_row, new_row);
                     }
-                    ex.vueAssign(this.org_row, new_row);
                 }
-            } else if (this.tab_head.after_save_express) {
-                ex.eval(this.tab_head.after_save_express, { vc: this });
+                // 老的调用名字，新的后端调用名全部用 after_save
+                else if (this.tab_head.after_save_express) {
+                        ex.eval(this.tab_head.after_save_express, { vc: this });
+                    }
             }
         },
         showErrors: function showErrors(errors) {
