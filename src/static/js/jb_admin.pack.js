@@ -1319,7 +1319,7 @@ var order_list = {
                     Vue.set(this.row, this.head.name, JSON.stringify(v));
                     //this.row[this.head.name] = JSON.stringify(v)
                 } else {
-                    Vue.set(this.row, this.head.name, '');
+                    Vue.set(this.row, this.head.name, '[]');
                     //this.row[this.head.name] = ''
                 }
             },
