@@ -908,19 +908,19 @@ def out_com_save(rows,matchid):
 
         if row['pk'] in which_map:
             
-            outcome_list = json.loads(row.get('content') ) 
+            outcome_list = json.loads(row.get('content','[]') ) 
             for item in outcome_list:
                 item['Specifiers'] = which_map[row['pk']]%{'org_sp':item['Specifiers']}
                 item['MarketId']= row['pk']
                 send_dc['Special'].append(item)
         if row['pk'] in [103,106,109]:
-            outcome_list = json.loads(row.get('content') ) 
+            outcome_list = json.loads(row.get('content','[]') ) 
             for item in outcome_list:
                 item['Specifiers'] = 'goalnr='+item.pop('Specifiers_1')+item['Specifiers']
                 item['MarketId']= row['pk']
                 send_dc['Special'].append(item)
         if row['pk'] in [104,107,110]:
-            outcome_list = json.loads(row.get('content') ) 
+            outcome_list = json.loads(row.get('content','[]') ) 
             for item in outcome_list:
                 item['Specifiers'] = 'total='+item.pop('Specifiers_1')+item['Specifiers']
                 item['MarketId']= row['pk']
