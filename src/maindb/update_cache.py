@@ -28,7 +28,7 @@ def update_redis_cache(sender, **kws):
     elif sender == sports_model.TbOddstypegroup:
         redisInst.delete('App:Static:TypeGroup')
     elif sender in [ sports_model.Blackiprangelist, sports_model.TbAreablacklist, 
-                     sports_model.TbWhiteiprangelist, 
+                     sports_model.TbWhiteiprangelist,
                      sports_model.Whiteiplist, sports_model.Whiteuserlist]:
         ls1 = redisInst.keys(pattern='blackList:*')
         if ls1:
