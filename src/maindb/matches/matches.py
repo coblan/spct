@@ -935,6 +935,11 @@ def out_com_save(rows,matchid):
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
             total_home = 0
             total_away = 0
+            half_home=0
+            half_away=0
+            half2_home=0
+            half2_away=0
+            
             if has_overtime:
                 home = row.pop('home_40_1')
                 away = row.pop('away_40_1')
@@ -944,23 +949,33 @@ def out_com_save(rows,matchid):
             away = row.get('away_13_1')
             total_home += int(home)
             total_away += int(away)
+            half_home += int(home)
+            half_away ++ int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=13,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_14_1')
             away = row.get('away_14_1')
             total_home += int(home)
             total_away += int(away)
+            half_home += int(home)
+            half_away ++ int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=14,scoretype=1,home=home,away=away ,type=0) )
-            
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=half_home,away=half_away ,type=0) )
+
             home = row.get('home_15_1')
             away = row.get('away_15_1')
             total_home += int(home)
             total_away += int(away)
+            half2_home += int(home)
+            half2_away ++ int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=15,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_16_1')
             away = row.get('away_16_1')
             total_home += int(home)
             total_away += int(away)
+            half2_home += int(home)
+            half2_away ++ int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=16,scoretype=1,home=home,away=away ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=half2_home,away=half2_away ,type=0) )
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
 
         if row['pk'] == -3:
