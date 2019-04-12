@@ -334,7 +334,7 @@ outcome_header = {
                            {'value':'from=61|to=75','label':'61-75'},
                            {'value':'from=76|to=90','label':'76-90'},
                          ]}, 
-                    {'name':'OutcomeId','label':'个数','editor':'com-field-select', 'required':True,
+                    {'name':'OutcomeId','label':'胜平负','editor':'com-field-select', 'required':True,
                       'options':[
                               {'value':1 ,'label':'主赢' },
                               {'value':2,'label':'平局'},
@@ -349,7 +349,7 @@ outcome_header = {
          },
          103:{
             'heads':[
-                 {'name':'content','label':'15分钟进球','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers_1)','fv_msg':'第几粒球不能重复',
+                 {'name':'content','label':'15分钟进球','editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)','fv_msg':'第几粒球+时间段 不能重复',
                   'table_heads':[
                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-table-pop-fields-local'},
                     {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
@@ -378,7 +378,7 @@ outcome_header = {
                            {'value':'|from=61|to=75','label':'61-75'},
                            {'value':'|from=76|to=90','label':'76-90'},
                          ]}, 
-                    {'name':'OutcomeId','label':'个数','editor':'com-field-select', 'required':True,
+                    {'name':'OutcomeId','label':'胜平负','editor':'com-field-select', 'required':True,
                       'options':[
                                {'value':6,'label':'主赢' },
                                {'value':7,'label':'平局'},
@@ -464,7 +464,7 @@ outcome_header = {
                            {'value':"from=71|to=80",'label':"71-80"},
                            {'value':"from=81|to=90",'label':"81-90"},
                          ]}, 
-                    {'name':'OutcomeId','label':'个数','editor':'com-field-select', 'required':True,
+                    {'name':'OutcomeId','label':'胜平负','editor':'com-field-select', 'required':True,
                       'options':[
                               {'value':1 ,'label':'主赢' },
                               {'value':2,'label':'平局'},
@@ -479,7 +479,7 @@ outcome_header = {
          },
          106:{
             'heads':[
-                 {'name':'content','label':'10分钟进球','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers_1)','fv_msg':'第几粒球 不能重复',
+                 {'name':'content','label':'10分钟进球','editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)','fv_msg':'第几粒球+时间段不能重复',
                   'table_heads':[
                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-table-pop-fields-local'},
                     {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
@@ -514,7 +514,7 @@ outcome_header = {
                            {'value':"|from=71|to=80",'label':"71-80"},
                            {'value':"|from=81|to=90",'label':"81-90"},
                          ]}, 
-                    {'name':'OutcomeId','label':'个数','editor':'com-field-select', 'required':True,
+                    {'name':'OutcomeId','label':'胜平负','editor':'com-field-select', 'required':True,
                       'options':[
                                {'value':6,'label':'主赢' },
                                {'value':7,'label':'平局'},
@@ -640,7 +640,7 @@ outcome_header = {
          },
          109:{
             'heads':[
-                 {'name':'content','label':'5分钟进球','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers_1)','fv_msg':'第几粒球 不能重复',
+                 {'name':'content','label':'5分钟进球','editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)','fv_msg':'第几粒球+时间段不能重复',
                   'table_heads':[
                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-table-pop-fields-local'},
                     {'name':'Specifiers','label':'时间段','editor':'com-table-mapper', 'width': 200,
