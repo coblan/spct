@@ -1002,8 +1002,17 @@ def out_com_save(rows,matchid):
         match.score = '%s:%s'%(home_score,away_score)
         match.marketstatus=3
         match.statuscode = 100
+        match.terminator ='manual'
         match.save()
     notifyManulOutcome(json.dumps(send_dc))
+    dc={
+        'MatchID':match.matchid,
+        'Score':match.score,
+        'MarketStatus':match.marketstatus,
+        'StatusCode':match.statuscode,
+        'Terminator':match.terminator
+    }
+    updateMatchMongo(dc)
     
 director.update({
     'match.table': MatchsPage.tableCls,
