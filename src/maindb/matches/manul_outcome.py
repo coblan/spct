@@ -232,7 +232,7 @@ outcome_header = {
          },
          100:{
             'heads':[
-                 {'name':'content','label':'15分钟','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)','fv_rule':'个数不能重复',
+                 {'name':'content','label':'15分钟','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)','fv_msg':'个数不能重复',
                   'table_heads':[
                       {'name':'Specifiers','label':'个数','editor':'com-table-pop-fields-local', 'width': 200,}, 
                       {'name':'OutcomeId','label':'时间段','editor':'com-table-mapper', 'width': 200,
