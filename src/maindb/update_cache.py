@@ -1,33 +1,25 @@
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from .redisInstance import redisInst
-#from .models import TbCurrency, TbNotice, TbBanner, TbMatches, TbOddstypegroup
 from . import models as sports_model
 from helpers.func.sim_signal import sim_signal
-#dc = {
-    #TbCurrency: 'App:Static:Currency',
-    #TbNotice: 'App:Cache:index:notices',
-    #TbBanner: 'App:Cache:index:banners',
-    #TbMatches: 'App:Cache:index:matches',
-    #TbOddstypegroup: 'App:Static:TypeGroup',
-#}
 
 # 利用django的model的signal进行缓存清空
 def update_redis_cache(sender, **kws): 
     
-    if sender == sports_model.TbBanner:
-        ls1 = redisInst.keys(pattern='cmmon:*')
+    if sender in [sports_model.TbBanner,sports_model.TbMatch]:
+        ls1 = redisInst.keys(pattern='common:*')
         if ls1:
             redisInst.delete(*ls1)
         #redisInst.delete('App:Cache:index:banners:0')
         #redisInst.delete('App:Cache:index:banners:1')
-        
+    
+    # TbMatches 被 TbMatch 替换了，
     elif sender == sports_model.TbMatches:
         redisInst.delete('App:Cache:index:matches:Soccer')  # App:Cache:index:matches:Basketball
     elif sender == sports_model.TbMatchesBasketball:
         redisInst.delete('App:Cache:index:matches:Basketball') 
-    #elif sender == sports_model.TbNotice:
-        #redisInst.delete('App:Cache:index:notices')
+    
     elif sender == sports_model.TbMaxpayout:
         for key in  ['App:Static:MaxPayout', 'App:Static:MaxSinglePayout']:
             redisInst.delete(key)
@@ -38,7 +30,7 @@ def update_redis_cache(sender, **kws):
     elif sender in [ sports_model.Blackiprangelist, sports_model.TbAreablacklist, 
                      sports_model.TbWhiteiprangelist, 
                      sports_model.Whiteiplist, sports_model.Whiteuserlist]:
-        ls1 = redisInst.keys(pattern='App:BlackList:*')
+        ls1 = redisInst.keys(pattern='blackList:*')
         if ls1:
             redisInst.delete(*ls1)
     elif sender == sports_model.TbUserRank:
@@ -47,18 +39,6 @@ def update_redis_cache(sender, **kws):
             redisInst.delete(*ls1)
         redisInst.delete('App:Cache:index:ranks')
             
-    #if sender.__module__ == 'maindb.models' :  #in sports_model:
-        #ls1 = redisInst.keys(pattern='App:Cache:index:*')
-        #if ls1:
-            #redisInst.delete(*ls1)
-        #ls2 = redisInst.keys(pattern='App:Static:*')
-        #if ls2:
-            #redisInst.delete(*ls2)
-        
-        #redisInst.delete('App:Cache:index:*')
-        #redisInst.delete('App:Static:*')
-    #if sender in dc:
-        #redisInst.delete(dc.get(sender))  
         
 post_delete.connect(update_redis_cache)
 post_save.connect(update_redis_cache)
