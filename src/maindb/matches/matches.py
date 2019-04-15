@@ -950,14 +950,14 @@ def out_com_save(rows,matchid):
             total_home += int(home)
             total_away += int(away)
             half_home += int(home)
-            half_away ++ int(away)
+            half_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=13,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_14_1')
             away = row.get('away_14_1')
             total_home += int(home)
             total_away += int(away)
             half_home += int(home)
-            half_away ++ int(away)
+            half_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=14,scoretype=1,home=home,away=away ,type=0) )
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=half_home,away=half_away ,type=0) )
 
@@ -966,14 +966,14 @@ def out_com_save(rows,matchid):
             total_home += int(home)
             total_away += int(away)
             half2_home += int(home)
-            half2_away ++ int(away)
+            half2_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=15,scoretype=1,home=home,away=away ,type=0) )
             home = row.get('home_16_1')
             away = row.get('away_16_1')
             total_home += int(home)
             total_away += int(away)
             half2_home += int(home)
-            half2_away ++ int(away)
+            half2_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=16,scoretype=1,home=home,away=away ,type=0) )
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=half2_home,away=half2_away ,type=0) )
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
@@ -1009,7 +1009,7 @@ def out_com_save(rows,matchid):
         home_score =0
         away_score =0
         for inst in batch_create:
-            if inst.scoretype==1 and inst.statuscode in [6,7,40,13,14,15,16,50]:
+            if inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
                 home_score += int(inst.home)
                 away_score += int(inst.away)
             
