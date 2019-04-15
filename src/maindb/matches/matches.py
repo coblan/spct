@@ -643,6 +643,7 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
                                                                         #marketid_id=market['marketid'],
         oddSwitch=None                                       #defaults={'status': 0})
         for item in dbOddSwitchs:
+            # type=2 是玩法market
             if item.type==2 and item.marketid_id==market['marketid']:
                 oddSwitch = item
                 dbOddSwitchs.remove(item)
@@ -658,7 +659,8 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
         else:
             if oddSwitch.status != 0:
                 oddSwitch.status = 0
-                log_msg += '开启玩法：%s' % market['name']
+                if oddSwitch.pk: # 有pk，证明switch存在于数据库，但是status=0 表示即将开启(删除)
+                    log_msg += '开启玩法：%s' % market['name']
                 batchOperationSwitch.append(oddSwitch)
 
     for spbt in specialbetvalue:
@@ -693,7 +695,8 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
             else:
                 if spSwitch.status != 0:
                     spSwitch.status = 0
-                    log_msg += '开启盘口：%s' % spbt['specialbetvalue']
+                    if spSwitch.pk:
+                        log_msg += '开启盘口：%s' % spbt['specialbetvalue']
                     batchOperationSwitch.append(spSwitch)
                         
     new_list = []
