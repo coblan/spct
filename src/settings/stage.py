@@ -11,7 +11,7 @@ DATABASES = {
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         },
     'Sports': {
-        'NAME': 'Sports_20190221_Part3',
+        'NAME': 'Sports',
         'ENGINE': 'sql_server.pyodbc',
          'HOST':'192.168.40.6,1433',
         'USER': 'Backend',
