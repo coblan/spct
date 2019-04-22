@@ -787,21 +787,21 @@ class TbLivescout(models.Model):
 
 class TbLivefeed(models.Model):
     id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    sportid = models.IntegerField(db_column='SportId')  # Field name made lowercase.
-    livefeedid = models.BigIntegerField(db_column='LiveFeedId')  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportId',verbose_name='体育类型')  # Field name made lowercase.
+    livefeedid = models.BigIntegerField(db_column='LiveFeedId',verbose_name='FeedID')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchId')  # Field name made lowercase.
     eventid = models.BigIntegerField(db_column='EventId')  # Field name made lowercase.
-    eventtypeid = models.IntegerField(db_column='EventTypeId')  # Field name made lowercase.
+    eventtypeid = models.IntegerField(db_column='EventTypeId',verbose_name='')  # Field name made lowercase.
     extrainfo = models.IntegerField(db_column='ExtraInfo')  # Field name made lowercase.
     side = models.IntegerField(db_column='Side')  # Field name made lowercase.
-    matchtime = models.CharField(db_column='MatchTime', max_length=32, blank=True, null=True)  # Field name made lowercase.
-    matchscore = models.CharField(db_column='MatchScore', max_length=32, blank=True, null=True)  # Field name made lowercase.
-    eventdesc = models.CharField(db_column='EventDesc', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    matchtime = models.CharField(db_column='MatchTime', max_length=32, blank=True, null=True,verbose_name='比赛时间')  # Field name made lowercase.
+    matchscore = models.CharField(db_column='MatchScore', max_length=32, blank=True, null=True,verbose_name='比分')  # Field name made lowercase.
+    eventdesc = models.CharField(db_column='EventDesc', max_length=255, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
     eventdesczh = models.CharField(db_column='EventDescZh', max_length=255, blank=True, null=True)  # Field name made lowercase.
     statuscode = models.IntegerField(db_column='StatusCode')  # Field name made lowercase.
-    betstatus = models.IntegerField(db_column='BetStatus')  # Field name made lowercase.
-    servertime = models.DateTimeField(db_column='ServerTime',auto_now=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime',auto_now=True)  # Field name made lowercase.
+    betstatus = models.IntegerField(db_column='BetStatus',verbose_name='投注状态')  # Field name made lowercase.
+    servertime = models.DateTimeField(db_column='ServerTime',auto_now=True,verbose_name='服务器时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now=True,verbose_name='创建时间')  # Field name made lowercase.
 
     class Meta:
         managed = False

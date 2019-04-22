@@ -443,7 +443,7 @@ class TbLivescoutTable(ModelTable):
         width_dc={
             'servertime':150,
             'createtime':150,
-            'stopreason':150,
+            'eventdesc':200,
         }
         if width_dc.get(head['name']):
             head['width']=width_dc.get(head['name'])
