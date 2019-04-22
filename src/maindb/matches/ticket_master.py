@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director, SelectSearch, model_to_name
-from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatch, TbMatchesBasketball
+from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatch
 from django.db.models import Q, Sum, F, Case, When, FloatField
 import re
 from django.db import connections

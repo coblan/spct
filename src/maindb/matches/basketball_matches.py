@@ -1,8 +1,8 @@
 from helpers.director.shortcut import page_dc, director, director_view
-from .matches import MatchsPage, MatchForm, PeriodTypeForm ,quit_ticket,PeriodScoreTab#get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, 
-from ..models import TbMatchesBasketball, TbOddsBasketball,TbTournamentBasketball,TbMatch,TbTournament
+from .matches import MatchsPage, MatchForm ,quit_ticket,PeriodScoreTab#get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, 
+from ..models import  TbTournamentBasketball,TbMatch,TbTournament
 from maindb.mongoInstance import updateMatchBasketMongo
-from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points,BasketTwosection
+#from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points,BasketTwosection
 from ..redisInstance import redisInst
 import datetime
 from .matches import OutcomeTab
@@ -94,19 +94,19 @@ class BasketMatchForm(MatchForm):
           
     def save_form(self):
         msg = []
-        if self.kw.get('meta_type') == 'manul_outcome':
-            #specialcategoryid = self.kw.get('specialcategoryid')
-            #ProcCls = self.proc_map.get(specialcategoryid)
-            if self.kw.get('tournamentid')==698:
-                ProcCls=BasketTwosection
-            else:
-                ProcCls=BasketPoints
-            proc_obj = ProcCls(crt_user = self.crt_user)
-            self.instance.settletime = datetime.datetime.now()
-            rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
-            msg.append(rt_msg)
-        else:
-            super().save_form()
+        #if self.kw.get('meta_type') == 'manul_outcome':
+            ##specialcategoryid = self.kw.get('specialcategoryid')
+            ##ProcCls = self.proc_map.get(specialcategoryid)
+            #if self.kw.get('tournamentid')==698:
+                #ProcCls=BasketTwosection
+            #else:
+                #ProcCls=BasketPoints
+            #proc_obj = ProcCls(crt_user = self.crt_user)
+            #self.instance.settletime = datetime.datetime.now()
+            #rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
+            #msg.append(rt_msg)
+        #else:
+        super().save_form()
             
         self.updateMongo()
         self.proc_redis()
@@ -132,21 +132,6 @@ class BasketOutcome(OutcomeTab):
         rows = super(OutcomeTab,self).get_rows()
         return bf+rows
 
-#@director_view('basketball_quit_ticket')
-#def basketball_quit_ticket(rows, new_row): 
-    #return quit_ticket(rows, new_row, sportid = 2)
-
-#@director_view('basketball_get_special_bet_value')
-#def basketball_get_special_bet_value(matchid): 
-    #return get_special_bet_value(matchid,sportid = 1,oddsModel = TbOddsBasketball )
-
-#@director_view('basketball_save_special_bet_value')
-#def basketball_save_special_bet_value(matchid, match_opened, oddstype, specialbetvalue): 
-    #return save_special_bet_value_proc(matchid, match_opened, oddstype, specialbetvalue, sportid = 1)
-
-#@director_view('basketball_produce_match_outcome')
-#def basketball_produce_match_outcome(row): 
-    #return produce_match_outcome(row, MatchModel = TbMatchesBasketball, sportid = 1, half_end_code = 4, updateMongo= updateMatchBasketMongo)
 
 director.update({
     'basketball_matchs': BasketMatchsPage.tableCls,

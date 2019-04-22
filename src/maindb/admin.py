@@ -34,7 +34,7 @@ from .basic_data import sporttype
 from .basic_data import teams_basketball
 
 from .riskcontrol import admin
-from .riskcontrol import max_payout
+#from .riskcontrol import max_payout
 from . import update_cache
 from .riskcontrol import withdraw_limit
 from .riskcontrol import paychannel_blackiprange

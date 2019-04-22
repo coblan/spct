@@ -2,7 +2,7 @@
 
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, PageNum, RowSearch, RowFilter
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
-from ..models import TbMatches, TbOdds
+from ..models import TbMatch, TbOdds
 from django.db.models.aggregates import Count,Sum
 from django.db.models import Q, F, Case, When, Sum, DecimalField, Max
 from django.db.models.expressions import Subquery, OuterRef
@@ -96,7 +96,7 @@ class CusPagenator(PageNum):
 #"""      
 
 class OddsTypeGroup4Table(ModelTable):
-    model = TbMatches
+    model = TbMatch
     exclude = []
     fields_sort = ['matchid', 'matchdate', 'event', 'turnover', 'balance', 'favorite', 'betradar','sw', 'SpecialBetValue', 'FavOdds', 'UnderOdds', 
                    'plus', 'MaxPayout','status_odds', 'special_turnover']

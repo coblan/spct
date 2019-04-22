@@ -30,7 +30,7 @@ var com_tab_special_bet_value={
     //mixins:[mix_fields_data],
     template:`<div class="com_tab_special_bet_value" style="position: absolute;top:0;right:0;left:0;bottom: 0;">
     <div class="oprations">
-                <component style="padding: 0.5em;" v-for="op in ops" :is="op.editor" :ref="'op_'+op.fun" :head="op" @operation="on_operation($event)"></component>
+                <component style="padding: 0.5em;margin: 0 0.5rem" v-for="op in ops" :is="op.editor" :ref="'op_'+op.fun" :head="op" @operation="on_operation($event)"></component>
     </div>
         <div style="text-align: center;">
             <span v-text="par_row.matchdate"></span>/
@@ -76,6 +76,7 @@ var com_tab_special_bet_value={
                             <tr>
                             <td></td>
                             <td>玩法名</td>
+                            <td>FTR</td>
                             <td>盘口值</td>
                             <td>盘口名</td>
                             </tr>
@@ -89,6 +90,9 @@ var com_tab_special_bet_value={
                                 </td>
                                 <td>
                                  <span v-text="spbet.marketname"></span>
+                                </td>
+                                 <td>
+                                    <span v-text="spbet.fortherest"></span>
                                 </td>
                                 <td>
                                 <span v-text="spbet.specialbetvalue"></span>

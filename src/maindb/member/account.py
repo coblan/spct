@@ -10,7 +10,7 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelField
 from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
-from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatches,TbBetfullrecord
+from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatch,TbBetfullrecord
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
 from helpers.func.random_str import get_str, get_random_number
@@ -99,7 +99,7 @@ def account_tab(self):
          'com': 'com-tab-table',
          'par_field': 'accountid',
          'table_ctx': MatchesStatisticsTab(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbMatches, self.crt_user)},
+         'visible': can_touch(TbMatch, self.crt_user)},
         {'name':'BetFullRecordTab',
          'label':'限额记录',
          'com':'com-tab-table',

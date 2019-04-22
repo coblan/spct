@@ -2,8 +2,8 @@
 from __future__ import unicode_literals
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
     SelectSearch, Fields, director_view
-from ..models import TbMatches, TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,\
-     TbLivescout,TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch
+from ..models import  TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,\
+     TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch,TbLivefeed
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
 from maindb.mongoInstance import updateMatchMongo
@@ -16,7 +16,7 @@ import requests
 from django.conf import settings
 from helpers.director.model_func.dictfy import to_dict
 import functools
-from .match_outcome_forms import FootBallPoints, NumberOfCorner
+#from .match_outcome_forms import FootBallPoints, NumberOfCorner
 from helpers.director.middleware.request_cache import get_request_cache
 from django.db import connections
 import datetime
@@ -179,10 +179,10 @@ class MatchsPage(TablePage):
             names = ['matchdate']
 
         def get_operation(self):
-            points_form =  FootBallPoints(crt_user= self.crt_user)
-            corner_form = NumberOfCorner(crt_user= self.crt_user)
+            #points_form =  FootBallPoints(crt_user= self.crt_user)
+            #corner_form = NumberOfCorner(crt_user= self.crt_user)
             
-            PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
+            #PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
             
             #spoutcome_form =  SpOutcome(crt_user= self.crt_user)
             ops = [
@@ -317,10 +317,10 @@ def quit_ticket(rows,**kws ):
 
 class MatchForm(ModelFields):
     
-    proc_map = {
-        0: FootBallPoints,
-        2: NumberOfCorner,
-    }
+    #proc_map = {
+        #0: FootBallPoints,
+        #2: NumberOfCorner,
+    #}
     
     class Meta:
         model = TbMatch
@@ -355,15 +355,15 @@ class MatchForm(ModelFields):
     
     def save_form(self):
         msg = []
-        if self.kw.get('meta_type') == 'manul_outcome':
-            specialcategoryid = self.kw.get('specialcategoryid')
-            ProcCls = self.proc_map.get(specialcategoryid)
-            proc_obj = ProcCls(crt_user = self.crt_user)
-            self.instance.settletime = datetime.datetime.now()
-            rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
-            msg.append(rt_msg)
-        else:
-            super().save_form()
+        #if self.kw.get('meta_type') == 'manul_outcome':
+            #specialcategoryid = self.kw.get('specialcategoryid')
+            #ProcCls = self.proc_map.get(specialcategoryid)
+            #proc_obj = ProcCls(crt_user = self.crt_user)
+            #self.instance.settletime = datetime.datetime.now()
+            #rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
+            #msg.append(rt_msg)
+        #else:
+        super().save_form()
             
         self.updateMongo()
         self.proc_redis()
@@ -395,27 +395,27 @@ class MatchForm(ModelFields):
                 redisInst.set('backend:match:iscloseliveodds:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
                               60 * 1000 * 60 * 24 * 7)
 
-class PeriodTypeForm(Fields):
-    def get_heads(self): 
-        return [
-            {'name': 'PeriodType','label': 'PeriodType','editor': 'sim_select','options': [
-                {'value': 0, 'label': '全场',}, 
-                #{'value': 1, 'label': '上半场',}, 
-                {'value': 2, 'label': '上半场+全场',}
-                ],}
-        ]
-    def get_row(self): 
-        return {
-            'PeriodType': 2,
-            '_director_name': self.get_director_name(),
-        }
+#class PeriodTypeForm(Fields):
+    #def get_heads(self): 
+        #return [
+            #{'name': 'PeriodType','label': 'PeriodType','editor': 'sim_select','options': [
+                #{'value': 0, 'label': '全场',}, 
+                ##{'value': 1, 'label': '上半场',}, 
+                #{'value': 2, 'label': '上半场+全场',}
+                #],}
+        #]
+    #def get_row(self): 
+        #return {
+            #'PeriodType': 2,
+            #'_director_name': self.get_director_name(),
+        #}
     
 
 class TbLivescoutTable(ModelTable):
     """危险球表格"""
-    model = TbLivescout
+    model = TbLivefeed
     exclude=[]
-    fields_sort=['id','matchid','betstatus','matchtime','matchscore','stopreason','eventdesc','servertime','createtime']
+    fields_sort=['matchid','betstatus','matchtime','matchscore','eventdesc','servertime','createtime']
     def get_operation(self):
         return [
             {'name':'director_call',
@@ -449,25 +449,25 @@ class TbLivescoutTable(ModelTable):
             head['width']=width_dc.get(head['name'])
         return head
     
-    def getExtraHead(self):
-        return [
-            {'name':'stopreason','label':'危险球原因'}
-        ]
+    #def getExtraHead(self):
+        #return [
+            #{'name':'stopreason','label':'危险球原因'}
+        #]
     
     def inn_filter(self, query):
         query = super().inn_filter(query)
-        query = query.extra(select={'stopreason':'SELECT TB_BetStopReason.description'},
-                    where=['TB_BetStopReason.id =TB_LiveScout.BrExtraInfo'],
-                    tables =['TB_BetStopReason'])
+        #query = query.extra(select={'stopreason':'SELECT TB_BetStopReason.description'},
+                    #where=['TB_BetStopReason.id =TB_LiveScout.BrExtraInfo'],
+                    #tables =['TB_BetStopReason'])
         if self.kw.get('matchid'):
-            return query.filter(matchid=self.kw.get('matchid'),eventtypeid__in=[33,34]).order_by('-createtime')
+            return query.filter(matchid=self.kw.get('matchid'),eventtypeid__in=[1010,1011]).order_by('-createtime')
         else:
             return query  
     
-    def dict_row(self, inst):
-        return {
-            'stopreason':inst.stopreason
-        }
+    #def dict_row(self, inst):
+        #return {
+            #'stopreason':inst.stopreason
+        #}
 
 @director_view('PeriodScoreTab')
 class PeriodScoreTab(ModelTable):
@@ -492,25 +492,25 @@ class PeriodScoreTab(ModelTable):
 
 @director_view('match.livescout_status')
 def match_livescout_status(matchid,**kws):
-    live = TbLivescout.objects.filter(matchid=matchid,eventtypeid__in=[33,34]).order_by('-createtime').first()
-    if live and live.eventtypeid ==33:    
+    live = TbLivefeed.objects.filter(matchid=matchid,eventtypeid__in=[33,34]).order_by('-createtime').first()
+    if not live or live.eventtypeid ==1010:    
         return False
     else:
         return True
 
 @director_view('match.add_livescout')
 def add_livescout(new_row,**kws):
-    match = TbMatches.objects.get(matchid=new_row.get('matchid'))
+    match = TbMatch.objects.get(matchid=new_row.get('matchid'))
     #TbLivescout.objects.order_by('-createtime').first()
     if new_row.get('is_danger'):
-        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.score,eventtypeid=34,typeid=1011,betstatus=3,scoutfeedtype=2,eventdesc='BetStop')
+        TbLivefeed.objects.create(extrainfo='999',side=0,statuscode=match.statuscode,sportid=match.sportid,matchid=new_row.get('matchid'),livefeedid=0,matchscore=match.score,eventid=match.eventid,eventtypeid=1011,betstatus=3,eventdesc='BetStop')
     else:
-        TbLivescout.objects.create(matchstatusid=0,brextrainfo='999',matchid=new_row.get('matchid'),matchscore=match.score,eventtypeid=33,typeid=1010,betstatus=2,scoutfeedtype=2,eventdesc='BetStart')
+        TbLivefeed.objects.create(extrainfo='999',side=0,statuscode=match.statuscode,sportid=match.sportid,matchid=new_row.get('matchid'),livefeedid=0,matchscore=match.score,eventid=match.eventid,eventtypeid=1010,betstatus=2,eventdesc='BetStart')
         with connections['Sports'].cursor() as cursor:
             sql_args = {
                 'MatchID':new_row.get('matchid')
             }
-            sql = r"exec dbo.SP_DangerousBack_V1 %(MatchID)s" \
+            sql = r"exec dbo.SP_DangerousBack %(MatchID)s" \
                   % sql_args
             cursor.execute(sql)        
     return {'success':True}
@@ -530,13 +530,36 @@ def getSpecialbetValue(matchid):
     markets =[]
     specialbetvalue = []
     # 填充玩法
-    for market in TbMarkets.objects.filter(enabled=1):
+    for odds in TbOdds.objects.filter(matchid=matchid,status=1,).extra(select={
+        'sort':'SELECT TB_Markets.Sort',
+        }, tables=['TB_Markets'],where=['TB_Markets.MarketID=TB_Odds.MarketID']).values('marketname','marketid','sort','marketname').distinct():
         markets.append({
-            'name':market.marketnamezh,
-            'marketid':market.marketid,
-            'sort':market.sort,
+            'name':odds.get('marketname'),
+            'marketid':odds.get('marketid'),
+            'marketname':odds.get('marketname'),
+            'sort':odds.get('sort'),
             'opened':True,
         })
+    
+    for switch in TbMarkethcpswitch.objects.filter(matchid=matchid,type=2, status = 1).extra(select={
+        'sort':'SELECT TB_Markets.Sort',
+        }, tables=['TB_Markets'],where=['TB_Markets.MarketID=TB_MarketHcpSwitch.MarketID']):
+        
+        markets.append({
+            'name':switch.marketname,
+            'marketid':switch.marketid_id,
+            'marketname':switch.marketname,
+            'sort':switch.sort,
+            'opened':False,
+        })
+    
+    #for market in TbMarkets.objects.filter(enabled=1):
+        #markets.append({
+            #'name':market.marketnamezh,
+            #'marketid':market.marketid,
+            #'sort':market.sort,
+            #'opened':True,
+        #})
     
     # 填充盘口   
             #.values('marketname', 'specialbetvalue','specifiers',
@@ -554,6 +577,7 @@ def getSpecialbetValue(matchid):
                     'specialbetvalue': odd.specialbetvalue,
                     'specialbetname':spbetname,
                     'specifiers':odd.specifiers,
+                    'fortherest':odd.fortherest if odd.fortherest is not None else '',
                     'opened': True,
                     #'Handicapkey': odd['handicapkey'],
                 }
@@ -567,6 +591,7 @@ def getSpecialbetValue(matchid):
             {
                 'name': name,
                 'marketid':switch.marketid_id,
+                'fortherest':switch.fortherest,
                 #'oddstypegroup': switch.oddstypegroup_id,
                 'marketname':switch.marketname,
                 'specialbetname':switch.specialbetname,
@@ -595,9 +620,10 @@ def getSpecialbetValue(matchid):
         # match_opened =False
         # 2 封盘 玩法
         if oddsswitch.type == 2:
-            for i in markets:
-                if i['marketid'] == oddsswitch.marketid_id:
-                    i['opened'] = False
+            pass
+            #for i in markets:
+                #if i['marketid'] == oddsswitch.marketid_id:
+                    #i['opened'] = False
         # 3 封盘 值 specialbetvalue
         elif oddsswitch.type == 3:
             for i in specialbetvalue:
@@ -654,6 +680,7 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
         if not market['opened']:
             if oddSwitch.status != 1:
                 oddSwitch.status = 1
+                oddSwitch.marketname = market.get('marketname')
                 log_msg += '屏蔽玩法：%s' % market['name']
                 batchOperationSwitch.append(oddSwitch)
         else:
@@ -677,7 +704,7 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
                 dbOddSwitchs.remove(item)
                 break
         if not spSwitch:
-            spSwitch = TbMarkethcpswitch(matchid=matchid, type=3,marketid_id=market['marketid'],
+            spSwitch = TbMarkethcpswitch(matchid=matchid, type=3,marketid_id=market['marketid'],fortherest= spbt['fortherest'] if spbt['fortherest'] is not None else '',
                                          specialbetname=spbt['specialbetname'],marketname=spbt['marketname'],
                                          specialbetvalue=spbt['specialbetvalue'],specifiers=spbt['specifiers'],status=100)     
  

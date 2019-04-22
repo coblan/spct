@@ -4,7 +4,7 @@ import re
 from django.db import connections
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter
 from helpers.director.table.row_search import SelectSearch
-from ..models import TbMatches, MATCH_STATUS,TbTicketmaster,TbTournament
+from ..models import TbMatch, NEW_MATCH_STATUS,TbTicketmaster,TbTournament
 from helpers.director.base_data import director
 from django.utils import timezone
 from helpers.director.table.table import PlainTable
@@ -18,13 +18,13 @@ class MatchesStatisticsPage(TablePage):
         return '赛事投注状况'
 
     class tableCls(ModelTable):
-        model = TbMatches
+        model = TbMatch
         include = ['matchid', 'livebet', 'statuscode', 'matchdate', 'tournamentid']
         hide_fields = ['livebet', 'statuscode', 'matchdate', 'tournamentid']
 
         def dict_head(self, head):
             if head['name'] == 'StatusCode':
-                head['options'] = [{'value': value, 'label': label} for (value, label) in MATCH_STATUS]
+                head['options'] = [{'value': value, 'label': label} for (value, label) in NEW_MATCH_STATUS]
                 head['editor'] = 'com-table-mapper'
             if head['name'] == 'matchid':
                 if can_touch (TbTicketmaster,self.crt_user):
@@ -252,12 +252,7 @@ class DetailStatistic(PlainTable):
             {'name': 'OutcomeName','label': '投注项' },
             {'name': 'BetAmout','label': '投注金额','editor': 'com-table-digit-shower','digit': 2,  }
         ]
-        #return [
-            #{'name': 'OddsTypeNameZH','label': '玩法','width': 150,}, 
-            #{'name': 'Outcome','label': '盘口',}, 
-            #{'name': 'HomeBetAmount','label': '主','editor': 'com-table-digit-shower','digit': 2,}, 
-            #{'name': 'AwayBetAmount','label': '客','editor': 'com-table-digit-shower','digit': 2,}
-        #]
+
     
     def get_rows(self): 
         #exec [dbo].[SP_SingleMatchStatistics] 97856,0,1 
@@ -266,11 +261,7 @@ class DetailStatistic(PlainTable):
             'matchid': self.kw.get('matchid'),
             'half_or_full': self.search_args.get('half_or_full', 'null'),
             'oddkind': self.search_args.get('oddkind', 'null'),
-        }
-        
-        #sql = r"exec dbo.%(sql_fun)s %(matchid)s,%(half_or_full)s,%(oddkind)s" \
-              #% sql_args
-              
+        }    
         sql = r"exec dbo.%(sql_fun)s %(matchid)s" % sql_args   
         
         with connections['Sports'].cursor() as cursor:
@@ -281,53 +272,11 @@ class DetailStatistic(PlainTable):
                 for index, head in enumerate(cursor.description):
                     dc[head[0]] = row[index]
                 rows.append(dc) 
-        
-        #def jj(x): 
-            #name =  x['OddsTypeNameZH']
-            #if '让分' in name:
-                #return '0'
-            #if '大小' in name:
-                #return '1'
-            #return name
-        
-        #out_rows = sorted(rows, key= jj)
-                
+
         return rows
     
-    #def getRowFilters(self): 
-        #return [
-            #{'name': 'oddkind', 'label': '早盘/走地','editor': 'com-select-filter','options': [
-                #{'value': 1, 'label': '早盘'}, 
-                #{'value': 2, 'label': '走地'}, 
-                #],},             
-             #{'name': 'half_or_full','label': '全场/半场','editor': 'com-select-filter','options': [
-                 #{'value': 1, 'label': '半场',}, 
-                 #{'value': 0, 'label': '全场',}, 
-                 #],}, 
-        #]
-    
-    #def getTableLayout(self, rows):
-        #heads = self.get_heads()
-        #taked = {}
-        #out_dc = {}
-        #for (index , row) in enumerate( rows):
-            #namezh =  row.get('OddsTypeNameZH')
-            #layindex = '%s,%s'%(index, 0)
-            #if  namezh not in taked:
-                #taked[namezh] = layindex
-                #out_dc[layindex] = [1, 1]
-            #else:
-                #valid_layindex = taked[namezh]
-                #count =  out_dc[valid_layindex][0] + 1
-                #out_dc[valid_layindex] = [count, 1]
-                
-                #out_dc[layindex] = [0, 1]
-            
-            #if not ('让分' in namezh or '大小' in namezh ):
-                #out_dc[ '%s,%s'%(index, 2)] = [1, 2]
-                #out_dc[ '%s,%s'%(index, 3)] = [1, 0]
-        
-        #return out_dc
+
+
     
 class TickmasterTab(TicketMasterPage.tableCls):
     

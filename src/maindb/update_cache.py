@@ -15,10 +15,10 @@ def update_redis_cache(sender, **kws):
         #redisInst.delete('App:Cache:index:banners:1')
     
     # TbMatches 被 TbMatch 替换了，
-    elif sender == sports_model.TbMatches:
+    elif sender == sports_model.TbMatch:
         redisInst.delete('App:Cache:index:matches:Soccer')  # App:Cache:index:matches:Basketball
-    elif sender == sports_model.TbMatchesBasketball:
-        redisInst.delete('App:Cache:index:matches:Basketball') 
+    #elif sender == sports_model.TbMatchesBasketball:
+        #redisInst.delete('App:Cache:index:matches:Basketball') 
     
     elif sender == sports_model.TbMaxpayout:
         for key in  ['App:Static:MaxPayout', 'App:Static:MaxSinglePayout']:

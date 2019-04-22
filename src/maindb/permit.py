@@ -84,10 +84,10 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            
            #-----------------------------------------------------------
            
-           ('TbMatches', model_read_permit(TbMatches), model_to_name(TbMatches), 'model'), 
-           ('TbMatches.edit', model_full_permit(TbMatches), model_to_name(TbMatches), 'model'),  
-           ('TbMatchesBasketball', model_read_permit(TbMatchesBasketball), model_to_name(TbMatchesBasketball), 'model'), 
-           ('TbMatchesBasketball.edit', model_full_permit(TbMatchesBasketball), model_to_name(TbMatchesBasketball), 'model'),             
+           ('TbMatches', model_read_permit(TbMatch), model_to_name(TbMatch), 'model'), 
+           ('TbMatches.edit', model_full_permit(TbMatch), model_to_name(TbMatch), 'model'),  
+           ('TbMatchesBasketball', model_read_permit(TbMatch), model_to_name(TbMatch), 'model'), 
+           ('TbMatchesBasketball.edit', model_full_permit(TbMatch), model_to_name(TbMatch), 'model'),             
            
            ('TbTicketmaster', model_read_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'), 
            ('TbTicketmaster.edit', model_full_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'), 
@@ -100,10 +100,10 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
                                            #'TbTicketmaster', 'TbLoginlog', 'TbMatches']), '', 'set'), 
     
            
-            ('TbMaxpayout', model_read_permit(TbMaxpayout), model_to_name(TbMaxpayout), 'model'),
-            ('TbMaxpayout.edit', model_full_permit(TbMaxpayout), model_to_name(TbMaxpayout), 'model'),
-            ('TbMaxpayoutBasketball', model_read_permit(TbMaxpayoutBasketball), model_to_name(TbMaxpayoutBasketball), 'model'),
-            ('TbMaxpayoutBasketball.edit', model_full_permit(TbMaxpayoutBasketball), model_to_name(TbMaxpayoutBasketball), 'model'),            
+            #('TbMaxpayout', model_read_permit(TbMaxpayout), model_to_name(TbMaxpayout), 'model'),
+            #('TbMaxpayout.edit', model_full_permit(TbMaxpayout), model_to_name(TbMaxpayout), 'model'),
+            #('TbMaxpayoutBasketball', model_read_permit(TbMaxpayoutBasketball), model_to_name(TbMaxpayoutBasketball), 'model'),
+            #('TbMaxpayoutBasketball.edit', model_full_permit(TbMaxpayoutBasketball), model_to_name(TbMaxpayoutBasketball), 'model'),            
            
             ('TbParameterinfo', model_read_permit(TbParameterinfo), model_to_name(TbParameterinfo), 'model'), 
             ('TbParameterinfo.edit', model_full_permit(TbParameterinfo), model_to_name(TbParameterinfo), 'model'),
