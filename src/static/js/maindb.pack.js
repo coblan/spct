@@ -590,8 +590,12 @@ var com_tab_special_bet_value = {
 
             var ordered_spval = ex.filter(filtered_list, function (spval) {
                 var market = ex.findone(self.oddstype, { marketid: spval.marketid });
-                spval.sort = market.sort;
-                return market.opened;
+                if (market) {
+                    spval.sort = market.sort;
+                    return market.opened;
+                } else {
+                    return false;
+                }
             });
             var sorted_spval = ex.sortOrder(ordered_spval, 'name');
             var sorted_spval = ex.sortOrder(sorted_spval, 'sort');
