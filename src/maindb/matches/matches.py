@@ -512,7 +512,7 @@ def add_livescout(new_row,**kws):
             }
             sql = r"exec dbo.SP_DangerousBack %(MatchID)s" \
                   % sql_args
-            cursor.execute(sql)        
+            #cursor.execute(sql)        
     return {'success':True}
  
 
