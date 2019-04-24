@@ -167,14 +167,14 @@ class TicketMasterPage(TablePage):
         def get_operation(self):
             return [
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废',
-                 'pre_set': 'rt={status:-1,memo:""}',
+                 'pre_set': 'rt={status:-1,voidreason:""}',
                  #'field': 'status', 'value': 30,
                  'row_match': 'many_row', 
                  'match_express':'rt= ex.isin( scope.row.status,[0,1])',
                  #'match_field': 'status', 'match_values': [0,1], 
                 'match_msg': '只能选择【确认中】或【未结算】的订单',
                  'confirm_msg': '确认作废这些注单吗?', 'fields_ctx': {
-                    'heads': [{'name': 'memo', 'label': '备注', 'editor': 'blocktext', }],
+                    'heads': [{'name': 'voidreason', 'label': '备注', 'editor': 'blocktext', }],
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
                 }, 'visible': 'status' in self.permit.changeable_fields(),},
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
@@ -233,7 +233,7 @@ class TicketMasterPage(TablePage):
 class TicketMasterForm(ModelFields):
     class Meta:
         model = TbTicketmaster
-        fields = ['status', 'memo']
+        fields = ['status', 'voidreason']
 
     def save_form(self):
         if 'status' in self.changed_data and self.cleaned_data['status'] == -1:
@@ -242,11 +242,11 @@ class TicketMasterForm(ModelFields):
                 #'VoidReason':self.kw.get('memo')
             }
             cursor = connections['Sports'].cursor()
-            cursor.execute(sql,[self.kw.get('memo')])
+            cursor.execute(sql,[self.kw.get('voidreason')])
             cursor.commit()
-            self.instance.memo = self.kw.get('memo')
-            self.instance.save()
-            self.save_log({'model': model_to_name(TbTicketmaster), 'memo': '取消订单', 'pk': self.instance.pk,})
+            #self.instance.memo = self.kw.get('memo')
+            #self.instance.save()
+            self.save_log({'model': model_to_name(TbTicketmaster), 'voidreason': '取消订单', 'pk': self.instance.pk,})
         else:
             super().save_form()
 
