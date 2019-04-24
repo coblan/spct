@@ -18,6 +18,7 @@ class MatchesStatisticsPage(TablePage):
         return '赛事投注状况'
 
     class tableCls(ModelTable):
+        sportid= 1
         model = TbMatch
         include = ['matchid', 'livebet', 'statuscode', 'matchdate', 'tournamentid']
         hide_fields = ['livebet', 'statuscode', 'matchdate', 'tournamentid']
@@ -93,7 +94,7 @@ class MatchesStatisticsPage(TablePage):
             return self.matches
 
         def get_statistic_sql(self, sql_args): 
-            sql = r"exec dbo.SP_MatchesStatistics %(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+            sql = r"exec dbo.SP_MatchesStatistics %(sportid)s,%(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
                   % sql_args
             return sql
         
@@ -126,6 +127,7 @@ class MatchesStatisticsPage(TablePage):
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
                 'Sort': sort,
+                'sportid':self.sportid
             }            
             sql = self.get_statistic_sql(sql_args)
             with connections['Sports'].cursor() as cursor:
@@ -155,7 +157,7 @@ class MatchesStatisticsPage(TablePage):
                 {'name': 'Team1ZH', 'label': '主队', 'width': 150},
                 {'name': 'Team2ZH', 'label': '客队', 'width': 150},
                 {'name': 'MatchDate', 'label': '比赛日期', 'width': 140},
-                {'name': 'MatchScore', 'label': '比分', 'width': 80},
+                {'name': 'Score', 'label': '比分', 'width': 80},
                 {'name': 'StatusCode', 'label': '状态', },
                 {'name': 'LiveBet', 'label': '走地盘', 'editor': 'com-table-bool-shower'},
                 {'name': 'TicketCount', 'label': '单注注数', 'width': 80},
@@ -179,33 +181,10 @@ class MatchesStatisticsPage(TablePage):
             return [
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
+        
     def get_context(self): 
         ctx = super().get_context()
-        #ls = [
-           #{'name': 'detailStatic',
-            #'label': '详细统计',
-            #'com': 'com_tab_table',
-            #'par_field': 'matchid',
-            #'table_ctx': DetailStatistic(crt_user=self.crt_user).get_head_context(),
-            #'visible': True,
-            #},
-           #{'name': 'ticket_master',
-            #'label': '注单', 
-            #'com': 'com_tab_table',
-            #'par_field': 'matchid',
-            #'table_ctx': TickmasterTab(crt_user=self.crt_user).get_head_context(),
-            #'visible': True, }        
-        #]
-        ##ctx['tabs'] = ls
-        
-        #ctx['named_tabs'] = {
-            #'match_statistic': ls,
-        #}
-        #ctx['named_tabs'] .update( TicketMasterPage.get_tabs() )
-        
         ctx['named_ctx'] = self.get_tabs(self.crt_user)
-        
-
         return ctx
     
     @classmethod

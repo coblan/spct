@@ -237,7 +237,10 @@ class TicketMasterForm(ModelFields):
 
     def save_form(self):
         if 'status' in self.changed_data and self.cleaned_data['status'] == -1:
-            sql = 'exec [dbo].[SP_CancelTicket] %(ticketid)s,-1' % {'ticketid': self.instance.ticketid}
+            sql = "exec [dbo].[SP_CancelTicket_V1] %(ticketid)s,'%(VoidReason)s'" % {
+                'ticketid': self.instance.ticketid,
+                'VoidReason':self.kw.get('memo')
+            }
             cursor = connections['Sports'].cursor()
             cursor.execute(sql)
             cursor.commit()
