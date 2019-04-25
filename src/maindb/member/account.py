@@ -135,7 +135,7 @@ class AccountPage(TablePage):
         #include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
                    #'isenablewithdraw', 'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount',
                    #'createtime', 'source','accounttype','weight','groupid']
-        fields_sort = ['accountid', 'account', 'nickname', 'createtime','weight','groupid', 'bonusrate', 'viplv', 'status',
+        fields_sort = ['accountid', 'account', 'nickname', 'createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
                        'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype']
 
@@ -301,7 +301,7 @@ class AccountPage(TablePage):
 class AccoutBaseinfo(ModelFields):
     #'agentamount', 
     field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'bonusrate',
-                  'isenablewithdraw','accounttype', 'groupid','weight','risklevel','cashchannel','createtime']
+                  'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','createtime']
     readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount']
 
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):

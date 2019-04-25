@@ -18,7 +18,7 @@ class League(TablePage):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
-        fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet', 'weight','sportid','sort', 'typegroupswitch',]
+        fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet', 'weight','ticketdelay','sportid','sort', 'typegroupswitch',]
 
         # hide_fields = ['tournamentid']
 

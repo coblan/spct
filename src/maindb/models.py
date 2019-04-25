@@ -100,7 +100,8 @@ class TbAccount(models.Model):
     risklevel = models.IntegerField(db_column='RiskLevel',verbose_name='风控等级',default=1)  # Field name made lowercase.
     isriskleveldown = models.BooleanField(db_column='IsRiskLevelDown',default=False)  # Field name made lowercase.
     cashchannel = models.IntegerField(db_column='CashChannel',verbose_name='允许提款渠道',default=0)  # Field name made lowercase.
-
+    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_Account'
@@ -855,7 +856,8 @@ class TbMatch(models.Model):
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=2,verbose_name='权重')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
-
+    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+  
     class Meta:
         managed = False
         db_table = 'TB_Match'
@@ -1185,7 +1187,10 @@ class TbMarkets(models.Model):
     isasian = models.NullBooleanField(db_column='IsAsian')  # Field name made lowercase.    
     #templateid = models.IntegerField(db_column='TemplateID', blank=True, null=True)  # Field name made lowercase.
     templateid = models.ForeignKey(to='TbTemplate',db_constraint=False,db_column='TemplateID',verbose_name='模板',null=True)  # Field name made lowercase.
-    
+    weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+  
+   
     class Meta:
         managed = False
         db_table = 'TB_Markets'
@@ -1981,8 +1986,8 @@ class TbTournament(models.Model):
     sportid = models.IntegerField(db_column='SportID', blank=True, null=True,choices=SPORTID_OPTION_2,verbose_name='运动类型')  # Field name made lowercase.
     tournamentid = models.IntegerField(db_column='TournamentID', verbose_name='联赛ID',unique=True)  # Field name made lowercase.
     tournamentname = models.CharField(db_column='TournamentName', max_length=200,
-                                      verbose_name='联赛名')  # Field name made lowercase.
-    tournamentnamezh = models.CharField(db_column='TournamentNameZH', max_length=200)  # Field name made lowercase.
+                                      verbose_name='联赛名称')  # Field name made lowercase.
+    tournamentnamezh = models.CharField(db_column='TournamentNameZH', max_length=200,verbose_name='中文名')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.
     
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID',
@@ -1998,7 +2003,8 @@ class TbTournament(models.Model):
     #source = models.IntegerField(db_column='Source',choices=DATA_SOURCE,verbose_name='数据源')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
-     
+    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+ 
     class Meta:
         managed = False
         db_table = 'TB_Tournament'

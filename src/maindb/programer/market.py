@@ -49,12 +49,34 @@ class MarketForm(ModelFields):
         return head   
     
 
+class UserMarketPage(MarketPage):
+    class tableCls(MarketPage.tableCls):
+        exclude=['includesoutcomestype','outcometype','isasian','templateid','sort']
+        def inn_filter(self, query):
+            return query.filter(enabled=1)
+        
+        class filters(RowFilter):
+            names=['enabled']
+
+class UserMarketForm(MarketForm):
+    
+    field_sort=['marketid','marketname','marketnamezh','description','enabled','weight','ticketdelay']
+    readonly=['marketid','marketname','marketnamezh','description','enabled',]
+    class Meta:
+        model = TbMarkets
+        fields = ['marketid','marketname','marketnamezh','description','enabled','weight','ticketdelay']
+
 
 director.update({
     'marketpage':MarketPage.tableCls,
     'marketpage.edit':MarketForm,
+    
+    'usermarket':UserMarketPage.tableCls,
+    'usermarket.edit':UserMarketForm
 })
 
 page_dc.update({
-    'marketpage':MarketPage
+    'marketpage':MarketPage,
+    
+    'usermarket':UserMarketPage,
 })
