@@ -692,6 +692,7 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
                 batchOperationSwitch.append(oddSwitch)
 
     for spbt in specialbetvalue:
+        par_market = None
         for market in markets:
             if spbt['marketid'] == market['marketid']:
                 par_market = market
@@ -709,12 +710,8 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
                                          specialbetname=spbt['specialbetname'],marketname=spbt['marketname'],
                                          specialbetvalue=spbt['specialbetvalue'],specifiers=spbt['specifiers'],status=100)     
  
-        #spSwitch, created = TbMarkethcpswitch.objects.get_or_create(matchid=matchid,  type=3,
-                                                                      #marketid_id=par_market['marketid'],
-                                                                      #specialbetvalue=spbt['specialbetvalue'],
-                                                                      #defaults={'status': 0})
                                                                       
-        if par_market['opened']:
+        if par_market and par_market['opened']:
             if not spbt['opened']:
                 if spSwitch.status != 1:
                     spSwitch.status = 1
