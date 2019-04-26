@@ -603,7 +603,7 @@ var com_tab_special_bet_value = {
             var crt = '';
             var cls = 'oven';
             ex.each(sorted_spval, function (spval) {
-                var name = spval.name.split(' ')[0];
+                var name = spval.marketname; // spval.name.split(' ')[0]
                 if (name != crt) {
                     crt = name;
                     cls = cls == 'oven' ? 'even' : 'oven';
