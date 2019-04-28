@@ -848,7 +848,7 @@ def get_score_heads(ls):
 def get_match_outcome_info(matchid):
    
     row ={}
-    for score in TbPeriodscore.objects.filter(matchid=matchid,statuscode__in=[6,7,40,50],scoretype__in=[1,5]):
+    for score in TbPeriodscore.objects.filter(matchid=matchid,statuscode__in=[6,7,13,14,15,16,40,50,100],scoretype__in=[1,5]):
         row['home_%s_%s'%(score.statuscode,score.scoretype)] = score.home
         row['away_%s_%s'%(score.statuscode,score.scoretype)] = score.away
         
