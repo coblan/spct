@@ -574,9 +574,10 @@ Vue.component('com-shouchun', {
             var dec_rows = [{ label: '首存', action: '', submitable: false }, { label: '再存', action: '', submitable: false }];
             var self = this;
             cfg.show_load();
+
             jb_js.get('/activity/charge/list?activityId=' + activity.pk, function (resp) {
                 cfg.hide_load();
-                //cfg.showMsg('首存数据:'+JSON.stringify(resp))
+                cfg.showMsg('首存数据:' + JSON.stringify(resp));
                 self.rows = resp.data;
 
                 var last_done = true;
