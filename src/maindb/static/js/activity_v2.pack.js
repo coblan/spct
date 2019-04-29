@@ -564,12 +564,12 @@ Vue.component('com-shouchun', {
                 2: '已发放',
                 3: '已过期'
             };
-            return dc[row.State];
+            return dc[row.state];
         },
         update_data: function update_data() {
             //cfg.showMsg('开始更新数据')
             var mock_data = {
-                data: [{ ChargeTime: '04-21 22:30', Amount: 50, Bonus: 50, State: 1 }, { ChargeTime: '2019-01-22 22:30:30', Amount: '100000', Bonus: '1239999', State: 0 }]
+                data: [{ ChargeTime: '04-21 22:30', Amount: 50, Bonus: 50, state: 1 }, { ChargeTime: '2019-01-22 22:30:30', Amount: '100000', Bonus: '1239999', state: 0 }]
             };
             var dec_rows = [{ label: '首存', action: '', submitable: false }, { label: '再存', action: '', submitable: false }];
             var self = this;
@@ -585,7 +585,7 @@ Vue.component('com-shouchun', {
                     var row = self.rows[i];
                     ex.vueAssign(row, dec_rows[i]);
                     row.Type = i + 1;
-                    if (row.State != 0) {
+                    if (row.state != 0) {
                         last_done = true;
                     } else if (last_done) {
                         row.submitable = true;
