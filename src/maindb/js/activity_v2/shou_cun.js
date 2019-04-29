@@ -83,6 +83,9 @@ Vue.component('com-shouchun',{
                         last_done=false
                     }
                 }
+
+                cfg.showMsg('追踪数据:'+JSON.stringify(self.rows))
+
             },mock_data)
         },
         submit:function(row){
