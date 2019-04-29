@@ -577,7 +577,7 @@ Vue.component('com-shouchun', {
 
             jb_js.get('/activity/charge/list?activityId=' + activity.pk, function (resp) {
                 cfg.hide_load();
-                cfg.showMsg('首存数据:' + JSON.stringify(resp));
+                //cfg.showMsg('首存数据:'+JSON.stringify(resp))
                 self.rows = resp.data;
 
                 var last_done = true;
@@ -593,7 +593,7 @@ Vue.component('com-shouchun', {
                     }
                 }
 
-                cfg.showMsg('追踪数据:' + JSON.stringify(self.rows));
+                //cfg.showMsg('追踪数据:'+JSON.stringify(self.rows))
             }, mock_data);
         },
         submit: function submit(row) {
