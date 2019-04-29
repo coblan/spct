@@ -100,7 +100,7 @@ class TbAccount(models.Model):
     risklevel = models.IntegerField(db_column='RiskLevel',verbose_name='风控等级',default=1)  # Field name made lowercase.
     isriskleveldown = models.BooleanField(db_column='IsRiskLevelDown',default=False)  # Field name made lowercase.
     cashchannel = models.IntegerField(db_column='CashChannel',verbose_name='允许提款渠道',default=0)  # Field name made lowercase.
-    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时',default=0)  # Field name made lowercase.
     
     class Meta:
         managed = False
