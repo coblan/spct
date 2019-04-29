@@ -21,18 +21,18 @@ Vue.component('com-shouchun',{
         return {
             heads:[
                 {name:'label',scls:'big-col',top_label:''},
-                {name:'ChargeTime',scls:'data-col',top_label:'存款'},
-                {name:'Amount',scls:'data-col',top_label:'存入'},
-                {name:'Bonus',scls:'data-col green',top_label:'可得红利'},
+                {name:'chargeTime',scls:'data-col',top_label:'存款'},
+                {name:'amount',scls:'data-col',top_label:'存入'},
+                {name:'bonus',scls:'data-col green',top_label:'可得红利'},
 
             ],
             rows:[]
         }
     },
     /*
-     "ChargeTime": "2019-01-09T11:34:28.207Z",
-     "Amount": 0,
-     "Bonus": 0,
+     "chargeTime": "2019-01-09T11:34:28.207Z",
+     "amount": 0,
+     "bonus": 0,
      "Done": true
     * */
     mounted:function(){
@@ -55,8 +55,8 @@ Vue.component('com-shouchun',{
             //cfg.showMsg('开始更新数据')
             var mock_data={
                 data:[
-                    {ChargeTime:'04-21 22:30',Amount:50,Bonus:50,state:1},
-                    {ChargeTime:'2019-01-22 22:30:30',Amount:'100000',Bonus:'1239999',state:0},
+                    {chargeTime:'04-21 22:30',amount:50,bonus:50,state:1},
+                    {chargeTime:'2019-01-22 22:30:30',amount:'100000',bonus:'1239999',state:0},
                 ]
             }
             var dec_rows=[

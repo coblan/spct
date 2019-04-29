@@ -540,14 +540,14 @@ Vue.component('com-shouchun', {
     template: '<div class="com-shouchun">\n\n    <!--<button @click="update_data()">\u83B7\u53D6</button>-->\n\n    <table>\n    <tr v-for="row in rows">\n        <td v-for="head in heads"  :class="head.scls">\n            <div   v-if="row[head.name]" v-text="head.top_label"></div>\n            <div v-text="row[head.name]"></div>\n        </td>\n        <td class="mybtn-col">\n            <div :class="[\'mybtn\',{disabled:!row.submitable}]" @click="submit(row)"><span class="center-vh" style="white-space: nowrap" v-text="action_label(row)"></span></div>\n        </td>\n    </tr>\n    </table>\n    </div>',
     data: function data() {
         return {
-            heads: [{ name: 'label', scls: 'big-col', top_label: '' }, { name: 'ChargeTime', scls: 'data-col', top_label: '存款' }, { name: 'Amount', scls: 'data-col', top_label: '存入' }, { name: 'Bonus', scls: 'data-col green', top_label: '可得红利' }],
+            heads: [{ name: 'label', scls: 'big-col', top_label: '' }, { name: 'chargeTime', scls: 'data-col', top_label: '存款' }, { name: 'amount', scls: 'data-col', top_label: '存入' }, { name: 'bonus', scls: 'data-col green', top_label: '可得红利' }],
             rows: []
         };
     },
     /*
-     "ChargeTime": "2019-01-09T11:34:28.207Z",
-     "Amount": 0,
-     "Bonus": 0,
+     "chargeTime": "2019-01-09T11:34:28.207Z",
+     "amount": 0,
+     "bonus": 0,
      "Done": true
     * */
     mounted: function mounted() {
@@ -569,7 +569,7 @@ Vue.component('com-shouchun', {
         update_data: function update_data() {
             //cfg.showMsg('开始更新数据')
             var mock_data = {
-                data: [{ ChargeTime: '04-21 22:30', Amount: 50, Bonus: 50, state: 1 }, { ChargeTime: '2019-01-22 22:30:30', Amount: '100000', Bonus: '1239999', state: 0 }]
+                data: [{ chargeTime: '04-21 22:30', amount: 50, bonus: 50, state: 1 }, { chargeTime: '2019-01-22 22:30:30', amount: '100000', bonus: '1239999', state: 0 }]
             };
             var dec_rows = [{ label: '首存', action: '', submitable: false }, { label: '再存', action: '', submitable: false }];
             var self = this;
