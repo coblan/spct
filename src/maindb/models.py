@@ -198,9 +198,9 @@ class TbActivityV2(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=128,verbose_name='大标题')  # Field name made lowercase.
     subtitle = models.CharField(db_column='SubTitle', max_length=128,verbose_name='小标题', blank=True, null=True)  # Field name made lowercase.
-    timedesp = models.CharField(db_column='TimeDesp', max_length=256,verbose_name='时间描述', blank=True, null=True)  # Field name made lowercase.
-    begintime = models.DateTimeField(db_column='BeginTime',verbose_name='开始时间')  # Field name made lowercase.
-    endtime = models.DateTimeField(db_column='EndTime',verbose_name='结束时间')  # Field name made lowercase.
+    timedesp = models.CharField(db_column='TimeDesp', max_length=256,verbose_name='时间描述', blank=True, null=True,help_text='显示在活动页面中')  # Field name made lowercase.
+    begintime = models.DateTimeField(db_column='BeginTime',verbose_name='开始时间',help_text='只是被service使用，不会显示在活动页面中')  # Field name made lowercase.
+    endtime = models.DateTimeField(db_column='EndTime',verbose_name='结束时间',help_text='只是被service使用，不会显示在活动页面中')  # Field name made lowercase.
     
     displaytype = models.IntegerField(db_column='DisplayType',default=0,choices=BANNER_DISPLAYTYPE,verbose_name='对内/对外')  # Field name made lowercase.
     
@@ -209,7 +209,7 @@ class TbActivityV2(models.Model):
     rules = models.CharField(db_column='Rules', max_length=3000,verbose_name='规则')  # Field name made lowercase.
     banner = PictureField(db_column='Banner', max_length=512, blank=True, null=True)  # Field name made lowercase.
     url = models.CharField(db_column='Url', max_length=512)  # Field name made lowercase.
-    componentname = models.CharField(db_column='ComponentName', max_length=64, blank=True, null=True,verbose_name='前端组件名',choices=ACTIVITY_COM)  # Field name made lowercase.
+    componentname = models.CharField(db_column='ComponentName', max_length=64, blank=True, null=True,verbose_name='前端组件名',choices=ACTIVITY_COM,help_text='注意首存再存等活动，必须选择对应的前端组件')  # Field name made lowercase.
     componentparams = models.CharField(db_column='ComponentParams', max_length=4000, blank=True, null=True,verbose_name='前端组件参数')  # Field name made lowercase.
     templateid = models.IntegerField(db_column='TemplateId',verbose_name='程序集',default=0)  # Field name made lowercase.
     #templateid = models.ForeignKey(to='TbActivityTemplate',db_constraint=False,db_column='TemplateId',verbose_name='程序集',blank=True)  # Field name made lowercase.
