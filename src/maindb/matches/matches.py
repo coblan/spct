@@ -915,8 +915,11 @@ def out_com_save(rows,matchid):
             total_home_1 += int( home )
             total_away_1 += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home,away=away ,type=0) )
-            home = row.get('home_7_1')
-            away = row.get('away_7_1')
+            home = int( row.get('home_07_1') )- int(home)
+            away = int( row.get('away_07_1') )- int(away)
+            if home <0 or away <0:
+                raise UserWarning('全场部分不能少于上半场比分')
+            
             total_home_1 += int(home)
             total_away_1 += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home,away=away ,type=0) )
@@ -927,8 +930,11 @@ def out_com_save(rows,matchid):
             total_home_5 += int(home)
             total_away_5 += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=5,home=home,away=away ,type=0) )
-            home = row.get('home_7_5')
-            away = row.get('away_7_5')
+            home = int( row.get('home_07_5') ) - int(home)
+            away = int( row.get('away_07_5') ) - int(away)
+            if home <0 or away <0:
+                raise UserWarning('全场部分不能少于上半场角球')
+            
             total_home_5 += int(home)
             total_away_5 += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=5,home=home,away=away ,type=0) )
@@ -1025,8 +1031,8 @@ def out_com_save(rows,matchid):
             total_home += int(home)
             total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home,away=away ,type=0) )
-            home = row.get('home_7_1')
-            away = row.get('away_7_1')
+            home = int( row.get('home_07_1') ) -int(home)
+            away = int( row.get('away_07_1') ) - int(away)
             total_home += int(home)
             total_away += int(away)
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home,away=away ,type=0) )
