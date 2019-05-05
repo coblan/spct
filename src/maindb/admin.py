@@ -29,7 +29,7 @@ from .report import recharge_report
 from .basic_data import bet_type, league, teams, app_resource, currency
 from .basic_data import banktypes
 from .basic_data import paychannel
-from .basic_data import basketball_league
+#from .basic_data import basketball_league
 from .basic_data import sporttype
 from .basic_data import teams_basketball
 

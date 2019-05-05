@@ -336,8 +336,8 @@ class TicketparlayTable(ModelTable):
             field_name = 'parlay%stid' % i
             parlay = getattr(inst, field_name)
             if parlay:
-                dc[field_name] = '{team1zh}VS{team2zh}'.format(team1zh=parlay.match.team1zh,
-                                                               team2zh=parlay.match.team2zh)
+                dc[field_name] = '{team1zh}VS{team2zh}'.format(team1zh=parlay.matchid.team1zh,
+                                                               team2zh=parlay.matchid.team2zh)
             else:
                 dc[field_name] = ''
         return dc

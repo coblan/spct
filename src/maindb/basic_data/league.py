@@ -3,6 +3,7 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, 
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from helpers.director.model_func.field_procs.dotStrArray import DotStrArrayProc
 from helpers.director.table.table import RowFilter
+from helpers.director.access.permit import can_write
 
 from maindb.models import TbTournament, TbOddstypegroup
 from maindb.redisInstance import redisInst
@@ -48,20 +49,23 @@ class League(TablePage):
             }
 
         def get_operation(self):
-            return [
-                {'fun':'selected_set_and_save','label':'订阅','editor':'com-op-btn',
-                 'confirm_msg':'确认订阅这些联赛?',
-                 'row_match':'many_row','pre_set':'rt={issubscribe:1}'},
-                {'fun':'selected_set_and_save','label':'取消订阅','editor':'com-op-btn',
-                 'confirm_msg':'确认取消订阅这些联赛?',
-                 'row_match':'many_row','pre_set':'rt={issubscribe:0}'},
-                {'fun':'selected_set_and_save','label':'走地','editor':'com-op-btn',
-                 'confirm_msg':'确认开启这些联赛的走地?',
-                 'row_match':'many_row','pre_set':'rt={closelivebet:0}'},
-                {'fun':'selected_set_and_save','label':'取消走地','editor':'com-op-btn',
-                  'confirm_msg':'确认关闭这些联赛的走地?',
-                 'row_match':'many_row','pre_set':'rt={closelivebet:1}'},
-            ]
+            if can_write(self.model,self.crt_user):
+                return [
+                    {'fun':'selected_set_and_save','label':'订阅','editor':'com-op-btn',
+                     'confirm_msg':'确认订阅这些联赛?',
+                     'row_match':'many_row','pre_set':'rt={issubscribe:1}'},
+                    {'fun':'selected_set_and_save','label':'取消订阅','editor':'com-op-btn',
+                     'confirm_msg':'确认取消订阅这些联赛?',
+                     'row_match':'many_row','pre_set':'rt={issubscribe:0}'},
+                    {'fun':'selected_set_and_save','label':'走地','editor':'com-op-btn',
+                     'confirm_msg':'确认开启这些联赛的走地?',
+                     'row_match':'many_row','pre_set':'rt={closelivebet:0}'},
+                    {'fun':'selected_set_and_save','label':'取消走地','editor':'com-op-btn',
+                      'confirm_msg':'确认关闭这些联赛的走地?',
+                     'row_match':'many_row','pre_set':'rt={closelivebet:1}'},
+                ]
+            else:
+                return []
 
         class sort(RowSort):
             names = ['sort']

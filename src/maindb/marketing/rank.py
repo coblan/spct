@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage, ModelTable, ModelFields, page_dc, director, field_map, RowFilter, RowSearch
-from ..models import TbUserConst, TbUserRank, TbParlayrules, TbUserConst
+from ..models import TbUserConst, TbUserRank, TbParlayrules
 from django.core.exceptions import ValidationError
 from django.forms import ValidationError
 

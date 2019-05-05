@@ -1,6 +1,6 @@
 from helpers.director.shortcut import page_dc, director, director_view
 from .matches import MatchsPage, MatchForm ,quit_ticket,PeriodScoreTab#get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, 
-from ..models import  TbTournamentBasketball,TbMatch,TbTournament
+from ..models import TbMatch,TbTournament
 from maindb.mongoInstance import updateMatchBasketMongo
 #from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points,BasketTwosection
 from ..redisInstance import redisInst

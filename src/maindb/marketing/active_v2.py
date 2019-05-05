@@ -1,5 +1,7 @@
 from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc ,director,director_view
 from ..models import TbActivityV2,TbActivitySettings,TbActivityTemplate
+from helpers.director.access.permit import can_touch
+from helpers.func.collection.container import evalue_container
 from ..static_html_builder import StaticHtmlBuilder
 from urllib.parse import urljoin
 from helpers.func.sim_signal import sim_signal
@@ -37,11 +39,11 @@ class ActiviyV2Page(TablePage):
                  #'par_field': 'pk',
                  'pre_set':'rt={meta_par_pk:scope.par_row.pk}',
                  'table_ctx': act_setting.get_head_context(),
-                 'visible': True,                 
+                 'visible': can_touch(TbActivitySettings, self.crt_user),                 
                  }
             ]
         }
-        ctx['named_ctx']=named_ctx
+        ctx['named_ctx']= evalue_container( named_ctx )
         return ctx
     
     

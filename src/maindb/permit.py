@@ -24,10 +24,15 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbQa.edit', model_full_permit(TbQa), model_to_name(TbQa), 'model'), 
            ('TbQa.update_cache', '', '', 'single'), 
            
-           ('TbActivity', model_read_permit(TbActivity), model_to_name(TbActivity), 'model'), 
-           ('TbActivity.edit', model_full_permit(TbActivity), model_to_name(TbActivity), 'model'), 
-           ('TbActivity.update_cache', '', '', 'single'), 
+           #------活动2--------
+           ('TbActivityV2', model_read_permit(TbActivityV2), model_to_name(TbActivityV2), 'model'), 
+           ('TbActivityV2.edit', model_full_permit(TbActivityV2), model_to_name(TbActivityV2), 'model'), 
+           ('TbActivityV2.update_cache', '', '', 'single'), 
+           ('TbActivitySettings.edit', model_full_permit(TbActivitySettings), model_to_name(TbActivitySettings), 'model'),
            
+           # 代理公告
+           ('TbAgentnotice.edit',model_full_permit(TbAgentnotice),model_to_name(TbAgentnotice),'model'),
+           # 代理留言
            ('TbAgentleavemsg', model_read_permit(TbAgentleavemsg), model_to_name(TbAgentleavemsg), 'model'), 
            
            #------------------------------------------------
@@ -43,8 +48,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbTournament', model_read_permit(TbTournament), model_to_name(TbTournament), 'model'), 
            ('TbTournament.edit', model_full_permit(TbTournament), model_to_name(TbTournament), 'model'), 
            
-           ('TbTournamentBasketball', model_read_permit(TbTournamentBasketball), model_to_name(TbTournamentBasketball), 'model'), 
-           ('TbTournamentBasketball.edit', model_full_permit(TbTournamentBasketball), model_to_name(TbTournamentBasketball), 'model'),            
+           #('TbTournamentBasketball', model_read_permit(TbTournamentBasketball), model_to_name(TbTournamentBasketball), 'model'), 
+           #('TbTournamentBasketball.edit', model_full_permit(TbTournamentBasketball), model_to_name(TbTournamentBasketball), 'model'),            
            
            ('TbTeams', model_read_permit(TbTeams), model_to_name(TbTeams), 'model'), 
            ('TbTeams.edit', model_full_permit(TbTeams), model_to_name(TbTeams), 'model'), 
@@ -82,34 +87,37 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            
            ('TbLoginlog', model_read_permit(TbLoginlog), model_to_name(TbLoginlog), 'model'), 
            
-           #-----------------------------------------------------------
+           #------比赛----------------------------------------------
            
            ('TbMatches', model_read_permit(TbMatch), model_to_name(TbMatch), 'model'), 
-           ('TbMatches.edit', model_full_permit(TbMatch), model_to_name(TbMatch), 'model'),  
-           ('TbMatchesBasketball', model_read_permit(TbMatch), model_to_name(TbMatch), 'model'), 
-           ('TbMatchesBasketball.edit', model_full_permit(TbMatch), model_to_name(TbMatch), 'model'),             
+           ('TbMatches.edit', model_full_permit(TbMatch), model_to_name(TbMatch), 'model'),
+           ('TbPeriodscore',model_read_permit(TbPeriodscore),model_to_name(TbPeriodscore),'model'), # 比分
+           ('TbLivefeed.edit',model_full_permit(TbLivefeed),model_to_name(TbLivefeed),'model'),# 危险球
            
+           ('TbMarkets',model_read_permit(TbMarkets),model_to_name(TbMarkets),'model'), # 玩法
+           ('TbMarkets.edit',model_full_permit(TbMarkets),model_to_name(TbMarkets),'model'), # 玩法
+           
+           ('TbMarkethcpswitch.edit',model_full_permit(TbMarkethcpswitch),model_to_name(TbMarkethcpswitch),'model'),
+           ('manual_specialbetvalue','TbMarkethcpswitch.edit','','set'), # 封盘
+           ('manual_outcome','','','single'), # 手动结算 
+        
+            
            ('TbTicketmaster', model_read_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'), 
            ('TbTicketmaster.edit', model_full_permit(TbTicketmaster), model_to_name(TbTicketmaster), 'model'), 
            ('TbTicketstake', model_read_permit(TbTicketstake), model_to_name(TbTicketstake), 'model'),
            ('TbTicketparlay', model_read_permit(TbTicketparlay), model_to_name(TbTicketparlay), 'model'),
            
            ('TbTicketmaster_all_tab_read', ';'.join(['TbTicketmaster', 'TbTicketstake', 'TbTicketparlay']), '', 'set'), 
-           
-           #('Account_list_read', ';'.join(['TbAccount', 'TbBalancelog', 'TbBankcard', 'TbRecharge', 'TbWithdraw'
-                                           #'TbTicketmaster', 'TbLoginlog', 'TbMatches']), '', 'set'), 
-    
-           
-            #('TbMaxpayout', model_read_permit(TbMaxpayout), model_to_name(TbMaxpayout), 'model'),
-            #('TbMaxpayout.edit', model_full_permit(TbMaxpayout), model_to_name(TbMaxpayout), 'model'),
-            #('TbMaxpayoutBasketball', model_read_permit(TbMaxpayoutBasketball), model_to_name(TbMaxpayoutBasketball), 'model'),
-            #('TbMaxpayoutBasketball.edit', model_full_permit(TbMaxpayoutBasketball), model_to_name(TbMaxpayoutBasketball), 'model'),            
+           # --------------------------------------------------------------
+
+           ('TbUserConst.edit',model_full_permit(TbUserConst),model_to_name(TbUserConst),'model'),
+           ('TbUserRank.edit',model_full_permit(TbUserRank),model_to_name(TbUserRank),'model'),
            
             ('TbParameterinfo', model_read_permit(TbParameterinfo), model_to_name(TbParameterinfo), 'model'), 
             ('TbParameterinfo.edit', model_full_permit(TbParameterinfo), model_to_name(TbParameterinfo), 'model'),
            
-           ('Blackiprangelist', model_read_permit(Blackiprangelist), model_to_name(Blackiprangelist), 'model'), 
-           ('Blackiprangelist.edit', model_full_permit(Blackiprangelist), model_to_name(Blackiprangelist), 'model'), 
+           #('Blackiprangelist', model_read_permit(Blackiprangelist), model_to_name(Blackiprangelist), 'model'), 
+           #('Blackiprangelist.edit', model_full_permit(Blackiprangelist), model_to_name(Blackiprangelist), 'model'), 
            ('TbPaychannelblackiprange', model_read_permit(TbPaychannelblackiprange), model_to_name(TbPaychannelblackiprange), 'model'), 
            ('TbPaychannelblackiprange.edit', model_full_permit(TbPaychannelblackiprange), model_to_name(TbPaychannelblackiprange), 'model'), 
            
@@ -132,7 +140,7 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
           ('TbAgentcommission', model_read_permit(TbAgentcommission), model_to_name(TbAgentcommission), 'model'), 
           ('TbAgentcommission.edit', model_full_permit(TbAgentcommission), model_to_name(TbAgentcommission), 'model'),
           
-           ('TbLeagueGroup.edit', model_full_permit(TbLeagueGroup), model_to_name(TbLeagueGroup), 'model'), 
+           #('TbLeagueGroup.edit', model_full_permit(TbLeagueGroup), model_to_name(TbLeagueGroup), 'model'), 
            #('Account_list_write', ';'.join(['TbAccount.edit', 'TbBalancelog.edit', 'TbBankcard.edit', 'TbRecharge.edit', 'TbWithdraw.edit'
                                            #'TbTicketmaster.edit', 'TbLoginlog.edit', 'TbMatches.edit']), '', 'set'),  
         ('TbBonuslog', model_read_permit(TbBonuslog), model_to_name(TbBonuslog), 'model'), 
@@ -149,8 +157,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
          ('TbLimitusergroup.edit',model_full_permit(TbLimitusergroup),model_to_name(TbLimitusergroup),'model'),
          ('risk.RiskcontrolSetting','','','single'),
          ('member.chum_user','','','single'), # 流失用户
-         ('TbBetfullrecord',model_read_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
-         ('TbBetfullrecord.edit',model_full_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
+         #('TbBetfullrecord',model_read_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
+         #('TbBetfullrecord.edit',model_full_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
            ]
 
 add_permits(permits)

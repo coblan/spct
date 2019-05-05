@@ -1,9 +1,9 @@
 from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowFilter,RowSearch,RowSort
-from ..models import TbAccount
+from ..models import TbAccount,TbRecharge
 from django.utils import timezone
 from django.db import connections
 from ..member.account import UserRecharge,account_tab
-from helpers.director.access.permit import has_permit
+from helpers.director.access.permit import has_permit,can_touch
 
 class RechargeReport(TablePage):
     def check_permit(self): 
@@ -71,8 +71,12 @@ class RechargeReport(TablePage):
             return ctx
         
         def getExtraHead(self):
+            if can_touch(TbRecharge, self.crt_user):
+                nickhead = {'name': 'NickName', 'label': '昵称', 'width': 150,'editor':'com-table-switch-to-tab','ctx_name':'recharge_tabs','tab_name':'UserRecharge'}
+            else:
+                nickhead ={'name': 'NickName', 'label': '昵称', 'width': 150,'editor':'com-table-span'}
             return [
-                {'name': 'NickName', 'label': '昵称', 'width': 150,'editor':'com-table-switch-to-tab','ctx_name':'recharge_tabs','tab_name':'UserRecharge'},
+                nickhead,
                 #{'name': 'DangerLevel', 'label': '用户安全等级', 'width': 100,'editor':'com-table-style-block', 'style_express':"""
                 #var style_map={'高危':'background-color:red;color:white;'};
                 #rt=style_map[scope.row.DangerLevel]

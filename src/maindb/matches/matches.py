@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
     SelectSearch, Fields, director_view
+from helpers.func.collection.container import evalue_container
+from helpers.director.access.permit import has_permit,can_touch,can_write
 from ..models import  TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,\
      TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch,TbLivefeed
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
@@ -59,7 +61,7 @@ class MatchsPage(TablePage):
                 'com':'com-tab-table',
                 'pre_set':'rt={matchid:scope.par_row.matchid}',
                 'table_ctx': PeriodScoreTab(crt_user=self.crt_user).get_head_context(),
-                #'visible': can_touch(TbLivescout, self.crt_user), 
+                'visible': can_touch(TbPeriodscore, self.crt_user), 
              },
             {
                 'name':'danger_football',
@@ -67,7 +69,7 @@ class MatchsPage(TablePage):
                 'com':'com-tab-table',
                 'par_field': 'matchid',
                 'table_ctx': TbLivescoutTable(crt_user=self.crt_user).get_head_context(),
-                #'visible': can_touch(TbLivescout, self.crt_user), 
+                'visible': can_write(TbLivefeed, self.crt_user), 
                 },
             {'name': 'special_bet_value',
              'label': '盘口',
@@ -79,7 +81,8 @@ class MatchsPage(TablePage):
                  {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-plain-btn', 'icon': 'fa-refresh', }, 
                  {'fun':'filter_name','label':'玩法过滤','editor':'com-op-search',
                   'icon':'fa-refresh','btn_text':False},
-             ]
+             ],
+             'visible': has_permit(self.crt_user, 'manual_specialbetvalue'), 
             },
             {
                 'name':'manul_outcome',
@@ -87,14 +90,14 @@ class MatchsPage(TablePage):
                 'com':'com-tab-table',
                 'pre_set': 'rt={matchid:scope.par_row.matchid}',
                 'table_ctx': OutcomeTab(crt_user=self.crt_user).get_head_context(),
-                #'visible': can_touch(TbLivescout, self.crt_user), 
+                'visible': has_permit(self.crt_user, 'manual_outcome'), 
             },
             
                   
         ]
         
         ctx['named_ctx'] = {
-            'match_tabs':match_tabs,
+            'match_tabs':evalue_container( match_tabs),
             }
         return ctx
     
@@ -423,7 +426,6 @@ class TbLivescoutTable(ModelTable):
              'editor':'com-op-switch',
             'label':'危险球',
             'pre_set':'rt={matchid:scope.ps.crt_row.matchid,is_danger:scope.head.value}',
-            #'pre_set':'', # 预先设置的字
             'active_color':'red',
             'op_confirm_msg':'scope.value?"是否开启危险球?":"是否关闭危险球?"',
             'after_save':'rt=scope.ts.search()',

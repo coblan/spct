@@ -18,18 +18,25 @@ def get_permit():
                  {'label': '编辑','value': 'TbNotice.edit', 'depend': ['TbNotice'],}, 
                  {'label': '更新缓存','value': 'TbNotice.update_cache', 'depend': [ 'TbNotice', 'TbNotice.edit'],}, 
                  ],},
+             {'label':'代理公告','value':'TbAgentnotice.edit'},
              #{ 'label': _('Notice'), 'value': 'TbNotice',}, 
              { 'label': _('Help'), 'children':[
                  {'label': '查看', 'value': 'TbQa',}, 
                  {'label': '编辑', 'value': 'TbQa.edit','depend': ['TbQa']}, 
                  {'label': '更新缓存', 'value': 'TbQa.update_cache', 'depend': ['TbQa' , 'TbQa.edit',],}
                  ]}, 
-             { 'label': _('Activity'), 'children': [
-                 {'label': '查看', 'value': 'TbActivity',}, 
-                 {'label': '编辑', 'value': 'TbActivity.edit', 'depend': ['TbActivity'],}, 
-                 {'label': '更新缓存', 'value': 'TbActivity.update_cache', 'depend': ['TbActivity', 'TbActivity.edit', ],}
+             { 'label': '活动', 'children': [
+                 {'label': '查看', 'value': 'TbActivityV2',}, 
+                 {'label': '编辑', 'value': 'TbActivityV2.edit', 'depend': ['TbActivityV2'],}, 
+                 {'label': '更新缓存', 'value': 'TbActivityV2.update_cache', 'depend': ['TbActivityV2', 'TbActivityV2.edit', ],},
+                 {'label':'活动设置','value':'TbActivitySettings.edit','depend':['TbActivityV2']}
                  ]}, 
             { 'label': '代理用户留言', 'value': 'TbAgentleavemsg',}, 
+            
+            { 'label': '用户排行', 'children':[
+                {'label':'虚拟用户','value':'TbUserConst.edit'},
+                {'label':'用户排行','value':'TbUserRank.edit'}
+                ],}, 
            
             { 'label': '红利发放', 'children': [
                 {'label': '查看', 'value': 'Bonuse-dispatch',}, 
@@ -43,23 +50,23 @@ def get_permit():
                  {'label': '查看', 'value': 'TbSporttypes',}, 
                  {'label': '编辑', 'value': 'TbSporttypes.edit', 'depend': ['TbSporttypes'],}
                                  ],}, 
-             {'label': '足球联赛资料', 'children': [
+             {'label': '联赛资料', 'children': [
                  {'label': '查看', 'value': 'TbTournament',}, 
                  {'label': '编辑', 'value': 'TbTournament.edit', 'depend': ['TbTournament'],}
                     ],}, 
-             {'label': '篮球联赛资料', 'children': [
-                 {'label': '查看', 'value': 'TbTournamentBasketball',}, 
-                 {'label': '编辑', 'value': 'TbTournamentBasketball.edit', 'depend': ['TbTournamentBasketball'],}
-                            ],}, 
+             #{'label': '篮球联赛资料', 'children': [
+                 #{'label': '查看', 'value': 'TbTournamentBasketball',}, 
+                 #{'label': '编辑', 'value': 'TbTournamentBasketball.edit', 'depend': ['TbTournamentBasketball'],}
+                            #],}, 
              
-             {'label': '足球队资料', 'children': [
-                 {'label': '查看', 'value': 'TbTeams',}, 
-                 {'label': '编辑', 'value': 'TbTeams.edit', 'depend': ['TbTeams'],}
-                    ],}, 
-             {'label': '篮球队资料', 'children': [
-                 {'label': '查看', 'value': 'TbTeamsBasketball',}, 
-                 {'label': '编辑', 'value': 'TbTeamsBasketball.edit', 'depend': ['TbTeamsBasketball'],}
-                           ],}, 
+             #{'label': '足球队资料', 'children': [
+                 #{'label': '查看', 'value': 'TbTeams',}, 
+                 #{'label': '编辑', 'value': 'TbTeams.edit', 'depend': ['TbTeams'],}
+                    #],}, 
+             #{'label': '篮球队资料', 'children': [
+                 #{'label': '查看', 'value': 'TbTeamsBasketball',}, 
+                 #{'label': '编辑', 'value': 'TbTeamsBasketball.edit', 'depend': ['TbTeamsBasketball'],}
+                           #],}, 
 
              {'label': '充值渠道', 'children': [
                  {'label': '查看', 'value': 'TbPaychannel',}, 
@@ -74,7 +81,10 @@ def get_permit():
                  {'label': '查看', 'value': 'TbBanktypes',}, 
                  {'label': '编辑', 'value': 'TbBanktypes.edit', 'depend': ['TbBanktypes'],}
                        ],},              
-             {'label': '玩法设置', 'value': 'TbOddstypegroup',}, 
+             {'label': '玩法设置', 'children':[
+                 {'label':'查看','value':'TbMarkets'},
+                 {'label':'修改','value': 'TbMarkets.edit','depend':['TbMarkets']}
+             ]} ,
              {'label': 'APP资源', 'children': [
                  {'label': '查看', 'value': 'TbAppresource',}, 
                  {'label': '编辑', 'value': 'TbAppresource.edit', 'depend': ['TbAppresource'],}
@@ -107,10 +117,10 @@ def get_permit():
                 {'label': '查看', 'value': 'TbBankcard',}, 
                 {'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
                 ],}, 
-            {'label': '限额记录', 'children': [
-                {'label': '查看', 'value': 'TbBetfullrecord',}, 
-                {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
-                ],}, 
+            #{'label': '限额记录', 'children': [
+                #{'label': '查看', 'value': 'TbBetfullrecord',}, 
+                #{'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
+                #],}, 
              
              {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
              
@@ -133,15 +143,16 @@ def get_permit():
         }, 
         {'label': '比赛列表',#_('Tb Match'), 
          'children': [
-             {'label': '足球比赛列表', 'children': [
+             {'label': '比赛列表', 'children': [
                  {'label': '查看', 'value': 'TbMatches',}, 
-                 {'label': '编辑', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],}
+                 {'label': '编辑', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],},
+                 {'label':'比分','value':'TbPeriodscore'},
+                 {'label':'危险球','value':'TbLivefeed.edit'},
+                 {'label':'盘口','value':'manual_specialbetvalue'},
+                 {'label':'手动结算','value':'manual_outcome','depend':['TbMarkets']},
                  ]}, 
-             {'label':'篮球比赛列表', 'children': [
-                 {'label': '查看', 'value': 'TbMatchesBasketball',}, 
-                 {'label': '编辑', 'value': 'TbMatchesBasketball.edit', 'depend': ['TbMatchesBasketball'],}
-                 ]}, 
-             
+    
+
              {'label': _('Tb TicketMaster'), 'children': [
                  {'label': '查看', 'value': 'TbTicketmaster_all_tab_read','depend':['TbMatches','TbMatchesBasketball']}, 
                  {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', ],}
@@ -151,23 +162,23 @@ def get_permit():
        
         {'label': _('RiskControl'),
          'children': [
-             {'label': '足球最大赔付', 'children': [
-                 {'label': '查看', 'value': 'TbMaxpayout','depend': ['TbMatches', 'TbTournament', 'TbAccount']}, 
-                 {'label': '编辑', 'value': 'TbMaxpayout.edit', 'depend': ['TbMaxpayout', ],}, 
-                 ],}, 
-             {'label': '篮球最大赔付', 'children': [
-                 {'label': '查看', 'value': 'TbMaxpayoutBasketball','depend': ['TbMatchesBasketball', 'TbTournamentBasketball', 'TbAccount']}, 
-                 {'label': '编辑', 'value': 'TbMaxpayoutBasketball.edit', 'depend': ['TbMaxpayoutBasketball',],}, 
-                             ],}, 
+             #{'label': '足球最大赔付', 'children': [
+                 #{'label': '查看', 'value': 'TbMaxpayout','depend': ['TbMatches', 'TbTournament', 'TbAccount']}, 
+                 #{'label': '编辑', 'value': 'TbMaxpayout.edit', 'depend': ['TbMaxpayout', ],}, 
+                 #],}, 
+             #{'label': '篮球最大赔付', 'children': [
+                 #{'label': '查看', 'value': 'TbMaxpayoutBasketball','depend': ['TbMatchesBasketball', 'TbTournamentBasketball', 'TbAccount']}, 
+                 #{'label': '编辑', 'value': 'TbMaxpayoutBasketball.edit', 'depend': ['TbMaxpayoutBasketball',],}, 
+                             #],}, 
              
              {'label': '提现控制', 'children': [
                  {'label': '查看', 'value': 'TbParameterinfo',}, 
                  {'label': '编辑', 'value': 'TbParameterinfo.edit', 'depend': ['TbParameterinfo'],}, 
                         ],}, 
-             {'label': '黑名单范围', 'children': [
-                 {'label': '查看', 'value': 'Blackiprangelist',}, 
-                 {'label': '编辑', 'value': 'Blackiprangelist.edit', 'depend': ['Blackiprangelist'],}, 
-                        ],}, 
+             #{'label': '黑名单范围', 'children': [
+                 #{'label': '查看', 'value': 'Blackiprangelist',}, 
+                 #{'label': '编辑', 'value': 'Blackiprangelist.edit', 'depend': ['Blackiprangelist'],}, 
+                        #],}, 
              {'label': '充值黑名单IP', 'children': [
                  {'label': '查看', 'value': 'TbPaychannelblackiprange',}, 
                  {'label': '编辑', 'value': 'TbPaychannelblackiprange.edit', 'depend': ['TbPaychannelblackiprange'],}, 
@@ -180,7 +191,7 @@ def get_permit():
                  {'label': '查看', 'value': 'Whiteuserlist',}, 
                  {'label': '编辑', 'value': 'Whiteuserlist.edit', 'depend': ['Whiteuserlist', 'TbAccount'],}, 
                       ],}, 
-             {'label': '联赛组水位', 'value': 'TbLeagueGroup.edit',}, 
+             #{'label': '联赛组水位', 'value': 'TbLeagueGroup.edit',}, 
              {'label': '参数设置', 'value': 'risk.parameter',},
              {'label':'用户限额分组','children':[
                  {'label':'查看','value':'TbLimitusergroup'},
@@ -206,7 +217,7 @@ def get_permit():
          'children': [
              {'label': '会员统计', 'value': 'member_statistic', 'depend': ['TbAccount'],}, 
              {'label': '平台亏盈', 'value': 'platform_profit',}, 
-             {'label':'充值安全统计','value':'report.recharge_reports'},
+             {'label':'充值安全统计','value':'report.recharge_reports','depend':['TbRecharge']},
                      ],
         }, 
         {'label': '代理平台', 'children': [
