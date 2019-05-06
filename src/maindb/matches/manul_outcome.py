@@ -8,8 +8,8 @@ outcome_header = {
             'heads':[
                 {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场'},
                 {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场'},
-                {'name':'home_07_1','label':'主队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, home_6_1)'},
-                {'name':'away_07_1','label':'客队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, away_6_1)'},
+                {'name':'home_100_1','label':'主队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, home_6_1)'},
+                {'name':'away_100_1','label':'客队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, away_6_1)'},
                 {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
                 {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
                         
@@ -20,7 +20,7 @@ outcome_header = {
             'layout':{
                 'table_grid':[['has_overtime'],
                               ['home_6_1','away_6_1'],
-                              ['home_07_1','away_07_1'],
+                              ['home_100_1','away_100_1'],
                               ['home_40_1','away_40_1'],
                               ],
                 #'fields_group':[
@@ -74,8 +74,8 @@ outcome_header = {
             'heads': [ 
                 {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:'},
                 {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场:'},
-                {'name':'home_07_1','label':'主队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, home_6_1)'},
-                {'name':'away_07_1','label':'客队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, away_6_1)'},
+                {'name':'home_100_1','label':'主队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, home_6_1)'},
+                {'name':'away_100_1','label':'客队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, away_6_1)'},
                 {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
                 {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
                 {'name':'home_50_1','label':'主队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty'},
@@ -83,29 +83,29 @@ outcome_header = {
                 
                 {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number','required':True,'fv_rule':'主队上半场:'},
                 {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number','required':True,'fv_rule':'客队上半场:'},
-                {'name':'home_07_5','label':'主队全场角球','editor':'com-field-number','required':True,'fv_rule':'match(gte, home_6_5)'},
-                {'name':'away_07_5','label':'客队全场角球','editor':'com-field-number','required':True,'fv_rule':'match(gte, away_6_5)'},
+                {'name':'home_100_5','label':'主队全场角球','editor':'com-field-number','required':True,'fv_rule':'match(gte, home_6_5)'},
+                {'name':'away_100_5','label':'客队全场角球','editor':'com-field-number','required':True,'fv_rule':'match(gte, away_6_5)'},
                 {'name':'home_40_5','label':'主队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
                 {'name':'away_40_5','label':'客队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
                 
                 {'name':'has_overtime','label':'加时赛','editor':'com-field-bool'},
-                {'name':'has_penalty','label':'点球大战','editor':'com-field-bool'},
+                {'name':'has_penalty','label':'点球大战','editor':'com-field-bool','fv_rule':'depend_check(has_overtime)','fv_msg':'必须选择加时赛!'},
                 ],
             'editor':'com-form-one', #'com-outcome-score',
             'layout':{
                 'table_grid':[['has_overtime','has_penalty'],
                               ['home_6_1','away_6_1'],
-                              ['home_07_1','away_07_1'],
+                              ['home_100_1','away_100_1'],
                               ['home_40_1','away_40_1'],
                               ['home_50_1','away_50_1'],
                               ['home_6_5','away_6_5'],
-                              ['home_07_5','away_07_5'],
+                              ['home_100_5','away_100_5'],
                               ['home_40_5','away_40_5'],
                               ],
                 'fields_group':[
                     {'name':'huji','label':'基本控制','head_names':['has_overtime','has_penalty']},
-                    {'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_07_1','away_07_1','home_40_1','away_40_1','home_50_1','away_50_1']},
-                    {'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_07_5','away_07_5','home_40_5','away_40_5']},
+                    {'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_100_1','away_100_1','home_40_1','away_40_1','home_50_1','away_50_1']},
+                    {'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_100_5','away_100_5','home_40_5','away_40_5']},
                 ]
                 },
             'ops_loc':'down',
@@ -124,7 +124,7 @@ outcome_header = {
                          ]}, 
                       ],
                  'fields_heads':[
-                     {'name':'Specifiers','label':'分数','editor':'com-field-int','required':True, }, 
+                     {'name':'Specifiers','label':'分数','editor':'com-field-number','required':True,'fv_rule':'integer(+0)' }, 
                      {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'required':True,'options':[
                          {'value':4,'label':'主队'},
                          {'value':5,'label':'客队'},

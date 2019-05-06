@@ -899,56 +899,65 @@ def out_com_save(rows,matchid):
             has_overtime = row.pop('has_overtime',False)
             has_penalty = row.pop('has_penalty',False)
             TbPeriodscore.objects.filter(matchid=matchid,scoretype__in=[1,5]).delete()
-            total_home_1=0
-            total_away_1=0
-            total_home_5=0
-            total_away_5=0
             
-            if has_overtime:
-                home = row.pop('home_40_1')
-                away = row.pop('away_40_1')
-                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home,away=away)) 
-                home = row.pop('home_40_5')
-                away = row.pop('away_40_5')
-                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=5,type=1,home=home,away=away) )
-
-            if has_penalty:
-                home = row.pop('home_50_1')
-                away = row.pop('away_50_1')
-                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=50,scoretype=1,home=home,away=away ,type=2) )
-                          
-            home = row.get('home_6_1')
-            away = row.get('away_6_1')
-            total_home_1 += int( home )
-            total_away_1 += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home,away=away ,type=0) )
-            home = int( row.get('home_07_1') )- int(home)
-            away = int( row.get('away_07_1') )- int(away)
-            if home <0 or away <0:
+            # 比分
+            home_6_1 = int( row.get('home_6_1') )
+            away_6_1 = int( row.get('away_6_1') )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home_6_1,away=away_6_1 ,type=0) )
+            
+            home_100_1 = int( row.get('home_100_1') )
+            away_100_1 = int( row.get('away_100_1') )
+            home_7_1 = home_100_1 - home_6_1
+            away_7_1 = away_100_1 - away_6_1
+            if home_7_1 < 0  or away_7_1 < 0:
                 raise UserWarning('全场部分不能少于上半场比分')
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
+        
+            if has_overtime:
+                home_40_1 = int( row.pop('home_40_1') )
+                away_40_1 = int( row.pop('away_40_1') )
+                home_110_1 = home_100_1 + home_40_1
+                away_110_1 = away_100_1 + away_40_1
+                
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home_40_1,away=away_40_1)) 
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=1,type=1,home=home_110_1,away=away_110_1) )
+                
             
-            total_home_1 += int(home)
-            total_away_1 += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home,away=away ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home_1,away=total_away_1 ,type=0) )
+            if has_penalty:
+                home_50_1 = int( row.pop('home_50_1') )
+                away_50_1 = int( row.pop('away_50_1') )
+                home_120_1 = home_110_1 + home_50_1
+                away_120_1 = away_110_1 + away_50_1
+                
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=50,scoretype=1,type=2,home=home_50_1,away=away_50_1 ) )
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=120,scoretype=1,type=2,home=home_120_1,away=away_120_1 ) )
             
-            home = row.get('home_6_5')
-            away = row.get('away_6_5')
-            total_home_5 += int(home)
-            total_away_5 += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=5,home=home,away=away ,type=0) )
-            home = int( row.get('home_07_5') ) - int(home)
-            away = int( row.get('away_07_5') ) - int(away)
-            if home <0 or away <0:
+            # 角球
+            home_6_5 = int( row.get('home_6_5') )
+            away_6_5 = int( row.get('away_6_5') )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=5,home=home_6_5,away=away_6_5 ,type=0) )
+            
+            home_100_5 = int( row.get('home_100_5') )
+            away_100_5 = int( row.get('away_100_5') )
+            
+            home_7_5 = home_100_5 - home_6_5
+            away_7_5 = away_100_5 - away_6_5
+            
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=5,home=home_7_5,away=away_7_5 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=5,home=home_100_5,away=away_100_5 ,type=0) )
+            if home_7_5 <0 or away_7_5 <0:
                 raise UserWarning('全场部分不能少于上半场角球')
             
-            total_home_5 += int(home)
-            total_away_5 += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=5,home=home,away=away ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=5,home=total_home_5,away=total_away_5 ,type=0) )
-
+            if has_overtime:
+                home_40_5 = int( row.pop('home_40_5') )
+                away_40_5 = int( row.pop('away_40_5') )
+                home_110_5 = home_100_5 + home_40_5
+                away_110_5 = away_100_5 + away_40_5
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=5,type=1,home=home_40_5,away=away_40_5) )
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=5,type=1,home=home_110_5,away=away_110_5) )
+        
         if row['pk'] in which_map:
-            
             outcome_list = json.loads(row.get('content','[]') ) 
             for item in outcome_list:
                 item['Specifiers'] = which_map[row['pk']]%{'org_sp':item['Specifiers']}
@@ -967,57 +976,44 @@ def out_com_save(rows,matchid):
                 item['MarketId']= row['pk']
                 item['Score'] = '%s:%s'%(item.pop('OutcomeId'),item.pop('OutcomeId_1') )
                 send_dc['Special'].append(item)
+                
         if row['pk'] == -2:
             # 普通篮球手动输入比分 （有四小节）
             send_dc['IsSettleByScore']=True
             dc = {}
             has_overtime = row.pop('has_overtime',False)
-     
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
-            total_home = 0
-            total_away = 0
-            half_home=0
-            half_away=0
-            half2_home=0
-            half2_away=0
+                           
+            home_13_1 = int( row.get('home_13_1') )
+            away_13_1 = int( row.get('away_13_1') )
+            home_14_1 = int( row.get('home_14_1') )
+            away_14_1 = int( row.get('away_14_1') )
+            home_15_1 = int( row.get('home_15_1') )
+            away_15_1 = int( row.get('away_15_1') )
+            home_16_1 = int( row.get('home_16_1') )
+            away_16_1 = int( row.get('away_16_1') )
+            home_6_1 = home_13_1 + home_14_1
+            home_7_1 = home_15_1 + home_16_1
+            away_6_1 = away_13_1 + away_14_1
+            away_7_1 = away_15_1 + away_16_1
+            home_100_1 = home_6_1 + home_7_1
+            away_100_1 = away_6_1 + away_7_1
+            
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=13,scoretype=1,home=home_13_1,away=away_13_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=14,scoretype=1,home=home_14_1,away=away_14_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=15,scoretype=1,home=home_15_1,away=away_15_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=16,scoretype=1,home=home_16_1,away=away_16_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home_6_1,away=away_6_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
             
             if has_overtime:
-                home = row.pop('home_40_1')
-                away = row.pop('away_40_1')
-                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home,away=away)) 
-                                      
-            home = row.get('home_13_1')
-            away = row.get('away_13_1')
-            total_home += int(home)
-            total_away += int(away)
-            half_home += int(home)
-            half_away += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=13,scoretype=1,home=home,away=away ,type=0) )
-            home = row.get('home_14_1')
-            away = row.get('away_14_1')
-            total_home += int(home)
-            total_away += int(away)
-            half_home += int(home)
-            half_away += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=14,scoretype=1,home=home,away=away ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=half_home,away=half_away ,type=0) )
-
-            home = row.get('home_15_1')
-            away = row.get('away_15_1')
-            total_home += int(home)
-            total_away += int(away)
-            half2_home += int(home)
-            half2_away += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=15,scoretype=1,home=home,away=away ,type=0) )
-            home = row.get('home_16_1')
-            away = row.get('away_16_1')
-            total_home += int(home)
-            total_away += int(away)
-            half2_home += int(home)
-            half2_away += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=16,scoretype=1,home=home,away=away ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=half2_home,away=half2_away ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
+                home_40_1 = int( row.pop('home_40_1') )
+                away_40_1 = int( row.pop('away_40_1') )
+                home_110_1 = home_100_1 + home_40_1
+                away_110_1 = away_100_1 + away_40_1
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home_40_1,away=away_40_1)) 
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=1,type=1,home=home_110_1,away=away_110_1)) 
 
         if row['pk'] == -3:
             # NCAA 篮球手动输入比分 （只有上下半场,有加时赛）
@@ -1026,24 +1022,29 @@ def out_com_save(rows,matchid):
             has_overtime = row.pop('has_overtime',False)
            
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
-            total_home = 0
-            total_away = 0
+               
+            home_6_1 = int( row.get('home_6_1') )
+            away_6_1 = int( row.get('away_6_1') )
+            
+            home_100_1 = int( row.get('home_100_1') )
+            away_100_1 = int( row.get('away_100_1') )
+            
+            home_7_1 = home_100_1 - home_6_1
+            away_7_1 = away_100_1 - away_6_1
+            
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home_6_1,away=away_6_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_6_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
+            
             if has_overtime:
-                home = row.pop('home_40_1')
-                away = row.pop('away_40_1')
-                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home,away=away)) 
+                home_40_1 = int( row.pop('home_40_1') )
+                away_40_1 = int( row.pop('away_40_1') )
+                home_110_1 = home_100_1 + home_40_1
+                away_110_1 = away_100_1 + away_40_1
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home_40_1,away=away_40_1)) 
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=1,type=1,home=home_110_1,away=away_110_1)) 
                                 
-            home = row.get('home_6_1')
-            away = row.get('away_6_1')
-            total_home += int(home)
-            total_away += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home,away=away ,type=0) )
-            home = int( row.get('home_07_1') ) -int(home)
-            away = int( row.get('away_07_1') ) - int(away)
-            total_home += int(home)
-            total_away += int(away)
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home,away=away ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=total_home,away=total_away ,type=0) )
+            
 
     TbPeriodscore.objects.bulk_create(batch_create)
     if send_dc.get('IsSettleByScore'):
