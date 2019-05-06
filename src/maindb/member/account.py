@@ -254,14 +254,14 @@ class AccountPage(TablePage):
                         'label': '昵称',
                     }
 
-            def clean_search(self):
-                if self.qf in ['accountid']:
-                    if not re.search('^\d*$', self.q):
-                        return None
-                    else:
-                        return self.q
-                else:
-                    return super().clean_search()
+            #def clean_search(self):
+                #if self.qf in ['accountid']:
+                    #if not re.search('^\d*$', self.q):
+                        #return None
+                    #else:
+                        #return self.q
+                #else:
+                    #return super().clean_search()
 
         class sort(RowSort):
             names = ['nickname', 'account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount',
