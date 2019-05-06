@@ -107,7 +107,7 @@ def get_permit():
                 
                 {'label': '所有标签(全功能)', 'value': 'TbAccount.all_tab', 'depend': ['TbAccount.edit', 
                                 'TbBalancelog', 'TbLoginlog', 'TbBankcard', 'TbBankcard.edit', 'TbRecharge.edit',
-                                'TbWithdraw.edit','TbBetfullrecord','TbBetfullrecord.edit'],}, 
+                                'TbWithdraw.edit',],}, 
                
                 ],}, 
              
@@ -154,7 +154,7 @@ def get_permit():
     
 
              {'label': _('Tb TicketMaster'), 'children': [
-                 {'label': '查看', 'value': 'TbTicketmaster_all_tab_read','depend':['TbMatches','TbMatchesBasketball']}, 
+                 {'label': '查看', 'value': 'TbTicketmaster_all_tab_read','depend':['TbMatches']}, 
                  {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', ],}
                  ]},              
              ],
@@ -175,14 +175,28 @@ def get_permit():
                  {'label': '查看', 'value': 'TbParameterinfo',}, 
                  {'label': '编辑', 'value': 'TbParameterinfo.edit', 'depend': ['TbParameterinfo'],}, 
                         ],}, 
-             #{'label': '黑名单范围', 'children': [
-                 #{'label': '查看', 'value': 'Blackiprangelist',}, 
-                 #{'label': '编辑', 'value': 'Blackiprangelist.edit', 'depend': ['Blackiprangelist'],}, 
-                        #],}, 
-             {'label': '充值黑名单IP', 'children': [
+             {'label': '登录IP黑名单', 'children': [
+                 {'label': '查看', 'value': 'Blackiprangelist',}, 
+                 {'label': '编辑', 'value': 'Blackiprangelist.edit', 'depend': ['Blackiprangelist'],}, 
+                        ],}, 
+             {'label': '登录地区黑名单', 'children': [
+                 {'label': '查看', 'value': 'TbAreablacklist',}, 
+                 {'label': '编辑', 'value': 'TbAreablacklist.edit', 'depend': ['TbAreablacklist'],}, 
+                        ],}, 
+             {'label': '充值用户黑名单', 'children': [
+                 {'label': '查看', 'value': 'TbPaychannelblackaccount',}, 
+                 {'label': '编辑', 'value': 'TbPaychannelblackaccount.edit', 'depend': ['TbPaychannelblackaccount'],}, 
+                        ],}, 
+             
+             {'label': '充值IP黑名单', 'children': [
                  {'label': '查看', 'value': 'TbPaychannelblackiprange',}, 
                  {'label': '编辑', 'value': 'TbPaychannelblackiprange.edit', 'depend': ['TbPaychannelblackiprange'],}, 
                           ],}, 
+             {'label': '充值地区黑名单', 'children': [
+                 {'label': '查看', 'value': 'TbRechargeareablacklist',}, 
+                 {'label': '编辑', 'value': 'TbRechargeareablacklist.edit', 'depend': ['TbRechargeareablacklist'],}, 
+                          ],}, 
+             
              {'label': 'IP白名单', 'children': [
                  {'label': '查看', 'value': 'TbWhiteiprangelist',}, 
                  {'label': '编辑', 'value': 'TbWhiteiprangelist.edit', 'depend': ['TbWhiteiprangelist', ],}, 

@@ -740,6 +740,11 @@ def save_special_bet_value_proc(matchid, markets, specialbetvalue):
             changed_list.append(item)
             item.delete()
     TbMarkethcpswitch.objects.bulk_create(new_list)    
+    for item in new_list:
+        if item.type==2:
+            # 封玩法，需要把所有odds 取消
+            TbOdds.objects.filter(matchid=item.matchid,marketid=item.marketid_id).update(status=-1)
+        
     op_log.info(log_msg)
     
     ls=[]
