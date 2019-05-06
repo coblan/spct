@@ -593,6 +593,14 @@ class AccountLoginTable(WithAccoutInnFilter, LoginLogPage.tableCls):
 class UserStatisticsTab(UserStatisticsPage.tableCls):
     class search(RowSearch):
         names = []
+        
+    class filters(RowFilter):
+        range_fields = ['date']
+
+        def getExtraHead(self):
+            return [
+                {'name':'date','editor':'com-filter-datetime-range','label':'时间'}
+            ]
 
 
 class MatchesStatisticsTab(MatchesStatisticsPage.tableCls):

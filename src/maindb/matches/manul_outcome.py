@@ -124,7 +124,7 @@ outcome_header = {
                          ]}, 
                       ],
                  'fields_heads':[
-                     {'name':'Specifiers','label':'分数','editor':'com-field-number','required':True, }, 
+                     {'name':'Specifiers','label':'分数','editor':'com-field-int','required':True, }, 
                      {'name':'OutcomeId','label':'主队/客队','editor':'com-field-select', 'required':True,'options':[
                          {'value':4,'label':'主队'},
                          {'value':5,'label':'客队'},

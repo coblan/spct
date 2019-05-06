@@ -159,7 +159,7 @@ class MatchesStatisticsPage(TablePage):
                 {'name': 'MatchDate', 'label': '比赛日期', 'width': 140},
                 {'name': 'Score', 'label': '比分', 'width': 80},
                 {'name': 'StatusCode', 'label': '状态', },
-                {'name': 'LiveBet', 'label': '走地盘', 'editor': 'com-table-bool-shower'},
+                #{'name': 'LiveBet', 'label': '走地盘', 'editor': 'com-table-bool-shower'},
                 {'name': 'TicketCount', 'label': '单注注数', 'width': 80},
                 {'name': 'SeriesTicketCount', 'label': '串关注数', 'width': 80},
                 {'name': 'UserCount', 'label': '用户数', 'width': 80},
