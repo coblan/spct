@@ -55,7 +55,7 @@ class PcMenu(BaseEngine):
                 {'label': '活动', 'url': page('activity_v2'), 'visible': can_touch(TbActivityV2, crt_user), },
                 #{'label': _('Activity'), 'url': page('activity'), 'visible': can_touch(TbActivity, crt_user), },
                 {'label': '用户留言', 'url': page('feedback'), 'visible': can_touch(TbAgentleavemsg, crt_user), },
-                {'label': '用户排行', 'visible': True, 
+                {'label': '用户排行', 'visible': lambda liveitem:liveitem['submenu'], 
                  'submenu': [
                      {'label': '虚拟用户', 'url': page('rankuser'), 'visible': can_touch(TbUserConst, crt_user), },
                      {'label': '虚拟排行', 'url': page('rank'), 'visible': can_touch(TbUserRank, crt_user), },                      
@@ -138,7 +138,7 @@ class PcMenu(BaseEngine):
                 {'label':'充值安全统计','url':page('recharge_reports'),'visible': has_permit(crt_user, 'report.recharge_reports')},
              ]},
             
-            {'label': '代理系统', 'icon': fa('fa-street-view'), 'visible': True,
+            {'label': '代理系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
              'submenu': [
                  {'label': '代理用户', 'url': page('agent_user'),'visible': has_permit(crt_user, 'agent'), },
                  {'label': '代理佣金', 'url': page('agent_commission'),'visible': can_touch(TbAgentcommission, crt_user), },
