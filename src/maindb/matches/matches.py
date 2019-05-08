@@ -128,8 +128,8 @@ class MatchsPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['isrecommend', 'marketstatus','statuscode','tournamentid']
-            fields_sort=['isrecommend', 'marketstatus', 'statuscode','tournamentid','matchdate']
+            names = ['isrecommend', 'marketstatus','statuscode','hasliveodds','tournamentid']
+            fields_sort=['isrecommend', 'marketstatus', 'statuscode','hasliveodds','tournamentid','matchdate']
             def getExtraHead(self):
                 return [
                     {'name':'specialcategoryid','editor':'com-filter-select','label':'类型',
