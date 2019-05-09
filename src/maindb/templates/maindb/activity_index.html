@@ -70,7 +70,7 @@
             goto:function(url){
                 var search_args ={}
                 location.search.slice(1).split('&').forEach(function(item){
-                    var ls = item.split('=');search_args[ls[0]]=search_args[1]}
+                    var ls = item.split('=');search_args[ls[0]]=ls[1]}
                 )
 
                 var path = location.href
