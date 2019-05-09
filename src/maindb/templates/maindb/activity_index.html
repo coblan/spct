@@ -68,10 +68,20 @@
         },
         methods:{
             goto:function(url){
+                var search_args ={}
+                location.search.slice(1).split('&').forEach(function(item){
+                    var ls = item.split('=');search_args[ls[0]]=search_args[1]}
+                )
+
                 var path = location.href
                 var mt = /(.*?)[^\/]+$/.exec(path)
                 var org_url = mt[1]+url
-                location='chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
+                if(search_args.client == 'web'){
+                    location = org_url
+                }else{
+                    location='chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
+                }
+
             }
         }
     })
