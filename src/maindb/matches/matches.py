@@ -265,7 +265,7 @@ class MatchsPage(TablePage):
                     head['editor'] ='com-table-map-html'
                     head['map_express']="scope.row[scope.head.name]==1?scope.head.danger_img:''"
                     head['danger_img']="<img class='danger-ball' src='/static/images/danger.png' />"
-                    head['css']='.danger-ball{height:30px;display:inline-block;}'
+                    head['css']='.danger-ball{height:20px;display:inline-block;}'
         
             # 弹出 table 框
             #if head['name']=='tournamentzh':
