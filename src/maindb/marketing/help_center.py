@@ -66,7 +66,7 @@ class HelpPage(TablePage):
         exclude=[]
 
         #pop_edit_field='title'
-        fields_sort=['title','mtype','status']
+        fields_sort=['title','mtype','status','priority']
         
         #def get_operation(self):
 
@@ -131,8 +131,11 @@ class HelpPage(TablePage):
                 },
                 #{'fun': 'update_help_file', 'label': '更新缓存', 'editor': 'com-op-btn', 
                  #'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
-                  {'fun': 'director_call', 'director_name': "gen_help_static_file", 'label': '更新缓存', 'editor': 'com-op-btn', 
-                 'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
+                  {'fun': 'director_call', 
+                   'director_name': "gen_help_static_file", 
+                   'label': '更新缓存', 
+                   'editor': 'com-op-btn', 
+                   'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
             ])
             return operations
         
@@ -160,10 +163,12 @@ class HelpPage(TablePage):
             # return get_mtype_options()
             # else:
             # return RowFilter.get_options(self,name)
+        class sort(RowSort):
+            names = ['priority']
 
 
 class HelpForm(ModelFields):
-    field_sort = ['title', 'status', 'mtype', 'description']
+    field_sort = ['title', 'status','priority', 'mtype', 'description']
 
     class Meta:
         model = TbQa
@@ -171,11 +176,14 @@ class HelpForm(ModelFields):
 
     def clean_dict(self, dc):
         super().clean_dict(dc)
-        if not dc.get('pk', None):
-            if dc.get('mtype') == 0:
-                dc['type'] = len(TbQa.objects.values('mtype').distinct())
-            else:
-                dc['type'] = 0
+        #if not dc.get('pk', None):
+        if dc.get('mtype') == 0 :
+            if dc.get('type') == 0:
+                dc['type'] = len(TbQa.objects.values('type').distinct())
+        else:
+            dc['type'] = 0
+        #else:
+            #dc['type'] = 0
 
         return dc
 

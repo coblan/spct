@@ -6,7 +6,7 @@ class PaychannelblackaccountPage(TablePage):
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
     def get_label(self):
-        return '充值账号黑名单'
+        return '充值用户黑名单'
     
     class tableCls(ModelTable):
         pop_edit_field='blackaccountid'

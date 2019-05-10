@@ -22,7 +22,8 @@ class PcMenu(BaseEngine):
     title = 'SportsCenter'
     brand = '<img src="/static/images/logo.png" style="height:46px">'
     mini_brand = '<img src="/static/images/logo2.png" style="height:46px">'
-
+    need_staff=True
+    
     @property
     def menu(self):
         crt_user = self.request.user
@@ -36,7 +37,7 @@ class PcMenu(BaseEngine):
                 {'label': _('Tb Login Log'), 'url': page('loginlog'),
                  'visible': can_touch(TbLoginlog, crt_user), },
                 {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbBankcard, crt_user), },
-                {'label': '关联用户', 'url': page('ReleventUser'), 'visible': can_touch(TbBankcard, crt_user), },
+                {'label': '关联用户', 'url': page('ReleventUser'), 'visible': has_permit( crt_user,'member.relevent_user'), },
                 {'label': '流失用户', 'url': page('chum_user'), 'visible': has_permit( crt_user,'member.chum_user'), },
                 
                  

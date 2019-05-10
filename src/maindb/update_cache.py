@@ -20,9 +20,9 @@ def update_redis_cache(sender, **kws):
     #elif sender == sports_model.TbMatchesBasketball:
         #redisInst.delete('App:Cache:index:matches:Basketball') 
     
-    elif sender == sports_model.TbMaxpayout:
-        for key in  ['App:Static:MaxPayout', 'App:Static:MaxSinglePayout']:
-            redisInst.delete(key)
+    #elif sender == sports_model.TbMaxpayout:
+        #for key in  ['App:Static:MaxPayout', 'App:Static:MaxSinglePayout']:
+            #redisInst.delete(key)
     elif sender == sports_model.TbOddstypes:
         redisInst.delete('App:Static:OddsType')
     elif sender == sports_model.TbOddstypegroup:
@@ -34,10 +34,13 @@ def update_redis_cache(sender, **kws):
         if ls1:
             redisInst.delete(*ls1)
     elif sender == sports_model.TbUserRank:
-        ls1 = redisInst.keys(pattern='App:Cache:Ranking*')
+        ls1 = redisInst.keys(pattern='common:*')
         if ls1:
             redisInst.delete(*ls1)
-        redisInst.delete('App:Cache:index:ranks')
+        #ls1 = redisInst.keys(pattern='App:Cache:Ranking*')
+        #if ls1:
+            #redisInst.delete(*ls1)
+        #redisInst.delete('App:Cache:index:ranks')
             
         
 post_delete.connect(update_redis_cache)

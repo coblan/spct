@@ -1,6 +1,6 @@
 from helpers.director.shortcut import page_dc, director, director_view
 from .matches import MatchsPage, MatchForm ,quit_ticket,PeriodScoreTab#get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, 
-from ..models import TbMatch,TbTournament
+from ..models import TbMatch,TbTournament,TbPeriodscore
 from maindb.mongoInstance import updateMatchBasketMongo
 #from .match_outcome_forms import  BasketPoints, Quarter, FirstBasket, LastBasket, HightestQuarterScore, FirstReachScore, TotalPoints, Shot3Points,BasketTwosection
 from ..redisInstance import redisInst
@@ -43,7 +43,7 @@ class BasketMatchsPage(MatchsPage):
                 'com':'com-tab-table',
                 'pre_set':'rt={matchid:scope.par_row.matchid}',
                 'table_ctx': PeriodScoreTab(crt_user=self.crt_user).get_head_context(),
-                #'visible': can_touch(TbLivescout, self.crt_user), 
+                 'visible': can_touch(TbPeriodscore, self.crt_user), 
              },
             {'name': 'special_bet_value',
              'label': '封盘',
@@ -55,14 +55,15 @@ class BasketMatchsPage(MatchsPage):
                  {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-plain-btn', 'icon': 'fa-refresh', }, 
                  {'fun':'filter_name','label':'玩法过滤','editor':'com-op-search',
                   'icon':'fa-refresh','btn_text':False},
-             ]
+             ],
+             'visible': has_permit(self.crt_user, 'manual_specialbetvalue'), 
             }, {
                 'name':'manul_outcome',
                 'label':'手动结算',
                 'com':'com-tab-table',
                 'par_field': 'matchid',
                 'table_ctx': BasketOutcome(crt_user=self.crt_user).get_head_context(),
-
+                'visible': has_permit(self.crt_user, 'manual_outcome'), 
             },
                   
         ]

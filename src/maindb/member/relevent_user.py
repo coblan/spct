@@ -1,6 +1,8 @@
 from helpers.director.shortcut import TablePage,PlainTable,page_dc,director
 from django.db import connections
 from .account import account_tab
+from helpers.director.access.permit import can_touch
+from ..models import TbAccount
 
 class ReleventUserPage(TablePage):
     def get_label(self):
@@ -19,11 +21,19 @@ class ReleventUserPage(TablePage):
     
     class tableCls(PlainTable):
         def get_heads(self):
+            if can_touch(TbAccount,self.crt_user):
+                account_head = {'name':'AccountID',
+                                'label':'账号ID',
+                                'editor':'com-table-switch-to-tab',
+                                'ctx_name':'account_tabs',
+                                'tab_name':'baseinfo'}
+            else:
+                account_head = {'name':'AccountID',
+                                'label':'账号ID',
+                                'editor':'com-table-span',
+                                }
             return [
-                {'name':'AccountID','label':'账号ID',
-                 'editor':'com-table-switch-to-tab',
-                 'ctx_name':'account_tabs',
-                 'tab_name':'baseinfo'},              
+                account_head,              
                 {'name':'NickName','label':'昵称','width':140},
                 {'name':'Relevant','label':'关联条件','width':280},
                 {'name':'Reason','label':'原因','width':220},

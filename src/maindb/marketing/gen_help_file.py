@@ -16,7 +16,7 @@ def gen_help_file():
     root_path = os.path.join(settings.MEDIA_ROOT, 'public/help')
     spd = StaticHtmlBuilder(url= index_url, root_path= root_path)
     spd.run()
-    for itm in TbQa.objects.filter(status=1).exclude(mtype=0):
+    for itm in TbQa.objects.filter(status=1):
         page_url =  urljoin(settings.SELF_URL, '/help/%s.html' % itm.pk )
         spd = StaticHtmlBuilder(url= page_url, root_path= root_path)
         spd.run()        

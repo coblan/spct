@@ -121,7 +121,7 @@ def get_permit():
                 #{'label': '查看', 'value': 'TbBetfullrecord',}, 
                 #{'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
                 #],}, 
-             
+             {'label':'关联用户','value':'member.relevent_user'},
              {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
              
              ],
@@ -184,7 +184,7 @@ def get_permit():
                  {'label': '编辑', 'value': 'TbAreablacklist.edit', 'depend': ['TbAreablacklist'],}, 
                         ],}, 
              {'label': '充值用户黑名单', 'children': [
-                 {'label': '查看', 'value': 'TbPaychannelblackaccount',}, 
+                 {'label': '查看', 'value': 'TbPaychannelblackaccount','depend':['TbAccount']}, 
                  {'label': '编辑', 'value': 'TbPaychannelblackaccount.edit', 'depend': ['TbPaychannelblackaccount'],}, 
                         ],}, 
              
@@ -235,10 +235,7 @@ def get_permit():
                      ],
         }, 
         {'label': '代理平台', 'children': [
-            {'label': '代理用户', 'children': [
-                {'label': '查看', 'value': 'agent', 'depend': ['TbAccount'],}, 
-                {'label': '编辑', 'value': 'agent.edit', 'depend': ['TbAccount.edit'],},     
-               ],}, 
+            {'label': '代理用户',  'value': 'agent', 'depend': ['TbAccount'] }, 
             {'label': '代理佣金', 'children': [
                 {'label': '查看', 'value': 'TbAgentcommission',}, 
                 {'label': '编辑', 'value': 'TbAgentcommission.edit',},

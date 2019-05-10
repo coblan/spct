@@ -36,12 +36,11 @@ class UserStatisticsPage(TablePage):
             last = today - sp
             def_start = last.strftime('%Y-%m-%d 00:00:00')
             def_end = today.strftime('%Y-%m-%d %H:%M:%S')
-            if not search_args.get('_has_default'):
+            if search_args.get('_first_access',1):
                 search_args['_start_date'] = search_args.get('_start_date') or def_start
                 search_args['_end_date'] = search_args.get('_end_date') or def_end
-                
                 search_args['AccountType'] = search_args.get('AccountType',0)
-            
+                search_args['_first_access'] = 0
             return search_args
 
         class search(SelectSearch):

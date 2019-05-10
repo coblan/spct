@@ -1,6 +1,6 @@
 from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc ,director,director_view
 from ..models import TbActivityV2,TbActivitySettings,TbActivityTemplate
-from helpers.director.access.permit import can_touch
+from helpers.director.access.permit import can_touch,has_permit
 from helpers.func.collection.container import evalue_container
 from ..static_html_builder import StaticHtmlBuilder
 from urllib.parse import urljoin
@@ -87,7 +87,7 @@ class ActiviyV2Page(TablePage):
                     'pre_set':'rt={enabled:1}',
                     'row_match': 'many_row',
                     'confirm_msg': '确认修改为在线吗?', 
-                    'visible': True,#'status' in self.permit.changeable_fields(),
+                    'visible': 'enabled' in self.permit.changeable_fields(),
                 },
                 {
                     'fun': 'selected_set_and_save',
@@ -98,14 +98,14 @@ class ActiviyV2Page(TablePage):
                      'pre_set':'rt={enabled:0}',
                     'row_match': 'many_row',
                     'confirm_msg': '确认修改为离线吗?', 
-                     'visible': True,#'status' in self.permit.changeable_fields(),
+                     'visible': 'enabled' in self.permit.changeable_fields(),
                 },
                 {
                     'fun': 'director_call',
                     'director_name': 'update_activity_file_v2',
                     'label': '更新缓存',
                     'editor': 'com-op-btn', 
-                     'visible': True,
+                     'visible': has_permit(self.crt_user, 'TbActivityV2.update_cache'),
                           }
             ])
             return operations        

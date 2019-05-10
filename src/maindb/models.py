@@ -450,7 +450,7 @@ class TbBetfullrecord(models.Model):
     #accountid = models.BigIntegerField(db_column='AccountID')  # Field name made lowercase.
     content = models.CharField(db_column='Content',verbose_name='详细说明', max_length=150, blank=True, null=True)  # Field name made lowercase.
     
-    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间', blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间', blank=True, null=True,auto_now=True)  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount',verbose_name='原始限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
     
     class Meta:
@@ -1583,10 +1583,10 @@ class TbQa(models.Model):
     mtype = models.IntegerField(db_column='MType', default=0,
                                 verbose_name=_('Belong To'))  # 从属于Field name made lowercase.
     type = models.IntegerField(db_column='Type')  # Field name made lowercase.
-    priority = models.SmallIntegerField(db_column='Priority', default=0, blank=True)  # Field name made lowercase.
+    priority = models.SmallIntegerField(db_column='Priority', default=0, verbose_name='优先级',help_text='大的数字优先级高')  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=100, verbose_name='标题')  # Field name made lowercase.
     description = models.TextField(db_column='Description',verbose_name='详细')  # Field name made lowercase.
-    status = models.SmallIntegerField(db_column='Status', default=1,
+    status = models.SmallIntegerField(db_column='Status', default=1,verbose_name='状态',
                                       choices=ONLINE_STATUS)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
     ver = models.IntegerField(db_column='Ver', default=0, blank=True)  # Field name made lowercase.
@@ -1594,6 +1594,9 @@ class TbQa(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_QA'
+    
+    def __str__(self):
+        return self.title
 
 
 class TbRcFilter(models.Model):
@@ -2366,7 +2369,7 @@ class TbAgentleavemsg(models.Model):
 class TbPaychannelblackaccount(models.Model):
     blackaccountid = models.AutoField(db_column='BlackAccountID', primary_key=True)  # Field name made lowercase.
     #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
-    accountid = models.ForeignKey(db_column='AccountID',to=TbAccount, blank=True, null=True,verbose_name='账号ID') 
+    accountid = models.ForeignKey(db_column='AccountID',to=TbAccount, blank=True, null=True,verbose_name='账号') 
     account = models.CharField(db_column='Account', max_length=255, blank=True, null=True,verbose_name='账号')  # Field name made lowercase.
     iswork = models.BooleanField(db_column='IsWork',default=True,verbose_name='启用')  # Field name made lowercase.
     #paychannelid = models.IntegerField(db_column='PayChannelID')  # Field name made lowercase.

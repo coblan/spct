@@ -44,7 +44,7 @@ class RechargeReport(TablePage):
         
         @classmethod
         def clean_search_args(cls, search_args):
-            if not search_args.get('_has_default'):
+            if search_args.get('_first_access',1):
                 today = timezone.now()
                 sp = timezone.timedelta(days=30)
                 last = today - sp
@@ -52,7 +52,7 @@ class RechargeReport(TablePage):
                 def_end = today.strftime('%Y-%m-%d %H:%M:%S')                
                 search_args['_start_date'] = search_args.get('_start_date') or def_start
                 search_args['_end_date'] = search_args.get('_end_date') or def_end
-                search_args['_has_default'] =1
+                search_args['_first_access'] =0
                 
             return search_args        
         

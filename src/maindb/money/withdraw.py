@@ -126,11 +126,11 @@ class WithdrawPage(TablePage):
                     }
 
             def clean_search(self):
-                if self.qf in ['orderid']:
-                    if not re.search('^\d*$', self.q):
-                        return None
-                    else:
+                if self.qf == 'orderid':
+                    if re.search('^\d*$', self.q):
                         return self.q
+                if self.qf =='accountid__nickname':
+                    return self.qf
                 else:
                     return super().clean_search()
 

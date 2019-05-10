@@ -83,7 +83,10 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbWithdraw', model_read_permit(TbWithdraw), model_to_name(TbWithdraw), 'model'), 
            ('TbWithdraw.edit', model_full_permit(TbWithdraw), model_to_name(TbWithdraw), 'model'), 
            
-           
+           # 关联用户
+           ('member.relevent_user','','','single'),
+           # 流失用户
+           ('member.chum_user','','','single'), 
            
            ('TbLoginlog', model_read_permit(TbLoginlog), model_to_name(TbLoginlog), 'model'), 
            
@@ -141,13 +144,14 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('member_statistic', '', '', 'single'), 
            ('platform_profit', '', '', 'single'), 
            
+           # 代理用户
            ('agent', '', '', 'single'), 
-           ('agent.edit', '', '', 'single'), 
+           #('agent.edit', '', '', 'single'),  # 代理用户的编辑，取决于 TbAccount的权限
            
-           ('agent.commission', '', '', 'single'), 
+           #('agent.commission', '', '', 'single'), 
            
            ('risk.parameter', '', '', 'single'), 
-           
+           # 代理佣金
            ('TbAgentcommission', model_read_permit(TbAgentcommission), model_to_name(TbAgentcommission), 'model'), 
            ('TbAgentcommission.edit', model_full_permit(TbAgentcommission), model_to_name(TbAgentcommission), 'model'),
            
@@ -167,7 +171,7 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbLimitusergroup',model_read_permit(TbLimitusergroup),model_to_name(TbLimitusergroup),'model'),
            ('TbLimitusergroup.edit',model_full_permit(TbLimitusergroup),model_to_name(TbLimitusergroup),'model'),
            ('risk.RiskcontrolSetting','','','single'),
-           ('member.chum_user','','','single'), # 流失用户
+           
            #('TbBetfullrecord',model_read_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
            #('TbBetfullrecord.edit',model_full_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
            ]
