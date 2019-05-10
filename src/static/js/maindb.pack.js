@@ -1452,6 +1452,16 @@ $.validator.config({
                 }
             }
             return true;
+        },
+        depend_check: function depend_check(elem, param) {
+            var depend_value = $("[name=" + param + "]").prop('checked');
+            var value = $(elem).prop('checked');
+
+            if (value && !depend_value) {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 });

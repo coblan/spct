@@ -857,7 +857,8 @@ class TbMatch(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
     ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
-  
+    isdangerous = models.IntegerField(db_column='IsDangerous', blank=True, null=True,verbose_name='危险球')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_Match'
@@ -1560,7 +1561,7 @@ PERIOD_TYP=(
 )
 class TbPeriodscore(models.Model):
     tid = models.BigAutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
-    matchid = models.BigIntegerField(db_column='MatchID', blank=True, null=True)  # Field name made lowercase.
+    matchid = models.BigIntegerField(db_column='MatchID', blank=True, null=True,verbose_name='比赛ID')  # Field name made lowercase.
     statuscode = models.IntegerField(db_column='StatusCode', blank=True, null=True,verbose_name='阶段',choices=NEW_MATCH_STATUS)  # Field name made lowercase.
     scoretype = models.IntegerField(db_column='ScoreType', blank=True, null=True,verbose_name='记分类型',choices=P_TYPE)  # Field name made lowercase.
     periodnumber = models.IntegerField(db_column='PeriodNumber', blank=True, null=True,verbose_name='阶段')  # Field name made lowercase.

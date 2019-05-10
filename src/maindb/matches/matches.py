@@ -106,7 +106,7 @@ class MatchsPage(TablePage):
         model = TbMatch
         exclude = []  # 'ishidden', 'iscloseliveodds'
         fields_sort = ['matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score',
-                       'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay']
+                       'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous']
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'}]
@@ -125,6 +125,7 @@ class MatchsPage(TablePage):
                 where=['TB_Tournament.TournamentID=TB_Match.TournamentID AND TB_Tournament.SportID=%s'%self.sportid],
                 tables =['TB_Tournament']
             )
+        
 
         class filters(RowFilter):
             range_fields = ['matchdate']
@@ -150,7 +151,7 @@ class MatchsPage(TablePage):
                 
             def dict_head(self, head):
                 if head['name']=='statuscode':
-                    head['options']=list( filter(lambda x:x['value'] in [0,6,7,31,40,100,110,120],head['options']) )
+                    head['options']=list( filter(lambda x:x['value'] in [0,6,7,31,40,50,100,110,120],head['options']) )
                 
                 if head['name'] == 'tournamentid':
                     #head['editor'] = 'com-filter-search-select'
@@ -160,6 +161,7 @@ class MatchsPage(TablePage):
                     head['options']=[
                         {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(sportid=1)
                     ]
+    
                 return head
 
         class search(SelectSearch):
@@ -258,6 +260,13 @@ class MatchsPage(TablePage):
             
             if head['name']=='tournamentid':
                 head['editor']='com-table-label-shower'
+                
+            if head['name'] == 'isdangerous':
+                    head['editor'] ='com-table-map-html'
+                    head['map_express']="scope.row[scope.head.name]==1?scope.head.danger_img:''"
+                    head['danger_img']="<img class='danger-ball' src='/static/images/danger.png' />"
+                    head['css']='.danger-ball{height:30px;display:inline-block;}'
+        
             # 弹出 table 框
             #if head['name']=='tournamentzh':
                 #mytable = TbLivescoutTable(crt_user=self.crt_user)
@@ -474,7 +483,7 @@ class TbLivescoutTable(ModelTable):
 class PeriodScoreTab(ModelTable):
     hide_fields=['tid']
     model = TbPeriodscore
-    exclude=['createtime']
+    exclude=['createtime','type']
     
     @classmethod
     def clean_search_args(cls, search_args):
