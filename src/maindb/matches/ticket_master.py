@@ -88,7 +88,7 @@ class TicketMasterPage(TablePage):
         def clean_search_args(cls, search_args):
             if search_args.get('_first_access',1):
                 search_args['accountid__accounttype'] = search_args.get('accountid__accounttype',0)
-                search_args.get['_first_access'] = 0 
+                search_args['_first_access'] = 0 
             return search_args
         
         def dict_head(self, head):
