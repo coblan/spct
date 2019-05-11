@@ -83,7 +83,7 @@ class BasketMatchsPage(MatchsPage):
                 #head = super().dict_head(head)
                 
                 if head['name']=='statuscode':
-                    head['options']=list( filter(lambda x:x['value'] in [0,13,14,15,16,31,40,100,110],head['options']) )
+                    head['options']=list( filter(lambda x:x['value'] in [0,13,14,15,16,31,32,40,100,110],head['options']) )
                 if head['name'] == 'tournamentid':
                     head['options']=[
                         {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(sportid=2)                    

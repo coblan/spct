@@ -151,7 +151,7 @@ class MatchsPage(TablePage):
                 
             def dict_head(self, head):
                 if head['name']=='statuscode':
-                    head['options']=list( filter(lambda x:x['value'] in [0,6,7,31,40,50,100,110,120],head['options']) )
+                    head['options']=list( filter(lambda x:x['value'] in [0,6,7,31,32,34,40,50,100,110,120],head['options']) )
                 
                 if head['name'] == 'tournamentid':
                     #head['editor'] = 'com-filter-search-select'
