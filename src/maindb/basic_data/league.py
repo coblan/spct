@@ -40,7 +40,7 @@ class League(TablePage):
 
             if head['name'] == 'typegroupswitch':
                 head['options'] = [{'value': str(x.marketid), 'label': x.marketnamezh, } for x in
-                                   TbMarkets.objects.all()]
+                                   TbMarkets.objects.filter(enabled=1)]
             return head
 
         def dict_row(self, inst):
@@ -98,7 +98,7 @@ class LeagueForm(ModelFields):
     def dict_head(self, head):
         if head['name'] == 'typegroupswitch':
             head['options'] = [{'value': str(x.marketid), 'label': x.marketnamezh, } for x in
-                               TbMarkets.objects.all()]
+                               TbMarkets.objects.filter(enabled=1)]
         if head['name']=='weight':
             head['fv_rule']='range(0.001~500)'
         return head
