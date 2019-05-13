@@ -39,8 +39,8 @@ class League(TablePage):
                 head['width'] = dc.get(head['name'])
 
             if head['name'] == 'typegroupswitch':
-                head['options'] = [{'value': str(x.oddstypegroup), 'label': x.oddstypenamezh, } for x in
-                                   TbOddstypegroup.objects.all()]
+                head['options'] = [{'value': str(x.marketid), 'label': x.marketnamezh, } for x in
+                                   TbMarkets.objects.all()]
             return head
 
         def dict_row(self, inst):
