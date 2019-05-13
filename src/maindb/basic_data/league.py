@@ -5,7 +5,7 @@ from helpers.director.model_func.field_procs.dotStrArray import DotStrArrayProc
 from helpers.director.table.table import RowFilter
 from helpers.director.access.permit import can_write
 
-from maindb.models import TbTournament, TbOddstypegroup
+from maindb.models import TbTournament, TbMarkets
 from maindb.redisInstance import redisInst
 
 
@@ -97,8 +97,8 @@ class LeagueForm(ModelFields):
 
     def dict_head(self, head):
         if head['name'] == 'typegroupswitch':
-            head['options'] = [{'value': str(x.oddstypegroup), 'label': x.oddstypenamezh, } for x in
-                               TbOddstypegroup.objects.all()]
+            head['options'] = [{'value': str(x.marketid), 'label': x.marketnamezh, } for x in
+                               TbMarkets.objects.all()]
         if head['name']=='weight':
             head['fv_rule']='range(0.001~500)'
         return head
