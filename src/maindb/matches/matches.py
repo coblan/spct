@@ -543,7 +543,7 @@ def getSpecialbetValue(matchid):
     # 填充玩法
     for odds in TbOdds.objects.filter(matchid=matchid,status=1,).extra(select={
         'sort':'SELECT TB_Markets.Sort',
-        }, tables=['TB_Markets'],where=['TB_Markets.MarketID=TB_Odds.MarketID']).values('marketname','marketid','sort','marketname').distinct():
+        }, tables=['TB_Markets'],where=['TB_Markets.MarketID=TB_Odds.MarketID']).values('marketname','marketid','sort').distinct():
         markets.append({
             'name':odds.get('marketname'),
             'marketid':odds.get('marketid'),
@@ -563,6 +563,19 @@ def getSpecialbetValue(matchid):
             'sort':switch.sort,
             'opened':False,
         })
+    # 填充 因为 odds被封了，而造成market消失的那些market
+    loaded_marketid = [x['marketid'] for x in markets]
+    for switch in TbMarkethcpswitch.objects.filter(matchid=matchid,type=3,status=1).extra(select={
+        'sort':'SELECT TB_Markets.Sort',
+        }, tables=['TB_Markets'],where=['TB_Markets.MarketID=TB_MarketHcpSwitch.MarketID']).values('marketname','marketid','sort').distinct():
+        if switch['marketid'] not in loaded_marketid:
+            markets.append({
+                'name':switch['marketname'],
+                'marketid':switch['marketid'],
+                'marketname':switch['marketname'],
+                'sort':switch['sort'],
+                'opened':True,
+            })
     
     #for market in TbMarkets.objects.filter(enabled=1):
         #markets.append({
