@@ -1567,7 +1567,7 @@ class TbPeriodscore(models.Model):
     periodnumber = models.IntegerField(db_column='PeriodNumber', blank=True, null=True,verbose_name='阶段')  # Field name made lowercase.
     home = models.IntegerField(db_column='Home', blank=True, null=True,verbose_name='主队')  # Field name made lowercase.
     away = models.IntegerField(db_column='Away', blank=True, null=True,verbose_name='客队')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True,verbose_name='创建时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True,verbose_name='创建时间',auto_now=True)  # Field name made lowercase.
     type = models.IntegerField(db_column='Type', blank=True, null=True,verbose_name='常规/加时',choices=PERIOD_TYP)  # Field name made lowercase.
     #periodtype = models.IntegerField(db_column='PeriodType', blank=True, null=True)  # Field name made lowercase.
 
