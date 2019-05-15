@@ -921,12 +921,16 @@ def out_com_save(rows,matchid):
                 raise UserWarning('全场部分不能少于上半场比分')
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
-        
+            
+            accumulate_home = home_100_1
+            accumulate_away = away_100_1
             if has_overtime:
                 home_40_1 = int( row.pop('home_40_1') )
                 away_40_1 = int( row.pop('away_40_1') )
-                home_110_1 = home_100_1 + home_40_1
-                away_110_1 = away_100_1 + away_40_1
+                accumulate_home += home_40_1
+                accumulate_away += away_40_1
+                home_110_1 = accumulate_home
+                away_110_1 = accumulate_away
                 
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home_40_1,away=away_40_1)) 
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=1,type=1,home=home_110_1,away=away_110_1) )
@@ -935,8 +939,8 @@ def out_com_save(rows,matchid):
             if has_penalty:
                 home_50_1 = int( row.pop('home_50_1') )
                 away_50_1 = int( row.pop('away_50_1') )
-                home_120_1 = home_110_1 + home_50_1
-                away_120_1 = away_110_1 + away_50_1
+                home_120_1 = accumulate_home + home_50_1
+                away_120_1 = accumulate_away + away_50_1
                 
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=50,scoretype=1,type=2,home=home_50_1,away=away_50_1 ) )
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=120,scoretype=1,type=2,home=home_120_1,away=away_120_1 ) )
