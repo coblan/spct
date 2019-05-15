@@ -862,7 +862,10 @@ def get_score_heads(ls):
 @director_view('get_match_outcome_info')
 def get_match_outcome_info(matchid):
    
-    row ={}
+    row ={
+        'has_half1':True,
+        'has_half2':True,
+    }
     for score in TbPeriodscore.objects.filter(matchid=matchid,statuscode__in=[6,7,13,14,15,16,40,50,100],scoretype__in=[1,5]):
         row['home_%s_%s'%(score.statuscode,score.scoretype)] = score.home
         row['away_%s_%s'%(score.statuscode,score.scoretype)] = score.away
@@ -879,11 +882,6 @@ def out_com_save(rows,matchid):
         'IsSettleByScore':False,
         'Special':[],
         'Unsubscribe':False,
-        #public long MatchID { get; set; }
-        #public DateTime SendTime { get; set; }
-        #public string Source { get; set; }
-        #public bool IsSettleByScore { get; set; }
-        #public List<SpecialEntity> Special { get; set; }
     }
 
     which_map= {
@@ -904,6 +902,8 @@ def out_com_save(rows,matchid):
             # 足球手动输入比分
             send_dc['IsSettleByScore']=True
             dc = {}
+            
+            has_half2 = row.pop('has_half2',False)
             has_overtime = row.pop('has_overtime',False)
             has_penalty = row.pop('has_penalty',False)
             TbPeriodscore.objects.filter(matchid=matchid,scoretype__in=[1,5]).delete()
@@ -945,17 +945,17 @@ def out_com_save(rows,matchid):
             home_6_5 = int( row.get('home_6_5') )
             away_6_5 = int( row.get('away_6_5') )
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=5,home=home_6_5,away=away_6_5 ,type=0) )
-            
-            home_100_5 = int( row.get('home_100_5') )
-            away_100_5 = int( row.get('away_100_5') )
-            
-            home_7_5 = home_100_5 - home_6_5
-            away_7_5 = away_100_5 - away_6_5
-            
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=5,home=home_7_5,away=away_7_5 ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=5,home=home_100_5,away=away_100_5 ,type=0) )
-            if home_7_5 <0 or away_7_5 <0:
-                raise UserWarning('全场部分不能少于上半场角球')
+            if has_half2:
+                home_100_5 = int( row.get('home_100_5') )
+                away_100_5 = int( row.get('away_100_5') )
+                
+                home_7_5 = home_100_5 - home_6_5
+                away_7_5 = away_100_5 - away_6_5
+                
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=5,home=home_7_5,away=away_7_5 ,type=0) )
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=5,home=home_100_5,away=away_100_5 ,type=0) )
+                if home_7_5 <0 or away_7_5 <0:
+                    raise UserWarning('全场部分不能少于上半场角球')
             
             if has_overtime:
                 home_40_5 = int( row.pop('home_40_5') )

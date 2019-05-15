@@ -238,7 +238,7 @@ class TicketMasterForm(ModelFields):
 
     def save_form(self):
         if 'status' in self.changed_data and self.cleaned_data['status'] == -1:
-            sql = r"exec [dbo].[SP_CancelTicket_V1] %(ticketid)s,%%s" % {
+            sql = r"exec [dbo].[SP_CancelTicket] %(ticketid)s,%%s" % {
                 'ticketid': self.instance.ticketid,
                 #'VoidReason':self.kw.get('memo')
             }
