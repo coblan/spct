@@ -838,7 +838,15 @@ class OutcomeTab(ModelTable):
     
     def get_operation(self):
         return [
-            {'name':'outcome','label':'结算','editor':'com-op-btn','action':'rt=cfg.confirm("确定发送手动结算信息?").then(()=>out_come_save(scope.ps.rows,scope.ps.vc.par_row.matchid))'},
+            {'name':'outcome','label':'结算','editor':'com-op-btn','action':'''rt=cfg.confirm("确定发送手动结算信息?")
+            .then(()=>{ return out_come_save(scope.ps.rows,scope.ps.vc.par_row.matchid)} )
+            .then(()=>{
+                return ex.director_call("d.get_row",
+                    {
+                        director_name:scope.ps.vc.par_row._director_name,filter_kws:{matchid:scope.ps.vc.par_row.matchid} 
+                    })
+                 })
+            .then((res)=>{ex.vueAssign(scope.ps.vc.par_row,res)}) ''' },
         ]
     
 def get_score_heads(ls):
@@ -1088,6 +1096,13 @@ def out_com_save(rows,matchid):
             
         match = TbMatch.objects.get(matchid=matchid)
         match.score = '%s:%s'%(home_score,away_score)
+        if home_score <away_score:
+            match.winner = 2
+        elif home_score > away_score:
+            match.winner = 1
+        else:
+            match.winner = 3
+            
         match.marketstatus=3
         match.statuscode = 100
         match.terminator ='manual'

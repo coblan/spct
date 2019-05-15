@@ -77,14 +77,18 @@ window.out_come_save=function(rows,matchid){
             maped_row.push(dc)
         }
     })
-    if(maped_row.length >0){
-        cfg.show_load()
-        ex.director_call('out_com_save',{rows:maped_row,matchid:matchid}).then(res=>{
-            cfg.hide_load(2000)
-        })
-    }else{
-        cfg.showError('请至少填写一条结算信息!')
-    }
+    return new Promise((resolve,reject)=>{
+        if(maped_row.length >0){
+            cfg.show_load()
+    
+            ex.director_call('out_com_save',{rows:maped_row,matchid:matchid}).then(res=>{
+                cfg.hide_load(2000)
+                resolve()
+            })
+        }else{
+            cfg.showError('请至少填写一条结算信息!')
+        }
+    })
 
 }
 
