@@ -912,18 +912,18 @@ def out_com_save(rows,matchid):
             home_6_1 = int( row.get('home_6_1') )
             away_6_1 = int( row.get('away_6_1') )
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home_6_1,away=away_6_1 ,type=0) )
-            
-            home_100_1 = int( row.get('home_100_1') )
-            away_100_1 = int( row.get('away_100_1') )
-            home_7_1 = home_100_1 - home_6_1
-            away_7_1 = away_100_1 - away_6_1
-            if home_7_1 < 0  or away_7_1 < 0:
-                raise UserWarning('全场部分不能少于上半场比分')
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
-            
-            accumulate_home = home_100_1
-            accumulate_away = away_100_1
+            if has_half2:
+                home_100_1 = int( row.get('home_100_1') )
+                away_100_1 = int( row.get('away_100_1') )
+                home_7_1 = home_100_1 - home_6_1
+                away_7_1 = away_100_1 - away_6_1
+                if home_7_1 < 0  or away_7_1 < 0:
+                    raise UserWarning('全场部分不能少于上半场比分')
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
+                
+                accumulate_home = home_100_1
+                accumulate_away = away_100_1
             if has_overtime:
                 home_40_1 = int( row.pop('home_40_1') )
                 away_40_1 = int( row.pop('away_40_1') )
