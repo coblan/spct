@@ -80,8 +80,8 @@ outcome_header = {
                 {'name':'home_50_1','label':'主队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty','fv_rule':'integer(+0)'},
                 {'name':'away_50_1','label':'客队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty','fv_rule':'integer(+0)'},
                 
-                {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number','required':True,'fv_rule':'主队上半场:','fv_rule':'integer(+0)'},
-                {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number','required':True,'fv_rule':'客队上半场:','fv_rule':'integer(+0)'},
+                {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)',},
+                {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)',},
                 {'name':'home_100_5','label':'主队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, home_6_5)'},
                 {'name':'away_100_5','label':'客队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, away_6_5)'},
                 {'name':'home_40_5','label':'主队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
