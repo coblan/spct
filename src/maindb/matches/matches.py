@@ -1082,8 +1082,9 @@ def out_com_save(rows,matchid):
         away_score =0
         for inst in batch_create:
             if inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
-                home_score += int(inst.home)
-                away_score += int(inst.away)
+                if inst.home >= 0 and inst.away >= 0:
+                    home_score += int(inst.home)
+                    away_score += int(inst.away)
             
         match = TbMatch.objects.get(matchid=matchid)
         match.score = '%s:%s'%(home_score,away_score)
