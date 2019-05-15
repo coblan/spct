@@ -947,7 +947,8 @@ def out_com_save(rows,matchid):
                 
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home_40_1,away=away_40_1)) 
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=1,type=1,home=home_110_1,away=away_110_1) )
-                
+            else:
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=-1,away=-1)) 
             
             if has_penalty:
                 home_50_1 = int( row.pop('home_50_1') )
@@ -981,7 +982,9 @@ def out_com_save(rows,matchid):
                 away_110_5 = away_100_5 + away_40_5
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=5,type=1,home=home_40_5,away=away_40_5) )
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=5,type=1,home=home_110_5,away=away_110_5) )
-        
+            else:
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=5,type=1,home=-1,away=-1) )
+                
         if row['pk'] in which_map:
             outcome_list = json.loads(row.get('content','[]') ) 
             for item in outcome_list:
