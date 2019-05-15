@@ -6,12 +6,12 @@ outcome_header = {
     'panel_map':{
         -3:{
             'heads':[
-                {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场'},
-                {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场'},
-                {'name':'home_100_1','label':'主队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, home_6_1)'},
-                {'name':'away_100_1','label':'客队全场得分','editor':'com-field-number','required':True,'fv_rule':'match(gte, away_6_1)'},
-                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
-                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
+                {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)'},
+                {'name':'home_100_1','label':'主队全场得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0);match(gte, home_6_1)'},
+                {'name':'away_100_1','label':'客队全场得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0);match(gte, away_6_1)'},
+                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                         
                 {'name':'has_overtime','label':'加时赛','editor':'com-field-bool'},
     
@@ -35,16 +35,16 @@ outcome_header = {
         },
         -2:{
             'heads':[
-                {'name':'home_13_1','label':'主队第一节得分','editor':'com-field-number','required':True},
-                {'name':'away_13_1','label':'客队第一节得分','editor':'com-field-number','required':True},
-                {'name':'home_14_1','label':'主队第二节得分','editor':'com-field-number','required':True},
-                {'name':'away_14_1','label':'客队第二节得分','editor':'com-field-number','required':True},
-                {'name':'home_15_1','label':'主队第三节得分','editor':'com-field-number','required':True},
-                {'name':'away_15_1','label':'客队第三节得分','editor':'com-field-number','required':True},
-                {'name':'home_16_1','label':'主队第四节得分','editor':'com-field-number','required':True},
-                {'name':'away_16_1','label':'客队第四节得分','editor':'com-field-number','required':True},
-                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
-                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                {'name':'home_13_1','label':'主队第一节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                {'name':'away_13_1','label':'客队第一节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                {'name':'home_14_1','label':'主队第二节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                {'name':'away_14_1','label':'客队第二节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                {'name':'home_15_1','label':'主队第三节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                {'name':'away_15_1','label':'客队第三节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                {'name':'home_16_1','label':'主队第四节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                {'name':'away_16_1','label':'客队第四节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                   
                 {'name':'has_overtime','label':'加时赛','editor':'com-field-bool'},
                
@@ -67,26 +67,25 @@ outcome_header = {
                 },
             'ops_loc':'down',
             'ops':pop_edit_ops,
-            'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
-            
+            'init_express':'if(ex.isEmpty(scope.row)){ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res)) }'
            },
         -1:{
             'heads': [ 
-                {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:'},
-                {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场:'},
-                {'name':'home_100_1','label':'主队全场得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'match(gte, home_6_1)'},
-                {'name':'away_100_1','label':'客队全场得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'match(gte, away_6_1)'},
-                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
-                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
-                {'name':'home_50_1','label':'主队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty'},
-                {'name':'away_50_1','label':'客队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty'},
+                {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
+                {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)'},
+                {'name':'home_100_1','label':'主队全场得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, home_6_1)'},
+                {'name':'away_100_1','label':'客队全场得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, away_6_1)'},
+                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                {'name':'home_50_1','label':'主队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty','fv_rule':'integer(+0)'},
+                {'name':'away_50_1','label':'客队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty','fv_rule':'integer(+0)'},
                 
-                {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number','required':True,'fv_rule':'主队上半场:'},
-                {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number','required':True,'fv_rule':'客队上半场:'},
-                {'name':'home_100_5','label':'主队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'match(gte, home_6_5)'},
-                {'name':'away_100_5','label':'客队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'match(gte, away_6_5)'},
-                {'name':'home_40_5','label':'主队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
-                {'name':'away_40_5','label':'客队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime'},
+                {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number','required':True,'fv_rule':'主队上半场:','fv_rule':'integer(+0)'},
+                {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number','required':True,'fv_rule':'客队上半场:','fv_rule':'integer(+0)'},
+                {'name':'home_100_5','label':'主队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, home_6_5)'},
+                {'name':'away_100_5','label':'客队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, away_6_5)'},
+                {'name':'home_40_5','label':'主队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                {'name':'away_40_5','label':'客队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                 
                 {'name':'has_half1','label':'上半场','editor':'com-field-bool','readonly':True},
                 {'name':'has_half2','label':'全场','editor':'com-field-bool'},
