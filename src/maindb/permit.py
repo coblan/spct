@@ -172,8 +172,11 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbLimitusergroup.edit',model_full_permit(TbLimitusergroup),model_to_name(TbLimitusergroup),'model'),
            ('risk.RiskcontrolSetting','','','single'),
            
-           #('TbBetfullrecord',model_read_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
-           #('TbBetfullrecord.edit',model_full_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
+           ('TbBetfullrecord',model_read_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
+           ('TbBetfullrecord.edit',model_full_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
+           # 会员 全标签  , 因为 TbBetfullrecord.edit 没有权限ui，所以只能在这里做一个集合来取它的值
+           ('TbAccount.all_tab',';'.join(['TbAccount.edit', 'TbBalancelog', 'TbLoginlog', 'TbBankcard', 'TbBankcard.edit', 'TbRecharge.edit',
+                                'TbWithdraw.edit','TbBetfullrecord.edit']),'','set'),
            ]
 
 add_permits(permits)
