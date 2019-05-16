@@ -1001,20 +1001,25 @@ def out_com_save(rows,matchid):
                 item['Specifiers'] = which_map[row['pk']]%{'org_sp':item['Specifiers']}
                 item['MarketId']= row['pk']
                 send_dc['Special'].append(item)
-        if row['pk'] in [103,106,109]:
+        elif row['pk'] in [103,106,109]:
             outcome_list = json.loads(row.get('content','[]') ) 
             for item in outcome_list:
                 item['Specifiers'] = 'goalnr='+item.pop('Specifiers_1')+item['Specifiers']
                 item['MarketId']= row['pk']
                 send_dc['Special'].append(item)
-        if row['pk'] in [104,107,110]:
+        elif row['pk'] in [104,107,110]:
             outcome_list = json.loads(row.get('content','[]') ) 
             for item in outcome_list:
                 item['Specifiers'] = 'total='+item.pop('Specifiers_1')+item['Specifiers']
                 item['MarketId']= row['pk']
                 item['Score'] = '%s:%s'%(item.pop('OutcomeId'),item.pop('OutcomeId_1') )
                 send_dc['Special'].append(item)
-                
+        else:
+            send_dc['Special'].append([
+                {'Specifiers':'','MarketId':row['pk'],'OutcomeId':row['OutcomeId']}
+            ])
+        
+        
         if row['pk'] == -2:
             # 普通篮球手动输入比分 （有四小节）
             send_dc['IsSettleByScore']=True

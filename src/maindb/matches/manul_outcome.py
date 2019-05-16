@@ -219,7 +219,7 @@ outcome_header = {
          },
          9:{
            'heads':[
-                 {'name':'content','label':'谁进最后一个球','editor':'com-field-select',  
+                 {'name':'OutcomeId','label':'谁进最后一个球','editor':'com-field-select',  
                   'options':[
                          {'value':6,'label':'主队'},
                          {'value':7,'label':'都不'},
