@@ -1015,9 +1015,9 @@ def out_com_save(rows,matchid):
                 item['Score'] = '%s:%s'%(item.pop('OutcomeId'),item.pop('OutcomeId_1') )
                 send_dc['Special'].append(item)
         else:
-            send_dc['Special'].append([
+            send_dc['Special'].append(
                 {'Specifiers':'','MarketId':row['pk'],'OutcomeId':row['OutcomeId']}
-            ])
+            )
         
         
         if row['pk'] == -2:
