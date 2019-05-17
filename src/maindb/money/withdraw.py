@@ -125,14 +125,14 @@ class WithdrawPage(TablePage):
                         'label': '昵称',
                     }
 
-            def clean_search(self):
-                if self.qf == 'orderid':
-                    if re.search('^\d*$', self.q):
-                        return self.q
-                if self.qf =='accountid__nickname':
-                    return self.qf
-                else:
-                    return super().clean_search()
+            #def clean_search(self):
+                #if self.qf == 'orderid':
+                    ##if re.search('^\d*$', self.q):
+                    #return self.q
+                #if self.qf =='accountid__nickname':
+                    #return self.qf
+                #else:
+                    #return super().clean_search()
 
         class filters(RowFilter):
             range_fields = ['createtime', 'confirmtime']

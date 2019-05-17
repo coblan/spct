@@ -107,14 +107,15 @@ class RechargePage(TablePage):
                         'label': '昵称',
                     }
 
-            def clean_search(self):
-                if self.qf in ['orderid']:
-                    if not re.search('^\d*$', self.q):
-                        return None
-                    else:
-                        return self.q
-                else:
-                    return super().clean_search()
+            #def clean_search(self):
+                #if self.qf in ['orderid']:
+                    #return self.q
+                    ##if not re.search('^\d*$', self.q):
+                        ##return None
+                    ##else:
+                        ##return self.q
+                #else:
+                    #return super().clean_search()
 
         class filters(RowFilter):
             range_fields = ['createtime', 'confirmtime']
