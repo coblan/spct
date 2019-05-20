@@ -3,12 +3,12 @@ import re
 from django.db import transaction
 from django.utils.timezone import datetime
 from django.db.models import Sum
-from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter, ModelFields
+from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter, ModelFields,director_view
 from helpers.director.table.row_search import SelectSearch
 from helpers.director.table.table import RowSort
-from ..models import TbWithdraw, TbBalancelog, TbMessageUnsend
+from ..models import TbWithdraw, TbBalancelog, TbMessageUnsend,TbTicketmaster
 from maindb.rabbitmq_instance import notifyWithdraw
-
+from maindb.matches.ticket_master import TicketMasterPage
 
 class WithdrawPage(TablePage):
     template = 'jb_admin/table.html'
@@ -60,12 +60,37 @@ class WithdrawPage(TablePage):
             # 交叉引用问题
             from maindb.member.account import account_tab
             ctx['named_ctx'] = account_tab(self)
+            ctx['named_ctx'].update({
+                'withdraw_tab':[
+                     {'name': 'ticketmaster',
+                      'label': '注单列表',
+                      'com': 'com-tab-table',
+                      'pre_set': '{accountid:scope.par_row.accountid}',
+                      'table_ctx': TicketmasterTab(crt_user=self.crt_user).get_head_context(),
+                      'visible': True,
+                      },
+                ]
+            })
             return ctx
 
         def get_operation(self):
             return [
                 {
                     'fun': 'selected_set_and_save',
+                    'action':'''(function(){
+                    if( !scope.ps.check_selected(scope.head) ){return};
+                    ex.director_call("has_audit_ticketmaster",{accountid:scope.ps.selected[0].accountid})
+                    .then((res)=>{
+                        if(!res){
+                            scope.self.$emit('operation',scope.self.head.name || scope.self.head.fun)
+                        }else{
+                            cfg.confirm("该用户有未处理的异常注单").then(()=>{
+                                scope.ps.switch_to_tab({ctx_name:"withdraw_tab",tab_name:"ticketmaster",par_row:scope.ps.selected[0]})
+                            })
+                           
+                        }
+                    })
+                    })()''',
                     'editor': 'com-op-btn',
                     'label': '审核异常单',
                     'field': 'status',
@@ -210,6 +235,29 @@ class WithDrawForm(ModelFields):
                 'memo': '提现退款'}
         return ex_log
 
+@director_view("has_audit_ticketmaster")
+def has_audit_ticketmaster(accountid):
+    audit_count = TbTicketmaster.objects.filter(accountid_id = accountid).exclude(audit = 0).count()
+    if audit_count >0:
+        return True
+    else:
+        return False
+
+@director_view('tab.ticketmaster')
+class TicketmasterTab(TicketMasterPage.tableCls):
+    
+    @classmethod
+    def clean_search_args(cls, search_args):
+        search_args = TicketMasterPage.tableCls.clean_search_args(search_args)
+        search_args['_need_audit']='1'
+        return search_args
+    
+    def inn_filter(self, query):
+        query = super().inn_filter(query)
+        if self.kw.get('accountid'):
+            return query.filter(accountid=self.kw.get('accountid'))
+        else:
+            return query
 
 director.update({
     'Withdraw': WithdrawPage.tableCls,

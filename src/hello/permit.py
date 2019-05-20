@@ -133,8 +133,8 @@ def get_permit():
                  {'label': '编辑', 'value': 'TbRecharge.edit', 'depend': ['TbRecharge', 'TbAccount'],}
                  ],}, 
              {'label': '提现记录', 'children': [
-                 {'label': '查看', 'value': 'TbWithdraw',}, 
-                 {'label': '编辑', 'value': 'TbWithdraw.edit', 'depend': ['TbWithdraw'],}
+                 {'label': '查看', 'value': 'TbWithdraw','depend':['TbTicketmaster.edit']}, 
+                 {'label': '编辑', 'value': 'TbWithdraw.edit', 'depend': ['TbWithdraw',],}
                           ],}
              #{'label': '账目记录', 'value': 'TbBalancelog', }, 
              #{'label': '金流渠道', 'value': 'TbChannel',}, 
