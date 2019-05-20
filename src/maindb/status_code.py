@@ -241,3 +241,8 @@ DATA_SOURCE=(
     (1,'Sportative'),
     (2,'Betrader')
 )
+
+AUDIT_OPTIONS=(
+    (0,'正常注单'),
+    (1,'异常注单')
+)

@@ -1846,6 +1846,9 @@ class TbTicketmaster(models.Model):
                             verbose_name='备注')  # Field name made lowercase.
     voidreason = models.CharField(db_column='VoidReason', max_length=200, blank=True, null=True,
                             verbose_name='作废原因')  # Field name made lowercase.
+    handicap = models.IntegerField(db_column='Handicap', blank=True, null=True)  # Field name made lowercase.
+    terminal = models.IntegerField(db_column='Terminal', blank=True, null=True)  # Field name made lowercase.
+    audit = models.IntegerField(db_column='Audit',verbose_name='待审核',choices=AUDIT_OPTIONS)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1962,27 +1965,27 @@ class TbTicketstake(models.Model):
         db_table = 'TB_TicketStake'
 
 
-class TbTickets(models.Model):
-    tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    # accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
-    account = models.CharField(db_column='Account', max_length=20)  # Field name made lowercase.
-    match = models.ForeignKey(TbMatch, db_constraint=False,
-                              db_column='MatchID')  # models.IntegerField(db_column='MatchID')  # Field name made lowercase.
-    oddstid = models.IntegerField(db_column='OddsTid')  # Field name made lowercase.
-    odds = CusDecimalField(db_column='Odds', max_digits=18, decimal_places=2)  # Field name made lowercase.
-    betamount = models.IntegerField(db_column='BetAmount')  # Field name made lowercase.
-    status = models.SmallIntegerField(db_column='Status')  # Field name made lowercase.
-    betoutcome = CusDecimalField(db_column='BetOutcome', max_digits=18, decimal_places=2)  # Field name made lowercase.
-    turnover = CusDecimalField(db_column='Turnover', max_digits=18, decimal_places=2)  # Field name made lowercase.
-    bonuspa = CusDecimalField(db_column='BonusPa', max_digits=18, decimal_places=2)  # Field name made lowercase.
-    bonus = CusDecimalField(db_column='Bonus', max_digits=18, decimal_places=2)  # Field name made lowercase.
-    rawdata = models.CharField(db_column='RawData', max_length=500, blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
-    settletime = models.DateTimeField(db_column='SettleTime', blank=True, null=True)  # Field name made lowercase.
+#class TbTickets(models.Model):
+    #tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    ## accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
+    #account = models.CharField(db_column='Account', max_length=20)  # Field name made lowercase.
+    #match = models.ForeignKey(TbMatch, db_constraint=False,
+                              #db_column='MatchID')  # models.IntegerField(db_column='MatchID')  # Field name made lowercase.
+    #oddstid = models.IntegerField(db_column='OddsTid')  # Field name made lowercase.
+    #odds = CusDecimalField(db_column='Odds', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    #betamount = models.IntegerField(db_column='BetAmount')  # Field name made lowercase.
+    #status = models.SmallIntegerField(db_column='Status')  # Field name made lowercase.
+    #betoutcome = CusDecimalField(db_column='BetOutcome', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    #turnover = CusDecimalField(db_column='Turnover', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    #bonuspa = CusDecimalField(db_column='BonusPa', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    #bonus = CusDecimalField(db_column='Bonus', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    #rawdata = models.CharField(db_column='RawData', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    #createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    #settletime = models.DateTimeField(db_column='SettleTime', blank=True, null=True)  # Field name made lowercase.
 
-    class Meta:
-        managed = False
-        db_table = 'TB_Tickets'
+    #class Meta:
+        #managed = False
+        #db_table = 'TB_Tickets'
 
 
 class TbTournament(models.Model):
