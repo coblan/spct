@@ -245,6 +245,9 @@ def has_audit_ticketmaster(accountid):
 
 @director_view('tab.ticketmaster')
 class TicketmasterTab(TicketMasterPage.tableCls):
+    @classmethod
+    def get_edit_director_name(cls):
+        return TicketMasterPage.tableCls.get_edit_director_name()
     
     @classmethod
     def clean_search_args(cls, search_args):
