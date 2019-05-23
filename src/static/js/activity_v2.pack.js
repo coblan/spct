@@ -467,6 +467,70 @@ var jb_js = {
     }
 };
 
+var search_args = ex.parseSearch();
+if (search_args.client == 'web') {
+    if (search_args.baseurl) {
+        var baseurl = atob(search_args.baseurl);
+    } else {
+        alert('必输传入 baseurl');
+    }
+
+    jb_js = {
+        get: function get(url, callback) {
+            //alert("进入web GET请求方式")
+            //var  baseurl =   'http://appplus.rrystv.com'
+            $.ajax({
+                url: baseurl + url,
+                headers: {
+                    Authorization: 'Bearer ' + search_args.token,
+                    'x-api-version': '2.0',
+                    'x-device': search_args.xdevice ? atob(search_args.xdevice) : ''
+
+                },
+                type: "GET",
+                success: function success(data) {
+                    //alert(JSON.stringify(data))
+                    callback(data);
+                }
+                //'Content-Type':'application/josn;charset=UTF-8'
+            }).fail(function (jqXHR, textStatus) {
+                cfg.hide_load();
+                if (jqXHR.status == 401) {
+                    cfg.showError('请先登录！');
+                } else {
+                    cfg.showError(textStatus);
+                }
+            });
+        },
+        post: function post(url, data, callback) {
+            //alert("进入web POST请求方式")
+            //var baseurl = 'http://appplus.rrystv.com'
+            $.ajax({
+                url: baseurl + url,
+                data: JSON.stringify(data),
+                headers: {
+                    Authorization: 'Bearer ' + search_args.token,
+                    'x-api-version': '2.0',
+                    'x-device': search_args.xdevice ? atob(search_args.xdevice) : '',
+                    'Content-Type': 'application/json'
+                },
+                type: "post",
+                success: function success(data) {
+                    //alert(JSON.stringify(data))
+                    callback(data);
+                }
+            }).fail(function (jqXHR, textStatus) {
+                cfg.hide_load();
+                if (jqXHR.status == 401) {
+                    cfg.showError('请先登录！');
+                } else {
+                    cfg.showError(textStatus);
+                }
+            });
+        }
+    };
+}
+
 window.jb_js = jb_js;
 
 function _uuid() {

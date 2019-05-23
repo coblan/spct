@@ -93,6 +93,13 @@ if(search_args.client =='web'){
                     callback(data)
                 }
                 //'Content-Type':'application/josn;charset=UTF-8'
+            }).fail(function(jqXHR, textStatus){
+                cfg.hide_load()
+                if(jqXHR.status == 401){
+                    cfg.showError('请先登录！')
+                }else{
+                    cfg.showError(textStatus)
+                }
             });
         },
         post:function(url,data,callback){
@@ -111,6 +118,13 @@ if(search_args.client =='web'){
                 success: function (data) {
                     //alert(JSON.stringify(data))
                     callback(data)
+                }
+            }).fail(function(jqXHR, textStatus){
+                cfg.hide_load()
+                if(jqXHR.status == 401){
+                    cfg.showError('请先登录！')
+                }else{
+                    cfg.showError(textStatus)
                 }
             });
         },
