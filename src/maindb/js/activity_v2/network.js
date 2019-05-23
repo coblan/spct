@@ -67,6 +67,64 @@ var jb_js={
     }
 }
 
+var search_args = ex.parseSearch()
+if(search_args.client =='web'){
+    if (search_args.baseurl){
+        var baseurl = atob( search_args.baseurl )
+    }else{
+        alert('必输传入 baseurl')
+    }
+
+    jb_js={
+        get:function(url,callback){
+            //alert("进入web GET请求方式")
+            //var  baseurl =   'http://appplus.rrystv.com'
+            $.ajax({
+                url:baseurl+ url,
+                headers: {
+                    Authorization:'Bearer '+search_args.token,
+                    'x-api-version':'2.0',
+                    'x-device': search_args.xdevice ? atob( search_args.xdevice ) : '' ,
+
+                },
+                type: "GET",
+                success: function (data) {
+                    //alert(JSON.stringify(data))
+                    callback(data)
+                }
+                //'Content-Type':'application/josn;charset=UTF-8'
+            });
+        },
+        post:function(url,data,callback){
+            //alert("进入web POST请求方式")
+            //var baseurl = 'http://appplus.rrystv.com'
+            $.ajax({
+                url:baseurl + url,
+                data: JSON.stringify(data) ,
+                headers: {
+                    Authorization:'Bearer '+search_args.token,
+                    'x-api-version':'2.0',
+                    'x-device': search_args.xdevice ? atob( search_args.xdevice ) : '' ,
+                    'Content-Type':'application/json'
+                },
+                type: "post",
+                success: function (data) {
+                    //alert(JSON.stringify(data))
+                    callback(data)
+                }
+            });
+        },
+    }
+}
+
+
+
+
+
+
+
+
+
 window.jb_js=jb_js
 
 

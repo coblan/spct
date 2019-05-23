@@ -77,7 +77,7 @@
                 var mt = /(.*?)[^\/]+$/.exec(path)
                 var org_url = mt[1]+url
                 if(search_args.client == 'web'){
-                    location = org_url
+                    location = ex.appendSearch(org_url,search_args)
                 }else{
                     location='chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
                 }

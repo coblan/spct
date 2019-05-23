@@ -94,6 +94,8 @@ class ActivityIndex(View):
 
 class Activity(View):
     def get(self, request, pk = None): 
+        if pk.endswith('.html'):
+            pk = pk[:-5]
         if pk.startswith('index'):
             if pk =='index':
                 query = TbActivityV2.objects.filter(enabled=True,displaytype=0).order_by('sort')
@@ -104,7 +106,7 @@ class Activity(View):
             rows=[]
             for row in query:
                 dc= sim_dict(row)
-                dc['url'] = '%s.html?%s'%(row.pk,time.time())
+                dc['url'] = '%s.html?t=%s'%(row.pk,time.time())
                 rows.append(dc)
             ctx = {
                 'rows':rows,
