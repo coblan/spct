@@ -79,6 +79,10 @@ class MarketGroupPage(TablePage):
             names=['groupname','groupnamezh']
         class filters(RowFilter):
             names=['sportid']
+            def dict_head(self, head):
+                head['editor']='com-filter-select'
+                head['options'] = [{'value':x.sportid,'label':x.sportnamezh} for x in TbSporttypes.objects.filter(enabled=True)]
+                return head
 
 class MarketGroupForm(ModelFields):
     class Meta:
