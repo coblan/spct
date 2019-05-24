@@ -1,6 +1,6 @@
 from helpers.director.shortcut import page_dc,ModelTable,ModelFields,TablePage,director,RowSearch,\
      director_view,RowFilter
-from ..models import TbMarketgroup,TbMarketgroupwithmarket,TbMarkets
+from ..models import TbMarketgroup,TbMarketgroupwithmarket,TbMarkets,TbSporttypes
 from django.db.models import Q
 
 class MarketGroupPage(TablePage):
@@ -64,6 +64,9 @@ class MarketGroupPage(TablePage):
                 head['editor']='com-table-switch-to-tab'
                 head['ctx_name']='marketgroup-tabs'
                 head['tab_name']='marketgroup'
+            if head['name']=='sportid':
+                head['editor']='com-table-mapper'
+                head['options'] = [{'value':x.sportid,'label':x.sportnamezh} for x in TbSporttypes.objects.filter(enabled=True)]
             return head
         
         def get_operation(self):
@@ -102,6 +105,9 @@ class MarketGroupForm(ModelFields):
     def dict_head(self, head):
         if head['name']=='groupid':
             head['readonly']='Boolean(scope.row.pk)'
+        if head['name']=='sportid':
+            head['editor']='com-field-select'
+            head['options'] = [{'value':x.sportid,'label':x.sportnamezh} for x in TbSporttypes.objects.filter(enabled=True)]
         return head
     
     #def clean_save(self):
