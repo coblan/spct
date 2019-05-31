@@ -5,7 +5,7 @@ from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelField
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import has_permit,can_touch,can_write
 from ..models import  TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,\
-     TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch,TbLivefeed
+     TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch,TbLivefeed,TbSporttypes
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
 from maindb.mongoInstance import updateMatchMongo
@@ -105,7 +105,7 @@ class MatchsPage(TablePage):
         sportid=1
         model = TbMatch
         exclude = []  # 'ishidden', 'iscloseliveodds'
-        fields_sort = ['matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score',
+        fields_sort = ['sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous']
 
         def getExtraHead(self):
@@ -120,17 +120,19 @@ class MatchsPage(TablePage):
             return search_args
                 
         def inn_filter(self, query):
-            return query.filter(sportid=self.sportid).extra(select={
-                '_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh'},
-                where=['TB_Tournament.TournamentID=TB_Match.TournamentID AND TB_Tournament.SportID=%s'%self.sportid],
-                tables =['TB_Tournament']
+            return query.extra(select={
+                '_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
+                '_sportid_label':'SELECT TB_SportTypes.SportNameZH'},
+                where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID'],
+                tables =['TB_Tournament','TB_SportTypes']
             )
         
 
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['isrecommend', 'marketstatus','statuscode','hasliveodds','tournamentid']
-            fields_sort=['isrecommend', 'marketstatus', 'statuscode','hasliveodds','tournamentid','matchdate']
+            names = ['sportid','isrecommend', 'marketstatus','statuscode','hasliveodds','tournamentid']
+            fields_sort=['sportid','isrecommend', 'marketstatus', 'statuscode','hasliveodds','tournamentid','matchdate']
+            
             def getExtraHead(self):
                 return [
                     {'name':'specialcategoryid','editor':'com-filter-select','label':'类型',
@@ -159,15 +161,18 @@ class MatchsPage(TablePage):
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
                     head['options']=[
-                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(sportid=1)
+                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.all()
                     ]
-    
+                if head['name'] == 'sportid':
+                    head['options'] =[
+                        {'value':x.sportid,'label':x.sportnamezh } for x in TbSporttypes.objects.filter(enabled = True)
+                    ]
                 return head
 
         class search(SelectSearch):
             names = ['team1zh']
             exact_names = ['matchid']
-
+            field_sort=['matchid','team1zh']
             def get_option(self, name):
                 if name == 'team1zh':
                     return {'value': 'team1zh', 'label': '球队名称', }
@@ -258,9 +263,9 @@ class MatchsPage(TablePage):
                 head['ctx_name']='match_tabs'
                 head['tab_name']='match_base_info'            
             
-            if head['name']=='tournamentid':
+            if head['name'] in ['tournamentid','sportid']:
                 head['editor']='com-table-label-shower'
-                
+            
             if head['name'] == 'isdangerous':
                     head['editor'] ='com-table-map-html'
                     head['map_express']="scope.row[scope.head.name]==1?scope.head.danger_img:''"
@@ -284,7 +289,8 @@ class MatchsPage(TablePage):
                 '_matchid_label': '%(home)s VS %(away)s' % {'home': inst.team1zh, 'away': inst.team2zh},
                 '_matchdate_label': str(inst.matchdate)[: -3],
                 'isshow': not bool(inst.ishidden),
-                '_tournamentid_label':inst._tournamentid_label
+                '_tournamentid_label':inst._tournamentid_label,
+                '_sportid_label':inst._sportid_label
             }
  
 #@director_view('get_football_league_options')
@@ -794,6 +800,11 @@ class OutcomeTab(ModelTable):
     selectable=False
     include =['marketid','marketname','marketnamezh']
     
+    def __init__(self,*args,**kw):
+        super().__init__(*args,**kw)
+        if self.kw.get('matchid'):
+            self.match = TbMatch.objects.get(matchid = self.kw.get('matchid'))
+    
     def getExtraHead(self):
         return [
             {'name':'outcome','label':'结果','editor':'com-table-json','width':250},
@@ -809,9 +820,26 @@ class OutcomeTab(ModelTable):
         ]
     
     def get_rows(self):
-        bf = [
-            {'marketid':'','pk':-1,'marketname':'score','marketnamezh':'比分型'}
-        ]
+        bf =[]
+        
+        if self.match.sportid ==1:
+            bf = [
+                {'marketid':'','pk':-1,'marketname':'score','marketnamezh':'比分型'}
+            ]
+        elif self.match.sportid == 2:
+            if self.match.tournamentid == 698:
+                bf = [
+                        {'marketid':'','pk':-3,'marketname':'score','marketnamezh':'比分型'}
+                    ]
+            else:
+                bf = [
+                        {'marketid':'','pk':-2,'marketname':'score','marketnamezh':'比分型'}
+                    ]
+        elif self.match.sportid == 109:
+            bf =[
+                {'marketid':'','pk':-109,'marketname':'score','marketnamezh':'比分型'}
+            ]
+        
         rows = super().get_rows()
         return bf+rows
     
@@ -833,8 +861,11 @@ class OutcomeTab(ModelTable):
 
     
     def inn_filter(self, query):
-        # 291 是篮球的
-        return query.filter(enabled=True,marketid__in = [8,9,100,101,102,103,104,105,106,107,108,109,110,163,174,])
+        if self.match.sportid ==1:
+            return query.filter(enabled=True,marketid__in = [8,9,100,101,102,103,104,105,106,107,108,109,110,163,174,])
+        elif self.match.sportid ==2:
+            # 291 是篮球的
+            return query.filter(enabled=True,marketid__in = [291])
     
     def get_operation(self):
         return [

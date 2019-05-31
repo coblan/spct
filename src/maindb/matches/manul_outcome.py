@@ -114,6 +114,55 @@ outcome_header = {
             'ops':pop_edit_ops,
             'init_express':'if(!scope.row.has_half1){ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))}'
             },
+            -109:{
+            'heads': [ 
+                {'name':'home_141','label':'主队第一局得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
+                {'name':'away_141','label':'客队第一局得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)'},
+                {'name':'home_14140','label':'第一局得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
+                {'name':'home_142','label':'主队第二局得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, home_6_1)'},
+                {'name':'away_142','label':'客队第二局得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, away_6_1)'},
+                
+                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                {'name':'home_50_1','label':'主队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty','fv_rule':'integer(+0)'},
+                {'name':'away_50_1','label':'客队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty','fv_rule':'integer(+0)'},
+                
+                {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)',},
+                {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)',},
+                {'name':'home_100_5','label':'主队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, home_6_5)'},
+                {'name':'away_100_5','label':'客队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, away_6_5)'},
+                {'name':'home_40_5','label':'主队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                {'name':'away_40_5','label':'客队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                
+                {'name':'has_half1','label':'上半场','editor':'com-field-bool','readonly':True},
+                {'name':'has_half2','label':'全场','editor':'com-field-bool'},
+                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_half2)','fv_msg':'必须选择全场!'},
+                {'name':'has_penalty','label':'点球大战','editor':'com-field-bool','fv_rule':'depend_check(has_half2)','fv_msg':'必须选择全场!'}
+                #{'name':'has_penalty','label':'点球大战','editor':'com-field-bool','fv_rule':'depend_check(has_overtime)','fv_msg':'必须选择加时赛!'},
+                ],
+            'editor':'com-form-one', #'com-outcome-score',
+            'layout':{
+                'table_grid':[['has_half1','has_half2','has_overtime','has_penalty'],
+                              ['home_6_1','away_6_1'],
+                              ['home_100_1','away_100_1'],
+                              ['home_40_1','away_40_1'],
+                              ['home_50_1','away_50_1'],
+                              ['home_6_5','away_6_5'],
+                              ['home_100_5','away_100_5'],
+                              ['home_40_5','away_40_5'],
+                              ],
+                'fields_group':[
+                    {'name':'huji','label':'基本控制','head_names':['has_half1','has_half2','has_overtime','has_penalty']},
+                    {'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_100_1','away_100_1','home_40_1','away_40_1','home_50_1','away_50_1']},
+                    {'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_100_5','away_100_5','home_40_5','away_40_5']},
+                ]
+                },
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+            'init_express':'if(!scope.row.has_half1){ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))}'
+            },
+         
+         
          291:{
             'heads':[
                  {'name':'content','label':'谁先得X分','editor':'com-field-table-list','fv_rule':'key_unique(Specifiers)','fv_msg':'分数不能重复',
