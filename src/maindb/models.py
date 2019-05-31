@@ -1582,7 +1582,7 @@ class TbQa(models.Model):
                                    blank=True)  # Field name made lowercase. Field renamed because it was a Python reserved word.
     mtype = models.IntegerField(db_column='MType', default=0,
                                 verbose_name=_('Belong To'))  # 从属于Field name made lowercase.
-    type = models.IntegerField(db_column='Type')  # Field name made lowercase.
+    type = models.IntegerField(db_column='Type',default=0)  # Field name made lowercase.
     priority = models.SmallIntegerField(db_column='Priority', default=0, verbose_name='优先级',help_text='大的数字优先级高')  # Field name made lowercase.
     title = models.CharField(db_column='Title', max_length=100, verbose_name='标题')  # Field name made lowercase.
     description = models.TextField(db_column='Description',verbose_name='详细')  # Field name made lowercase.
