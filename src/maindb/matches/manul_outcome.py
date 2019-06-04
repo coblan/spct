@@ -2,6 +2,108 @@ pop_edit_ops=[
              {'name':'save','label':'确定','editor':'com-op-btn','action':'rt=scope.ps.vc.isValid()?scope.ps.vc.$emit("finish",scope.ps.vc.row):""'}
         ]
 
+
+def head_109():
+    def _fun(num):
+        ls =[
+        {'name':'home_14%s_1'%num,'label':'主队第%s局得分'%num,'editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
+        {'name':'away_14%s_1'%num,'label':'客队第%s局得分'%num,'editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)'},
+        {'name':'has_overtime_14%s'%num,'label':'是否有加时','editor':'com-field-bool'},
+        {'name':'home_14%s40_1'%num,'label':'主队第%s局加时得分'%num,'editor':'com-field-number','required':True,'fv_rule':'加时比分:integer(+0)','show':'scope.row.has_overtime_14%s'%num},
+        {'name':'away_14%s40_1'%num,'label':'客队第%s局加时得分'%num,'editor':'com-field-number','required':True,'fv_rule':'加时比分:integer(+0)','show':'scope.row.has_overtime_14%s'%num},
+        ]  
+        return ls
+    out_ls =[]
+    for i in range(1,8):
+        out_ls += _fun(i)
+    return out_ls
+
+def fields_group_109():
+    def _fun(num):
+        ls =[
+            {'name':'huji','show':'scope.row.round_count>=%s'%num,'label':'第%s局'%num,'heads':['home_14%s_1'%num,'away_14%s_1'%num,'home_14%s40_1'%num,'away_14%s40_1'%num,'has_overtime_14%s'%num]},
+        ]
+        return ls
+    
+    out_ls =[]
+    for i in range(1,8):
+        out_ls += _fun(i)
+    return out_ls
+        
+
+def head_lol_score():
+    return { # 英雄联盟
+            'heads': [
+                {'name':'round_count','label':'局总数','editor':'com-field-select','required':True,'options':[
+                    {'value':1,'label':'一局'},
+                    {'value':2,'label':'两局'},
+                    {'value':3,'label':'三局'},
+                    {'value':4,'label':'四局'},
+                    {'value':5,'label':'五局'},
+                    ]},
+                {'name':'home_141_1','label':'第一局胜者','editor':'com-field-select','required':True,'show':'scope.row.round_count >= 1','options':[
+                    {'value':1,'label':'主队'},
+                    {'value':0,'label':'客队'}
+                    ]},
+                {'name':'home_142_1','label':'第二局胜者','editor':'com-field-select','required':True,'show':'scope.row.round_count >= 2','options':[
+                    {'value':1,'label':'主队'},
+                    {'value':0,'label':'客队'}
+                    ]},
+                {'name':'home_143_1','label':'第三局胜者','editor':'com-field-select','required':True,'show':'scope.row.round_count >= 3','options':[
+                    {'value':1,'label':'主队'},
+                    {'value':0,'label':'客队'}
+                    ]},
+                {'name':'home_144_1','label':'第四局胜者','editor':'com-field-select','required':True,'show':'scope.row.round_count >= 4','options':[
+                    {'value':1,'label':'主队'},
+                    {'value':0,'label':'客队'}
+                    ]},
+                {'name':'home_145_1','label':'第五局胜者','editor':'com-field-select','required':True,'show':'scope.row.round_count >= 5','options':[
+                    {'value':1,'label':'主队'},
+                    {'value':0,'label':'客队'}
+                    ]},
+               
+                ],
+            'editor':'com-form-one', #'com-outcome-score',
+
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+            'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
+            }
+    
+
+def head_all_333(label1,label2,round_number):
+    dc = {
+            'heads':[
+                 {'name':'content','label':label1+label2,'editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)','fv_msg':'%s+%s 不能重复'%(label1,label2),
+                  'table_heads':[
+                    {'name':'Specifiers_1','label':label1,'editor':'com-table-pop-fields-local'},
+                    {'name':'Specifiers','label':label2,'editor':'com-table-span', 'width': 80, },
+                    {'name':'OutcomeId','label':'主/客队','editor':'com-table-mapper', 'width': 80,
+                      'options':[
+                         {'value':4,'label':'主队'},
+                         {'value':5,'label':'客队'}
+                         ], 
+                     }, 
+                    
+                      ],
+                 'fields_heads':[
+                     {'name':'Specifiers_1','label':label1,'editor':'com-field-number','required':True,'fv_rule':'integer(+);range(1~%s)'%round_number},
+                     {'name':'Specifiers','label':label2,'editor':'com-field-number','required':True,'fv_rule':'integer(+)'}, 
+                    {'name':'OutcomeId','label':'主队','editor':'com-field-select', 'required':True,
+                     'options':[
+                         {'value':4,'label':'主队'},
+                         {'value':5,'label':'客队'}
+                         ]}, 
+                 ]}
+            ],
+            
+            'editor':'com-form-one',
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+         }
+    return dc
+
+
 outcome_header = {
     'panel_map':{
         -3:{
@@ -17,18 +119,18 @@ outcome_header = {
     
             ],
             'editor':'com-form-one', 
-            'layout':{
-                'table_grid':[['has_overtime'],
-                              ['home_6_1','away_6_1'],
-                              ['home_100_1','away_100_1'],
-                              ['home_40_1','away_40_1'],
-                              ],
-                #'fields_group':[
-                    #{'name':'huji','label':'基本控制','head_names':['has_overtime','has_penalty']},
-                    #{'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
-                    #{'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
-                #]
-                },
+            
+            'table_grid':[['has_overtime'],
+                          ['home_6_1','away_6_1'],
+                          ['home_100_1','away_100_1'],
+                          ['home_40_1','away_40_1'],
+                          ],
+            #'fields_group':[
+                #{'name':'huji','label':'基本控制','heads':['has_overtime','has_penalty']},
+                #{'name':'huji','label':'比分','heads':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
+                #{'name':'huji','label':'角球','heads':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
+            #],
+            
             'ops_loc':'down',
             'ops':pop_edit_ops,
             'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
@@ -51,25 +153,23 @@ outcome_header = {
                 
             ],
             'editor':'com-form-one', 
-            'layout':{
-                'table_grid':[['has_overtime'],
-                              ['home_13_1','away_13_1'],
-                              ['home_14_1','away_14_1'],
-                              ['home_15_1','away_15_1'],
-                              ['home_16_1','away_16_1'],
-                              ['home_40_1','away_40_1'],
-                              ],
-                #'fields_group':[
-                    #{'name':'huji','label':'基本控制','head_names':['has_overtime','has_penalty']},
-                    #{'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
-                    #{'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
-                #]
-                },
+            'table_grid':[['has_overtime'],
+                          ['home_13_1','away_13_1'],
+                          ['home_14_1','away_14_1'],
+                          ['home_15_1','away_15_1'],
+                          ['home_16_1','away_16_1'],
+                          ['home_40_1','away_40_1'],
+                          ],
+            #'fields_group':[
+                #{'name':'huji','label':'基本控制','heads':['has_overtime','has_penalty']},
+                #{'name':'huji','label':'比分','heads':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
+                #{'name':'huji','label':'角球','heads':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
+            #],
             'ops_loc':'down',
             'ops':pop_edit_ops,
             'init_express':'if(ex.isEmpty(scope.row)){ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res)) }'
            },
-        -1:{
+        -1:{ # 足球分数
             'heads': [ 
                 {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
                 {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)'},
@@ -94,74 +194,53 @@ outcome_header = {
                 #{'name':'has_penalty','label':'点球大战','editor':'com-field-bool','fv_rule':'depend_check(has_overtime)','fv_msg':'必须选择加时赛!'},
                 ],
             'editor':'com-form-one', #'com-outcome-score',
-            'layout':{
-                'table_grid':[['has_half1','has_half2','has_overtime','has_penalty'],
-                              ['home_6_1','away_6_1'],
-                              ['home_100_1','away_100_1'],
-                              ['home_40_1','away_40_1'],
-                              ['home_50_1','away_50_1'],
-                              ['home_6_5','away_6_5'],
-                              ['home_100_5','away_100_5'],
-                              ['home_40_5','away_40_5'],
-                              ],
-                'fields_group':[
-                    {'name':'huji','label':'基本控制','head_names':['has_half1','has_half2','has_overtime','has_penalty']},
-                    {'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_100_1','away_100_1','home_40_1','away_40_1','home_50_1','away_50_1']},
-                    {'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_100_5','away_100_5','home_40_5','away_40_5']},
-                ]
-                },
+     
+            'table_grid':[['has_half1','has_half2','has_overtime','has_penalty'],
+                          ['home_6_1','away_6_1'],
+                          ['home_100_1','away_100_1'],
+                          ['home_40_1','away_40_1'],
+                          ['home_50_1','away_50_1'],
+                          ['home_6_5','away_6_5'],
+                          ['home_100_5','away_100_5'],
+                          ['home_40_5','away_40_5'],
+                          ],
+            'fields_group':[
+                {'name':'huji','label':'基本控制','heads':['has_half1','has_half2','has_overtime','has_penalty']},
+            ] + fields_group_109(),
+              
             'ops_loc':'down',
             'ops':pop_edit_ops,
             'init_express':'if(!scope.row.has_half1){ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))}'
             },
-            -109:{
+            -109:{ # 反恐精英 分数
             'heads': [ 
-                {'name':'home_141','label':'主队第一局得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
-                {'name':'away_141','label':'客队第一局得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)'},
-                {'name':'home_14140','label':'第一局得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
-                {'name':'home_142','label':'主队第二局得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, home_6_1)'},
-                {'name':'away_142','label':'客队第二局得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, away_6_1)'},
-                
-                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
-                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
-                {'name':'home_50_1','label':'主队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty','fv_rule':'integer(+0)'},
-                {'name':'away_50_1','label':'客队点球大战得分','editor':'com-field-number','required':True,'show':'scope.row.has_penalty','fv_rule':'integer(+0)'},
-                
-                {'name':'home_6_5','label':'主队上半场角球','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)',},
-                {'name':'away_6_5','label':'客队上半场角球','editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)',},
-                {'name':'home_100_5','label':'主队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, home_6_5)'},
-                {'name':'away_100_5','label':'客队全场角球','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, away_6_5)'},
-                {'name':'home_40_5','label':'主队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
-                {'name':'away_40_5','label':'客队加时赛角球','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
-                
-                {'name':'has_half1','label':'上半场','editor':'com-field-bool','readonly':True},
-                {'name':'has_half2','label':'全场','editor':'com-field-bool'},
-                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_half2)','fv_msg':'必须选择全场!'},
-                {'name':'has_penalty','label':'点球大战','editor':'com-field-bool','fv_rule':'depend_check(has_half2)','fv_msg':'必须选择全场!'}
-                #{'name':'has_penalty','label':'点球大战','editor':'com-field-bool','fv_rule':'depend_check(has_overtime)','fv_msg':'必须选择加时赛!'},
-                ],
+                {'name':'round_count','label':'局总数','editor':'com-field-select','required':True,'options':[
+                    {'value':1,'label':'一局'},
+                    {'value':2,'label':'两局'},
+                    {'value':3,'label':'三局'},
+                    {'value':4,'label':'四局'},
+                    {'value':5,'label':'五局'},
+                    {'value':6,'label':'六局'},
+                    {'value':7,'label':'七局'},
+                    ]},
+                ] + head_109(),
             'editor':'com-form-one', #'com-outcome-score',
-            'layout':{
-                'table_grid':[['has_half1','has_half2','has_overtime','has_penalty'],
-                              ['home_6_1','away_6_1'],
-                              ['home_100_1','away_100_1'],
-                              ['home_40_1','away_40_1'],
-                              ['home_50_1','away_50_1'],
-                              ['home_6_5','away_6_5'],
-                              ['home_100_5','away_100_5'],
-                              ['home_40_5','away_40_5'],
-                              ],
-                'fields_group':[
-                    {'name':'huji','label':'基本控制','head_names':['has_half1','has_half2','has_overtime','has_penalty']},
-                    {'name':'huji','label':'比分','head_names':['home_6_1','away_6_1','home_100_1','away_100_1','home_40_1','away_40_1','home_50_1','away_50_1']},
-                    {'name':'huji','label':'角球','head_names':['home_6_5','away_6_5','home_100_5','away_100_5','home_40_5','away_40_5']},
-                ]
-                },
+            
+            'table_grid':[['round_count'],
+                          ['has_overtime_14%s'%num for num in range(1,8)],
+                          ['home_14%s_1'%num for num in range(1,8)]+['away_14%s_1'%num for num in range(1,8)]   ,
+                          ['home_14%s40_1'%num for num in range(1,8)] + ['away_14%s40_1'%num for num in range(1,8)],
+                          ],
+            'fields_group':[
+                {'name':'basice','label':'基本控制','heads':['round_count']},
+            ] + fields_group_109(),
+            
             'ops_loc':'down',
             'ops':pop_edit_ops,
-            'init_express':'if(!scope.row.has_half1){ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))}'
+            'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
             },
-         
+         -110:head_lol_score(),
+         -111:head_lol_score(),
          
          291:{
             'heads':[
@@ -817,7 +896,50 @@ outcome_header = {
             'editor':'com-form-one',
             'ops_loc':'down',
             'ops':pop_edit_ops,
-         }
+         },
+         333:{
+            'heads':[
+                 {'name':'content','label':'第X局Y杀','editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)','fv_msg':'第X局+第Y杀 不能重复',
+                  'table_heads':[
+                    {'name':'Specifiers_1','label':'第X局','editor':'com-table-pop-fields-local'},
+                    {'name':'Specifiers','label':'第Y杀','editor':'com-table-span', 'width': 80, },
+                    {'name':'OutcomeId','label':'主/客队','editor':'com-table-mapper', 'width': 80,
+                      'options':[
+                         {'value':4,'label':'主队'},
+                         {'value':5,'label':'客队'}
+                         ], 
+                     }, 
+                    
+                      ],
+                 'fields_heads':[
+                     {'name':'Specifiers_1','label':'第X局','editor':'com-field-number','required':True,'fv_rule':'integer(+);range(1~7)'},
+                     {'name':'Specifiers','label':'第Y杀','editor':'com-field-number','required':True,'fv_rule':'integer(+);range(1~7)'}, 
+                    {'name':'OutcomeId','label':'主队','editor':'com-field-select', 'required':True,
+                     'options':[
+                         {'value':4,'label':'主队'},
+                         {'value':5,'label':'客队'}
+                         ]}, 
+                 ]}
+            ],
+            
+            'editor':'com-form-one',
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+         },  
+         396:head_all_333('第几局', '第几保护', 5),
+         397:head_all_333('第几局', '第几个塔', 5), 
+         398:head_all_333('第几局', '第几个兵营', 5),
+         556:head_all_333('第几局', '第几个小龙', 5), 
+         557:head_all_333('第几局', '第几个男爵',5),
+         558:head_all_333('第几局', '第几个水晶',5)
  
     }
 }
+
+
+
+
+
+        
+        
+     

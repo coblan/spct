@@ -29,6 +29,65 @@ import logging
 op_log = logging.getLogger('operation_log')
 
 
+def get_match_tab(crt_user):
+    match_form = MatchForm(crt_user=crt_user)
+    match_tabs=[
+        {'name':'match_base_info',
+         'label':'基本信息',
+         'com':'com-tab-fields',
+         'get_data': {
+             'fun': 'get_row',
+             'kws': {
+                 'director_name': match_form.get_director_name(),
+                 'relat_field': 'matchid',
+             }
+         },
+         'after_save': {
+             'fun': 'update_or_insert'
+         },
+         'heads': match_form.get_heads(),
+         'ops': match_form.get_operations()             
+        },
+        {
+            'name':'peroidscore',
+            'label':'比分',
+            'com':'com-tab-table',
+            'pre_set':'rt={matchid:scope.par_row.matchid}',
+            'table_ctx': PeriodScoreTab(crt_user = crt_user).get_head_context(),
+            'visible': can_touch(TbPeriodscore, crt_user), 
+         },
+        {
+            'name':'danger_football',
+            'label':'危险球',
+            'com':'com-tab-table',
+            'par_field': 'matchid',
+            'table_ctx': TbLivescoutTable(crt_user= crt_user).get_head_context(),
+            'visible': can_write(TbLivefeed,  crt_user), 
+            },
+        {'name': 'special_bet_value',
+         'label': '盘口',
+         'com': 'com-tab-special-bet-value',
+         'update_director': 'get_special_bet_value',
+         'save_director': 'save_special_bet_value',
+         'ops': [
+             {'fun': 'save', 'label': '保存', 'editor': 'com-op-plain-btn', 'icon': 'fa-save', },
+             {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-plain-btn', 'icon': 'fa-refresh', }, 
+             {'fun':'filter_name','label':'玩法过滤','editor':'com-op-search',
+              'icon':'fa-refresh','btn_text':False},
+         ],
+         'visible': has_permit( crt_user, 'manual_specialbetvalue'), 
+        },
+        {
+            'name':'manul_outcome',
+            'label':'手动结算',
+            'com':'com-tab-table',
+            'pre_set': 'rt={matchid:scope.par_row.matchid}',
+            'table_ctx': OutcomeTab(crt_user= crt_user).get_head_context(),
+            'visible': has_permit( crt_user, 'manual_outcome'), 
+        },     
+    ]
+    return match_tabs
+
 class MatchsPage(TablePage):
     template = 'jb_admin/table.html'
 
@@ -37,67 +96,9 @@ class MatchsPage(TablePage):
 
     def get_context(self):
         ctx = super().get_context()
-        match_form = MatchForm(crt_user=self.crt_user)
-        match_tabs=[
-            {'name':'match_base_info',
-             'label':'基本信息',
-             'com':'com-tab-fields',
-             'get_data': {
-                 'fun': 'get_row',
-                 'kws': {
-                     'director_name': match_form.get_director_name(),
-                     'relat_field': 'matchid',
-                 }
-             },
-             'after_save': {
-                 'fun': 'update_or_insert'
-             },
-             'heads': match_form.get_heads(),
-             'ops': match_form.get_operations()             
-            },
-            {
-                'name':'peroidscore',
-                'label':'比分',
-                'com':'com-tab-table',
-                'pre_set':'rt={matchid:scope.par_row.matchid}',
-                'table_ctx': PeriodScoreTab(crt_user=self.crt_user).get_head_context(),
-                'visible': can_touch(TbPeriodscore, self.crt_user), 
-             },
-            {
-                'name':'danger_football',
-                'label':'危险球',
-                'com':'com-tab-table',
-                'par_field': 'matchid',
-                'table_ctx': TbLivescoutTable(crt_user=self.crt_user).get_head_context(),
-                'visible': can_write(TbLivefeed, self.crt_user), 
-                },
-            {'name': 'special_bet_value',
-             'label': '盘口',
-             'com': 'com-tab-special-bet-value',
-             'update_director': 'get_special_bet_value',
-             'save_director': 'save_special_bet_value',
-             'ops': [
-                 {'fun': 'save', 'label': '保存', 'editor': 'com-op-plain-btn', 'icon': 'fa-save', },
-                 {'fun': 'refresh', 'label': '刷新', 'editor': 'com-op-plain-btn', 'icon': 'fa-refresh', }, 
-                 {'fun':'filter_name','label':'玩法过滤','editor':'com-op-search',
-                  'icon':'fa-refresh','btn_text':False},
-             ],
-             'visible': has_permit(self.crt_user, 'manual_specialbetvalue'), 
-            },
-            {
-                'name':'manul_outcome',
-                'label':'手动结算',
-                'com':'com-tab-table',
-                'pre_set': 'rt={matchid:scope.par_row.matchid}',
-                'table_ctx': OutcomeTab(crt_user=self.crt_user).get_head_context(),
-                'visible': has_permit(self.crt_user, 'manual_outcome'), 
-            },
-            
-                  
-        ]
         
         ctx['named_ctx'] = {
-            'match_tabs':evalue_container( match_tabs),
+            'match_tabs':evalue_container( get_match_tab(self.crt_user) ),
             }
         return ctx
     
@@ -835,9 +836,9 @@ class OutcomeTab(ModelTable):
                 bf = [
                         {'marketid':'','pk':-2,'marketname':'score','marketnamezh':'比分型'}
                     ]
-        elif self.match.sportid == 109:
+        else: # self.match.sportid == 109:
             bf =[
-                {'marketid':'','pk':-109,'marketname':'score','marketnamezh':'比分型'}
+                {'marketid':'','pk':-self.match.sportid,'marketname':'score','marketnamezh':'比分型'}
             ]
         
         rows = super().get_rows()
@@ -854,7 +855,7 @@ class OutcomeTab(ModelTable):
         if head['name'] =='marketname':
             head['editor'] = 'com-table-click'
             head['action'] = 'var panel=scope.head.panel_map[scope.row.pk],\
-            rt=cfg.pop_vue_com({editor:panel.editor,ctx:{row:scope.row.outcome,init_express:panel.init_express,layout:panel.layout,ops_loc:"bottom",heads:panel.heads,ops:panel.ops,par_row:scope.ps.vc.par_row,init_express:panel.init_express}})\
+            rt=cfg.pop_vue_com({editor:panel.editor,ctx:{row:scope.row.outcome,init_express:panel.init_express,fields_group:panel.fields_group,table_grid:panel.table_grid,ops_loc:"bottom",heads:panel.heads,ops:panel.ops,par_row:scope.ps.vc.par_row,init_express:panel.init_express}})\
             .then(res=>Vue.set(scope.row,"outcome",res))'
             head.update(outcome_header)
         return head
@@ -866,6 +867,15 @@ class OutcomeTab(ModelTable):
         elif self.match.sportid ==2:
             # 291 是篮球的
             return query.filter(enabled=True,marketid__in = [291])
+        elif self.match.sportid == 109:
+            # 反恐精英 
+            return query.filter(enabled=True,marketid__in = [333])
+        elif self.match.sportid == 110:
+           # 英雄联盟 
+            return query.filter(enabled=True,marketid__in = [333,397,556,557,558])
+        elif self.match.sportid == 111:
+            # 刀塔2
+            return query.filter(enabled=True,marketid__in = [396,397,398])
     
     def get_operation(self):
         return [
@@ -913,12 +923,15 @@ def get_score_heads(ls):
 
 @director_view('get_match_outcome_info')
 def get_match_outcome_info(matchid):
-   
-    row ={
-        'has_half1':True,
-        'has_half2':True,
-    }
-    for score in TbPeriodscore.objects.filter(matchid=matchid,statuscode__in=[6,7,13,14,15,16,40,50,100],scoretype__in=[1,5]):
+    match  = TbMatch.objects.get(matchid = matchid)
+    if match.sportid in  [109,110,111]:
+        row ={}
+    else:
+        row ={
+            'has_half1':True,
+            'has_half2':True,
+        }
+    for score in TbPeriodscore.objects.filter(matchid=matchid,statuscode__in=[6,7,13,14,15,16,40,50,100,141,142,143,144,145,146,147,14140,14240,14340,14440,14540,14640,14740],scoretype__in=[1,5]):
         row['home_%s_%s'%(score.statuscode,score.scoretype)] = score.home
         row['away_%s_%s'%(score.statuscode,score.scoretype)] = score.away
         
@@ -1050,6 +1063,13 @@ def out_com_save(rows,matchid):
                 {'Specifiers':'','MarketId':row['pk'],'OutcomeId':row['OutcomeId']}
             )
         
+        if row['pk'] in [333,396,397,398,556,557,558]:
+            outcome_list = json.loads(row.get('content','[]') )
+            for item in outcome_list:
+                send_dc['Special'].append(
+                    {'Specifiers':'mapnr=%s|xth=%s'%(item.get('Specifiers_1'),item.get('Specifiers')),'OutcomeId':item['OutcomeId'],'MarketId':row['pk'],}
+                )
+        
         
         if row['pk'] == -2:
             # 普通篮球手动输入比分 （有四小节）
@@ -1117,20 +1137,66 @@ def out_com_save(rows,matchid):
                 away_110_1 = away_100_1 + away_40_1
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home_40_1,away=away_40_1)) 
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=1,type=1,home=home_110_1,away=away_110_1)) 
-                                
+        if row['pk'] == -109:
+            send_dc['IsSettleByScore']=True
+            TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
             
+            round_count = int( row.get('round_count') )
+            home_round = 0
+            away_round = 0
+            for i in range(1,round_count+1):
+                home = int(  row.get('home_14%s_1'%i) )
+                away = int(  row.get('away_14%s_1'%i) )
+                home_score = home
+                away_score = away
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=int('14%s'%i),scoretype=1,type=1,home=home,away=away  ) ) 
+                if row.get('has_overtime_14%s'%i):
+                    home40 = int(  row.get('home_14%s40_1'%i) )
+                    away40 = int(  row.get('away_14%s40_1'%i) )
+                    home_score += home40
+                    away_score += away40
+                    batch_create.append(TbPeriodscore(matchid=matchid,statuscode=int('14%s40'%i),scoretype=1,type=1,home=home40,away=away40  ) ) 
+                if home_score > away_score:
+                    home_round += 1
+                elif home_score == away_score:
+                    raise UserWarning('请看清楚，每局比分不能相等。')
+                else:
+                    away_round +=1
+            batch_create.append(TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,type=1,home=home_round,away=away_round  ) ) 
+        if row['pk'] in [-110,-111]:
+            send_dc['IsSettleByScore']=True
+            TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
+            round_count = int( row.get('round_count') )
+            home_round = 0
+            away_round = 0
+            for i in range(1,round_count+1):
+                home = int(  row.get('home_14%s_1'%i) )
+                if home:
+                    home_round += 1
+                else:
+                    away_round +=1
+                away = 0 if home else 1
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=int('14%s'%i),scoretype=1,type=1,home=home,away=away  ) ) 
+            batch_create.append(TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,type=1,home=home_round,away=away_round  ) ) 
 
     TbPeriodscore.objects.bulk_create(batch_create)
     if send_dc.get('IsSettleByScore'):
         home_score =0
         away_score =0
+        match = TbMatch.objects.get(matchid=matchid)
+        
         for inst in batch_create:
-            if inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
+            if match.sportid in [109,110,111]:
+                if inst.statuscode==100:
+                    home_score =inst.home
+                    away_score =inst.away
+                    break
+            elif inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
                 if inst.home >= 0 and inst.away >= 0:
                     home_score += int(inst.home)
                     away_score += int(inst.away)
             
-        match = TbMatch.objects.get(matchid=matchid)
+        
         match.score = '%s:%s'%(home_score,away_score)
         if home_score <away_score:
             match.winner = 2
