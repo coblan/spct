@@ -897,35 +897,7 @@ outcome_header = {
             'ops_loc':'down',
             'ops':pop_edit_ops,
          },
-         333:{
-            'heads':[
-                 {'name':'content','label':'第X局Y杀','editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)','fv_msg':'第X局+第Y杀 不能重复',
-                  'table_heads':[
-                    {'name':'Specifiers_1','label':'第X局','editor':'com-table-pop-fields-local'},
-                    {'name':'Specifiers','label':'第Y杀','editor':'com-table-span', 'width': 80, },
-                    {'name':'OutcomeId','label':'主/客队','editor':'com-table-mapper', 'width': 80,
-                      'options':[
-                         {'value':4,'label':'主队'},
-                         {'value':5,'label':'客队'}
-                         ], 
-                     }, 
-                    
-                      ],
-                 'fields_heads':[
-                     {'name':'Specifiers_1','label':'第X局','editor':'com-field-number','required':True,'fv_rule':'integer(+);range(1~7)'},
-                     {'name':'Specifiers','label':'第Y杀','editor':'com-field-number','required':True,'fv_rule':'integer(+);range(1~7)'}, 
-                    {'name':'OutcomeId','label':'主队','editor':'com-field-select', 'required':True,
-                     'options':[
-                         {'value':4,'label':'主队'},
-                         {'value':5,'label':'客队'}
-                         ]}, 
-                 ]}
-            ],
-            
-            'editor':'com-form-one',
-            'ops_loc':'down',
-            'ops':pop_edit_ops,
-         },  
+         333:head_all_333('第几局', '第几杀', 7),
          396:head_all_333('第几局', '第几保护', 5),
          397:head_all_333('第几局', '第几个塔', 5), 
          398:head_all_333('第几局', '第几个兵营', 5),
