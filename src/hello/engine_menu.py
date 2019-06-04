@@ -94,12 +94,12 @@ class PcMenu(BaseEngine):
 
             {'label': _('Games'), 'icon': fa('fa-globe'), 'visible': True,
              'submenu': [
-                 {'label': '足球赛事列表', 'url': page('matches'), 'visible': can_touch(TbMatch, crt_user), },
-                 {'label': '足球赛事统计', 'url': page('matches_statistics'),
+                 {'label': '赛事列表', 'url': page('matches'), 'visible': can_touch(TbMatch, crt_user), },
+                 {'label': '赛事统计', 'url': page('matches_statistics'),
                   'visible': can_touch(TbMatch, crt_user), },
-                 {'label': '篮球赛事列表', 'url': page('basketball_matchs'), 'visible': can_touch(TbMatch, crt_user), },
-                  {'label': '篮球赛事统计', 'url': page('BasketballMatchesStatisticsPage'),
-                  'visible': can_touch(TbMatch, crt_user), },
+                 #{'label': '篮球赛事列表', 'url': page('basketball_matchs'), 'visible': can_touch(TbMatch, crt_user), },
+                  #{'label': '篮球赛事统计', 'url': page('BasketballMatchesStatisticsPage'),
+                  #'visible': can_touch(TbMatch, crt_user), },
                  
                  {'label': '注单列表', 'url': page('tickets'),
                   'visible': can_touch(TbTicketmaster, crt_user), },

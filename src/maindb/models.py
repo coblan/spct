@@ -1950,7 +1950,7 @@ class TbTicketstake(models.Model):
     #mainmatchid = models.IntegerField(db_column='MainMatchID')  # Field name made lowercase.
     marketname = models.CharField(db_column='MarketName', max_length=100, blank=True, null=True,verbose_name='玩法')  # Field name made lowercase.
     outcomename = models.CharField(db_column='OutcomeName', max_length=50, blank=True, null=True,verbose_name='投注项')  # Field name made lowercase.    
-    
+    score = models.CharField(db_column='Score', max_length=50, blank=True, null=True,verbose_name = '当时比分')  # Field name made lowercase.
     #@property
     #def match(self): 
         #if self.sportid == 0:
@@ -1963,6 +1963,9 @@ class TbTicketstake(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_TicketStake'
+    
+    def __str__(self):
+        return self.outcomename
 
 
 #class TbTickets(models.Model):

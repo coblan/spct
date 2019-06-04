@@ -9,6 +9,8 @@ import re
 from django.db import connections
 from helpers.director.middleware.request_cache import get_request_cache
 from .. import status_code
+from .matches import get_match_tab
+from helpers.func.collection.container import evalue_container
 
 class TicketMasterPage(TablePage):
     template = 'jb_admin/table.html'  # 'maindb/table_ajax_tab.html'
@@ -35,7 +37,8 @@ class TicketMasterPage(TablePage):
              }
         ]
         return {
-             'ticketmaster': ls
+             'ticketmaster': ls,
+              'match_tabs':evalue_container( get_match_tab(crt_user) ),
         }
     
     @classmethod
@@ -285,7 +288,7 @@ class TicketstakeTable(ModelTable):
     """ 子注单 """
     model = TbTicketstake
     exclude = ['marketid']
-    fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketname','specialbetname','outcomename', 'odds', 'confirmodds', 'realodds', 
+    fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketname','specialbetname','outcomename','score', 'odds', 'confirmodds', 'realodds', 
                    'status', 'createtime', 'updatetime']
 
     def inn_filter(self, query):
@@ -336,8 +339,11 @@ class TicketstakeTable(ModelTable):
         #if head['name'] == 'match':
             #head['label'] = '比赛'
         if head['name'] == 'matchid':
-            head['editor'] = 'com-table-pop-fields-from-row'
-            head['ctx_field'] = '_matchid_form'
+            head['editor'] = 'com-table-switch-to-tab'
+            head['tab_name']='match_base_info'
+            head['ctx_name']='match_tabs'
+            #head['editor'] = 'com-table-pop-fields-from-row'
+            #head['ctx_field'] = '_matchid_form'
         return head
 
 

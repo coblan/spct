@@ -4,7 +4,7 @@ import re
 from django.db import connections
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter
 from helpers.director.table.row_search import SelectSearch
-from ..models import TbMatch, NEW_MATCH_STATUS,TbTicketmaster,TbTournament
+from ..models import TbMatch, NEW_MATCH_STATUS,TbTicketmaster,TbTournament,TbSporttypes
 from helpers.director.base_data import director
 from django.utils import timezone
 from helpers.director.table.table import PlainTable
@@ -20,7 +20,7 @@ class MatchesStatisticsPage(TablePage):
     class tableCls(ModelTable):
         sportid= 1
         model = TbMatch
-        include = ['matchid', 'livebet', 'statuscode', 'matchdate', 'tournamentid']
+        include = ['sportid','matchid', 'livebet', 'statuscode', 'matchdate', 'tournamentid']
         hide_fields = ['livebet', 'statuscode', 'matchdate', 'tournamentid']
 
         def dict_head(self, head):
@@ -59,7 +59,7 @@ class MatchesStatisticsPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['tournamentid', 'statuscode', 'livebet']
+            names = ['sportid','tournamentid', 'statuscode', 'livebet']
 
             def dict_head(self, head):
                 if head['name'] == 'tournamentid':
@@ -68,13 +68,17 @@ class MatchesStatisticsPage(TablePage):
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
                     head['options']=[
-                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(sportid=1)
+                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.all()
                         #{'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.extra(
                             #where=["TB_SportTypes.source= TB_Tournament.source","TB_SportTypes.SportID=0"],
                             #tables=['TB_SportTypes'])
                     ]                    
                     #head['order'] = True
-                    
+                if head['name'] == 'sportid':
+                    head['editor'] = 'com-filter-select'
+                    head['options'] =[
+                        {'value':x.sportid,'label':x.sportnamezh } for x in TbSporttypes.objects.filter(enabled = True)
+                    ]
                 return head
 
         class sort(RowSort):
@@ -127,7 +131,7 @@ class MatchesStatisticsPage(TablePage):
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
                 'Sort': sort,
-                'sportid':self.sportid
+                'sportid': self.search_args.get('sportid',-1) #self.sportid
             }            
             sql = self.get_statistic_sql(sql_args)
             with connections['Sports'].cursor() as cursor:
