@@ -32,6 +32,8 @@ class MatchesStatisticsPage(TablePage):
                     head['editor'] = 'com-table-switch-to-tab'
                     head['tab_name'] = 'detailStatic'
                     head['ctx_name'] = 'match_statistic'
+
+            
             return head
 
         @classmethod
@@ -89,6 +91,7 @@ class MatchesStatisticsPage(TablePage):
         def get_rows(self):
             self.getData()
             for row in self.matches:
+                row['sportid'] = row['SportNameZH']
                 row['matchid'] = row['MatchID']
                 row['SumBetAmount'] = round(row['SumBetAmount'], 2)
                 row['SumBetOutcome'] = round(row['SumBetOutcome'], 2)
