@@ -882,7 +882,7 @@ class OutcomeTab(ModelTable):
             {'name':'outcome','label':'结算','editor':'com-op-btn','action':'''rt=cfg.confirm("确定发送手动结算信息?")
             .then(()=>{ return out_come_save(scope.ps.rows,scope.ps.vc.par_row.matchid)} )
             .then(()=>{
-                return ex.director_call("d.get_row",
+                return ex.director_call("get_row",
                     {
                         director_name:scope.ps.vc.par_row._director_name,filter_kws:{matchid:scope.ps.vc.par_row.matchid} 
                     })
