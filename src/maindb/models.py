@@ -828,7 +828,7 @@ WINNER_TYPE=(
 )
 
 class TbMatch(models.Model):
-    sportid = models.IntegerField(db_column='SportID',verbose_name='比赛类型')  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID',verbose_name='运动类型')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID', primary_key=True,verbose_name='比赛ID')  # Field name made lowercase.
     eventid = models.CharField(db_column='EventID', unique=True, max_length=50)  # Field name made lowercase.
     tournamentid = models.IntegerField(db_column='TournamentID',verbose_name='联赛')  # Field name made lowercase.
