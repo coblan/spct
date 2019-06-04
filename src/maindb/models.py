@@ -1847,7 +1847,7 @@ class TbTicketmaster(models.Model):
     voidreason = models.CharField(db_column='VoidReason', max_length=200, blank=True, null=True,
                             verbose_name='作废原因')  # Field name made lowercase.
     handicap = models.IntegerField(db_column='Handicap', blank=True, null=True)  # Field name made lowercase.
-    terminal = models.IntegerField(db_column='Terminal', blank=True, null=True)  # Field name made lowercase.
+    terminal = models.IntegerField(db_column='Terminal', blank=True, null=True,choices= TERMINAL_TYPE,verbose_name='终端')  # Field name made lowercase.
     audit = models.IntegerField(db_column='Audit',verbose_name='待审核',choices=AUDIT_OPTIONS)  # Field name made lowercase.
 
     class Meta:

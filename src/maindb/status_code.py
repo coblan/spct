@@ -247,3 +247,10 @@ AUDIT_OPTIONS=(
     (0,'正常注单'),
     (1,'异常注单')
 )
+
+TERMINAL_TYPE = (
+    (1,'iOS'),
+    (2,'Android'),
+    (3,'H5'),
+    (4,'PC')
+)

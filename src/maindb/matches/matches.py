@@ -63,6 +63,7 @@ def get_match_tab(crt_user):
             'par_field': 'matchid',
             'table_ctx': TbLivescoutTable(crt_user= crt_user).get_head_context(),
             'visible': can_write(TbLivefeed,  crt_user), 
+            'show':'scope.par_row.sportid==1'
             },
         {'name': 'special_bet_value',
          'label': '盘口',
@@ -808,14 +809,14 @@ class OutcomeTab(ModelTable):
     
     def getExtraHead(self):
         return [
-            {'name':'outcome','label':'结果','editor':'com-table-json','width':250},
+            {'name':'outcome','label':'结果','editor':'com-table-span','width':250},
             {'name':'ops','label':'','editor':'com-table-ops-cell','width':50,
              'ops':[
                  {
                          'editor':'com-op-plain-btn',
                          'label':'清空',
                          'class':'btn btn-primary btn-xs',
-                         'action':"""rt=scope.row.outcome=''"""}
+                         'action':""" Vue.set( scope.row,'outcome','') """}
                  ]},
 
         ]

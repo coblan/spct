@@ -85,7 +85,7 @@ class TicketMasterPage(TablePage):
         exclude = ['accountid']
         fields_sort = ['ticketid', 'orderid','audit', 'accountid__nickname', 'parlayrule', 'status',
                        'winbet', 'stakeamount', 'betamount', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
-                       'createtime', 'settletime', 'memo','voidreason',]
+                       'createtime', 'settletime', 'memo','voidreason','terminal']
         
         @classmethod
         def clean_search_args(cls, search_args):
