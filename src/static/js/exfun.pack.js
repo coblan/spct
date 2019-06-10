@@ -419,6 +419,16 @@ window.cfg = {
 
         (_layer = layer).msg.apply(_layer, [msg].concat(parm));
     },
+    toast: function toast(msg) {
+        var _layer2;
+
+        for (var _len2 = arguments.length, parm = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+            parm[_key2 - 1] = arguments[_key2];
+        }
+
+        (_layer2 = layer).msg.apply(_layer2, [msg].concat(parm));
+    },
+
     tr: {
         'picture_size_excceed': '图片尺寸不能超过{maxsize}'
     },
@@ -429,8 +439,16 @@ window.cfg = {
     hide_cloak: function hide_cloak() {
         layer.close(this._cloak_index);
     },
-    show_load: function show_load() {
-        this._loader_index = layer.load(1);
+    show_load: function show_load(msg) {
+        if (msg) {
+            this._loader_index = layer.msg(msg, {
+                icon: 16,
+                shade: 0.01,
+                time: 0
+            });
+        } else {
+            this._loader_index = layer.load(1);
+        }
     },
     hide_load: function hide_load(delay, msg) {
         if (!this._loader_index) {

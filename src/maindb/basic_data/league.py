@@ -4,10 +4,10 @@ from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from helpers.director.model_func.field_procs.dotStrArray import DotStrArrayProc
 from helpers.director.table.table import RowFilter
 from helpers.director.access.permit import can_write
-
+import json
 from maindb.models import TbTournament, TbMarkets
 from maindb.redisInstance import redisInst
-
+from maindb.rabbitmq_instance import notifyTournameRecommond
 
 class League(TablePage):
     template = 'jb_admin/table.html'
@@ -19,7 +19,7 @@ class League(TablePage):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
-        fields_sort = ['tournamentid', 'tournamentname', 'issubscribe', 'openlivebet', 'weight','ticketdelay','sportid','sort', 'typegroupswitch',]
+        fields_sort = ['tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sport','sort', 'typegroupswitch',]
 
         # hide_fields = ['tournamentid']
 
@@ -63,6 +63,15 @@ class League(TablePage):
                     {'fun':'selected_set_and_save','label':'取消走地','editor':'com-op-btn',
                       'confirm_msg':'确认关闭这些联赛的走地?',
                      'row_match':'many_row','pre_set':'rt={closelivebet:1}'},
+                    {'fun':'selected_set_and_save','label':'推介','editor':'com-op-btn',
+                      'confirm_msg':'确认推介这些联赛?', 'after_save':'ex.director_call("notify_tournament_recommend",{rows:scope.rows})',
+                     'row_match':'many_row','pre_set':'rt={isrecommend:1}'},
+                    {'fun':'selected_set_and_save','label':'取消推介','editor':'com-op-btn',
+                      'confirm_msg':'取消推介这些联赛?',
+                     'row_match':'many_row','pre_set':'rt={isrecommend:0}'},
+                    #{'label':'推介','editor':'com-op-btn','row_match':'many_row',
+                     #'action':''' if(scope.ps.check_selected(scope.head)){ cfg.confirm("确定推介联赛?").then(()=>{
+                     #scope.selected.forEach(item=>{item.isrecommend=true}) ; return ex.director_call("save_rows",{rows:})}) }'''}
                 ]
             else:
                 return []
@@ -74,7 +83,7 @@ class League(TablePage):
             names = ['tournamentname', 'tournamentid']
 
         class filters(RowFilter):
-            names = ['issubscribe','sportid']
+            names = ['issubscribe','sport']
             def getExtraHead(self): 
                 return [
                     {'name': 'openlivebet','label': '走地',
@@ -122,6 +131,10 @@ class LeagueForm(ModelFields):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid']
 
+def notify_tournament_recommend(rows):
+    ls =[x['pk'] for x in rows]
+    msg = json.dumps(ls)
+    notifyTournameRecommond(msg)
 
 field_map.update({
     'maindb.tbtournament.issubscribe': IntBoolProc,
@@ -132,6 +145,7 @@ field_map.update({
 director.update({
     'match.league': League.tableCls,
     'match.league.edit': LeagueForm,
+    'notify_tournament_recommend':notify_tournament_recommend,
 })
 
 page_dc.update({

@@ -1993,7 +1993,7 @@ class TbTicketstake(models.Model):
 
 class TbTournament(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
-    sportid = models.IntegerField(db_column='SportID', blank=True, null=True,choices=SPORTID_OPTION_2,verbose_name='运动类型')  # Field name made lowercase.
+    #sportid = models.IntegerField(db_column='SportID', blank=True, null=True,choices=SPORTID_OPTION_2,verbose_name='运动类型')  # Field name made lowercase.
     tournamentid = models.IntegerField(db_column='TournamentID', verbose_name='联赛ID',unique=True)  # Field name made lowercase.
     tournamentname = models.CharField(db_column='TournamentName', max_length=200,
                                       verbose_name='联赛名称')  # Field name made lowercase.
@@ -2014,6 +2014,9 @@ class TbTournament(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
     ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+    #sportid = models.IntegerField(db_column='SportID',)  # Field name made lowercase.
+    sport = models.ForeignKey(to= 'TbSporttypes',to_field='sportid',db_column='SportID',db_constraint=False,verbose_name='体育类型')  # Field name made lowercase.
+    isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name = '推介')  # Field name made lowercase.
  
     class Meta:
         managed = False
@@ -2698,4 +2701,38 @@ class TbSporttypes(models.Model):
         managed = False
         db_table = 'TB_SportTypes'
 
+    def __str__(self):
+        return self.sportnamezh
 
+
+class TbTrendstatistics(models.Model):
+    tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='时间')  # Field name made lowercase.
+    betnum = models.BigIntegerField(db_column='BetNum',verbose_name='投注单数')  # Field name made lowercase.
+    betamount = models.DecimalField(db_column='BetAmount', max_digits=18, decimal_places=4,verbose_name='投注金额')  # Field name made lowercase.
+    finishbetamount = models.DecimalField(db_column='FinishBetAmount', max_digits=18, decimal_places=4,verbose_name='(已结算)投注金额')  # Field name made lowercase.
+    turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=4,verbose_name='流水')  # Field name made lowercase.
+    betoutcome = models.DecimalField(db_column='BetOutCome', max_digits=18, decimal_places=4,verbose_name='派奖金额')  # Field name made lowercase.
+    bonusamount = models.DecimalField(db_column='BonusAmount', max_digits=18, decimal_places=4,verbose_name='反水金额')  # Field name made lowercase.
+    firstrechargeamount = models.DecimalField(db_column='FirstRechargeAmount', max_digits=18, decimal_places=4,verbose_name='首存金额')  # Field name made lowercase.
+    secondrechargeamount = models.DecimalField(db_column='SecondRechargeAmount', max_digits=18, decimal_places=4,verbose_name='再存金额')  # Field name made lowercase.
+    birthdayamount = models.DecimalField(db_column='BirthdayAmount', max_digits=18, decimal_places=4,verbose_name='生日礼金')  # Field name made lowercase.
+    rescueamount = models.DecimalField(db_column='RescueAmount', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    deductionamount = models.DecimalField(db_column='DeductionAmount', max_digits=18, decimal_places=4,verbose_name='')  # Field name made lowercase.
+    ddditionamount = models.DecimalField(db_column='DdditionAmount', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    ebankamount = models.DecimalField(db_column='EbankAmount', max_digits=18, decimal_places=4,)  # Field name made lowercase.
+    backendamount = models.DecimalField(db_column='BackendAmount', max_digits=18, decimal_places=4,verbose_name='礼金')  # Field name made lowercase.
+    userprofit = models.DecimalField(db_column='UserProfit', max_digits=18, decimal_places=4,verbose_name='亏盈')  # Field name made lowercase.
+    starttime = models.DateTimeField(db_column='StartTime',verbose_name='时间')  # Field name made lowercase.
+    endtime = models.DateTimeField(db_column='EndTime')  # Field name made lowercase.
+    activityamount = models.DecimalField(db_column='ActivityAmount', max_digits=18, decimal_places=4,verbose_name='活动+调整')  # Field name made lowercase.
+    rechargeamount = models.DecimalField(db_column='RechargeAmount', max_digits=18, decimal_places=4,verbose_name='充值金额')  # Field name made lowercase.
+    withdrawamount = models.DecimalField(db_column='WithdrawAmount', max_digits=18, decimal_places=4,verbose_name='提现金额')  # Field name made lowercase.
+    betusernum = models.IntegerField(db_column='BetUserNum',verbose_name='投注人数')  # Field name made lowercase.
+    newusernum = models.IntegerField(db_column='NewUserNum',verbose_name='注册人数')  # Field name made lowercase.
+    withdrawusernum = models.IntegerField(db_column='WithdrawUserNum',verbose_name='提现人数')  # Field name made lowercase.
+    rechargeusernum = models.IntegerField(db_column='RechargeUserNum',verbose_name='充值人数')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_TrendStatistics'
