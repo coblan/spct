@@ -34,7 +34,7 @@ def notifyManulOutcome(msg):
                           routing_key= 'backend.betclear',
                           body=msg)
 
-def notifyTournameRecommond(msg):
+def notifyMatchRecommond(msg):
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
     channel = connection.channel()
     channel.basic_publish(exchange='center.topic',

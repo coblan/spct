@@ -7,7 +7,6 @@ from helpers.director.access.permit import can_write
 import json
 from maindb.models import TbTournament, TbMarkets
 from maindb.redisInstance import redisInst
-from maindb.rabbitmq_instance import notifyTournameRecommond
 
 class League(TablePage):
     template = 'jb_admin/table.html'
@@ -19,7 +18,7 @@ class League(TablePage):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
-        fields_sort = ['tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sport','sort', 'typegroupswitch',]
+        fields_sort = ['sport','tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',]
 
         # hide_fields = ['tournamentid']
 
@@ -64,7 +63,8 @@ class League(TablePage):
                       'confirm_msg':'确认关闭这些联赛的走地?',
                      'row_match':'many_row','pre_set':'rt={closelivebet:1}'},
                     {'fun':'selected_set_and_save','label':'推介','editor':'com-op-btn',
-                      'confirm_msg':'确认推介这些联赛?', 'after_save':'ex.director_call("notify_tournament_recommend",{rows:scope.rows})',
+                      'confirm_msg':'确认推介这些联赛?', 
+                      #'after_save':'ex.director_call("notify_tournament_recommend",{rows:scope.rows})',
                      'row_match':'many_row','pre_set':'rt={isrecommend:1}'},
                     {'fun':'selected_set_and_save','label':'取消推介','editor':'com-op-btn',
                       'confirm_msg':'取消推介这些联赛?',
@@ -83,7 +83,7 @@ class League(TablePage):
             names = ['tournamentname', 'tournamentid']
 
         class filters(RowFilter):
-            names = ['issubscribe','sport']
+            names = ['issubscribe','sport','isrecommend']
             def getExtraHead(self): 
                 return [
                     {'name': 'openlivebet','label': '走地',
@@ -112,7 +112,12 @@ class LeagueForm(ModelFields):
             head['fv_rule']='range(0.001~500)'
         return head
 
-
+    def clean_save(self):
+        if 'isrecommend' in self.changed_data:
+            if self.cleaned_data.get('isrecommend'):
+                if TbTournament.objects.filter(isrecommend = True).count() >=6:
+                    raise UserWarning('最多只能推介6个联赛')
+    
     def save_form(self):
         super().save_form()
         if 'closelivebet' in self.changed_data:
@@ -121,6 +126,7 @@ class LeagueForm(ModelFields):
                     'Backend:league:closelivebet:%(tournamentid)s' % {'tournamentid': self.instance.tournamentid})
             else:
                 redisInst.set('Backend:league:closelivebet:%s' % self.instance.tournamentid, 1)
+        
     
     def dict_row(self, inst): 
         return {
@@ -131,10 +137,10 @@ class LeagueForm(ModelFields):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid']
 
-def notify_tournament_recommend(rows):
-    ls =[x['pk'] for x in rows]
-    msg = json.dumps(ls)
-    notifyTournameRecommond(msg)
+#def notify_tournament_recommend(rows):
+    #ls =[x['pk'] for x in rows]
+    #msg = json.dumps(ls)
+    #notifyTournameRecommond(msg)
 
 field_map.update({
     'maindb.tbtournament.issubscribe': IntBoolProc,
@@ -145,7 +151,7 @@ field_map.update({
 director.update({
     'match.league': League.tableCls,
     'match.league.edit': LeagueForm,
-    'notify_tournament_recommend':notify_tournament_recommend,
+    #'notify_tournament_recommend':notify_tournament_recommend,
 })
 
 page_dc.update({

@@ -25,6 +25,7 @@ import datetime
 from maindb.rabbitmq_instance import notifyManulOutcome
 from . manul_outcome import outcome_header
 from django.db.models import Count,Q,QuerySet
+from maindb.rabbitmq_instance import notifyMatchRecommond
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -240,10 +241,17 @@ class MatchsPage(TablePage):
             #spoutcome_form =  SpOutcome(crt_user= self.crt_user)
             ops = [
                 #'match_express': 'scope.row.specialcategoryid <= 0 ',
-                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
+                 #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
+                 #'pre_set': 'rt={isrecommend:1}', 'row_match': 'many_row', 
+                 #'match_msg': '只能推荐常规比赛。',
+                 #'visible': 'isrecommend' in self.permit.changeable_fields(),},
+                 
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
                  'pre_set': 'rt={isrecommend:1}', 'row_match': 'many_row', 
                  'match_msg': '只能推荐常规比赛。',
+                 'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  'visible': 'isrecommend' in self.permit.changeable_fields(),},
+                 
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
                  'pre_set': 'rt={isrecommend:0}', 'row_match': 'many_row',
                  'match_msg': '只能取消推荐常规比赛。',
@@ -1263,6 +1271,11 @@ def out_com_save(rows,matchid):
 
     notifyManulOutcome(json.dumps(send_dc))
 
+@director_view('notify_match_recommend')
+def notify_match_recommend(rows):
+    ls =[x['pk'] for x in rows]
+    msg = json.dumps(ls)
+    notifyMatchRecommond(msg)
 
 director.update({
     'match.table': MatchsPage.tableCls,
