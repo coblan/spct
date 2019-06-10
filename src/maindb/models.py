@@ -848,7 +848,7 @@ class TbMatch(models.Model):
                                      choices=NEW_MATCH_STATUS)  # Field name made lowercase.
     score = models.CharField(db_column='Score', max_length=20, blank=True, null=True,verbose_name='比分')  # Field name made lowercase.
     hasliveodds = models.BooleanField(db_column='HasLiveOdds',verbose_name='走地盘')  # Field name made lowercase.
-    isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name='推介')  # Field name made lowercase.
+    isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name='推荐')  # Field name made lowercase.
     ishidden = models.BooleanField(db_column='IsHidden',verbose_name='隐藏')  # Field name made lowercase.
     iscloseliveodds = models.IntegerField(db_column='IsCloseLiveOdds', blank=True, null=True)  # Field name made lowercase.
     winner = models.IntegerField(db_column='Winner',verbose_name='胜者',choices=WINNER_TYPE)  # Field name made lowercase.
@@ -2016,7 +2016,7 @@ class TbTournament(models.Model):
     ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
     #sportid = models.IntegerField(db_column='SportID',)  # Field name made lowercase.
     sport = models.ForeignKey(to= 'TbSporttypes',to_field='sportid',db_column='SportID',db_constraint=False,verbose_name='体育类型')  # Field name made lowercase.
-    isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name = '推介')  # Field name made lowercase.
+    isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name = '推荐')  # Field name made lowercase.
  
     class Meta:
         managed = False

@@ -625,7 +625,7 @@ class Migration(migrations.Migration):
                 ('winner', models.IntegerField(db_column='Winner', verbose_name='获胜者')),
                 ('statuscode', models.IntegerField(db_column='StatusCode', verbose_name='状态')),
                 ('roundinfo', models.IntegerField(db_column='RoundInfo', verbose_name='轮')),
-                ('isrecommend', models.BooleanField(db_column='IsRecommend', verbose_name='推介')),
+                ('isrecommend', models.BooleanField(db_column='IsRecommend', verbose_name='推荐')),
                 ('livebet', models.BooleanField(db_column='LiveBet', verbose_name='滚球')),
                 ('generatedat', models.DateTimeField(db_column='GeneratedAt', verbose_name='创建时间')),
                 ('createtime', models.DateTimeField(db_column='CreateTime')),

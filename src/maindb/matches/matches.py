@@ -248,13 +248,12 @@ class MatchsPage(TablePage):
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
                  'pre_set': 'rt={isrecommend:1}', 'row_match': 'many_row', 
-                 'match_msg': '只能推荐常规比赛。',
                  'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  'visible': 'isrecommend' in self.permit.changeable_fields(),},
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
                  'pre_set': 'rt={isrecommend:0}', 'row_match': 'many_row',
-                 'match_msg': '只能取消推荐常规比赛。',
+                 'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  'visible': 'isrecommend' in self.permit.changeable_fields()},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '走地', 'confirm_msg': '确认打开走地吗？',
                  'field':'hasliveodds', # 'iscloseliveodds', 
