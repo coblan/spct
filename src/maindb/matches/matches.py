@@ -247,12 +247,12 @@ class MatchsPage(TablePage):
                  #'visible': 'isrecommend' in self.permit.changeable_fields(),},
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
-                 'pre_set': 'rt={isrecommend:1}', 'row_match': 'many_row', 
+                 'pre_set': 'rt={isrecommend:true}', 'row_match': 'many_row', 
                  'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  'visible': 'isrecommend' in self.permit.changeable_fields(),},
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
-                 'pre_set': 'rt={isrecommend:0}', 'row_match': 'many_row',
+                 'pre_set': 'rt={isrecommend:false}', 'row_match': 'many_row',
                  'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  'visible': 'isrecommend' in self.permit.changeable_fields()},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '走地', 'confirm_msg': '确认打开走地吗？',
@@ -384,11 +384,6 @@ def quit_ticket(rows,**kws ):
 
 
 class MatchForm(ModelFields):
-
-    #proc_map = {
-        #0: FootBallPoints,
-        #2: NumberOfCorner,
-    #}
 
     class Meta:
         model = TbMatch
