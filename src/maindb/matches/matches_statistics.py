@@ -168,7 +168,7 @@ class MatchesStatisticsPage(TablePage):
                 {'name': 'StatusCode', 'label': '状态', },
                 #{'name': 'LiveBet', 'label': '走地盘', 'editor': 'com-table-bool-shower'},
                 {'name': 'TicketCount', 'label': '单注注数', 'width': 80},
-                {'name': 'SeriesTicketCount', 'label': '串关注数', 'width': 80},
+                #{'name': 'SeriesTicketCount', 'label': '串关注数', 'width': 80},
                 {'name': 'UserCount', 'label': '用户数', 'width': 80},
                 {'name': 'SumBetAmount', 'label': '投注金额', 'width': 120},
                 {'name': 'SumBetOutcome', 'label': '派奖金额', 'width': 120},

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 35);
+/******/ 	return __webpack_require__(__webpack_require__.s = 39);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -378,21 +378,6 @@ function updateLink(linkElement, obj) {
 
 /***/ }),
 
-/***/ 28:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".com-shouchun {\n  background-color: white;\n  padding: 0;\n  margin: 14px 0; }\n  .com-shouchun table {\n    width: 100%; }\n    .com-shouchun table td {\n      text-align: center; }\n    .com-shouchun table tr:first-child td {\n      border-bottom: 1px solid #f2f2f2; }\n    .com-shouchun table .big-col {\n      font-size: 110%;\n      padding: 4px; }\n    .com-shouchun table .data-col {\n      color: grey;\n      font-size: 80%; }\n    .com-shouchun table .green {\n      color: #46c8bb; }\n  .com-shouchun .mybtn-col {\n    width: 6em;\n    height: 5em; }\n    .com-shouchun .mybtn-col .mybtn {\n      position: relative;\n      width: 6em;\n      height: 2.5em;\n      background-color: #52d39a;\n      color: white;\n      border-radius: 2em;\n      font-size: 90%;\n      margin: auto; }\n      .com-shouchun .mybtn-col .mybtn.disabled {\n        background-color: #aaaaaa; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-
 /***/ 3:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -547,13 +532,28 @@ function _uuid() {
 
 /***/ }),
 
-/***/ 32:
+/***/ 30:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-shouchun {\n  background-color: white;\n  padding: 0;\n  margin: 14px 0; }\n  .com-shouchun table {\n    width: 100%; }\n    .com-shouchun table td {\n      text-align: center; }\n    .com-shouchun table tr:first-child td {\n      border-bottom: 1px solid #f2f2f2; }\n    .com-shouchun table .big-col {\n      font-size: 110%;\n      padding: 4px; }\n    .com-shouchun table .data-col {\n      color: grey;\n      font-size: 80%; }\n    .com-shouchun table .green {\n      color: #46c8bb; }\n  .com-shouchun .mybtn-col {\n    width: 6em;\n    height: 5em; }\n    .com-shouchun .mybtn-col .mybtn {\n      position: relative;\n      width: 6em;\n      height: 2.5em;\n      background-color: #52d39a;\n      color: white;\n      border-radius: 2em;\n      font-size: 90%;\n      margin: auto; }\n      .com-shouchun .mybtn-col .mybtn.disabled {\n        background-color: #aaaaaa; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 35:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(28);
+var content = __webpack_require__(30);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -574,7 +574,7 @@ if(false) {
 
 /***/ }),
 
-/***/ 35:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -598,7 +598,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 "use strict";
 
 
-__webpack_require__(32);
+__webpack_require__(35);
 
 Vue.component('com-shouchun', {
     template: '<div class="com-shouchun">\n\n    <!--<button @click="update_data()">\u83B7\u53D6</button>-->\n\n    <table>\n    <tr v-for="row in rows">\n        <td v-for="head in heads"  :class="head.scls">\n            <div   v-if="row[head.name]" v-text="head.top_label"></div>\n            <div v-text="row[head.name]"></div>\n        </td>\n        <td class="mybtn-col">\n            <div :class="[\'mybtn\',{disabled:!row.submitable}]" @click="submit(row)"><span class="center-vh" style="white-space: nowrap" v-text="action_label(row)"></span></div>\n        </td>\n    </tr>\n    </table>\n    </div>',

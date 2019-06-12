@@ -40,3 +40,10 @@ def notifyMatchRecommond(msg):
     channel.basic_publish(exchange='center.topic',
                           routing_key= 'backend.recommend.match',
                           body=msg)
+    
+def notifyAdjustOddsBase(msg):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
+    channel = connection.channel()
+    channel.basic_publish(exchange='center.topic',
+                          routing_key= 'backend.adjust.odds',
+                          body=msg)

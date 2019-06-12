@@ -7,6 +7,7 @@ from helpers.director.access.permit import can_write
 import json
 from maindb.models import TbTournament, TbMarkets
 from maindb.redisInstance import redisInst
+from  maindb.rabbitmq_instance import notifyAdjustOddsBase
 
 class League(TablePage):
     template = 'jb_admin/table.html'
@@ -40,6 +41,7 @@ class League(TablePage):
             if head['name'] == 'typegroupswitch':
                 head['options'] = [{'value': str(x.marketid), 'label': x.marketnamezh, } for x in
                                    TbMarkets.objects.filter(enabled=1)]
+           
             return head
 
         def dict_row(self, inst):
@@ -110,6 +112,10 @@ class LeagueForm(ModelFields):
                                TbMarkets.objects.filter(enabled=1)]
         if head['name']=='weight':
             head['fv_rule']='range(0.001~500)'
+            
+        if head['name'] == 'oddsadjustment':
+            head['fv_rule']='range(0~0.99);digit(2)'
+            #head['fv_rule']='digit(2);range(0~1,false)'
         return head
 
     def clean_save(self):
@@ -126,8 +132,13 @@ class LeagueForm(ModelFields):
                     'Backend:league:closelivebet:%(tournamentid)s' % {'tournamentid': self.instance.tournamentid})
             else:
                 redisInst.set('Backend:league:closelivebet:%s' % self.instance.tournamentid, 1)
+        if 'oddsadjustment' in self.changed_data or 'baseticketeamout' in self.changed_data:
+            dc ={
+                'Type':1,
+                'Ids':[self.instance.tournamentid]
+            }
+            notifyAdjustOddsBase(json.dumps(dc))
         
-    
     def dict_row(self, inst): 
         return {
             'openlivebet': not inst.closelivebet,

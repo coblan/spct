@@ -25,8 +25,7 @@ import datetime
 from maindb.rabbitmq_instance import notifyManulOutcome
 from . manul_outcome import outcome_header
 from django.db.models import Count,Q,QuerySet
-from maindb.rabbitmq_instance import notifyMatchRecommond
-
+from maindb.rabbitmq_instance import notifyMatchRecommond,notifyAdjustOddsBase
 import logging
 op_log = logging.getLogger('operation_log')
 
@@ -248,7 +247,7 @@ class MatchsPage(TablePage):
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
                  'pre_set': 'rt={isrecommend:true}', 'row_match': 'many_row', 
-                 'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
+                 'after_save':' ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  'visible': 'isrecommend' in self.permit.changeable_fields(),},
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
@@ -331,7 +330,6 @@ class MatchsPage(TablePage):
                 #'table_ctx':mytable.get_head_context(),
 
                 #})
-
             return head
 
         def dict_row(self, inst):
@@ -390,7 +388,7 @@ class MatchForm(ModelFields):
         exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
                    'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', ]
 
-    field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','weight','ticketdelay']
+    field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','weight','ticketdelay','oddsadjustment','baseticketeamout']
 
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('matchid'):
@@ -403,6 +401,9 @@ class MatchForm(ModelFields):
     def dict_head(self, head):
         if head['name'] == 'matchid':
             head['readonly'] = True
+        if head['name'] == 'oddsadjustment':
+            head['fv_rule']='range(0~0.99);digit(2)'
+            
         return head
 
     def dict_row(self, inst):
@@ -429,6 +430,14 @@ class MatchForm(ModelFields):
 
         self.updateMongo()
         self.proc_redis()
+        
+        if 'oddsadjustment' in self.changed_data or 'baseticketeamout' in self.changed_data:
+            dc ={
+                'Type':2,
+                'Ids':[self.instance.matchid]
+            }
+            notifyAdjustOddsBase(json.dumps(dc))
+        
         return {'msg': msg,}
 
     def updateMongo(self): 

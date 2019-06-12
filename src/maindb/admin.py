@@ -26,6 +26,7 @@ from .report import report_channel
 from .report import platform_profit
 from .report import recharge_report
 from .report import every_day
+from .report import bet_analysis
 
 from .basic_data import bet_type, league, teams, app_resource, currency
 from .basic_data import banktypes

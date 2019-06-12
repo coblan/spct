@@ -139,6 +139,7 @@ class PcMenu(BaseEngine):
                 {'label':'充值安全统计','url':page('recharge_reports'),'visible': has_permit(crt_user, 'report.recharge_reports')},
                 {'label': '每日报表', 'url': page('everyday_report'),
                   'visible': can_touch(TbTrendstatistics, crt_user), },
+                {'label':'投注分析','url':page('bet_analysis'),}
                 
              ]},
             
