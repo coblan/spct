@@ -1,6 +1,6 @@
-from helpers.director.shortcut import page_dc,PlainTable,director,RowFilter
+from helpers.director.shortcut import page_dc,PlainTable,director,RowFilter,ModelTable
 from django.db import connections
-from maindb.models import TbSporttypes
+from maindb.models import TbSporttypes,TbTrendstatistics
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 
@@ -15,12 +15,29 @@ class BetAnalysisPage(object):
         return 'jb_admin/live.html'
     
     def get_context(self):
+        chart_ctx = BetCondition().get_head_context()
+        chart_ctx.update({
+            'content_editor':'com-bet-chart',
+            'autoload':True
+        })
+        
+        bet_week_chart = BetWeekChart().get_head_context()
+        bet_week_chart.update({
+            'content_editor':'com-bet-week-chart',
+            'autoload':False
+        })
+        
         return {
             'editor':'com-live-block-tree-menu',
             'editor_label':'报表分类',
             'editor_ctx':{
                 'menu':[
                     {'name':'ss','label':'中注率','open_editor':'live_table','open_ctx':WinbetRatio().get_head_context()},
+                    {'name':'bbb','label':'用户活跃度统计','open_editor':'live_table','open_ctx':LoginNumer().get_head_context()},
+                    {'name':'aaa','label':'投注概况','open_editor':'live_table_type','open_ctx': chart_ctx},
+                    {'name':'cc','label':'投注总额-周推移','open_editor':'live_table_type','open_ctx':bet_week_chart},
+                    {'name':'dd','label':'玩法统计','open_editor':'live_table','open_ctx':MarketAnalysis().get_head_context() },
+                    {'name':'TournamentAnalysis','label':'联赛统计', 'open_editor':'live_table','open_ctx':TournamentAnalysis().get_head_context()  }
                 ]
             } 
         }
@@ -131,22 +148,242 @@ class WinbetRatio(PlainTable):
             'perpage': self.search_args.get('_perpage', 20)
         }
     
-    #class filters(RowFilter):
-        #names=['AccountID']
-        #icontains=['AccountID']
-        #def getExtraHead(self):
-            #return [
-                #{'name':'AccountID','label':'账号ID',},
-            #]
 
-#class WinbetRatioWeek(PlainTable):
-    #def get_rows(self):
-        #return [
-        #]
 
+
+class LoginNumer(ModelTable):
+    model = TbTrendstatistics
+    include =['starttime','newusernum','betusernum','withdrawusernum','rechargeusernum',]
+    selectable = False
+    
+    def dict_head(self, head):
+        width_dc ={
+            'starttime':150
+        }
+        if head['name'] in width_dc:
+            head['width'] = width_dc.get(head['name'])
+        return head
+    
+    class filters(RowFilter):
+        range_fields=['starttime']
+    
+
+class BetCondition(ModelTable):
+    model = TbTrendstatistics
+    include =['starttime','betusernum','betnum','betamount','betoutcome','userprofit',]
+    
+    @classmethod
+    def clean_search_args(cls, search_args):
+        today = timezone.now()
+        if not search_args.get('_start_starttime') or not search_args.get('_end_starttime'):
+            sp = timezone.timedelta(days=30)
+            last = today - sp
+            def_start = last.strftime('%Y-%m-%d')
+            def_end = today.strftime('%Y-%m-%d')                
+            search_args['_start_starttime'] = search_args.get('_start_starttime') or def_start
+            search_args['_end_starttime'] = search_args.get('_end_starttime') or def_end
+        if not search_args.get('Type'):
+            search_args['Type'] = 0
+  
+        return search_args 
+    
+    def dict_row(self, inst):
+        return {
+            'userprofit':-inst.userprofit
+        }
+    
+    class filters(RowFilter):
+        range_fields=['starttime']
+
+ 
+ 
+class BetWeekChart(PlainTable):
+    def get_heads(self):
+        return [
+        ]
+    
+    @classmethod
+    def clean_search_args(cls, search_args):
+        #today = timezone.now()
+        if not search_args.get('_start_week') or not search_args.get('_end_week'):
+            raise UserWarning('必须选择开始周和结束周')
+            #sp = timezone.timedelta(days=10)
+            #last = today - sp
+            #def_start = last.strftime('%Y-%m-%d')
+            #def_end = today.strftime('%Y-%m-%d')                
+            #search_args['_start_Date'] = search_args.get('_start_Date') or def_start
+            #search_args['_end_Date'] = search_args.get('_end_Date') or def_end
+        return search_args
+    
+    def get_rows(self):
+        data_rows = []
+        sql_args = {
+            'start': self.search_args.get('_start_week'), #'2019-05-01',
+            'end': self.search_args.get('_end_week') , # '2019-06-10'
+        }
+        #sql="""SELECT  SUM([BetAmount])  AS BetAmount, DATENAME(WEEK, StartTime) AS Week, YEAR(StartTime) AS Year
+            #FROM    [dbo].[TB_TrendStatistics] WITH ( NOLOCK )
+            #WHERE   [StartTime] BETWEEN '%(start)s' AND '%(end)s'
+            #GROUP BY DATENAME(WEEK, StartTime), YEAR(StartTime)
+            #ORDER BY Year , Week;""" % sql_args
+        sql = """
+        SELECT [Year],[Week],[a].[BetAmount]  FROM (
+SELECT  SUM([BetAmount])  AS BetAmount, DATENAME(WEEK, StartTime) AS [Week], YEAR(StartTime) AS [Year],MIN([StartTime]) AS StartTime
+FROM    [dbo].[TB_TrendStatistics] WITH ( NOLOCK )
+WHERE   [StartTime] BETWEEN '%(start)s' AND '%(end)s'
+GROUP BY DATENAME(WEEK, StartTime), YEAR(StartTime))a ORDER BY StartTime asc
+        """% sql_args
+        
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql)
+            for row in cursor:
+                dc = {}
+                for index, head in enumerate(cursor.description):
+                    dc[head[0]] = row[index]
+                data_rows.append(dc)
+        return data_rows
+    def getRowFilters(self):
+        return [
+            {'name':'week','label':'周','editor':'com-filter-week-range'}
+        ]
+
+ 
+class MarketAnalysis(PlainTable):
+    def get_heads(self):
+        return [
+            {'name':'SportNameZH','label':'体育类型','editor':'com-table-span'},
+            {'name':'OddsKindType','label':'盘口','editor':'com-table-span'},
+            {'name':'MarketNameZH','label':'玩法','editor':'com-table-span','width':120},
+            {'name':'MarketID','label':'玩法ID','editor':'com-table-span'},
+            {'name':'TicketCount','label':'注单数','editor':'com-table-span'},
+            {'name':'TotalBetAmount','label':'总投注额','editor':'com-table-span','width':130},
+            {'name':'TotalBetOutcome','label':'派奖额','editor':'com-table-span','width':120},
+            {'name':'BetUserCount','label':'投注人数','editor':'com-table-span'},
+            {'name':'AVGBetAmount','label':'平均注单额','editor':'com-table-span','width':140},
+            {'name':'AVGBetCount','label':'平均注单数','editor':'com-table-span','width':140},
+            {'name':'Profit','label':'毛利','editor':'com-table-span','width':150}
+        ]
+    
+    @classmethod
+    def clean_search_args(cls, search_args):
+        today = timezone.now()
+        if not search_args.get('_start_time') or not search_args.get('_end_time'):
+            sp = timezone.timedelta(days=7)
+            last = today - sp
+            def_start = last.strftime('%Y-%m-%d %H:%M:%S')
+            def_end = today.strftime('%Y-%m-%d %H:%M:%S')                
+            search_args['_start_time'] = search_args.get('_start_time') or def_start
+            search_args['_end_time'] = search_args.get('_end_time') or def_end
+  
+        return search_args  
+    
+    def get_rows(self):
+        data_rows = []
+        try:
+            accountid = int ( self.search_args.get('accountid') )
+        except :
+            accountid = 'null'
+            
+        sql_args = {
+            'start': self.search_args.get('_start_time'), #'2019-05-01',
+            'end': self.search_args.get('_end_time') , # '2019-06-10'
+            'accountid':accountid
+        }
+        sql = r"EXEC SP_Report_MarketAnalysis '%(start)s','%(end)s',%(accountid)s" \
+            % sql_args
+        
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql)
+            for row in cursor:
+                dc = {}
+                for index, head in enumerate(cursor.description):
+                    dc[head[0]] = row[index]
+                data_rows.append(dc)
+        return data_rows
+    
+    def getRowFilters(self):
+        return [
+            {'name':'accountid','label':'账号ID','editor':'com-filter-text'},
+            {'name':'time','label':'时间','editor':'com-filter-datetime-range'}
+        ]
+
+ 
+class TournamentAnalysis(PlainTable):
+    @classmethod
+    def clean_search_args(cls, search_args):
+        today = timezone.now()
+        if not search_args.get('_start_time') or not search_args.get('_end_time'):
+            sp = timezone.timedelta(days=7)
+            last = today - sp
+            def_start = last.strftime('%Y-%m-%d %H:%M:%S')
+            def_end = today.strftime('%Y-%m-%d %H:%M:%S')                
+            search_args['_start_time'] = search_args.get('_start_time') or def_start
+            search_args['_end_time'] = search_args.get('_end_time') or def_end
+        search_args [ 'sportID'] = search_args.get('sportID') or 1
+        return search_args  
+    
+    def get_heads(self):
+        return [
+            {'name':'TournamentID','label':'联赛ID','editor':'com-table-span'},
+            {'name':'TournamentNameZH','label':'联赛名','editor':'com-table-span','width':160},
+            {'name':'TotalNum','label':'总场次','editor':'com-table-span'},
+            {'name':'LiveNum','label':'走地场次','editor':'com-table-span'},
+            {'name':'TotalBetAmount','label':'总投注额','editor':'com-table-span'},
+            {'name':'TotalBetOutcome','label':'总派奖','editor':'com-table-span'},
+            {'name':'TotalBonus','label':'总反水','editor':'com-table-span'},
+            {'name':'OrderCount','label':'注单数','editor':'com-table-span'},
+            {'name':'UserCount','label':'用户数','editor':'com-table-span'},
+        ]
+    def get_rows(self):
+        data_rows = []
+        
+        sort_str = self.search_args.get('_sort')
+        if sort_str:
+            sort = sort_str.lstrip('-')
+            sortWay = 'DESC' if sort_str.startswith('-') else 'ASC'
+        else:
+            sort='NULL'
+            sortWay='NULL'
+            
+        sql_args = {
+            'start': self.search_args.get('_start_time'), #'2019-05-01',
+            'end': self.search_args.get('_end_time') , # '2019-06-10'
+            'sportID':self.search_args.get('sportID'),
+            'sort': sort,
+            'sortWay':sortWay
+        }
+        sql = r"EXEC SP_Report_TournamentAnalysis '%(start)s','%(end)s',%(sportID)s,%%s,%(sort)s,%(sortWay)s" \
+            % sql_args
+        
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql,[self.search_args.get('nickname'),])
+            for row in cursor:
+                dc = {}
+                for index, head in enumerate(cursor.description):
+                    dc[head[0]] = row[index]
+                data_rows.append(dc)
+        return data_rows
+    
+    def getRowFilters(self):
+        return [
+            {'name':'nickname','label':'用户昵称','editor':'com-filter-text'},
+            {'name':'sportID','label':'体育类型','editor':'com-filter-select','required':True,'options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
+            {'name':'time','label':'时间','editor':'com-filter-datetime-range'}
+        ]
+    
+    def getRowSort(self):
+        return   {
+            'sortable': ['TotalNum','LiveNum','TotalBetAmount','TotalBetOutcome','TotalBonus','OrderCount','UserCount'],
+        } 
+ 
 
 director.update({
     'WinbetRatio':WinbetRatio,
+    'LoginNumer':LoginNumer,
+    'BetCondition':BetCondition,
+    'BetWeekChart':BetWeekChart,
+    'MarketAnalysis':MarketAnalysis,
+    'TournamentAnalysis':TournamentAnalysis,
 })
 
 page_dc.update({

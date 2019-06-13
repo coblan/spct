@@ -2729,7 +2729,8 @@ class TbTrendstatistics(models.Model):
     ebankamount = models.DecimalField(db_column='EbankAmount', max_digits=18, decimal_places=4,)  # Field name made lowercase.
     backendamount = models.DecimalField(db_column='BackendAmount', max_digits=18, decimal_places=4,verbose_name='礼金')  # Field name made lowercase.
     userprofit = models.DecimalField(db_column='UserProfit', max_digits=18, decimal_places=4,verbose_name='亏盈')  # Field name made lowercase.
-    starttime = models.DateTimeField(db_column='StartTime',verbose_name='时间')  # Field name made lowercase.
+    starttime = models.DateField(db_column='StartTime',verbose_name='时间',help_text='db 是 Datetime')  # Field name made lowercase.
+    #starttime = models.DateTimeField(db_column='StartTime',verbose_name='时间')  # Field name made lowercase.
     endtime = models.DateTimeField(db_column='EndTime')  # Field name made lowercase.
     activityamount = models.DecimalField(db_column='ActivityAmount', max_digits=18, decimal_places=4,verbose_name='活动+调整')  # Field name made lowercase.
     rechargeamount = models.DecimalField(db_column='RechargeAmount', max_digits=18, decimal_places=4,verbose_name='充值金额')  # Field name made lowercase.

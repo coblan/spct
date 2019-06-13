@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 44);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -532,7 +532,7 @@ function _uuid() {
 
 /***/ }),
 
-/***/ 30:
+/***/ 33:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -547,13 +547,13 @@ exports.push([module.i, ".com-shouchun {\n  background-color: white;\n  padding:
 
 /***/ }),
 
-/***/ 35:
+/***/ 39:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(30);
+var content = __webpack_require__(33);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -574,31 +574,13 @@ if(false) {
 
 /***/ }),
 
-/***/ 39:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _shou_cun = __webpack_require__(4);
-
-var shou_cun = _interopRequireWildcard(_shou_cun);
-
-var _network = __webpack_require__(3);
-
-var network = _interopRequireWildcard(_network);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-/***/ }),
-
 /***/ 4:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(35);
+__webpack_require__(39);
 
 Vue.component('com-shouchun', {
     template: '<div class="com-shouchun">\n\n    <!--<button @click="update_data()">\u83B7\u53D6</button>-->\n\n    <table>\n    <tr v-for="row in rows">\n        <td v-for="head in heads"  :class="head.scls">\n            <div   v-if="row[head.name]" v-text="head.top_label"></div>\n            <div v-text="row[head.name]"></div>\n        </td>\n        <td class="mybtn-col">\n            <div :class="[\'mybtn\',{disabled:!row.submitable}]" @click="submit(row)"><span class="center-vh" style="white-space: nowrap" v-text="action_label(row)"></span></div>\n        </td>\n    </tr>\n    </table>\n    </div>',
@@ -682,6 +664,24 @@ Vue.component('com-shouchun', {
         }
     }
 });
+
+/***/ }),
+
+/***/ 44:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _shou_cun = __webpack_require__(4);
+
+var shou_cun = _interopRequireWildcard(_shou_cun);
+
+var _network = __webpack_require__(3);
+
+var network = _interopRequireWildcard(_network);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ })
 

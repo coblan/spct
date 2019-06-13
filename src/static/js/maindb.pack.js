@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 40);
+/******/ 	return __webpack_require__(__webpack_require__.s = 45);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -520,7 +520,24 @@ window.banner_logic = banner_logic;
 "use strict";
 
 
-__webpack_require__(36);
+var _bet_abstract_chart = __webpack_require__(20);
+
+var bet_abstract_chart = _interopRequireWildcard(_bet_abstract_chart);
+
+var _bet_week_chart = __webpack_require__(21);
+
+var bet_week_chart = _interopRequireWildcard(_bet_week_chart);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(40);
 
 var com_tab_special_bet_value = {
     props: ['tab_head', 'par_row'],
@@ -652,20 +669,20 @@ var com_tab_special_bet_value = {
 Vue.component('com-tab-special-bet-value', com_tab_special_bet_value);
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _bar_chart = __webpack_require__(19);
+var _bar_chart = __webpack_require__(22);
 
 var bar_chart = _interopRequireWildcard(_bar_chart);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -710,20 +727,20 @@ var help_logic = {
 window.help_logic = help_logic;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _block_tree_menu = __webpack_require__(29);
+var _block_tree_menu = __webpack_require__(32);
 
 var block_tree_menu = _interopRequireWildcard(_block_tree_menu);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1079,7 +1096,7 @@ window.produce_match_outcome = produce_match_outcome;
 window.produceMatchOutcomePanel = produceMatchOutcomePanel;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1133,7 +1150,7 @@ var maxpayout = exports.maxpayout = {
 window.maxpayout_form_logic = maxpayout;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1178,51 +1195,51 @@ var notice_logic = {
 window.notice_logic = notice_logic;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _turnover = __webpack_require__(28);
+var _turnover = __webpack_require__(31);
 
 var turnover = _interopRequireWildcard(_turnover);
 
-var _multi_line = __webpack_require__(22);
+var _multi_line = __webpack_require__(25);
 
 var multi_line = _interopRequireWildcard(_multi_line);
 
-var _multi_line_edit = __webpack_require__(23);
+var _multi_line_edit = __webpack_require__(26);
 
 var multi_line_edit = _interopRequireWildcard(_multi_line_edit);
 
-var _switch_checkbox = __webpack_require__(27);
+var _switch_checkbox = __webpack_require__(30);
 
 var switch_checkbox = _interopRequireWildcard(_switch_checkbox);
 
-var _plus = __webpack_require__(24);
+var _plus = __webpack_require__(27);
 
 var plus_editor = _interopRequireWildcard(_plus);
 
-var _status = __webpack_require__(26);
+var _status = __webpack_require__(29);
 
 var status_editor = _interopRequireWildcard(_status);
 
-var _specialvalue_turnover = __webpack_require__(25);
+var _specialvalue_turnover = __webpack_require__(28);
 
 var specialvalue_turnover = _interopRequireWildcard(_specialvalue_turnover);
 
-var _favorite = __webpack_require__(21);
+var _favorite = __webpack_require__(24);
 
 var com_favorite = _interopRequireWildcard(_favorite);
 
-var _balance = __webpack_require__(20);
+var _balance = __webpack_require__(23);
 
 var com_balance = _interopRequireWildcard(_balance);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(37);
+__webpack_require__(41);
 
 var ajax_table = {
     props: ['tab_head'], //['heads','row_filters','kw'],
@@ -1316,7 +1333,7 @@ var get_data = {
 };
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1362,7 +1379,7 @@ var oddstypegroup_logic = {
 window.oddstypegroup_logic = oddstypegroup_logic;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1418,7 +1435,7 @@ var ping_lue = {
 Vue.component('com-field-pinglue', ping_lue);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1484,13 +1501,13 @@ $.validator.config({
 });
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(32);
+var content = __webpack_require__(35);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1510,7 +1527,278 @@ if(false) {
 }
 
 /***/ }),
-/* 19 */
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(42);
+
+var bet_chart = {
+    template: '<div class="live-bet-chart">\n        <div class="mychart betusernum" ></div>\n          <div class="mychart betamount" ></div>\n        <div class="mychart betnum" ></div>\n\n        <div class="mychart userprofit" ></div>\n    </div>',
+    data: function data() {
+        return {};
+    },
+    beforeCreate: function beforeCreate() {
+        this.parStore = ex.vueParStore(this);
+    },
+    mounted: function mounted() {
+        //this.draw1()
+    },
+
+    computed: {
+        rows: function rows() {
+            return this.parStore.rows;
+        }
+    },
+
+    watch: {
+        rows: function rows() {
+            this.draw1();
+            this.draw_betnum();
+            this.draw_betamount();
+            this.draw_betoutcome();
+        }
+    },
+    methods: {
+        draw1: function draw1() {
+            var myChart = echarts.init($(this.$el).find('.betusernum')[0]);
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {},
+                legend: {
+                    data: ['用户数']
+                },
+                xAxis: {
+                    data: this.parStore.rows.map(function (item) {
+                        return item.starttime;
+                    }).reverse()
+                    //data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                },
+                yAxis: {},
+                series: [{
+                    name: '用户数',
+                    type: 'bar',
+                    data: this.parStore.rows.map(function (item) {
+                        return item.betusernum;
+                    }).reverse()
+                    //data: [5, 20, 36, 10, 10, 20]
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        },
+        draw_betnum: function draw_betnum() {
+            var myChart = echarts.init($(this.$el).find('.betnum')[0]);
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {},
+                legend: {
+                    data: ['注单量', '注单金额']
+                },
+                xAxis: {
+                    data: this.parStore.rows.map(function (item) {
+                        return item.starttime;
+                    }).reverse()
+                    //data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                },
+                yAxis: [{
+                    type: 'value',
+                    name: '注单量'
+                }, {
+                    type: 'value',
+                    name: '注单金额'
+                }],
+                series: [{
+                    name: '注单量',
+                    type: 'bar',
+                    yAxisIndex: 0,
+                    data: this.parStore.rows.map(function (item) {
+                        return item.betnum;
+                    }).reverse()
+                    //data: [5, 20, 36, 10, 10, 20]
+                }, {
+                    name: '注单金额',
+                    type: 'line',
+                    yAxisIndex: 1,
+                    data: this.parStore.rows.map(function (item) {
+                        return item.betamount;
+                    }).reverse()
+                    //data: [5, 20, 36, 10, 10, 20]
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        },
+        draw_betamount: function draw_betamount() {
+            var myChart = echarts.init($(this.$el).find('.betamount')[0]);
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {},
+                legend: {
+                    data: ['投注金额', '派奖金额']
+                },
+                xAxis: {
+                    data: this.parStore.rows.map(function (item) {
+                        return item.starttime;
+                    }).reverse()
+                    //data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                },
+                yAxis: {},
+                series: [{
+                    name: '投注金额',
+                    type: 'bar',
+                    data: this.parStore.rows.map(function (item) {
+                        return item.betamount;
+                    }).reverse()
+                    //data: [5, 20, 36, 10, 10, 20]
+                }, {
+                    name: '派奖金额',
+                    type: 'bar',
+                    data: this.parStore.rows.map(function (item) {
+                        return item.betoutcome;
+                    }).reverse()
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        },
+        draw_betoutcome: function draw_betoutcome() {
+            var myChart = echarts.init($(this.$el).find('.userprofit')[0]);
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {},
+                legend: {
+                    data: ['平台毛利']
+                },
+                xAxis: {
+                    data: this.parStore.rows.map(function (item) {
+                        return item.starttime;
+                    }).reverse()
+                    //data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+                },
+                yAxis: {},
+                series: [{
+                    name: '平台毛利',
+                    type: 'bar',
+                    data: this.parStore.rows.map(function (item) {
+                        return item.userprofit;
+                    }).reverse()
+                    //data: [5, 20, 36, 10, 10, 20]
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+    }
+};
+
+Vue.component('com-bet-chart', function (resolve, reject) {
+    ex.load_js(js_config.js_lib.echarts).then(function () {
+        resolve(bet_chart);
+    });
+});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var bet_chart = {
+    template: '<div class="live-bet-week-chart" style="margin: 20px">\n        <div class="mychart betweek" style="width: 700px;height: 500px;"></div>\n    </div>',
+    data: function data() {
+        return {};
+    },
+    beforeCreate: function beforeCreate() {
+        this.parStore = ex.vueParStore(this);
+    },
+    mounted: function mounted() {
+        //this.draw1()
+    },
+
+    computed: {
+        rows: function rows() {
+            return this.parStore.rows;
+        }
+    },
+
+    watch: {
+        rows: function rows() {
+            this.draw_betweek();
+        }
+    },
+    methods: {
+        draw_betweek: function draw_betweek() {
+            var myChart = echarts.init($(this.$el).find('.betweek')[0]);
+
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {},
+                legend: {
+                    data: ['投注额']
+                },
+                xAxis: {
+                    data: this.parStore.rows.map(function (item) {
+                        return item.Year + '/' + item.Week;
+                    })
+                },
+                yAxis: {},
+                axisTick: {
+                    inside: true
+                },
+                grid: {
+                    left: 100
+                },
+                series: [{
+                    name: '投注额',
+                    type: 'bar',
+                    data: this.parStore.rows.map(function (item) {
+                        return item.BetAmount;
+                    })
+                    //data: [5, 20, 36, 10, 10, 20]
+                }]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+    }
+};
+
+Vue.component('com-bet-week-chart', function (resolve, reject) {
+    ex.load_js(js_config.js_lib.echarts).then(function () {
+        resolve(bet_chart);
+    });
+});
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1574,7 +1862,7 @@ Vue.component('com-bar-chart', {
 });
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1594,7 +1882,7 @@ var bool_shower = {
 Vue.component('com-odds-balance', bool_shower);
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1618,7 +1906,7 @@ var bool_shower = {
 Vue.component('com-odds-favorite', bool_shower);
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1641,7 +1929,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line', odds_multi_line);
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1684,7 +1972,7 @@ var odds_multi_line = {
 Vue.component('com-odds-multi-line-edit', odds_multi_line);
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1710,7 +1998,7 @@ var odds_multi_line = {
 Vue.component('com-odds-plus', odds_multi_line);
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1760,7 +2048,7 @@ var odds_multi_line = {
 Vue.component('com-odds-special-turnover', odds_multi_line);
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1801,7 +2089,7 @@ Vue.component('com-odds-status-check-btn', {
 });
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1822,7 +2110,7 @@ var odds_multi_line = {
 Vue.component('com-odds-switch-checkbox', odds_multi_line);
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1838,13 +2126,13 @@ var bool_shower = {
 Vue.component('com-odds-turnover', bool_shower);
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(38);
+__webpack_require__(43);
 
 var report_block_tree_menu = {
     props: ['ctx'],
@@ -1867,8 +2155,8 @@ Vue.component('com-live-block-tree-menu', report_block_tree_menu);
 window.livepage_report_block_tree_menu;
 
 /***/ }),
-/* 30 */,
-/* 31 */
+/* 33 */,
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1882,7 +2170,7 @@ exports.push([module.i, ".com_tab_special_bet_value {\n  display: flex;\n  flex-
 
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1896,7 +2184,7 @@ exports.push([module.i, ".home-page .my-panel {\n  background-color: white;\n  p
 
 
 /***/ }),
-/* 33 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1910,7 +2198,21 @@ exports.push([module.i, ".odds input::-webkit-outer-spin-button,\n.odds input::-
 
 
 /***/ }),
-/* 34 */
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".live-bet-chart .mychart {\n  padding: 10px;\n  background-color: #fff;\n  display: inline-block;\n  width: 500px;\n  height: 350px;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -1924,14 +2226,14 @@ exports.push([module.i, ".report-block-tree-menu {\n  padding: 30px;\n}\n.report
 
 
 /***/ }),
-/* 35 */,
-/* 36 */
+/* 39 */,
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(31);
+var content = __webpack_require__(34);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1951,13 +2253,13 @@ if(false) {
 }
 
 /***/ }),
-/* 37 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(33);
+var content = __webpack_require__(36);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1977,13 +2279,39 @@ if(false) {
 }
 
 /***/ }),
-/* 38 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(34);
+var content = __webpack_require__(37);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../coblan/webcode/node_modules/stylus-loader/index.js!./bet_abstract_chart.styl", function() {
+			var newContent = require("!!../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../coblan/webcode/node_modules/stylus-loader/index.js!./bet_abstract_chart.styl");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(38);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -2003,14 +2331,14 @@ if(false) {
 }
 
 /***/ }),
-/* 39 */,
-/* 40 */
+/* 44 */,
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _match = __webpack_require__(11);
+var _match = __webpack_require__(12);
 
 var match = _interopRequireWildcard(_match);
 
@@ -2018,11 +2346,11 @@ var _app_pkg = __webpack_require__(5);
 
 var app_pkg = _interopRequireWildcard(_app_pkg);
 
-var _help = __webpack_require__(9);
+var _help = __webpack_require__(10);
 
 var help_logic = _interopRequireWildcard(_help);
 
-var _notice = __webpack_require__(13);
+var _notice = __webpack_require__(14);
 
 var notice_logic = _interopRequireWildcard(_notice);
 
@@ -2034,41 +2362,45 @@ var _banner = __webpack_require__(6);
 
 var banner_logic = _interopRequireWildcard(_banner);
 
-var _odds = __webpack_require__(14);
+var _odds = __webpack_require__(15);
 
 var odds_editor = _interopRequireWildcard(_odds);
 
-var _com_tab_special_bet_value = __webpack_require__(7);
+var _com_tab_special_bet_value = __webpack_require__(8);
 
 var com_tab_special_bet_value = _interopRequireWildcard(_com_tab_special_bet_value);
 
-var _oddstypegroup_logic = __webpack_require__(15);
+var _oddstypegroup_logic = __webpack_require__(16);
 
 var oddstypegroup_logic = _interopRequireWildcard(_oddstypegroup_logic);
 
-var _maxpayout = __webpack_require__(12);
+var _maxpayout = __webpack_require__(13);
 
 var maxpayout = _interopRequireWildcard(_maxpayout);
 
-var _validator_rule = __webpack_require__(17);
+var _validator_rule = __webpack_require__(18);
 
 var validator = _interopRequireWildcard(_validator_rule);
 
-var _parameter = __webpack_require__(16);
+var _parameter = __webpack_require__(17);
 
 var parameter = _interopRequireWildcard(_parameter);
 
-var _main = __webpack_require__(8);
+var _main = __webpack_require__(9);
 
 var coms_main = _interopRequireWildcard(_main);
 
-var _main2 = __webpack_require__(10);
+var _main2 = __webpack_require__(11);
 
 var livepage_main = _interopRequireWildcard(_main2);
 
+var _main3 = __webpack_require__(7);
+
+var chart_main = _interopRequireWildcard(_main3);
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-__webpack_require__(18);
+__webpack_require__(19);
 
 //table mix
 
