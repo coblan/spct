@@ -117,7 +117,7 @@ class LeagueForm(ModelFields):
         if head['name']=='weight':
             head['fv_rule']='range(0.001~500)'
             
-        if head['name'] == 'oddsadjustment':
+        if head['name'] in [ 'oddsadjustment','oddsadjustmax']:
             head['fv_rule']='range(0~0.99);digit(2)'
             #head['fv_rule']='digit(2);range(0~1,false)'
         return head

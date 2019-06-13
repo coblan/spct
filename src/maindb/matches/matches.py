@@ -407,7 +407,7 @@ class MatchForm(ModelFields):
     def dict_head(self, head):
         if head['name'] == 'matchid':
             head['readonly'] = True
-        if head['name'] == 'oddsadjustment':
+        if head['name'] in [ 'oddsadjustment','oddsadjustmax']:
             head['fv_rule']='range(0~0.99);digit(2)'
             
         return head
