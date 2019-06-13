@@ -437,7 +437,7 @@ class MatchForm(ModelFields):
         self.updateMongo()
         self.proc_redis()
         
-        if 'oddsadjustment' in self.changed_data or 'baseticketeamout' in self.changed_data:
+        if any([x in self.changed_data for x in ['oddsadjustment','baseticketeamout','oddsadjustmax'] ] ): 
             dc ={
                 'Type':2,
                 'Ids':[self.instance.matchid]

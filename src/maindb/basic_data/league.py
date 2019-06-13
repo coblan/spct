@@ -136,7 +136,7 @@ class LeagueForm(ModelFields):
                     'Backend:league:closelivebet:%(tournamentid)s' % {'tournamentid': self.instance.tournamentid})
             else:
                 redisInst.set('Backend:league:closelivebet:%s' % self.instance.tournamentid, 1)
-        if 'oddsadjustment' in self.changed_data or 'baseticketeamout' in self.changed_data:
+        if any([x in self.changed_data for x in ['oddsadjustment','baseticketeamout','oddsadjustmax'] ] ): 
             dc ={
                 'Type':1,
                 'Ids':[self.instance.tournamentid]
