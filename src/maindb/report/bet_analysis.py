@@ -339,8 +339,8 @@ class TournamentAnalysis(PlainTable):
         
         sort_str = self.search_args.get('_sort')
         if sort_str:
-            sort = sort_str.lstrip('-')
-            sortWay = 'DESC' if sort_str.startswith('-') else 'ASC'
+            sort = "'%s'"%sort_str.lstrip('-')
+            sortWay = "'DESC'" if sort_str.startswith('-') else "'ASC'"
         else:
             sort='NULL'
             sortWay='NULL'

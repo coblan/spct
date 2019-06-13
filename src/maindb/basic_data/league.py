@@ -19,7 +19,8 @@ class League(TablePage):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
-        fields_sort = ['sport','tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',]
+        fields_sort = ['sport','tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',
+                       'oddsadjustment','oddsadjustmax','baseticketeamout']
 
         # hide_fields = ['tournamentid']
 
@@ -34,6 +35,9 @@ class League(TablePage):
                 'tournamentname': 250,
                 'createtime': 120,
                 'typegroupswitch': 300,
+                'oddsadjustment' :100,
+                'oddsadjustmax' :120,
+                'baseticketeamout':100,
             }
             if head['name'] in dc:
                 head['width'] = dc.get(head['name'])

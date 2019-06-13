@@ -109,7 +109,8 @@ class MatchsPage(TablePage):
         model = TbMatch
         exclude = []  # 'ishidden', 'iscloseliveodds'
         fields_sort = ['sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
-                       'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous']
+                       'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
+                       'oddsadjustment','oddsadjustmax','baseticketeamout']
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'},
@@ -298,7 +299,12 @@ class MatchsPage(TablePage):
                 'currentperiodstart': 150,
                 'maxsinglepayout': 120,
                 'marketstatus': 70,
-                'iscloseliveodds': 70
+                'iscloseliveodds': 70,
+                
+                'oddsadjustment' :100,
+                'oddsadjustmax' :120,
+                'baseticketeamout':100,
+                
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -388,7 +394,7 @@ class MatchForm(ModelFields):
         exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
                    'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', ]
 
-    field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','weight','ticketdelay','oddsadjustment','baseticketeamout']
+    field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','weight','ticketdelay','oddsadjustment','oddsadjustmax','baseticketeamout' ]
 
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('matchid'):
