@@ -92,13 +92,13 @@ class WithdrawPage(TablePage):
                     })
                     })()''',
                     'editor': 'com-op-btn',
-                    'label': '审核异常单',
+                    'label': '审核异常单/重发',
                     'field': 'status',
                     'value': 1,
                     'row_match': 'one_row_match',
                     'match_field': 'status',
-                    'match_values': [4],
-                    'match_msg': '只能选择状态为异常的订单！',
+                    'match_values': [3,4],
+                    'match_msg': '只能选择状态为异常/失败的订单！',
                     'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(),
                     'visible': 'status' in self.permit.changeable_fields(), },
                 {
