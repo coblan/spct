@@ -104,7 +104,7 @@ PACKAGE_NAME = 'com.jingbo.DQGuess'
 
 BET_DATA_SOURCE=2
 
-
+STATIC_DICT = 'D:\work\sportscenter\src\index.py'
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
 

@@ -41,6 +41,8 @@ class AgentUser(TablePage):
                 #search_args['_start_createtime'] = search_args.get('_start_createtime') or def_start
                 #search_args['_end_createtime'] = search_args.get('_end_createtime') or def_end
                 search_args['createtime'] = today.strftime('%Y-%m')
+            if not search_args.get('accounttype'):
+                search_args['accounttype'] = 0
             return search_args
         
         
@@ -57,7 +59,7 @@ class AgentUser(TablePage):
             
             def getExtraHead(self):
                 return [
-                    {'name':'accounttype','label':'用户类型','editor':'com-filter-select','options':[
+                    {'name':'accounttype','label':'用户类型','editor':'com-filter-select','required':True,'options':[
                         #{'value':'NULL','label':'全部'},
                         {'value':'0','label':'普通'},
                         {'value':'1','label':'内部'}
@@ -128,7 +130,7 @@ class AgentUser(TablePage):
             createdate = timezone.datetime.strptime( self.search_args.get('createtime'),'%Y-%m')
             start_date = createdate.strftime('%Y-%m-%d')
             end_date = (createdate+ relativedelta(months=1) ).strftime('%Y-%m-%d')
-            AccountType = self.search_args.get('accounttype','NULL')
+            AccountType = self.search_args.get('accounttype')
             sql_args = {
                 'AccountID': par,
                 'PageIndex': self.search_args.get('_page', 1),
