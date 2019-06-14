@@ -191,7 +191,7 @@ class TicketMasterPage(TablePage):
                  .then(res=>{
                     scope.ps.selected.forEach(row=>{row.audit=0});
                     cfg.show_load();
-                    return ex.director_call("d.save_rows",{rows:scope.ps.selected})
+                    return ex.director_call("save_rows",{rows:scope.ps.selected})
                  })
                  .then(res=>{return cfg.showMsg("操作成功!")})
                  .then((res)=>{scope.ps.search()})
@@ -230,20 +230,20 @@ class TicketMasterPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
-            names = ['status', 'winbet','accountid__accounttype','_need_audit']
+            names = ['status', 'winbet','accountid__accounttype']
             
             def getExtraHead(self):
                 return [
                     {'name':'accountid__accounttype','label':'账号类型','editor':'com-filter-select',
                      'options':[{'value':value,'label':label} for value,label in status_code.ACCOUNT_TYPE]},
-                    {'name':'_need_audit','label':'正常/异常','editor':'com-filter-select',
+                    {'name':'meta_need_audit','label':'正常/异常','editor':'com-filter-select',
                      'options':[{'value':'0','label':'正常注单'},{'value':'1','label':'异常注单'}]},
                 ]
             
-            def clean_search_args(self, search_args):
-                if '_need_audit' in search_args:
-                    search_args.pop('_need_audit')
-                return search_args
+            #def clean_search_args(self, search_args):
+                #if '_need_audit' in search_args:
+                    #search_args.pop('_need_audit')
+                #return search_args
             
             def clean_query(self, query): 
                 search_args = self.kw.get('search_args')
@@ -251,9 +251,9 @@ class TicketMasterPage(TablePage):
                     query= query.filter(status = 2)
                 if search_args.get('accountid__accounttype',None) !=None:
                     query= query.filter(accountid__accounttype=search_args.get('accountid__accounttype'))
-                if search_args.get('_need_audit') == '1':
+                if search_args.get('meta_need_audit') == '1':
                     query= query.exclude(audit = 0)
-                elif search_args.get('_need_audit') == '0':
+                elif search_args.get('meta_need_audit') == '0':
                     query= query.filter(audit = 0)
                 return query
 
