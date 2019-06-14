@@ -46,7 +46,7 @@ DATABASES = {
             #},        
        #} ,  
     'Sports': {
-        'NAME': 'Sports_20190411_Part1', #'Sports',#'Sports',
+        'NAME': 'Sports_20190610_Part1', #'Sports',#'Sports',
         'ENGINE': 'sql_server.pyodbc',
         #'HOST': '192.168.40.79,1433',
         'HOST':'192.168.40.6,1433',
