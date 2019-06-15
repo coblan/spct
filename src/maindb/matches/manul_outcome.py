@@ -205,8 +205,13 @@ outcome_header = {
                           ['home_40_5','away_40_5'],
                           ],
             'fields_group':[
-                {'name':'huji','label':'基本控制','heads':['has_half1','has_half2','has_overtime','has_penalty']},
-            ] + fields_group_109(),
+                    {'name':'huji','label':'基本控制','heads':['has_half1','has_half2','has_overtime','has_penalty']},
+                    {'name':'huji','label':'比分','heads':['home_6_1','away_6_1','home_100_1','away_100_1','home_40_1','away_40_1','home_50_1','away_50_1']},
+                    {'name':'huji','label':'角球','heads':['home_6_5','away_6_5','home_100_5','away_100_5','home_40_5','away_40_5']},
+                ],
+            #'fields_group':[
+                #{'name':'huji','label':'基本控制','heads':['has_half1','has_half2','has_overtime','has_penalty']},
+            #] + fields_group_109(),
               
             'ops_loc':'down',
             'ops':pop_edit_ops,

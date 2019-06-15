@@ -1355,6 +1355,16 @@ var obj_control = exports.obj_control = {
             }
         }
         return true;
+    },
+    objContain: function objContain(par, child) {
+        var is_contain = true;
+        for (var k in child) {
+            if (child[k] != par[k]) {
+                is_contain = false;
+                break;
+            }
+        }
+        return is_contain;
     }
 };
 
@@ -2120,11 +2130,21 @@ var vuetool = exports.vuetool = {
         return rt;
     },
     vueBroadcase: function vueBroadcase() {},
-    vueParStore: function vueParStore(self) {
+    vueParStore: function vueParStore(self, filter) {
         var parent = self.$parent;
         while (parent) {
             if (parent.childStore) {
-                return parent.childStore;
+                if (filter) {
+                    if (typeof filter == 'function' && filter(parent)) {
+                        return parent.childStore;
+                    } else {
+                        if (ex.objContain(parent, filter)) {
+                            return parent.childStore;
+                        }
+                    }
+                } else {
+                    return parent.childStore;
+                }
             } else {
                 parent = parent.$parent;
             }
