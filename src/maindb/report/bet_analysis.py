@@ -37,7 +37,9 @@ class BetAnalysisPage(object):
                     {'name':'aaa','label':'投注概况','open_editor':'live_table_type','open_ctx': chart_ctx},
                     {'name':'cc','label':'投注总额-周推移','open_editor':'live_table_type','open_ctx':bet_week_chart},
                     {'name':'dd','label':'玩法统计','open_editor':'live_table','open_ctx':MarketAnalysis().get_head_context() },
-                    {'name':'TournamentAnalysis','label':'联赛统计', 'open_editor':'live_table','open_ctx':TournamentAnalysis().get_head_context()  }
+                    {'name':'TournamentAnalysis','label':'联赛统计', 'open_editor':'live_table','open_ctx':TournamentAnalysis().get_head_context()  },
+                    {'name':'ReportTicketState','label':'投注单状态分析', 'open_editor':'live_table','open_ctx':ReportTicketState().get_head_context()  }
+                    #{'name':'ReportTicketState','label':'投注单状态汇总', 'open_editor':'live_table','open_ctx':ReportTicketState().get_head_context()  }
                 ]
             } 
         }
@@ -376,6 +378,117 @@ class TournamentAnalysis(PlainTable):
             'sortable': ['TotalNum','LiveNum','TotalBetAmount','TotalBetOutcome','TotalBonus','OrderCount','UserCount'],
         } 
  
+class ReportTicketState(PlainTable):
+
+    @classmethod
+    def clean_search_args(cls, search_args):
+        today = timezone.now()
+        if not search_args.get('_start_time') or not search_args.get('_end_time'):
+            sp = timezone.timedelta(days=10)
+            last = today - sp
+            def_start = last.strftime('%Y-%m-%d')
+            def_end = today.strftime('%Y-%m-%d')                
+            search_args['_start_time'] = search_args.get('_start_time') or def_start
+            search_args['_end_time'] = search_args.get('_end_time') or def_end
+  
+        return search_args 
+    
+    def getRowFilters(self):
+        return [
+             {'name':'accountid','label':'账号ID','editor':'com-filter-text'},
+             {'name':'sportID','label':'体育类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
+            {'name':'time','label':'日期','editor':'com-filter-date-range'}
+        ]
+    
+    def get_operation(self):
+        return [
+            {'name':'pp','label':'jjj','editor':'com-table-op-group-check','init_value':['ticketmaster_count','ticketmaster_amount','ticketmaster_count_ratio','ticketmaster_amount_ratio'],
+             'action':'Vue.set(scope.ps.search_args,"showed_col",scope.value)','options':[
+                {'value':'ticketmaster_count','label':'注单数量'},
+                {'value':'ticketmaster_amount','label':'注单金额'},
+                {'value':'ticketmaster_count_ratio','label':'注单数量占比'},
+                {'value':'ticketmaster_amount_ratio','label':'注单金额占比'},
+            ]}
+        ]
+    
+    def get_heads(self):
+        return [
+            {'name':'CreateDate','label':'日期','editor':'com-table-span','fixed':True,'width':100},
+            {'name':'Sport','label':'体育类型','editor':'com-table-span','fixed':True},
+            {'name':'UserCount','label':'不重复投注人数','editor':'com-table-span','width':130},
+            
+            {'name':'ticketmaster_count','label':'注单数量','style':'.el-table thead.is-group th.ticketmaster_count-col{background-color:#3d8ebc;color:white;text-align:center}','class':'ticketmaster_count-col',
+             'children':['SumCount','EarlyCount','LiveCount','MixtureCount','SingleCount','ParlayCount'],
+             'show':' (!scope.ps.search_args.showed_col) || scope.ps.search_args.showed_col.indexOf(scope.head.name) != -1'},
+            {'name':'SumCount','label':'注单数','editor':'com-table-span','sublevel':True},
+            {'name':'EarlyCount','label':'早盘','editor':'com-table-span','sublevel':True},
+            {'name':'LiveCount','label':'走地','editor':'com-table-span','sublevel':True},
+            {'name':'MixtureCount','label':'混合','editor':'com-table-span','sublevel':True},
+            {'name':'SingleCount','label':'单注','editor':'com-table-span','sublevel':True},
+            {'name':'ParlayCount','label':'串关','editor':'com-table-span','sublevel':True},
+            
+             {'name':'ticketmaster_amount','label':'注单金额','style':'.el-table thead.is-group th.ticketmaster_amount-col{background-color:#48A66C;color:white;text-align:center}','class':'ticketmaster_amount-col',
+              'children':['SumBetAmount','EarlyBetAmount','LiveBetAmount','MixtureBetAmount','SingleBetAmount','ParlayBetAmount'],
+              'show':' (!scope.ps.search_args.showed_col) || scope.ps.search_args.showed_col.indexOf(scope.head.name) != -1'},
+             {'name':'SumBetAmount','label':'注单金额','editor':'com-table-span','sublevel':True,'width':100},
+             {'name':'EarlyBetAmount','label':'早盘','editor':'com-table-span','sublevel':True,'width':100},
+             {'name':'LiveBetAmount','label':'走地','editor':'com-table-span','sublevel':True,'width':100},
+             {'name':'MixtureBetAmount','label':'混合','editor':'com-table-span','sublevel':True,'width':100},
+             {'name':'SingleBetAmount','label':'单注','editor':'com-table-span','sublevel':True,'width':100},
+            {'name':'ParlayBetAmount','label':'串关','editor':'com-table-span','sublevel':True,'width':100},
+            
+             {'name':'ticketmaster_count_ratio','label':'注单数量占比','style':'.el-table thead.is-group th.ticketmaster_count_ratio-col{background-color:#F3B27C;color:white;text-align:center}','class':'ticketmaster_count_ratio-col',
+              'children':['AverageCount','PrEarlyCount','PrLiveCount','PrMixtureCount','PrSingleCount','PrParlayCount'],
+              'show':' (!scope.ps.search_args.showed_col) || scope.ps.search_args.showed_col.indexOf(scope.head.name) != -1'},
+            {'name':'AverageCount','label':'人均','editor':'com-table-span','sublevel':True},
+            {'name':'PrEarlyCount','label':'早盘','editor':'com-table-span','sublevel':True},
+            {'name':'PrLiveCount','label':'走地','editor':'com-table-span','sublevel':True},
+            {'name':'PrMixtureCount','label':'混合','editor':'com-table-span','sublevel':True},
+            {'name':'PrSingleCount','label':'单注','editor':'com-table-span','sublevel':True},
+            {'name':'PrParlayCount','label':'串关','editor':'com-table-span','sublevel':True},
+            
+            {'name':'ticketmaster_amount_ratio','label':'注单数量占比','style':'.el-table thead.is-group th.ticketmaster_amount_ratio-col{background-color:#5DECE2;color:white;text-align:center}','class':'ticketmaster_amount_ratio-col',
+              'children':['AverageAmount','PrEarlyCount','PrLiveCount','PrMixtureCount','PrSingleCount','PrParlayCount'],
+              'show':' (!scope.ps.search_args.showed_col) || scope.ps.search_args.showed_col.indexOf(scope.head.name) != -1'},
+            {'name':'AverageAmount','label':'人均','editor':'com-table-span','sublevel':True},
+            {'name':'PrEarlyAmount','label':'早盘','editor':'com-table-span','sublevel':True},
+            {'name':'PrLiveAmount','label':'走地','editor':'com-table-span','sublevel':True},
+            {'name':'PrMixtureAmount','label':'混合','editor':'com-table-span','sublevel':True},
+            {'name':'PrSingleAmount','label':'单注','editor':'com-table-span','sublevel':True},
+            {'name':'PrParlayAmount','label':'串关','editor':'com-table-span','sublevel':True},
+            
+        ]
+    def get_rows(self):
+        data_rows = []
+        
+        sort_str = self.search_args.get('_sort')
+        if sort_str:
+            sort = "'%s'"%sort_str.lstrip('-')
+            sortWay = "'DESC'" if sort_str.startswith('-') else "'ASC'"
+        else:
+            sort='NULL'
+            sortWay='NULL'
+            
+        sql_args = {
+            'start': self.search_args.get('_start_time'), #'2019-05-01',
+            'end': self.search_args.get('_end_time') , # '2019-06-10'
+            'sportID':self.search_args.get('sportID',0),
+            'AccountID':self.search_args.get('AccountID','null'),
+        }
+        sql = r"EXEC SP_Report_Ticket_State '%(start)s','%(end)s',%(sportID)s,%(AccountID)s" \
+            % sql_args
+        
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql)
+            for row in cursor:
+                dc = {}
+                for index, head in enumerate(cursor.description):
+                    dc[head[0]] = row[index]
+                dc['CreateDate'] = dc.get('CreateDate').strftime('%Y-%m-%d')
+                data_rows.append(dc)
+        return data_rows
+    
+ 
 
 director.update({
     'WinbetRatio':WinbetRatio,
@@ -384,6 +497,7 @@ director.update({
     'BetWeekChart':BetWeekChart,
     'MarketAnalysis':MarketAnalysis,
     'TournamentAnalysis':TournamentAnalysis,
+    'ReportTicketState':ReportTicketState,
 })
 
 page_dc.update({
