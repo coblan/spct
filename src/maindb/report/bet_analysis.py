@@ -413,7 +413,8 @@ class ReportTicketState(PlainTable):
     
     def get_heads(self):
         return [
-            {'name':'CreateDate','label':'日期','editor':'com-table-span','fixed':True,'width':100},
+            #'show':'scope.ps.row_has_field("CreateDate")'
+            {'name':'CreateDate','label':'日期','editor':'com-table-span','fixed':True,'width':100,'show':'scope.ps.row_has_field("CreateDate")'},
             {'name':'Sport','label':'体育类型','editor':'com-table-span','fixed':True},
             {'name':'UserCount','label':'不重复投注人数','editor':'com-table-span','width':130},
             
@@ -459,21 +460,12 @@ class ReportTicketState(PlainTable):
             
         ]
     def get_rows(self):
-        data_rows = []
-        
-        sort_str = self.search_args.get('_sort')
-        if sort_str:
-            sort = "'%s'"%sort_str.lstrip('-')
-            sortWay = "'DESC'" if sort_str.startswith('-') else "'ASC'"
-        else:
-            sort='NULL'
-            sortWay='NULL'
-            
+        data_rows = [] 
         sql_args = {
             'start': self.search_args.get('_start_time'), #'2019-05-01',
             'end': self.search_args.get('_end_time') , # '2019-06-10'
             'sportID':self.search_args.get('sportID',0),
-            'AccountID':self.search_args.get('AccountID','null'),
+            'AccountID':self.search_args.get('accountid') or 'null',
         }
         sql = r"EXEC SP_Report_Ticket_State '%(start)s','%(end)s',%(sportID)s,%(AccountID)s" \
             % sql_args
@@ -484,8 +476,10 @@ class ReportTicketState(PlainTable):
                 dc = {}
                 for index, head in enumerate(cursor.description):
                     dc[head[0]] = row[index]
-                dc['CreateDate'] = dc.get('CreateDate').strftime('%Y-%m-%d')
+                if 'CreateDate' in dc:
+                    dc['CreateDate'] = dc.get('CreateDate').strftime('%Y-%m-%d')
                 data_rows.append(dc)
+          
         return data_rows
     
  
