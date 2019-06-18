@@ -40,12 +40,12 @@ class BetAnalysisPage(object):
                 'menu':[
                     {'name':'ss','label':'中注率','open_editor':'live_table','open_ctx':WinbetRatio().get_head_context()},
                     {'name':'bbb','label':'用户活跃度统计','open_editor':'live_table','open_ctx':LoginNumer().get_head_context()},
-                    {'name':'aaa','label':'投注概况','open_editor':'live_table_type','open_ctx': chart_ctx},
-                    {'name':'cc','label':'投注总额-周推移','open_editor':'live_table_type','open_ctx':bet_week_chart},
+                    {'name':'aaa','label':'投注概况','open_editor':'live_table_type','open_ctx': chart_ctx,'render_type':'chart'},
+                    {'name':'cc','label':'投注总额-周推移','open_editor':'live_table_type','open_ctx':bet_week_chart,'render_type':'chart'},
                     {'name':'dd','label':'玩法统计','open_editor':'live_table','open_ctx':MarketAnalysis().get_head_context() },
                     {'name':'TournamentAnalysis','label':'联赛统计', 'open_editor':'live_table','open_ctx':TournamentAnalysis().get_head_context()  },
-                    {'name':'ReportTicketState','label':'投注单状态分析', 'open_editor':'live_table','open_ctx':ReportTicketState().get_head_context()  }
-                    #{'name':'ReportTicketState','label':'投注单状态汇总', 'open_editor':'live_table','open_ctx':ReportTicketState().get_head_context()  }
+                    {'name':'ReportTicketState','label':'投注单状态分析', 'open_editor':'live_table','open_ctx':ReportTicketState().get_head_context()  },
+                    {'name':'ReportTicketSummary','label':'投注单状态汇总', 'open_editor':'live_table','open_ctx':ReportTicketSummary().get_head_context()  }
                 ]
             } 
         }
@@ -454,7 +454,7 @@ class ReportTicketState(PlainTable):
             {'name':'PrSingleCount','label':'单注','editor':'com-table-span','sublevel':True},
             {'name':'PrParlayCount','label':'串关','editor':'com-table-span','sublevel':True},
             
-            {'name':'ticketmaster_amount_ratio','label':'注单数量占比','style':'.el-table thead.is-group th.ticketmaster_amount_ratio-col{background-color:#5DECE2;color:white;text-align:center}','class':'ticketmaster_amount_ratio-col',
+            {'name':'ticketmaster_amount_ratio','label':'注单金额占比','style':'.el-table thead.is-group th.ticketmaster_amount_ratio-col{background-color:#5DECE2;color:white;text-align:center}','class':'ticketmaster_amount_ratio-col',
               'children':['AverageAmount','PrEarlyCount','PrLiveCount','PrMixtureCount','PrSingleCount','PrParlayCount'],
               'show':' (!scope.ps.search_args.showed_col) || scope.ps.search_args.showed_col.indexOf(scope.head.name) != -1'},
             {'name':'AverageAmount','label':'人均','editor':'com-table-span','sublevel':True},
@@ -488,7 +488,46 @@ class ReportTicketState(PlainTable):
           
         return data_rows
     
- 
+class ReportTicketSummary(PlainTable):
+    @classmethod
+    def clean_search_args(cls, search_args):
+        today = timezone.now()
+        if not search_args.get('_start_time') or not search_args.get('_end_time'):
+            sp = timezone.timedelta(days=10)
+            last = today - sp
+            def_start = last.strftime('%Y-%m-%d')
+            def_end = today.strftime('%Y-%m-%d')                
+            search_args['_start_time'] = search_args.get('_start_time') or def_start
+            search_args['_end_time'] = search_args.get('_end_time') or def_end
+  
+        return search_args 
+    
+    def get_heads(self):
+        return [
+            {'name':'Sport','label':'体育类型'},
+            {'name':'OddsKind','label':'盘口类型'},
+            {'name':'BetAmount','label':'投注金额','width':180},
+            {'name':'BetCount','label':"下单数量"},
+            {'name':'Profit','label':'利润','width':130},
+        ]
+    
+    def get_rows(self):
+        data_rows = [] 
+        sql_args = {
+            'start': self.search_args.get('_start_time'), #'2019-05-01',
+            'end': self.search_args.get('_end_time') , # '2019-06-10'
+        }
+        sql = r"EXEC SP_Report_Ticket_Summary '%(start)s','%(end)s'"%sql_args
+        
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql)
+            for row in cursor:
+                dc = {}
+                for index, head in enumerate(cursor.description):
+                    dc[head[0]] = row[index]
+                data_rows.append(dc)
+          
+        return data_rows 
 
 director.update({
     'WinbetRatio':WinbetRatio,
@@ -498,6 +537,7 @@ director.update({
     'MarketAnalysis':MarketAnalysis,
     'TournamentAnalysis':TournamentAnalysis,
     'ReportTicketState':ReportTicketState,
+    'ReportTicketSummary':ReportTicketSummary,
 })
 
 page_dc.update({

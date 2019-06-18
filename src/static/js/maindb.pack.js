@@ -2137,7 +2137,7 @@ __webpack_require__(43);
 var report_block_tree_menu = {
     props: ['ctx'],
     basename: 'block-tree',
-    template: '<div class="report-block-tree-menu">\n\n    <div v-for="action in ctx.menu" class="block-btn" @click="next_level(action)">\n        <span v-text="action.label"></span>\n    </div>\n    </div>',
+    template: '<div class="report-block-tree-menu">\n\n    <div v-for="action in ctx.menu" class="block-btn" @click="next_level(action)">\n        <div class="icon center-v">\n            <i v-if="action.render_type==\'chart\'" style="color: #802a35" class="fa fa-bar-chart" aria-hidden="true"></i>\n            <i v-else style="color: green" class="fa fa-table" aria-hidden="true"></i>\n         </div>\n        <div class="center-vh" style="width: 80px;">\n            <span v-text="action.label" style="position: relative;left: 10px"></span>\n        </div>\n    </div>\n    </div>',
     data: function data() {
         return {
             parStore: ex.vueParStore(this)
@@ -2220,7 +2220,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".report-block-tree-menu {\n  padding: 30px;\n}\n.report-block-tree-menu .block-btn {\n  display: inline-block;\n  width: 150px;\n  height: 90px;\n  background-color: #eaeaea;\n  border: 1px solid #808080;\n}\n", ""]);
+exports.push([module.i, ".report-block-tree-menu {\n  padding: 30px;\n}\n.report-block-tree-menu .block-btn {\n  display: inline-block;\n  position: relative;\n  width: 150px;\n  height: 90px;\n  margin: 10px;\n  background-color: #eaeaea;\n  border: 1px solid #d4d4d4;\n  border-radius: 2px;\n}\n.report-block-tree-menu .block-btn:hover {\n  background-color: #f6f6f6;\n  cursor: pointer;\n}\n.report-block-tree-menu .block-btn .icon {\n  font-size: 120%;\n  position: absolute;\n  left: 3px;\n}\n", ""]);
 
 // exports
 
