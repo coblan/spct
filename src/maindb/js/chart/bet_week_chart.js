@@ -50,7 +50,30 @@ var bet_chart={
                 series: [{
                     name: '投注额',
                     type: 'bar',
-                    data: this.parStore.rows.map(item=>{return item.BetAmount})
+                    barMaxWidth: 30,
+                    data: this.parStore.rows.map(item=>{return item.BetAmount}),
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#83bff6'},
+                                    {offset: 0.5, color: '#188df0'},
+                                    {offset: 1, color: '#188df0'}
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#2378f7'},
+                                    {offset: 0.7, color: '#2378f7'},
+                                    {offset: 1, color: '#83bff6'}
+                                ]
+                            )
+                        }
+                    },
                     //data: [5, 20, 36, 10, 10, 20]
                 }]
             };

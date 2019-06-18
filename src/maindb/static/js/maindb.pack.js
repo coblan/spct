@@ -1586,8 +1586,14 @@ var bet_chart = {
                     type: 'bar',
                     data: this.parStore.rows.map(function (item) {
                         return item.betusernum;
-                    }).reverse()
-                    //data: [5, 20, 36, 10, 10, 20]
+                    }).reverse(),
+                    barMaxWidth: 30,
+                    itemStyle: {
+                        normal: {
+                            color: '#27B6AC'
+                        }
+                    }
+
                 }]
             };
 
@@ -1625,8 +1631,13 @@ var bet_chart = {
                     yAxisIndex: 0,
                     data: this.parStore.rows.map(function (item) {
                         return item.betnum;
-                    }).reverse()
-                    //data: [5, 20, 36, 10, 10, 20]
+                    }).reverse(),
+                    barMaxWidth: 30,
+                    itemStyle: {
+                        normal: {
+                            color: '#27B6AC'
+                        }
+                    }
                 }, {
                     name: '注单金额',
                     type: 'line',
@@ -1665,8 +1676,8 @@ var bet_chart = {
                     type: 'bar',
                     data: this.parStore.rows.map(function (item) {
                         return item.betamount;
-                    }).reverse()
-                    //data: [5, 20, 36, 10, 10, 20]
+                    }).reverse(),
+                    barMaxWidth: 30
                 }, {
                     name: '派奖金额',
                     type: 'bar',
@@ -1703,8 +1714,13 @@ var bet_chart = {
                     type: 'bar',
                     data: this.parStore.rows.map(function (item) {
                         return item.userprofit;
-                    }).reverse()
-                    //data: [5, 20, 36, 10, 10, 20]
+                    }).reverse(),
+                    barMaxWidth: 30,
+                    itemStyle: {
+                        normal: {
+                            color: '#27B6AC'
+                        }
+                    }
                 }]
             };
 
@@ -1778,9 +1794,18 @@ var bet_chart = {
                 series: [{
                     name: '投注额',
                     type: 'bar',
+                    barMaxWidth: 30,
                     data: this.parStore.rows.map(function (item) {
                         return item.BetAmount;
-                    })
+                    }),
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#83bff6' }, { offset: 0.5, color: '#188df0' }, { offset: 1, color: '#188df0' }])
+                        },
+                        emphasis: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#2378f7' }, { offset: 0.7, color: '#2378f7' }, { offset: 1, color: '#83bff6' }])
+                        }
+                    }
                     //data: [5, 20, 36, 10, 10, 20]
                 }]
             };

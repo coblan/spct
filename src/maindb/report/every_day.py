@@ -23,12 +23,17 @@ class EveryDayReportPage(TablePage):
         
         def dict_head(self, head):
             width_dc={
-                'starttime':150,
-                'userprofit':120,
-                
+                'finishbetamount':150,
             }
             if head['name'] in width_dc:
                 head['width'] = width_dc.get(head['name'])
+            else:
+                head['width'] =120
+                
+            if head['name'] =='userprofit':
+                head['editor'] = 'com-table-rich-span'
+                head['class'] = 'scope.row[scope.head.name]<0?"everyday-warning":""'
+                head['css'] = '.everyday-warning{background-color:green;color:white}'
             return head
         
         class filters(RowFilter):

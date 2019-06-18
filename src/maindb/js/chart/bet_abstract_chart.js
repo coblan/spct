@@ -53,8 +53,14 @@ var bet_chart={
                 series: [{
                     name: '用户数',
                     type: 'bar',
-                    data: this.parStore.rows.map(item=>{return item.betusernum}).reverse()
-                    //data: [5, 20, 36, 10, 10, 20]
+                    data: this.parStore.rows.map(item=>{return item.betusernum}).reverse(),
+                    barMaxWidth: 30,
+                    itemStyle: {
+                        normal: {
+                            color:'#27B6AC'
+                        },
+                    },
+
                 }]
             };
 
@@ -91,8 +97,13 @@ var bet_chart={
                     name: '注单量',
                     type: 'bar',
                     yAxisIndex:0,
-                    data: this.parStore.rows.map(item=>{return item.betnum}).reverse()
-                    //data: [5, 20, 36, 10, 10, 20]
+                    data: this.parStore.rows.map(item=>{return item.betnum}).reverse(),
+                    barMaxWidth: 30,
+                    itemStyle: {
+                        normal: {
+                            color:'#27B6AC'
+                        },
+                    },
                 },
                     {
                         name: '注单金额',
@@ -127,8 +138,8 @@ var bet_chart={
                 series: [{
                     name: '投注金额',
                     type: 'bar',
-                    data: this.parStore.rows.map(item=>{return item.betamount}).reverse()
-                    //data: [5, 20, 36, 10, 10, 20]
+                    data: this.parStore.rows.map(item=>{return item.betamount}).reverse(),
+                    barMaxWidth: 30,
                 },
                     {
                         name: '派奖金额',
@@ -162,8 +173,13 @@ var bet_chart={
                 series: [{
                     name: '平台毛利',
                     type: 'bar',
-                    data: this.parStore.rows.map(item=>{return item.userprofit}).reverse()
-                    //data: [5, 20, 36, 10, 10, 20]
+                    data: this.parStore.rows.map(item=>{return item.userprofit}).reverse(),
+                    barMaxWidth: 30,
+                    itemStyle: {
+                        normal: {
+                            color:'#27B6AC'
+                        }
+                    },
                 }]
             };
 
