@@ -232,6 +232,7 @@ def get_permit():
              {'label': '会员统计', 'value': 'member_statistic', 'depend': ['TbAccount'],}, 
              {'label': '平台亏盈', 'value': 'platform_profit',}, 
              {'label':'充值安全统计','value':'report.recharge_reports','depend':['TbRecharge']},
+             {'label':'投注分析','value':'report.betAnalysis',}
                      ],
         }, 
         {'label': '代理平台', 'children': [

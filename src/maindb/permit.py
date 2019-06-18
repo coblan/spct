@@ -177,6 +177,10 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            # 会员 全标签  , 因为 TbBetfullrecord.edit 没有权限ui，所以只能在这里做一个集合来取它的值
            ('TbAccount.all_tab',';'.join(['TbAccount.edit', 'TbBalancelog', 'TbLoginlog', 'TbBankcard', 'TbBankcard.edit', 'TbRecharge.edit',
                                 'TbWithdraw.edit','TbBetfullrecord.edit']),'','set'),
+           
+           ('TbTrendstatistics',model_read_permit(TbTrendstatistics),model_to_name(TbTrendstatistics),'model'),
+           
+           ('report.betAnalysis',';'.join(['TbTrendstatistics']),'','set'),
            ]
 
 add_permits(permits)

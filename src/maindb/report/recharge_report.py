@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.db import connections
 from ..member.account import UserRecharge,account_tab
 from helpers.director.access.permit import has_permit,can_touch
+from django.core.exceptions import PermissionDenied
 
 class RechargeReport(TablePage):
     def check_permit(self): 

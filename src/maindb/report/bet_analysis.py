@@ -3,6 +3,8 @@ from django.db import connections
 from maindb.models import TbSporttypes,TbTrendstatistics
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from helpers.director.access.permit import has_permit
+from django.core.exceptions import PermissionDenied
 
 class BetAnalysisPage(object):
     def __init__(self, request,engin):
@@ -13,6 +15,10 @@ class BetAnalysisPage(object):
     
     def get_template(self):
         return 'jb_admin/live.html'
+    
+    def check_permit(self):
+        if not has_permit(self.request.user,'report.betAnalysis'):
+            raise PermissionDenied('没有权限 report.betAnalysis')
     
     def get_context(self):
         chart_ctx = BetCondition().get_head_context()
