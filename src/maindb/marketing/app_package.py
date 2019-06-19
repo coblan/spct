@@ -106,7 +106,7 @@ class AppPackageForm(ModelFields):
         super().save_form()
         #if 'packageurl' in self.changed_data:
         # 现在要求每次都重传S3服务器
-        if 'valid' in self.changed_data and self.instance.valid :
+        if 'md5' in self.changed_data:
             plateform = {1:'ios',2:'android'}.get(self.instance.terminal)
             if getattr(settings,'UPLOAD_CLOUD_SHELL',None):
                 shell_file = getattr(settings,'UPLOAD_CLOUD_SHELL')
