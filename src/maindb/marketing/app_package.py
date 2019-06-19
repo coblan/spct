@@ -35,7 +35,7 @@ class AppPackage(TablePage):
                 'valid':80,
                 'terminal':80,
                 'packageurl':180,
-                'md5':160,
+                'md5':180,
                 'versionid':80,
                 'versionname':120,
                 'description':250,
@@ -45,6 +45,22 @@ class AppPackage(TablePage):
             if dc.get(head['name']):
                 head['width'] =dc.get(head['name'])  
             return head
+    
+        def get_operation(self):
+            ops = super().get_operation()
+            ls =[]
+            for op in ops:
+                if op['name'] == 'add_new':
+                    ls.append(op)
+            ls += [
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废', 'confirm_msg': '确认作废已选中项？',
+                 'pre_set': 'rt={valid:false}', 'row_match': 'many_row',},
+            ]
+            return ls
+                         #'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
+        class filters(RowFilter):
+            names=['description','terminal','valid']
+            icontains=['description']
               
     
 class AppPackageForm(ModelFields):
@@ -90,13 +106,13 @@ class AppPackageForm(ModelFields):
         super().save_form()
         #if 'packageurl' in self.changed_data:
         # 现在要求每次都重传S3服务器
-        plateform = {1:'ios',2:'android'}.get(self.instance.terminal)
-
-        if getattr(settings,'UPLOAD_CLOUD_SHELL',None):
-            shell_file = getattr(settings,'UPLOAD_CLOUD_SHELL')
-            Popen('%(shell)s %(plateform)s'%{'shell':shell_file,'plateform':plateform},shell=True)
-            general_log.info('执行批处理 %s'%shell_file)
-            #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})  
+        if 'valid' in self.changed_data and self.instance.valid :
+            plateform = {1:'ios',2:'android'}.get(self.instance.terminal)
+            if getattr(settings,'UPLOAD_CLOUD_SHELL',None):
+                shell_file = getattr(settings,'UPLOAD_CLOUD_SHELL')
+                Popen('%(shell)s %(plateform)s'%{'shell':shell_file,'plateform':plateform},shell=True)
+                general_log.info('执行批处理 %s'%shell_file)
+                #os.system('%(shell)s %(arg)s'%{'shell':shell,'arg':arg})  
 
 class AppPkgUrlProc(BaseFieldProc):
     def to_dict(self,inst,name):
