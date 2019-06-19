@@ -1169,7 +1169,7 @@ Vue.component('com-pop-image', {
 
 Vue.component('com-field-picture', {
     props: ['row', 'head'],
-    template: '<div class="com-field-picture picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head.config"></img-uploador></div>',
+    template: '<div class="com-field-picture picture">\n            <input class="virtual_input" style="position:absolute;height: 0;width: 0;" type="text"  :name="head.name" v-model="row[head.name]">\n            <img class="img-uploador" v-if=\'head.readonly\' :src=\'row[head.name]\'/>\n\t\t\t<img-uploador @select="on_uploader_click()" v-else :up_url="head.up_url" v-model="row[head.name]" :id="\'id_\'+head.name" :config="head"></img-uploador></div>',
     methods: {
         on_uploader_click: function on_uploader_click() {
             $(this.$el).find('.virtual_input').focus();
@@ -2258,7 +2258,14 @@ var img_uploader = {
 
             if (this.cfg.maxsize) {
                 if (img_fl.size > this.cfg.maxsize) {
-                    var msg = ex.template(cfg.tr.picture_size_excceed, { maxsize: this.cfg.maxsize });
+                    if (this.cfg.maxsize > 1024 * 1024) {
+                        var num_msg = (this.cfg.maxsize / (1024 * 1024)).toFixed(2) + 'M';
+                    } else if (this.cfg.maxsize > 1024) {
+                        var num_msg = (this.cfg.maxsize / 1024).toFixed(2) + 'k';
+                    } else {
+                        var num_msg = this.cfg.maxsize;
+                    }
+                    var msg = ex.template(cfg.tr.picture_size_excceed, { maxsize: num_msg });
                     cfg.showMsg(msg);
                     this.clear();
                     return false;
