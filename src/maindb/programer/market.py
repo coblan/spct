@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowSearch,RowFilter
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowSearch,RowFilter,RowSort
 from ..models import TbMarkets
 
 class MarketPage(TablePage):
@@ -57,6 +57,8 @@ class UserMarketPage(MarketPage):
         
         class filters(RowFilter):
             names=['enabled']
+        class sort(RowSort):
+            names=['sort']
 
 class UserMarketForm(MarketForm):
     
