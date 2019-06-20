@@ -28,11 +28,10 @@ class MarketPage(TablePage):
             return []
         
         class search(RowSearch):
-            names=['marketname','marketnamezh']
+            names=['marketname','marketnamezh','marketid']
         
         class filters(RowFilter):
-            names=['marketid','includesoutcomestype','outcometype','enabled']
-            icontains=['marketid']
+            names=['includesoutcomestype','outcometype','enabled']
         
 
 class MarketForm(ModelFields):
