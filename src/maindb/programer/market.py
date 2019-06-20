@@ -31,7 +31,8 @@ class MarketPage(TablePage):
             names=['marketname','marketnamezh']
         
         class filters(RowFilter):
-            names=['includesoutcomestype','outcometype','enabled']
+            names=['marketid','includesoutcomestype','outcometype','enabled']
+            icontains=['marketid']
         
 
 class MarketForm(ModelFields):
