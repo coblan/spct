@@ -51,7 +51,7 @@ class MarketForm(ModelFields):
 
 class UserMarketPage(MarketPage):
     class tableCls(MarketPage.tableCls):
-        exclude=['includesoutcomestype','outcometype','isasian','templateid','sort']
+        exclude=['includesoutcomestype','outcometype','isasian','templateid']
         def inn_filter(self, query):
             return query.filter(enabled=1)
         
@@ -60,7 +60,7 @@ class UserMarketPage(MarketPage):
 
 class UserMarketForm(MarketForm):
     
-    field_sort=['marketid','marketname','marketnamezh','description','enabled','weight','ticketdelay']
+    field_sort=['marketid','marketname','marketnamezh','description','enabled','sort','weight','ticketdelay']
     readonly=['marketid','marketname','marketnamezh','description','enabled',]
     class Meta:
         model = TbMarkets
