@@ -448,6 +448,7 @@ class MatchForm(ModelFields):
 
     def updateMongo(self): 
         match =  self.instance
+        beijin_tz = datetime.timezone(datetime.timedelta(hours=8))
         dc = {
             'MatchID': match.matchid,
             'IsRecommend': match.isrecommend,
@@ -460,8 +461,8 @@ class MatchForm(ModelFields):
             #'Period1Score': match.period1score,
             'MatchScore': match.score,
             'Winner': match.winner,
-            'MatchDate':match.matchdate ,#.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
-            'PreMatchDate':match.prematchdate ,#.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc)
+            'MatchDate':match.matchdate.replace(tzinfo = beijin_tz ) ,#.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
+            'PreMatchDate':match.prematchdate.replace(tzinfo = beijin_tz) ,#.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc)
         }        
         updateMatchMongo(dc)
 
