@@ -66,7 +66,7 @@ class UserMarketForm(MarketForm):
     readonly=['marketid','marketname','marketnamezh','description','enabled',]
     class Meta:
         model = TbMarkets
-        fields = ['marketid','marketname','marketnamezh','description','enabled','weight','ticketdelay']
+        fields = ['marketid','marketname','marketnamezh','description','enabled','sort','weight','ticketdelay']
 
 
 director.update({
