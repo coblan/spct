@@ -6,7 +6,7 @@ import re
 from django.db.models import Sum, Case, When, F,Count,OuterRef,Subquery
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSearch, RowSort, RowFilter, director
+    RowSearch, RowSort, RowFilter, director,field_map,model_to_name
 from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
@@ -14,6 +14,8 @@ from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBank
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
 from helpers.func.random_str import get_str, get_random_number
+from helpers.director.model_func.field_procs.decimalproc import DecimalProc
+
 import hashlib
 from decimal import Decimal
 from ..matches.ticket_master import TicketMasterPage
@@ -314,7 +316,7 @@ class AccoutBaseinfo(ModelFields):
         if head['name'] == 'bonusrate':
             head['step'] = 0.001
         if head['name']=='weight':
-            head['fv_rule']='range(0.001~500)'
+            head['fv_rule']='range(0.001~500);'+ head.get('fv_rule','')
         if head['name']=='risklevel':
             head['editor']='com-field-select'
             inst = TbSetting.objects.get(settingname='RiskControlLevel')
@@ -690,3 +692,9 @@ def gen_money_pswd():
     pswd_db_str = m2.hexdigest().upper()
     return text_pswd, pswd_db_str
 
+class Digit3(DecimalProc):
+    digit=3
+
+field_map.update({
+    model_to_name(TbAccount)+'.weight':Digit3
+})

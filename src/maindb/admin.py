@@ -58,3 +58,6 @@ from . import permit
 from . import js_cfg
 
 from .programer import admin
+from helpers.director.base_data import site_cfg,field_map
+
+site_cfg['inspect_dict']['field_map'] = field_map
