@@ -2755,12 +2755,12 @@ class TbTrendstatistics(models.Model):
         
 class TbMarketlistwithsport(models.Model):
     tid = models.AutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
-    sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
-    marketid = models.IntegerField(db_column='MarketID')  # Field name made lowercase.
-    marketshowname = models.CharField(db_column='MarketShowName', max_length=200, blank=True, null=True)  # Field name made lowercase.
-    sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
-    enabled = models.BooleanField(db_column='Enabled')  # Field name made lowercase.
-    description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID',verbose_name='体育类型')  # Field name made lowercase.
+    marketid = models.IntegerField(db_column='MarketID',verbose_name='玩法')  # Field name made lowercase.
+    marketshowname = models.CharField(db_column='MarketShowName', max_length=200, blank=True, null=True,verbose_name='列表展示名')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort',verbose_name='排序')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled',verbose_name='启用')  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=200, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
 
     class Meta:
         managed = False
