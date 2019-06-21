@@ -106,6 +106,69 @@ def head_all_333(label1,label2,round_number):
 
 outcome_header = {
     'panel_map':{
+        -19:{
+            'heads':[
+                 {'name':'set_count','label':'总盘数','editor':'com-field-select','options':[
+                    {'value':i,'label':'%s盘'%i}
+                    for i in range(1,51)
+                    ]},
+            ]+[ {'name':'home_%s_1'%i,'label':'主队第%s盘得分'%i,'editor':'com-field-number','required':True,'show':'scope.row.set_count >= %s'%i,'fv_rule':'integer(+0)'}
+                    for i in range(1,51)]
+            +[{'name':'away_%s_1'%i,'label':'客队第%s盘得分'%i,'editor':'com-field-number','required':True,'show':'scope.row.set_count >= %s'%i,'fv_rule':'integer(+0)'}
+               for i in range(1,51)],
+            'table_grid':[['set_count'],
+                          ]+[['home_%s_1'%i,'away_%s_1'%i]
+                             for i in range(1,51)
+                              ],
+            'fields_group':[
+                {'name':'huji','label':'基本控制','heads':['set_count']},
+                {'name':'huji','label':'比分','heads':['home_%s_1'%i for i in range(1,51)]+ ['away_%s_1'%i for i in range(1,51)]},
+            ],
+            
+            'editor':'com-form-one', 
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+            'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
+
+        },
+        -5:{
+            'heads':[
+                {'name':'set_count','label':'总盘数','editor':'com-field-select','options':[
+                    {'value':1,'label':'一盘'},
+                    {'value':3,'label':'三盘'},
+                    {'value':5,'label':'五盘'}
+                    ]},
+                {'name':'home_8_1','label':'主队第一盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 1','fv_rule':'integer(+0)'},
+                {'name':'away_8_1','label':'客队第一盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 1','fv_rule':'integer(+0)'},
+                {'name':'home_9_1','label':'主队第二盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 2','fv_rule':'integer(+0)'},
+                {'name':'away_9_1','label':'客队第二盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 2','fv_rule':'integer(+0)'},
+                {'name':'home_10_1','label':'主队第三盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 3','fv_rule':'integer(+0)'},
+                {'name':'away_10_1','label':'客队第三盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 3','fv_rule':'integer(+0)'},
+                {'name':'home_11_1','label':'主队第四盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 4','fv_rule':'integer(+0)'},
+                {'name':'away_11_1','label':'客队第四盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 4 ','fv_rule':'integer(+0)'},
+                {'name':'home_12_1','label':'主队第五盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 5','fv_rule':'integer(+0)'},
+                {'name':'away_12_1','label':'客队第五盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 5','fv_rule':'integer(+0)'},
+                    
+            ],
+            'editor':'com-form-one', 
+            
+            'table_grid':[['set_count'],
+                          ['home_8_1','away_8_1'],
+                          ['home_9_1','away_9_1'],
+                          ['home_10_1','away_10_1'],
+                          ['home_11_1','away_11_1'],
+                          ['home_12_1','away_12_1'],
+                          ],
+            'fields_group':[
+                {'name':'huji','label':'基本控制','heads':['set_count']},
+                {'name':'huji','label':'比分','heads':['home_8_1','away_8_1','home_9_1','away_9_1','home_10_1','away_10_1','home_11_1','away_11_1','home_12_1','away_12_1']},
+                #{'name':'huji','label':'角球','heads':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
+            ],
+            
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+            'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
+        },
         -3:{
             'heads':[
                 {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
@@ -908,7 +971,42 @@ outcome_header = {
          398:head_all_333('第几局', '第几个兵营', 5),
          556:head_all_333('第几局', '第几个小龙', 5), 
          557:head_all_333('第几局', '第几个男爵',5),
-         558:head_all_333('第几局', '第几个水晶',5)
+         558:head_all_333('第几局', '第几个水晶',5),
+         206:{
+            'heads':[
+                 {'name':'content','label':'第几盘是否有抢7','editor':'com-field-table-list','fv_rule':'group_unique( Specifiers)','fv_msg':'盘数不能重复',
+                  'table_heads':[
+                    {'name':'Specifiers','label':'第几盘','editor':'com-table-pop-fields-local'},
+                    {'name':'OutcomeId','label':'是否抢7','editor':'com-table-mapper','options':[
+                        {'value':74,'label':'是' },
+                        {'value':76,'label':'否'},
+                        ]},
+                      ],
+                 'fields_heads':[
+                     {'name':'Specifiers','label':'第几盘','editor':'com-field-number','required':True},
+                    {'name':'OutcomeId','label':'是否抢7','editor':'com-field-select', 'required':True,
+                      'options':[
+                               {'value':74,'label':'是' },
+                               {'value':76,'label':'否'},
+                             ]}, 
+                 ]}
+            ],
+            
+            'editor':'com-form-one',
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+         },
+         195:{
+             'heads':[
+                 {'name':'OutcomeId','label':'是否抢7','editor':'com-field-select','options':[
+                       {'value':74,'label':'是' },
+                        {'value':76,'label':'否'},
+                 ]}
+             ],
+            'editor':'com-form-one',
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+         }
  
     }
 }

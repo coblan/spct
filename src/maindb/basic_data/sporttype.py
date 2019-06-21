@@ -12,8 +12,8 @@ class SportsTypesPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbSporttypes
-        exclude =['createtime','status','tid','onlinetime','sort']
-        #pop_edit_field='tid'
+        exclude =['createtime','status','onlinetime','sort']
+        pop_edit_field = 'tid'
         def get_operation(self):
             changeable_fields = self.permit.changeable_fields()
             return [

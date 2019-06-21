@@ -2703,7 +2703,13 @@ class TbSporttypes(models.Model):
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True,auto_now=True,verbose_name='更新时间')  # Field name made lowercase.
     #updateuser = models.IntegerField(db_column='UpdateUser', blank=True, null=True)  # Field name made lowercase.
     updateuser = UpdateUserField(db_column='UpdateUser',verbose_name='更新人', blank=True, null=True)  # Field name made lowercase.
-    source = models.IntegerField(db_column='Source',choices=DATA_SOURCE)  # Field name made lowercase.
+    #source = models.IntegerField(db_column='Source',choices=DATA_SOURCE)  # Field name made lowercase.
+    #sportimg_s = models.CharField(db_column='SportImg_S', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    #sportimg_m = models.CharField(db_column='SportImg_M', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    #sportimg_l = models.CharField(db_column='SportImg_L', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    sportimg_s = CusPictureField(db_column='SportImg_S', max_length=255, blank=True, null=True,verbose_name='小图')  # Field name made lowercase.
+    sportimg_m = CusPictureField(db_column='SportImg_M', max_length=255, blank=True, null=True,verbose_name='中图')  # Field name made lowercase.
+    sportimg_l = CusPictureField(db_column='SportImg_L', max_length=255, blank=True, null=True,verbose_name='大图')  # Field name ma
     
     class Meta:
         managed = False
@@ -2745,3 +2751,17 @@ class TbTrendstatistics(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_TrendStatistics'
+        
+        
+class TbMarketlistwithsport(models.Model):
+    tid = models.AutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
+    marketid = models.IntegerField(db_column='MarketID')  # Field name made lowercase.
+    marketshowname = models.CharField(db_column='MarketShowName', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled')  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=200, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_MarketListWithSport'

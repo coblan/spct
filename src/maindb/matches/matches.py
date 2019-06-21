@@ -937,6 +937,13 @@ class OutcomeTab(ModelTable):
         elif self.match.sportid == 111:
             # 刀塔2
             return query.filter(enabled=True,marketid__in = [396,397,398])
+        elif self.match.sportid == 5:
+            # 网球
+            return query.filter(enabled=True,marketid__in=[195,206])
+        #elif self.match.sportid == 19:
+            #return query.filter(enabled=True,marketid__in=[])
+        else:
+            return query.none()
 
     def get_operation(self):
         return [
@@ -1012,14 +1019,15 @@ def out_com_save(rows,matchid):
 
     which_map= {
         291:'pointnr=%(org_sp)s',
-                174:'cornernr=%(org_sp)s',
-                163:'cornernr=%(org_sp)s',
-                8:'goalnr=%(org_sp)s',
-                100:'goalnr=%(org_sp)s',
-                101:'goalnr=%(org_sp)s',
-                102:'%(org_sp)s',
-                105:'%(org_sp)s',
-                108:'%(org_sp)s',
+        174:'cornernr=%(org_sp)s',
+        163:'cornernr=%(org_sp)s',
+        8:'goalnr=%(org_sp)s',
+        100:'goalnr=%(org_sp)s',
+        101:'goalnr=%(org_sp)s',
+        102:'%(org_sp)s',
+        105:'%(org_sp)s',
+        108:'%(org_sp)s',
+        206:'setnr=%(org_sp)s'
     }
 
     batch_create=[]
@@ -1119,7 +1127,7 @@ def out_com_save(rows,matchid):
                 item['MarketId']= row['pk']
                 item['Score'] = '%s:%s'%(item.pop('OutcomeId'),item.pop('OutcomeId_1') )
                 send_dc['Special'].append(item)
-        if row['pk'] in [9]:
+        if row['pk'] in [9,195]:
             send_dc['Special'].append(
                 {'Specifiers':'','MarketId':row['pk'],'OutcomeId':row['OutcomeId']}
             )
@@ -1239,7 +1247,42 @@ def out_com_save(rows,matchid):
                 away = 0 if home else 1
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=int('14%s'%i),scoretype=1,type=1,home=home,away=away  ) ) 
             batch_create.append(TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,type=1,home=home_round,away=away_round  ) ) 
-
+        if row['pk'] == -5:
+            # 网球分数
+            send_dc['IsSettleByScore'] =True
+            TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
+            set_count = int( row.get('set_count') )
+            home_set = 0
+            away_set = 0
+            for i in range(1,set_count+1):
+                home = int(  row.get('home_%s_1'%(i+7) ) )
+                away = int(  row.get('away_%s_1'%(i+7) ) )
+                if home > away:
+                    home_set += 1
+                elif home < away:
+                    away_set +=1
+                else:
+                    raise UserWarning('盘数不能相等')
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=int('%s'%(i+7)),scoretype=1,type=1,home=home,away=away  ) ) 
+            batch_create.append(TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,type=1,home=home_set,away=away_set  ) ) 
+        if row['pk']== -19:
+            send_dc['IsSettleByScore'] =True
+            TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
+            set_count = int( row.get('set_count') )
+            home_set = 0
+            away_set = 0
+            for i in range(1,set_count+1):
+                home = int(  row.get('home_%s_1'%(i) ) )
+                away = int(  row.get('away_%s_1'%(i) ) )
+                if home > away:
+                    home_set += 1
+                elif home < away:
+                    away_set +=1
+                else:
+                    raise UserWarning('盘数不能相等')
+                batch_create.append(TbPeriodscore(matchid=matchid,statuscode=int('%s'%(i)),scoretype=1,type=1,home=home,away=away  ) ) 
+            batch_create.append(TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,type=1,home=home_set,away=away_set  ) ) 
+            
     TbPeriodscore.objects.bulk_create(batch_create)
     if send_dc.get('IsSettleByScore'):
         home_score =0

@@ -39,6 +39,7 @@ class CusPictureMap(BaseFieldProc):
     def dict_table_head(self,head): 
         head['editor']='com-table-picture'
         head['show_tooltip'] = False
+        head['width'] = 150
         return head
     
     def dict_field_head(self,head):

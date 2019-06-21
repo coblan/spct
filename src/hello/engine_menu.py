@@ -197,6 +197,7 @@ class ProgramerAdmin(BaseEngine):
             {'label': '玩法组', 'url': page('marketgroup'), 'icon': fa('fa-superpowers')},
             {'label': '玩法', 'url': page('marketpage'), 'icon': fa('fa-superpowers')},
             {'label': '投注项', 'url': page('outcome'), 'icon': fa('fa-superpowers')},
+            {'label':'何步云专用','url':page('marketsport'),'icon':fa('fa-superpowers')}
             
         ]
         return menu
