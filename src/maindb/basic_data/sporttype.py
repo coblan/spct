@@ -34,9 +34,10 @@ class SportsTypesPage(TablePage):
         
 
 class SportsTypeForm(ModelFields):
+    readonly=['sportid']
     class Meta:
         model = TbSporttypes
-        exclude=['createtime','status','tid','onlinetime','sort']
+        exclude=['createtime','status','tid','onlinetime','sort','updateuser']
         
     def dict_row(self, inst):
         return {
