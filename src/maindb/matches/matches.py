@@ -1262,8 +1262,10 @@ def out_com_save(rows,matchid):
                 elif home < away:
                     away_set +=1
                 else:
-                    raise UserWarning('盘数不能相等')
+                    raise UserWarning('每盘比分不能相等')
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=int('%s'%(i+7)),scoretype=1,type=1,home=home,away=away  ) ) 
+            if home_set == away_set:
+                raise UserWarning('主客赢的盘数不能相等')
             batch_create.append(TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,type=1,home=home_set,away=away_set  ) ) 
         if row['pk']== -19:
             # 斯诺克
@@ -1280,8 +1282,10 @@ def out_com_save(rows,matchid):
                 elif home < away:
                     away_set +=1
                 else:
-                    raise UserWarning('盘数不能相等')
+                    raise UserWarning('每盘比分不能相等')
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=int('%s'%(i)),scoretype=1,type=1,home=home,away=away  ) ) 
+            if home_set == away_set:
+                raise UserWarning('主客赢的盘数不能相等')
             batch_create.append(TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,type=1,home=home_set,away=away_set  ) ) 
             
     TbPeriodscore.objects.bulk_create(batch_create)

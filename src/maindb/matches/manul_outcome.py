@@ -983,7 +983,7 @@ outcome_header = {
                         ]},
                       ],
                  'fields_heads':[
-                     {'name':'Specifiers','label':'第几盘','editor':'com-field-number','required':True},
+                    {'name':'Specifiers','label':'第几盘','editor':'com-field-number','fv_rule':'integer(+0)','required':True},
                     {'name':'OutcomeId','label':'是否抢7','editor':'com-field-select', 'required':True,
                       'options':[
                                {'value':74,'label':'是' },

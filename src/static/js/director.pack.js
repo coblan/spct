@@ -3909,6 +3909,12 @@ var number = {
     props: ['row', 'head'],
 
     template: '<div><span v-if=\'head.readonly\' v-text=\'row[head.name]\'></span>\n            \t\t<input v-else type="text" class="form-control input-sm" v-model="row[head.name]" :id="\'id_\'+head.name"\n            \t\t    :name="head.name" :step="head.step"\n            \t\t     @keypress="isNumber($event)"\n                        :placeholder="head.placeholder" :autofocus="head.autofocus"></div>',
+    created: function created() {
+        if (this.head.fv_rule == undefined) {
+            Vue.set(this.head, 'fv_rule', 'digit(4)');
+        }
+    },
+
     methods: {
         isNumber: function isNumber(evt) {
             evt = evt ? evt : window.event;
