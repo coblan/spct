@@ -999,7 +999,7 @@ def get_match_outcome_info(matchid):
             'has_half1':True,
             'has_half2':True,
         }
-    for score in TbPeriodscore.objects.filter(matchid=matchid,statuscode__in=[6,7,13,14,15,16,40,50,100,141,142,143,144,145,146,147,14140,14240,14340,14440,14540,14640,14740],scoretype__in=[1,5]):
+    for score in TbPeriodscore.objects.filter(matchid=matchid,scoretype__in=[1,5]): # statuscode__in=[6,7,13,14,15,16,40,50,100,141,142,143,144,145,146,147,14140,14240,14340,14440,14540,14640,14740,],
         row['home_%s_%s'%(score.statuscode,score.scoretype)] = score.home
         row['away_%s_%s'%(score.statuscode,score.scoretype)] = score.away
 
@@ -1295,9 +1295,10 @@ def out_com_save(rows,matchid):
                 if inst.statuscode==100:
                     home_score += int(inst.home)
                     away_score += int(inst.away)
-                elif inst.statuscode in [40,50,]:
-                    home_score += int(inst.home)
-                    away_score += int(inst.away)
+                else:
+                    if match.sportid in [1,2] and inst.statuscode in [40,50,]:
+                        home_score += int(inst.home)
+                        away_score += int(inst.away)
  
             #if match.sportid in [1,2] and inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
                 #if inst.home >= 0 and inst.away >= 0:
