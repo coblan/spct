@@ -1266,6 +1266,7 @@ def out_com_save(rows,matchid):
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=int('%s'%(i+7)),scoretype=1,type=1,home=home,away=away  ) ) 
             batch_create.append(TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,type=1,home=home_set,away=away_set  ) ) 
         if row['pk']== -19:
+            # 斯诺克
             send_dc['IsSettleByScore'] =True
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
             set_count = int( row.get('set_count') )
@@ -1290,15 +1291,25 @@ def out_com_save(rows,matchid):
         match = TbMatch.objects.get(matchid=matchid)
 
         for inst in batch_create:
-            if match.sportid in [109,110,111]:
+            if inst.scoretype==1:
                 if inst.statuscode==100:
-                    home_score =inst.home
-                    away_score =inst.away
-                    break
-            elif inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
-                if inst.home >= 0 and inst.away >= 0:
                     home_score += int(inst.home)
                     away_score += int(inst.away)
+                elif inst.statuscode in [40,50,]:
+                    home_score += int(inst.home)
+                    away_score += int(inst.away)
+ 
+            #if match.sportid in [1,2] and inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
+                #if inst.home >= 0 and inst.away >= 0:
+                    #home_score += int(inst.home)
+                    #away_score += int(inst.away)
+            ##elif match.sportid in [109,110,111,5,19]:
+            #else:
+                #if inst.statuscode==100:
+                    #home_score =inst.home
+                    #away_score =inst.away
+                    #break
+           
 
 
         match.score = '%s:%s'%(home_score,away_score)
