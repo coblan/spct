@@ -316,7 +316,7 @@ class MatchsPage(TablePage):
             if head['name']=='matchid':
                 head['editor']='com-table-switch-to-tab'
                 head['ctx_name']='match_tabs'
-                head['tab_name']='match_base_info'            
+                head['tab_name']='special_bet_value' # 'match_base_info'            
 
             if head['name'] in ['tournamentid','sportid']:
                 head['editor']='com-table-label-shower'
@@ -566,7 +566,9 @@ class PeriodScoreTab(ModelTable):
             head['editor']='com-table-mapper'
         return head
     class sort(RowSort):
-        names=['statuscode']
+        names=['statuscode','scoretype']
+    class filters(RowFilter):
+        names = ['scoretype']
 
 @director_view('match.livescout_status')
 def match_livescout_status(matchid,**kws):
