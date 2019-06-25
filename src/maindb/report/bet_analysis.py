@@ -5,6 +5,7 @@ from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from helpers.director.access.permit import has_permit
 from django.core.exceptions import PermissionDenied
+from helpers.director.network import argument
 
 class BetAnalysisPage(object):
     def __init__(self, request,engin):
@@ -88,7 +89,9 @@ class WinbetRatio(PlainTable):
         
         if not search_args.get('Type'):
             search_args['Type'] = 0
-  
+        argument.validate_argument(search_args,{
+            'AccountID':[argument.failmsg(argument.int_str,'账号ID必须为数字')]
+        })
         return search_args  
     
     def get_rows(self):
@@ -108,6 +111,7 @@ class WinbetRatio(PlainTable):
                 raise UserWarning('必须填写开始月和结束月')
             start += '-01'
             end = ( timezone.datetime.strptime(end,'%Y-%m') + relativedelta(months=1) - relativedelta(days=1) ) .strftime('%Y-%m-%d')
+        
         sql_args={
             'BeginDate':start , #'2019-05-01',
             'EndDate':  end , #'2019-06-11',
@@ -192,7 +196,7 @@ class BetCondition(ModelTable):
             search_args['_end_starttime'] = search_args.get('_end_starttime') or def_end
         if not search_args.get('Type'):
             search_args['Type'] = 0
-  
+
         return search_args 
     
     def dict_row(self, inst):
@@ -282,20 +286,22 @@ class MarketAnalysis(PlainTable):
             def_end = today.strftime('%Y-%m-%d %H:%M:%S')                
             search_args['_start_time'] = search_args.get('_start_time') or def_start
             search_args['_end_time'] = search_args.get('_end_time') or def_end
-  
+        argument.validate_argument(search_args,{
+            'accountid':[argument.failmsg(argument.int_str,'账号ID只能为数字')]
+        })
         return search_args  
     
     def get_rows(self):
         data_rows = []
-        try:
-            accountid = int ( self.search_args.get('accountid') )
-        except :
-            accountid = 'null'
+        #try:
+            #accountid = int ( self.search_args.get('accountid') )
+        #except :
+            #accountid = 'null'
             
         sql_args = {
             'start': self.search_args.get('_start_time'), #'2019-05-01',
             'end': self.search_args.get('_end_time') , # '2019-06-10'
-            'accountid':accountid
+            'accountid':self.search_args.get('accountid') or 'null'
         }
         sql = r"EXEC SP_Report_MarketAnalysis '%(start)s','%(end)s',%(accountid)s" \
             % sql_args

@@ -521,11 +521,7 @@ window.cfg = {
             layer.close(winindex);
         };
     },
-    pop_vue_com: function pop_vue_com(_ref) {
-        var ctx = _ref.ctx,
-            editor = _ref.editor,
-            option = _ref.option;
-
+    pop_vue_com: function pop_vue_com(editor, ctx, option) {
         return new Promise(function (resolve, reject) {
             var callback = function callback(e) {
                 close_fun();

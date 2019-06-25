@@ -918,7 +918,7 @@ class OutcomeTab(ModelTable):
         if head['name'] =='marketname':
             head['editor'] = 'com-table-click'
             head['action'] = 'var panel=scope.head.panel_map[scope.row.pk],\
-            rt=cfg.pop_vue_com({editor:panel.editor,ctx:{row:scope.row.outcome,init_express:panel.init_express,fields_group:panel.fields_group,table_grid:panel.table_grid,ops_loc:"bottom",heads:panel.heads,ops:panel.ops,par_row:scope.ps.vc.par_row,init_express:panel.init_express}})\
+            rt=cfg.pop_vue_com(panel.editor,{row:scope.row.outcome,init_express:panel.init_express,fields_group:panel.fields_group,table_grid:panel.table_grid,ops_loc:"bottom",heads:panel.heads,ops:panel.ops,par_row:scope.ps.vc.par_row,init_express:panel.init_express})\
             .then(res=>Vue.set(scope.row,"outcome",res))'
             head.update(outcome_header)
         return head
