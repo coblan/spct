@@ -135,7 +135,9 @@ outcome_header = {
             'heads':[
                 {'name':'set_count','label':'总盘数','editor':'com-field-select','options':[
                     {'value':1,'label':'一盘'},
+                    {'value':2,'label':'二盘'},
                     {'value':3,'label':'三盘'},
+                    {'value':4,'label':'四盘'},
                     {'value':5,'label':'五盘'}
                     ]},
                 {'name':'home_8_1','label':'主队第一盘得分','editor':'com-field-number','required':True,'show':'scope.row.set_count >= 1','fv_rule':'integer(+0)'},
