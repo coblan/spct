@@ -403,7 +403,9 @@ class ReportTicketState(PlainTable):
             def_end = today.strftime('%Y-%m-%d')                
             search_args['_start_time'] = search_args.get('_start_time') or def_start
             search_args['_end_time'] = search_args.get('_end_time') or def_end
-  
+        argument.validate_argument(search_args,{
+            'accountid':[argument.failmsg(argument.int_str,'账号ID只能为数字')]
+        })
         return search_args 
     
     def getRowFilters(self):
