@@ -338,6 +338,7 @@ class TournamentAnalysis(PlainTable):
             {'name':'LiveNum','label':'走地场次','editor':'com-table-span'},
             {'name':'TotalBetAmount','label':'总投注额','editor':'com-table-span'},
             {'name':'TotalBetOutcome','label':'总派奖','editor':'com-table-span'},
+            {'name':'Profit','label':'毛利','editor':'com-table-span'},
             {'name':'TotalBonus','label':'总反水','editor':'com-table-span'},
             {'name':'OrderCount','label':'注单数','editor':'com-table-span'},
             {'name':'UserCount','label':'用户数','editor':'com-table-span'},
@@ -381,7 +382,7 @@ class TournamentAnalysis(PlainTable):
     
     def getRowSort(self):
         return   {
-            'sortable': ['TotalNum','LiveNum','TotalBetAmount','TotalBetOutcome','TotalBonus','OrderCount','UserCount'],
+            'sortable': ['TotalNum','LiveNum','TotalBetAmount','TotalBetOutcome','Profit','TotalBonus','OrderCount','UserCount'],
         } 
  
 class ReportTicketState(PlainTable):
