@@ -455,7 +455,7 @@ class ReportTicketState(PlainTable):
             {'name':'PrParlayCount','label':'串关','editor':'com-table-span','sublevel':True},
             
             {'name':'ticketmaster_amount_ratio','label':'注单金额占比','style':'.el-table thead.is-group th.ticketmaster_amount_ratio-col{background-color:#5DECE2;color:white;text-align:center}','class':'ticketmaster_amount_ratio-col',
-              'children':['AverageAmount','PrEarlyCount','PrLiveCount','PrMixtureCount','PrSingleCount','PrParlayCount'],
+              'children':['AverageAmount','PrEarlyAmount','PrLiveAmount','PrMixtureAmount','PrSingleAmount','PrParlayAmount'],
               'show':' (!scope.ps.search_args.showed_col) || scope.ps.search_args.showed_col.indexOf(scope.head.name) != -1'},
             {'name':'AverageAmount','label':'人均','editor':'com-table-span','sublevel':True},
             {'name':'PrEarlyAmount','label':'早盘','editor':'com-table-span','sublevel':True},
@@ -528,6 +528,11 @@ class ReportTicketSummary(PlainTable):
                 data_rows.append(dc)
           
         return data_rows 
+    
+    def getRowFilters(self):
+        return [
+            {'name':'time','label':'日期','editor':'com-filter-date-range'}
+        ] 
 
 director.update({
     'WinbetRatio':WinbetRatio,
