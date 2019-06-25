@@ -455,14 +455,14 @@ class ReportTicketState(PlainTable):
             {'name':'PrParlayCount','label':'串关','editor':'com-table-span','sublevel':True},
             
             {'name':'ticketmaster_amount_ratio','label':'注单金额占比','style':'.el-table thead.is-group th.ticketmaster_amount_ratio-col{background-color:#5DECE2;color:white;text-align:center}','class':'ticketmaster_amount_ratio-col',
-              'children':['AverageAmount','PrEarlyAmount','PrLiveAmount','PrMixtureAmount','PrSingleAmount','PrParlayAmount'],
+              'children':['AverageAmount','PrEarlyBetAmount','PrLiveBetAmount','PrMixtureBetAmount','PrSingleBetAmount','PrParlayBetAmount'],
               'show':' (!scope.ps.search_args.showed_col) || scope.ps.search_args.showed_col.indexOf(scope.head.name) != -1'},
             {'name':'AverageAmount','label':'人均','editor':'com-table-span','sublevel':True},
-            {'name':'PrEarlyAmount','label':'早盘','editor':'com-table-span','sublevel':True},
-            {'name':'PrLiveAmount','label':'走地','editor':'com-table-span','sublevel':True},
-            {'name':'PrMixtureAmount','label':'混合','editor':'com-table-span','sublevel':True},
-            {'name':'PrSingleAmount','label':'单注','editor':'com-table-span','sublevel':True},
-            {'name':'PrParlayAmount','label':'串关','editor':'com-table-span','sublevel':True},
+            {'name':'PrEarlyBetAmount','label':'早盘','editor':'com-table-span','sublevel':True},
+            {'name':'PrLiveBetAmount','label':'走地','editor':'com-table-span','sublevel':True},
+            {'name':'PrMixtureBetAmount','label':'混合','editor':'com-table-span','sublevel':True},
+            {'name':'PrSingleBetAmount','label':'单注','editor':'com-table-span','sublevel':True},
+            {'name':'PrParlayBetAmount','label':'串关','editor':'com-table-span','sublevel':True},
             
         ]
     def get_rows(self):
