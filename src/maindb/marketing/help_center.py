@@ -17,7 +17,6 @@ from .gen_help_file import gen_help_file
 
 class HelpPage(TablePage):
     template = 'jb_admin/table.html'
-    #extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
         return '帮助管理'

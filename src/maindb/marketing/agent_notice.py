@@ -18,7 +18,6 @@ from helpers.director.access.permit import has_permit
 
 class AgentNoticePage(TablePage):
     template = 'jb_admin/table.html'
-    extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
         return '代理通知'

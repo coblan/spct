@@ -4,9 +4,7 @@ from maindb.models import TbParameterinfo
 
 class WithdrawLimitPage(FieldsPage):
     template = 'jb_admin/fields.html'
-    extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
-    
-    
+
     class fieldsCls(Fields):
         extra_mixins = ['parameter_form_logic']
         def get_heads(self): 

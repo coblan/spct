@@ -21,7 +21,7 @@ operation_log = logging.getLogger('operation_log')
 
 class AppPackage(TablePage):
     template='jb_admin/table.html'
-    extra_js=['/static/js/maindb.pack.js?t=%s'%js_stamp_dc.get('maindb_pack_js','')]
+  
     def get_label(self):
         return 'App包管理'
     

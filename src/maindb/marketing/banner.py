@@ -11,7 +11,6 @@ from helpers.maintenance.update_static_timestamp import js_stamp_dc
 
 class BannerPage(TablePage):
     template = 'jb_admin/table.html'  # 'jb_admin/table_with_height.html'
-    #extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     class tableCls(ModelTable):
         model = TbBanner

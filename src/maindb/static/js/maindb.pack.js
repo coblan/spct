@@ -2177,7 +2177,7 @@ var report_block_tree_menu = {
 };
 
 Vue.component('com-live-block-tree-menu', report_block_tree_menu);
-window.livepage_report_block_tree_menu;
+window.live_report_block_tree_menu = report_block_tree_menu;
 
 /***/ }),
 /* 33 */,

@@ -166,7 +166,8 @@ class PcMenu(BaseEngine):
         ctx['fast_config_panel'] = True
         if 'extra_js' not in ctx:
             ctx['extra_js'] = []
-        ctx['extra_js'].append(ctx['js_config']['js_lib']['maindb'])
+        if 'maindb' not in ctx['extra_js']:
+            ctx['extra_js'].append('maindb')
    
         # ctx['table_fun_config'] ={
         # 'detail_link': '详情', #'<i class="fa fa-info-circle" aria-hidden="true" title="查看详情"></i>'#,

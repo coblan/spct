@@ -18,7 +18,6 @@ from .gen_notice import gen_notice_file
 
 class NoticePage(TablePage):
     template = 'jb_admin/table.html'
-    #extra_js = ['/static/js/maindb.pack.js?t=%s' % js_stamp_dc.get('maindb_pack_js', '')]
 
     def get_label(self):
         return '通知'

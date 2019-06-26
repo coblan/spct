@@ -35,7 +35,7 @@ class BetAnalysisPage(object):
         })
         
         return {
-            'editor':'com-live-block-tree-menu',
+            'editor': 'live_report_block_tree_menu', # 'com-live-block-tree-menu',
             'editor_label':'报表分类',
             'editor_ctx':{
                 'menu':[
@@ -342,12 +342,12 @@ class TournamentAnalysis(PlainTable):
             {'name':'TournamentNameZH','label':'联赛名','editor':'com-table-span','width':160},
             {'name':'TotalNum','label':'总场次','editor':'com-table-span'},
             {'name':'LiveNum','label':'走地场次','editor':'com-table-span'},
-            {'name':'TotalBetAmount','label':'总投注额','editor':'com-table-span'},
-            {'name':'TotalBetOutcome','label':'总派奖','editor':'com-table-span'},
-            {'name':'Profit','label':'毛利','editor':'com-table-span'},
-            {'name':'TotalBonus','label':'总反水','editor':'com-table-span'},
-            {'name':'OrderCount','label':'注单数','editor':'com-table-span'},
-            {'name':'UserCount','label':'用户数','editor':'com-table-span'},
+            {'name':'TotalBetAmount','label':'总投注额','editor':'com-table-span','width':130},
+            {'name':'TotalBetOutcome','label':'总派奖','editor':'com-table-span','width':130},
+            {'name':'Profit','label':'毛利','editor':'com-table-span','width':130},
+            {'name':'TotalBonus','label':'总反水','editor':'com-table-span','width':130},
+            {'name':'OrderCount','label':'注单数','editor':'com-table-span','width':130},
+            {'name':'UserCount','label':'用户数','editor':'com-table-span','width':130},
         ]
     def get_rows(self):
         data_rows = []
@@ -410,8 +410,8 @@ class ReportTicketState(PlainTable):
     
     def getRowFilters(self):
         return [
-             {'name':'accountid','label':'账号ID','editor':'com-filter-text'},
-             {'name':'sportID','label':'体育类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
+            {'name':'accountid','label':'账号ID','editor':'com-filter-text'},
+            {'name':'sportID','label':'体育类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
             {'name':'time','label':'日期','editor':'com-filter-date-range'}
         ]
     
