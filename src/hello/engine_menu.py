@@ -62,6 +62,7 @@ class PcMenu(BaseEngine):
                      {'label': '虚拟排行', 'url': page('rank'), 'visible': can_touch(TbUserRank, crt_user), },                      
                      ],},
                 {'label': '红利发放', 'url': page('bonuspage'),'visible': can_touch(TbBonuslog, crt_user), },
+                {'label':'启动广告','url':page('advertise'),'visible':can_touch(TbAdvertisement,crt_user)},
                 
              ]},
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,
@@ -140,7 +141,7 @@ class PcMenu(BaseEngine):
                 {'label': '每日报表', 'url': page('everyday_report'),
                   'visible': can_touch(TbTrendstatistics, crt_user), },
                 {'label':'投注分析','url':page('bet_analysis'),'visible':has_permit(crt_user,'report.betAnalysis')},
-                
+                {'label':'活动记录','url':page('activityrecord'),},
              ]},
             
             {'label': '代理系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],

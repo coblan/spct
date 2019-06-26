@@ -51,6 +51,19 @@ class Blackiprangelist(models.Model):
         db_table = 'TB_BlackIpRangeList'
 
 
+class TbAdvertisement(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    #image = models.CharField(db_column='Image', max_length=255,verbose_name='图片地址')  # Field name made lowercase.
+    image = CusPictureField(db_column='Image', max_length=255,verbose_name='图片地址')
+    target = models.CharField(db_column='Target', max_length=255,verbose_name='跳转地址')  # Field name made lowercase.
+    durationseconds = models.IntegerField(db_column='DurationSeconds',verbose_name='持续时间')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled',verbose_name='启用',default=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Advertisement'
+
+
 class TbAccount(models.Model):
     accountid = models.IntegerField(db_column='AccountID', primary_key=True,
                                     verbose_name='账号ID')  # Field name made lowercase.
@@ -234,6 +247,24 @@ class TbActivityV2(models.Model):
     def __str__(self):
         return self.title
 
+
+class TbActivityRecord(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    #activityid = models.IntegerField(db_column='ActivityId')  # Field name made lowercase.
+    activity = models.ForeignKey(to=TbActivityV2,db_constraint=False,db_column='ActivityId',verbose_name = '活动')  
+    bid = models.BigIntegerField(db_column='BId')  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountId')  # Field name made lowercase.
+    account = models.ForeignKey(to=TbAccount,db_constraint=False,to_field='accountid',db_column='AccountId',verbose_name='用户') 
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='生成时间')  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=38, decimal_places=4,verbose_name='金额')  # Field name made lowercase.
+    turnover = models.DecimalField(db_column='Turnover', max_digits=38, decimal_places=4,verbose_name='流水')  # Field name made lowercase.
+    bonus = models.DecimalField(db_column='Bonus', max_digits=38, decimal_places=4,verbose_name='奖金')  # Field name made lowercase.
+    state = models.IntegerField(db_column='State',verbose_name='状态',choices=ACTIVITY_RECORD_STATE)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Activity_Record'
+        
 
 class TbActivitySettings(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
@@ -2710,6 +2741,7 @@ class TbSporttypes(models.Model):
     sportimg_s = CusPictureField(db_column='SportImg_S', max_length=255, blank=True, null=True,verbose_name='小图')  # Field name made lowercase.
     sportimg_m = CusPictureField(db_column='SportImg_M', max_length=255, blank=True, null=True,verbose_name='中图')  # Field name made lowercase.
     sportimg_l = CusPictureField(db_column='SportImg_L', max_length=255, blank=True, null=True,verbose_name='大图')  # Field name ma
+    new = models.BooleanField(db_column='New',verbose_name = '最新上线')  # Field name made lowercase.
     
     class Meta:
         managed = False

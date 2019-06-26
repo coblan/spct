@@ -407,7 +407,7 @@ class AccoutModifyAmount(ModelFields):
             before_amount = self.instance.amount
             self.instance.amount = before_amount + Decimal(self.kw.get('add_amount', 0))
             TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
-                                        amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='system',
+                                        amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='Backend',
                                         memo='调账', accountid=self.instance, categoryid_id=moenycategory,
                                         cashflow=cashflow)
             return {'memo': '调账', 'ex_before': {'amount': before_amount},
@@ -474,13 +474,6 @@ class ModifyBetFullRecord(ModelFields):
             else:
                 TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,consumeamount = add_amount,consumestatus=1,rftype=3,rfid=0,content='后台管理员限额调整')
                 
-            #cashflow, moenycategory = (1, 4) if self.changed_amount > 0 else (0, 34)
-            #before_amount = self.instance.amount
-            #self.instance.amount = before_amount + Decimal(self.kw.get('add_amount', 0))
-            #TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
-                                        #amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='system',
-                                        #memo='调账', accountid=self.instance, categoryid_id=moenycategory,
-                                        #cashflow=cashflow)
             after_amount = Decimal(self.kw.get('betfullrecord')) + add_amount
             return {'memo': '提现限额调整', 'ex_before': {'betfullrecord': self.kw.get('betfullrecord')},
                     'ex_after': {'betfullrecord': str(after_amount) , }}

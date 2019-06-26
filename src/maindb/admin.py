@@ -20,6 +20,7 @@ from .matches import basketball_matches_statistics
 from .marketing import admin
 from .marketing import feedback
 from .marketing import agent_qa
+from .marketing import advertisement
 
 from .report import user_statistics
 from .report import report_channel
@@ -27,6 +28,7 @@ from .report import platform_profit
 from .report import recharge_report
 from .report import every_day
 from .report import bet_analysis
+from .report import active_record
 
 from .basic_data import bet_type, league, teams, app_resource, currency
 from .basic_data import banktypes
