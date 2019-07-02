@@ -110,7 +110,7 @@ class MatchsPage(TablePage):
         exclude = []  # 'ishidden', 'iscloseliveodds'
         fields_sort = ['sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
-                       'oddsadjustment','oddsadjustmax','baseticketeamout','eventid']
+                       'eventid'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'},
@@ -394,7 +394,7 @@ class MatchForm(ModelFields):
         exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
                    'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', ]
 
-    field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','weight','ticketdelay','oddsadjustment','oddsadjustmax','baseticketeamout' ]
+    field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','weight','ticketdelay', ] #'oddsadjustment','oddsadjustmax','baseticketeamout'
 
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('matchid'):
