@@ -104,6 +104,7 @@ class PcMenu(BaseEngine):
                  
                  {'label': '注单列表', 'url': page('tickets'),
                   'visible': can_touch(TbTicketmaster, crt_user), },
+                 {'label':'调水模板','url':page('adjusttemplate'),'visible':can_touch(TbAdjusttemplate,crt_user)},
                  
                  
                  # {'label':_('Odds'),'url':page('maindb.TbOdds'), 'visible': True,},

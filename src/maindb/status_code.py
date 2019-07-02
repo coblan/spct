@@ -261,3 +261,8 @@ ACTIVITY_RECORD_STATE=(
     (2,'已发放'),
     (3,'已失效'),
 )
+
+ADJUSTTEMPLATE_STATUS=(
+    (0,'失效'),
+    (1,'启用'),
+)

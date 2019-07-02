@@ -16,6 +16,7 @@ from .member import chum_user
 from .matches import admin, matches, ticket_master,matches_statistics
 from .matches import basketball_matches
 from .matches import basketball_matches_statistics
+from .matches import ajusttemplate
 
 from .marketing import admin
 from .marketing import feedback

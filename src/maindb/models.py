@@ -161,6 +161,23 @@ class TbAgentqa(models.Model):
         db_table = 'TB_AgentQA'
 
 
+class TbAdjusttemplate(models.Model):
+    templateid = models.AutoField(db_column='TemplateID', primary_key=True,verbose_name='模板ID')  # Field name made lowercase.
+    templatename = models.CharField(db_column='TemplateName', max_length=200, blank=True, null=True,verbose_name='模板名')  # Field name made lowercase.
+    remark = models.CharField(db_column='Remark', max_length=200, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
+    adjustsettings = models.CharField(db_column='AdjustSettings', max_length=3000, blank=True, null=True,verbose_name='调水详细')  # Field name made lowercase.
+    minlimit = models.DecimalField(db_column='MinLimit', max_digits=18, decimal_places=4,verbose_name='最小限制')  # Field name made lowercase.
+    maxlimit = models.DecimalField(db_column='MaxLimit', max_digits=18, decimal_places=4,verbose_name='最大限制')  # Field name made lowercase.
+    operateuser = UpdateUserField(db_column='OperateUserNo', blank=True, null=True,verbose_name='操作人')  # Field name made lowercase.
+    #operateuserno = models.IntegerField(db_column='OperateUserNo', blank=True, null=True)  # Field name made lowercase.
+    operatetime = models.DateTimeField(db_column='OperateTime', blank=True, null=True,verbose_name='操作时间',auto_now=True)  #
+    status = models.IntegerField(db_column='Status',verbose_name='状态',choices=ADJUSTTEMPLATE_STATUS,default=1)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_AdjustTemplate'
+        
+
 class TbAccountMatchFav(models.Model):
     accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID')  # Field name made lowercase.
