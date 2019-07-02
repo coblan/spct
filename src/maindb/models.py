@@ -178,7 +178,7 @@ class TbAdjusttemplate(models.Model):
         db_table = 'TB_AdjustTemplate'
     
     def __str__(self):
-        return self.templatename
+        return self.templatename if self.templatename else ''
         
 
 class TbAccountMatchFav(models.Model):
