@@ -210,5 +210,25 @@ class ProgramerAdmin(BaseEngine):
         ctx['fast_config_panel'] = True
         return ctx
 
-
 ProgramerAdmin.add_pages(page_dc)
+
+class YunweiEngin(BaseEngine):
+    url_name = 'yunwei'
+    brand = 'yunwei'
+    mini_brand = 'YW'
+    need_login = False
+    
+    @property
+    def menu(self):
+        menu = [
+            {'label': '域名管理', 'url': page('domain'), 'icon': fa('fa-superpowers')}
+            
+        ]
+        return menu
+
+    def custome_ctx(self, ctx):
+        ctx['js_stamp'] = js_stamp
+        ctx['fast_config_panel'] = True
+        return ctx
+
+YunweiEngin.add_pages(page_dc)

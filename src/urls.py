@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from helpers.authuser import urls as authuser_urls
-from hello.engine_menu import PcMenu, ProgramerAdmin
+from hello.engine_menu import PcMenu, ProgramerAdmin,YunweiEngin
 from django.views.generic import RedirectView 
 from maindb.views import test
 from helpers.authuser.engin_view import AuthEngine
@@ -42,6 +42,10 @@ urlpatterns = [
     
     url(r'^pa/([\w\.]+)/?$', ProgramerAdmin.as_view(), name= ProgramerAdmin.url_name), 
     url(r'^pa/?$', RedirectView.as_view(url='/pa/marketgroup')), 
+    
+    url(r'^yw/([\w\.]+)/?$', YunweiEngin.as_view(), name= YunweiEngin.url_name), 
+    url(r'^yw/?$', RedirectView.as_view(url='/yw/domain')), 
+    
     
     url(r'^$',RedirectView.as_view(url='/pc/home')) ,
     #url(r'test',test)

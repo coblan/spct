@@ -262,7 +262,7 @@ ACTIVITY_RECORD_STATE=(
     (3,'已失效'),
 )
 
-ADJUSTTEMPLATE_STATUS=(
+ZERO_ONE_STATUS=(
     (0,'失效'),
     (1,'启用'),
 )

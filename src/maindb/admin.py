@@ -60,6 +60,8 @@ from . import permit
 
 from . import js_cfg
 
+from .yunwei import domain
+
 from .programer import admin
 from helpers.director.base_data import site_cfg,field_map
 

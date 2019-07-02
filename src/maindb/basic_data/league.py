@@ -20,7 +20,7 @@ class League(TablePage):
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
         fields_sort = ['sport','tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',
-                       'oddsadjustment','oddsadjustmax','baseticketeamout']
+                       'adjusttemplate']
 
         # hide_fields = ['tournamentid']
 
@@ -150,7 +150,8 @@ class LeagueForm(ModelFields):
 
     class Meta:
         model = TbTournament
-        exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid']
+        exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid',
+                   'oddsadjustment','oddsadjustmax','baseticketeamout']
 
 #def notify_tournament_recommend(rows):
     #ls =[x['pk'] for x in rows]

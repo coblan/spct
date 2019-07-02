@@ -171,11 +171,14 @@ class TbAdjusttemplate(models.Model):
     operateuser = UpdateUserField(db_column='OperateUserNo', blank=True, null=True,verbose_name='操作人')  # Field name made lowercase.
     #operateuserno = models.IntegerField(db_column='OperateUserNo', blank=True, null=True)  # Field name made lowercase.
     operatetime = models.DateTimeField(db_column='OperateTime', blank=True, null=True,verbose_name='操作时间',auto_now=True)  #
-    status = models.IntegerField(db_column='Status',verbose_name='状态',choices=ADJUSTTEMPLATE_STATUS,default=1)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',verbose_name='状态',choices=ZERO_ONE_STATUS,default=1)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'TB_AdjustTemplate'
+    
+    def __str__(self):
+        return self.templatename
         
 
 class TbAccountMatchFav(models.Model):
@@ -654,6 +657,16 @@ class TbContacts(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Contacts'
+
+
+class TbDomain(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    url = models.CharField(db_column='Url', max_length=255)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',default=1,choices=ZERO_ONE_STATUS)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Domain'
 
 
 class TbD9Userhttpreferer(models.Model):
@@ -2073,7 +2086,8 @@ class TbTournament(models.Model):
     oddsadjustment = models.DecimalField(db_column='OddsAdjustment', max_digits=2, decimal_places=2,verbose_name='赔率调整值')  # Field name made lowercase.
     oddsadjustmax = models.DecimalField(db_column='OddsAdjustMax', max_digits=2, decimal_places=2,verbose_name='赔率调整最大值')  # Field name made lowercase.
     baseticketeamout = models.DecimalField(db_column='BaseTicketeAmout', max_digits=18, decimal_places=2,verbose_name='投注差额基数',help_text='每投注X元赔率调整一次')  # Field name made lowercase.
-    
+    #adjusttemplateid = models.IntegerField(db_column='AdjustTemplateID')  # Field name made lowercase.
+    adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='调水模板')  # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'TB_Tournament'
