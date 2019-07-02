@@ -22,6 +22,14 @@ class AdjusttemplatePage(TablePage):
         def get_operation(self):
             ops = super().get_operation()
             ops= [x for x in ops if x['name'] !='delete_selected']
+            ops+=[
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '启用', 'confirm_msg': '确认启用？',
+                 'pre_set': 'rt={status:1}', 'row_match': 'many_row', 
+                 'visible': 'status' in self.permit.changeable_fields(),},
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁用', 'confirm_msg': '确认禁用？',
+                 'pre_set': 'rt={status:0}', 'row_match': 'many_row', 
+                 'visible': 'status' in self.permit.changeable_fields(),},
+            ]
             return ops
 
 class AjusttemplateForm(ModelFields):
