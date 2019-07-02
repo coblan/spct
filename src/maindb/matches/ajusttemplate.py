@@ -41,6 +41,8 @@ class AjusttemplateForm(ModelFields):
     def dict_head(self, head):
         if head['name'] =='adjustsettings':
             head['editor']='com-field-table-list'
+            head['fv_rule']='group_unique(Percent);express(scope.value!="[]")'
+            head['fv_msg']='不能为空,且比值不能重复'
             head['table_heads']=[
                 {'name':'Percent','label':'比值','editor':'com-table-pop-fields-local'},
                 {'name':'AdjustValue','label':'调整值','editor':'com-table-span'}
