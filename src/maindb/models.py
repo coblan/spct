@@ -661,8 +661,8 @@ class TbContacts(models.Model):
 
 class TbDomain(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    url = models.CharField(db_column='Url', max_length=255)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status',default=1,choices=ZERO_ONE_STATUS)  # Field name made lowercase.
+    url = models.CharField(db_column='Url', max_length=255,verbose_name='域名')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',default=1,choices=ZERO_ONE_STATUS,verbose_name='状态')  # Field name made lowercase.
 
     class Meta:
         managed = False

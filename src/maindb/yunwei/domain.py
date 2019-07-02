@@ -12,8 +12,10 @@ class DomainPage(TablePage):
         return 'jb_admin/table.html'
     
     class tableCls(ModelTable):
+        nolimit=True
         model = TbDomain
         exclude =[]
+        pop_edit_fields=['id']
         
         def dict_head(self, head):
             width_dc ={
@@ -24,6 +26,7 @@ class DomainPage(TablePage):
             return head
 
 class DomainForm(ModelFields):
+    nolimit=True
     class Meta:
         model = TbDomain
         exclude = []
@@ -38,7 +41,7 @@ def gen_js_file():
         domain_list.append(domain.url)
     outstr = 'url_list = %s'%json.dumps(domain_list)
     path = os.path.join(settings.MEDIA_ROOT,'public','check','domain.js')
-    with open('w',path) as f:
+    with open(path,'w') as f:
         f.write(outstr)
 
 
