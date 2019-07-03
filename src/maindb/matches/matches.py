@@ -214,12 +214,14 @@ class MatchsPage(TablePage):
                 return head
 
         class search(SelectSearch):
-            names = ['team1zh']
-            exact_names = ['matchid']
-            field_sort=['matchid','team1zh']
+            names = ['team1zh','eventid']
+            exact_names = ['matchid','eventid']
+            field_sort=['matchid','team1zh','eventid']
             def get_option(self, name):
                 if name == 'team1zh':
                     return {'value': 'team1zh', 'label': '球队名称', }
+                elif name =='eventid':
+                    return {'value':'eventid','label':'eventid'}
                 else:
                     return super().get_option(name)
 
