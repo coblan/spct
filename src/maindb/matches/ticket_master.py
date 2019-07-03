@@ -200,7 +200,7 @@ class TicketMasterPage(TablePage):
             ]
 
         class search(SelectSearch):
-            names = ['accountid__nickname']
+            names = ['accountid__nickname','ticketid']
             exact_names = ['orderid', 'tbticketstake__matchid']
 
             def get_option(self, name):
@@ -217,6 +217,11 @@ class TicketMasterPage(TablePage):
                     return {
                         'value': name,
                         'label': 'matchid',
+                    }
+                elif name =='ticketid':
+                    return {
+                        'value':name,
+                        'label':'注单ID'
                     }
 
             def clean_search(self):
