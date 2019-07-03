@@ -1,6 +1,7 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,field_map,model_to_name,BaseFieldProc
 from maindb.models import TbAdjusttemplate
 import json
+from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 
 class AdjusttemplatePage(TablePage):
     def get_label(self):
@@ -15,6 +16,11 @@ class AdjusttemplatePage(TablePage):
         exclude = []
         
         def dict_head(self, head):
+            width = {
+                'remark':200
+            }
+            if head['name'] in width:
+                head['width'] = width.get(head['name'])
             if head['name'] == 'adjustsettings':
                 head['editor']='com-table-label-shower'
             return head
@@ -79,7 +85,8 @@ class AdjustSettingProc(BaseFieldProc):
             }
 
 field_map.update({
-    '%s.adjustsettings'%model_to_name(TbAdjusttemplate):AdjustSettingProc
+    '%s.adjustsettings'%model_to_name(TbAdjusttemplate):AdjustSettingProc,
+    '%s.status'%model_to_name(TbAdjusttemplate):IntBoolProc,
 })
 
 director.update({
