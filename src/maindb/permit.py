@@ -183,6 +183,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('report.betAnalysis',';'.join(['TbTrendstatistics']),'','set'),
            
            ('TbAdjusttemplate.edit',model_full_permit(TbAdjusttemplate),model_to_name(TbAdjusttemplate),'model'),
+           
+           ('TbDomain.edit',model_full_permit(TbDomain),model_to_name(TbDomain),'model'),
            ]
 
 add_permits(permits)

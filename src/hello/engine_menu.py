@@ -193,7 +193,8 @@ class ProgramerAdmin(BaseEngine):
     url_name = 'ProgramerAdmin'
     brand = 'ProgramerAdmin'
     mini_brand = 'PA'
-
+    need_staff = True
+    
     @property
     def menu(self):
         menu = [
@@ -216,12 +217,13 @@ class YunweiEngin(BaseEngine):
     url_name = 'yunwei'
     brand = 'yunwei'
     mini_brand = 'YW'
-    need_login = False
+    need_staff=False
     
     @property
     def menu(self):
+        crt_user = self.request.user
         menu = [
-            {'label': '域名管理', 'url': page('domain'), 'icon': fa('fa-superpowers')}
+            {'label': '域名管理', 'url': page('domain'), 'icon': fa('fa-superpowers'),'visible':can_touch(TbDomain,crt_user)}
             
         ]
         return menu

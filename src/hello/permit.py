@@ -255,7 +255,12 @@ def get_permit():
              {'label': _('User'), 'value': 'User.write',}, 
              {'label': _('Role'), 'value': 'Group',}
              ],
-         }
+         },
+         {'label': '运维管理',
+         'children': [
+             {'label': '域名管理', 'value': 'TbDomain.edit',}, 
+             ],
+         },
     ]
     return permit
 
