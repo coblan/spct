@@ -156,7 +156,8 @@ def get_permit():
              {'label': _('Tb TicketMaster'), 'children': [
                  {'label': '查看', 'value': 'TbTicketmaster_all_tab_read','depend':['TbMatches']}, 
                  {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', ],}
-                 ]},              
+                 ]},   
+             {'label': '调水模板', 'value':'TbAdjusttemplate.edit'},  
              ],
         }, 
        
