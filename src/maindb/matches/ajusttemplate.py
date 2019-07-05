@@ -17,6 +17,8 @@ class AdjusttemplatePage(TablePage):
         
         def dict_head(self, head):
             width = {
+                'templatename':150,
+                'operateuser':150,
                 'remark':200
             }
             if head['name'] in width:

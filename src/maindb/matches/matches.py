@@ -416,7 +416,7 @@ class MatchForm(ModelFields):
 
     def dict_row(self, inst):
         return {'isshow': not bool(inst.ishidden),
-                '_matchdate_label':inst.matchdate.strftime('%Y-%m-%d %H:%M'),
+                '_matchdate_label':inst.matchdate.strftime('%Y-%m-%d %H:%M') if inst.matchdate else '',
                 }
 
     def clean_save(self):

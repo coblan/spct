@@ -393,11 +393,6 @@ class AccoutModifyAmount(ModelFields):
             dc['add_amount'] = '叠加值使得余额小于0'
         return dc
 
-    # def clean(self):
-
-    # raise ValidationError('余额不能小于0')
-    # return self.cleaned_data.get('amount')
-
     def clean_save(self):
         if 'add_amount' in self.kw:
             moenycategory_pk = self.kw.get('moenycategory')
@@ -444,6 +439,7 @@ class ModifyBetFullRecord(ModelFields):
         ]    
     
     def clean(self):
+        super().clean()
         add_amount = self.kw.get('add_amount')
         if not add_amount :
             self._errors['add_amount']= '调整值不能为0或者空'

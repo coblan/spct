@@ -137,6 +137,7 @@ class RankForm(ModelFields):
         
     
     def clean(self):
+        super().clean()
         if not self.instance.pk:
             userid = self.kw.get('userid')
             type = self.kw.get('type')

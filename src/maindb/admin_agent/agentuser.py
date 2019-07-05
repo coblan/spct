@@ -409,6 +409,7 @@ class NewAgentUserForm(ModelFields):
         #}
     
     def clean(self): 
+        super().clean()
         phone = self.cleaned_data.get('phone')
         if TbAccount.objects.filter(phone = phone).exists():
             self.add_error('phone', '手机号码已经存在')

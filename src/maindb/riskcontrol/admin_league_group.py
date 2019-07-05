@@ -175,6 +175,7 @@ class LeagueidInGroupForm(Fields):
             ]
     
     def clean(self):
+        super().clean()
         new_league_list = [int(x) for x in self.kw.get('league_list')]
         new_in = []
         

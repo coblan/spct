@@ -89,7 +89,7 @@ class League(TablePage):
             names = ['tournamentname', 'tournamentid']
 
         class filters(RowFilter):
-            names = ['issubscribe','sport','isrecommend']
+            names = ['issubscribe','sport','isrecommend','adjusttemplate']
             def getExtraHead(self): 
                 return [
                     {'name': 'openlivebet','label': '走地',

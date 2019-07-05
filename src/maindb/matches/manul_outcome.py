@@ -484,7 +484,7 @@ outcome_header = {
                          ], }
                       ],
                  'fields_heads':[
-                     {'name':'Specifiers','label':'个数','editor':'com-field-number', 'required':True}, 
+                     {'name':'Specifiers','label':'个数','editor':'com-field-number','fv_rule':'integer(+0)', 'required':True}, 
                      {'name':'OutcomeId','label':'时间段','editor':'com-field-select', 'required':True,'options':[
                            {'value':598,'label':"1-10"},
                            {'value':600,'label':"11-20"},
@@ -569,7 +569,7 @@ outcome_header = {
                          ]}, 
                       ],
                  'fields_heads':[
-                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-field-number','required':True},
+                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-field-number','fv_rule':'integer(+)','required':True},
                      {'name':'Specifiers','label':'时间段','editor':'com-field-select', 'required':True,'options':[
                            {'value':'|from=1|to=15','label':'1-15'},
                            {'value':'|from=16|to=30','label':'16-30'},
@@ -702,7 +702,7 @@ outcome_header = {
                          ]}, 
                       ],
                  'fields_heads':[
-                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-field-number','required':True},
+                     {'name':'Specifiers_1','label':'第几粒球','editor':'com-field-number','fv_rule':'integer(+)','required':True},
                      {'name':'Specifiers','label':'时间段','editor':'com-field-select','required':True, 'options':[
                          {'value':"|from=1|to=10",'label':"1-10"},
                            {'value':"|from=11|to=20",'label':"11-20"},
