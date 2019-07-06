@@ -56,11 +56,11 @@ class AjusttemplateForm(ModelFields):
                 {'name':'AdjustValue','label':'调整值','editor':'com-table-span'}
             ]
             head['fields_heads']=[
-                {'name':'Percent','label':'比值','editor':'com-field-number','fv_rule':'range(0.01~0.9)','required':True},
+                {'name':'Percent','label':'比值','editor':'com-field-number','fv_rule':'range(0.1~0.9)','required':True},
                 {'name':'AdjustValue','label':'调整值','editor':'com-field-number','fv_rule':'range(0.01~0.5)','required':True}
             ]
         if head['name']=='minlimit':
-            head['fv_rule']='range(0.1~0.9)'
+            head['fv_rule']='range(0.01~0.9)'
         if head['name']=='maxlimit':
             head['fv_rule']='range(-0.9~-0.1)'
         return head
