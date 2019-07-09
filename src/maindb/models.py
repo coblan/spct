@@ -239,7 +239,7 @@ class TbActivityV2(models.Model):
     target = models.CharField(db_column='Target',verbose_name='活动对象', max_length=256, blank=True, null=True)  # Field name made lowercase.
     content = models.CharField(db_column='Content', max_length=2048, blank=True, null=True,verbose_name='活动详情')  # Field name made lowercase.
     rules = models.CharField(db_column='Rules', max_length=3000,verbose_name='规则')  # Field name made lowercase.
-    banner = PictureField(db_column='Banner', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    banner = CusPictureField(db_column='Banner', max_length=512, blank=True, null=True,verbose_name='列表封面')  # Field name made lowercase.
     url = models.CharField(db_column='Url', max_length=512)  # Field name made lowercase.
     componentname = models.CharField(db_column='ComponentName', max_length=64, blank=True, null=True,verbose_name='前端组件名',choices=ACTIVITY_COM,help_text='注意首存再存等活动，必须选择对应的前端组件')  # Field name made lowercase.
     componentparams = models.CharField(db_column='ComponentParams', max_length=4000, blank=True, null=True,verbose_name='前端组件参数')  # Field name made lowercase.
@@ -2813,6 +2813,22 @@ class TbTrendstatistics(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_TrendStatistics'
+ 
+ 
+class TbTodomsg(models.Model):
+    tid = models.BigAutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
+    category = models.IntegerField(db_column='Category')  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=200)  # Field name made lowercase.
+    content = models.CharField(db_column='Content', max_length=1000)  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
+    rfid = models.CharField(db_column='RFID', max_length=100, blank=True, null=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    operateuserno = models.IntegerField(db_column='OperateUserNo')  # Field name made lowercase.
+    operatetime = models.DateTimeField(db_column='OperateTime', blank=True, null=True)  # Field name made lowercase.
+ 
+    class Meta:
+        managed = False
+        db_table = 'TB_ToDoMsg'      
         
         
 class TbMarketlistwithsport(models.Model):
