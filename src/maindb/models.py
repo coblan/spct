@@ -2822,7 +2822,7 @@ class TbTodolist(models.Model):
     content = models.CharField(db_column='Content', max_length=1000,verbose_name='内容')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status',verbose_name='状态',default=0,choices=TODOLIST_STATUS)  # Field name made lowercase.
     rfid = models.CharField(db_column='RFID', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间',auto_now_add=True)  # Field name made lowercase.
     #operateuserno = models.IntegerField(db_column='OperateUserNo',verbose_name='操作人')  # Field name made lowercase.
     operateuser = UpdateUserField(db_column='OperateUserNo',verbose_name='操作人')  
     operatetime = models.DateTimeField(db_column='OperateTime', blank=True, null=True,auto_now=True,verbose_name='更新时间')  # Field name made lowercase.
@@ -2830,6 +2830,12 @@ class TbTodolist(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_ToDoList'    
+    
+    def __str__(self):
+        if len(self.title)>10:
+            return '%s...'%self.title[:10]
+        else:
+            return self.title
         
         
 class TbMarketlistwithsport(models.Model):

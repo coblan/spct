@@ -3,6 +3,11 @@ from django.utils.translation import ugettext as _
 
 def get_permit(): 
     permit = [
+        {'label': '待办事项',
+         'children': [
+             {'label': '结算相关', 'value': 'todolist_1',}, 
+             ],
+         },
         { 'label': _('Marketing'),
          'children': [
              { 'label': _('Banner'), 'children': [

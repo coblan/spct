@@ -200,3 +200,10 @@ LOGGING = {
         #},        
     }
 }
+
+
+WEBSOCKET={
+    'url': "wss://mq.mv03.com/websocket",
+    'user': "stageuser",
+    'pswd': "YXNkZmFmc2RmbAo"
+}
