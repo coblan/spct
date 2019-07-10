@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,director_view
+from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,director_view,RowSort
 from .models import TbTodolist
 from helpers.director.access.permit import has_permit
 from helpers.director.decorator import get_request_cache
@@ -14,6 +14,12 @@ class TodoList(TablePage):
         model = TbTodolist
         exclude =['rfid']
         pop_edit_fields=['tid']
+        
+        @classmethod
+        def clean_search_args(cls,search_args):
+            if '_sort' in search_args:
+                search_args['_sort'] = 'status'
+            return search_args
         
         def inn_filter(self, query):
             cat_list = get_todolist_catlist()
@@ -35,6 +41,9 @@ class TodoList(TablePage):
             if head['name'] in width:
                 head['width'] = width.get(head['name'])
             return head
+        
+        class sort(RowSort):
+            names=['status']
 
 class TodoForm(ModelFields):
     overlap_fields=[]
