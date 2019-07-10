@@ -17,7 +17,7 @@ class TodoList(TablePage):
         
         @classmethod
         def clean_search_args(cls,search_args):
-            if '_sort' in search_args:
+            if '_sort' not in search_args:
                 search_args['_sort'] = 'status'
             return search_args
         
