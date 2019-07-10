@@ -65,3 +65,9 @@ UPLOAD_CLOUD_SHELL='/pypro/shell/upload-app.sh'
 
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
+
+WEBSOCKET={
+    'url': "wss://mq.mv03.com/websocket",
+    'user': "stageuser",
+    'pswd': "YXNkZmFmc2RmbAo"
+}
