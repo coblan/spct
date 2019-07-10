@@ -29,9 +29,10 @@ class BonusPage(object):
                         'com': 'com-tab-fields',
                         'heads': bonus_form.get_heads(),
                         'ops': bonus_form.get_operations(),
-                        'get_row':'rt=scope.vc.row= {_director_name:"bonuslog_list.edit"}',
+                        'init_express':'scope.vc.row =  {_director_name:"bonuslog_list.edit"}',
+                        #'get_row':'scope.vc.row= {_director_name:"bonuslog_list.edit"}',
                         #'row_express':
-                        'after_save':'rt= scope.vc.row={_director_name:"bonuslog_list.edit"}'
+                        'after_save':'scope.vc.row={_director_name:"bonuslog_list.edit"}'
                     },
                     {'name': 'bonustype-list',
                      'label': '红利类型',

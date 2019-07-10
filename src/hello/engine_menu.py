@@ -15,7 +15,7 @@ from helpers.director.access.permit import has_permit
 # Blackiprangelist, Whiteiplist, Whiteuserlist, TbWithdrawlimitlog, TbTeams,
 from maindb.models import *
 from . import permit
-
+from django.utils import timezone
 
 class PcMenu(BaseEngine):
     url_name = 'sportcenter'
@@ -29,6 +29,7 @@ class PcMenu(BaseEngine):
         crt_user = self.request.user
         menu = [
             {'label': _('DashBoard'), 'url': page('home'), 'icon': fa('fa-home'), 'visible': True},
+            {'label': '待办事项', 'url': page('todolist'), 'icon': fa('fa-clock-o'), 'visible': True},
             {'label': _('Member'), 'icon': fa('fa-users'), 'visible': True,
              'submenu': [
                 {'label': _('Tb Account'), 'url': page('account'), 'visible': can_touch(TbAccount, crt_user), },
@@ -170,7 +171,15 @@ class PcMenu(BaseEngine):
             ctx['extra_js'] = []
         if 'maindb' not in ctx['extra_js']:
             ctx['extra_js'].append('maindb')
-   
+        if 'init_express' not in ctx:
+            ctx['init_express'] = '''(function(){
+            ex.stompInit({url:"ws://localhost:15674/ws",user:"v1_user",pswd:"v1_user"});
+            ex.stompListen("/exchange/mytest/test",function(data){
+                console.log(data.body)
+                rootStore.$emit("todolist_updated")
+            })
+            })()
+            '''
         # ctx['table_fun_config'] ={
         # 'detail_link': '详情', #'<i class="fa fa-info-circle" aria-hidden="true" title="查看详情"></i>'#,
         # }
@@ -184,6 +193,33 @@ class PcMenu(BaseEngine):
         # }
 
         return ctx
+    
+    def get_head_bar_data(self, request):
+        dc = super().get_head_bar_data(request)
+        header_bar_widgets = dc.get('header_bar_widgets')
+        count = TbTodolist.objects.filter(status=0).count()
+        header_bar_widgets = [
+            {'editor': 'com-head-bell-msg', 'link':'/pc/todolist','count':count,'lasttime':timezone.now().strftime('%Y-%m-%d %H:%M:%S'),'init_express':'''(function(){
+            rootStore.$on('todolist_updated',()=>{
+                ex.director_call("todolist.hasnew_todolist",{lasttime:scope.head.lasttime}).then((resp)=>{
+                    scope.head.count = resp.count
+                    if(resp.hasnew){
+                       scope.head.lasttime=resp.lasttime
+                        cfg.notify(resp.title,
+                        {requireInteraction:true,
+                        tag:'jb_todolist',
+                        data: {
+                            url: '%(self_url)s/pc/todolist'
+                        }})
+                    }
+                })
+            })
+            })()
+            '''%{'self_url':settings.SELF_URL}
+               },
+        ] + header_bar_widgets
+        dc['header_bar_widgets'] = header_bar_widgets
+        return dc
 
 
 PcMenu.add_pages(page_dc)

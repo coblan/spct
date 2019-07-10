@@ -521,14 +521,19 @@ class TbLivescoutTable(ModelTable):
 
     def dict_head(self, head):
         width_dc={
-            'servertime':150,
-            'createtime':150,
+            'servertime':180,
+            'createtime':180,
             'eventdesc':200,
         }
         if width_dc.get(head['name']):
             head['width']=width_dc.get(head['name'])
         return head
-
+    
+    def dict_row(self, inst):
+        return {
+            'servertime':inst.servertime.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3],
+            'createtime':inst.createtime.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
+        }
     #def getExtraHead(self):
         #return [
             #{'name':'stopreason','label':'危险球原因'}

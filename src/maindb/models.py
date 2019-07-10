@@ -2815,20 +2815,21 @@ class TbTrendstatistics(models.Model):
         db_table = 'TB_TrendStatistics'
  
  
-class TbTodomsg(models.Model):
+class TbTodolist(models.Model):
     tid = models.BigAutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
-    category = models.IntegerField(db_column='Category')  # Field name made lowercase.
-    title = models.CharField(db_column='Title', max_length=200)  # Field name made lowercase.
-    content = models.CharField(db_column='Content', max_length=1000)  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
+    category = models.IntegerField(db_column='Category',verbose_name='类别',choices=TODOLIST_CATEGORY)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=200,verbose_name='标题')  # Field name made lowercase.
+    content = models.CharField(db_column='Content', max_length=1000,verbose_name='内容')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',verbose_name='状态',default=0,choices=TODOLIST_STATUS)  # Field name made lowercase.
     rfid = models.CharField(db_column='RFID', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
-    operateuserno = models.IntegerField(db_column='OperateUserNo')  # Field name made lowercase.
-    operatetime = models.DateTimeField(db_column='OperateTime', blank=True, null=True)  # Field name made lowercase.
- 
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
+    #operateuserno = models.IntegerField(db_column='OperateUserNo',verbose_name='操作人')  # Field name made lowercase.
+    operateuser = UpdateUserField(db_column='OperateUserNo',verbose_name='操作人')  
+    operatetime = models.DateTimeField(db_column='OperateTime', blank=True, null=True,auto_now=True,verbose_name='更新时间')  # Field name made lowercase.
+
     class Meta:
         managed = False
-        db_table = 'TB_ToDoMsg'      
+        db_table = 'TB_ToDoList'    
         
         
 class TbMarketlistwithsport(models.Model):

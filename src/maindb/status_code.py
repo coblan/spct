@@ -269,3 +269,12 @@ ZERO_ONE_STATUS=(
     (0,'失效'),
     (1,'启用'),
 )
+
+TODOLIST_CATEGORY=(
+    (0,'未知'),
+    (1,'初始')
+)
+TODOLIST_STATUS=(
+    (0,'未处理'),
+    (1,'已处理'),
+)
