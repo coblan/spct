@@ -222,6 +222,13 @@ class PcMenu(BaseEngine):
                         }
                     })
                 })
+                
+                rootStore.$on('todolist_count_updated',()=>{
+                    ex.director_call('todolist.get_counter').then(count=>{
+                        scope.head.count = count
+                    })
+                })
+                
                 })()
                 '''%{'self_url':settings.SELF_URL}
                    },

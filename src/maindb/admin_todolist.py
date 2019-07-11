@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,director_view,RowSort
+from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,director_view,RowSort,RowFilter
 from .models import TbTodolist
 from helpers.director.access.permit import has_permit
 from helpers.director.decorator import get_request_cache
@@ -33,7 +33,7 @@ class TodoList(TablePage):
                   'confirm_msg': '确认修改为已经处理？',
                  'pre_set': 'rt={status:1}', 
                  'row_match': 'many_row', 
-                 'after_save':'alert("pp")',
+                 'after_save':'rootStore.$emit("todolist_count_updated")',
                  'visible': 'status' in self.permit.changeable_fields(),},
             ]
         
@@ -47,7 +47,11 @@ class TodoList(TablePage):
             return head
         
         class sort(RowSort):
-            names=['status']
+            names=['status','createtime']
+        
+        class filters(RowFilter):
+            names=['title','status']
+            icontains=['title']
 
 class TodoForm(ModelFields):
     overlap_fields=[]
@@ -78,7 +82,7 @@ def hasnew_todolist(lasttime):
     cat_list=get_todolist_catlist()
     new_todo = TbTodolist.objects.filter(createtime__gte=lasttime,category__in=cat_list).order_by('-createtime').first()
     if new_todo:
-        count = TbTodolist.filter(status=0,category__in=cat_list).objects.count()
+        count = TbTodolist.objects.filter(status=0,category__in=cat_list).count()
         dc={
             'count':count,
             'hasnew':True,
@@ -90,6 +94,12 @@ def hasnew_todolist(lasttime):
             'hasnew':False,
         }
     return dc
+
+@director_view('todolist.get_counter')
+def get_counter():
+    cat_list=get_todolist_catlist()
+    count = TbTodolist.objects.filter(status=0,category__in=cat_list).count()
+    return count
 
 
 director.update({
