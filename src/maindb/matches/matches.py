@@ -572,10 +572,17 @@ class PeriodScoreTab(ModelTable):
         if head['name']=='statuscode':
             head['editor']='com-table-mapper'
         return head
+    
     class sort(RowSort):
         names=['statuscode','scoretype']
+        
+        def clean_search_args(self):
+            if not self.sort_str:
+                self.sort_str='statuscode'
+        
     class filters(RowFilter):
         names = ['scoretype']
+        
 
 @director_view('match.livescout_status')
 def match_livescout_status(matchid,**kws):

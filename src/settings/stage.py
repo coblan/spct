@@ -14,8 +14,8 @@ DATABASES = {
         'NAME': 'Sports_20190610_Part1',#'Sports',
         'ENGINE': 'sql_server.pyodbc',
          'HOST':'192.168.40.6,1433',
-        'USER': 'Backend',
-        'PASSWORD': 'SSDEVdev@123',
+          'USER': 'develop',#'Backend',
+        'PASSWORD': 'develop_cheer',#'SSDEVdev@123',
         #'PORT': '1436',
         'OPTIONS': {
              

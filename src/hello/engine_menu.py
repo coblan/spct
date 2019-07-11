@@ -24,7 +24,7 @@ class PcMenu(BaseEngine):
     brand = '<img src="/static/images/logo.png" style="height:46px">'
     mini_brand = '<img src="/static/images/logo2.png" style="height:46px">'
     need_staff=True
-    
+    access_from_internet=True
     @property
     def menu(self):
         crt_user = self.request.user
@@ -238,7 +238,7 @@ class ProgramerAdmin(BaseEngine):
     brand = 'ProgramerAdmin'
     mini_brand = 'PA'
     need_staff = True
-    
+    access_from_internet=True
     @property
     def menu(self):
         menu = [
@@ -262,7 +262,7 @@ class YunweiEngin(BaseEngine):
     brand = 'yunwei'
     mini_brand = 'YW'
     need_staff=False
-    
+    access_from_internet=True
     @property
     def menu(self):
         crt_user = self.request.user
