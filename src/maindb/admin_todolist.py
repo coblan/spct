@@ -83,7 +83,7 @@ def get_todolist_catlist():
 def hasnew_todolist(lasttime):
     cat_list=get_todolist_catlist()
     #new_todo = TbTodolist.objects.filter(createtime__gte=lasttime,category__in=cat_list).order_by('-createtime').first()
-    if TbTodolist.objects.filter(createtime__gte=lasttime,category__in=cat_list).exist():
+    if TbTodolist.objects.filter(createtime__gte=lasttime,category__in=cat_list).exists():
         count = TbTodolist.objects.filter(status=0,category__in=cat_list).count()
         dc={
             'count':count,
