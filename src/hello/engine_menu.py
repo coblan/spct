@@ -228,7 +228,6 @@ class PcMenu(BaseEngine):
                                 url: '%(self_url)s/pc/todolist'
                             },
                             onclose:function(){
-                                alert("jj")
                                 window.alert_audio.pause();
                             }
                             })
