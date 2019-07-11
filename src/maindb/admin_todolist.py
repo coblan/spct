@@ -53,6 +53,7 @@ class TodoList(TablePage):
         class filters(RowFilter):
             names=['title','status']
             icontains=['title']
+            range_fields=['createtime']
 
 class TodoForm(ModelFields):
     overlap_fields=[]
