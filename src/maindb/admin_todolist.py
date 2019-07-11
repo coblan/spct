@@ -2,6 +2,7 @@ from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,d
 from .models import TbTodolist
 from helpers.director.access.permit import has_permit
 from helpers.director.decorator import get_request_cache
+from django.utils import timezone
 
 class TodoList(TablePage):
     def get_label(self):
@@ -80,14 +81,14 @@ def get_todolist_catlist():
 @director_view('todolist.hasnew_todolist')
 def hasnew_todolist(lasttime):
     cat_list=get_todolist_catlist()
-    new_todo = TbTodolist.objects.filter(createtime__gte=lasttime,category__in=cat_list).order_by('-createtime').first()
-    if new_todo:
+    #new_todo = TbTodolist.objects.filter(createtime__gte=lasttime,category__in=cat_list).order_by('-createtime').first()
+    if TbTodolist.objects.filter(createtime__gte=lasttime,category__in=cat_list).exist():
         count = TbTodolist.objects.filter(status=0,category__in=cat_list).count()
         dc={
             'count':count,
             'hasnew':True,
-            'title':new_todo.title,
-            'lasttime':new_todo.createtime.strftime('%Y-%m-%d %H:%M:%S')
+            'title':'有新的待办事项,请尽快处理', #new_todo.title,
+            'lasttime': timezone.now().strftime('%Y-%m-%d %H:%M:%S'), #new_todo.createtime.strftime('%Y-%m-%d %H:%M:%S')
         }
     else:
         dc={
