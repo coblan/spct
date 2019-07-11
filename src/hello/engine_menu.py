@@ -180,7 +180,7 @@ class PcMenu(BaseEngine):
             ex.stompListen("/exchange/center.topic/backend.timely.message",function(data){
                 console.log(data.body)
                 var msg_dc = JSON.parse(data.body)
-                if(msg_dc.EventType==2){
+                if(msg_dc.EventType==1){
                     rootStore.$emit("todolist_updated")
                 }
             })
