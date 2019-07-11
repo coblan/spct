@@ -173,9 +173,14 @@ class PcMenu(BaseEngine):
             ctx['extra_js'] = []
         if 'maindb' not in ctx['extra_js']:
             ctx['extra_js'].append('maindb')
+        if 'notify' not in ctx['extra_js']:
+            ctx['extra_js'].append('notify')
         if 'init_express' not in ctx:
             #ws://localhost:15674/ws   v1_user  v1_user   /exchange/mytest/test
             ctx['init_express'] = '''(function(){
+            window.alert_audio = new Audio("/static/mp3/alert.mp3")
+            window.alert_audio.loop=true
+            
             ex.stompInit({url:"%(url)s",user:"%(user)s",pswd:"%(pswd)s"});
             ex.stompListen("/exchange/center.topic/backend.timely.message",function(data){
                 console.log(data.body)
@@ -213,12 +218,20 @@ class PcMenu(BaseEngine):
                         scope.head.count = resp.count
                         if(resp.hasnew){
                            scope.head.lasttime=resp.lasttime
+                           window.alert_audio.play()
+                           
                             cfg.notify(resp.title,
-                            {requireInteraction:true,
+                            {
+                            requireInteraction:true,
                             tag:'jb_todolist',
                             data: {
                                 url: '%(self_url)s/pc/todolist'
-                            }})
+                            },
+                            onclose:function(){
+                                alert("jj")
+                                window.alert_audio.pause();
+                            }
+                            })
                         }
                     })
                 })
