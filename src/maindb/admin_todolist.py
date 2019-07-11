@@ -27,9 +27,13 @@ class TodoList(TablePage):
         
         def get_operation(self):
             return [
-                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 
-                  'label': '已经处理', 'confirm_msg': '确认修改为已经处理？',
-                 'pre_set': 'rt={status:1}', 'row_match': 'many_row', 
+                 {'fun': 'selected_set_and_save', 
+                  'editor': 'com-op-btn', 
+                  'label': '已经处理', 
+                  'confirm_msg': '确认修改为已经处理？',
+                 'pre_set': 'rt={status:1}', 
+                 'row_match': 'many_row', 
+                 'after_save':'alert("pp")',
                  'visible': 'status' in self.permit.changeable_fields(),},
             ]
         

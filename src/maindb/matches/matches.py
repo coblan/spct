@@ -394,7 +394,7 @@ class MatchForm(ModelFields):
     class Meta:
         model = TbMatch
         exclude = ['marketstatus', 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
-                   'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', ]
+                   'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', 'prematchdate','createtime']
 
     field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','weight','ticketdelay', ] #'oddsadjustment','oddsadjustmax','baseticketeamout'
 
