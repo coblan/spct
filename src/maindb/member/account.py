@@ -369,12 +369,17 @@ class AccoutBaseinfo(ModelFields):
 
 class AccoutModifyAmount(ModelFields):
     field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory']
-    readonly = ['accountid', 'nickname', 'amount']
+    readonly = ['accountid', 'nickname']
 
     class Meta:
         model = TbAccount
         fields = ['amount', 'nickname', 'accountid', 'amount', 'agentamount']
-
+    
+    def dict_head(self, head):
+        if head['name'] =='amount':
+            head['readonly']=True
+        return head
+    
     def getExtraHeads(self):
         desp_options = [{'value':x.pk,'label':x.categoryname} for x in  TbMoneyCategories.objects.all()]
         return [
@@ -401,7 +406,6 @@ class AccoutModifyAmount(ModelFields):
         if 'add_amount' in self.kw:
             moenycategory_pk = self.kw.get('moenycategory')
             moenycategory_inst = TbMoneyCategories.objects.get(categoryid =moenycategory_pk)
-            #cashflow, moenycategory = (1, 4) if self.changed_amount > 0 else (0, 34)
             cashflow, moenycategory =moenycategory_inst.cashflow,moenycategory_pk
             before_amount = self.instance.amount
             self.instance.amount = before_amount + Decimal(self.kw.get('add_amount', 0))
