@@ -952,7 +952,7 @@ class OutcomeTab(ModelTable):
             return query.filter(enabled=True,marketid__in = [333,397,556,557,558])
         elif self.match.sportid == 111:
             # 刀塔2
-            return query.filter(enabled=True,marketid__in = [396,397,398])
+            return query.filter(enabled=True,marketid__in = [396,397,398,555])
         elif self.match.sportid == 5:
             # 网球
             return query.filter(enabled=True,marketid__in=[195,206])
@@ -963,7 +963,7 @@ class OutcomeTab(ModelTable):
 
     def get_operation(self):
         return [
-            {'name':'outcome','label':'结算','editor':'com-op-btn','action':'''rt=cfg.confirm("确定发送手动结算信息?")
+            {'name':'outcome','label':'结算','editor':'com-op-btn','class':'btn btn-info','action':'''rt=cfg.confirm("确定发送手动结算信息?")
             .then(()=>{ return out_come_save(scope.ps.rows,scope.ps.vc.par_row.matchid)} )
             .then(()=>{
                 return ex.director_call("get_row",
@@ -1154,7 +1154,14 @@ def out_com_save(rows,matchid):
                 send_dc['Special'].append(
                     {'Specifiers':'mapnr=%s|xth=%s'%(item.get('Specifiers_1'),item.get('Specifiers')),'OutcomeId':item['OutcomeId'],'MarketId':row['pk'],}
                 )
-
+        if row['pk'] in [555]:
+            outcome_list = json.loads(row.get('content','[]') )
+            for item in outcome_list:
+                send_dc['Special'].append(
+                    {'Specifiers':'mapnr=%s|hcp=%s'%(item.get('Specifiers'),item.get('Specifiers_1')),
+                     'Score':'%s:%s'%(item.pop('OutcomeId'),item.pop('OutcomeId_1') ),
+                     'MarketId':row['pk'],}
+                )
 
         if row['pk'] == -2:
             # 普通篮球手动输入比分 （有四小节）

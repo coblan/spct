@@ -1008,7 +1008,28 @@ outcome_header = {
             'editor':'com-form-one',
             'ops_loc':'down',
             'ops':pop_edit_ops,
-         }
+         },
+         555:{
+            'heads':[
+                 {'name':'content','label':'第几局击杀让分','editor':'com-field-table-list','fv_rule':'group_unique(Specifiers_1, Specifiers)','fv_msg':'盘口+时间段 不能重复',
+                  'table_heads':[
+                    {'name':'Specifiers','label':'第几盘','editor':'com-table-pop-fields-local'},
+                    {'name':'Specifiers_1','label':'盘口','editor':'com-table-span'},
+                    {'name':'OutcomeId','label':'主队','editor':'com-table-span', 'width': 80,}, 
+                    {'name':'OutcomeId_1','label':'客队','editor':'com-table-span', 'width': 80,}, 
+                      ],
+                 'fields_heads':[
+                    {'name':'Specifiers','label':'第几局','editor':'com-field-number','fv_rule':'integer(+0)','required':True},
+                    {'name':'Specifiers_1','label':'盘口','editor':'com-field-number','required':True},
+                    {'name':'OutcomeId','label':'主队','editor':'com-field-number', 'required':True}, 
+                    {'name':'OutcomeId_1','label':'客队','editor':'com-field-number', 'required':True}, 
+                 ]}
+            ],
+            
+            'editor':'com-form-one',
+            'ops_loc':'down',
+            'ops':pop_edit_ops,
+         },
  
     }
 }

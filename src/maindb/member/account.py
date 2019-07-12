@@ -28,6 +28,7 @@ from maindb.send_phone_message import send_message_password, send_message_fundsp
 from django.db.models import DecimalField
 from ..models import TbMoneyCategories,TbSetting,TbRisklevellog
 import json
+from maindb.rabbitmq_instance import notifyAccountFrozen
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -355,7 +356,10 @@ class AccoutBaseinfo(ModelFields):
                 # 降
                 self.instance.isriskleveldown = 1
                 TbRisklevellog.objects.create(upordown=2,createuser=self.crt_user.username,accountid=self.instance.accountid,oldrisklevel=self.orgin_risklevel,newrisklevel=risklevel,)
-                
+        if 'status' in self.changed_data:
+            dc = {'AccountID':self.instance.accountid}
+            msg = json.dumps(dc)
+            notifyAccountFrozen(msg)
 
     class Meta:
         model = TbAccount
