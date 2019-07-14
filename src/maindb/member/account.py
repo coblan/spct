@@ -369,7 +369,11 @@ class AccoutBaseinfo(ModelFields):
 
 class AccoutModifyAmount(ModelFields):
     field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory']
-    readonly = ['accountid', 'nickname']
+    readonly = ['accountid', 'nickname','amount']
+    
+    def __init__(self, *args, **kw):
+        super().__init__(*args, **kw)
+        self.before_amount = self.instance.amount
 
     class Meta:
         model = TbAccount
@@ -387,13 +391,13 @@ class AccoutModifyAmount(ModelFields):
             {'name':'moenycategory','label':'类型','editor':'com-field-select','required':True,'options':desp_options},
         ]
 
-    def clean_dict(self, dc):
-        if dc.get('add_amount'):
-            add_amount = Decimal(dc.get('add_amount', 0))
-            self.before_amount = Decimal(dc['amount'])
-            self.changed_amount = add_amount
-            dc['amount'] = Decimal(dc['amount']) + add_amount
-        return dc
+    #def clean_dict(self, dc):
+        #if dc.get('add_amount'):
+            #add_amount = Decimal(dc.get('add_amount', 0))
+             ##Decimal(dc['amount'])
+            #self.changed_amount = add_amount
+            ##dc['amount'] = Decimal(dc['amount']) + add_amount
+        #return dc
 
 
     def extra_valid(self):
@@ -404,16 +408,18 @@ class AccoutModifyAmount(ModelFields):
 
     def clean_save(self):
         if 'add_amount' in self.kw:
+            add_amount = Decimal(self.kw.get('add_amount', 0))
+            self.changed_amount = add_amount
             moenycategory_pk = self.kw.get('moenycategory')
             moenycategory_inst = TbMoneyCategories.objects.get(categoryid =moenycategory_pk)
             cashflow, moenycategory =moenycategory_inst.cashflow,moenycategory_pk
-            before_amount = self.instance.amount
-            self.instance.amount = before_amount + Decimal(self.kw.get('add_amount', 0))
+            #before_amount = self.instance.amount
+            self.instance.amount = self.before_amount + add_amount
             TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
                                         amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='Backend',
                                         memo='调账', accountid=self.instance, categoryid_id=moenycategory,
                                         cashflow=cashflow)
-            return {'memo': '调账', 'ex_before': {'amount': before_amount},
+            return {'memo': '调账', 'ex_before': {'amount': self.before_amount},
                     'ex_after': {'amount': self.instance.amount, }}
 
 
