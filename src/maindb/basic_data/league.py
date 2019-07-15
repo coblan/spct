@@ -7,7 +7,7 @@ from helpers.director.access.permit import can_write
 import json
 from maindb.models import TbTournament, TbMarkets
 from maindb.redisInstance import redisInst
-from  maindb.rabbitmq_instance import notifyAdjustOddsBase
+from  maindb.rabbitmq_instance import notifyAdjustOddsBase,notifyHandicapcount
 
 class League(TablePage):
     template = 'jb_admin/table.html'
@@ -120,6 +120,8 @@ class LeagueForm(ModelFields):
         if head['name'] in [ 'oddsadjustment','oddsadjustmax']:
             head['fv_rule']='range(0~0.99);digit(2)'
             #head['fv_rule']='digit(2);range(0~1,false)'
+        if head['name'] =='handicapcount':
+            head['fv_rule'] = 'integer(+)'
         return head
 
     def clean_save(self):
@@ -142,6 +144,10 @@ class LeagueForm(ModelFields):
                 'Ids':[self.instance.tournamentid]
             }
             notifyAdjustOddsBase(json.dumps(dc))
+        
+        if 'handicapcount' in self.changed_data:
+            notifyHandicapcount(json.dumps([self.instance.tournamentid]))
+        
         
     def dict_row(self, inst): 
         return {
