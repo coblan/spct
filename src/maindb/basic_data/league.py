@@ -121,7 +121,7 @@ class LeagueForm(ModelFields):
             head['fv_rule']='range(0~0.99);digit(2)'
             #head['fv_rule']='digit(2);range(0~1,false)'
         if head['name'] =='handicapcount':
-            head['fv_rule'] = 'integer(+)'
+            head['fv_rule'] = 'integer(+);range(1~6)'
         return head
 
     def clean_save(self):
