@@ -20,7 +20,7 @@ class League(TablePage):
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
         fields_sort = ['sport','tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',
-                       'adjusttemplate']
+                       'adjusttemplate','handicapcount']
 
         # hide_fields = ['tournamentid']
 
@@ -38,6 +38,7 @@ class League(TablePage):
                 'oddsadjustment' :100,
                 'oddsadjustmax' :120,
                 'baseticketeamout':100,
+                'handicapcount':140,
             }
             if head['name'] in dc:
                 head['width'] = dc.get(head['name'])
