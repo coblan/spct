@@ -72,7 +72,7 @@ class TeamsPage(TablePage):
                 head['order'] = True
                 if head['name'] == 'country':
                     head['event_slots']=[
-                        {'event':'input','express':'scope.ts.$emit("country.changed",scope.event)'},
+                        {'event':'input','express':'scope.ps.$emit("country.changed",scope.event)'},
                         {'par_event':'row.update_or_insert','express':'rt=scope.vc.clear_value()'},
                         {'par_event':'row.update_or_insert','express':'rt=scope.vc.get_options({post_data:{} })'},
                         
@@ -81,7 +81,7 @@ class TeamsPage(TablePage):
                         
                     ]
                     #head['update_options_on'] = 'row.update_or_insert'
-                    #head['on_changed_express'] = 'scope.ts.$emit("country.changed",scope.value)'
+                    #head['on_changed_express'] = 'scope.ps.$emit("country.changed",scope.value)'
                     head['director_name'] = 'contry-options'
                 return head
             

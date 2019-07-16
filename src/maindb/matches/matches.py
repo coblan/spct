@@ -270,7 +270,7 @@ class MatchsPage(TablePage):
                  'field': 'ishidden',
                  'value': 1, 'visible': 'ishidden' in self.permit.changeable_fields()},
                 #{'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
-                #'express': 'rt=scope.ts.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_iscloseliveodds_tabs",par_row:scope.ts.selected[0]})',
+                #'express': 'rt=scope.ps.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_iscloseliveodds_tabs",par_row:scope.ps.selected[0]})',
                     #'visible': self.permit.can_edit(),}, 
                             {'fun': 'director_call', 'editor': 'com-op-btn', 
                   'director_name': 'match.quit_ticket',
@@ -506,7 +506,7 @@ class TbLivescoutTable(ModelTable):
             'pre_set':'rt={matchid:scope.ps.crt_row.matchid,is_danger:scope.head.value}',
             'active_color':'red',
             'op_confirm_msg':'scope.value?"是否开启危险球?":"是否关闭危险球?"',
-            'after_save':'rt=scope.ts.search()',
+            'after_save':'rt=scope.ps.search()',
             'init_express':'rt=ex.director_call("match.livescout_status",{matchid:scope.ps.vc.par_row.matchid}).then((resp)=>scope.vc.myvalue=resp)'
             },
             {

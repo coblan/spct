@@ -272,7 +272,7 @@ class AgentUser(TablePage):
 
         def get_event_slots(self):
             ls = [
-                {'event':'parent_changed','express':'scope.ts.search_args._q=""'}
+                {'event':'parent_changed','express':'scope.ps.search_args._q=""'}
               ]      
             return ls
         
@@ -287,23 +287,23 @@ class AgentUser(TablePage):
             par_form = ParentForm(crt_user=self.crt_user)
             return [
                 {'fun': 'add_new', 'editor': 'com-op-btn' ,
-                 'after_save': 'rt=scope.ts.search()', #'preset':'rt={meta_only_add_root_next_level:1}',
-                 'preset':'rt={meta_par:scope.ts.parents[scope.ts.parents.length-1].value}',
-                 'disabled':'scope.ts.parents.length>2',
+                 'after_save': 'rt=scope.ps.search()', #'preset':'rt={meta_only_add_root_next_level:1}',
+                 'preset':'rt={meta_par:scope.ps.parents[scope.ps.parents.length-1].value}',
+                 'disabled':'scope.ps.parents.length>2',
                  'label': '创建代理用户','fields_ctx': agent.get_head_context(),}, 
                 #{'fun': 'add_new', 'editor': 'com-op-btn' ,
                  #'after_save': 'rt=scope.search()',
                  #'label': '创建下级用户','fields_ctx': agent.get_head_context(),}, 
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn' ,
-                 'after_save': 'rt=scope.ts.search()','row_match':'one_row',
+                 'after_save': 'rt=scope.ps.search()','row_match':'one_row',
                  'match_express':'scope.row.AccountType == 1','match_msg':'只有代理用户才能修改佣金比例',
                  'label': '修改佣金比例','fields_ctx': yong.get_head_context(),}, 
                  
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
                 
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn' ,
-                 'after_save': 'rt=scope.ts.search()','row_match':'many_row',
+                 'after_save': 'rt=scope.ps.search()','row_match':'many_row',
                  'label': '修改上级','fields_ctx': par_form.get_head_context(),}, 
             ]
 

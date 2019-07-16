@@ -235,8 +235,11 @@ class DetailStatistic(PlainTable):
             {'name': 'MarketID','label': '玩法ID',}, 
             {'name': 'MarketName','label': '玩法','width': 150,}, 
             {'name': 'SpecialBetValue','label': '盘口',}, 
-            {'name': 'OutcomeName','label': '投注项' },
-            {'name': 'BetAmout','label': '投注金额','editor': 'com-table-digit-shower','digit': 2,  }
+            {'name': 'OutcomeName','label': '投注项' ,'width':160},
+            {'name': 'BetAmout','label': '投注金额','editor': 'com-table-digit-shower','digit': 2,  },
+            {'name':'BetOutcome','label':'派奖金额'},
+            {'name':'Bonus','label':'反水'},
+            {'name':'Profit','label':'毛利'}
         ]
 
     

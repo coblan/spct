@@ -15,12 +15,12 @@ class TodoList(TablePage):
         model = TbTodolist
         exclude =['rfid']
         pop_edit_fields=['tid']
-        
-        @classmethod
-        def clean_search_args(cls,search_args):
-            if '_sort' not in search_args:
-                search_args['_sort'] = 'status'
-            return search_args
+        nolimit=True
+        #@classmethod
+        #def clean_search_args(cls,search_args):
+            #if '_sort' not in search_args:
+                #search_args['_sort'] = 'status'
+            #return search_args
         
         def inn_filter(self, query):
             cat_list = get_todolist_catlist()
@@ -45,18 +45,34 @@ class TodoList(TablePage):
             }
             if head['name'] in width:
                 head['width'] = width.get(head['name'])
+            if head['name']=='status':
+                head['inn_editor'] = head['editor']
+                head['editor'] = 'com-table-rich-span'
+                head['css']='''
+                td.mymiddle{text-align: center !important;}
+                .mymiddle .com-table-rich-span{border-radius:3px;font-size:80%;display:inline-block;height: 16px;padding: 0 5px;line-height: 16px}
+                .unprocessed{color:white;background-color:red;}
+                .processed{color:white;background-color:green}
+                '''
+                head['cell_class']='scope.row.status==0?"unprocessed":"processed"'
+                head['class']='mymiddle'
+       
             return head
         
         class sort(RowSort):
             names=['status','createtime']
+            def clean_search_args(self):
+                if not self.sort_str:
+                    self.sort_str ='status'
         
         class filters(RowFilter):
             names=['title','status']
             icontains=['title']
             range_fields=['createtime']
+            
 
 class TodoForm(ModelFields):
-    overlap_fields=[]
+    nolimit=True
     hide_fields =['operatetime','operateuser']
     class Meta:
         model = TbTodolist
