@@ -25,10 +25,10 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
             'formatter':'standard',
         },
-        'elk_warning':{
-            'level': 'ERROR',
-            'class': 'hello.log_to_elastic.EsHandler',         
-            }, 
+        #'elk_warning':{
+            #'level': 'ERROR',
+            #'class': 'hello.log_to_elastic.EsHandler',         
+            #}, 
         #'elk_info':{
             #'level': 'DEBUG',
             #'class': 'hello.log_to_elastic.EsHandler',         
@@ -61,11 +61,11 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'djangoout_warning', 'mail_admins', 'elk_warning'],
+            'handlers': ['console', 'djangoout_warning', 'mail_admins', ], #'elk_warning'],
             'level': 'INFO',
             },
         'general_log': {
-            'handlers': ['console', 'djangoout_warning', 'elk_warning' ],
+            'handlers': ['console', 'djangoout_warning', ], #'elk_warning' ],
             'level': 'DEBUG',
             'propagate': True,            
             },
