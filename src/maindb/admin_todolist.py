@@ -48,14 +48,14 @@ class TodoList(TablePage):
             if head['name']=='status':
                 head['inn_editor'] = head['editor']
                 head['editor'] = 'com-table-rich-span'
-                head['css']='''
-                td.mymiddle{text-align: center !important;}
-                .mymiddle .com-table-rich-span{border-radius:3px;font-size:80%;display:inline-block;height: 16px;padding: 0 5px;line-height: 16px}
-                .unprocessed{color:white;background-color:red;}
-                .processed{color:white;background-color:green}
-                '''
-                head['cell_class']='scope.row.status==0?"unprocessed":"processed"'
-                head['class']='mymiddle'
+                #head['css']='''
+                #td.mymiddle{text-align: center !important;}
+                #.mymiddle .com-table-rich-span{border-radius:3px;font-size:80%;display:inline-block;height: 16px;padding: 0 5px;line-height: 16px}
+                #.unprocessed{color:white;background-color:red;}
+                #.processed{color:white;background-color:green}
+                #'''
+                head['cell_class']='scope.row.status==0?"warning":"success"'
+                head['class']='middle-col btn-like-col'
        
             return head
         
