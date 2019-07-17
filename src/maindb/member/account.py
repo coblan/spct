@@ -140,7 +140,7 @@ class AccountPage(TablePage):
                    #'createtime', 'source','accounttype','weight','groupid']
         fields_sort = ['accountid', 'account', 'nickname', 'createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
-                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype']
+                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum']
 
         class filters(RowFilter):
             names=['accounttype','groupid']
@@ -201,7 +201,8 @@ class AccountPage(TablePage):
                 'withdrawamount': 100,
                 'agentamount': 100,
                 'status': 60,
-                'createtime': 150
+                'createtime': 150,
+                'anomalyticketnum':120,
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -217,7 +218,6 @@ class AccountPage(TablePage):
             if head['name'] in ['bonusrate']:
                 head['editor'] = 'com-table-digit-shower'
                 head['digit'] = 3
-
             return head
 
         #def statistics(self, query):
@@ -304,7 +304,7 @@ class AccountPage(TablePage):
 class AccoutBaseinfo(ModelFields):
     #'agentamount', 
     field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'bonusrate',
-                  'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','createtime']
+                  'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','createtime','anomalyticketnum']
     readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount']
 
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
@@ -325,7 +325,9 @@ class AccoutBaseinfo(ModelFields):
         if head['name']=='cashchannel':
             head['editor']='com-field-select'
             inst = TbSetting.objects.get(settingname='CashChannel')
-            head['options']=[{'value':x['Channel'],'label':x['Memo']} for x in json.loads(inst.settingvalue)]            
+            head['options']=[{'value':x['Channel'],'label':x['Memo']} for x in json.loads(inst.settingvalue)]  
+        if head['name'] == 'anomalyticketnum':
+            head['fv_rule']='integer(+0);range(0~10)'
         return head
 
     def dict_row(self, inst):

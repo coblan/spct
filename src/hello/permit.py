@@ -7,6 +7,7 @@ def get_permit():
          'children': [
              
              {'label': '结算相关', 'value': 'todolist_1',}, 
+             {'label':'资金流','value':'todolist_100'},
              ],
          },
         { 'label': _('Marketing'),

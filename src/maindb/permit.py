@@ -189,6 +189,7 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            #- 即时消息
            #('TbTodolist.edit',model_full_permit(TbTodolist),model_to_name(TbTodolist),'model'),
            ('todolist_1','','','single'),
+           ('todolist_100','','','single'),
            
            ]
 
