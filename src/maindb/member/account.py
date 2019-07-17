@@ -268,7 +268,7 @@ class AccountPage(TablePage):
 
         class sort(RowSort):
             names = ['nickname', 'account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount',
-                     'rechargeamount', 'withdrawamount']
+                     'rechargeamount', 'withdrawamount','anomalyticketnum']
 
         def get_operation(self):
             modifyer = AccoutModifyAmount(crt_user=self.crt_user)
