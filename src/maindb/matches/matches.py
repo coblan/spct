@@ -11,7 +11,7 @@ from helpers.director.base_data import director
 from maindb.mongoInstance import updateMatchMongo
 from maindb.rabbitmq_instance import closeHandicap
 import json
-from ..redisInstance import redisInst
+from ..redisInstance import redisInst,redisInst0
 from django.db.models import Q
 import urllib
 import requests
@@ -475,6 +475,16 @@ class MatchForm(ModelFields):
             else:
                 redisInst.set('backend:match:iscloseliveodds:%(matchid)s' % {'matchid': self.instance.eventid}, 1,
                               60 * 1000 * 60 * 24 * 7)
+        if 'team1zh' in self.changed_data or 'team2zh' in self.changed_data:
+            key = 'public:match:%(eventid)s'%{'eventid':self.instance.eventid}
+            rstr = redisInst0.get(key)
+            if rstr:
+                dc = json.loads(rstr)
+                dc.update({
+                    "Team1Zh": self.instance.team1zh,
+                    "Team2Zh": self.instance.team2zh,
+                })
+                redisInst0.set(key,json.dumps(dc,ensure_ascii=False))
 
 #class PeriodTypeForm(Fields):
     #def get_heads(self): 

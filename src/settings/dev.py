@@ -92,7 +92,13 @@ MONGO_SERVER ="mongodb://admin:lishen123@192.168.40.210:27017,192.168.40.211:270
 
 
 REDIS_SERVER = '192.168.40.222'
-ELASTIC = 'http://192.168.40.217:9200'
+
+ELK={
+    'elastic':'http://192.168.40.199:9200',
+    'user':'elastic',
+    'pwsd':'Nr2IFuu78CYDKR4qNask'
+}
+
 SELF_URL = 'http://localhost:8000'
 
 RABBITMQ = '192.168.40.99'
@@ -132,14 +138,14 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
             'formatter':'standard',
         },
-        #'elk_warning':{
-            #'level': 'ERROR',
-            #'class': 'hello.log_to_elastic.EsHandler',         
-            #}, 
-        #'elk_info':{
-            #'level': 'DEBUG',
-            #'class': 'hello.log_to_elastic.EsHandler',         
-            #},         
+        'elk_warning':{
+            'level': 'ERROR',
+            'class': 'hello.log_to_elastic.EsHandler',         
+            }, 
+        'elk_info':{
+            'level': 'DEBUG',
+            'class': 'hello.log_to_elastic.EsHandler',         
+            },         
         'console': {
             'level':'DEBUG',
             'class': 'logging.StreamHandler',
@@ -188,11 +194,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,               
             },        
-        #'requests': {
-            #'handlers': ['console'],
-            #'level': 'DEBUG',
-            #'propagate': True,               
-            #},
+        'requests': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,               
+            },
         #'django.request': {
             #'handlers': ['rotfile'],
             #'level': 'ERROR',

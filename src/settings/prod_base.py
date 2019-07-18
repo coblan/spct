@@ -25,14 +25,14 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
             'formatter':'standard',
         },
-        #'elk_warning':{
-            #'level': 'ERROR',
-            #'class': 'hello.log_to_elastic.EsHandler',         
-            #}, 
-        #'elk_info':{
-            #'level': 'DEBUG',
-            #'class': 'hello.log_to_elastic.EsHandler',         
-            #},         
+        'elk_warning':{
+            'level': 'ERROR',
+            'class': 'hello.log_to_elastic.EsHandler',         
+            }, 
+        'elk_info':{
+            'level': 'DEBUG',
+            'class': 'hello.log_to_elastic.EsHandler',         
+            },         
         'console': {
             'level':'DEBUG',
             'class': 'logging.StreamHandler',
@@ -61,29 +61,29 @@ LOGGING = {
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'djangoout_warning', 'mail_admins', ], #'elk_warning'],
+            'handlers': ['console', 'djangoout_warning', 'mail_admins', 'elk_warning'],
             'level': 'INFO',
             },
         'general_log': {
-            'handlers': ['console', 'djangoout_warning', ], #'elk_warning' ],
+            'handlers': ['console', 'djangoout_warning', 'elk_warning' ],
             'level': 'DEBUG',
             'propagate': True,            
             },
         'ModelFields.save_form': {
-            'handlers': ['operation_log', ], #'elk_info'],
+            'handlers': ['operation_log', 'elk_info'],
             'level': 'DEBUG',
             'propagate': True,              
             },
         'operation_log': {
-            'handlers': ['operation_log', ], #'elk_info'],
+            'handlers': ['operation_log', 'elk_info'],
             'level': 'DEBUG',
             'propagate': True,               
             },
-        #'task': {
-            #'handlers': ['elk_info'],
-            #'level': 'DEBUG',
-            #'propagate': True,                 
-            #},             
+        'task': {
+            'handlers': ['elk_info'],
+            'level': 'DEBUG',
+            'propagate': True,                 
+            },             
     }
 }
 

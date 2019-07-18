@@ -10,7 +10,7 @@ log = logging.getLogger('general_log')
 
 hostName = socket.gethostname()
 
-es = Elasticsearch(settings.ELASTIC)
+es = Elasticsearch(settings.ELK.get('elastic'),http_auth=(settings.ELK.get('user'),settings.ELK.get('pwsd') ),)
 
 _index_mappings = {
   "mappings": {
@@ -36,7 +36,7 @@ if es.indices.exists(index='adminbackend') is not True:
 import asyncio
 from elasticsearch_async import AsyncElasticsearch
 
-client = AsyncElasticsearch(hosts=[settings.ELASTIC])
+client = AsyncElasticsearch(hosts=[settings.ELK.get('elastic')],http_auth=(settings.ELK.get('user'),settings.ELK.get('pwsd') ))
 
 async def es_save(dc):
     try:

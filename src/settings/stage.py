@@ -54,7 +54,8 @@ RAB_USER = 'publisher'
 RAB_PSWD = 'publisher@123'
 
 REDIS_SERVER = '192.168.40.222'
-ELASTIC = 'http://192.168.40.217:9200'
+
+
 PRODUCT_NAME = '飞球竞猜'
 PACKAGE_NAME = 'com.jingbo.flyingball'
 
@@ -70,4 +71,10 @@ WEBSOCKET={
     'url': "wss://mq.mv03.com/websocket",
     'user': "stageuser",
     'pswd': "YXNkZmFmc2RmbAo"
+}
+
+ELK={
+    'elastic':'http://192.168.40.199:9200',
+    'user':'elastic',
+    'pwsd':'Nr2IFuu78CYDKR4qNask'
 }

@@ -5,9 +5,10 @@ from helpers.director.model_func.field_procs.dotStrArray import DotStrArrayProc
 from helpers.director.table.table import RowFilter
 from helpers.director.access.permit import can_write
 import json
-from maindb.models import TbTournament, TbMarkets
+from maindb.models import TbTournament, TbMarkets,TbMatch
 from maindb.redisInstance import redisInst
 from  maindb.rabbitmq_instance import notifyAdjustOddsBase,notifyHandicapcount
+from django.utils import timezone
 
 class League(TablePage):
     template = 'jb_admin/table.html'
@@ -130,6 +131,10 @@ class LeagueForm(ModelFields):
             if self.cleaned_data.get('isrecommend'):
                 if TbTournament.objects.filter(isrecommend = True).count() >=6:
                     raise UserWarning('最多只能推介6个联赛')
+        
+        if 'issubscribe' in self.changed_data:
+            ishiddern =  not bool( self.cleaned_data.get('issubscribe') )
+            TbMatch.objects.filter(tournamentid=self.instance.tournamentid,matchdate__gte=timezone.now() ).update(ishidden=True)
     
     def save_form(self):
         super().save_form()
