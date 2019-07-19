@@ -2016,6 +2016,8 @@ class TbTicketstake(models.Model):
     marketname = models.CharField(db_column='MarketName', max_length=100, blank=True, null=True,verbose_name='玩法')  # Field name made lowercase.
     outcomename = models.CharField(db_column='OutcomeName', max_length=50, blank=True, null=True,verbose_name='投注项')  # Field name made lowercase.    
     score = models.CharField(db_column='Score', max_length=50, blank=True, null=True,verbose_name = '当时比分')  # Field name made lowercase.
+    ticketbetstopdiff = models.IntegerField(db_column='TicketBetStopDiff',verbose_name='BetStop时间差(S)')  # Field name made lowercase.
+    
     #@property
     #def match(self): 
         #if self.sportid == 0:

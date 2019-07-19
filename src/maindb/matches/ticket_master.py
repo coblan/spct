@@ -305,7 +305,7 @@ class TicketstakeTable(ModelTable):
     model = TbTicketstake
     exclude = ['marketid']
     fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketname','specialbetname','outcomename','score', 'odds', 'confirmodds', 'realodds', 
-                   'status', 'createtime', 'updatetime']
+                   'status', 'createtime', 'updatetime','ticketbetstopdiff']
 
     def inn_filter(self, query):
         ticketid = self.kw.get('ticketid')
@@ -332,7 +332,8 @@ class TicketstakeTable(ModelTable):
             '_matchid_form': 'match_form_ctx',#  matchid_form,
             'matchid': inst.matchid.matchid,
             'tournament': inst.tournament,
-            'matchname': '{team1zh} VS {team2zh}'.format(team1zh=inst.matchid.team1zh, team2zh=inst.matchid.team2zh)
+            'matchname': '{team1zh} VS {team2zh}'.format(team1zh=inst.matchid.team1zh, team2zh=inst.matchid.team2zh),
+            'ticketbetstopdiff':inst.ticketbetstopdiff/1000 if inst.ticketbetstopdiff else ''
         }
 
     def dict_head(self, head):
@@ -347,7 +348,8 @@ class TicketstakeTable(ModelTable):
             'confirmoddsid_ori': 80,
             'status': 80,
             'updatetime': 150,
-            'createtime': 150
+            'createtime': 150,
+            'ticketbetstopdiff':150,
         }
         if dc.get(head['name']):
             head['width'] = dc.get(head['name'])
