@@ -240,7 +240,7 @@ class TicketMasterPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
-            names = ['status','audit', 'winbet','accountid__accounttype']
+            names = ['status','audit', 'winbet','terminal','accountid__accounttype']
             
             def getExtraHead(self):
                 return [
