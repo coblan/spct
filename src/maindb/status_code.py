@@ -248,7 +248,8 @@ DATA_SOURCE=(
 
 AUDIT_OPTIONS=(
     (0,'正常注单'),
-    (1,'异常注单')
+    (1,'异常注单'),
+    (2,'已审核')
 )
 
 TERMINAL_TYPE = (

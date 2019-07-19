@@ -110,7 +110,12 @@ class TicketMasterPage(TablePage):
                 #head['named_tabs'] = 'ticketmaster'
             if head['name'] =='audit':
                 head['css']='.audit_danger{color:red}'
-                head['class'] ='scope.row.audit !=0 ? "audit_danger" :""'
+                head['inn_editor'] = head['editor']
+                head['editor']='com-table-rich-span'
+                head['class']='middle-col btn-like-col'
+                head['cell_class'] = 'var dc={0:"success",1:"warning",2:"primary"};rt=dc[scope.row.audit]'
+                #head['cell_class'] ='scope.row.audit !=0 ? "audit_danger" :""'
+               
             return head
 
         def getExtraHead(self):
@@ -184,12 +189,12 @@ class TicketMasterPage(TablePage):
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
                 }, 'visible': 'status' in self.permit.changeable_fields(),},
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
-                {'editor':'com-op-btn','label':'审核通过','row_match':'one_row','match_express':' rt = scope.row.audit !=0', 'match_msg': '只能选择异常注单',
+                {'editor':'com-op-btn','label':'审核通过','row_match':'one_row','match_express':' rt = scope.row.audit == 1', 'match_msg': '只能选择异常注单',
                  'action':'''(function(){
                  if (!scope.ps.check_selected(scope.head)){return};
                  cfg.confirm("确定审核该条注单吗？")
                  .then(res=>{
-                    scope.ps.selected.forEach(row=>{row.audit=0});
+                    scope.ps.selected.forEach(row=>{row.audit=2});
                     cfg.show_load();
                     return ex.director_call("save_rows",{rows:scope.ps.selected})
                  })
@@ -235,14 +240,16 @@ class TicketMasterPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
-            names = ['status', 'winbet','accountid__accounttype']
+            names = ['status','audit', 'winbet','accountid__accounttype']
             
             def getExtraHead(self):
                 return [
                     {'name':'accountid__accounttype','label':'账号类型','editor':'com-filter-select',
                      'options':[{'value':value,'label':label} for value,label in status_code.ACCOUNT_TYPE]},
-                    {'name':'meta_need_audit','label':'正常/异常','editor':'com-filter-select',
-                     'options':[{'value':'0','label':'正常注单'},{'value':'1','label':'异常注单'}]},
+                    #{'name':'meta_need_audit','label':'正常/异常','editor':'com-filter-select',
+                     #'options':[{'value':'0','label':'正常注单'},
+                                #{'value':'1','label':'异常注单'},
+                                #{'value':'2','label':'审核过的'},]},
                 ]
             
             #def clean_search_args(self, search_args):
@@ -256,10 +263,14 @@ class TicketMasterPage(TablePage):
                     query= query.filter(status = 2)
                 if search_args.get('accountid__accounttype',None) !=None:
                     query= query.filter(accountid__accounttype=search_args.get('accountid__accounttype'))
-                if search_args.get('meta_need_audit') == '1':
-                    query= query.exclude(audit = 0)
-                elif search_args.get('meta_need_audit') == '0':
-                    query= query.filter(audit = 0)
+                #if search_args.get('meta_need_audit') == '1':
+                    ## 不正常的
+                    #query= query.filter(audit = 1)
+                #elif search_args.get('meta_need_audit') == '0':
+                    ## 正常的
+                    #query= query.exclude(audit = 1)
+                #elif search_args.get('meta_need_audit') == '2':
+                    #query= query.filter(audit = 2)
                 return query
 
         class sort(RowSort):
