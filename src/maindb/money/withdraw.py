@@ -9,12 +9,38 @@ from helpers.director.table.table import RowSort
 from ..models import TbWithdraw, TbBalancelog, TbMessageUnsend,TbTicketmaster
 from maindb.rabbitmq_instance import notifyWithdraw
 from maindb.matches.ticket_master import TicketMasterPage
+from helpers.director.decorator import get_request_cache
 
 class WithdrawPage(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
         return '提现管理'
+    
+    def get_context(self):
+        ctx = super().get_context()
+        # 交叉引用问题
+        from maindb.member.account import account_tab
+        ctx['named_ctx']= account_tab(self)
+        # account_tab 已经调用了下面的函数
+        #ctx['named_ctx'].update(self.get_tabs()) 
+        
+        return ctx
+    
+    @classmethod
+    def get_tabs(cls):
+        named_ctx={
+            'withdraw_tab':[
+                 {'name': 'ticketmaster',
+                  'label': '注单列表',
+                  'com': 'com-tab-table',
+                  'pre_set': 'rt={accountid:scope.par_row.accountid}',
+                  'table_ctx': TicketmasterTab().get_head_context(),
+                  'visible': True,
+                  },
+            ]
+        }
+        return named_ctx
 
     class tableCls(ModelTable):
         model = TbWithdraw
@@ -56,21 +82,6 @@ class WithdrawPage(TablePage):
         def get_context(self):
             ctx = ModelTable.get_context(self)
             ctx['footer'] = self.footer
-            
-            # 交叉引用问题
-            from maindb.member.account import account_tab
-            ctx['named_ctx'] = account_tab(self)
-            ctx['named_ctx'].update({
-                'withdraw_tab':[
-                     {'name': 'ticketmaster',
-                      'label': '注单列表',
-                      'com': 'com-tab-table',
-                      'pre_set': 'rt={accountid:scope.par_row.accountid}',
-                      'table_ctx': TicketmasterTab(crt_user=self.crt_user).get_head_context(),
-                      'visible': True,
-                      },
-                ]
-            })
             return ctx
 
         def get_operation(self):

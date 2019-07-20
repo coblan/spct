@@ -115,6 +115,7 @@ def account_tab(self):
         'account_tabs':evalue_container(ls)
     }
     dc.update(MatchesStatisticsPage.get_tabs(self.crt_user))
+    dc.update(WithdrawPage.get_tabs())
     return dc
 
 
@@ -540,6 +541,7 @@ class UserWithdraw(WithAccoutInnFilter, WithdrawPage.tableCls):
     @classmethod
     def get_edit_director_name(cls):
         return WithdrawPage.tableCls.get_edit_director_name()
+    
 
     class search(RowSearch):
         names = []
