@@ -274,6 +274,7 @@ ZERO_ONE_STATUS=(
 TODOLIST_CATEGORY=(
     (0,'未知'),
     (1,'结算相关'),
+    (100,'资金流'),
 )
 TODOLIST_STATUS=(
     (0,'未处理'),
