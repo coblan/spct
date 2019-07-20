@@ -237,7 +237,7 @@ class WithDrawForm(ModelFields):
 
 @director_view("has_audit_ticketmaster")
 def has_audit_ticketmaster(accountid):
-    audit_count = TbTicketmaster.objects.filter(accountid_id = accountid).exclude(audit = 0).count()
+    audit_count = TbTicketmaster.objects.filter(accountid_id = accountid,audit = 1).count()
     if audit_count >0:
         return True
     else:
