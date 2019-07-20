@@ -65,7 +65,7 @@ class WithdrawPage(TablePage):
                      {'name': 'ticketmaster',
                       'label': '注单列表',
                       'com': 'com-tab-table',
-                      'pre_set': '{accountid:scope.par_row.accountid}',
+                      'pre_set': 'rt={accountid:scope.par_row.accountid}',
                       'table_ctx': TicketmasterTab(crt_user=self.crt_user).get_head_context(),
                       'visible': True,
                       },
@@ -252,13 +252,13 @@ class TicketmasterTab(TicketMasterPage.tableCls):
     @classmethod
     def clean_search_args(cls, search_args):
         search_args = TicketMasterPage.tableCls.clean_search_args(search_args)
-        search_args['_need_audit']='1'
+        search_args['audit']='1'
         return search_args
     
     def inn_filter(self, query):
         query = super().inn_filter(query)
         if self.kw.get('accountid'):
-            return query.filter(accountid=self.kw.get('accountid'))
+            return query.filter(accountid_id=self.kw.get('accountid'))
         else:
             return query
 
