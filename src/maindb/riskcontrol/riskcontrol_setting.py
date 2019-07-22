@@ -20,14 +20,29 @@ class RiskcontrolSetting(TablePage):
         def get_heads(self):
             riskform=RiskcontrolForm(crt_user=self.crt_user)
             
+            fields_ctx = riskform.get_head_context()
+            fields_ctx.update({
+                'init_express':'ex.vueAssign(scope.row,scope.vc.par_row)',
+                'after_save':'ex.vueAssign( scope.vc.par_row,scope.row)',
+                'ops_loc':'bottom'
+            })
+            
             return [
+                {'name':'Level',
+                 'label':'风控等级',
+                 'editor':'com-table-click',
+                 'fields_ctx':fields_ctx,
+                 'action':'scope.head.fields_ctx.title=scope.row._label;scope.head.fields_ctx.par_row=scope.row;cfg.pop_vue_com("com-form-one",scope.head.fields_ctx)',
+                 },
                 #{'name':'Level','label':'风控等级','editor':'com-table-pop-fields',
                  #'fields_ctx':riskform.get_head_context(),'get_row':{'fun':'get_table_row'},'after_save':{'fun':'update_or_insert'}},
-                {'name':'Level','label':'风控等级',},
+                #{'name':'Level','label':'风控等级',},
                 {'name':'Memo','label':'备注'},
                 {'name':'RechargeDays','label':'充值天数'},
                 {'name':'RechargeCount','label':'充值次数'},
                 {'name':'RechargeAmount','label':'充值金额'},
+                {'name':'PossibleWinAmount','label':'投注延时(可赢额)','width':150,},
+                {'name':'DelaySec','label':'投注延时(秒)','width':150,}
             ]
         
         def get_rows(self):
@@ -43,9 +58,11 @@ class RiskcontrolForm(Fields):
         return [
             {'name':'Level','label':'风控等级','editor':'number','readonly':True},
             {'name':'Memo','label':'备注','editor':'linetext','readonly':True},
-            {'name':'RechargeDays','label':'充值天数','editor':'number'},
-            {'name':'RechargeCount','label':'充值次数','editor':'number'},
-            {'name':'RechargeAmount','label': '充值金额','editor':'number'},
+            {'name':'RechargeDays','label':'充值天数','editor':'com-field-number'},
+            {'name':'RechargeCount','label':'充值次数','editor':'com-field-number'},
+            {'name':'RechargeAmount','label': '充值金额','editor':'com-field-number'},
+            {'name':'PossibleWinAmount','label':'投注延时(可赢额)','editor':'com-field-number',},
+            {'name':'DelaySec','label':'投注延时(秒)','editor':'com-field-number'}
         ]
     
     def save_form(self):
