@@ -1,8 +1,8 @@
 
-import helpers
-import hello
 import maindb
+import helpers
 import django
+import hello
 page_dc = {
     "kv"	:helpers.common.admin.KvTablePage,
     "kv.edit"	:helpers.common.admin.KvFormPage,
@@ -83,6 +83,7 @@ page_dc = {
     "parameterinfo"	:maindb.riskcontrol.new_withdraw_limit.WithDrawLimitContralPage,
     "todolist"	:maindb.admin_todolist.TodoList,
     "domain"	:maindb.yunwei.domain.DomainPage,
+    "badurl"	:maindb.yunwei.badurl.BadurlPage,
     "marketgroup"	:maindb.programer.marketgroup.MarketGroupPage,
     "marketpage"	:maindb.programer.market.MarketPage,
     "usermarket"	:maindb.programer.market.UserMarketPage,
@@ -92,8 +93,6 @@ page_dc = {
 }
 director = {
     "cloudfile_uploader"	:maindb.cus_models_fields.CloudFileUploader,
-    "get_row"	:helpers.director.dapi.get_row,
-    "save_rows"	:helpers.director.dapi.save_rows,
     "permit.programer"	:helpers.director.admin.PermitPage.PermitTable,
     "permit.programer.edit"	:helpers.director.admin.PermitFormPage.PermitForm,
     "jb_user"	:helpers.case.jb_admin.admin.UserPage.tableCls,
@@ -101,16 +100,7 @@ director = {
     "jb_group"	:helpers.case.jb_admin.admin.GroupPage.tableCls,
     "jb_group.edit"	:helpers.case.jb_admin.admin.GroupForm,
     "authuser.regist"	:helpers.authuser.admin_regist.RegistFormPage.fieldsCls,
-    "do_login"	:helpers.authuser.admin_login.LoginFormPage.do_login,
-    "match.quit_ticket"	:maindb.matches.matches.quit_ticket,
     "PeriodScoreTab"	:maindb.matches.matches.PeriodScoreTab,
-    "match.livescout_status"	:maindb.matches.matches.match_livescout_status,
-    "match.add_livescout"	:maindb.matches.matches.add_livescout,
-    "get_special_bet_value"	:maindb.matches.matches.getSpecialbetValue,
-    "save_special_bet_value"	:maindb.matches.matches.save_special_bet_value_proc,
-    "get_match_outcome_info"	:maindb.matches.matches.get_match_outcome_info,
-    "out_com_save"	:maindb.matches.matches.out_com_save,
-    "notify_match_recommend"	:maindb.matches.matches.notify_match_recommend,
     "match.table"	:maindb.matches.matches.MatchsPage.tableCls,
     "match.table.edit"	:maindb.matches.matches.MatchForm,
     "outcome_tab"	:maindb.matches.matches.OutcomeTab,
@@ -130,7 +120,6 @@ director = {
     "BankCards.edit"	:maindb.member.bankcard.BankCardForm,
     "Recharge"	:maindb.money.recharge.RechargePage.tableCls,
     "Recharge.edit"	:maindb.money.recharge.ConfirmRechargeForm,
-    "has_audit_ticketmaster"	:maindb.money.withdraw.has_audit_ticketmaster,
     "tab.ticketmaster"	:maindb.money.withdraw.TicketmasterTab,
     "Withdraw"	:maindb.money.withdraw.WithdrawPage.tableCls,
     "Withdraw.edit"	:maindb.money.withdraw.WithDrawForm,
@@ -166,7 +155,6 @@ director = {
     "adjusttemplate.edit"	:maindb.matches.ajusttemplate.AjusttemplateForm,
     "banner.table"	:maindb.marketing.banner.BannerPage.tableCls,
     "banner.table.edit"	:maindb.marketing.banner.BannerForm,
-    "gen_notice_static"	:maindb.marketing.notice.NoticePage.tableCls.gen_notice_static,
     "notice.table"	:maindb.marketing.notice.NoticePage.tableCls,
     "notice.table.edit"	:maindb.marketing.notice.NoticeForm,
     "currency.table"	:maindb.basic_data.currency.CurrencyPage.tableCls,
@@ -175,7 +163,6 @@ director = {
     "help.table.edit"	:maindb.marketing.help_center.HelpForm,
     "get_mtype_options"	:maindb.marketing.help_center.get_mtype_options,
     "gen_help_static_file"	:maindb.marketing.help_center.HelpPage.tableCls.gen_help_static_file,
-    "update_activity_file"	:maindb.marketing.activity.update_activity_file,
     "activity.table"	:maindb.marketing.activity.ActivityPage.tableCls,
     "activity.table.edit"	:maindb.marketing.activity.ActiveForm,
     "AppResource"	:maindb.basic_data.app_resource.AppResource.tableCls,
@@ -184,7 +171,6 @@ director = {
     "app_pkg.edit"	:maindb.marketing.app_package.AppPackageForm,
     "agentnotice"	:maindb.marketing.agent_notice.AgentNoticePage.tableCls,
     "agentnotice.edit"	:maindb.marketing.agent_notice.NoticeForm,
-    "update_activity_file_v2"	:maindb.marketing.active_v2.update_activity_file_v2,
     "activity_v2"	:maindb.marketing.active_v2.ActiviyV2Page.tableCls,
     "activity_v2.edit"	:maindb.marketing.active_v2.ActivityV2Form,
     "activity_v2.setting"	:maindb.marketing.active_v2.ActivitySettingTable,
@@ -237,11 +223,8 @@ director = {
     "paychannel.edit"	:maindb.basic_data.paychannel.PayChannelForm,
     "sportstype"	:maindb.basic_data.sporttype.SportsTypesPage.tableCls,
     "sportstype.edit"	:maindb.basic_data.sporttype.SportsTypeForm,
-    "basketball-contry-options"	:maindb.basic_data.teams_basketball.getCountry,
-    "basketball-league-options"	:maindb.basic_data.teams_basketball.getLeagueOptions,
     "teams_basketball"	:maindb.basic_data.teams_basketball.TeamBasketballPage.tableCls,
     "teams_basketball.edit"	:maindb.basic_data.teams_basketball.TeamsBasketballFields,
-    "league_group.league_options"	:maindb.riskcontrol.admin_league_group.league_options,
     "LeagueGroupPage"	:maindb.riskcontrol.admin_league_group.LeagueGroupPage.tableCls,
     "LeagueGroupPage.edit"	:maindb.riskcontrol.admin_league_group.LeagueGroupForm,
     "LeagueidInGroupForm"	:maindb.riskcontrol.admin_league_group.LeagueidInGroupForm,
@@ -277,12 +260,11 @@ director = {
     "agent_commission.onekey_all"	:maindb.admin_agent.agent_commission.AgentCommission.tableCls.onekey_audit_all,
     "parameterinfo"	:maindb.riskcontrol.new_withdraw_limit.WithDrawLimitContralPage.tableCls,
     "parameterinfo.edit"	:maindb.riskcontrol.new_withdraw_limit.WithDrawForm,
-    "todolist.hasnew_todolist"	:maindb.admin_todolist.hasnew_todolist,
-    "todolist.get_counter"	:maindb.admin_todolist.get_counter,
     "todolist"	:maindb.admin_todolist.TodoList.tableCls,
     "todolist.edit"	:maindb.admin_todolist.TodoForm,
     "domain"	:maindb.yunwei.domain.DomainPage.tableCls,
     "domain.edit"	:maindb.yunwei.domain.DomainForm,
+    "badurl"	:maindb.yunwei.badurl.BadurlPage.tableCls,
     "marketgroup"	:maindb.programer.marketgroup.MarketGroupPage.tableCls,
     "marketgroup.edit"	:maindb.programer.marketgroup.MarketGroupForm,
     "Marketgroupwithmarket"	:maindb.programer.marketgroup.MarketgroupwithmarketTable,
@@ -296,6 +278,28 @@ director = {
     "outcome.edit"	:maindb.programer.outcome.OutcomeForm,
     "marketsport"	:maindb.programer.marketsport.MarketSportPage.tableCls,
     "marketsport.edit"	:maindb.programer.marketsport.MarketSportForm,
+}
+director_views = {
+    "get_row"	:helpers.director.dapi.get_row,
+    "save_rows"	:helpers.director.dapi.save_rows,
+    "do_login"	:helpers.authuser.admin_login.do_login,
+    "match.quit_ticket"	:maindb.matches.matches.quit_ticket,
+    "match.livescout_status"	:maindb.matches.matches.match_livescout_status,
+    "match.add_livescout"	:maindb.matches.matches.add_livescout,
+    "get_special_bet_value"	:maindb.matches.matches.getSpecialbetValue,
+    "save_special_bet_value"	:maindb.matches.matches.save_special_bet_value_proc,
+    "get_match_outcome_info"	:maindb.matches.matches.get_match_outcome_info,
+    "out_com_save"	:maindb.matches.matches.out_com_save,
+    "notify_match_recommend"	:maindb.matches.matches.notify_match_recommend,
+    "has_audit_ticketmaster"	:maindb.money.withdraw.has_audit_ticketmaster,
+    "gen_notice_static"	:maindb.marketing.notice.NoticePage.tableCls.gen_notice_static,
+    "update_activity_file"	:maindb.marketing.activity.update_activity_file,
+    "update_activity_file_v2"	:maindb.marketing.active_v2.update_activity_file_v2,
+    "basketball-contry-options"	:maindb.basic_data.teams_basketball.getCountry,
+    "basketball-league-options"	:maindb.basic_data.teams_basketball.getLeagueOptions,
+    "league_group.league_options"	:maindb.riskcontrol.admin_league_group.league_options,
+    "todolist.hasnew_todolist"	:maindb.admin_todolist.hasnew_todolist,
+    "todolist.get_counter"	:maindb.admin_todolist.get_counter,
     "trend_data"	:hello.admin.trend_data,
 }
 sim_signal = {
@@ -340,4 +344,3 @@ field_map = {
     "maindb.tbareablacklist.status"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
     "maindb.tbrechargeareablacklist.status"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
 }
-

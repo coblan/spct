@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
-     SelectSearch, Fields, director_view
+     SelectSearch, Fields, director_view,director_element
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import has_permit,can_touch,can_write
 from ..models import  TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,\
@@ -564,7 +564,7 @@ class TbLivescoutTable(ModelTable):
             #'stopreason':inst.stopreason
         #}
 
-@director_view('PeriodScoreTab')
+@director_element('PeriodScoreTab')
 class PeriodScoreTab(ModelTable):
     hide_fields=['tid']
     model = TbPeriodscore

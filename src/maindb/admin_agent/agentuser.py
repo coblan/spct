@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, RowFilter, RowSort, RowSearch, Fields, ModelFields,director_view
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, RowFilter, RowSort, RowSearch, Fields, ModelFields,director_view,director_element
 from helpers.director.table.row_search import SelectSearch
 from ..models import TbAccount,TbAgentrules
 from django.db import connections
@@ -307,7 +307,7 @@ class AgentUser(TablePage):
                  'label': '修改上级','fields_ctx': par_form.get_head_context(),}, 
             ]
 
-@director_view('YongJingForm')
+@director_element('YongJingForm')
 class YongJingForm(Fields):
     """用于修改佣金"""
     def get_heads(self):
@@ -325,12 +325,12 @@ class YongJingForm(Fields):
         agent_rule.save()
         modelfields_log.info('修改账号%(accountid)s的佣金比例为%(percentage)s'%{'accountid':self.kw.get('accountid'),'percentage':AgentRulePercentage})
 
-@director_view('agent.parentselect')
+@director_element('agent.parentselect')
 class ParentSelect(AccountSelect):
     def inn_filter(self, query):
         return query.filter(accounttype=1)
 
-@director_view('agent.ParentForm')
+@director_element('agent.ParentForm')
 class ParentForm(Fields):
     """调整父亲"""
     #class Meta:

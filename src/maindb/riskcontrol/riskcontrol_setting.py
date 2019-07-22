@@ -21,8 +21,9 @@ class RiskcontrolSetting(TablePage):
             riskform=RiskcontrolForm(crt_user=self.crt_user)
             
             return [
-                {'name':'Level','label':'风控等级','editor':'com-table-pop-fields',
-                 'fields_ctx':riskform.get_head_context(),'get_row':{'fun':'get_table_row'},'after_save':{'fun':'update_or_insert'}},
+                #{'name':'Level','label':'风控等级','editor':'com-table-pop-fields',
+                 #'fields_ctx':riskform.get_head_context(),'get_row':{'fun':'get_table_row'},'after_save':{'fun':'update_or_insert'}},
+                {'name':'Level','label':'风控等级',},
                 {'name':'Memo','label':'备注'},
                 {'name':'RechargeDays','label':'充值天数'},
                 {'name':'RechargeCount','label':'充值次数'},

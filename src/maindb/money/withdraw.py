@@ -3,7 +3,7 @@ import re
 from django.db import transaction
 from django.utils.timezone import datetime
 from django.db.models import Sum
-from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter, ModelFields,director_view
+from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter, ModelFields,director_view,director_element
 from helpers.director.table.row_search import SelectSearch
 from helpers.director.table.table import RowSort
 from ..models import TbWithdraw, TbBalancelog, TbMessageUnsend,TbTicketmaster
@@ -254,7 +254,7 @@ def has_audit_ticketmaster(accountid):
     else:
         return False
 
-@director_view('tab.ticketmaster')
+@director_element('tab.ticketmaster')
 class TicketmasterTab(TicketMasterPage.tableCls):
     @classmethod
     def get_edit_director_name(cls):

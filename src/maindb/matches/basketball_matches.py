@@ -1,4 +1,4 @@
-from helpers.director.shortcut import page_dc, director, director_view
+from helpers.director.shortcut import page_dc, director, director_view,director_element
 from .matches import MatchsPage, MatchForm ,quit_ticket,PeriodScoreTab#get_special_bet_value, produce_match_outcome, save_special_bet_value_proc, 
 from ..models import TbMatch,TbTournament,TbPeriodscore
 from maindb.mongoInstance import updateMatchBasketMongo
@@ -114,7 +114,7 @@ class BasketMatchForm(MatchForm):
         self.proc_redis()
         return {'msg': msg,}  
    
-@director_view('basketball.manul_outcome')
+@director_element('basketball.manul_outcome')
 class BasketOutcome(OutcomeTab):
     def inn_filter(self, query):
         # 291 是篮球的

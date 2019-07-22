@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.db import models
-from helpers.director.shortcut import field_map,director_view
+from helpers.director.shortcut import field_map,director_view,director_element
 from helpers.director.model_func.field_proc import BaseFieldProc
 import re
 from helpers.director.recv_file import GeneralUpload
@@ -78,7 +78,7 @@ class CloudFileFieldProc(CusPictureMap):
         }
         return head   
 
-@director_view('cloudfile_uploader')
+@director_element('cloudfile_uploader')
 class CloudFileUploader(GeneralUpload):
     def procFile(self,file_data,name):
         rt = super().procFile(file_data,name)
