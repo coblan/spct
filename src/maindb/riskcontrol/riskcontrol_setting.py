@@ -41,7 +41,7 @@ class RiskcontrolSetting(TablePage):
                 {'name':'RechargeDays','label':'充值天数'},
                 {'name':'RechargeCount','label':'充值次数'},
                 {'name':'RechargeAmount','label':'充值金额'},
-                {'name':'PossibleWinAmount','label':'投注延时(可赢额)','width':150,},
+                {'name':'PossibleWinAmount','label':'可赢额','width':150,},
                 {'name':'DelaySec','label':'投注延时(秒)','width':150,}
             ]
         
@@ -58,11 +58,11 @@ class RiskcontrolForm(Fields):
         return [
             {'name':'Level','label':'风控等级','editor':'number','readonly':True},
             {'name':'Memo','label':'备注','editor':'linetext','readonly':True},
-            {'name':'RechargeDays','label':'充值天数','editor':'com-field-number'},
-            {'name':'RechargeCount','label':'充值次数','editor':'com-field-number'},
-            {'name':'RechargeAmount','label': '充值金额','editor':'com-field-number'},
-            {'name':'PossibleWinAmount','label':'投注延时(可赢额)','editor':'com-field-number',},
-            {'name':'DelaySec','label':'投注延时(秒)','editor':'com-field-number'}
+            {'name':'RechargeDays','label':'充值天数','editor':'com-field-number','required':True,'fv_rule':'number'},
+            {'name':'RechargeCount','label':'充值次数','editor':'com-field-number','required':True,'fv_rule':'number'},
+            {'name':'RechargeAmount','label': '充值金额','editor':'com-field-number','required':True,'fv_rule':'number'},
+            {'name':'PossibleWinAmount','label':'投注延时(可赢额)','editor':'com-field-number','required':True,'fv_rule':'number'},
+            {'name':'DelaySec','label':'投注延时(秒)','editor':'com-field-number','required':True,'fv_rule':'number'}
         ]
     
     def save_form(self):
