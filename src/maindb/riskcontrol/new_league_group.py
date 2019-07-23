@@ -74,6 +74,7 @@ class LeagureGroupForm(ModelFields):
             head.update({
                 'editor':'com-field-table-list',
                 'fv_rule':'风控等级:key_unique(Level)',
+                'fv_msg':'至少填写一项,且风控等级不能重复',
                 'table_heads':[
                     {'name':'Level','label':'风控等级','editor':'com-table-pop-fields-local',
                      'inn_editor':'com-table-mapper','options':[
