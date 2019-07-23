@@ -25,6 +25,7 @@ class LeagueGroupPage(TablePage):
             if head['name'] in width:
                 head['width'] = width[head['name']]
             return head
+        
         def getExtraHead(self):
             table_ctx = League.tableCls().get_head_context()
             table_ctx.update({
@@ -92,6 +93,11 @@ class LeagureGroupForm(ModelFields):
             })
 
         return head
+    
+    def dict_row(self, inst):
+        return {
+            'league_count':inst.tbtournament_set.count() 
+        }
     
     
 field_map.update({
