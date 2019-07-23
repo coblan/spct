@@ -83,12 +83,12 @@ class LeagureGroupForm(ModelFields):
                     {'name':'DelaySec','label':'延迟秒数'},
                 ],
                 'fields_heads':[
-                    {'name':'Level','label':'风控等级','editor':'com-field-select',
+                    {'name':'Level','label':'风控等级','editor':'com-field-select','required':True,
                      'options':[
                         {'value':x["Level"],'label':x['Memo']} for x in json.loads( TbSetting.objects.get(settingname='RiskControlLevel').settingvalue)
                     ]},
-                    {'name':'PossibleWinAmount','label':'可赢额','editor':'com-field-number','fv_rule':'number'},
-                    {'name':'DelaySec','label':'延迟秒数','editor':'com-field-number','fv_rule':'integer(+0)'},
+                    {'name':'PossibleWinAmount','label':'可赢额','required':True,'editor':'com-field-number','fv_rule':'number'},
+                    {'name':'DelaySec','label':'延迟秒数','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
                 ]
             })
 
