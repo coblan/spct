@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,director,page_dc,field_map,model_to_name
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,director,page_dc,field_map,model_to_name,RowFilter
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from maindb.models import TbLeagueGroup,TbSetting
 import json
@@ -18,6 +18,13 @@ class LeagueGroupPage(TablePage):
         pop_edit_fields=['id']
         hide_fields=['riskleveldelay']
         
+        def dict_head(self, head):
+            width = {
+                'groupname':200
+            }
+            if head['name'] in width:
+                head['width'] = width[head['name']]
+            return head
         def getExtraHead(self):
             table_ctx = League.tableCls().get_head_context()
             table_ctx.update({
@@ -51,7 +58,9 @@ class LeagueGroupPage(TablePage):
             return {
                 'league_count':inst.league_count
             }
-
+        
+        class filters(RowFilter):
+            names = ['enabled']
 
 class LeagureGroupForm(ModelFields):
     hide_fields=['id']
@@ -63,7 +72,7 @@ class LeagureGroupForm(ModelFields):
         if head['name'] == 'riskleveldelay':
             head.update({
                 'editor':'com-field-table-list',
-                'fv_rule':'key_unique(Level)','fv_msg':'风控等级重复',
+                'fv_rule':'风控等级:key_unique(Level)',
                 'table_heads':[
                     {'name':'Level','label':'风控等级','editor':'com-table-pop-fields-local',
                      'inn_editor':'com-table-mapper','options':[
@@ -83,6 +92,7 @@ class LeagureGroupForm(ModelFields):
             })
 
         return head
+    
     
 field_map.update({
     '%s.enabled'%model_to_name(TbLeagueGroup):IntBoolProc

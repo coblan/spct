@@ -2093,7 +2093,7 @@ class TbTournament(models.Model):
     adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='调水模板')  # Field name made lowercase.
     handicapcount = models.IntegerField(db_column='HandicapCount',verbose_name='走地盘口显示数量')  # Field name made lowercase.
     #groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
-    group = models.ForeignKey(to='TbLeagueGroup',to_field='groupid',db_constraint=False,db_column='GroupID')  # Field name made lowercase.
+    group = models.ForeignKey(to='TbLeagueGroup',db_constraint=False,db_column='GroupID',verbose_name='联赛组')  # Field name made lowercase.
     
     class Meta:
         managed = False
@@ -2572,10 +2572,10 @@ class TbOperationlog(models.Model):
 
 class TbLeagueGroup(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    groupid = models.IntegerField(db_column='GroupId', unique=True, verbose_name='分组ID')  # Field name made lowercase.
+    #groupid = models.IntegerField(db_column='GroupId', unique=True, verbose_name='分组ID')  # Field name made lowercase.
     groupname = models.CharField(db_column='GroupName', max_length=50, verbose_name='分组名')  # Field name made lowercase.
-    enabled = models.SmallIntegerField(db_column='Enabled', default=1, blank=True)  # Field name made lowercase.
-    riskleveldelay = models.CharField(db_column='RiskLevelDelay', max_length=3000)  # Field name made lowercase
+    enabled = models.SmallIntegerField(db_column='Enabled', default=1, blank=True,verbose_name='启用')  # Field name made lowercase.
+    riskleveldelay = models.CharField(db_column='RiskLevelDelay', max_length=3000,verbose_name='风控等级延迟')  # Field name made lowercase
     
     class Meta:
         managed = False
