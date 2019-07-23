@@ -29,7 +29,12 @@ class League(TablePage):
         def getExtraHead(self):
             return [{'name': 'openlivebet', 'label': '走地', 'editor': 'com-table-bool-shower'}]
 
-
+        def inn_filter(self, query):
+            if self.kw.get('group_id'):
+                return query.filter(group_id = self.kw.get('group_id'))
+            else:
+                return query
+            
         def dict_head(self, head):
             dc = {
                 'tournamentid': 120,

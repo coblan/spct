@@ -14,7 +14,7 @@ class BannerPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbBanner
-        include = ['title', 'displaytype','status', 'picturename', 'order', 'createuser', 'createtime', 'description']
+        include = ['title', 'displaytype','status', 'picturename','pcpicturename', 'order', 'createuser', 'createtime', 'description']
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
@@ -109,7 +109,7 @@ class BannerPage(TablePage):
 
 class BannerForm(ModelFields):
     readonly = ['createuser']
-    field_sort = ['title', 'navigateurl', 'picturename', 'order','displaytype', 'description']
+    field_sort = ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description']
 
     class Meta:
         model = TbBanner
@@ -117,7 +117,7 @@ class BannerForm(ModelFields):
         # fields=['title','navigateurl','picturename','order','description']
 
     def dict_head(self, head):
-        if head['name'] == 'picturename':
+        if head['name'] in ['picturename','pcpicturename']:
             head['up_url'] = '/d/upload?path=public/banner'
         if head['name'] == 'createuser':
             head['editor'] = 'com-field-label-shower'

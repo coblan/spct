@@ -16,6 +16,7 @@ from .cus_models_fields import CusPictureField, CusFileField,CloudFileField
 
 from helpers.director.model_func.cus_fields.cus_picture import PictureField
 from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
+
 from maindb.create_user import CreateUserField,UpdateUserField
 
 
@@ -55,7 +56,7 @@ class TbAdvertisement(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     #image = models.CharField(db_column='Image', max_length=255,verbose_name='图片地址')  # Field name made lowercase.
     image = CusPictureField(db_column='Image', max_length=255,verbose_name='图片地址')
-    target = models.CharField(db_column='Target', max_length=255,verbose_name='跳转地址')  # Field name made lowercase.
+    target = models.CharField(db_column='Target',blank=True, max_length=255,verbose_name='跳转地址')  # Field name made lowercase.
     durationseconds = models.IntegerField(db_column='DurationSeconds',verbose_name='持续时间')  # Field name made lowercase.
     enabled = models.BooleanField(db_column='Enabled',verbose_name='启用',default=True)  # Field name made lowercase.
 
@@ -2091,6 +2092,8 @@ class TbTournament(models.Model):
     #adjusttemplateid = models.IntegerField(db_column='AdjustTemplateID')  # Field name made lowercase.
     adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='调水模板')  # Field name made lowercase.
     handicapcount = models.IntegerField(db_column='HandicapCount',verbose_name='走地盘口显示数量')  # Field name made lowercase.
+    #groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
+    group = models.ForeignKey(to='TbLeagueGroup',to_field='groupid',db_constraint=False,db_column='GroupID')  # Field name made lowercase.
     
     class Meta:
         managed = False
@@ -2106,6 +2109,7 @@ class TbBanner(models.Model):
                              verbose_name='标题')  # Field name made lowercase.
     picturename = CusPictureField(db_column='PictureName', verbose_name=_('Picture Name'),
                                   max_length=255)  # Field name made lowercase
+    pcpicturename = CusPictureField(db_column='PcPictureName', max_length=255, blank=True, null=True,verbose_name ='pc图片')  # Field name made lowercase.
     # picturename = models.CharField(db_column='PictureName',verbose_name=_('Picture Name'), max_length=255)  # Field name made lowercase.
     order = models.IntegerField(db_column='Order', verbose_name=_('Priority'))  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
@@ -2122,7 +2126,8 @@ class TbBanner(models.Model):
     navigateurl = models.CharField(db_column='NavigateUrl', max_length=512, verbose_name=_('Navigate Url'), blank=True,
                                    null=True)
     displaytype = models.IntegerField(db_column='DisplayType',default=0,choices=BANNER_DISPLAYTYPE,verbose_name='对内/对外')  # Field name made lowercase.
-    
+    #pcpicturename = models.CharField(db_column='PcPictureName', max_length=255, blank=True, null=True)  # Field name made lowercase.
+   
 
     class Meta:
         managed = False
@@ -2567,13 +2572,17 @@ class TbOperationlog(models.Model):
 
 class TbLeagueGroup(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    groupid = models.IntegerField(db_column='GroupId', blank=True, verbose_name='分组ID')  # Field name made lowercase.
+    groupid = models.IntegerField(db_column='GroupId', unique=True, verbose_name='分组ID')  # Field name made lowercase.
     groupname = models.CharField(db_column='GroupName', max_length=50, verbose_name='分组名')  # Field name made lowercase.
     enabled = models.SmallIntegerField(db_column='Enabled', default=1, blank=True)  # Field name made lowercase.
-
+    riskleveldelay = models.CharField(db_column='RiskLevelDelay', max_length=3000)  # Field name made lowercase
+    
     class Meta:
         managed = False
         db_table = 'TB_League_Group'
+    
+    def __str__(self):
+        return self.groupname
 
 
 class TbLeagueGroupSpread(models.Model):

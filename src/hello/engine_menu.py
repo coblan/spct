@@ -131,7 +131,7 @@ class PcMenu(BaseEngine):
                 #{'label': '数据源维护', 'url': page('sourececontrol'),'visible': has_permit(crt_user, 'risk.parameter'),},
                 {'label': '用户限额分组', 'url': page('limitusergroup'),'visible': can_touch(TbLimitusergroup, crt_user),},
                 {'label': '风险控制设置', 'url': page('RiskcontrolSetting'),'visible': has_permit(crt_user, 'risk.RiskcontrolSetting'),},
-                  
+                {'label':'联赛风控','url':page('newleaguegroup'),'visible':can_touch(TbLeagueGroup,crt_user)},
                 
              ]},
 
