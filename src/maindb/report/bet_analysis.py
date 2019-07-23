@@ -286,6 +286,7 @@ class MarketAnalysis(PlainTable):
             def_end = today.strftime('%Y-%m-%d %H:%M:%S')                
             search_args['_start_time'] = search_args.get('_start_time') or def_start
             search_args['_end_time'] = search_args.get('_end_time') or def_end
+            
         argument.validate_argument(search_args,{
             'accountid':[argument.failmsg(argument.int_str,'账号ID只能为数字')]
         })
@@ -297,13 +298,24 @@ class MarketAnalysis(PlainTable):
             #accountid = int ( self.search_args.get('accountid') )
         #except :
             #accountid = 'null'
-            
+        sort_str = self.search_args.get('_sort')
+        if sort_str:
+            sort = "'%s'"%sort_str.lstrip('-')
+            sortWay = "'DESC'" if sort_str.startswith('-') else "'ASC'"
+        else:
+            sort='NULL'
+            sortWay='NULL'
+        
         sql_args = {
             'start': self.search_args.get('_start_time'), #'2019-05-01',
             'end': self.search_args.get('_end_time') , # '2019-06-10'
-            'accountid':self.search_args.get('accountid') or 'null'
+            'accountid':self.search_args.get('accountid') or 'null',
+            'sort':sort,
+            'sortway':sortWay,
+            'oddkind':self.search_args.get('oddkind','null'),
+            'sportid':self.search_args.get('sportid','null'),
         }
-        sql = r"EXEC SP_Report_MarketAnalysis '%(start)s','%(end)s',%(accountid)s" \
+        sql = r"EXEC SP_Report_MarketAnalysis '%(start)s','%(end)s',%(accountid)s,%(sort)s,%(sortway)s,%(oddkind)s,%(sportid)s" \
             % sql_args
         
         with connections['Sports'].cursor() as cursor:
@@ -318,8 +330,27 @@ class MarketAnalysis(PlainTable):
     def getRowFilters(self):
         return [
             {'name':'accountid','label':'账号ID','editor':'com-filter-text'},
+            {'name':'oddkind','label':'盘口类型','editor':'com-filter-select','options':[
+                {'value':1,'label':'早盘'},
+                {'value':2,'label':'走地'},
+            ]},
+            {'name':'sportid','label':'体育类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
             {'name':'time','label':'时间','editor':'com-filter-datetime-range'}
         ]
+    
+    def getRowSort(self):
+        return {
+            'sortable':['OddsKindType','AVGBetAmount','AVGBetCount','BetUserCount','TotalBetAmount','TotalBetOutcome','Profit','TicketCount'],
+            
+        }
+    
+    
+    def getRowPages(self):
+        return {
+            'total':0,
+            'crt_page':1,
+            'perpage':500,
+        }
 
  
 class TournamentAnalysis(PlainTable):
@@ -389,6 +420,7 @@ class TournamentAnalysis(PlainTable):
     def getRowSort(self):
         return   {
             'sortable': ['TotalNum','LiveNum','TotalBetAmount','TotalBetOutcome','Profit','TotalBonus','OrderCount','UserCount'],
+            'sort_str':self.search_args.get('_sort','')
         } 
  
 class ReportTicketState(PlainTable):

@@ -59,7 +59,10 @@ def get_permit():
                                  ],}, 
              {'label': '联赛资料', 'children': [
                  {'label': '查看', 'value': 'TbTournament',}, 
-                 {'label': '编辑', 'value': 'TbTournament.edit', 'depend': ['TbTournament'],}
+                 {'label':'订阅','value':'TbTournament.issubscribe'},
+                 {'label':'走地','value':'TbTournament.closelivebet'},
+                 {'label':'推荐','value':'TbTournament.isrecommend'},
+                 {'label': '编辑(除订阅、走地、推荐)', 'value': 'TbTournament.edit', 'depend': ['TbTournament'],}
                     ],}, 
              #{'label': '篮球联赛资料', 'children': [
                  #{'label': '查看', 'value': 'TbTournamentBasketball',}, 
@@ -152,7 +155,11 @@ def get_permit():
          'children': [
              {'label': '比赛列表', 'children': [
                  {'label': '查看', 'value': 'TbMatches',}, 
-                 {'label': '编辑', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],},
+                 {'label':'推荐','value':'TbMatch.isrecommend'},
+                 {'label':'走地','value':'TbMatch.hasliveodds'},
+                 {'label':'显示/隐藏','value':'TbMatch.ishidden'},
+                 {'label':'退单','value':'TbMatch.quit_ticket'},
+                 {'label': '编辑(除推荐、走地、显示)', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],},
                  {'label':'比分','value':'TbPeriodscore'},
                  {'label':'危险球','value':'TbLivefeed.edit'},
                  {'label':'盘口','value':'manual_specialbetvalue'},

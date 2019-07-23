@@ -46,7 +46,10 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            
            # 联赛
            ('TbTournament', model_read_permit(TbTournament), model_to_name(TbTournament), 'model'), 
-           ('TbTournament.edit', model_full_permit(TbTournament), model_to_name(TbTournament), 'model'), 
+           ('TbTournament.issubscribe',json.dumps({'write':['issubscribe']}),model_to_name(TbTournament),'model'),
+           ('TbTournament.closelivebet',json.dumps({'write':['closelivebet']}),model_to_name(TbTournament),'model'),
+           ('TbTournament.isrecommend',json.dumps({'write':['isrecommend']}),model_to_name(TbTournament),'model'),
+           ('TbTournament.edit', model_full_permit(TbTournament,exclude=['issubscribe','closelivebet','isrecommend']), model_to_name(TbTournament), 'model'), 
            
            #('TbTournamentBasketball', model_read_permit(TbTournamentBasketball), model_to_name(TbTournamentBasketball), 'model'), 
            #('TbTournamentBasketball.edit', model_full_permit(TbTournamentBasketball), model_to_name(TbTournamentBasketball), 'model'),            
@@ -93,7 +96,12 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            #------比赛----------------------------------------------
            
            ('TbMatches', model_read_permit(TbMatch), model_to_name(TbMatch), 'model'), 
-           ('TbMatches.edit', model_full_permit(TbMatch), model_to_name(TbMatch), 'model'),
+           ('TbMatch.isrecommend',json.dumps({'write':['isrecommend']}),model_to_name(TbMatch),'model'),
+           ('TbMatch.hasliveodds',json.dumps({'write':['hasliveodds']}),model_to_name(TbMatch),'model'),
+           ('TbMatch.ishidden',json.dumps({'write':['ishidden']}),model_to_name(TbMatch),'model'),
+           ('TbMatch.quit_ticket','','','single'),
+           ('TbMatches.edit', model_full_permit(TbMatch,exclude=['isrecommend','hasliveodds','ishidden']), model_to_name(TbMatch), 'model'),
+           
            ('TbPeriodscore',model_read_permit(TbPeriodscore),model_to_name(TbPeriodscore),'model'), # 比分
            ('TbLivefeed.edit',model_full_permit(TbLivefeed),model_to_name(TbLivefeed),'model'),# 危险球
            

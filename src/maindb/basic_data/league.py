@@ -9,6 +9,7 @@ from maindb.models import TbTournament, TbMarkets,TbMatch
 from maindb.redisInstance import redisInst
 from  maindb.rabbitmq_instance import notifyAdjustOddsBase,notifyHandicapcount
 from django.utils import timezone
+from helpers.director.access.permit import has_permit
 
 class League(TablePage):
     template = 'jb_admin/table.html'
@@ -60,23 +61,31 @@ class League(TablePage):
                 return [
                     {'fun':'selected_set_and_save','label':'订阅','editor':'com-op-btn',
                      'confirm_msg':'确认订阅这些联赛?',
-                     'row_match':'many_row','pre_set':'rt={issubscribe:1}'},
+                     'row_match':'many_row','pre_set':'rt={issubscribe:1}',
+                     'visible':'issubscribe' in self.permit.changeable_fields()
+                     },
                     {'fun':'selected_set_and_save','label':'取消订阅','editor':'com-op-btn',
                      'confirm_msg':'确认取消订阅这些联赛?',
-                     'row_match':'many_row','pre_set':'rt={issubscribe:0}'},
+                     'row_match':'many_row','pre_set':'rt={issubscribe:0}',
+                     'visible':'issubscribe' in self.permit.changeable_fields()
+                     },
                     {'fun':'selected_set_and_save','label':'走地','editor':'com-op-btn',
                      'confirm_msg':'确认开启这些联赛的走地?',
-                     'row_match':'many_row','pre_set':'rt={closelivebet:0}'},
+                     'row_match':'many_row','pre_set':'rt={closelivebet:0}',
+                     'visible':'closelivebet'in self.permit.changeable_fields()},
                     {'fun':'selected_set_and_save','label':'取消走地','editor':'com-op-btn',
                       'confirm_msg':'确认关闭这些联赛的走地?',
-                     'row_match':'many_row','pre_set':'rt={closelivebet:1}'},
+                     'row_match':'many_row','pre_set':'rt={closelivebet:1}',
+                     'visible':'closelivebet'in self.permit.changeable_fields()},
                     {'fun':'selected_set_and_save','label':'推荐','editor':'com-op-btn',
                       'confirm_msg':'确认推介这些联赛?', 
                       #'after_save':'ex.director_call("notify_tournament_recommend",{rows:scope.rows})',
-                     'row_match':'many_row','pre_set':'rt={isrecommend:1}'},
+                     'row_match':'many_row','pre_set':'rt={isrecommend:1}',
+                     'visible':'isrecommend'in self.permit.changeable_fields()},
                     {'fun':'selected_set_and_save','label':'取消推荐','editor':'com-op-btn',
                       'confirm_msg':'取消推介这些联赛?',
-                     'row_match':'many_row','pre_set':'rt={isrecommend:0}'},
+                     'row_match':'many_row','pre_set':'rt={isrecommend:0}',
+                     'visible':'isrecommend'in self.permit.changeable_fields()},
                     #{'label':'推介','editor':'com-op-btn','row_match':'many_row',
                      #'action':''' if(scope.ps.check_selected(scope.head)){ cfg.confirm("确定推介联赛?").then(()=>{
                      #scope.selected.forEach(item=>{item.isrecommend=true}) ; return ex.director_call("save_rows",{rows:})}) }'''}

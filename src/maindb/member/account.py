@@ -268,7 +268,7 @@ class AccountPage(TablePage):
                     #return super().clean_search()
 
         class sort(RowSort):
-            names = ['nickname', 'account', 'amount', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount',
+            names = ['nickname', 'account', 'amount','ticketdelay', 'bonusrate', 'agentamount', 'createtime', 'sumrechargecount',
                      'rechargeamount', 'withdrawamount','anomalyticketnum']
 
         def get_operation(self):

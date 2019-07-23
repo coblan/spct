@@ -272,13 +272,13 @@ class MatchsPage(TablePage):
                 #{'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
                 #'express': 'rt=scope.ps.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_iscloseliveodds_tabs",par_row:scope.ps.selected[0]})',
                     #'visible': self.permit.can_edit(),}, 
-                            {'fun': 'director_call', 'editor': 'com-op-btn', 
+                {'fun': 'director_call', 'editor': 'com-op-btn', 
                   'director_name': 'match.quit_ticket',
                   'label': '退单', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
                   #'pre_set': 'rt={PeriodType:2}',
                   #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
                   #'fields_ctx': PeriodTypeForm_form.get_head_context(),
-                 'visible': 'ishidden' in self.permit.changeable_fields()},
+                 'visible': has_permit(self.crt_user,'TbMatch.quit_ticket')},
 
             ]
             return ops
@@ -318,7 +318,10 @@ class MatchsPage(TablePage):
             if head['name']=='matchid':
                 head['editor']='com-table-switch-to-tab'
                 head['ctx_name']='match_tabs'
-                head['tab_name']='special_bet_value' # 'match_base_info'            
+                if has_permit( self.crt_user, 'manual_specialbetvalue'):
+                    head['tab_name']='special_bet_value' 
+                else:
+                    head['tab_name']='match_base_info'            
 
             if head['name'] in ['tournamentid','sportid']:
                 head['editor']='com-table-label-shower'

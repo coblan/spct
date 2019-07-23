@@ -61,7 +61,7 @@ class RiskcontrolForm(Fields):
             {'name':'RechargeDays','label':'充值天数','editor':'com-field-number','required':True,'fv_rule':'number'},
             {'name':'RechargeCount','label':'充值次数','editor':'com-field-number','required':True,'fv_rule':'number'},
             {'name':'RechargeAmount','label': '充值金额','editor':'com-field-number','required':True,'fv_rule':'number'},
-            {'name':'PossibleWinAmount','label':'投注延时(可赢额)','editor':'com-field-number','required':True,'fv_rule':'number'},
+            {'name':'PossibleWinAmount','label':'可赢额','editor':'com-field-number','required':True,'fv_rule':'number'},
             {'name':'DelaySec','label':'投注延时(秒)','editor':'com-field-number','required':True,'fv_rule':'number'}
         ]
     
