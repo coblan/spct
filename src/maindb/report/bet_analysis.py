@@ -383,6 +383,9 @@ class TournamentAnalysis(PlainTable):
     def get_rows(self):
         data_rows = []
         
+        argument.validate_argument(self.search_args,{
+            'tournamentID':[argument.int_str]
+        })
         sort_str = self.search_args.get('_sort')
         if sort_str:
             sort = "'%s'"%sort_str.lstrip('-')
@@ -390,15 +393,20 @@ class TournamentAnalysis(PlainTable):
         else:
             sort='NULL'
             sortWay='NULL'
-            
+        
+        
         sql_args = {
             'start': self.search_args.get('_start_time'), #'2019-05-01',
             'end': self.search_args.get('_end_time') , # '2019-06-10'
             'sportID':self.search_args.get('sportID'),
+            'tournamentID':self.search_args.get('tournamentID') or 'NULL',
             'sort': sort,
             'sortWay':sortWay
         }
-        sql = r"EXEC SP_Report_TournamentAnalysis '%(start)s','%(end)s',%(sportID)s,%%s,%(sort)s,%(sortWay)s" \
+        
+       
+        
+        sql = r"EXEC SP_Report_TournamentAnalysis '%(start)s','%(end)s',%(sportID)s,%%s,%(tournamentID)s,%(sort)s,%(sortWay)s" \
             % sql_args
         
         with connections['Sports'].cursor() as cursor:
@@ -413,6 +421,7 @@ class TournamentAnalysis(PlainTable):
     def getRowFilters(self):
         return [
             {'name':'nickname','label':'用户昵称','editor':'com-filter-text'},
+            {'name':'tournamentID','label':'联赛ID','editor':'com-filter-text'},
             {'name':'sportID','label':'体育类型','editor':'com-filter-select','required':True,'options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
             {'name':'time','label':'时间','editor':'com-filter-datetime-range'}
         ]

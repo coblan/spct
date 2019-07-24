@@ -33,8 +33,9 @@ DATABASES = {
 ALLOWED_HOSTS = ['*']
 
 # 静态文件服务地址
-STATIC_SERVICE = 'http://103.246.219.202:9004/static'
-CLOUD_STORAGE = 'http://103.246.219.202:9004/static'  #云存储路径，用于生成plist文件的app下载路径
+STATIC_SERVICE = 'https://static.rrystv.com'
+#CLOUD_STORAGE = 'http://103.246.219.202:9004/static'  #云存储路径，用于生成plist文件的app下载路径
+CLOUD_STORAGE = 'https://static.rrystv.com'
 SELF_URL = 'http://192.168.40.145:9019'   # 后台系统自身的访问url，用户爬取helper，notice页面，生成静态文件
 
 AGENT_SERVICE = 'http://192.168.40.144:8001'

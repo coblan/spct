@@ -108,7 +108,7 @@ class BannerPage(TablePage):
 
 
 class BannerForm(ModelFields):
-    readonly = ['createuser']
+    readonly = []
     field_sort = ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description']
 
     class Meta:
