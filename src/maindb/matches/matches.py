@@ -232,7 +232,7 @@ class MatchsPage(TablePage):
                     return super().get_express(q_str)
 
         class sort(RowSort):
-            names = ['matchdate']
+            names = ['matchdate','ticketdelay']
 
         def get_operation(self):
             #points_form =  FootBallPoints(crt_user= self.crt_user)
