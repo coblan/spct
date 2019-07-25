@@ -98,6 +98,7 @@ class MatchesStatisticsPage(TablePage):
                 row['SumGrossProfit'] = round(row['SumGrossProfit'], 2)
                 row['SumBonus'] = round(row['SumBonus'], 2)
                 row['SumProfit'] = round(row['SumProfit'], 2)
+                row['_label'] = '比赛(%s)'%row['MatchID']
             return self.matches
 
         def get_statistic_sql(self, sql_args): 

@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 from helpers.director.access.permit import has_permit
 from django.core.exceptions import PermissionDenied
 from helpers.director.network import argument
+from maindb.matches.matches_statistics import MatchesStatisticsPage
 
 class BetAnalysisPage(object):
     def __init__(self, request,engin):
@@ -25,7 +26,8 @@ class BetAnalysisPage(object):
         chart_ctx = BetCondition().get_head_context()
         chart_ctx.update({
             'content_editor':'com-bet-chart',
-            'autoload':True
+            'autoload':True,
+            
         })
         
         bet_week_chart = BetWeekChart().get_head_context()
@@ -48,7 +50,8 @@ class BetAnalysisPage(object):
                     {'name':'ReportTicketState','label':'投注单状态分析', 'open_editor':'live_table','open_ctx':ReportTicketState().get_head_context()  },
                     {'name':'ReportTicketSummary','label':'投注单状态汇总', 'open_editor':'live_table','open_ctx':ReportTicketSummary().get_head_context()  }
                 ]
-            } 
+            } ,
+            'named_ctx':MatchesStatisticsPage.get_tabs(self.request.user)
         }
 
 class WinbetRatio(PlainTable):
@@ -368,8 +371,18 @@ class TournamentAnalysis(PlainTable):
         return search_args  
     
     def get_heads(self):
+        table_ctx = MatchesStatisticsPage.tableCls().get_head_context()
+        table_ctx.update({
+            'title':'赛事统计',
+            'search_args':{},
+        })
+
         return [
-            {'name':'TournamentID','label':'联赛ID','editor':'com-table-span'},
+            {'name':'TournamentID','label':'联赛ID','editor':'com-table-click','table_ctx':table_ctx,
+             'action':'''scope.head.table_ctx.search_args.tournamentid = scope.row.TournamentID; 
+             scope.head.table_ctx.search_args._start_matchdate = scope.ps.search_args._start_time;
+             scope.head.table_ctx.search_args._end_matchdate = scope.ps.search_args._end_time;
+             root_live.open_live(live_table,scope.head.table_ctx)'''},
             {'name':'TournamentNameZH','label':'联赛名','editor':'com-table-span','width':160},
             {'name':'TotalNum','label':'总场次','editor':'com-table-span'},
             {'name':'LiveNum','label':'走地场次','editor':'com-table-span'},
@@ -403,8 +416,6 @@ class TournamentAnalysis(PlainTable):
             'sort': sort,
             'sortWay':sortWay
         }
-        
-       
         
         sql = r"EXEC SP_Report_TournamentAnalysis '%(start)s','%(end)s',%(sportID)s,%%s,%(tournamentID)s,%(sort)s,%(sortWay)s" \
             % sql_args
