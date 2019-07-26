@@ -1,9 +1,10 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,director,page_dc,field_map,model_to_name,RowFilter
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
-from maindb.models import TbLeagueGroup,TbSetting
+from maindb.models import TbLeagueGroup,TbSetting,TbTournament
 import json
 from django.db.models import Count
 from maindb.basic_data.league import League
+from helpers.director.access.permit import can_touch
 
 class LeagueGroupPage(TablePage):
     def get_label(self):
@@ -27,16 +28,20 @@ class LeagueGroupPage(TablePage):
             return head
         
         def getExtraHead(self):
-            table_ctx = League.tableCls().get_head_context()
-            table_ctx.update({
-                'init_express':'scope.ps.search_args.group_id=scope.ps.par_row.pk;scope.ps.search()',
-                'ops_loc':'bottom'
-            })
-            return [
-                {'name':'league_count','label':'包含联赛','editor':'com-table-click',
+            if can_touch(TbTournament,self.crt_user):
+                table_ctx = League.tableCls().get_head_context()
+                table_ctx.update({
+                    'init_express':'scope.ps.search_args.group_id=scope.ps.par_row.pk;scope.ps.search()',
+                    'ops_loc':'bottom'
+                })
+                head = {'name':'league_count','label':'包含联赛','editor':'com-table-click',
                  'table_ctx':table_ctx,
                  'action':'scope.head.table_ctx.par_row=scope.row;cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)'
                  }
+            else:
+                head ={'name':'league_count','label':'包含联赛','editor':'com-table-span'}
+            return [
+                head
             ]
         
         

@@ -59,9 +59,9 @@ def get_permit():
                                  ],}, 
              {'label': '联赛资料', 'children': [
                  {'label': '查看', 'value': 'TbTournament',}, 
-                 {'label':'订阅','value':'TbTournament.issubscribe'},
-                 {'label':'走地','value':'TbTournament.closelivebet'},
-                 {'label':'推荐','value':'TbTournament.isrecommend'},
+                 {'label':'订阅','value':'TbTournament.issubscribe','depend': ['TbTournament']},
+                 {'label':'走地','value':'TbTournament.closelivebet','depend': ['TbTournament']},
+                 {'label':'推荐','value':'TbTournament.isrecommend','depend': ['TbTournament']},
                  {'label': '编辑(除订阅、走地、推荐)', 'value': 'TbTournament.edit', 'depend': ['TbTournament'],}
                     ],}, 
              #{'label': '篮球联赛资料', 'children': [
@@ -227,6 +227,7 @@ def get_permit():
                  {'label':'编辑','value':'TbLimitusergroup.edit','depend':['TbLimitusergroup']}
              ]},
              {'label':'风险控制设置','value':'risk.RiskcontrolSetting'},
+             {'label':'联赛风控','value':'TbLeagueGroup.edit'},
              
             
             #{'label': _('Tb RC Filter'), 'value': 'TbRcFilter',}, 
