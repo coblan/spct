@@ -22,7 +22,7 @@ class League(TablePage):
         exclude = ['categoryid', 'uniquetournamentid', 'createtime']
         pop_edit_field = 'tournamentid'
         fields_sort = ['sport','tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',
-                       'adjusttemplate','handicapcount']
+                       'adjusttemplate','handicapcount','group']
 
         # hide_fields = ['tournamentid']
 
@@ -105,7 +105,7 @@ class League(TablePage):
             names = ['tournamentname', 'tournamentid']
 
         class filters(RowFilter):
-            names = ['issubscribe','sport','isrecommend','adjusttemplate']
+            names = ['issubscribe','sport','isrecommend','adjusttemplate','group']
             def getExtraHead(self): 
                 return [
                     {'name': 'openlivebet','label': '走地',
