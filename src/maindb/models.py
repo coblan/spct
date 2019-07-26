@@ -2092,8 +2092,10 @@ class TbTournament(models.Model):
     #adjusttemplateid = models.IntegerField(db_column='AdjustTemplateID')  # Field name made lowercase.
     adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='调水模板')  # Field name made lowercase.
     handicapcount = models.IntegerField(db_column='HandicapCount',verbose_name='走地盘口显示数量')  # Field name made lowercase.
+    minodds = models.DecimalField(db_column='MinOdds', max_digits=18, decimal_places=2,verbose_name='最小赔率',help_text='上下盘玩法非主盘口封盘最低赔率')  # Field name made lowercase.
     #groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
     group = models.ForeignKey(to='TbLeagueGroup',db_constraint=False,db_column='GroupID',verbose_name='联赛组')  # Field name made lowercase.
+    
     
     class Meta:
         managed = False

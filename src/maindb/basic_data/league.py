@@ -165,7 +165,7 @@ class LeagueForm(ModelFields):
             }
             notifyAdjustOddsBase(json.dumps(dc))
         
-        if 'handicapcount' in self.changed_data:
+        if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
             notifyHandicapcount(json.dumps([self.instance.tournamentid]))
         
         
