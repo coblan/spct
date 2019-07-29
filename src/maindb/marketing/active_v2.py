@@ -147,7 +147,7 @@ class ActivitySettingTable(ModelTable):
         ops = super().get_operation()
         for op in ops:
             if op['name']=='add_new':
-                op['pre_set']='rt={activityid:scope.search_args.meta_par_pk}'
+                op['pre_set']='rt={activityid_id:scope.search_args.meta_par_pk}'
         return ops    
 
 class ActivitySettingForm(ModelFields):
