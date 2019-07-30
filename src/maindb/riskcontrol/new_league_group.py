@@ -35,7 +35,7 @@ class LeagueGroupPage(TablePage):
                     'init_express':'scope.ps.search_args.group_id=scope.ps.par_row.pk;scope.ps.search()',
                     'ops_loc':'bottom'
                 })
-                head = {'name':'league_count','label':'包含联赛','editor':'com-table-click',
+                head = {'name':'league_count','label':'包含联赛数','editor':'com-table-click',
                  'table_ctx':table_ctx,
                  'action':'scope.head.table_ctx.par_row=scope.row;cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)'
                  }
@@ -65,6 +65,15 @@ class LeagueGroupPage(TablePage):
             return {
                 'league_count':inst.league_count
             }
+        
+        def get_operation(self):
+            ops = super().get_operation()
+            out_ops = []
+            for op in ops:
+                if op['name'] !='delete_selected':
+                    out_ops.append(op)
+            return out_ops
+        
         
         class filters(RowFilter):
             names = ['enabled']
@@ -106,6 +115,12 @@ class LeagureGroupForm(ModelFields):
         return {
             'league_count':inst.tbtournament_set.count() 
         }
+    
+    def clean(self):
+        super().clean()
+        if 'enabled' in self.changed_data and self.cleaned_data.get('enabled') ==0:
+            if self.instance.tbtournament_set.count() != 0:
+                self.add_error('enabled', '联赛组已经被使用，不能禁用')
     
     def after_save(self):
         if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
