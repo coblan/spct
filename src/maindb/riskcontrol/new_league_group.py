@@ -22,7 +22,8 @@ class LeagueGroupPage(TablePage):
         
         def dict_head(self, head):
             width = {
-                'groupname':200
+                'groupname':200,
+                'league_count':100
             }
             if head['name'] in width:
                 head['width'] = width[head['name']]
@@ -40,7 +41,7 @@ class LeagueGroupPage(TablePage):
                  'action':'scope.head.table_ctx.par_row=scope.row;cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)'
                  }
             else:
-                head ={'name':'league_count','label':'包含联赛','editor':'com-table-span'}
+                head ={'name':'league_count','label':'包含联赛数','editor':'com-table-span'}
             return [
                 head
             ]
