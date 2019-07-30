@@ -108,7 +108,7 @@ class LeagureGroupForm(ModelFields):
     
     def after_save(self):
         if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
-            notifyLeagueGroup(json.dumps([self.instance.id]))
+            notifyLeagueGroup(json.dumps({'type':1,'id':self.instance.id}))
     
     
 field_map.update({

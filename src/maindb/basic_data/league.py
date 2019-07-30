@@ -7,7 +7,7 @@ from helpers.director.access.permit import can_write
 import json
 from maindb.models import TbTournament, TbMarkets,TbMatch
 from maindb.redisInstance import redisInst
-from  maindb.rabbitmq_instance import notifyAdjustOddsBase,notifyHandicapcount
+from  maindb.rabbitmq_instance import notifyAdjustOddsBase,notifyHandicapcount,notifyLeagueGroup
 from django.utils import timezone
 from helpers.director.access.permit import has_permit
 
@@ -167,6 +167,8 @@ class LeagueForm(ModelFields):
         
         if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
             notifyHandicapcount(json.dumps([self.instance.tournamentid]))
+        if 'group' in self.changed_data:
+            notifyLeagueGroup(json.dumps({'type':2,'id':self.instance.id}))
         
         
     def dict_row(self, inst): 
