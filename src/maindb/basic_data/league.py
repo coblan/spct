@@ -168,7 +168,7 @@ class LeagueForm(ModelFields):
         if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
             notifyHandicapcount(json.dumps([self.instance.tournamentid]))
         if 'group' in self.changed_data:
-            notifyLeagueGroup(json.dumps({'type':2,'id':self.instance.id}))
+            notifyLeagueGroup(json.dumps({'type':2,'id':self.instance.tournamentid}))
         
         
     def dict_row(self, inst): 
