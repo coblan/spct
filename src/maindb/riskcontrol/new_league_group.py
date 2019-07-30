@@ -98,7 +98,8 @@ class LeagureGroupForm(ModelFields):
                     {'name':'DelaySec','label':'延迟秒数','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
                 ]
             })
-
+        if head['name']=='handicapcount':
+            head['fv_rule'] = 'integer(+)'
         return head
     
     def dict_row(self, inst):
