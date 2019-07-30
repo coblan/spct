@@ -55,6 +55,13 @@ def notifyHandicapcount(msg):
                           routing_key= 'backend.handicapcount.tournament',
                           body=msg)
 
+def notifyLeagueGroup(msg):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
+    channel = connection.channel()
+    channel.basic_publish(exchange='center.topic',
+                          routing_key= 'backend.leaguegroup.tournament',
+                          body=msg)
+
 def notifyAccountFrozen(msg):
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
     channel = connection.channel()

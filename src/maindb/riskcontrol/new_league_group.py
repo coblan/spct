@@ -5,6 +5,7 @@ import json
 from django.db.models import Count
 from maindb.basic_data.league import League
 from helpers.director.access.permit import can_touch
+from maindb.rabbitmq_instance import notifyLeagueGroup
 
 class LeagueGroupPage(TablePage):
     def get_label(self):
@@ -104,6 +105,10 @@ class LeagureGroupForm(ModelFields):
         return {
             'league_count':inst.tbtournament_set.count() 
         }
+    
+    def after_save(self):
+        if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
+            notifyLeagueGroup(json.dumps([self.instance.id]))
     
     
 field_map.update({
