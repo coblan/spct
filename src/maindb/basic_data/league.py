@@ -7,7 +7,7 @@ from helpers.director.access.permit import can_write
 import json
 from maindb.models import TbTournament, TbMarkets,TbMatch
 from maindb.redisInstance import redisInst
-from  maindb.rabbitmq_instance import notifyAdjustOddsBase,notifyHandicapcount,notifyLeagueGroup
+from  maindb.rabbitmq_instance import notifyAdjustOddsBase,notifyLeagueGroup
 from django.utils import timezone
 from helpers.director.access.permit import has_permit
 
@@ -19,7 +19,7 @@ class League(TablePage):
 
     class tableCls(ModelTable):
         model = TbTournament
-        exclude = ['categoryid', 'uniquetournamentid', 'createtime','adjusttemplate','handicapcount','weight','ticketdelay','minodds']
+        exclude = ['categoryid', 'uniquetournamentid', 'createtime',]
         pop_edit_field = 'tournamentid'
         fields_sort = ['sport','tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',
                        'adjusttemplate','handicapcount','group']
@@ -165,9 +165,9 @@ class LeagueForm(ModelFields):
             }
             notifyAdjustOddsBase(json.dumps(dc))
         
-        if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
-            notifyHandicapcount(json.dumps([self.instance.tournamentid]))
-        if 'group' in self.changed_data:
+        #if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
+            #notifyHandicapcount(json.dumps([self.instance.tournamentid]))
+        if 'group' in self.changed_data or 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
             notifyLeagueGroup(json.dumps({'type':2,'id':self.instance.tournamentid}))
         
         
@@ -179,8 +179,7 @@ class LeagueForm(ModelFields):
     class Meta:
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid',
-                   'oddsadjustment','oddsadjustmax','baseticketeamout',
-                   'adjusttemplate','handicapcount','weight','ticketdelay','minodds']
+                   'oddsadjustment','oddsadjustmax','baseticketeamout',]
 
 #def notify_tournament_recommend(rows):
     #ls =[x['pk'] for x in rows]

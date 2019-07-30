@@ -48,12 +48,12 @@ def notifyAdjustOddsBase(msg):
                           routing_key= 'backend.adjust.odds',
                           body=msg)
 
-def notifyHandicapcount(msg):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
-    channel = connection.channel()
-    channel.basic_publish(exchange='center.topic',
-                          routing_key= 'backend.handicapcount.tournament',
-                          body=msg)
+#def notifyHandicapcount(msg):
+    #connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
+    #channel = connection.channel()
+    #channel.basic_publish(exchange='center.topic',
+                          #routing_key= 'backend.handicapcount.tournament',
+                          #body=msg)
 
 def notifyLeagueGroup(msg):
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    

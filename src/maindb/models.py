@@ -2080,8 +2080,8 @@ class TbTournament(models.Model):
     #specialcategoryid = models.IntegerField(db_column='SpecialCategoryID')  # Field name made lowercase.    
     #source = models.IntegerField(db_column='Source',choices=DATA_SOURCE,verbose_name='数据源')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
-    weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
-    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+    weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重',null=True,blank=True)  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',verbose_name='注单延时',null=True,blank=True)  # Field name made lowercase.
     #sportid = models.IntegerField(db_column='SportID',)  # Field name made lowercase.
     sport = models.ForeignKey(to= 'TbSporttypes',to_field='sportid',db_column='SportID',db_constraint=False,verbose_name='体育类型')  # Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name = '推荐')  # Field name made lowercase.
@@ -2090,9 +2090,9 @@ class TbTournament(models.Model):
     oddsadjustmax = models.DecimalField(db_column='OddsAdjustMax', max_digits=2, decimal_places=2,verbose_name='赔率调整最大值')  # Field name made lowercase.
     baseticketeamout = models.DecimalField(db_column='BaseTicketeAmout', max_digits=18, decimal_places=2,verbose_name='投注差额基数',help_text='每投注X元赔率调整一次')  # Field name made lowercase.
     #adjusttemplateid = models.IntegerField(db_column='AdjustTemplateID')  # Field name made lowercase.
-    adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='调水模板')  # Field name made lowercase.
-    handicapcount = models.IntegerField(db_column='HandicapCount',verbose_name='走地盘口显示数量')  # Field name made lowercase.
-    minodds = models.DecimalField(db_column='MinOdds', max_digits=18, decimal_places=2,verbose_name='最小赔率',help_text='上下盘玩法非主盘口封盘最低赔率')  # Field name made lowercase.
+    adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='调水模板',null=True,blank=True)  # Field name made lowercase.
+    handicapcount = models.IntegerField(db_column='HandicapCount',verbose_name='走地盘口显示数量',null=True,blank=True)  # Field name made lowercase.
+    minodds = models.DecimalField(db_column='MinOdds', max_digits=18, decimal_places=2,null=True,blank=True,verbose_name='最小赔率',help_text='上下盘玩法非主盘口封盘最低赔率')  # Field name made lowercase.
     #groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
     group = models.ForeignKey(to='TbLeagueGroup',db_constraint=False,db_column='GroupID',verbose_name='联赛组')  # Field name made lowercase.
     
