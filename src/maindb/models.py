@@ -2111,7 +2111,7 @@ class TbBanner(models.Model):
                              verbose_name='标题')  # Field name made lowercase.
     picturename = CusPictureField(db_column='PictureName', verbose_name='app图片',
                                   max_length=255)  # Field name made lowercase
-    pcpicturename = CusPictureField(db_column='PcPictureName', max_length=255, blank=True, null=True,verbose_name ='pc图片')  # Field name made lowercase.
+    pcpicturename = CusPictureField(db_column='PcPictureName', max_length=255, null=True,verbose_name ='pc图片')  # Field name made lowercase.
     # picturename = models.CharField(db_column='PictureName',verbose_name=_('Picture Name'), max_length=255)  # Field name made lowercase.
     order = models.IntegerField(db_column='Order', verbose_name=_('Priority'))  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
