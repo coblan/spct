@@ -4,13 +4,14 @@ from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director, SelectSearch, model_to_name
 from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatch
-from django.db.models import Q, Sum, F, Case, When, FloatField
+from django.db.models import Q, Sum, F, Case, When, FloatField,Count
 import re
 from django.db import connections
 from helpers.director.middleware.request_cache import get_request_cache
 from .. import status_code
 from .matches import get_match_tab
 from helpers.func.collection.container import evalue_container
+
 
 class TicketMasterPage(TablePage):
     template = 'jb_admin/table.html'  # 'maindb/table_ajax_tab.html'
@@ -84,8 +85,11 @@ class TicketMasterPage(TablePage):
         model = TbTicketmaster
         exclude = ['accountid']
         fields_sort = ['ticketid', 'orderid','audit', 'accountid__nickname', 'parlayrule', 'status',
-                       'winbet', 'stakeamount', 'betamount', 'betoutcome', 'turnover', 'bonuspa', 'bonus', 'profit',
-                       'createtime', 'settletime', 'memo','voidreason','terminal']
+                       'winbet', 'stakeamount', 'betamount', 'betoutcome', 
+                       'ticketstake','matchid','match',
+                       'turnover', 'bonuspa', 'bonus', 'profit',
+                       'createtime', 'settletime', 'memo','voidreason','terminal',
+                       ]
         
         @classmethod
         def clean_search_args(cls, search_args):
@@ -101,8 +105,7 @@ class TicketMasterPage(TablePage):
                                   'bonus',
                                   'profit']:
                 head['width'] = 120
-            else:
-                head['width'] = 80
+
             if head['name'] == 'ticketid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'ticketstake'
@@ -119,12 +122,20 @@ class TicketMasterPage(TablePage):
             return head
 
         def getExtraHead(self):
-            return [{'name': 'profit', 'label': '亏盈'}, 
-                    {'name': 'accountid__nickname','label': '昵称',}]
+            return [
+                {'name': 'profit', 'label': '亏盈'}, 
+                {'name': 'accountid__nickname','label': '昵称',},
+                {'name':'ticketstake','label':'子注单','children':['matchid','match'],
+                 'class':'mystake','style':'th.mystake{background-color:#48A66C !important;color:white}'},
+                {'name':'matchid','label':'比赛ID','sublevel':True,'editor':'com-table-span'},
+                {'name':'match','label':'比赛','sublevel':True,'editor':'com-table-span','width':260},
+                
+                    ]
 
         def dict_row(self, inst):
             dc = {
                 'accountid__nickname': inst.accountid__nickname,
+                'stake_count':inst.stake_count,
             }
             # if inst.status == 2:
             #     dc.update( {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)} )
@@ -146,8 +157,62 @@ class TicketMasterPage(TablePage):
 
         def inn_filter(self, query):
             return query.order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus')) \
-                .annotate(accountid__nickname=F('accountid__nickname'))
-
+                .annotate(accountid__nickname=F('accountid__nickname'),stake_count=Count('tbticketstake'))
+        
+        def get_rows(self):
+            rows = super().get_rows()
+            rows_pklist = [x['pk'] for x in rows]
+            #rows[0].update({
+                #'matchid':'111',
+                #'match':'bbb'
+            #})
+            #rows[1].update({
+                #'matchid':'1221',
+                #'match':'baabb'
+            #})
+            #return rows
+            dc={}
+            for row in rows:
+                dc[row['pk']]=[]
+            for stake in TbTicketstake.objects.filter(ticket_master_id__in=rows_pklist):
+                dc[stake.ticket_master_id].append(
+                    {'matchid':stake.matchid.matchid,'match':str(stake.matchid)}
+                )
+            out_rows=[]
+            for row in rows:
+                drow=dict(row)
+                drow['first']=1
+                stake_ls = dc[row['pk']]
+                if stake_ls:
+                    for stake_dc in stake_ls:
+                        drow.update(stake_dc)
+                        out_rows.append(drow)
+                        drow=dict(row)
+                else:
+                    out_rows.append(drow)
+            return out_rows
+                    
+            
+        
+        def getTableLayout(self, rows):
+            return '''rt=(function(){
+            if(!scope.row.first){
+               if(scope.columnIndex<11 || scope.columnIndex>12){
+                    return [0,0]
+               }else{
+                    return [1,1]
+               }
+            }
+            
+            if(scope.columnIndex<11 || scope.columnIndex>12){
+                return [scope.row.stake_count,1]
+            }else{
+                return [1,1]
+            }
+            })()'''
+   
+            
+        
         def statistics(self, query):
             dc = query.aggregate(total_betamount=Sum('betamount'), total_betoutcome=Sum('betoutcome'),
                                  total_turnover=Sum('turnover'), total_bonus=Sum('bonus'),
@@ -244,6 +309,9 @@ class TicketMasterPage(TablePage):
             
             def getExtraHead(self):
                 return [
+                    {'name':'is_multi_stake','label':'单注/串关','editor':'com-filter-select','options':[
+                        {'value':1,'label':'单注'},{'value':2,'label':'串关'}
+                    ]},
                     {'name':'accountid__accounttype','label':'账号类型','editor':'com-filter-select',
                      'options':[{'value':value,'label':label} for value,label in status_code.ACCOUNT_TYPE]},
                     #{'name':'meta_need_audit','label':'正常/异常','editor':'com-filter-select',
@@ -260,9 +328,13 @@ class TicketMasterPage(TablePage):
             def clean_query(self, query): 
                 search_args = self.kw.get('search_args')
                 if search_args.get('winbet', None) != None :
-                    query= query.filter(status = 2)
+                    query = query.filter(status = 2)
                 if search_args.get('accountid__accounttype',None) !=None:
-                    query= query.filter(accountid__accounttype=search_args.get('accountid__accounttype'))
+                    query = query.filter(accountid__accounttype=search_args.get('accountid__accounttype'))
+                if search_args.get('is_multi_stake') ==1:
+                    query = query.filter(stake_count = 1)
+                if search_args.get('is_multi_stake') ==2:
+                    query = query.filter(stake_count__gte = 2)
                 #if search_args.get('meta_need_audit') == '1':
                     ## 不正常的
                     #query= query.filter(audit = 1)
