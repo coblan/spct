@@ -86,8 +86,8 @@ class PcMenu(BaseEngine):
                  {'label': _('AppResource'), 'url': page('app_resource'),
                   'visible': can_touch(TbAppresource, crt_user), },
                 {'label': _('Currency'), 'url': page('currency'), 'visible': can_touch(TbCurrency, crt_user)},
-                
-                 
+                {'label':'三方数据匹配','url':page('web_match_data')},
+            
              ]},
 
             {'label': _('MoneyFlow'), 'icon': fa('fa-dollar'), 'visible': True,

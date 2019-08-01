@@ -2583,8 +2583,7 @@ class TbLeagueGroup(models.Model):
     #adjusttemplateid = models.IntegerField(db_column='AdjustTemplateID')  # Field name made lowercase.
     adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='调水模板')  # Field name made lowercase.
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
-    
-    
+    reopenmarketsdelay = models.IntegerField(db_column='ReOpenMarketsDelay',verbose_name='进球后延迟开盘时间',help_text='单位秒')  # Field name made lowercase.
     
     class Meta:
         managed = False

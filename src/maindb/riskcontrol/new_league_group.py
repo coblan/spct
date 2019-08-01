@@ -23,7 +23,8 @@ class LeagueGroupPage(TablePage):
         def dict_head(self, head):
             width = {
                 'groupname':200,
-                'league_count':100
+                'league_count':100,
+                'reopenmarketsdelay':150,
             }
             if head['name'] in width:
                 head['width'] = width[head['name']]
@@ -109,6 +110,8 @@ class LeagureGroupForm(ModelFields):
                 ]
             })
         if head['name']=='handicapcount':
+            head['fv_rule'] = 'integer(+)'
+        if head['name'] == 'reopenmarketsdelay':
             head['fv_rule'] = 'integer(+)'
         return head
     
