@@ -127,8 +127,8 @@ class LeagureGroupForm(ModelFields):
                 self.add_error('enabled', '联赛组已经被使用，不能禁用')
     
     def after_save(self):
-        if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
-            notifyLeagueGroup(json.dumps({'type':1,'id':self.instance.id}))
+        #if 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
+        notifyLeagueGroup(json.dumps({'type':1,'id':self.instance.id}))
     
     
 field_map.update({
