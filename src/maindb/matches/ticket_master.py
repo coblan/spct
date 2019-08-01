@@ -13,6 +13,122 @@ from .matches import get_match_tab
 from helpers.func.collection.container import evalue_container
 
 
+class TicketstakeTable(ModelTable):
+    """ 子注单 """
+    model = TbTicketstake
+    exclude = ['marketid']
+    fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketname','specialbetname','outcomename','score', 'odds', 'confirmodds', 'realodds', 
+                   'status', 'createtime', 'updatetime','ticketbetstopdiff']
+
+    def inn_filter(self, query):
+        ticketid = self.kw.get('ticketid')
+        query = query.extra(select={
+            'tournament':'select TB_Tournament.tournamentnamezh'},
+                            tables=['TB_Tournament','TB_Match'],
+                            where=['TB_Tournament.tournamentid=TB_Match.tournamentid and TB_Match.sportid=TB_Tournament.sportid',
+                                   'TB_Match.matchid=TB_TicketStake.matchid']
+                            )
+        if ticketid:
+            return query.filter(ticket_master_id = ticketid)
+        else:
+            return query
+
+    def getExtraHead(self):
+        return [
+            {'name': 'matchname', 'label': '比赛', 'width': 200, },
+            {'name': 'tournament', 'label': '联赛', 'width': 160, },
+        ]
+
+    def dict_row(self, inst):
+
+        return {
+            '_matchid_form': 'match_form_ctx',#  matchid_form,
+            'matchid': inst.matchid.matchid,
+            'tournament': inst.tournament,
+            'matchname': '{team1zh} VS {team2zh}'.format(team1zh=inst.matchid.team1zh, team2zh=inst.matchid.team2zh),
+            'ticketbetstopdiff':inst.ticketbetstopdiff/1000 if inst.ticketbetstopdiff else ''
+        }
+
+    def dict_head(self, head):
+        dc = {
+            'tid': 80,
+            'match': 250,
+            'marketname':160,
+            'specialbetvalue': 80,
+            'odds': 80,
+            'confirmodds': 80,
+            'realodds': 80,
+            'confirmoddsid_ori': 80,
+            'status': 80,
+            'updatetime': 150,
+            'createtime': 150,
+            'ticketbetstopdiff':150,
+        }
+        if dc.get(head['name']):
+            head['width'] = dc.get(head['name'])
+
+        #if head['name'] == 'match':
+            #head['label'] = '比赛'
+        if head['name'] == 'matchid':
+            head['editor'] = 'com-table-switch-to-tab'
+            head['tab_name']='match_base_info'
+            head['ctx_name']='match_tabs'
+            #head['editor'] = 'com-table-pop-fields-from-row'
+            #head['ctx_field'] = '_matchid_form'
+        return head
+
+
+class TicketstakeEmbedTable(TicketstakeTable):
+    fields_sort = ['ticketstake_'+x for x in TicketstakeTable.fields_sort]
+    def inn_filter(self, query):
+        query = query.extra(select={
+            'tournament':'select TB_Tournament.tournamentnamezh'},
+                            tables=['TB_Tournament','TB_Match'],
+                            where=['TB_Tournament.tournamentid=TB_Match.tournamentid and TB_Match.sportid=TB_Tournament.sportid',
+                                   'TB_Match.matchid=TB_TicketStake.matchid']
+                            )
+        master_id_list = self.kw.get('master_id_list')
+        return query.filter(ticket_master_id__in = master_id_list)
+    
+    def dict_head(self, head):
+        head = super().dict_head(head)
+        
+        if head['name'] == 'matchid':
+            head['editor'] = 'com-table-click'
+            head['action']='scope.head["par_row"]={matchid:scope.row.ticketstake_matchid};scope.ps.switch_to_tab(scope.head)'
+            head['tab_name']='match_base_info'
+            head['ctx_name']='match_tabs'
+        
+        head.update({
+            'name':'ticketstake_'+head['name'],
+            'row_editor':head['editor']
+          })
+               
+        head.update({
+            'sublevel':True,
+            'editor':'com-field-multi-row',
+            'rows_field':'ticketstake',
+            'show_tooltip':False,
+        })
+        return head
+    
+    def get_rows(self):
+        rows = super().get_rows()
+        out_rows=[]
+        for row in rows:
+            dc ={}
+            for k,v in row.items():
+                if not k.startswith('_') and k not in ['pk']:
+                    dc['ticketstake_'+k] = v
+                elif k.startswith('_') and k.endswith('_label'):
+                    dc['_ticketstake_'+k[1:]] =v
+                else:
+                    dc[k] = v
+
+            out_rows.append(dc)
+        return out_rows
+
+
 class TicketMasterPage(TablePage):
     template = 'jb_admin/table.html'  # 'maindb/table_ajax_tab.html'
 
@@ -84,10 +200,10 @@ class TicketMasterPage(TablePage):
     class tableCls(ModelTable):
         model = TbTicketmaster
         exclude = ['accountid']
-        fields_sort = ['ticketid', 'orderid','audit', 'accountid__nickname', 'parlayrule', 'status',
-                       'winbet', 'stakeamount', 'betamount', 'betoutcome', 
-                       'ticketstake','matchid','match',
-                       'turnover', 'bonuspa', 'bonus', 'profit',
+        fields_sort = ['ticketid', 'orderid','audit', 'accountid__nickname', 'status',
+                       'winbet', 'stakeamount', 'betamount', 'betoutcome', 'profit',
+                       'ticketstake',]+ TicketstakeEmbedTable.fields_sort + \
+                       ['turnover', 'bonuspa', 'bonus', 
                        'createtime', 'settletime', 'memo','voidreason','terminal',
                        ]
         
@@ -122,15 +238,16 @@ class TicketMasterPage(TablePage):
             return head
 
         def getExtraHead(self):
+            stake_heads = TicketstakeEmbedTable().get_heads()
+ 
             return [
                 {'name': 'profit', 'label': '亏盈'}, 
                 {'name': 'accountid__nickname','label': '昵称',},
-                {'name':'ticketstake','label':'子注单','children':['matchid','match'],
-                 'class':'mystake','style':'th.mystake{background-color:#48A66C !important;color:white}'},
-                {'name':'matchid','label':'比赛ID','sublevel':True,'editor':'com-table-span'},
-                {'name':'match','label':'比赛','sublevel':True,'editor':'com-table-span','width':260},
+                {'name':'ticketstake','label':'子注单','children':TicketstakeEmbedTable.fields_sort,
+                 'class':'mystake','style':'th.mystake{background-color:#48A66C !important;color:white;text-align:center !important}'},
+    
                 
-                    ]
+                    ]+ stake_heads
 
         def dict_row(self, inst):
             dc = {
@@ -162,54 +279,63 @@ class TicketMasterPage(TablePage):
         def get_rows(self):
             rows = super().get_rows()
             rows_pklist = [x['pk'] for x in rows]
-            #rows[0].update({
-                #'matchid':'111',
-                #'match':'bbb'
-            #})
-            #rows[1].update({
-                #'matchid':'1221',
-                #'match':'baabb'
-            #})
-            #return rows
             dc={}
             for row in rows:
                 dc[row['pk']]=[]
-            for stake in TbTicketstake.objects.filter(ticket_master_id__in=rows_pklist):
-                dc[stake.ticket_master_id].append(
-                    {'matchid':stake.matchid.matchid,'match':str(stake.matchid)}
-                )
-            out_rows=[]
+            for stake in  TicketstakeEmbedTable(master_id_list = rows_pklist,perpage=1000).get_rows():
+                dc[stake.get('ticketstake_ticket_master')].append(stake)
+                
             for row in rows:
-                drow=dict(row)
-                drow['first']=1
-                stake_ls = dc[row['pk']]
-                if stake_ls:
-                    for stake_dc in stake_ls:
-                        drow.update(stake_dc)
-                        out_rows.append(drow)
-                        drow=dict(row)
-                else:
-                    out_rows.append(drow)
-            return out_rows
-                    
+                row.update({
+                    'ticketstake':dc[row['pk'] ]
+                    #'matchid':[x['matchid'] for x in dc[row['pk']]],
+                    #'matchname':[x['matchname'] for x in dc[row['pk']]],
+                    #'marketname':[x['marketname'] for x in dc[row['pk']]]
+                })
             
+            return rows
         
-        def getTableLayout(self, rows):
-            return '''rt=(function(){
-            if(!scope.row.first){
-               if(scope.columnIndex<11 || scope.columnIndex>12){
-                    return [0,0]
-               }else{
-                    return [1,1]
-               }
-            }
+        
+        #def get_rows(self):
+            #rows = super().get_rows()
+            #rows_pklist = [x['pk'] for x in rows]
+            #dc={}
+            #for row in rows:
+                #dc[row['pk']]=[]
+            #for stake in TbTicketstake.objects.filter(ticket_master_id__in=rows_pklist):
+                #dc[stake.ticket_master_id].append(
+                    #{'matchid':stake.matchid.matchid,'match':str(stake.matchid)}
+                #)
+            #out_rows=[]
+            #for row in rows:
+                #drow=dict(row)
+                #drow['first']=1
+                #stake_ls = dc[row['pk']]
+                #if stake_ls:
+                    #for stake_dc in stake_ls:
+                        #drow.update(stake_dc)
+                        #out_rows.append(drow)
+                        #drow=dict(row)
+                #else:
+                    #out_rows.append(drow)
+            #return out_rows
+        
+        #def getTableLayout(self, rows):
+            #return '''rt=(function(){
+            #if(!scope.row.first){
+               #if(scope.columnIndex<11 || scope.columnIndex>12){
+                    #return [0,0]
+               #}else{
+                    #return [1,1]
+               #}
+            #}
             
-            if(scope.columnIndex<11 || scope.columnIndex>12){
-                return [scope.row.stake_count,1]
-            }else{
-                return [1,1]
-            }
-            })()'''
+            #if(scope.columnIndex<11 || scope.columnIndex>12){
+                #return [scope.row.stake_count,1]
+            #}else{
+                #return [1,1]
+            #}
+            #})()'''
    
             
         
@@ -369,72 +495,6 @@ class TicketMasterForm(ModelFields):
             self.save_log({'model': model_to_name(TbTicketmaster), 'voidreason': '取消订单', 'pk': self.instance.pk,})
         else:
             super().save_form()
-
-
-
-class TicketstakeTable(ModelTable):
-    """ 子注单 """
-    model = TbTicketstake
-    exclude = ['marketid']
-    fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketname','specialbetname','outcomename','score', 'odds', 'confirmodds', 'realodds', 
-                   'status', 'createtime', 'updatetime','ticketbetstopdiff']
-
-    def inn_filter(self, query):
-        ticketid = self.kw.get('ticketid')
-        query = query.extra(select={
-            'tournament':'select TB_Tournament.tournamentnamezh'},
-                            tables=['TB_Tournament','TB_Match'],
-                            where=['TB_Tournament.tournamentid=TB_Match.tournamentid and TB_Match.sportid=TB_Tournament.sportid',
-                                   'TB_Match.matchid=TB_TicketStake.matchid']
-                            )
-        if ticketid:
-            return query.filter(ticket_master_id = ticketid)
-        else:
-            return query
-
-    def getExtraHead(self):
-        return [
-            {'name': 'matchname', 'label': '比赛', 'width': 200, },
-            {'name': 'tournament', 'label': '联赛', 'width': 160, },
-        ]
-
-    def dict_row(self, inst):
-
-        return {
-            '_matchid_form': 'match_form_ctx',#  matchid_form,
-            'matchid': inst.matchid.matchid,
-            'tournament': inst.tournament,
-            'matchname': '{team1zh} VS {team2zh}'.format(team1zh=inst.matchid.team1zh, team2zh=inst.matchid.team2zh),
-            'ticketbetstopdiff':inst.ticketbetstopdiff/1000 if inst.ticketbetstopdiff else ''
-        }
-
-    def dict_head(self, head):
-        dc = {
-            'tid': 80,
-            'match': 250,
-            'marketname':160,
-            'specialbetvalue': 80,
-            'odds': 80,
-            'confirmodds': 80,
-            'realodds': 80,
-            'confirmoddsid_ori': 80,
-            'status': 80,
-            'updatetime': 150,
-            'createtime': 150,
-            'ticketbetstopdiff':150,
-        }
-        if dc.get(head['name']):
-            head['width'] = dc.get(head['name'])
-
-        #if head['name'] == 'match':
-            #head['label'] = '比赛'
-        if head['name'] == 'matchid':
-            head['editor'] = 'com-table-switch-to-tab'
-            head['tab_name']='match_base_info'
-            head['ctx_name']='match_tabs'
-            #head['editor'] = 'com-table-pop-fields-from-row'
-            #head['ctx_field'] = '_matchid_form'
-        return head
 
 
 class TicketparlayTable(ModelTable):
