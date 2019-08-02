@@ -201,7 +201,7 @@ class TicketMasterPage(TablePage):
         model = TbTicketmaster
         exclude = ['accountid']
         fields_sort = ['ticketid', 'orderid','audit', 'accountid__nickname', 'status',
-                       'winbet', 'stakeamount', 'betamount', 'betoutcome', 'profit',
+                       'winbet','parlayrule', 'stakeamount', 'betamount', 'betoutcome', 'profit',
                        'ticketstake',]+ TicketstakeEmbedTable.fields_sort + \
                        ['turnover', 'bonuspa', 'bonus', 
                        'createtime', 'settletime', 'memo','voidreason','terminal',

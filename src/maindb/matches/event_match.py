@@ -17,7 +17,14 @@ class OtherWebMatchPage(TablePage):
             self.filter_args={}
             if self.search_args.get('EventDate'):
                 self.filter_args['EventDate'] = {'$regex' : ".*%s.*"%self.search_args.get('EventDate')}
-            
+            if self.search_args.get('LeagueZh'):
+                self.filter_args['LeagueZh'] = {'$regex' : ".*%s.*"%self.search_args.get('LeagueZh')}
+            if self.search_args.get('Team'):
+                self.filter_args['$or'] = [{'Team1En':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
+                                           {'Team2En':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
+                                           {'Team1Zh':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
+                                           {'Team2Zh':{'$regex' : ".*%s.*"%self.search_args.get('Team')}}]
+  
         
         def get_heads(self):
             return [
@@ -57,7 +64,9 @@ class OtherWebMatchPage(TablePage):
         
         def getRowFilters(self):
             return [
-                {'name':'EventDate','label':'日期','editor':'com-filter-text'}
+                {'name':'Team','label':'球队名字','editor':'com-filter-text'},
+                {'name':'EventDate','label':'日期','editor':'com-filter-text'},
+                {'name':'LeagueZh','label':'联赛','editor':'com-filter-text'},
             ]
         
         def getRowPages(self):
@@ -66,6 +75,7 @@ class OtherWebMatchPage(TablePage):
                 'total':mydb['Event'].find(self.filter_args).count(),
                 'perpage':self.perpage,
             }
+        
 
 class WebMatchForm(Fields):
     def get_heads(self):

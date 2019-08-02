@@ -17,6 +17,7 @@ from .matches import admin, matches, ticket_master,matches_statistics
 from .matches import basketball_matches
 from .matches import basketball_matches_statistics
 from .matches import ajusttemplate
+from .matches import event_match
 
 from .marketing import admin
 from .marketing import feedback
@@ -37,7 +38,7 @@ from .basic_data import paychannel
 #from .basic_data import basketball_league
 from .basic_data import sporttype
 from .basic_data import teams_basketball
-from .basic_data import event_match
+
 
 from .riskcontrol import admin
 #from .riskcontrol import max_payout
