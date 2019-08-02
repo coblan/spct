@@ -294,51 +294,7 @@ class TicketMasterPage(TablePage):
                 })
             
             return rows
-        
-        
-        #def get_rows(self):
-            #rows = super().get_rows()
-            #rows_pklist = [x['pk'] for x in rows]
-            #dc={}
-            #for row in rows:
-                #dc[row['pk']]=[]
-            #for stake in TbTicketstake.objects.filter(ticket_master_id__in=rows_pklist):
-                #dc[stake.ticket_master_id].append(
-                    #{'matchid':stake.matchid.matchid,'match':str(stake.matchid)}
-                #)
-            #out_rows=[]
-            #for row in rows:
-                #drow=dict(row)
-                #drow['first']=1
-                #stake_ls = dc[row['pk']]
-                #if stake_ls:
-                    #for stake_dc in stake_ls:
-                        #drow.update(stake_dc)
-                        #out_rows.append(drow)
-                        #drow=dict(row)
-                #else:
-                    #out_rows.append(drow)
-            #return out_rows
-        
-        #def getTableLayout(self, rows):
-            #return '''rt=(function(){
-            #if(!scope.row.first){
-               #if(scope.columnIndex<11 || scope.columnIndex>12){
-                    #return [0,0]
-               #}else{
-                    #return [1,1]
-               #}
-            #}
-            
-            #if(scope.columnIndex<11 || scope.columnIndex>12){
-                #return [scope.row.stake_count,1]
-            #}else{
-                #return [1,1]
-            #}
-            #})()'''
-   
-            
-        
+         
         def statistics(self, query):
             dc = query.aggregate(total_betamount=Sum('betamount'), total_betoutcome=Sum('betoutcome'),
                                  total_turnover=Sum('turnover'), total_bonus=Sum('bonus'),
@@ -368,6 +324,11 @@ class TicketMasterPage(TablePage):
 
         def get_operation(self):
             return [
+                {'editor':'com-op-table-refresh','label':'自动刷新频率','options':[
+                    {'value':2*60*1000,'label':'2分钟'},
+                    {'value':5*60*1000,'label':'5分钟'},
+                    {'value':10*60*1000,'label':'10分钟'},
+                    ],'action':'scope.ps.search()'},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废',
                  'pre_set': 'rt={status:-1,voidreason:""}',
                  #'field': 'status', 'value': 30,
