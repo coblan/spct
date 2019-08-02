@@ -154,6 +154,7 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            
            # 代理用户
            ('agent', '', '', 'single'), 
+           ('agent.parent.edit','','','single'),
            #('agent.edit', '', '', 'single'),  # 代理用户的编辑，取决于 TbAccount的权限
            
            #('agent.commission', '', '', 'single'), 

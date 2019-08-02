@@ -253,6 +253,7 @@ def get_permit():
         }, 
         {'label': '代理平台', 'children': [
             {'label': '代理用户',  'value': 'agent', 'depend': ['TbAccount'] }, 
+            {"label":'修改上级','value':'agent.parent.edit','depend': ['agent']},
             {'label': '代理佣金', 'children': [
                 {'label': '查看', 'value': 'TbAgentcommission',}, 
                 {'label': '编辑', 'value': 'TbAgentcommission.edit',},

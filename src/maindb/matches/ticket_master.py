@@ -200,12 +200,9 @@ class TicketMasterPage(TablePage):
     class tableCls(ModelTable):
         model = TbTicketmaster
         exclude = ['accountid']
-        fields_sort = ['ticketid', 'orderid','audit', 'accountid__nickname', 'status',
-                       'winbet','parlayrule', 'stakeamount', 'betamount', 'betoutcome', 'profit',
-                       'ticketstake',]+ TicketstakeEmbedTable.fields_sort + \
-                       ['turnover', 'bonuspa', 'bonus', 
-                       'createtime', 'settletime', 'memo','voidreason','terminal',
-                       ]
+        fields_sort = ['ticketid','createtime', 'accountid__nickname', 'ticketstake',] +TicketstakeEmbedTable.fields_sort + \
+        ['orderid','audit',  'status','winbet','parlayrule', 'stakeamount', 'betamount', 'betoutcome', 'profit',
+         'turnover', 'bonuspa', 'bonus', 'settletime', 'memo','voidreason','terminal',]
         
         @classmethod
         def clean_search_args(cls, search_args):
@@ -225,11 +222,10 @@ class TicketMasterPage(TablePage):
                                   'profit']:
                 head['width'] = 120
 
-            if head['name'] == 'ticketid':
-                head['editor'] = 'com-table-switch-to-tab'
-                head['tab_name'] = 'ticketstake'
-                head['ctx_name'] = 'ticketmaster'
-                #head['named_tabs'] = 'ticketmaster'
+            #if head['name'] == 'ticketid':
+                #head['editor'] = 'com-table-switch-to-tab'
+                #head['tab_name'] = 'ticketstake'
+                #head['ctx_name'] = 'ticketmaster'
             if head['name'] =='audit':
                 head['css']='.audit_danger{color:red}'
                 head['inn_editor'] = head['editor']

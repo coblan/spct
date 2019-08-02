@@ -304,7 +304,8 @@ class AgentUser(TablePage):
                 
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn' ,
                  'after_save': 'rt=scope.ps.search()','row_match':'many_row',
-                 'label': '修改上级','fields_ctx': par_form.get_head_context(),}, 
+                 'label': '修改上级','fields_ctx': par_form.get_head_context(),
+                 'visible':has_permit(self.crt_user, 'agent.parent.edit')}, 
             ]
 
 @director_element('YongJingForm')
