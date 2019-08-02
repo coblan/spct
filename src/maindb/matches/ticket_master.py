@@ -11,7 +11,7 @@ from helpers.director.middleware.request_cache import get_request_cache
 from .. import status_code
 from .matches import get_match_tab
 from helpers.func.collection.container import evalue_container
-
+from django.utils import timezone
 
 class TicketstakeTable(ModelTable):
     """ 子注单 """
@@ -212,6 +212,9 @@ class TicketMasterPage(TablePage):
             if search_args.get('_first_access',1):
                 search_args['accountid__accounttype'] = search_args.get('accountid__accounttype',0)
                 search_args['_first_access'] = 0 
+                now = timezone.now()
+                start = ( now-timezone.timedelta(days=2) ) .strftime('%Y-%m-%d %H:%M:%S')
+                search_args['_start_createtime'] = start
             return search_args
         
         def dict_head(self, head):
@@ -325,10 +328,10 @@ class TicketMasterPage(TablePage):
         def get_operation(self):
             return [
                 {'editor':'com-op-table-refresh','label':'自动刷新频率','options':[
+                    {'value':1*60*1000,'label':'1分钟'},
                     {'value':2*60*1000,'label':'2分钟'},
-                    {'value':5*60*1000,'label':'5分钟'},
-                    {'value':10*60*1000,'label':'10分钟'},
-                    ],'action':'scope.ps.search()'},
+                    {'value':3*60*1000,'label':'3分钟'},
+                ],'action':'scope.ps.search()'},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废',
                  'pre_set': 'rt={status:-1,voidreason:""}',
                  #'field': 'status', 'value': 30,
