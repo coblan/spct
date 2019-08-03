@@ -332,9 +332,9 @@ class TicketMasterPage(TablePage):
                  'pre_set': 'rt={status:-1,voidreason:""}',
                  #'field': 'status', 'value': 30,
                  'row_match': 'many_row', 
-                 'match_express':'rt= ex.isin( scope.row.status,[0,1])',
+                 'match_express':'rt= ex.isin( scope.row.status,[0,1,11])',
                  #'match_field': 'status', 'match_values': [0,1], 
-                'match_msg': '只能选择【确认中】或【未结算】的订单',
+                'match_msg': '只能选择【确认中】,【未结算】,【危险球】的订单',
                  'confirm_msg': '确认作废这些注单吗?', 'fields_ctx': {
                     'heads': [{'name': 'voidreason', 'label': '备注', 'editor': 'blocktext', }],
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],

@@ -516,10 +516,11 @@ class TbLivescoutTable(ModelTable):
              'director_name':'match.add_livescout',
              'editor':'com-op-switch',
              'label':'危险球',
-            'pre_set':'rt={matchid:scope.ps.crt_row.matchid,is_danger:scope.head.value}',
+            'pre_set':'rt={matchid:scope.self.vc.par_row.matchid,is_danger:scope.head.value}',
             'active_color':'red',
             'op_confirm_msg':'scope.value?"是否开启危险球?":"是否关闭危险球?"',
             'after_save':'rt=scope.ps.search()',
+            # com-op-switch 里面调用的init_express
             'init_express':'rt=ex.director_call("match.livescout_status",{matchid:scope.ps.vc.par_row.matchid}).then((resp)=>scope.vc.myvalue=resp)'
             },
             {
