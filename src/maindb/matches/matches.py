@@ -38,7 +38,7 @@ def get_match_tab(crt_user):
         {'name':'match_base_info',
          'label':'基本信息',
          'com':'com-tab-fields-v1',
-         'init_express':'scope.vc.row = scope.vc.par_row ',
+         'init_express':'cfg.show_load(); ex.director_call("%s",{matchid:scope.vc.par_row.matchid}).then(row=>{cfg.hide_load();ex.vueAssign(scope.vc.row,row)})'%match_form.get_director_name(),
          'fields_ctx':match_form.get_head_context()          
          },
         {

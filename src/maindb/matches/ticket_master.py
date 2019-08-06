@@ -98,7 +98,7 @@ class TicketstakeEmbedTable(TicketstakeTable):
         
         if head['name'] == 'matchid':
             head['editor'] = 'com-table-click'
-            head['action']='scope.head["par_row"]={matchid:scope.row.ticketstake_matchid,sportid:scope.row.ticketstake_sportid};scope.ps.switch_to_tab(scope.head)'
+            head['action']='debugger;scope.head["par_row"]={matchid:scope.row.ticketstake_matchid,sportid:scope.row.ticketstake_sportid};scope.ps.switch_to_tab(scope.head)'
             head['tab_name']='match_base_info'
             head['ctx_name']='match_tabs'
         
