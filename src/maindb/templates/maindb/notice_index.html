@@ -33,7 +33,7 @@
         font-size: 14px;
     }
     body{
-        background-color: #f4f4f4;
+        /*background-color: #f4f4f4;*/
         /*font-size: 1.5em;*/
     }
     /*.section-title{*/
@@ -52,7 +52,7 @@
     .section-content li{
         list-style-type:none;
         padding-top: 0.9em;
-        padding-bottom: 0.7em;
+        /*padding-bottom: 0.7em;*/
     }
     .itm-title{
         color: #333;
@@ -63,7 +63,8 @@
         /*align-items:center;*/
     }
     .item-content{
-        border-bottom: 1px solid #f8f8f8;
+        border-bottom: 1px solid #cfcfcf;
+        padding-bottom: .8rem
     }
     /*.section-content>li:last-child{*/
         /*border-bottom: none;*/
@@ -91,10 +92,15 @@
     }
 
 .one-row{
-    display: flex;
-    width: 100vw;
-    overflow-x: hidden;
+    padding: 1vw 5vw;
 }
+    .title{
+        font-size: 1.2rem;
+    }
+    .content{
+        color: grey;
+        font-size: 1rem;
+    }
 
 </style>
 
@@ -103,17 +109,19 @@
     <ul class="section-content">
         <li v-for="itm in notice_list" class="itm-title"  @click="goto(itm.url)">
             <div class="one-row">
-                <div style="padding: 0.2rem 1rem">
-                    <img style="width: 2.5rem" src="/static/images/ic.png" alt="">
-                </div>
+                <!--<div style="padding: 0.2rem 1rem">-->
+                    <!--<img style="width: 2.5rem" src="/static/images/ic.png" alt="">-->
+                <!--</div>-->
 
-                <div class="item-content" style="padding-left:1rem;padding-right: 2rem;flex-shrink: 0;flex-grow: 100;position: relative">
-                    <div style="position: absolute;left: 0;top:0;bottom: 0;right: 0">
-                        <div class="ellipsis" style="font-size: 1rem;padding-right: 1rem;">
+                <div class="item-content">
+                    <div >
+                        <div class="ellipsis title"  style="">
                             <span v-text="itm.title"></span>
                         </div>
-                        <div style="color: #bdbdbd;font-size: 0.75rem;position: relative;top:-0.1em;margin-top: 0.4rem">
+                        <div style="color: #bdbdbd;font-size: 0.8rem;font-weight: 400;position: relative;top:-0.1em;margin: 0.5rem 0">
                             <span v-text="itm.update_date"></span>
+                        </div>
+                        <div class="content" v-html="itm.content">
                         </div>
                     </div>
                 </div>

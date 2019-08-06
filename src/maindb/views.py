@@ -11,6 +11,8 @@ import json
 import time
 from helpers.director.model_func.dictfy import sim_dict
 from helpers.director.engine import BaseEngine
+from helpers.func.html import truncatehtml
+from django.conf import settings
 
 def test(request):
     gen_help()
@@ -36,13 +38,20 @@ class Notice(View):
                 query = TbNotice.objects.filter(status=1,displaytype=1).order_by('-createtime')
             for itm in query:
                 ls.append({'title':itm.title,
+                           'content':truncatehtml( itm.content,50),
                            'url':  '%s.html?t=%s' % (itm.pk , int(time.time()) ), #self.get_html_name(itm.title),
                            'update_date':itm.createtime.strftime('%Y-%m-%d')})      
             return render(request, 'maindb/notice_index.html', context= {'notice_list':ls})
         else:
             real_name = name[:-5]
             page = TbNotice.objects.get(pk = real_name)
-            return render(request, 'maindb/notice_content.html', context= {'content':page.content,'title':page.title})
+            return render(request, 'maindb/notice_content.html', context= {'content':page.content,
+                                                                           'title':page.title,
+                                                                           'logo':settings.NOTICE.get('logo'),
+                                                                           'logo_text':settings.NOTICE.get('logo_text'),
+                                                                           'water_mark':settings.NOTICE.get('water_mark'),
+                                                                           'update_date':page.createtime.strftime('%Y-%m-%d')
+                                                                           })
 
 
     def get_html_name(self, title):

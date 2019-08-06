@@ -111,12 +111,12 @@ PACKAGE_NAME = 'com.jingbo.DQGuess'
 BET_DATA_SOURCE=2
 
 INSPECT_DICT_STATIC = 'D:\work\sportscenter\src\index.py'
+
 #from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
 #SET(globals()) 
 
-
-
 #MIDDLEWARE_CLASSES += ['django_cprofile_middleware.middleware.ProfilerMiddleware']
+
 
 import os
 LOG_PATH= os.path.join( os.path.dirname(BASE_DIR),'log')
@@ -212,4 +212,10 @@ WEBSOCKET={
     'url': "wss://mq.mv03.com/websocket",
     'user': "stageuser",
     'pswd': "YXNkZmFmc2RmbAo"
+}
+
+NOTICE = {
+    'logo':'/media/public/manual/feiqiu.png',
+    'logo_text':'飞球体育运营',
+    'water_mark':'/media/public/manual/shuiyin.png',
 }

@@ -26,6 +26,8 @@ from maindb.rabbitmq_instance import notifyManulOutcome
 from . manul_outcome import outcome_header
 from django.db.models import Count,Q,QuerySet
 from maindb.rabbitmq_instance import notifyMatchRecommond,notifyAdjustOddsBase
+from django.utils import timezone
+
 import logging
 op_log = logging.getLogger('operation_log')
 
@@ -35,19 +37,9 @@ def get_match_tab(crt_user):
     match_tabs=[
         {'name':'match_base_info',
          'label':'基本信息',
-         'com':'com-tab-fields',
-         'get_data': {
-             'fun': 'get_row',
-             'kws': {
-                 'director_name': match_form.get_director_name(),
-                 'relat_field': 'matchid',
-             }
-             },
-         'after_save': {
-             'fun': 'update_or_insert'
-             },
-         'heads': match_form.get_heads(),
-         'ops': match_form.get_operations()             
+         'com':'com-tab-fields-v1',
+         'init_express':'scope.vc.row = scope.vc.par_row ',
+         'fields_ctx':match_form.get_head_context()          
          },
         {
             'name':'peroidscore',
@@ -137,7 +129,7 @@ class MatchsPage(TablePage):
                 '_sportid_label':'SELECT TB_SportTypes.SportNameZH',
                 'num_stake':'SELECT COUNT( 1) FROM TB_TicketMaster, TB_TicketStake  WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND TB_TicketMaster.Status =1'
                 },
-                where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID'],
+                where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1'],
                 tables =['TB_Tournament','TB_SportTypes']
                 )
             #.values('sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','ishidden',
@@ -242,16 +234,18 @@ class MatchsPage(TablePage):
 
             #spoutcome_form =  SpOutcome(crt_user= self.crt_user)
             ops = [
-                #'match_express': 'scope.row.specialcategoryid <= 0 ',
-                 #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
-                 #'pre_set': 'rt={isrecommend:1}', 'row_match': 'many_row', 
-                 #'match_msg': '只能推荐常规比赛。',
+            
+                #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
+                 #'pre_set': 'rt={isrecommend:true}', 'row_match': 'many_row', 
+                 #'after_save':' ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  #'visible': 'isrecommend' in self.permit.changeable_fields(),},
-                 
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
-                 'pre_set': 'rt={isrecommend:true}', 'row_match': 'many_row', 
-                 'after_save':' ex.director_call("notify_match_recommend",{rows:scope.rows})',
-                 'visible': 'isrecommend' in self.permit.changeable_fields(),},
+                 {'fun':'director_call','editor':'com-op-btn','label':'推荐','confirm_msg': '确认推荐吗？',
+                  'pre_set': 'rt={isrecommend:true}', 
+                  'director_name':'batch_recommand',
+                  'row_match': 'many_row',
+                  'after_save':' ex.director_call("notify_match_recommend",{rows:scope.rows})',
+                  'visible': 'isrecommend' in self.permit.changeable_fields()
+                  },
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
                  'pre_set': 'rt={isrecommend:false}', 'row_match': 'many_row',
@@ -425,6 +419,11 @@ class MatchForm(ModelFields):
     def clean_save(self):
         if 'matchdate' in self.changed_data:
             self.instance.prematchdate = self.instance.matchdate - datetime.timedelta(minutes=15)
+        #if 'isrecommend' in self.changed_data and self.cleaned_data.get('isrecommend'):
+            #now = timezone.now()
+            #count = TbMatch.objects.filter(sportid=self.instance.sportid,isrecommend=True,matchdate__gte=now).count()
+            #if count >= 5:
+                #raise UserWarning('每种体育类型最多5场推荐,但是经过这次操作后,%s已经超过了此限制.'% TbSporttypes.objects.get(sportid=self.instance.sportid) )
 
 
     def save_form(self):
@@ -488,22 +487,6 @@ class MatchForm(ModelFields):
                     "Team2Zh": self.instance.team2zh,
                 })
                 redisInst0.set(key,json.dumps(dc,ensure_ascii=False))
-
-#class PeriodTypeForm(Fields):
-    #def get_heads(self): 
-        #return [
-            #{'name': 'PeriodType','label': 'PeriodType','editor': 'sim_select','options': [
-                #{'value': 0, 'label': '全场',}, 
-                ##{'value': 1, 'label': '上半场',}, 
-                #{'value': 2, 'label': '上半场+全场',}
-                #],}
-        #]
-    #def get_row(self): 
-        #return {
-            #'PeriodType': 2,
-            #'_director_name': self.get_director_name(),
-        #}
-
 
 class TbLivescoutTable(ModelTable):
     """危险球表格"""
@@ -1376,6 +1359,26 @@ def out_com_save(rows,matchid):
         updateMatchMongo(dc)
 
     notifyManulOutcome(json.dumps(send_dc))
+
+@director_view('batch_recommand')
+def batch_recommand(rows,new_row):
+    sportid_dc={}
+    matchlist = []
+    for row in rows:
+        sportid = row['sportid']
+        if sportid not in sportid_dc:
+            sportid_dc[sportid] = []
+        sportid_dc[sportid] .append(row['matchid'])
+        matchlist.append(row['matchid'])
+    now = timezone.now()
+    for k,v in sportid_dc.items():
+        count = TbMatch.objects.filter(sportid=k,isrecommend=True,matchdate__gte=now).count()
+        if count + len(v) > 5:
+            raise UserWarning('每种体育类型最多5场推荐,但是经过这次操作后,%s已经超过了此限制.'% TbSporttypes.objects.get(sportid=k) )
+    
+    TbMatch.objects.filter(matchid__in=matchlist).update(isrecommend = True)
+    
+        
 
 @director_view('notify_match_recommend')
 def notify_match_recommend(rows):

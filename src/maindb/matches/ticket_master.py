@@ -12,6 +12,8 @@ from .. import status_code
 from .matches import get_match_tab
 from helpers.func.collection.container import evalue_container
 from django.utils import timezone
+from helpers.director.model_func.dictfy import sim_dict
+from django.db.models import Prefetch
 
 class TicketstakeTable(ModelTable):
     """ 子注单 """
@@ -46,7 +48,8 @@ class TicketstakeTable(ModelTable):
             'matchid': inst.matchid.matchid,
             'tournament': inst.tournament,
             'matchname': '{team1zh} VS {team2zh}'.format(team1zh=inst.matchid.team1zh, team2zh=inst.matchid.team2zh),
-            'ticketbetstopdiff':inst.ticketbetstopdiff/1000 if inst.ticketbetstopdiff else ''
+            'ticketbetstopdiff':inst.ticketbetstopdiff/1000 if inst.ticketbetstopdiff else '',
+            'ticket_master':inst.ticket_master_id,
         }
 
     def dict_head(self, head):
@@ -88,7 +91,7 @@ class TicketstakeEmbedTable(TicketstakeTable):
                                    'TB_Match.matchid=TB_TicketStake.matchid']
                             )
         master_id_list = self.kw.get('master_id_list')
-        return query.filter(ticket_master_id__in = master_id_list)
+        return query.filter(ticket_master_id__in = master_id_list).select_related('matchid')
     
     def dict_head(self, head):
         head = super().dict_head(head)
@@ -238,14 +241,11 @@ class TicketMasterPage(TablePage):
 
         def getExtraHead(self):
             stake_heads = TicketstakeEmbedTable().get_heads()
- 
             return [
                 {'name': 'profit', 'label': '亏盈'}, 
                 {'name': 'accountid__nickname','label': '昵称',},
                 {'name':'ticketstake','label':'子注单','children':TicketstakeEmbedTable.fields_sort,
                  'class':'mystake','style':'th.mystake{background-color:#48A66C !important;color:white;text-align:center !important}'},
-    
-                
                     ]+ stake_heads
 
         def dict_row(self, inst):
@@ -354,7 +354,46 @@ class TicketMasterPage(TablePage):
                  })()'''}
                  #'action':'ex.director_call("save_rows",scope.ps.selected_rows).then((rows)=>{ex.each(rows,(row)=>{scope.ps.update_or_insert(row)})})'}
             ]
+        
+        def getExcelRows(self):
+            query=self.get_query()
+            query = query.prefetch_related( 
+                Prefetch('tbticketstake_set',queryset=TbTicketstake.objects.select_related('matchid','marketid').extra(select={
+            'tournament':'select TB_Tournament.tournamentnamezh'},
+                            tables=['TB_Tournament','TB_Match'],
+                            where=['TB_Tournament.tournamentid=TB_Match.tournamentid and TB_Match.sportid=TB_Tournament.sportid',
+                                   'TB_Match.matchid=TB_TicketStake.matchid']
+                            ) ) 
+                ).all()  #'tbticketstake_set',
+            query = query[:1000] 
+            out=[]
+            permit_fields =  self.permited_fields()
+            for inst in query:
+                cus_dict = self.dict_row( inst)
+                dc = sim_dict(inst, include=permit_fields,filt_attr=cus_dict)
+                dc.update(cus_dict)
+                first = True
+                for stake in inst.tbticketstake_set.all():
+                    if first:
+                        mydc = dict(dc)
+                        first =False
+                    else:
+                        mydc ={}
+                    dd = TicketstakeEmbedTable.dict_row(None,stake)
+                    stake_dc = sim_dict(stake,filt_attr=dd)
+                    stake_norm_dc = {}
+                    for k,v in stake_dc.items():
+                        if not k.startswith('_') and k not in ['pk']:
+                            stake_norm_dc['ticketstake_'+k] = v
+                        elif k.startswith('_') and k.endswith('_label'):
+                            stake_norm_dc['_ticketstake_'+k[1:]] =v
+                        #else:
+                            #stake_norm_dc[k] = v
 
+                    mydc.update(stake_norm_dc)
+                    out.append(mydc)
+            return out
+        
         class search(SelectSearch):
             names = ['accountid__nickname','ticketid']
             exact_names = ['orderid', 'tbticketstake__matchid']
@@ -521,21 +560,6 @@ class MatchForm(ModelFields):
             'winner': winner
         }
 
-
-#class BasketballMatchForm(MatchForm):
-    #field_sort = ['matchdate', 'team1zh', 'team2zh', 'period1score','matchscore', 'winner', 'statuscode', 'roundinfo'
-                    #'livebet', 'generatedat','tournamentzh','q1score','q2score','q3score','q4score','overtimescore'] 
-    #readonly=field_sort
-    #def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
-        #if kw.get('matchid'):
-            #instance = TbMatchesBasketball.objects.get(matchid = kw.get('matchid'))
-            #super(MatchForm, self).__init__(dc, pk, crt_user, nolimit, instance = instance,**kw)
-        #else:
-            #super(MatchForm, self).__init__(dc, pk, crt_user, nolimit, *args, **kw)    
-            
-    #class Meta:
-        #model = TbMatchesBasketball
-        #exclude = [] 
 
 director.update({
     'games.ticketmaster': TicketMasterPage.tableCls,
