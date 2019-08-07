@@ -79,3 +79,9 @@ ELK={
     'user':'elastic',
     'pwsd':'Nr2IFuu78CYDKR4qNask'
 }
+
+NOTICE = {
+    'logo':'/media/public/manual/feiqiu.png',
+    'logo_text':'飞球体育运营',
+    'water_mark':'/media/public/manual/shuiyin.png',
+}

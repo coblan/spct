@@ -524,6 +524,12 @@ class TbLivescoutTable(ModelTable):
         }
         if width_dc.get(head['name']):
             head['width']=width_dc.get(head['name'])
+        if head['name'] == 'eventdesc':
+            head['inn_editor'] = head['editor']
+            head['editor'] ='com-table-rich-span'
+            head['class']='middle-col btn-like-col'
+            head['cell_class'] = 'var dc={"危险球解除":"success","有危险球":"warning",2:"primary"};rt=dc[scope.row.eventdesc]'
+                
         return head
     
     def dict_row(self, inst):
@@ -542,7 +548,7 @@ class TbLivescoutTable(ModelTable):
                     #where=['TB_BetStopReason.id =TB_LiveScout.BrExtraInfo'],
                     #tables =['TB_BetStopReason'])
         if self.kw.get('matchid'):
-            return query.filter(matchid=self.kw.get('matchid'),eventtypeid__in=[1010,1011]).order_by('-createtime')
+            return query.filter(matchid=self.kw.get('matchid'),eventtypeid__in=[1010,1011,0]).order_by('-createtime')
         else:
             return query  
 
