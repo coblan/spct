@@ -206,20 +206,20 @@ class MatchsPage(TablePage):
                 return head
 
         class search(SelectSearch):
-            names = ['team1zh','eventid']
+            names = ['teamname','eventid']
             exact_names = ['matchid','eventid']
-            field_sort=['matchid','team1zh','eventid']
+            field_sort=['matchid','teamname','eventid']
             def get_option(self, name):
-                if name == 'team1zh':
-                    return {'value': 'team1zh', 'label': '球队名称', }
+                if name == 'teamname':
+                    return {'value': 'teamname', 'label': '球队名称', }
                 elif name =='eventid':
                     return {'value':'eventid','label':'eventid'}
                 else:
                     return super().get_option(name)
 
             def get_express(self, q_str):
-                if self.qf == 'team1zh':
-                    return Q(team1zh__icontains=q_str) | Q(team2zh__icontains=q_str)
+                if self.qf == 'teamname':
+                    return Q(team1zh__icontains=q_str) | Q(team2zh__icontains=q_str) | Q(team1en__icontains=q_str) | Q(team2en__icontains=q_str)
                 else:
                     return super().get_express(q_str)
 

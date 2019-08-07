@@ -98,7 +98,7 @@ class WebMatchForm(Fields):
             {'name':'Team1En','label':'英文名','editor':'com-field-linetext','readonly':True},
             {'name':'Team1Zh','label':'主队中文名','editor':'com-field-linetext','readonly':True},
             {'name':'Team2En','label':'客队英文名','editor':'com-field-linetext','readonly':True},
-            {'name':'Team2Zh','label':'客队英文名','editor':'com-field-linetext','readonly':True},
+            {'name':'Team2Zh','label':'客队中文名','editor':'com-field-linetext','readonly':True},
             {'name':'MatchID','label':'比赛','editor':'com-field-pop-table-select',
              'table_ctx':MatchPicker().get_head_context(),'options':[]},
             
