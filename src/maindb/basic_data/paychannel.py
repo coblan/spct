@@ -18,8 +18,8 @@ class PayChannelPage(TablePage):
     class tableCls(ModelTable):
         model = TbPaychannel
         exclude = []
-        pop_edit_field = 'paychannelid'
-        fields_sort = ['paychannelid', 'channelgroupid', 'channelname', 'channeltype', 'active', 'minamount',
+        pop_edit_fields = ['paychannelid']
+        fields_sort = ['paychannelid', 'channelgroupid', 'channelname', 'channeltype','sort','isrecommend', 'active', 'minamount',
                        'maxamount', 'optionalamount','isonline', 'channelicon', 'memo']
 
         def get_operation(self):
@@ -58,7 +58,10 @@ class PayChannelPage(TablePage):
             names = ['channeltype']
 
         class sort(RowSort):
-            names = []
+            names = ['sort']
+            def clean_search_args(self):
+                if not self.sort_str:
+                    self.sort_str = 'sort'
 
         def dict_head(self, head):
             dc = {
@@ -67,7 +70,8 @@ class PayChannelPage(TablePage):
                 'channeltype': 120,
                 'optionalamount': 200,
                 'channelicon': 150,
-                'memo': 150
+                'memo': 150,
+                'maxamount':150,
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])

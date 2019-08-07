@@ -68,3 +68,10 @@ def notifyAccountFrozen(msg):
     channel.basic_publish(exchange='center.topic',
                           routing_key= 'backend.account.frozen',
                           body=msg)
+    
+def notifyScrapyMatch(msg):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
+    channel = connection.channel()
+    channel.basic_publish(exchange='center.topic',
+                          routing_key= 'match.multisource.start',
+                          body=msg)

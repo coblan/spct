@@ -90,6 +90,10 @@ page_dc = {
     "outcome"	:maindb.programer.outcome.OutcomePage,
     "marketsport"	:maindb.programer.marketsport.MarketSportPage,
     "home"	:hello.admin.Home,
+    
+    # 三方网站比赛匹配
+    "web_match_data"	:maindb.matches.event_match.OtherWebMatchPage,
+    "newleaguegroup"	:maindb.riskcontrol.new_league_group.LeagueGroupPage,
 }
 director = {
     "cloudfile_uploader"	:maindb.cus_models_fields.CloudFileUploader,
@@ -278,6 +282,12 @@ director = {
     "outcome.edit"	:maindb.programer.outcome.OutcomeForm,
     "marketsport"	:maindb.programer.marketsport.MarketSportPage.tableCls,
     "marketsport.edit"	:maindb.programer.marketsport.MarketSportForm,
+    
+    "web_match_data"	:maindb.matches.event_match.OtherWebMatchPage.tableCls,
+    "web_match_data.edit_self"	:maindb.matches.event_match.WebMatchForm,
+    "matchpicker"	:maindb.matches.event_match.MatchPicker,
+    "newleaguegroup"	:maindb.riskcontrol.new_league_group.LeagueGroupPage.tableCls,
+    "newleaguegroup.edit"	:maindb.riskcontrol.new_league_group.LeagureGroupForm,
 }
 director_views = {
     "get_row"	:helpers.director.dapi.get_row,
@@ -301,6 +311,7 @@ director_views = {
     "todolist.hasnew_todolist"	:maindb.admin_todolist.hasnew_todolist,
     "todolist.get_counter"	:maindb.admin_todolist.get_counter,
     "trend_data"	:hello.admin.trend_data,
+    "batch_recommand"	:maindb.matches.matches.batch_recommand,
 }
 sim_signal = {
     "notice.static.changed"	:[maindb.update_cache.clear_notice_cache],
@@ -343,4 +354,5 @@ field_map = {
     "maindb.tbteamsbasketball.icon"	:maindb.basic_data.teams_basketball.TeamBasketballIconProc,
     "maindb.tbareablacklist.status"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
     "maindb.tbrechargeareablacklist.status"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
+    "maindb.tbleaguegroup.enabled"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
 }

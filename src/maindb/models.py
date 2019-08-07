@@ -2260,6 +2260,9 @@ class TbPaychannel(models.Model):
     channelgroupid = models.ForeignKey(to='TbPaychannelgroup', db_constraint=False, db_column='ChannelGroupID',
                                        verbose_name='分组')  # Field name made lowercase.
     isonline = models.BooleanField(db_column='IsOnline',verbose_name='是否三方')  # Field name made lowercase.
+    isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name = '推荐')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort',verbose_name='排序')  # Field name made lowercase.
+    helpurl = CusPictureField(db_column='HelpUrl', max_length=255, blank=True, null=True,verbose_name='帮助地址')  # Field name made lowercase.
 
     class Meta:
         managed = False

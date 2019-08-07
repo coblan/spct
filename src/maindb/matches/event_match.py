@@ -1,7 +1,9 @@
-from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fields,ModelTable
+from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fields,ModelTable,director_view
 from maindb.mongoInstance import mydb
 from maindb.models import TbMatch
 from maindb.matches.matches import MatchsPage
+from maindb.rabbitmq_instance import notifyScrapyMatch
+import json
 
 class OtherWebMatchPage(TablePage):
     def get_label(self):
@@ -49,7 +51,7 @@ class OtherWebMatchPage(TablePage):
                     '_director_name':'web_match_data.edit_self'
                 }
                 for k,v in item.items():
-                    if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDate','LeagueZh']:
+                    if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDate','LeagueZh','EventTeam']:
                         dc[k]=v
                 rows.append(dc)
             
@@ -76,6 +78,19 @@ class OtherWebMatchPage(TablePage):
                 'perpage':self.perpage,
             }
         
+        def get_operation(self):
+            return [
+                {'name':'director_call',
+                 'director_name':'event_match.start_scrapy',
+                 'editor':'com-op-btn',
+                 'label':'启动抓取',
+                 'row_match':'many_row',
+                 'match_express':'Boolean( scope.row.MatchID )',
+                 'match_msg':'只能选择已经匹配完成的比赛',
+                 'confirm_msg':'确定启动这些比赛抓取', 
+                },
+            ]
+        
 
 class WebMatchForm(Fields):
     def get_heads(self):
@@ -96,7 +111,7 @@ class WebMatchForm(Fields):
              '_director_name':'web_match_data.edit_self'
         }
         for k,v in dc.items():
-            if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDate','LeagueZh']:
+            if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDate','LeagueZh','EventTeam']:
                 out_dc[k]=v
             if out_dc.get('MatchID'):
                 inst = TbMatch.objects.get(matchid=out_dc.get('MatchID') )
@@ -120,6 +135,16 @@ class MatchPicker(MatchsPage.tableCls):
     
     def get_operation(self):
         return []
+
+@director_view('event_match.start_scrapy')
+def start_scrapy(rows,**kws):
+    matchid_list = [row.get('MatchID') for row in rows]
+    for inst in TbMatch.objects.filter(matchid__in = matchid_list).exclude(marketstatus=2):
+        raise UserWarning('%s不是滚球状态，不能触发抓取'% inst)
+    for row in rows:
+        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend'}
+        notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
+        
 
 
 director.update({
