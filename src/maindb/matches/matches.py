@@ -492,7 +492,7 @@ class TbLivescoutTable(ModelTable):
     """危险球表格"""
     model = TbLivefeed
     exclude=[]
-    fields_sort=['matchid','betstatus','matchtime','matchscore','eventdesc','servertime','createtime']
+    fields_sort=['matchid','betstatus','matchscore','eventdesc','servertime','createtime']
     def get_operation(self):
         return [
             {'name':'director_call',
