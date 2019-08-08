@@ -20,7 +20,7 @@ class PayChannelPage(TablePage):
         exclude = []
         pop_edit_fields = ['paychannelid']
         fields_sort = ['paychannelid', 'channelgroupid', 'channelname', 'channeltype','sort','isrecommend', 'active', 'minamount',
-                       'maxamount', 'optionalamount','isonline', 'channelicon', 'memo']
+                       'maxamount', 'optionalamount','isonline', 'channelicon', 'memo','helpurl']
 
         def get_operation(self):
             create = super().get_operation()[0]
@@ -84,8 +84,8 @@ class PayChannelForm(ModelFields):
     def dict_head(self, head):
         if head['name'] == 'channelgroupid':
             head['placeholder'] = '请选择'
-        if head['name'] == 'memo':
-            head['required'] = True
+        #if head['name'] == 'memo':
+            #head['required'] = True
         return head
 
     class Meta:

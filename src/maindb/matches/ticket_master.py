@@ -315,11 +315,18 @@ class TicketMasterPage(TablePage):
             self.footer = self.footer_by_dict(normed_dc)
             self.footer = ['合计'] + self.footer
             return query
-
-        def get_context(self):
-            ctx = ModelTable.get_context(self)
-            ctx['footer'] = self.footer
+        
+        def get_head_context(self):
+            ctx = super().get_head_context()
+            ctx.update({
+                'heads_editable':True,
+            })
             return ctx
+        
+        #def get_data_context(self):
+            #ctx = ModelTable.get_data_context(self)
+            #ctx['footer'] = self.footer
+            #return ctx
 
         def get_operation(self):
             return [
