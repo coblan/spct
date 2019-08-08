@@ -915,7 +915,7 @@ class TbMatch(models.Model):
     iscloseliveodds = models.IntegerField(db_column='IsCloseLiveOdds', blank=True, null=True)  # Field name made lowercase.
     winner = models.IntegerField(db_column='Winner',verbose_name='胜者',choices=WINNER_TYPE)  # Field name made lowercase.
     terminator = models.CharField(db_column='Terminator', max_length=20, blank=True, null=True)  # Field name made lowercase.
-    weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=2,verbose_name='权重')  # Field name made lowercase.
+    weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4, blank=True, null=True ,verbose_name='权重')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
     ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.

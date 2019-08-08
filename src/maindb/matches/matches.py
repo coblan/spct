@@ -428,14 +428,6 @@ class MatchForm(ModelFields):
 
     def save_form(self):
         msg = []
-        #if self.kw.get('meta_type') == 'manul_outcome':
-            #specialcategoryid = self.kw.get('specialcategoryid')
-            #ProcCls = self.proc_map.get(specialcategoryid)
-            #proc_obj = ProcCls(crt_user = self.crt_user)
-            #self.instance.settletime = datetime.datetime.now()
-            #rt_msg =  proc_obj.manul_outcome( self.kw, self.instance)
-            #msg.append(rt_msg)
-        #else:
         super().save_form()
 
         self.updateMongo()

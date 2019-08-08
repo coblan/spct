@@ -318,15 +318,11 @@ class TicketMasterPage(TablePage):
         
         def get_head_context(self):
             ctx = super().get_head_context()
+            heads_names = [head['name'] for head in ctx.get('heads')]
             ctx.update({
-                'heads_editable':True,
+                'advise_heads':heads_names,
             })
             return ctx
-        
-        #def get_data_context(self):
-            #ctx = ModelTable.get_data_context(self)
-            #ctx['footer'] = self.footer
-            #return ctx
 
         def get_operation(self):
             return [
