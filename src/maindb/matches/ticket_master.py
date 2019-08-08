@@ -323,6 +323,7 @@ class TicketMasterPage(TablePage):
 
         def get_operation(self):
             return [
+                #{'editor':'com-op-table-ui-setting','label':'设置字段','action':'alert("jjyy")'},
                 {'editor':'com-op-table-refresh','label':'自动刷新频率','options':[
                     {'value':1*60*1000,'label':'1分钟'},
                     {'value':2*60*1000,'label':'2分钟'},

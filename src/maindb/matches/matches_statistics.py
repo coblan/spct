@@ -61,7 +61,7 @@ class MatchesStatisticsPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['sportid','tournamentid', 'statuscode', 'livebet']
+            names = ['sportid','tournamentid', 'statuscode',]
 
             def dict_head(self, head):
                 if head['name'] == 'tournamentid':
