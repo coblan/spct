@@ -6,6 +6,7 @@ from maindb.rabbitmq_instance import notifyScrapyMatch
 import json
 from helpers.director.model_func.dictfy import sim_dict
 from django.utils import timezone
+from django.db.models import Q
 
 class OtherWebMatchPage(TablePage):
     def get_label(self):
