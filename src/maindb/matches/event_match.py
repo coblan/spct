@@ -45,6 +45,7 @@ class OtherWebMatchPage(TablePage):
                  {'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
                  'table_ctx':select_table_ctx,
                  'action':'''scope.ps.selected = [scope.row];scope.head.table_ctx.par_row=scope.row; 
+                 scope.head.table_ctx.search_args._q = scope.row.Team1En;
                  scope.head.table_ctx.search_args._start_matchdate=scope.row.EventDateTime;
                  scope.head.table_ctx.search_args._end_matchdate=scope.row.EventDateTime; 
                  cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)'''},
