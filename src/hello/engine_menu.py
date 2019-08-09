@@ -104,7 +104,7 @@ class PcMenu(BaseEngine):
                  {'label': '注单列表', 'url': page('tickets'),
                   'visible': can_touch(TbTicketmaster, crt_user), },
                 {'label':'调水模板','url':page('adjusttemplate'),'visible':can_touch(TbAdjusttemplate,crt_user)},
-                {'label':'三方数据匹配','url':page('web_match_data')},
+                {'label':'赛事匹配','url':page('web_match_data')},
                  
              ]},
 
