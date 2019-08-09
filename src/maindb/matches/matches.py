@@ -219,7 +219,7 @@ class MatchsPage(TablePage):
 
             def get_express(self, q_str):
                 if self.qf == 'teamname':
-                    return Q(team1zh__icontains=q_str) | Q(team2zh__icontains=q_str) | Q(team1en__icontains=q_str) | Q(team2en__icontains=q_str)
+                    return Q(team1zh__icontains=q_str) | Q(team2zh__icontains=q_str) 
                 else:
                     return super().get_express(q_str)
 

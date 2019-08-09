@@ -4,10 +4,12 @@ from maindb.models import TbMatch
 from maindb.matches.matches import MatchsPage
 from maindb.rabbitmq_instance import notifyScrapyMatch
 import json
+from helpers.director.model_func.dictfy import sim_dict
+from django.utils import timezone
 
 class OtherWebMatchPage(TablePage):
     def get_label(self):
-        return '三方比赛数据匹配'
+        return '比赛匹配'
     
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
@@ -17,8 +19,15 @@ class OtherWebMatchPage(TablePage):
         def __init__(self, *arg,**kws):
             super().__init__(*arg,**kws)
             self.filter_args={}
-            if self.search_args.get('EventDate'):
-                self.filter_args['EventDate'] = {'$regex' : ".*%s.*"%self.search_args.get('EventDate')}
+            if self.search_args.get('_start_EventDateTime'):
+                self.filter_args['EventDateTime'] = {'$gte' : timezone.datetime.strptime( self.search_args.get('_start_EventDateTime'),'%Y-%m-%d %H:%M:%S' ) }
+            if self.search_args.get('_end_EventDateTime'):
+                if 'EventDateTime' not in  self.filter_args:
+                    self.filter_args['EventDateTime'] = {'$lte' : timezone.datetime.strptime( self.search_args.get('_end_EventDateTime'),'%Y-%m-%d %H:%M:%S' ) }
+                else:
+                    self.filter_args['EventDateTime'].update(
+                        {'$lte' : timezone.datetime.strptime( self.search_args.get('_end_EventDateTime'),'%Y-%m-%d %H:%M:%S' )}
+                    )
             if self.search_args.get('LeagueZh'):
                 self.filter_args['LeagueZh'] = {'$regex' : ".*%s.*"%self.search_args.get('LeagueZh')}
             if self.search_args.get('Team'):
@@ -29,14 +38,26 @@ class OtherWebMatchPage(TablePage):
   
         
         def get_heads(self):
+            select_table_ctx =MatchPicker().get_head_context()
+            
             return [
-                {'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
-                 'fields_ctx':WebMatchForm().get_head_context(),
-                 'action':"scope.head.fields_ctx.row=scope.row;cfg.pop_vue_com('com-form-one',scope.head.fields_ctx).then(row=>{ex.vueAssign(scope.row,row)})"},
+                 {'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
+                 'table_ctx':select_table_ctx,
+                 'action':'''scope.ps.selected = [scope.row];scope.head.table_ctx.par_row=scope.row; 
+                 scope.head.table_ctx.search_args._start_matchdate=scope.row.EventDateTime;
+                 scope.head.table_ctx.search_args._end_matchdate=scope.row.EventDateTime; 
+                 cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)'''},
+                #{'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
+                 #'fields_ctx':WebMatchForm().get_head_context(),
+                 #'action':"scope.head.fields_ctx.row=scope.row;cfg.pop_vue_com('com-form-one',scope.head.fields_ctx).then(row=>{ex.vueAssign(scope.row,row)})"},
+                {'name':'team1en','label':'主队英文名(Betradar)','editor':'com-table-rich-span','width':130,'class':'matched_match','css':'.el-table--border th.matched_match{background-color:#588AB5;color:white}'},
                 {'name':'Team1Zh','label':'主队中文名','editor':'com-table-span','width':130},
+                {'name':'team1zh','label':'主队中文名(Betradar)','editor':'com-table-span','width':130,'class':'matched_match'},
                 {'name':'Team2En','label':'客队英文名','editor':'com-table-span','width':130},
+                {'name':'team2en','label':'客队英文名(Betradar)','editor':'com-table-span','width':130,'class':'matched_match'},
                 {'name':'Team2Zh','label':'客队英文名','editor':'com-table-span','width':130},
-                {'name':'EventDate','label':'比赛日期','editor':'com-table-span','width':80},
+                {'name':'team2zh','label':'客队英文名(Betradar)','editor':'com-table-span','width':130,'class':'matched_match'},
+                {'name':'EventDateTime','label':'比赛日期','editor':'com-table-span','width':150},
                 {'name':'LeagueZh','label':'联赛','editor':'com-table-span','width':120},
                 {'name':"MatchID",'label':'比赛(比对结果)','editor':'com-table-label-shower','width':300},
             ]
@@ -51,23 +72,25 @@ class OtherWebMatchPage(TablePage):
                     '_director_name':'web_match_data.edit_self'
                 }
                 for k,v in item.items():
-                    if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDate','LeagueZh','EventTeam']:
+                    if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDateTime','LeagueZh','EventTeam']:
                         dc[k]=v
                 rows.append(dc)
             
             matchid_list = [x.get('MatchID') for x in rows if x.get('MatchID')]
             dc ={}
             for inst in TbMatch.objects.filter(matchid__in=matchid_list):
-                dc[inst.matchid] = str(inst)
+                dc[inst.matchid] = inst
             for row in rows:
                 if row.get('MatchID'):
-                    row['_MatchID_label'] = dc.get(row.get('MatchID'))
+                    match_inst = dc.get(row.get('MatchID'))
+                    row['_MatchID_label'] = str( match_inst )
+                    row.update( sim_dict( match_inst ) )
             return rows
         
         def getRowFilters(self):
             return [
                 {'name':'Team','label':'球队名字','editor':'com-filter-text'},
-                {'name':'EventDate','label':'日期','editor':'com-filter-text'},
+                {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
                 {'name':'LeagueZh','label':'联赛','editor':'com-filter-text'},
             ]
         
@@ -111,30 +134,59 @@ class WebMatchForm(Fields):
              '_director_name':'web_match_data.edit_self'
         }
         for k,v in dc.items():
-            if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDate','LeagueZh','EventTeam']:
+            if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDateTime','LeagueZh','EventTeam']:
                 out_dc[k]=v
-            if out_dc.get('MatchID'):
-                inst = TbMatch.objects.get(matchid=out_dc.get('MatchID') )
-                out_dc.update({
-                    '_MatchID_label':str(inst)
-                })
+                
+        if out_dc.get('MatchID'):
+            inst = TbMatch.objects.get(matchid=out_dc.get('MatchID') )
+            out_dc.update(sim_dict( inst ))
+            out_dc.update({
+                '_MatchID_label':str(inst) 
+            })
                 
         return out_dc
     
     def save_form(self):
-        dc = {'MatchID':self.kw.get('MatchID')}
+        dc = {'MatchID':self.kw.get('matchid')}
         mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         
 
 class MatchPicker(MatchsPage.tableCls):
+    fields_sort=['sportid','matchid', 'tournamentid','team1en', 'team1zh', 'team2en','team2zh', 'matchdate',]
     def dict_head(self, head):
         head = super().dict_head(head)
+        width={
+            'team1en':150,
+            'team2en':150,
+        }
+        if head['name'] in width:
+            head['width'] = width.get(head['name'])
         if head['name'] =='matchid':
-            head['editor'] ='com-table-foreign-click-select'
+            head['editor'] ='com-table-click'
+            head['action'] = 'delete scope.row._director_name;ex.vueAssign(scope.ps.par_row,scope.row);scope.ps.vc.$emit("finish");cfg.show_load();ex.director_call("d.save_row",{row:scope.ps.par_row}).then((resp)=>{cfg.hide_load();ex.vueAssign(scope.ps.par_row,resp.row)})'
         return head
     
     def get_operation(self):
         return []
+    
+    class filters(MatchsPage.tableCls.filters):
+        names=['sportid','tournamentid']
+    
+    class search(MatchsPage.tableCls.search):
+        names = ['teamname',]
+        exact_names = ['matchid']
+        field_sort=['teamname','matchid',]
+        def get_option(self, name):
+            if name == 'teamname':
+                return {'value': 'teamname', 'label': '球队名称', }
+            else:
+                return super().get_option(name)
+        def get_express(self, q_str):
+            if self.qf == 'teamname':
+                return Q(team1zh__icontains=q_str) | Q(team2zh__icontains=q_str) | Q(team1en__icontains=q_str) | Q(team2en__icontains=q_str)
+            else:
+                return super().get_express(q_str)
+    
 
 @director_view('event_match.start_scrapy')
 def start_scrapy(rows,**kws):
