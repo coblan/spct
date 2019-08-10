@@ -27,6 +27,7 @@ from . manul_outcome import outcome_header
 from django.db.models import Count,Q,QuerySet
 from maindb.rabbitmq_instance import notifyMatchRecommond,notifyAdjustOddsBase
 from django.utils import timezone
+from helpers.director.dapi import save_rows
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -243,7 +244,7 @@ class MatchsPage(TablePage):
                   'pre_set': 'rt={isrecommend:true}', 
                   'director_name':'batch_recommand',
                   'row_match': 'many_row',
-                  'after_save':' ex.director_call("notify_match_recommend",{rows:scope.rows})',
+                  'after_save':'scope.ps.update_rows(scope.resp); ex.director_call("notify_match_recommend",{rows:scope.resp})',
                   'visible': 'isrecommend' in self.permit.changeable_fields()
                   },
                  
@@ -1368,13 +1369,17 @@ def batch_recommand(rows,new_row):
             sportid_dc[sportid] = []
         sportid_dc[sportid] .append(row['matchid'])
         matchlist.append(row['matchid'])
+        row.update(new_row)
     now = timezone.now()
     for k,v in sportid_dc.items():
         count = TbMatch.objects.filter(sportid=k,isrecommend=True,matchdate__gte=now).count()
         if count + len(v) > 5:
             raise UserWarning('每种体育类型最多5场推荐,但是经过这次操作后,%s已经超过了此限制.'% TbSporttypes.objects.get(sportid=k) )
     
-    TbMatch.objects.filter(matchid__in=matchlist).update(isrecommend = True)
+    return save_rows(rows)
+   
+        
+    #TbMatch.objects.filter(matchid__in=matchlist).update(isrecommend = True)
     
         
 
