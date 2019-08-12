@@ -594,6 +594,7 @@ def add_livescout(new_row,**kws):
     #TbLivescout.objects.order_by('-createtime').first()
     if new_row.get('is_danger'):
         TbLivefeed.objects.create(extrainfo='999',side=0,statuscode=match.statuscode,sportid=match.sportid,matchid=new_row.get('matchid'),livefeedid=0,matchscore=match.score,eventid=match.eventid,eventtypeid=1011,betstatus=3,eventdesc='BetStop')
+        op_log.info('手动关闭%s的危险球'%match)
     else:
         TbLivefeed.objects.create(extrainfo='999',side=0,statuscode=match.statuscode,sportid=match.sportid,matchid=new_row.get('matchid'),livefeedid=0,matchscore=match.score,eventid=match.eventid,eventtypeid=1010,betstatus=2,eventdesc='BetStart')
         with connections['Sports'].cursor() as cursor:
@@ -604,6 +605,7 @@ def add_livescout(new_row,**kws):
                 % sql_args
             cursor.execute(sql) 
             cursor.commit()
+        op_log.info('手动开启%s的危险球'%match)
     return {'success':True}
 
 
