@@ -71,6 +71,11 @@ class OtherWebMatchPage(TablePage):
                 {'name':'EventDateTime','label':'比赛日期','editor':'com-table-span','width':150},
                 {'name':'LeagueZh','label':'联赛','editor':'com-table-span','width':120},
                 {'name':"MatchID",'label':'比赛(比对结果)','editor':'com-table-label-shower','width':300},
+                {'name':'ContrastStatus','label':'是否正在爬取','editor':'com-table-mapper','width':100,'options':[
+                    #{'value':0,'label':'未爬取'},
+                    {'value':1,'label':'爬取中'},
+                    {'value':2,'label':'已爬取'},
+                    ]},
             ]
         
         def get_rows(self):
@@ -82,9 +87,11 @@ class OtherWebMatchPage(TablePage):
                 dc ={
                     '_director_name':'web_match_data.edit_self'
                 }
-                for k,v in item.items():
-                    if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDateTime','LeagueZh','EventTeam']:
-                        dc[k]=v
+                item.pop('_id')
+                dc.update(item)
+                #for k,v in item.items():
+                    #if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDateTime','LeagueZh','EventTeam','ContrastStatus']:
+                        #dc[k]=v
                 rows.append(dc)
             
             matchid_list = [x.get('MatchID') for x in rows if x.get('MatchID')]
@@ -115,7 +122,7 @@ class OtherWebMatchPage(TablePage):
         def get_operation(self):
             return [
                  {'editor':'com-op-btn','label':'设置字段','icon': 'fa-gear',
-                  'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps})'},
+                  'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"字段调整"})'},
                 {'name':'director_call',
                  'director_name':'event_match.start_scrapy',
                  'editor':'com-op-btn',
@@ -156,14 +163,17 @@ class WebMatchForm(Fields):
         ]
     
     
-    def get_row(self):
+    def dict_row(self):
         dc = mydb['Event'].find_one({'Eid':self.kw.get('Eid')})
         out_dc = {
              '_director_name':'web_match_data.edit_self'
         }
-        for k,v in dc.items():
-            if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDateTime','LeagueZh','EventTeam']:
-                out_dc[k]=v
+        dc.pop('_id')
+        
+        out_dc.update(dc)
+        #for k,v in dc.items():
+            #if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDateTime','LeagueZh','EventTeam']:
+                #out_dc[k]=v
                 
         if out_dc.get('MatchID'):
             inst = TbMatch.objects.get(matchid=out_dc.get('MatchID') )
@@ -173,6 +183,9 @@ class WebMatchForm(Fields):
             })
                 
         return out_dc
+    
+    def get_org_dict(self,row=[]):
+        return {}
     
     def save_form(self):
         dc = {'MatchID':self.kw.get('matchid')}
