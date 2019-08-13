@@ -73,5 +73,5 @@ def notifyScrapyMatch(msg):
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
     channel = connection.channel()
     channel.basic_publish(exchange='center.topic',
-                          routing_key= 'match.multisource.start',
+                          routing_key= 'match.multisource',
                           body=msg)

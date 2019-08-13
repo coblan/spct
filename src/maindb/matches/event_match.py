@@ -38,6 +38,14 @@ class OtherWebMatchPage(TablePage):
                                            {'Team2Zh':{'$regex' : ".*%s.*"%self.search_args.get('Team')}}]
   
         
+        def get_head_context(self):
+            ctx = super().get_head_context()
+            heads_names = [head['name'] for head in ctx.get('heads')]
+            ctx.update({
+                'advise_heads':heads_names,
+            })
+            return ctx
+        
         def get_heads(self):
             select_table_ctx =MatchPicker().get_head_context()
             
@@ -106,6 +114,8 @@ class OtherWebMatchPage(TablePage):
         
         def get_operation(self):
             return [
+                 {'editor':'com-op-btn','label':'设置字段','icon': 'fa-gear',
+                  'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps})'},
                 {'name':'director_call',
                  'director_name':'event_match.start_scrapy',
                  'editor':'com-op-btn',
@@ -114,6 +124,21 @@ class OtherWebMatchPage(TablePage):
                  'match_express':'Boolean( scope.row.MatchID )',
                  'match_msg':'只能选择已经匹配完成的比赛',
                  'confirm_msg':'确定启动这些比赛抓取', 
+                 'class':'btn-success',
+                 'icon':'fa-play',
+                },
+                {'name':'director_call',
+                 'director_name':'event_match.stop_scrapy',
+                 'editor':'com-op-btn',
+                 'label':'停止抓取',
+                 'row_match':'many_row',
+                 
+                 'match_express':'Boolean( scope.row.MatchID )',
+                 'match_msg':'只能选择已经匹配完成的比赛',
+                 
+                 'confirm_msg':'确定停止这些比赛抓取', 
+                 'class':'btn-default',
+                 'icon':'fa-pause',
                 },
             ]
         
@@ -197,9 +222,14 @@ def start_scrapy(rows,**kws):
     for inst in TbMatch.objects.filter(matchid__in = matchid_list).exclude(marketstatus=2):
         raise UserWarning('%s不是滚球状态，不能触发抓取'% inst)
     for row in rows:
-        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend'}
+        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start'}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
-        
+
+@director_view('event_match.stop_scrapy')
+def start_scrapy(rows,**kws):
+    for row in rows:
+        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop'}
+        notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
 
 director.update({
