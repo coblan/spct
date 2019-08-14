@@ -73,7 +73,12 @@ class OtherWebMatchPage(TablePage):
                 {'name':'EventDateTime','label':'比赛日期','editor':'com-table-span','width':150},
                 {'name':'LeagueZh','label':'联赛','editor':'com-table-span','width':120},
                 {'name':"MatchID",'label':'比赛(比对结果)','editor':'com-table-label-shower','width':300},
-                {'name':'ContrastStatus','label':'是否正在爬取','editor':'com-table-mapper','width':100,'options':[
+                {'name':'ContrastStatus','label':'是否正在爬取',
+                 'editor':'com-table-rich-span',
+                 'inn_editor':'com-table-mapper',
+                 'class':'middle-col btn-like-col',
+                 'cell_class':'var dc={1:"success",2:"primary"};rt=dc[scope.row.ContrastStatus]',
+                 'width':100,'options':[
                     #{'value':0,'label':'未爬取'},
                     {'value':1,'label':'爬取中'},
                     {'value':2,'label':'已爬取'},
@@ -248,6 +253,10 @@ def start_scrapy(rows,**kws):
     matchid_list = [row.get('MatchID') for row in rows]
     for inst in TbMatch.objects.filter(matchid__in = matchid_list).exclude(marketstatus=2):
         raise UserWarning('%s不是滚球状态，不能触发抓取'% inst)
+    
+    if mydb['Event'].find({"ContrastStatus":1}).count() +len(rows) > 20:
+        raise UserWarning('最多同时爬取20场比赛!')
+    
     for row in rows:
         msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start'}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
