@@ -38,6 +38,14 @@ class OtherWebMatchPage(TablePage):
                                            {'Team2Zh':{'$regex' : ".*%s.*"%self.search_args.get('Team')}}]
             if self.search_args.get('ContrastStatus'):
                 self.filter_args['ContrastStatus'] =int( self.search_args.get('ContrastStatus') )
+            if self.search_args.get('TeamSwap'):
+                if self.search_args.get('TeamSwap') ==1:
+                    self.filter_args['TeamSwap'] = True
+                else:
+                    self.filter_args['$and']=[{'$or':[{'TeamSwap':{'$exists':False,}},
+                                                      {'TeamSwap':False}
+                                                      ]}
+                                              ]
   
         
         def get_head_context(self):
@@ -83,6 +91,7 @@ class OtherWebMatchPage(TablePage):
                     {'value':1,'label':'爬取中'},
                     {'value':2,'label':'已爬取'},
                     ]},
+                {'name':'TeamSwap','label':'交换主客队','editor':'com-table-bool-shower'}
             ]
         
         def get_rows(self):
@@ -96,9 +105,6 @@ class OtherWebMatchPage(TablePage):
                 }
                 item.pop('_id')
                 dc.update(item)
-                #for k,v in item.items():
-                    #if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDateTime','LeagueZh','EventTeam','ContrastStatus']:
-                        #dc[k]=v
                 rows.append(dc)
             
             matchid_list = [x.get('MatchID') for x in rows if x.get('MatchID')]
@@ -110,6 +116,10 @@ class OtherWebMatchPage(TablePage):
                     match_inst = dc.get(row.get('MatchID'))
                     row['_MatchID_label'] = str( match_inst )
                     row.update( sim_dict( match_inst ) )
+                row.update({
+                    'pk':row.get('Eid'),
+                    'TeamSwap':bool(row.get('TeamSwap'))
+                })
             return rows
         
         @classmethod
@@ -121,13 +131,19 @@ class OtherWebMatchPage(TablePage):
             return search_args
         
         def getRowFilters(self):
+            
             return [
                 {'name':'Team','label':'球队名字','editor':'com-filter-text'},
                 {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
-                {'name':'LeagueZh','label':'联赛','editor':'com-filter-text'},
+                {'name':'LeagueZh','label':'联赛','editor':'com-filter-select','options':[
+                    ]},
                 {'name':'ContrastStatus','label':'抓取状态','editor':'com-filter-select','options':[
                     {'value':1,'label':'抓取中'},
                     {'value':2,'label':'已爬取'}
+                ]},
+                {'name':'TeamSwap','label':'交换主客队','editor':'com-filter-select','options':[
+                    {'value':1,'label':'交换'},
+                    {'value':2,'label':'未交换'}
                 ]}
             ]
         
@@ -161,11 +177,28 @@ class OtherWebMatchPage(TablePage):
                  
                  'match_express':'Boolean( scope.row.MatchID )',
                  'match_msg':'只能选择已经匹配完成的比赛',
-                 
                  'confirm_msg':'确定停止这些比赛抓取', 
                  'class':'btn-default',
                  'icon':'fa-pause',
                 },
+                {'name':'selected_set_and_save',
+                 'editor':'com-op-btn',
+                 'label':'交换主客队',
+                 'row_match':'many_row',
+                 'pre_set':  'rt={TeamSwap:true}',#'rt={_my_swap_team:1}', 
+                 'confirm_msg':'确定交换主客队', 
+                 'class':'btn-default',
+                },
+                {'name':'selected_set_and_save',
+                 'editor':'com-op-btn',
+                 'label':'取消交换',
+                 'row_match':'many_row',
+                 'pre_set':  'rt={TeamSwap:false}',#'rt={_my_swap_team:1}', 
+                 'confirm_msg':'确定取消交换主客队?', 
+                 'class':'btn-default',
+                },
+                
+                
             ]
         
 
@@ -189,26 +222,32 @@ class WebMatchForm(Fields):
         }
         dc.pop('_id')
         
-        out_dc.update(dc)
-        #for k,v in dc.items():
-            #if k in ['Team1En','Team1Zh','Team2En','Team2Zh','MatchID','Eid','EventDateTime','LeagueZh','EventTeam']:
-                #out_dc[k]=v
-                
+        out_dc.update(dc)       
         if out_dc.get('MatchID'):
             inst = TbMatch.objects.get(matchid=out_dc.get('MatchID') )
             out_dc.update(sim_dict( inst ))
             out_dc.update({
-                '_MatchID_label':str(inst) 
+                '_MatchID_label':str(inst) ,
             })
-                
+        out_dc.update({
+            'pk':dc.get('Eid'),
+            'TeamSwap':bool(dc.get('TeamSwap'))
+        })
         return out_dc
     
     def get_org_dict(self,row=[]):
         return {}
     
     def save_form(self):
-        dc = {'MatchID':self.kw.get('matchid')}
+        #if self.kw.get('_my_swap_team'):
+            #if self.kw.get('TeamSwap'):
+                #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':False}})
+            #else:
+                #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':True}})
+        #else:
+        dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap')}
         mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
+        
         
 
 class MatchPicker(MatchsPage.tableCls):
