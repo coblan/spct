@@ -36,6 +36,8 @@ class OtherWebMatchPage(TablePage):
                                            {'Team2En':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
                                            {'Team1Zh':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
                                            {'Team2Zh':{'$regex' : ".*%s.*"%self.search_args.get('Team')}}]
+            if self.search_args.get('ContrastStatus'):
+                self.filter_args['ContrastStatus'] =int( self.search_args.get('ContrastStatus') )
   
         
         def get_head_context(self):
@@ -105,11 +107,23 @@ class OtherWebMatchPage(TablePage):
                     row.update( sim_dict( match_inst ) )
             return rows
         
+        @classmethod
+        def clean_search_args(cls, search_args):
+            if search_args.get('_first','1') == '1':
+                search_args['_first'] = '0'
+                search_args['_start_EventDateTime'] = ( timezone.now() - timezone.timedelta(days=1) ).strftime('%Y-%m-%d %H:%M:%S')
+                search_args['_end_EventDateTime'] = ( timezone.now() + timezone.timedelta(days=1) ).strftime('%Y-%m-%d %H:%M:%S')
+            return search_args
+        
         def getRowFilters(self):
             return [
                 {'name':'Team','label':'球队名字','editor':'com-filter-text'},
                 {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
                 {'name':'LeagueZh','label':'联赛','editor':'com-filter-text'},
+                {'name':'ContrastStatus','label':'抓取状态','editor':'com-filter-select','options':[
+                    {'value':1,'label':'抓取中'},
+                    {'value':2,'label':'已爬取'}
+                ]}
             ]
         
         def getRowPages(self):
