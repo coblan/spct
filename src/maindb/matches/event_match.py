@@ -29,8 +29,8 @@ class OtherWebMatchPage(TablePage):
                     self.filter_args['EventDateTime'].update(
                         {'$lte' : timezone.datetime.strptime( self.search_args.get('_end_EventDateTime'),'%Y-%m-%d %H:%M:%S' )}
                     )
-            if self.search_args.get('LeagueZh'):
-                self.filter_args['LeagueZh'] = {'$regex' : ".*%s.*"%self.search_args.get('LeagueZh')}
+            if self.search_args.get('LeagueId'):
+                self.filter_args['LeagueId'] =  int( self.search_args.get('LeagueId') )#{'$regex' : ".*%s.*"%self.search_args.get('LeagueZh')}
             if self.search_args.get('Team'):
                 self.filter_args['$or'] = [{'Team1En':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
                                            {'Team2En':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
@@ -46,6 +46,12 @@ class OtherWebMatchPage(TablePage):
                                                       {'TeamSwap':False}
                                                       ]}
                                               ]
+                    
+            if self.search_args.get('has_matched'):
+                if self.search_args.get('has_matched') ==1:
+                    self.filter_args['MatchID'] = {'$exists':True}
+                else:
+                    self.filter_args['MatchID'] = {'$exists':False}
   
         
         def get_head_context(self):
@@ -131,12 +137,11 @@ class OtherWebMatchPage(TablePage):
             return search_args
         
         def getRowFilters(self):
-            
+            league_options = [{'value':x['LeagueId'],'label':x['LeagueNameZh']} for x in mydb['League'].find({}).sort( [('LeagueNameZh',1)])]
             return [
                 {'name':'Team','label':'球队名字','editor':'com-filter-text'},
                 {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
-                {'name':'LeagueZh','label':'联赛','editor':'com-filter-select','options':[
-                    ]},
+                {'name':'LeagueId','label':'联赛','editor':'com-filter-single-select2','options':league_options},
                 {'name':'ContrastStatus','label':'抓取状态','editor':'com-filter-select','options':[
                     {'value':1,'label':'抓取中'},
                     {'value':2,'label':'已爬取'}
@@ -144,7 +149,11 @@ class OtherWebMatchPage(TablePage):
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-filter-select','options':[
                     {'value':1,'label':'交换'},
                     {'value':2,'label':'未交换'}
-                ]}
+                ]},
+                {'name':'has_matched','label':'匹配情况','editor':'com-filter-select','options':[
+                    {'value':1,'label':'已经匹配'},
+                    {'value':2,'label':'未匹配'}
+                ]},
             ]
         
         def getRowPages(self):
@@ -297,13 +306,13 @@ def start_scrapy(rows,**kws):
         raise UserWarning('最多同时爬取20场比赛!')
     
     for row in rows:
-        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start'}
+        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start','TeamSwap':row.get('TeamSwap')}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
 @director_view('event_match.stop_scrapy')
 def start_scrapy(rows,**kws):
     for row in rows:
-        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop'}
+        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop','TeamSwap':row.get('TeamSwap')}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
 
