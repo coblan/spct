@@ -127,7 +127,8 @@ class OtherWebMatchPage(TablePage):
                     row['_MatchID_label'] = str( match_inst )
                     row.update( sim_dict( match_inst ) )
                     row.update({
-                        '_tournamentid_label':inst._tournamentid_label
+                        '_tournamentid_label':match_inst._tournamentid_label,
+                        
                     })
                 row.update({
                     'pk':row.get('Eid'),
