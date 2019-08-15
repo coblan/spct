@@ -140,7 +140,7 @@ class OtherWebMatchPage(TablePage):
         def clean_search_args(cls, search_args):
             if search_args.get('_first','1') == '1':
                 search_args['_first'] = '0'
-                search_args['_start_EventDateTime'] = ( timezone.now() - timezone.timedelta(days=1) ).strftime('%Y-%m-%d %H:%M:%S')
+                search_args['_start_EventDateTime'] = ( timezone.now() ).strftime('%Y-%m-%d %H:%M:%S')
                 search_args['_end_EventDateTime'] = ( timezone.now() + timezone.timedelta(days=1) ).strftime('%Y-%m-%d %H:%M:%S')
             return search_args
         
@@ -152,14 +152,14 @@ class OtherWebMatchPage(TablePage):
                 {'name':'LeagueId','label':'联赛','editor':'com-filter-single-select2','placeholder':'请选择联赛','options':league_options},
                 {'name':'ContrastStatus','label':'采集状态','editor':'com-filter-select','options':[
                     {'value':1,'label':'采集中'},
-                    {'value':2,'label':'采集结束'}
+                    {'value':2,'label':'采集完成'}
                 ]},
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-filter-select','options':[
-                    {'value':1,'label':'交换'},
-                    {'value':2,'label':'未交换'}
+                    {'value':1,'label':'是'},
+                    {'value':2,'label':'否'}
                 ]},
                 {'name':'has_matched','label':'匹配情况','editor':'com-filter-select','options':[
-                    {'value':1,'label':'已经匹配'},
+                    {'value':1,'label':'已匹配'},
                     {'value':2,'label':'未匹配'}
                 ]},
             ]
