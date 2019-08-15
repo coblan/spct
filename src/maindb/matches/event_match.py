@@ -86,8 +86,9 @@ class OtherWebMatchPage(TablePage):
                 {'name':'team2zh','label':'客队中文名(Betradar)','editor':'com-table-span','width':130,'class':'matched_match'},
                 {'name':'EventDateTime','label':'比赛日期','editor':'com-table-span','width':150},
                 {'name':'LeagueZh','label':'联赛','editor':'com-table-span','width':120},
+                {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-table-label-shower','width':120,'class':'matched_match'},
                 {'name':"MatchID",'label':'比赛(比对结果)','editor':'com-table-label-shower','width':300},
-                {'name':'ContrastStatus','label':'是否正在爬取',
+                {'name':'ContrastStatus','label':'采集状态',
                  'editor':'com-table-rich-span',
                  'inn_editor':'com-table-mapper',
                  'class':'middle-col btn-like-col',
@@ -105,7 +106,7 @@ class OtherWebMatchPage(TablePage):
             #for item in mydb['Event'].find(self.filter_args).sort('CreateTime',-1).skip(start_index).limit(self.perpage):
             rows =[]
             
-            for item in mydb['Event'].find(self.filter_args).skip(start_index).limit(self.perpage):
+            for item in mydb['Event'].find(self.filter_args).sort( [('EventDateTime',1)]).skip(start_index).limit(self.perpage):
                 dc ={
                     '_director_name':'web_match_data.edit_self'
                 }
@@ -238,9 +239,9 @@ class WebMatchForm(Fields):
             scope.head.table_ctx.search_args._end_matchdate=scope.row.EventDateTime; 
              ''',
              'after_select':'ex.vueAssign(scope.row,scope.selected_row);',
-             'table_ctx':MatchPicker().get_head_context(),'options':[]},
+             'table_ctx':MatchPicker().get_head_context(),'options':[],},
             
-            {'name':'TeamSwap','label':'交换主客队','editor':'com-field-bool','help_text':'第三方赛事主客队顺序和Betrader不一致，必须勾选此选项，否则数据有误!!!'},
+            {'name':'TeamSwap','label':'交换主客队','editor':'com-field-bool','help_text':'当第三方赛事主客队顺序和Betrader不一致时，必须勾选此选项，否则会导致赔率严重错误!!!'},
             
             {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-field-label-shower','readonly':True,},
             {'name':'matchdate','label':'比赛日期(Betradar)','editor':'com-field-datetime','readonly':True},
