@@ -115,13 +115,20 @@ class OtherWebMatchPage(TablePage):
             
             matchid_list = [x.get('MatchID') for x in rows if x.get('MatchID')]
             dc ={}
-            for inst in TbMatch.objects.filter(matchid__in=matchid_list):
+            for inst in TbMatch.objects.filter(matchid__in=matchid_list).extra(
+                select={'_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',},
+                       where=['TB_Tournament.TournamentID=TB_Match.TournamentID '],
+                        tables =['TB_Tournament']
+                ):
                 dc[inst.matchid] = inst
             for row in rows:
                 if row.get('MatchID'):
                     match_inst = dc.get(row.get('MatchID'))
                     row['_MatchID_label'] = str( match_inst )
                     row.update( sim_dict( match_inst ) )
+                    row.update({
+                        '_tournamentid_label':inst._tournamentid_label
+                    })
                 row.update({
                     'pk':row.get('Eid'),
                     'TeamSwap':bool(row.get('TeamSwap'))
@@ -214,7 +221,9 @@ class OtherWebMatchPage(TablePage):
 class WebMatchForm(Fields):
     def get_heads(self):
         return [
-            {'name':'Team1En','label':'英文名','editor':'com-field-linetext','readonly':True,'css':'.field-input-td .com-field-linetext span{width:200px;height:30px;display:inline-block;padding:3px;background:#eeeeee;border:1px solid #EBEBEB}'},
+            {'name':'LeagueZh','label':'联赛','editor':'com-field-linetext','readonly':True,},
+            {'name':'EventDateTime','label':'比赛日期','editor':'com-field-datetime','readonly':True},
+            {'name':'Team1En','label':'主队英文名','editor':'com-field-linetext','readonly':True,'css':'.group_info_compare .field-input-td span{width:200px;height:30px;display:inline-block;padding:3px;background:#F5F5F5;border:1px solid #EBEBEB;color:grey}'},
             {'name':'Team1Zh','label':'主队中文名','editor':'com-field-linetext','readonly':True},
             {'name':'Team2En','label':'客队英文名','editor':'com-field-linetext','readonly':True},
             {'name':'Team2Zh','label':'客队中文名','editor':'com-field-linetext','readonly':True},
@@ -231,10 +240,12 @@ class WebMatchForm(Fields):
             
             {'name':'TeamSwap','label':'交换主客队','editor':'com-field-bool'},
             
-            {'name':'team1en','label':'英文名','editor':'com-field-linetext','readonly':True},
-            {'name':'team1zh','label':'主队中文名','editor':'com-field-linetext','readonly':True},
-            {'name':'team2en','label':'客队英文名','editor':'com-field-linetext','readonly':True},
-            {'name':'team2zh','label':'客队中文名','editor':'com-field-linetext','readonly':True},
+            {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-field-label-shower','readonly':True,},
+            {'name':'matchdate','label':'比赛日期(Betradar)','editor':'com-field-datetime','readonly':True},
+            {'name':'team1en','label':'主队英文名(Betradar)','editor':'com-field-linetext','readonly':True},
+            {'name':'team1zh','label':'主队中文名(Betradar)','editor':'com-field-linetext','readonly':True},
+            {'name':'team2en','label':'客队英文名(Betradar)','editor':'com-field-linetext','readonly':True},
+            {'name':'team2zh','label':'客队中文名(Betradar)','editor':'com-field-linetext','readonly':True},
 
         ]
     
@@ -242,13 +253,20 @@ class WebMatchForm(Fields):
     def get_head_context(self):
         ctx = super().get_head_context()
         ctx.update({
-            'table_grid':[['Team1En','team1en'],
-                          ['Team1Zh','team1zh'],
-                          ['Team2En','team2en'],
-                          ['Team2Zh','team2zh'],
-                          ['MatchID'],
-                          ['TeamSwap'],
-                          ]
+            'table_grid':[
+                ['LeagueZh','tournamentid'],
+                ['EventDateTime','matchdate'],
+                ['Team1En','team1en'],
+                ['Team1Zh','team1zh'],
+                ['Team2En','team2en'],
+                ['Team2Zh','team2zh'],
+                ['MatchID'],
+                ['TeamSwap'],
+                          ],
+            'fields_group':[
+                {'name':'info_compare','label':'信息对比','heads':['LeagueZh','tournamentid','EventDateTime','matchdate','Team1En','team1en','Team1Zh','team1zh','Team2En','team2en','Team2Zh','team2zh']},
+                {'name':'jj','label':'匹配选择','heads':['MatchID','TeamSwap']}
+            ]
         })
         return ctx
     
