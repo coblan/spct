@@ -66,17 +66,17 @@ class OtherWebMatchPage(TablePage):
             select_table_ctx =MatchPicker().get_head_context()
             
             return [
-                 {'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
-                 'table_ctx':select_table_ctx,
-                 'action':'''scope.ps.selected = [scope.row];scope.head.table_ctx.par_row=scope.row; 
-                 scope.head.table_ctx.search_args._q = scope.row.Team1En.replace(/-/g,' ');
-                 scope.head.table_ctx.search_args._qf = "teamname";
-                 scope.head.table_ctx.search_args._start_matchdate=scope.row.EventDateTime;
-                 scope.head.table_ctx.search_args._end_matchdate=scope.row.EventDateTime; 
-                 cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)'''},
-                #{'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
-                 #'fields_ctx':WebMatchForm().get_head_context(),
-                 #'action':"scope.head.fields_ctx.row=scope.row;cfg.pop_vue_com('com-form-one',scope.head.fields_ctx).then(row=>{ex.vueAssign(scope.row,row)})"},
+                 #{'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
+                 #'table_ctx':select_table_ctx,
+                 #'action':'''scope.ps.selected = [scope.row];scope.head.table_ctx.par_row=scope.row; 
+                 #scope.head.table_ctx.search_args._q = scope.row.Team1En.replace(/-/g,' ');
+                 #scope.head.table_ctx.search_args._qf = "teamname";
+                 #scope.head.table_ctx.search_args._start_matchdate=scope.row.EventDateTime;
+                 #scope.head.table_ctx.search_args._end_matchdate=scope.row.EventDateTime; 
+                 #cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)'''},
+                {'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
+                 'fields_ctx':WebMatchForm().get_head_context(),
+                 'action':"var ctx =scope.head.fields_ctx;ctx.row=scope.row;ctx.ops_loc='bottom';cfg.pop_vue_com('com-form-one',ctx).then(row=>{ex.vueAssign(scope.row,row)})"},
                 {'name':'team1en','label':'主队英文名(Betradar)','editor':'com-table-rich-span','width':130,'class':'matched_match','css':'.el-table--border th.matched_match{background-color:#588AB5;color:white}'},
                 {'name':'Team1Zh','label':'主队中文名','editor':'com-table-span','width':130},
                 {'name':'team1zh','label':'主队中文名(Betradar)','editor':'com-table-span','width':130,'class':'matched_match'},
@@ -94,8 +94,8 @@ class OtherWebMatchPage(TablePage):
                  'cell_class':'var dc={1:"success",2:"primary"};rt=dc[scope.row.ContrastStatus]',
                  'width':100,'options':[
                     #{'value':0,'label':'未爬取'},
-                    {'value':1,'label':'爬取中'},
-                    {'value':2,'label':'已爬取'},
+                    {'value':1,'label':'采集中'},
+                    {'value':2,'label':'采集完成'},
                     ]},
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-table-bool-shower'}
             ]
@@ -139,12 +139,12 @@ class OtherWebMatchPage(TablePage):
         def getRowFilters(self):
             league_options = [{'value':x['LeagueId'],'label':x['LeagueNameZh']} for x in mydb['League'].find({}).sort( [('LeagueNameZh',1)])]
             return [
-                {'name':'Team','label':'球队名字','editor':'com-filter-text'},
+                {'name':'Team','label':'球队名称','editor':'com-filter-text'},
                 {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
-                {'name':'LeagueId','label':'联赛','editor':'com-filter-single-select2','options':league_options},
-                {'name':'ContrastStatus','label':'抓取状态','editor':'com-filter-select','options':[
-                    {'value':1,'label':'抓取中'},
-                    {'value':2,'label':'已爬取'}
+                {'name':'LeagueId','label':'联赛','editor':'com-filter-single-select2','placeholder':'请选择联赛','options':league_options},
+                {'name':'ContrastStatus','label':'采集状态','editor':'com-filter-select','options':[
+                    {'value':1,'label':'采集中'},
+                    {'value':2,'label':'采集结束'}
                 ]},
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-filter-select','options':[
                     {'value':1,'label':'交换'},
@@ -170,7 +170,7 @@ class OtherWebMatchPage(TablePage):
                 {'name':'director_call',
                  'director_name':'event_match.start_scrapy',
                  'editor':'com-op-btn',
-                 'label':'启动抓取',
+                 'label':'启动采集',
                  'row_match':'many_row',
                  'match_express':'Boolean( scope.row.MatchID )',
                  'match_msg':'只能选择已经匹配完成的比赛',
@@ -181,7 +181,7 @@ class OtherWebMatchPage(TablePage):
                 {'name':'director_call',
                  'director_name':'event_match.stop_scrapy',
                  'editor':'com-op-btn',
-                 'label':'停止抓取',
+                 'label':'停止采集',
                  'row_match':'many_row',
                  
                  'match_express':'Boolean( scope.row.MatchID )',
@@ -214,15 +214,43 @@ class OtherWebMatchPage(TablePage):
 class WebMatchForm(Fields):
     def get_heads(self):
         return [
-            {'name':'Team1En','label':'英文名','editor':'com-field-linetext','readonly':True},
+            {'name':'Team1En','label':'英文名','editor':'com-field-linetext','readonly':True,'css':'.field-input-td .com-field-linetext span{width:200px;height:30px;display:inline-block;padding:3px;background:#eeeeee;border:1px solid #EBEBEB}'},
             {'name':'Team1Zh','label':'主队中文名','editor':'com-field-linetext','readonly':True},
             {'name':'Team2En','label':'客队英文名','editor':'com-field-linetext','readonly':True},
             {'name':'Team2Zh','label':'客队中文名','editor':'com-field-linetext','readonly':True},
             {'name':'MatchID','label':'比赛','editor':'com-field-pop-table-select',
+             'init_express':'''
+            scope.head.table_ctx.par_row=scope.row; 
+            scope.head.table_ctx.search_args._q = scope.row.Team1En.replace(/-/g,' ');
+            scope.head.table_ctx.search_args._qf = "teamname";
+            scope.head.table_ctx.search_args._start_matchdate=scope.row.EventDateTime;
+            scope.head.table_ctx.search_args._end_matchdate=scope.row.EventDateTime; 
+             ''',
+             'after_select':'ex.vueAssign(scope.row,scope.selected_row);',
              'table_ctx':MatchPicker().get_head_context(),'options':[]},
             
+            {'name':'TeamSwap','label':'交换主客队','editor':'com-field-bool'},
+            
+            {'name':'team1en','label':'英文名','editor':'com-field-linetext','readonly':True},
+            {'name':'team1zh','label':'主队中文名','editor':'com-field-linetext','readonly':True},
+            {'name':'team2en','label':'客队英文名','editor':'com-field-linetext','readonly':True},
+            {'name':'team2zh','label':'客队中文名','editor':'com-field-linetext','readonly':True},
+
         ]
     
+    
+    def get_head_context(self):
+        ctx = super().get_head_context()
+        ctx.update({
+            'table_grid':[['Team1En','team1en'],
+                          ['Team1Zh','team1zh'],
+                          ['Team2En','team2en'],
+                          ['Team2Zh','team2zh'],
+                          ['MatchID'],
+                          ['TeamSwap'],
+                          ]
+        })
+        return ctx
     
     def dict_row(self):
         dc = mydb['Event'].find_one({'Eid':self.kw.get('Eid')})
@@ -271,7 +299,8 @@ class MatchPicker(MatchsPage.tableCls):
             head['width'] = width.get(head['name'])
         if head['name'] =='matchid':
             head['editor'] ='com-table-click'
-            head['action'] = 'delete scope.row._director_name;ex.vueAssign(scope.ps.par_row,scope.row);scope.ps.vc.$emit("finish");cfg.show_load();ex.director_call("d.save_row",{row:scope.ps.par_row}).then((resp)=>{cfg.hide_load();ex.vueAssign(scope.ps.par_row,resp.row)})'
+            head['action']='delete scope.row._director_name;delete scope.row.pk;scope.ps.vc.$emit("finish",scope.row)'
+            #head['action'] = 'delete scope.row._director_name;ex.vueAssign(scope.ps.par_row,scope.row);scope.ps.vc.$emit("finish");cfg.show_load();ex.director_call("d.save_row",{row:scope.ps.par_row}).then((resp)=>{cfg.hide_load();ex.vueAssign(scope.ps.par_row,resp.row)})'
         return head
     
     def get_operation(self):
