@@ -175,8 +175,8 @@ class OtherWebMatchPage(TablePage):
         
         def get_operation(self):
             return [
-                 {'editor':'com-op-btn','label':'设置字段','icon': 'fa-gear',
-                  'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"字段调整"})'},
+                 {'editor':'com-op-btn','label':'设置列','icon': 'fa-gear',
+                  'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"列调整"})'},
                 {'name':'director_call',
                  'director_name':'event_match.start_scrapy',
                  'editor':'com-op-btn',

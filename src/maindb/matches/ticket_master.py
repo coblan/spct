@@ -229,6 +229,13 @@ class TicketMasterPage(TablePage):
                 #head['editor'] = 'com-table-switch-to-tab'
                 #head['tab_name'] = 'ticketstake'
                 #head['ctx_name'] = 'ticketmaster'
+            
+            if head['name'] =='betamount':
+                head['inn_editor'] = head['editor']
+                head['editor']='com-table-rich-span'
+                head['css']='.danger_bet{color:white;background:#FF4E4C}'
+                head['cell_class'] = 'rt= scope.row.betamount>3000?"danger_bet":""'
+            
             if head['name'] =='audit':
                 head['css']='.audit_danger{color:red}'
                 head['inn_editor'] = head['editor']
@@ -326,7 +333,7 @@ class TicketMasterPage(TablePage):
 
         def get_operation(self):
             return [
-                {'editor':'com-op-btn','label':'设置字段','icon': 'fa-gear',
+                {'editor':'com-op-btn','label':'设置列','icon': 'fa-gear',
                  'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"显示定制"})'},
                 {'editor':'com-op-table-refresh','label':'自动刷新频率','options':[
                     {'value':1*60*1000,'label':'1分钟'},
