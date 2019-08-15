@@ -141,8 +141,8 @@ class OtherWebMatchPage(TablePage):
         def clean_search_args(cls, search_args):
             if search_args.get('_first','1') == '1':
                 search_args['_first'] = '0'
-                search_args['_start_EventDateTime'] = ( timezone.now() ).strftime('%Y-%m-%d %H:%M:%S')
-                search_args['_end_EventDateTime'] = ( timezone.now() + timezone.timedelta(days=1) ).strftime('%Y-%m-%d %H:%M:%S')
+                search_args['_start_EventDateTime'] = timezone.now().strftime('%Y-%m-%d')+' 00:00:00'
+                search_args['_end_EventDateTime'] = ( timezone.now() + timezone.timedelta(days=1) ).strftime('%Y-%m-%d')+' 23:59:59'
             return search_args
         
         def getRowFilters(self):
@@ -158,9 +158,9 @@ class OtherWebMatchPage(TablePage):
                     {'value':1,'label':'是'},
                     {'value':2,'label':'否'}
                 ]},
-                {'name':'has_matched','label':'匹配情况','editor':'com-filter-select','options':[
-                    {'value':1,'label':'已匹配'},
-                    {'value':2,'label':'未匹配'}
+                {'name':'has_matched','label':'匹配','editor':'com-filter-select','options':[
+                    {'value':1,'label':'是'},
+                    {'value':2,'label':'否'}
                 ]},
                 {'name':'LeagueId','label':'联赛','editor':'com-filter-single-select2',
                  'placeholder':'请选择联赛','options':league_options},
