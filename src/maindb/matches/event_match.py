@@ -240,7 +240,7 @@ class WebMatchForm(Fields):
              'after_select':'ex.vueAssign(scope.row,scope.selected_row);',
              'table_ctx':MatchPicker().get_head_context(),'options':[]},
             
-            {'name':'TeamSwap','label':'交换主客队','editor':'com-field-bool'},
+            {'name':'TeamSwap','label':'交换主客队','editor':'com-field-bool','help_text':'第三方赛事主客队顺序和Betrader不一致，必须勾选此选项，否则数据有误!!!'},
             
             {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-field-label-shower','readonly':True,},
             {'name':'matchdate','label':'比赛日期(Betradar)','editor':'com-field-datetime','readonly':True},
