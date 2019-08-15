@@ -149,7 +149,6 @@ class OtherWebMatchPage(TablePage):
             return [
                 {'name':'Team','label':'球队名称','editor':'com-filter-text'},
                 {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
-                {'name':'LeagueId','label':'联赛','editor':'com-filter-single-select2','placeholder':'请选择联赛','options':league_options},
                 {'name':'ContrastStatus','label':'采集状态','editor':'com-filter-select','options':[
                     {'value':1,'label':'采集中'},
                     {'value':2,'label':'采集完成'}
@@ -162,6 +161,8 @@ class OtherWebMatchPage(TablePage):
                     {'value':1,'label':'已匹配'},
                     {'value':2,'label':'未匹配'}
                 ]},
+                {'name':'LeagueId','label':'联赛','editor':'com-filter-single-select2',
+                 'placeholder':'请选择联赛','options':league_options},
             ]
         
         def getRowPages(self):
