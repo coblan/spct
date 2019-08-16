@@ -92,6 +92,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            # 流失用户
            ('member.chum_user','','','single'), 
            
+           ('TbUserLog',model_read_permit(TbUserLog),model_to_name(TbUserLog),'model'),
+           
            ('TbLoginlog', model_read_permit(TbLoginlog), model_to_name(TbLoginlog), 'model'), 
            
            #------比赛----------------------------------------------
@@ -199,6 +201,7 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            #- 即时消息
            #('TbTodolist.edit',model_full_permit(TbTodolist),model_to_name(TbTodolist),'model'),
            ('todolist_1','','','single'),
+            ('todolist_2','','','single'),
            ('todolist_100','','','single'),
            
            ]

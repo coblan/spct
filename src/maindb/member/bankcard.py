@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelTable, ModelFields, TablePage, page_dc, director
+from helpers.director.shortcut import ModelTable, ModelFields, TablePage, page_dc, director,RowSort
 from helpers.director.table.table import RowSearch, RowFilter
 from ..models import TbBankcard
 from django.db.models import Q, fields
@@ -14,7 +14,7 @@ class BankCard(TablePage):
         model = TbBankcard
         exclude = ['account', 'banktypeid']
         fields_sort = ['bankcardid', 'accountid', 'cardno', 'bankaccountname', 'bankaccountmobil', 'banktypename',
-                       'bankprovince', 'bankcity', 'banksitename', 'creattime', 'active']
+                       'bankprovince', 'bankcity', 'banksitename','createtime', 'active']
         pop_edit_field='bankcardid'
 
         def get_operation(self):
@@ -84,6 +84,9 @@ class BankCard(TablePage):
 
         class filters(RowFilter):
             names = ['active']
+        
+        class sort(RowSort):
+            names = ['createtime']
 
 
 class BankCardForm(ModelFields):

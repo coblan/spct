@@ -12,6 +12,7 @@ from .member import loginlog
 from .member import operation_log
 from .member import relevent_user
 from .member import chum_user
+from .member import userlog
 
 from .matches import admin, matches, ticket_master,matches_statistics
 from .matches import basketball_matches

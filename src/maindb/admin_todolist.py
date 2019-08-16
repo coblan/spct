@@ -93,6 +93,8 @@ def get_todolist_catlist():
     cat_list=[]
     if has_permit(crt_user,'todolist_1'):
         cat_list.append(1) 
+    if has_permit(crt_user,'todolist_2'):
+        cat_list.append(2) 
     if has_permit(crt_user,'todolist_100'):
         cat_list.append(100)
     return cat_list

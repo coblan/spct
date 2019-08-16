@@ -25,14 +25,14 @@ class LoginLogPage(TablePage):
 
         def dict_head(self, head):
             dc = {
-                'accountid_id': 80,
+                'accountid_id': 120,
                 'devicecode': 120,
                 'deviceip': 120,
                 'appversion': 100,
                 'devicename': 120,
                 'deviceversion': 120,
                 'area': 200,
-                'createtime': 150
+                'createtime': 150,
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -48,7 +48,7 @@ class LoginLogPage(TablePage):
             return query.values(*self.fields_sort).order_by('-createtime')
 
         class search(SelectSearch):
-            names = ['accountid__nickname','area']
+            names = ['accountid__nickname','area','devicecode','deviceip']
             exact_names = ['accountid']
 
             def get_option(self, name):
@@ -65,6 +65,17 @@ class LoginLogPage(TablePage):
                         'value': name,
                         'label': '地区',
                     }
+                elif name =='devicecode':
+                    return {
+                        'value':name,
+                        'label':'设备码'
+                    }
+                elif name =='deviceip':
+                    return {
+                        'value':name,
+                        'label':'设备ip'
+                    }
+                
 
             def clean_search(self):
                 if self.qf in ['accountid']:

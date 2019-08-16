@@ -2774,6 +2774,23 @@ class TbUserRank(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_User_Rank'
+  
+class TbUserLog(models.Model):
+    id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    bid = models.CharField(db_column='BId', max_length=64)  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountId')  # Field name made lowercase.
+    account = models.ForeignKey(to=TbAccount,db_column='AccountId',verbose_name='账号',)
+    ipaddress = models.CharField(db_column='IpAddress', max_length=16,verbose_name='IP地址')  # Field name made lowercase.
+    operatetype = models.IntegerField(db_column='OperateType',choices=OPERATE_TYPE,verbose_name='操作类型')  # Field name made lowercase.
+    deviceid = models.CharField(db_column='DeviceId', max_length=255, blank=True, null=True,verbose_name='设备ID')  # Field name made lowercase.
+    terminal = models.IntegerField(db_column='Terminal',choices=TERMINAL_TYPE,verbose_name='终端')  # Field name made lowercase.
+    area = models.CharField(db_column='Area', max_length=255, blank=True, null=True,verbose_name='区域')  # Field name made lowercase.
+    arearemark = models.CharField(db_column='AreaRemark', max_length=255, blank=True, null=True,verbose_name = '区域标记')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_User_Log'
         
 class TbSporttypes(models.Model):
     tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.

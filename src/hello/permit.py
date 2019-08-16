@@ -7,6 +7,7 @@ def get_permit():
          'children': [
              
              {'label': '结算相关', 'value': 'todolist_1',}, 
+             {'label': '未结算订单', 'value': 'todolist_2',}, 
              {'label':'资金流','value':'todolist_100'},
              ],
          },
@@ -134,7 +135,7 @@ def get_permit():
                 #],}, 
              {'label':'关联用户','value':'member.relevent_user'},
              {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
-             
+             {'label':'用户日志','value':'TbUserLog'},
              ],
          }, 
         {'label': _('MoneyFlow'),

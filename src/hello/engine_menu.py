@@ -42,7 +42,7 @@ class PcMenu(BaseEngine):
                 {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbBankcard, crt_user), },
                 {'label': '关联用户', 'url': page('ReleventUser'), 'visible': has_permit( crt_user,'member.relevent_user'), },
                 {'label': '流失用户', 'url': page('chum_user'), 'visible': has_permit( crt_user,'member.chum_user'), },
-                
+                {'label':'用户日志','url':page('userlog'),'visible':can_touch(TbUserLog,crt_user)}
                  
              ]},
             {'label': '市场活动', 'icon': fa('fa-image'), 'visible': True,

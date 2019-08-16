@@ -406,6 +406,13 @@ TERMINAL_TYPE = (
     (3,'H5'),
     (4,'PC')
 )
+OPERATE_TYPE = (
+    (1,'下注'),
+    (2,'充值'),
+    (3,'登录'),
+    (4,'注册'),
+)
+
 
 ACTIVITY_RECORD_STATE=(
     (0,'正在进行'),
