@@ -303,7 +303,7 @@ class WebMatchForm(Fields):
             #else:
                 #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':True}})
         #else:
-        dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap')}
+        dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid')}
         mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         
         
@@ -356,13 +356,13 @@ def start_scrapy(rows,**kws):
         raise UserWarning('最多同时爬取20场比赛!')
     
     for row in rows:
-        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start','TeamSwap':row.get('TeamSwap')}
+        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start','TeamSwap':row.get('TeamSwap'),'EventId':row.get('eventid')}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
 @director_view('event_match.stop_scrapy')
 def start_scrapy(rows,**kws):
     for row in rows:
-        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop','TeamSwap':row.get('TeamSwap')}
+        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop','TeamSwap':row.get('TeamSwap'),'EventId':row.get('eventid')}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
 
