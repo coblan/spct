@@ -13,7 +13,7 @@ class ActiviyV2Page(TablePage):
         return 'jb_admin/table.html'
     
     def get_label(self):
-        return '活动管理V2'
+        return '优惠活动'
     
     def get_context(self):
         ctx = super().get_context()

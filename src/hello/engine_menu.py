@@ -56,7 +56,8 @@ class PcMenu(BaseEngine):
                  
                  {'label': _('Help'), 'url': page('help'), 'visible': can_touch(TbQa, crt_user), },
                  
-                {'label': '活动', 'url': page('activity_v2'), 'visible': can_touch(TbActivityV2, crt_user), },
+                {'label': '优惠活动', 'url': page('activity_v2'), 'visible': can_touch(TbActivityV2, crt_user), },
+                {'label':'活动记录','url':page('activity_record'),'visible':can_touch(TbActivityRecord,crt_user)},
                 #{'label': _('Activity'), 'url': page('activity'), 'visible': can_touch(TbActivity, crt_user), },
                 {'label': '用户留言', 'url': page('feedback'), 'visible': can_touch(TbAgentleavemsg, crt_user), },
                 {'label': '用户排行', 'visible': lambda liveitem:liveitem['submenu'], 
@@ -66,7 +67,7 @@ class PcMenu(BaseEngine):
                      ],},
                 {'label': '红利发放', 'url': page('bonuspage'),'visible': can_touch(TbBonuslog, crt_user), },
                 {'label':'启动广告','url':page('advertise'),'visible':can_touch(TbAdvertisement,crt_user)},
-                {'label':'活动记录','url':page('activity_record'),'visible':can_touch(TbActivityRecord,crt_user)}
+               
                 
              ]},
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,
