@@ -11,7 +11,7 @@ def get_permit():
              {'label':'资金流','value':'todolist_100'},
              ],
          },
-        { 'label': _('Marketing'),
+        { 'label': '市场活动',
          'children': [
              { 'label': _('Banner'), 'children': [
                  {'label': '查看', 'value': 'TbBanner'}, 
@@ -33,12 +33,13 @@ def get_permit():
                  {'label': '编辑', 'value': 'TbQa.edit','depend': ['TbQa']}, 
                  {'label': '更新缓存', 'value': 'TbQa.update_cache', 'depend': ['TbQa' , 'TbQa.edit',],}
                  ]}, 
-             { 'label': '活动', 'children': [
+             { 'label': '优惠活动', 'children': [
                  {'label': '查看', 'value': 'TbActivityV2',}, 
                  {'label': '编辑', 'value': 'TbActivityV2.edit', 'depend': ['TbActivityV2'],}, 
                  {'label': '更新缓存', 'value': 'TbActivityV2.update_cache', 'depend': ['TbActivityV2', 'TbActivityV2.edit', ],},
                  {'label':'活动设置','value':'TbActivitySettings.edit','depend':['TbActivityV2']}
                  ]}, 
+            {'label':'活动记录','value':'TbActivityRecord'},
             { 'label': '代理用户留言', 'value': 'TbAgentleavemsg',}, 
             
             { 'label': '用户排行', 'children':[
@@ -50,7 +51,7 @@ def get_permit():
                 {'label': '查看', 'value': 'Bonuse-dispatch',}, 
                 {'label': '编辑', 'value': 'Bonuse-dispatch.edit', 'depend': ['Bonuse-dispatch','TbAccount'],}, 
                          ]}, 
-            {'label':'活动日志','value':'TbActivityRecord'},
+          
              ]
          }, 
         { 'label': '基本信息',
