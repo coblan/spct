@@ -49,6 +49,7 @@ def get_permit():
                 {'label': '查看', 'value': 'Bonuse-dispatch',}, 
                 {'label': '编辑', 'value': 'Bonuse-dispatch.edit', 'depend': ['Bonuse-dispatch','TbAccount'],}, 
                          ]}, 
+            {'label':'活动日志','value':'TbActivityRecord'},
              ]
          }, 
         { 'label': '基本信息',

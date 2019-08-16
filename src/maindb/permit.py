@@ -29,6 +29,7 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbActivityV2.edit', model_full_permit(TbActivityV2), model_to_name(TbActivityV2), 'model'), 
            ('TbActivityV2.update_cache', '', '', 'single'), 
            ('TbActivitySettings.edit', model_full_permit(TbActivitySettings), model_to_name(TbActivitySettings), 'model'),
+           ('TbActivityRecord',model_read_permit(TbActivityRecord),model_to_name(TbActivityRecord),'model'),
            
            # 代理公告
            ('TbAgentnotice.edit',model_full_permit(TbAgentnotice),model_to_name(TbAgentnotice),'model'),

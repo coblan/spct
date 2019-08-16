@@ -66,6 +66,7 @@ class PcMenu(BaseEngine):
                      ],},
                 {'label': '红利发放', 'url': page('bonuspage'),'visible': can_touch(TbBonuslog, crt_user), },
                 {'label':'启动广告','url':page('advertise'),'visible':can_touch(TbAdvertisement,crt_user)},
+                {'label':'活动记录','url':page('activity_record'),'visible':can_touch(TbActivityRecord,crt_user)}
                 
              ]},
             {'label': _('Basic Info'), 'icon': fa('fa-book'), 'visible': True,
