@@ -429,6 +429,7 @@ ZERO_ONE_STATUS=(
 TODOLIST_CATEGORY=(
     (0,'未知'),
     (1,'结算相关'),
+    (2,'结算提醒'),
     (100,'资金流'),
 )
 TODOLIST_STATUS=(
