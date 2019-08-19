@@ -96,7 +96,9 @@ class OtherWebMatchPage(TablePage):
                  'width':100,'options':[
                     #{'value':0,'label':'未爬取'},
                     {'value':1,'label':'采集中'},
-                    {'value':2,'label':'采集停止'},
+                    {'value':2,'label':'手动停止'},
+                    {'value':3,'label':'异常停止'},
+                    {'value':4,'label':'采集完成'},
                     ]},
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-table-bool-shower'}
             ]
@@ -152,7 +154,9 @@ class OtherWebMatchPage(TablePage):
                 {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
                 {'name':'ContrastStatus','label':'采集状态','editor':'com-filter-select','options':[
                     {'value':1,'label':'采集中'},
-                    {'value':2,'label':'采集停止'}
+                    {'value':2,'label':'手动停止'},
+                    {'value':3,'label':'异常停止'},
+                    {'value':4,'label':'采集完成'},
                 ]},
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-filter-select','options':[
                     {'value':1,'label':'是'},

@@ -98,7 +98,10 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            
            #------比赛----------------------------------------------
            
+           # 老的比赛表名，但是现在对应的新表，为了兼容老的权限
            ('TbMatches', model_read_permit(TbMatch), model_to_name(TbMatch), 'model'), 
+           
+           ('TbMatch', model_read_permit(TbMatch), model_to_name(TbMatch), 'model'), 
            ('TbMatch.isrecommend',json.dumps({'write':['isrecommend']}),model_to_name(TbMatch),'model'),
            ('TbMatch.hasliveodds',json.dumps({'write':['hasliveodds']}),model_to_name(TbMatch),'model'),
            ('TbMatch.ishidden',json.dumps({'write':['ishidden']}),model_to_name(TbMatch),'model'),
@@ -186,7 +189,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            
            ('TbBetfullrecord',model_read_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
            ('TbBetfullrecord.edit',model_full_permit(TbBetfullrecord),model_to_name(TbBetfullrecord),'model'),
-           # 会员 全标签  , 因为 TbBetfullrecord.edit 没有权限ui，所以只能在这里做一个集合来取它的值
+           # 会员全标签  , 因为 TbBetfullrecord.edit 没有权限ui，所以只能在这里做一个集合来取它的值
+           # 现在不用这个权限了，全部展开了
            ('TbAccount.all_tab',';'.join(['TbAccount.edit', 'TbBalancelog', 'TbLoginlog', 'TbBankcard', 'TbBankcard.edit', 'TbRecharge.edit',
                                 'TbWithdraw.edit','TbBetfullrecord.edit']),'','set'),
            

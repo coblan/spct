@@ -334,7 +334,7 @@ class TicketMasterPage(TablePage):
         def get_operation(self):
             return [
                 {'editor':'com-op-btn','label':'设置列','icon': 'fa-gear',
-                 'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"显示定制"})'},
+                 'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"设置列"})'},
                 {'editor':'com-op-table-refresh','label':'自动刷新频率','options':[
                     {'value':1*60*1000,'label':'1分钟'},
                     {'value':2*60*1000,'label':'2分钟'},

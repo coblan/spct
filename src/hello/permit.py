@@ -115,13 +115,26 @@ def get_permit():
         { 'label': _('Member'),
          'children': [
              {'label': _('Tb Account'), 'children': [
-                {'label': '查看', 'value': 'TbAccount',}, 
-                {'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
-                
-                {'label': '所有标签(全功能)', 'value': 'TbAccount.all_tab', 'depend': ['TbAccount.edit', 
-                                'TbBalancelog', 'TbLoginlog', 'TbBankcard', 'TbBankcard.edit', 'TbRecharge.edit',
-                                'TbWithdraw.edit',],}, 
-               
+                {'label':'基本信息','children':[
+                      {'label': '查看', 'value': 'TbAccount',}, 
+                      {'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
+                    ]},
+                #{'label':'账目记录','value':'TbBalancelog'},
+                #{'label':'银行卡','children':[
+                      #{'label': '查看', 'value': 'TbBankcard',}, 
+                      #{'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
+                #]},
+                #{'label':'充值记录','value':'TbRecharge'},
+                #{'label':'提现记录','value':'TbWithdraw'},
+                #{'label':'注单','value':'TbTicketmaster_all_tab_read'},
+                #{'label':'登录日志','value':'TbLoginlog'},
+                #{'label':'会员统计','value':'member_statistic'},
+                #{'label':'赛事统计','value':'TbMatch'},
+              
+            
+                #{'label': '所有标签(全功能)', 'value': 'TbAccount.all_tab', 'depend': ['TbAccount.edit', 
+                                #'TbBalancelog', 'TbLoginlog', 'TbBankcard', 'TbBankcard.edit', 'TbRecharge.edit',
+                                #'TbWithdraw.edit',],}, 
                 ],}, 
              
              {'label': _('Tb Balance Log'), 'value': 'TbBalancelog', }, 
@@ -137,6 +150,10 @@ def get_permit():
              {'label':'关联用户','value':'member.relevent_user'},
              {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
              {'label':'用户日志','value':'TbUserLog'},
+            {'label':'限额记录','children':[
+                    {'label': '查看', 'value': 'TbBetfullrecord',}, 
+                    {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
+                ]}
              ],
          }, 
         {'label': _('MoneyFlow'),
