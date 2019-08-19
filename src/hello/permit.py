@@ -1,11 +1,14 @@
 from helpers.director.base_data import site_cfg
+from helpers.director.shortcut import director_element
+
 from django.utils.translation import ugettext as _
 
-def get_permit(): 
-    permit = [
+@director_element('permit.options')
+def get_permit(ui=None): 
+    
+    permit1 =[
         {'label': '待办事项',
          'children': [
-             
              {'label': '结算相关', 'value': 'todolist_1',}, 
              {'label': '结算提醒', 'value': 'todolist_2',}, 
              {'label':'资金流','value':'todolist_100'},
@@ -27,7 +30,6 @@ def get_permit():
                  {'label': '更新缓存','value': 'TbNotice.update_cache', 'depend': [ 'TbNotice', 'TbNotice.edit'],}, 
                  ],},
              {'label':'代理公告','value':'TbAgentnotice.edit'},
-             #{ 'label': _('Notice'), 'value': 'TbNotice',}, 
              { 'label': _('Help'), 'children':[
                  {'label': '查看', 'value': 'TbQa',}, 
                  {'label': '编辑', 'value': 'TbQa.edit','depend': ['TbQa']}, 
@@ -51,10 +53,9 @@ def get_permit():
                 {'label': '查看', 'value': 'Bonuse-dispatch',}, 
                 {'label': '编辑', 'value': 'Bonuse-dispatch.edit', 'depend': ['Bonuse-dispatch','TbAccount'],}, 
                          ]}, 
-          
              ]
          }, 
-        { 'label': '基本信息',
+               { 'label': '基本信息',
          'children': [
              {'label': '运动类型', 'children': [
                  {'label': '查看', 'value': 'TbSporttypes',}, 
@@ -67,20 +68,6 @@ def get_permit():
                  {'label':'推荐','value':'TbTournament.isrecommend','depend': ['TbTournament']},
                  {'label': '编辑(除订阅、走地、推荐)', 'value': 'TbTournament.edit', 'depend': ['TbTournament'],}
                     ],}, 
-             #{'label': '篮球联赛资料', 'children': [
-                 #{'label': '查看', 'value': 'TbTournamentBasketball',}, 
-                 #{'label': '编辑', 'value': 'TbTournamentBasketball.edit', 'depend': ['TbTournamentBasketball'],}
-                            #],}, 
-             
-             #{'label': '足球队资料', 'children': [
-                 #{'label': '查看', 'value': 'TbTeams',}, 
-                 #{'label': '编辑', 'value': 'TbTeams.edit', 'depend': ['TbTeams'],}
-                    #],}, 
-             #{'label': '篮球队资料', 'children': [
-                 #{'label': '查看', 'value': 'TbTeamsBasketball',}, 
-                 #{'label': '编辑', 'value': 'TbTeamsBasketball.edit', 'depend': ['TbTeamsBasketball'],}
-                           #],}, 
-
              {'label': '充值渠道', 'children': [
                  {'label': '查看', 'value': 'TbPaychannel',}, 
                  {'label': '编辑', 'value': 'TbPaychannel.edit', 'depend': ['TbPaychannel'],}
@@ -106,12 +93,52 @@ def get_permit():
                  {'label': '查看', 'value': 'TbCurrency',}, 
                  {'label': '编辑', 'value': 'TbCurrency.edit', 'depend': ['TbCurrency'],}
                               ],}, 
-             
-             #{'label': _('Tb Balance Log'), 'value': 'TbBalancelog', }, 
-          
              ],
          }, 
-        
+        { 'label': _('Member'),
+         'children': [
+             {'label': _('Tb Account'), 'children': [
+                {'label':'基本信息','children':[
+                      {'label': '查看', 'value': 'TbAccount',}, 
+                      {'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
+                    ]},
+                #{'label':'账目记录','value':'TbBalancelog'},
+                #{'label':'银行卡','children':[
+                      #{'label': '查看', 'value': 'TbBankcard',}, 
+                      #{'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
+                #]},
+                #{'label':'充值记录','value':'TbRecharge'},
+                #{'label':'提现记录','value':'TbWithdraw'},
+                #{'label':'注单','value':'TbTicketmaster_all_tab_read'},
+                #{'label':'登录日志','value':'TbLoginlog'},
+                #{'label':'会员统计','value':'member_statistic'},
+                #{'label':'赛事统计','value':'TbMatch'},
+              
+            
+                #{'label': '所有标签(全功能)', 'value': 'TbAccount.all_tab', 'depend': ['TbAccount.edit', 
+                                #'TbBalancelog', 'TbLoginlog', 'TbBankcard', 'TbBankcard.edit', 'TbRecharge.edit',
+                                #'TbWithdraw.edit',],}, 
+                ],}, 
+             
+             {'label': _('Tb Balance Log'), 'value': 'TbBalancelog', }, 
+             {'label': _('Tb Login Log'), 'value': 'TbLoginlog',}, 
+             {'label': '银行卡', 'children': [
+                {'label': '查看', 'value': 'TbBankcard',}, 
+                {'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
+                ],}, 
+            #{'label': '限额记录', 'children': [
+                #{'label': '查看', 'value': 'TbBetfullrecord',}, 
+                #{'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
+                #],}, 
+             {'label':'关联用户','value':'member.relevent_user'},
+             {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
+             {'label':'用户日志','value':'TbUserLog'},
+            {'label':'限额记录','children':[
+                    {'label': '查看', 'value': 'TbBetfullrecord',}, 
+                    {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
+                ]}
+             ],
+         }, 
         { 'label': _('Member'),
          'children': [
              {'label': _('Tb Account'), 'children': [
@@ -279,9 +306,6 @@ def get_permit():
                 {'label': '编辑', 'value': 'TbAgentcommission.edit',},
                          ],}
             ],
-         
-         
-         
         
         }, 
         
@@ -298,7 +322,82 @@ def get_permit():
              ],
          },
     ]
-    return permit
+    permit_member =  [ 
+       { 'label': '会员管理',
+         'children': [
+             {'label': _('Tb Account'), 'children': [
+                {'label':'基本信息','children':[
+                      {'label': '查看', 'value': 'TbAccount',}, 
+                      {'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
+                    ]},
+                {'label':'账目记录','value':'TbBalancelog'},
+                {'label':'银行卡','children':[
+                      {'label': '查看', 'value': 'TbBankcard',}, 
+                      {'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
+                ]},
+                {'label':'充值记录','value':'TbRecharge'},
+                {'label':'提现记录','value':'TbWithdraw'},
+                {'label':'注单','value':'TbTicketmaster_all_tab_read'},
+                {'label':'登录日志','value':'TbLoginlog'},
+                {'label':'会员统计','value':'member_statistic'},
+                {'label':'赛事统计','value':'TbMatch'},
+                
+                {'label':'限额记录','children':[
+                    {'label': '查看', 'value': 'TbBetfullrecord',}, 
+                    {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
+                ]},
+                
+            ],}, 
+             
+             {'label':'关联用户','value':'member.relevent_user'},
+             {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
+             {'label':'用户日志','value':'TbUserLog'},
+
+             ],
+         }
+        ]
+    permit_match =[
+        {'label': '比赛列表(按钮)',#_('Tb Match'), 
+         'children': [
+            {'label':'推荐','value':'TbMatch.isrecommend'},
+            {'label':'走地','value':'TbMatch.hasliveodds'},
+            {'label':'显示/隐藏','value':'TbMatch.ishidden'},
+            {'label':'退单','value':'TbMatch.quit_ticket'},
+            {'label': '编辑(除推荐、走地、显示)', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],},
+             ],
+        }, 
+        {'label':'标签页','children':[
+            {'label': '查看', 'value': 'TbMatches',}, 
+            {'label':'比分','value':'TbPeriodscore'},
+            {'label':'危险球','value':'TbLivefeed.edit'},
+            {'label':'盘口','value':'manual_specialbetvalue'},
+            {'label':'手动结算','value':'manual_outcome','depend':['TbMarkets']},
+            ]},
+        {'label': '玩法设置', 'children':[
+                 {'label':'查看','value':'TbMarkets'},
+                 {'label':'修改','value': 'TbMarkets.edit','depend':['TbMarkets']}
+             ]} ,
+        {'label': _('Tb TicketMaster'), 'children': [
+                 {'label': '查看', 'value': 'TbTicketmaster_all_tab_read','depend':['TbMatches']}, 
+                 {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', ],}
+                 ]},   
+        {'label': '调水模板', 'value':'TbAdjusttemplate.edit'},  
+    ]
+    if ui is None:
+        return permit1
+    elif ui =='member':
+        return permit_member
+    elif ui=='match':
+        return permit_match
+
+@director_element('permit.ui_options')
+def permit_ui_options():
+    return [
+        #{'value':'admin_menu','label':'管理后台菜单'},
+        {'value':'member','label':'会员管理(标签页)'},
+        {'value':'match','label':'比赛列表(标签页)'}
+     ]
 
 site_cfg['permit.options'] = get_permit
+
 #permit_dc['__root__'] = permit
