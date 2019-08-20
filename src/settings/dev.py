@@ -209,7 +209,7 @@ LOGGING = {
 
 
 WEBSOCKET={
-    'url': "wss://mq.mv03.com/websocket",
+    'url': "wss://mq.mv03.com:50443/websocket",
     'user': "stageuser",
     'pswd': "YXNkZmFmc2RmbAo"
 }

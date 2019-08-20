@@ -2,6 +2,7 @@ from helpers.director.base_data import site_cfg
 from helpers.director.shortcut import director_element
 
 from django.utils.translation import ugettext as _
+from helpers.func.nav_data import walk_dict
 
 @director_element('permit.options')
 def get_permit(ui=None): 
@@ -383,12 +384,21 @@ def get_permit(ui=None):
                  ]},   
         {'label': '调水模板', 'value':'TbAdjusttemplate.edit'},  
     ]
+    out_permit = []
     if ui is None:
-        return permit1
+        out_permit = permit1
     elif ui =='member':
-        return permit_member
+        out_permit = permit_member
     elif ui=='match':
-        return permit_match
+        out_permit = permit_match
+    
+    out_list =[]
+    for ns in walk_dict(out_permit):
+        if ns.get('value'):
+            if ns.get('value') in out_list:
+                raise UserWarning('%s发生了重复'%ns.get('value'))
+            out_list.append(out_list)
+    return out_permit
 
 @director_element('permit.ui_options')
 def permit_ui_options():

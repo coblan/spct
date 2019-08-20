@@ -1,6 +1,6 @@
 from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fields,ModelTable,director_view
 from maindb.mongoInstance import mydb
-from maindb.models import TbMatch
+from maindb.models import TbMatch,TbSporttypes
 from maindb.matches.matches import MatchsPage
 from maindb.rabbitmq_instance import notifyScrapyMatch
 import json
@@ -52,6 +52,8 @@ class OtherWebMatchPage(TablePage):
                     self.filter_args['MatchID'] = {'$exists':True}
                 else:
                     self.filter_args['MatchID'] = {'$exists':False}
+            if self.search_args.get('SportId'):
+                self.filter_args['SportId'] = self.search_args.get('SportId')
   
         
         def get_head_context(self):
@@ -100,7 +102,8 @@ class OtherWebMatchPage(TablePage):
                     {'value':3,'label':'异常停止'},
                     {'value':4,'label':'采集完成'},
                     ]},
-                {'name':'TeamSwap','label':'交换主客队','editor':'com-table-bool-shower'}
+                {'name':'TeamSwap','label':'交换主客队','editor':'com-table-bool-shower'},
+                {'name':'Reason','label':'原因','editor':'com-table-span'},
             ]
         
         def get_rows(self):
@@ -166,6 +169,9 @@ class OtherWebMatchPage(TablePage):
                     {'value':1,'label':'是'},
                     {'value':2,'label':'否'}
                 ]},
+                {'name':'SportId','label':'体育类型','editor':'com-filter-select','options':[
+                    {'label':str(x),'value':x.pk} for x in TbSporttypes.objects.filter(enabled=True)
+                    ]},
                 {'name':'LeagueId','label':'联赛','editor':'com-filter-single-select2',
                  'placeholder':'请选择联赛','options':league_options},
             ]
