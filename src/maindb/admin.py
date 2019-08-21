@@ -69,6 +69,6 @@ from .yunwei import domain
 from .yunwei import badurl
 
 from .programer import admin
-from helpers.director.base_data import site_cfg,field_map
+from helpers.director.base_data import inspect_dict,field_map
 
-site_cfg['inspect_dict']['field_map'] = field_map
+inspect_dict['field_map'] = field_map

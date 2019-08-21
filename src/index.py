@@ -94,6 +94,8 @@ page_dc = {
     # 三方网站比赛匹配
     "web_match_data"	:maindb.matches.event_match.OtherWebMatchPage,
     "newleaguegroup"	:maindb.riskcontrol.new_league_group.LeagueGroupPage,
+    "userlog"	:maindb.member.userlog.UserlogPage,
+    "activity_record"	:maindb.marketing.activity_record.ActivityRecoredPage,
 }
 director = {
     "cloudfile_uploader"	:maindb.cus_models_fields.CloudFileUploader,
@@ -288,6 +290,10 @@ director = {
     "matchpicker"	:maindb.matches.event_match.MatchPicker,
     "newleaguegroup"	:maindb.riskcontrol.new_league_group.LeagueGroupPage.tableCls,
     "newleaguegroup.edit"	:maindb.riskcontrol.new_league_group.LeagureGroupForm,
+    "userlog"	:maindb.member.userlog.UserlogPage.tableCls,
+    "activity_record"	:maindb.marketing.activity_record.ActivityRecoredPage.tableCls,
+    "permit.options"	:hello.permit.get_permit,
+    "permit.ui_options"	:hello.permit.permit_ui_options,
 }
 director_views = {
     "get_row"	:helpers.director.dapi.get_row,
@@ -312,6 +318,9 @@ director_views = {
     "todolist.get_counter"	:maindb.admin_todolist.get_counter,
     "trend_data"	:hello.admin.trend_data,
     "batch_recommand"	:maindb.matches.matches.batch_recommand,
+    "d.save_row"	:helpers.director.dapi.save_row,
+    "event_match.start_scrapy"	:maindb.matches.event_match.start_scrapy,
+    "event_match.stop_scrapy"	:maindb.matches.event_match.start_scrapy,
 }
 sim_signal = {
     "notice.static.changed"	:[maindb.update_cache.clear_notice_cache],
@@ -356,3 +365,5 @@ field_map = {
     "maindb.tbrechargeareablacklist.status"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
     "maindb.tbleaguegroup.enabled"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
 }
+
+

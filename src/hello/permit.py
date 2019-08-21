@@ -1,4 +1,4 @@
-from helpers.director.base_data import site_cfg
+
 from helpers.director.shortcut import director_element
 
 from django.utils.translation import ugettext as _
@@ -324,9 +324,7 @@ def get_permit(ui=None):
          },
     ]
     permit_member =  [ 
-       { 'label': '会员管理',
-         'children': [
-             {'label': _('Tb Account'), 'children': [
+        {'label':'会员列表(标签页)','children':[
                 {'label':'基本信息','children':[
                       {'label': '查看', 'value': 'TbAccount',}, 
                       {'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
@@ -347,13 +345,12 @@ def get_permit(ui=None):
                     {'label': '查看', 'value': 'TbBetfullrecord',}, 
                     {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
                 ]},
-                
-            ],}, 
-             
-             {'label':'关联用户','value':'member.relevent_user'},
-             {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
-             {'label':'用户日志','value':'TbUserLog'},
-
+            ]},
+       { 'label': '会员管理',
+         'children': [
+            {'label':'关联用户','value':'member.relevent_user'},
+            {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
+            {'label':'用户日志','value':'TbUserLog'},
              ],
          }
         ]
@@ -367,7 +364,7 @@ def get_permit(ui=None):
             {'label': '编辑(除推荐、走地、显示)', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],},
              ],
         }, 
-        {'label':'标签页','children':[
+        {'label':'比赛列表(标签页)','children':[
             {'label': '查看', 'value': 'TbMatches',}, 
             {'label':'比分','value':'TbPeriodscore'},
             {'label':'危险球','value':'TbLivefeed.edit'},
@@ -404,10 +401,9 @@ def get_permit(ui=None):
 def permit_ui_options():
     return [
         #{'value':'admin_menu','label':'管理后台菜单'},
-        {'value':'member','label':'会员管理(标签页)'},
-        {'value':'match','label':'比赛列表(标签页)'}
+        {'value':'member','label':'会员管理'},
+        {'value':'match','label':'比赛列表'}
      ]
 
-site_cfg['permit.options'] = get_permit
 
 #permit_dc['__root__'] = permit
