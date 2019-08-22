@@ -245,8 +245,8 @@ class WebMatchForm(Fields):
             scope.head.table_ctx.par_row=scope.row; 
             scope.head.table_ctx.search_args._q = scope.row.Team1En.replace(/-/g,' ');
             scope.head.table_ctx.search_args._qf = "teamname";
-            scope.head.table_ctx.search_args._start_matchdate=scope.row.EventDateTime;
-            scope.head.table_ctx.search_args._end_matchdate=scope.row.EventDateTime; 
+            Vue.set(scope.head.table_ctx.search_args,"_start_matchdate",scope.row.EventDateTime)
+            Vue.set(scope.head.table_ctx.search_args,"_end_matchdate",scope.row.EventDateTime)
              ''',
              'after_select':'ex.vueAssign(scope.row,scope.selected_row);',
              'table_ctx':MatchPicker().get_head_context(),'options':[],},
