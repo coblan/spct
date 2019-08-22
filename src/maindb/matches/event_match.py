@@ -236,9 +236,10 @@ class WebMatchForm(Fields):
         return [
             {'name':'LeagueZh','label':'联赛','editor':'com-field-linetext','readonly':True,},
             {'name':'EventDateTime','label':'比赛日期','editor':'com-field-datetime','readonly':True},
-            {'name':'Team1En','label':'主队英文名','editor':'com-field-linetext','readonly':True,'css':'.group_info_compare .field-input-td span{width:200px;height:30px;display:inline-block;padding:3px;background:#F5F5F5;border:1px solid #EBEBEB;color:grey}'},
+            {'name':'Team1En','label':'主队英文名','editor':'com-field-linetext','readonly':True,'css':'''.enname1.field-input-td .field-input span{color:red}
+            .group_info_compare .field-input-td span{width:200px;}''','class':'enname1'},
             {'name':'Team1Zh','label':'主队中文名','editor':'com-field-linetext','readonly':True},
-            {'name':'Team2En','label':'客队英文名','editor':'com-field-linetext','readonly':True},
+            {'name':'Team2En','label':'客队英文名','editor':'com-field-linetext','readonly':True,'css':'.enname2.field-input-td .field-input span{color:blue}','class':'enname2'},
             {'name':'Team2Zh','label':'客队中文名','editor':'com-field-linetext','readonly':True},
             {'name':'MatchID','label':'比赛','editor':'com-field-pop-table-select',
              'init_express':'''
@@ -247,6 +248,7 @@ class WebMatchForm(Fields):
             scope.head.table_ctx.search_args._qf = "teamname";
             Vue.set(scope.head.table_ctx.search_args,"_start_matchdate",scope.row.EventDateTime)
             Vue.set(scope.head.table_ctx.search_args,"_end_matchdate",scope.row.EventDateTime)
+
              ''',
              'after_select':'ex.vueAssign(scope.row,scope.selected_row);',
              'table_ctx':MatchPicker().get_head_context(),'options':[],},
@@ -255,9 +257,9 @@ class WebMatchForm(Fields):
             
             {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-field-label-shower','readonly':True,},
             {'name':'matchdate','label':'比赛日期(Betradar)','editor':'com-field-datetime','readonly':True},
-            {'name':'team1en','label':'主队英文名(Betradar)','editor':'com-field-linetext','readonly':True},
+            {'name':'team1en','label':'主队英文名(Betradar)','editor':'com-field-linetext','readonly':True,'class':'enname1'},
             {'name':'team1zh','label':'主队中文名(Betradar)','editor':'com-field-linetext','readonly':True},
-            {'name':'team2en','label':'客队英文名(Betradar)','editor':'com-field-linetext','readonly':True},
+            {'name':'team2en','label':'客队英文名(Betradar)','editor':'com-field-linetext','readonly':True,'class':'enname2'},
             {'name':'team2zh','label':'客队中文名(Betradar)','editor':'com-field-linetext','readonly':True},
 
         ]
