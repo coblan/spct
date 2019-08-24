@@ -1,7 +1,9 @@
-from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowFilter,SelectSearch
+from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowFilter,SelectSearch,RowSort
 from ..models import TbAccount 
 from django.core.exceptions import PermissionDenied
 from helpers.director.access.permit import has_permit
+from django.db.models import F
+from django.utils import timezone
 
 class ChumUser(TablePage):
     
@@ -19,6 +21,7 @@ class ChumUser(TablePage):
         model = TbAccount
         exclude=['password','fundspassword','agent','pwupdatetime','avatar',
                  'gender','birthday','points','codeid','parentid','isriskleveldown','phone','cashchannel']
+        hide_fields =['lastbettime']
         
         def dict_head(self, head):
             width_dc={
@@ -32,6 +35,11 @@ class ChumUser(TablePage):
                 head['width']=width_dc.get(head['name'])
             return head
         
+        def getExtraHead(self):
+            return [
+                {'name':'sleep_days','label':'休眠天数','editor':'com-table-span'},
+            ]
+        
         def inn_filter(self, query):
             return query.filter(sumrechargecount__lte=1)
         
@@ -40,10 +48,29 @@ class ChumUser(TablePage):
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
             ]
         
-        class filters(RowFilter):
-            names=['accounttype','groupid']
-            range_fields = ['createtime']   
+        def dict_row(self, inst):
+            now = timezone.now()
+            return {
+                'sleep_days': inst.lastbettime.days if inst.lastbettime else ''
+            }
         
+        class sort(RowSort):
+            names = ['sleep_days']
+            
+            def get_query(self, query):
+                if self.sort_str =='sleep_days':
+                    return query.order_by('-lastbettime')
+                elif self.sort_str =='-sleep_days':
+                    return  query.order_by('lastbettime')
+                else:
+                    return query
+                
+            
+        
+        class filters(RowFilter):
+            names=['accounttype','groupid','source']
+            range_fields = ['createtime']   
+            
         class search(SelectSearch):
             names = ['nickname']
             exact_names = ['accountid']

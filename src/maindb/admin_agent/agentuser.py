@@ -363,6 +363,7 @@ class ParentForm(Fields):
         if accout.accountid == self.kw.get('parentid'):
             raise UserWarning('不能选择自己作为自己的上级')
         accout.parentid = self.kw.get('parentid')
+        accout.source = 4
         accout.save()
         
     

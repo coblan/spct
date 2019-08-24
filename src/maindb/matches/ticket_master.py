@@ -318,9 +318,12 @@ class TicketMasterPage(TablePage):
             for k in dc:
                 dc[k] = str(round(dc.get(k, 0) or 0, 2))
             normed_dc = {mapper.get(k): v for (k, v) in dc.items()}
-            #footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
-            self.footer = self.footer_by_dict(normed_dc)
-            self.footer = ['合计'] + self.footer
+            normed_dc.update({
+                'meta_footer_label':'合计'
+            })
+            #self.footer = self.footer_by_dict(normed_dc)
+            #self.footer = ['合计'] + self.footer
+            self.footer = normed_dc
             return query
         
         def get_head_context(self):
