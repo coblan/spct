@@ -51,9 +51,14 @@ class RechargePage(TablePage):
             }
             for k in dc:
                 dc[k] = str(round(dc.get(k) or 0, 2))
-            footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
-            self.footer = footer
-            self.footer = ['合计'] + self.footer
+            self.footer={
+                '_label':'合计',
+                'amount':dc.get('total_amount'),
+                'confirmamount':dc.get('total_confirmamount')
+            }
+            #footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
+            #self.footer = footer
+            #self.footer = ['合计'] + self.footer
             return query
 
         def inn_filter(self, query):

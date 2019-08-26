@@ -69,9 +69,13 @@ class AgentCommission(TablePage):
             }
             for k in dc:
                 dc[k] = str(round(dc[k], 2)) if dc[k] else ''
-            footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
-            self.footer = footer
-            self.footer = ['合计'] + self.footer
+            #footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
+            #self.footer = footer
+            #self.footer = ['合计'] + self.footer
+            out_dc ={}
+            for k,v in mapper.items():
+                out_dc[k] = dc.get(v)
+            self.footer = out_dc
             return query
 
         class sort(RowSort):

@@ -319,7 +319,7 @@ class TicketMasterPage(TablePage):
                 dc[k] = str(round(dc.get(k, 0) or 0, 2))
             normed_dc = {mapper.get(k): v for (k, v) in dc.items()}
             normed_dc.update({
-                'meta_footer_label':'合计'
+                '_label':'合计'
             })
             #self.footer = self.footer_by_dict(normed_dc)
             #self.footer = ['合计'] + self.footer

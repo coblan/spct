@@ -187,7 +187,7 @@ class AgentUser(TablePage):
                         if k != 'Total' and k.startswith('Total'):
                             normed_v = v or 0
                             footer[k[5:]] = round(normed_v, 2)
-                    self.footer = ['合计'] + self.footer_by_dict(footer)
+                    self.footer = footer #['合计'] + self.footer_by_dict(footer)
                             
             # 保持 _par参数为空状态，可以判断 前端操作是 搜索or点击
 

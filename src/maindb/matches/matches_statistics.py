@@ -156,7 +156,7 @@ class MatchesStatisticsPage(TablePage):
                         dc[head_name] = round(row[index], 2)
                     self.footer_dc = dc
 
-                self.footer = ['合计'] + self.footer_by_dict(self.footer_dc)[0:]
+                self.footer = self.footer_dc #['合计'] + self.footer_by_dict(self.footer_dc)[0:]
 
         def getExtraHead(self):
             return [

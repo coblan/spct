@@ -140,7 +140,10 @@ class UserStatisticsPage(TablePage):
                     if head_name.startswith('Sum'):
                         head_name = head_name[3:]
                     footer[head_name] = round(col_data, 2)
-                self.footer = ['合计'] + self.footer_by_dict(footer)
+                footer.update({
+                    '_label':'合计'
+                })
+                self.footer =  footer # ['合计'] + self.footer_by_dict(footer)
 
                 cursor.nextset()
                 self.matches = []

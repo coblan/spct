@@ -234,10 +234,10 @@ class AccountPage(TablePage):
             #self.footer = ['合计'] + self.footer
             #return query.order_by('-pk')
 
-        def get_context(self):
-            ctx = ModelTable.get_context(self)
-            ctx['footer'] = self.footer
-            return ctx
+        #def get_context(self):
+            #ctx = ModelTable.get_context(self)
+            #ctx['footer'] = self.footer
+            #return ctx
 
         def getExtraHead(self):
             return [{'name': 'rechargeamount', 'label': '充值金额'}, 

@@ -44,15 +44,16 @@ class BalancelogPage(TablePage):
             }
             for k in dc:
                 dc[k] = str(round(dc.get(k) or 0, 2))
-            footer = [dc.get(mapper.get(name), '') for name in self.include]
-            self.footer = footer
-            self.footer = ['合计'] + self.footer
+            self.footer = {'amount':dc.get('total_amount'),'_label':'合计'}
+            #footer = [dc.get(mapper.get(name), '') for name in self.include]
+            #self.footer = footer
+            #self.footer = ['合计'] + self.footer
             return query
 
-        def get_context(self):
-            ctx = ModelTable.get_context(self)
-            ctx['footer'] = self.footer
-            return ctx
+        #def get_context(self):
+            #ctx = ModelTable.get_context(self)
+            #ctx['footer'] = self.footer
+            #return ctx
 
         def inn_filter(self, query):
             return query.order_by('-createtime')
