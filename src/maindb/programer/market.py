@@ -62,11 +62,11 @@ class UserMarketPage(MarketPage):
 
 class UserMarketForm(MarketForm):
     
-    field_sort=['marketid','marketname','marketnamezh','description','enabled','sort','weight']
+    field_sort=['marketid','marketname','marketnamezh','description','enabled','sort','weight','extendweight']
     readonly=['marketid','marketname','marketnamezh','description','enabled',]
     class Meta:
         model = TbMarkets
-        fields = ['marketid','marketname','marketnamezh','description','enabled','sort','weight']
+        fields = ['marketid','marketname','marketnamezh','description','enabled','sort','weight','extendweight']
 
 
 director.update({
