@@ -1,5 +1,6 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowSearch,RowFilter,RowSort
 from ..models import TbMarkets
+import base64
 
 class MarketPage(TablePage):
     def get_template(self, prefer=None):
@@ -67,6 +68,13 @@ class UserMarketForm(MarketForm):
     class Meta:
         model = TbMarkets
         fields = ['marketid','marketname','marketnamezh','description','enabled','sort','weight','extendweight']
+    
+    def dict_head(self, head):
+        if head['name'] =='extendweight':
+            express = base64.b64encode("parseFloat(scope.value) > 0".encode('utf-8'))
+            msg = base64.b64encode('必须大于0'.encode('utf-8'))
+            head['fv_rule']= 'express(%s , %s)'%( express.decode('utf-8'),msg.decode('utf-8'))
+        return head
 
 
 director.update({
