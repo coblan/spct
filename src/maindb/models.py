@@ -1257,7 +1257,7 @@ class TbMarkets(models.Model):
     templateid = models.ForeignKey(to='TbTemplate',db_constraint=False,db_column='TemplateID',verbose_name='模板',null=True)  # Field name made lowercase.
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
     ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
-  
+    extendweight = models.DecimalField(db_column='ExtendWeight', max_digits=18, decimal_places=2 ,verbose_name='扩展权重')  # Field name made lowercase.
    
     class Meta:
         managed = False
