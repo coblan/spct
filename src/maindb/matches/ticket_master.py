@@ -234,7 +234,7 @@ class TicketMasterPage(TablePage):
                 head['inn_editor'] = head['editor']
                 head['editor']='com-table-rich-span'
                 head['css']='.danger_bet{color:white;background:#FF4E4C}'
-                head['cell_class'] = 'rt= scope.row.betamount>3000?"danger_bet":""'
+                head['cell_class'] = 'rt= scope.row.betamount>1000?"danger_bet":""'
             
             if head['name'] =='audit':
                 head['css']='.audit_danger{color:red}'
