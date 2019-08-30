@@ -112,7 +112,7 @@ class MatchsPage(TablePage):
         @classmethod
         def clean_search_args(cls, search_args):
             now = datetime.datetime.now()
-            if search_args.get('first','1') =='1' :
+            if search_args.get('_first','1') =='1' :
                 search_args['_first'] = '0'
                 #search_args.get('_start_matchdate')==None and search_args.get('_end_matchdate')==None:
                 search_args['_start_matchdate']=now.strftime("%Y-%m-%d 00:00:00")
