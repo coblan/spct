@@ -364,8 +364,8 @@ def start_scrapy(rows,**kws):
     for inst in TbMatch.objects.filter(matchid__in = matchid_list).exclude(marketstatus=2):
         raise UserWarning('%s不是滚球状态，不能触发抓取'% inst)
     
-    if mydb['Event'].find({"ContrastStatus":1}).count() +len(rows) > 20:
-        raise UserWarning('最多同时爬取20场比赛!')
+    #if mydb['Event'].find({"ContrastStatus":1}).count() +len(rows) > 20:
+        #raise UserWarning('最多同时爬取20场比赛!')
     
     for row in rows:
         msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start','TeamSwap':row.get('TeamSwap'),'EventId':row.get('eventid')}
