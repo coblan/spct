@@ -50,8 +50,9 @@ class ChumUser(TablePage):
         
         def dict_row(self, inst):
             now = timezone.now()
+            
             return {
-                'sleep_days': inst.lastbettime.days if inst.lastbettime else ''
+                'sleep_days': (now - inst.lastbettime).days if inst.lastbettime else ''
             }
         
         class sort(RowSort):
