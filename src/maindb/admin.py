@@ -67,6 +67,8 @@ from . import js_cfg
 
 from .yunwei import domain
 from .yunwei import badurl
+from . import kefu
+from . import userex
 
 from .programer import admin
 from helpers.director.base_data import inspect_dict,field_map

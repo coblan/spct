@@ -38,6 +38,9 @@ class ChumUser(TablePage):
         def getExtraHead(self):
             return [
                 {'name':'sleep_days','label':'休眠天数','editor':'com-table-span'},
+                {'name':'ops','label':'操作','editor':'com-table-ops-cell','ops':[
+                    {'editor':'com-op-btn','label':'拨打电话','action':'ex.director_call("call_client",{rows:[scope.row]}).then(()=>cfg.toast("接通成功！"))'}
+                ]}
             ]
         
         def inn_filter(self, query):
@@ -52,7 +55,8 @@ class ChumUser(TablePage):
             now = timezone.now()
             
             return {
-                'sleep_days': (now - inst.lastbettime).days if inst.lastbettime else ''
+                'sleep_days': (now - inst.lastbettime).days if inst.lastbettime else '',
+                'account':inst.account[:3] +'****' + inst.account[7:]
             }
         
         class sort(RowSort):

@@ -368,13 +368,15 @@ def start_scrapy(rows,**kws):
         #raise UserWarning('最多同时爬取20场比赛!')
     
     for row in rows:
-        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start','TeamSwap':row.get('TeamSwap'),'EventId':row.get('eventid')}
+        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start','TeamSwap':row.get('TeamSwap'),
+               'EventId':row.get('eventid'),'SportId':row.get('SportId')}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
 @director_view('event_match.stop_scrapy')
-def start_scrapy(rows,**kws):
+def stop_scrapy(rows,**kws):
     for row in rows:
-        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop','TeamSwap':row.get('TeamSwap'),'EventId':row.get('eventid')}
+        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop','TeamSwap':row.get('TeamSwap'),
+               'EventId':row.get('eventid'),'SportId':row.get('SportId')}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
 

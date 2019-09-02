@@ -32,6 +32,8 @@ class PcMenu(BaseEngine):
         menu = [
             {'label': _('DashBoard'), 'url': page('home'), 'icon': fa('fa-home'), 'visible': True},
             {'label': '待办事项', 'url': page('todolist'), 'icon': fa('fa-clock-o'), 'visible': len(todo_cat_list) != 0 },
+            {'label': '客服', 'url': page('kefupage'), 'icon': fa('fa-clock-o'),  },
+            
             {'label': _('Member'), 'icon': fa('fa-users'), 'visible': True,
              'submenu': [
                 {'label': _('Tb Account'), 'url': page('account'), 'visible': can_touch(TbAccount, crt_user), },
@@ -156,7 +158,8 @@ class PcMenu(BaseEngine):
                  {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user)},
                  {'label': _('Role'), 'url': page('jb_group'), 'visible': can_touch(Group, crt_user)},
                  {'label': '操作日志', 'url': page('operation_log'), 'visible': can_touch(TbOperationlog, crt_user)},
-                 {'label':'异常地址','url':page('badurl')}
+                 {'label':'异常地址','url':page('badurl')},
+                 {'label':'账号扩展信息','url':page('userex'),'visible':can_touch(TbUserex,crt_user)},
                  # {'label':'权限分组','url':page('group_human'),'visible':can_touch(Group)},
              ]},
 

@@ -2893,3 +2893,14 @@ class TbMarketlistwithsport(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_MarketListWithSport'
+        
+class TbUserex(models.Model):
+    userid = models.IntegerField(db_column='UserID', primary_key=True,verbose_name='账号')  # Field name made lowercase.
+    extnumber = models.CharField(db_column='ExtNumber', max_length=50, blank=True, null=True,verbose_name='分机号')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_UserEx'
+    
+    def __str__(self):
+        return self.extnumber
