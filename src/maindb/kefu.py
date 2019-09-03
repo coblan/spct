@@ -15,13 +15,23 @@ class KefuPage(TablePage):
         #model = TbAccount
         #include =['accountid','nickname']
         
+        def get_head_context(self):
+            ctx = super().get_head_context()
+            heads_names = [head['name'] for head in ctx.get('heads')]
+            ctx.update({
+                'advise_heads':heads_names,
+            })
+            return ctx
+        
         def get_operation(self):
             return [
-                {'fun':'director_call','label':'联系客户',
-                 'row_match':'scope.ps.selected.length ==1',
-                 'match_msg':'cfg.toast("请选择一个客户")',
-                 'editor':'com-op-btn',
-                 'director_name':'call_client',}
+                {'editor':'com-op-btn','label':'设置列','icon': 'fa-gear',
+                 'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"设置列"})'},
+                #{'fun':'director_call','label':'联系客户',
+                 #'row_match':'scope.ps.selected.length ==1',
+                 #'match_msg':'cfg.toast("请选择一个客户")',
+                 #'editor':'com-op-btn',
+                 #'director_name':'call_client',}
             ]
         
         def inn_filter(self, query):

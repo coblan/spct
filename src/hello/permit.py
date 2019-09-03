@@ -15,10 +15,11 @@ def get_permit(ui=None):
              {'label':'资金流','value':'todolist_100'},
              ],
          },
+        {'label':'客服','value':'member.kefu','depend':['TbAccount']},
         { 'label': '市场活动',
          'children': [
              { 'label': _('Banner'), 'children': [
-                 {'label': '查看', 'value': 'TbBanner'}, 
+                 {'label': '查看', 'value': 'TbBanner',}, 
                  { 'label': '编辑', 'value': 'TbBanner.edit', 'depend': ['TbBanner'],}, 
                  ]}, 
              { 'label': _('App Package'), 'children': [
@@ -56,7 +57,7 @@ def get_permit(ui=None):
                          ]}, 
              ]
          }, 
-               { 'label': '基本信息',
+         { 'label': '基本信息',
          'children': [
              {'label': '运动类型', 'children': [
                  {'label': '查看', 'value': 'TbSporttypes',}, 
@@ -132,51 +133,7 @@ def get_permit(ui=None):
                 #{'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
                 #],}, 
              {'label':'关联用户','value':'member.relevent_user'},
-             {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
-             {'label':'用户日志','value':'TbUserLog'},
-            {'label':'限额记录','children':[
-                    {'label': '查看', 'value': 'TbBetfullrecord',}, 
-                    {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
-                ]}
-             ],
-         }, 
-        { 'label': _('Member'),
-         'children': [
-             {'label': _('Tb Account'), 'children': [
-                {'label':'基本信息','children':[
-                      {'label': '查看', 'value': 'TbAccount',}, 
-                      {'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
-                    ]},
-                #{'label':'账目记录','value':'TbBalancelog'},
-                #{'label':'银行卡','children':[
-                      #{'label': '查看', 'value': 'TbBankcard',}, 
-                      #{'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
-                #]},
-                #{'label':'充值记录','value':'TbRecharge'},
-                #{'label':'提现记录','value':'TbWithdraw'},
-                #{'label':'注单','value':'TbTicketmaster_all_tab_read'},
-                #{'label':'登录日志','value':'TbLoginlog'},
-                #{'label':'会员统计','value':'member_statistic'},
-                #{'label':'赛事统计','value':'TbMatch'},
-              
-            
-                #{'label': '所有标签(全功能)', 'value': 'TbAccount.all_tab', 'depend': ['TbAccount.edit', 
-                                #'TbBalancelog', 'TbLoginlog', 'TbBankcard', 'TbBankcard.edit', 'TbRecharge.edit',
-                                #'TbWithdraw.edit',],}, 
-                ],}, 
-             
-             {'label': _('Tb Balance Log'), 'value': 'TbBalancelog', }, 
-             {'label': _('Tb Login Log'), 'value': 'TbLoginlog',}, 
-             {'label': '银行卡', 'children': [
-                {'label': '查看', 'value': 'TbBankcard',}, 
-                {'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
-                ],}, 
-            #{'label': '限额记录', 'children': [
-                #{'label': '查看', 'value': 'TbBetfullrecord',}, 
-                #{'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
-                #],}, 
-             {'label':'关联用户','value':'member.relevent_user'},
-             {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
+             #{'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
              {'label':'用户日志','value':'TbUserLog'},
             {'label':'限额记录','children':[
                     {'label': '查看', 'value': 'TbBetfullrecord',}, 
@@ -349,7 +306,7 @@ def get_permit(ui=None):
        { 'label': '会员管理',
          'children': [
             {'label':'关联用户','value':'member.relevent_user'},
-            {'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
+            #{'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
             {'label':'用户日志','value':'TbUserLog'},
              ],
          }
@@ -389,12 +346,12 @@ def get_permit(ui=None):
     elif ui=='match':
         out_permit = permit_match
     
-    out_list =[]
-    for ns in walk_dict(out_permit):
-        if ns.get('value'):
-            if ns.get('value') in out_list:
-                raise UserWarning('%s发生了重复'%ns.get('value'))
-            out_list.append(out_list)
+    #out_list =[]
+    #for ns in walk_dict(out_permit):
+        #if ns.get('value'):
+            #if ns.get('value') in out_list:
+                #raise UserWarning('%s发生了重复'%ns.get('value'))
+            #out_list.append(out_list)
     return out_permit
 
 @director_element('permit.ui_options')

@@ -116,7 +116,7 @@ class TbAccount(models.Model):
     cashchannel = models.IntegerField(db_column='CashChannel',verbose_name='允许提款渠道',default=0)  # Field name made lowercase.
     ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时',default=0)  # Field name made lowercase.
     anomalyticketnum = models.IntegerField(db_column='AnomalyTicketNum',default=0,verbose_name='异常单次数')  # Field name made lowercase.
-    lastbettime = models.DateTimeField(db_column='LastBetTime', blank=True, null=True,verbose_name='上次投注时间')  # Field name made lowercase.
+    lastbettime = models.DateTimeField(db_column='LastBetTime', blank=True, null=True,verbose_name='最后投注时间')  # Field name made lowercase.
     
     class Meta:
         managed = False
