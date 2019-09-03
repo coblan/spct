@@ -2903,4 +2903,4 @@ class TbUserex(models.Model):
         db_table = 'TB_UserEx'
     
     def __str__(self):
-        return self.extnumber
+        return self.extnumber or ''
