@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSearch, RowSort, RowFilter, director, SelectSearch, model_to_name
+    RowSearch, RowSort, RowFilter, director, SelectSearch, model_to_name,director_view
 from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatch
 from django.db.models import Q, Sum, F, Case, When, FloatField,Count
 import re
@@ -366,7 +366,15 @@ class TicketMasterPage(TablePage):
                  })
                  .then(res=>{return cfg.showMsg("操作成功!")})
                  .then((res)=>{scope.ps.search()})
-                 })()'''}
+                 })()'''},
+                {'fun':'director_call','director_name':'match.makesure_ticketmaster', 
+                 'editor':'com-op-btn','label':'确认注单',
+                 'confirm_msg':'确认该注单？',
+                 #'icon':'fa-exclamation-triangle',
+                 'row_match':'one_row',
+                 'match_express':'scope.row.status==0',
+                 'after_save':'scope.ps.search()',
+                 'match_msg':"只能选择确认中的注单"},
                  #'action':'ex.director_call("save_rows",scope.ps.selected_rows).then((rows)=>{ex.each(rows,(row)=>{scope.ps.update_or_insert(row)})})'}
             ]
         
@@ -575,6 +583,17 @@ class MatchForm(ModelFields):
             'winner': winner
         }
 
+@director_view('match.makesure_ticketmaster')
+def make_sure_ticketmaster(rows,**kws):
+    ticket_list = [row.get('pk') for row in rows]
+    s30_ago = timezone.now() - timezone.timedelta(seconds=30)
+    count = TbTicketmaster.objects.filter(pk__in=ticket_list,status=0,createtime__lte=s30_ago).update(status=1)
+    if count==0:
+        raise UserWarning('确认不成功，可能是注定状态已经发生改变或者创建时间不足30秒。（该操作只能针对状态为“确认中”且创建时间为30秒以前的注单）')
+    stake_count =TbTicketstake.objects.filter(ticket_master_id__in=ticket_list,status =0).update(status =1,confirmodds=F('odds'))
+    #return {
+        #'msg':'确认成功,修改小单%s条'%stake_count
+    #}
 
 director.update({
     'games.ticketmaster': TicketMasterPage.tableCls,
@@ -585,7 +604,6 @@ director.update({
 
     'games.ticketstake.matchform': MatchForm,
      #'games.ticketstake.basketball_matchform': BasketballMatchForm,
-
 })
 
 page_dc.update({
