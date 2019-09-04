@@ -32,8 +32,7 @@ class PcMenu(BaseEngine):
         menu = [
             {'label': _('DashBoard'), 'url': page('home'), 'icon': fa('fa-home'), 'visible': True},
             {'label': '待办事项', 'url': page('todolist'), 'icon': fa('fa-clock-o'), 'visible': len(todo_cat_list) != 0 },
-            {'label': '客服', 'url': page('kefupage'), 'icon': fa('fa-clock-o'),  'visible': has_permit( crt_user,'member.kefu')},
-            
+           
             {'label': _('Member'), 'icon': fa('fa-users'), 'visible': True,
              'submenu': [
                 {'label': _('Tb Account'), 'url': page('account'), 'visible': can_touch(TbAccount, crt_user), },
@@ -44,7 +43,8 @@ class PcMenu(BaseEngine):
                 {'label': _('银行卡管理'), 'url': page('bankcards'), 'visible': can_touch(TbBankcard, crt_user), },
                 {'label': '关联用户', 'url': page('ReleventUser'), 'visible': has_permit( crt_user,'member.relevent_user'), },
                 #{'label': '流失用户', 'url': page('chum_user'), 'visible': has_permit( crt_user,'member.chum_user'), },
-                {'label':'用户日志','url':page('userlog'),'visible':can_touch(TbUserLog,crt_user)}
+                {'label':'用户日志','url':page('userlog'),'visible':can_touch(TbUserLog,crt_user)},
+                {'label': '会员关怀', 'url': page('kefupage'), 'icon': fa('fa-clock-o'),  'visible': has_permit( crt_user,'member.kefu')},
                  
              ]},
             {'label': '市场活动', 'icon': fa('fa-image'), 'visible': True,

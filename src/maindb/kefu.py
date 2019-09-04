@@ -4,6 +4,10 @@ import requests
 from django.conf import settings
 from .member.chum_user import ChumUser
 from .models import TbUserex
+import logging
+
+general_log = logging.getLogger('general_log')
+
 
 class KefuPage(TablePage):
     def get_label(self):
@@ -48,6 +52,7 @@ def call_client(rows,**kws):
         raise UserWarning('当前账号不具备分机号，请联系管理员!')
     url = '%(domain)s/api/ola/agents/%(fenji)s/dial/%(mobile)s'%{'domain':getattr(settings,'OLA_DOMAIN','http://115.28.186.246:8080'),'fenji':info.extnumber,'mobile':client.phone}
     #http://115.28.186.246:8080/api/ola/agents/1551/dial/17380565153
+    general_log.info('给用户%s打电话'%client)
     rt = requests.put(url)
     if rt.status_code != 200:
         raise UserWarning('请求网络电话出现问题,请联系管理员')
