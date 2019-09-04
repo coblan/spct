@@ -20,15 +20,13 @@ class MarketGroupPage(TablePage):
                     'name':'marketgroup',
                     'label':'基本信息',
                     'com':'com-tab-fields',
-                    'init_express':'scope.vc.updateRowBk("marketgroup.edit",{pk:scope.vc.par_row.pk})',
+                    #'init_express':'scope.vc.updateRowBk("marketgroup.edit",{pk:scope.vc.par_row.pk})',
+                    'init_express':'cfg.show_load();ex.director_call("marketgroup.edit",{pk:scope.vc.par_row.pk}).then((resp)=>{cfg.hide_load();ex.vueAssign(scope.row,resp.row)})',
                     #'get_row':'rt=scope.vc.get_row("marketgroup.edit",{pk:scope.vc.par_row.pk})',
                     #'get_data': {
                         #'fun': 'table_row',
                     #},
                     'after_save': 'ex.vueAssign(scope.vc.par_row,scope.row)',
-                    #'after_save': {
-                        #'fun': 'update_or_insert'
-                    #},
                     'heads': marketgroup_form.get_heads(),
                     'ops': marketgroup_form.get_operations(),
                      'event_slots':[
