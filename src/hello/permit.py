@@ -15,7 +15,6 @@ def get_permit(ui=None):
              {'label':'资金流','value':'todolist_100'},
              ],
          },
-        {'label':'客服','value':'member.kefu','depend':['TbAccount']},
         { 'label': '市场活动',
          'children': [
              { 'label': _('Banner'), 'children': [
@@ -138,7 +137,8 @@ def get_permit(ui=None):
             {'label':'限额记录','children':[
                     {'label': '查看', 'value': 'TbBetfullrecord',}, 
                     {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
-                ]}
+                ]},
+            {'label':'会员关怀','value':'member.kefu','depend':['TbAccount']},
              ],
          }, 
         {'label': _('MoneyFlow'),
