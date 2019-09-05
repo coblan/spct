@@ -2,6 +2,7 @@ from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,d
 from maindb.models import TbAdjusttemplate
 import json
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
+import base64
 
 class AdjusttemplatePage(TablePage):
     def get_label(self):
@@ -47,9 +48,10 @@ class AjusttemplateForm(ModelFields):
         exclude =[]
         
     def dict_head(self, head):
+        bb= base64.b64encode('scope.value!="[]"'.encode('utf-8'))
         if head['name'] =='adjustsettings':
             head['editor']='com-field-table-list'
-            head['fv_rule']='group_unique(Percent);express(scope.value!="[]")'
+            head['fv_rule']='group_unique(Percent);express(%s)'%bb
             head['fv_msg']='不能为空,且比值不能重复'
             head['table_heads']=[
                 {'name':'Percent','label':'比值','editor':'com-table-pop-fields-local'},

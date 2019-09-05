@@ -200,39 +200,43 @@ outcome_header = {
             'ops':pop_edit_ops,
             'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
         },
-        -2:{
+        -2:{ # 篮球分数
             'heads':[
-                {'name':'home_13_1','label':'主队第一节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
-                {'name':'away_13_1','label':'客队第一节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
-                {'name':'home_14_1','label':'主队第二节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
-                {'name':'away_14_1','label':'客队第二节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
-                {'name':'home_15_1','label':'主队第三节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
-                {'name':'away_15_1','label':'客队第三节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
-                {'name':'home_16_1','label':'主队第四节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
-                {'name':'away_16_1','label':'客队第四节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                {'name':'home_13_1','label':'主队第一节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_13_1',},
+                {'name':'away_13_1','label':'客队第一节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_13_1',},
+                {'name':'home_14_1','label':'主队第二节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_14_1',},
+                {'name':'away_14_1','label':'客队第二节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_14_1'},
+                {'name':'home_15_1','label':'主队第三节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_15_1'},
+                {'name':'away_15_1','label':'客队第三节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_15_1'},
+                {'name':'home_16_1','label':'主队第四节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_16_1'},
+                {'name':'away_16_1','label':'客队第四节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_16_1'},
                 {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                 {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
-                  
-                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool'},
+                
+                {'name':'has_13_1','label':'第一节','editor':'com-field-bool',},
+                {'name':'has_14_1','label':'第二节','editor':'com-field-bool','fv_rule':'depend_check(has_13_1)'},
+                {'name':'has_15_1','label':'第三节','editor':'com-field-bool','fv_rule':'depend_check(has_14_1)'},
+                {'name':'has_16_1','label':'第四节','editor':'com-field-bool','fv_rule':'depend_check(has_15_1)'},
+                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_16_1)'},
                
                 
             ],
             'editor':'com-form-one', 
-            'table_grid':[['has_overtime'],
+            'table_grid':[['has_13_1','has_14_1','has_15_1','has_16_1','has_overtime'],
                           ['home_13_1','away_13_1'],
                           ['home_14_1','away_14_1'],
                           ['home_15_1','away_15_1'],
                           ['home_16_1','away_16_1'],
                           ['home_40_1','away_40_1'],
                           ],
-            #'fields_group':[
-                #{'name':'huji','label':'基本控制','heads':['has_overtime','has_penalty']},
-                #{'name':'huji','label':'比分','heads':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
-                #{'name':'huji','label':'角球','heads':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
-            #],
+            'fields_group':[
+                {'name':'huji','label':'基本控制','heads':['has_13_1','has_14_1','has_15_1','has_16_1','has_overtime']},
+                {'name':'huji','label':'比分','heads':['home_13_1','away_13_1','home_14_1','away_14_1','home_15_1','away_15_1','home_16_1','away_16_1','home_40_1','away_40_1']},
+    
+            ],
             'ops_loc':'down',
             'ops':pop_edit_ops,
-            'init_express':'if(ex.isEmpty(scope.row)){ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res)) }'
+            'init_express':'if(ex.isEmpty(scope.row)){ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>{ex.vueAssign(scope.row,res);}) }'
            },
         -1:{ # 足球分数
             'heads': [ 
