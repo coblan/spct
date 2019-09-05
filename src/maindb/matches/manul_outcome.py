@@ -214,10 +214,10 @@ outcome_header = {
                 {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                 
                 {'name':'has_13_1','label':'第一节','editor':'com-field-bool',},
-                {'name':'has_14_1','label':'第二节','editor':'com-field-bool','fv_rule':'depend_check(has_13_1)'},
-                {'name':'has_15_1','label':'第三节','editor':'com-field-bool','fv_rule':'depend_check(has_14_1)'},
-                {'name':'has_16_1','label':'第四节','editor':'com-field-bool','fv_rule':'depend_check(has_15_1)'},
-                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_16_1)'},
+                {'name':'has_14_1','label':'第二节','editor':'com-field-bool','fv_rule':'depend_check(has_13_1)','fv_msg':'必须勾选第一节!'},
+                {'name':'has_15_1','label':'第三节','editor':'com-field-bool','fv_rule':'depend_check(has_14_1)','fv_msg':'必须勾选第二节!'},
+                {'name':'has_16_1','label':'第四节','editor':'com-field-bool','fv_rule':'depend_check(has_15_1)','fv_msg':'必须勾选第三节!'},
+                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_16_1)','fv_msg':'必须勾选第四节!'},
                
                 
             ],
