@@ -131,7 +131,7 @@ outcome_header = {
             'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
 
         },
-        -5:{
+        -5:{ # 网球分数
             'heads':[
                 {'name':'set_count','label':'总盘数','editor':'com-field-select','options':[
                     {'value':1,'label':'一盘'},
@@ -180,22 +180,18 @@ outcome_header = {
                 {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                 {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                         
-                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool'},
+                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_100_1)','fv_msg':'必须勾选比赛结束!'},
+                {'name':'has_100_1','label':'比赛结束','editor':'com-field-bool','fv_rule':'depend_check(has_16_1)','fv_msg':'必须勾选全场!'}
     
             ],
             'editor':'com-form-one', 
             
-            'table_grid':[['has_overtime'],
+            'table_grid':[['has_100_1'],
+                ['has_overtime'],
                           ['home_6_1','away_6_1'],
                           ['home_100_1','away_100_1'],
                           ['home_40_1','away_40_1'],
                           ],
-            #'fields_group':[
-                #{'name':'huji','label':'基本控制','heads':['has_overtime','has_penalty']},
-                #{'name':'huji','label':'比分','heads':['home_6_1','away_6_1','home_7_1','away_7_1','home_40_1','away_40_1','home_50_1','away_50_1']},
-                #{'name':'huji','label':'角球','heads':['home_6_5','away_6_5','home_7_5','away_7_5','home_40_5','away_40_5']},
-            #],
-            
             'ops_loc':'down',
             'ops':pop_edit_ops,
             'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
@@ -217,12 +213,15 @@ outcome_header = {
                 {'name':'has_14_1','label':'第二节','editor':'com-field-bool','fv_rule':'depend_check(has_13_1)','fv_msg':'必须勾选第一节!'},
                 {'name':'has_15_1','label':'第三节','editor':'com-field-bool','fv_rule':'depend_check(has_14_1)','fv_msg':'必须勾选第二节!'},
                 {'name':'has_16_1','label':'第四节','editor':'com-field-bool','fv_rule':'depend_check(has_15_1)','fv_msg':'必须勾选第三节!'},
-                {'name':'has_40_1','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_16_1)','fv_msg':'必须勾选第四节!'},
+                {'name':'has_40_1','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_16_1);depend_check(has_100_1)','fv_msg':'必须勾选第四节和比赛结束!'},
+                {'name':'has_100_1','label':'比赛结束','editor':'com-field-bool','fv_rule':'depend_check(has_16_1)','fv_msg':'必须勾选第四节!'}
                
                 
             ],
             'editor':'com-form-one', 
-            'table_grid':[['has_13_1','has_14_1','has_15_1','has_16_1','has_40_1'],
+            'table_grid':[
+                ['has_100_1'],
+                ['has_13_1','has_14_1','has_15_1','has_16_1','has_40_1'],
                           ['home_13_1','away_13_1'],
                           ['home_14_1','away_14_1'],
                           ['home_15_1','away_15_1'],
@@ -230,7 +229,7 @@ outcome_header = {
                           ['home_40_1','away_40_1'],
                           ],
             'fields_group':[
-                {'name':'huji','label':'基本控制','heads':['has_13_1','has_14_1','has_15_1','has_16_1','has_40_1']},
+                {'name':'huji','label':'基本控制','heads':['has_100_1','has_13_1','has_14_1','has_15_1','has_16_1','has_40_1']},
                 {'name':'huji','label':'比分','heads':['home_13_1','away_13_1','home_14_1','away_14_1','home_15_1','away_15_1','home_16_1','away_16_1','home_40_1','away_40_1']},
     
             ],
@@ -258,13 +257,15 @@ outcome_header = {
                 
                 {'name':'has_half1','label':'上半场','editor':'com-field-bool','readonly':True},
                 {'name':'has_half2','label':'全场','editor':'com-field-bool'},
-                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_half2)','fv_msg':'必须选择全场!'},
-                {'name':'has_penalty','label':'点球大战','editor':'com-field-bool','fv_rule':'depend_check(has_half2)','fv_msg':'必须选择全场!'}
-                #{'name':'has_penalty','label':'点球大战','editor':'com-field-bool','fv_rule':'depend_check(has_overtime)','fv_msg':'必须选择加时赛!'},
+                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_half2);depend_check(has_100_1)','fv_msg':'必须选择全场和比赛结束!'},
+                {'name':'has_penalty','label':'点球大战','editor':'com-field-bool','fv_rule':'depend_check(has_half2);depend_check(has_100_1)','fv_msg':'必须选择全场和比赛结束!'},
+                {'name':'has_100_1','label':'比赛结束','editor':'com-field-bool','fv_rule':'depend_check(has_half2);','fv_msg':'必须勾选全场!'}
                 ],
             'editor':'com-form-one', #'com-outcome-score',
      
-            'table_grid':[['has_half1','has_half2','has_overtime','has_penalty'],
+            'table_grid':[
+                ['has_100_1'],
+                ['has_half1','has_half2','has_overtime','has_penalty'],
                           ['home_6_1','away_6_1'],
                           ['home_100_1','away_100_1'],
                           ['home_40_1','away_40_1'],
@@ -274,14 +275,11 @@ outcome_header = {
                           ['home_40_5','away_40_5'],
                           ],
             'fields_group':[
-                    {'name':'huji','label':'基本控制','heads':['has_half1','has_half2','has_overtime','has_penalty']},
+                    {'name':'huji','label':'基本控制','heads':['has_100_1','has_half1','has_half2','has_overtime','has_penalty']},
                     {'name':'huji','label':'比分','heads':['home_6_1','away_6_1','home_100_1','away_100_1','home_40_1','away_40_1','home_50_1','away_50_1']},
                     {'name':'huji','label':'角球','heads':['home_6_5','away_6_5','home_100_5','away_100_5','home_40_5','away_40_5']},
                 ],
-            #'fields_group':[
-                #{'name':'huji','label':'基本控制','heads':['has_half1','has_half2','has_overtime','has_penalty']},
-            #] + fields_group_109(),
-              
+
             'ops_loc':'down',
             'ops':pop_edit_ops,
             'init_express':'if(!scope.row.has_half1){ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))}'
