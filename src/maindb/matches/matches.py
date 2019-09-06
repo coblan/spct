@@ -1168,24 +1168,25 @@ def out_com_save(rows,matchid):
             # 普通篮球手动输入比分 （有四小节）
             send_dc['IsSettleByScore']=True
             dc = {}
-            has_overtime = row.pop('has_overtime',False)
+            # 加时
+            has_40_1 = row.pop('has_40_1',False)
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
             if row.get('has_13_1'):
                 home_13_1 = int( row.get('home_13_1') )
                 away_13_1 = int( row.get('away_13_1') )
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=13,scoretype=1,home=home_13_1,away=away_13_1 ,type=0) )
             if row.get('has_14_1'):
                 home_14_1 = int( row.get('home_14_1') )
                 away_14_1 = int( row.get('away_14_1') )
                 home_6_1 = home_13_1 + home_14_1
                 away_6_1 = away_13_1 + away_14_1
-                
-                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=13,scoretype=1,home=home_13_1,away=away_13_1 ,type=0) )
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=14,scoretype=1,home=home_14_1,away=away_14_1 ,type=0) )
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home_6_1,away=away_6_1 ,type=0) )
                 
             if row.get('has_15_1'):
                 home_15_1 = int( row.get('home_15_1') )
                 away_15_1 = int( row.get('away_15_1') )
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=15,scoretype=1,home=home_15_1,away=away_15_1 ,type=0) )
             if row.get('has_16_1'):
                 home_16_1 = int( row.get('home_16_1') )
                 away_16_1 = int( row.get('away_16_1') )
@@ -1196,11 +1197,10 @@ def out_com_save(rows,matchid):
                 away_100_1 = away_6_1 + away_7_1
                 
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
-                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=15,scoretype=1,home=home_15_1,away=away_15_1 ,type=0) )
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=16,scoretype=1,home=home_16_1,away=away_16_1 ,type=0) )
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
 
-            if has_overtime:
+            if has_40_1:
                 home_40_1 = int( row.pop('home_40_1') )
                 away_40_1 = int( row.pop('away_40_1') )
                 home_110_1 = home_100_1 + home_40_1
