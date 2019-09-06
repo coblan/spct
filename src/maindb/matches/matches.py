@@ -1326,13 +1326,22 @@ def out_com_save(rows,matchid):
 
         for inst in batch_create:
             if inst.scoretype==1:
-                if inst.statuscode==100:
-                    home_score += int(inst.home)
-                    away_score += int(inst.away)
-                else:
-                    if match.sportid in [1,2] and inst.statuscode in [40,50,]:
+                #if match.sportid== 1 :
+                if row['pk'] in [-1,-3]:
+                    if inst.statuscode in [6,7,40,50]:
                         home_score += int(inst.home)
                         away_score += int(inst.away)
+                #elif match.sportid== 2:
+                elif row['pk'] == -2:
+                    if inst.statuscode in [13,14,15,16,40,]:
+                        home_score += int(inst.home)
+                        away_score += int(inst.away)
+                
+                elif inst.statuscode==100:
+                    home_score += int(inst.home)
+                    away_score += int(inst.away)
+
+                   
  
             #if match.sportid in [1,2] and inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
                 #if inst.home >= 0 and inst.away >= 0:
