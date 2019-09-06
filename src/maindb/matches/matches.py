@@ -1384,8 +1384,8 @@ def batch_recommand(rows,new_row):
     now = timezone.now()
     for k,v in sportid_dc.items():
         count = TbMatch.objects.filter(sportid=k,isrecommend=True,matchdate__gte=now).count()
-        if count + len(v) > 5:
-            raise UserWarning('每种体育类型最多5场推荐,但是经过这次操作后,%s已经超过了此限制.'% TbSporttypes.objects.get(sportid=k) )
+        #if count + len(v) > 5:
+            #raise UserWarning('每种体育类型最多5场推荐,但是经过这次操作后,%s已经超过了此限制.'% TbSporttypes.objects.get(sportid=k) )
     
     return save_rows(rows)
    
