@@ -210,19 +210,19 @@ outcome_header = {
                 {'name':'away_15_1','label':'客队第三节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_15_1'},
                 {'name':'home_16_1','label':'主队第四节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_16_1'},
                 {'name':'away_16_1','label':'客队第四节得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0)','show':'scope.row.has_16_1'},
-                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
-                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
+                {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_40_1','fv_rule':'integer(+0)'},
+                {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_40_1','fv_rule':'integer(+0)'},
                 
                 {'name':'has_13_1','label':'第一节','editor':'com-field-bool',},
                 {'name':'has_14_1','label':'第二节','editor':'com-field-bool','fv_rule':'depend_check(has_13_1)','fv_msg':'必须勾选第一节!'},
                 {'name':'has_15_1','label':'第三节','editor':'com-field-bool','fv_rule':'depend_check(has_14_1)','fv_msg':'必须勾选第二节!'},
                 {'name':'has_16_1','label':'第四节','editor':'com-field-bool','fv_rule':'depend_check(has_15_1)','fv_msg':'必须勾选第三节!'},
-                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_16_1)','fv_msg':'必须勾选第四节!'},
+                {'name':'has_40_1','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_16_1)','fv_msg':'必须勾选第四节!'},
                
                 
             ],
             'editor':'com-form-one', 
-            'table_grid':[['has_13_1','has_14_1','has_15_1','has_16_1','has_overtime'],
+            'table_grid':[['has_13_1','has_14_1','has_15_1','has_16_1','has_40_1'],
                           ['home_13_1','away_13_1'],
                           ['home_14_1','away_14_1'],
                           ['home_15_1','away_15_1'],
@@ -230,7 +230,7 @@ outcome_header = {
                           ['home_40_1','away_40_1'],
                           ],
             'fields_group':[
-                {'name':'huji','label':'基本控制','heads':['has_13_1','has_14_1','has_15_1','has_16_1','has_overtime']},
+                {'name':'huji','label':'基本控制','heads':['has_13_1','has_14_1','has_15_1','has_16_1','has_40_1']},
                 {'name':'huji','label':'比分','heads':['home_13_1','away_13_1','home_14_1','away_14_1','home_15_1','away_15_1','home_16_1','away_16_1','home_40_1','away_40_1']},
     
             ],
