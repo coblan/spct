@@ -2588,6 +2588,7 @@ class TbLeagueGroup(models.Model):
     adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='调水模板')  # Field name made lowercase.
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
     reopenmarketsdelay = models.IntegerField(db_column='ReOpenMarketsDelay',verbose_name='进球后延迟开盘时间',help_text='单位秒')  # Field name made lowercase.
+    #marketweight = models.CharField(verbose_name='玩法权重', db_column='MarketWeight', max_length=6000,blank=True)  # Field name made lowercase. This field type is a guess.  # Field name made lowercase. This field type is a guess.
     
     class Meta:
         managed = False
@@ -2596,6 +2597,21 @@ class TbLeagueGroup(models.Model):
     def __str__(self):
         return self.groupname
 
+class TbLeaguegroupMarketweight(models.Model):
+    tid = models.AutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
+    #leaguegroupid = models.IntegerField(db_column='LeagueGroupID')  # Field name made lowercase.
+    leaguegroup = models.ForeignKey(to=TbLeagueGroup,db_constraint=False, db_column='LeagueGroupID',verbose_name='玩法组')
+    #marketid = models.IntegerField(db_column='MarketID')  # Field name made lowercase.
+    market = models.ForeignKey(to=TbMarkets,db_constraint=False,db_column='MarketID',verbose_name='玩法')
+    preweight = models.DecimalField(db_column='PreWeight', max_digits=18, decimal_places=4,verbose_name='早盘权重')  # Field name made lowercase.
+    liveweight = models.DecimalField(db_column='LiveWeight', max_digits=18, decimal_places=4,verbose_name='走地权重')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_LeagueGroup_MarketWeight'
+    
+    def __str__(self):
+        return '玩法权重'
 
 class TbLeagueGroupSpread(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.

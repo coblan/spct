@@ -53,11 +53,12 @@ class WithDrawForm(ModelFields):
             head['editor'] = 'number'
             head['fv_rule'] = 'integer(+)'
         if head['name'] == 'value':
-            head['show'] = "scope.row.tag !='IsRapidWithdraw' && scope.row.tag !='IsEnableWithdraw'"
+            head['show'] = "!ex.isin(scope.row.tag,['IsRapidWithdraw','IsEnableWithdraw','AgInSwitch','AgOutSwitch'])  "
         if head['name'] == 'daysnumber':
-            head['show'] = "scope.row.tag != 'SingleMaxOrderCount' && scope.row.tag !='IsRapidWithdraw' && scope.row.tag !='IsEnableWithdraw'"
+            head['show'] = "!ex.isin(scope.row.tag,['SingleMaxOrderCount','IsRapidWithdraw','IsEnableWithdraw','AgInSwitch','AgOutSwitch']) "
             head['express']='rt={label:scope.row.memo.indexOf("分钟")!=-1 ? "分钟":"天数"}'
         return head
+
 
 
 director.update({

@@ -1111,7 +1111,8 @@ def out_com_save(rows,matchid):
                 away_7_5 = away_100_5 - away_6_5
 
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=5,home=home_7_5,away=away_7_5 ,type=0) )
-                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=5,home=home_100_5,away=away_100_5 ,type=0) )
+                if row.get('has_100_1'):
+                    batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=5,home=home_100_5,away=away_100_5 ,type=0) )
                 if home_7_5 <0 or away_7_5 <0:
                     raise UserWarning('全场部分不能少于上半场角球')
 
@@ -1344,7 +1345,6 @@ def out_com_save(rows,matchid):
                     home_score += int(inst.home)
                     away_score += int(inst.away)
 
-                   
  
             #if match.sportid in [1,2] and inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
                 #if inst.home >= 0 and inst.away >= 0:
@@ -1356,29 +1356,29 @@ def out_com_save(rows,matchid):
                     #home_score =inst.home
                     #away_score =inst.away
                     #break
-           
-
-
-        match.score = '%s:%s'%(home_score,away_score)
-        if home_score <away_score:
-            match.winner = 2
-        elif home_score > away_score:
-            match.winner = 1
-        else:
-            match.winner = 3
-
-        match.marketstatus=3
-        match.statuscode = 100
-        match.terminator ='manual'
-        match.save()
-        dc={
-            'MatchID':match.matchid, 
-            'Score':match.score,
-            'MarketStatus':match.marketstatus,
-            'StatusCode':match.statuscode,
-            'Terminator':match.terminator
-        }
-        updateMatchMongo(dc)
+                    
+        statuscode_list = [x.statuscode for x in batch_create]
+        if 100 in statuscode_list:
+            match.score = '%s:%s'%(home_score,away_score)
+            if home_score <away_score:
+                match.winner = 2
+            elif home_score > away_score:
+                match.winner = 1
+            else:
+                match.winner = 3
+    
+            match.marketstatus=3
+            match.statuscode = 100
+            match.terminator ='manual'
+            match.save()
+            dc={
+                'MatchID':match.matchid, 
+                'Score':match.score,
+                'MarketStatus':match.marketstatus,
+                'StatusCode':match.statuscode,
+                'Terminator':match.terminator
+            }
+            updateMatchMongo(dc)
 
     notifyManulOutcome(json.dumps(send_dc))
 
