@@ -51,8 +51,8 @@ class LeagueGroupPage(TablePage):
             else:
                 head ={'name':'league_count','label':'包含联赛数','editor':'com-table-span'}
             return [
+                {'name':'marketweight_count','label':'玩法权重数','editor':'com-table-switch-to-tab','ctx_name':'league_group_tabs','tab_name':'marketweight'},
                 head,
-                {'name':'marketweight_count','label':'玩法权重','editor':'com-table-switch-to-tab','ctx_name':'league_group_tabs','tab_name':'marketweight'},
             ]
         
         def inn_filter(self, query):
@@ -214,7 +214,7 @@ class TbLeaguegroupMarketweightForm(ModelFields):
         super().clean()
         if 'market' in self.changed_data:
             if TbLeaguegroupMarketweight.objects.filter(market=self.cleaned_data.get('market'),leaguegroup=self.cleaned_data.get('leaguegroup') ).exists():
-                self.add_error('market','玩法%s已经存在'%self.cleaned_data.get('market'))
+                self.add_error('market','玩法[%s]已经存在'%self.cleaned_data.get('market'))
 
     
 field_map.update({
