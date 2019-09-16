@@ -1359,10 +1359,8 @@ def out_com_save(rows,matchid):
                     
         statuscode_list = [x.statuscode for x in batch_create]
         
-        
-        match.score = '%s:%s'%(home_score,away_score)
         if 100 in statuscode_list:
-            
+            match.score = '%s:%s'%(home_score,away_score)
             if home_score <away_score:
                 match.winner = 2
             elif home_score > away_score:
@@ -1373,15 +1371,15 @@ def out_com_save(rows,matchid):
             match.marketstatus=3
             match.statuscode = 100
             match.terminator ='manual'
-        match.save()
-        dc={
-            'MatchID':match.matchid, 
-            'Score':match.score,
-            'MarketStatus':match.marketstatus,
-            'StatusCode':match.statuscode,
-            'Terminator':match.terminator
-        }
-        updateMatchMongo(dc)
+            match.save()
+            dc={
+                'MatchID':match.matchid, 
+                'Score':match.score,
+                'MarketStatus':match.marketstatus,
+                'StatusCode':match.statuscode,
+                'Terminator':match.terminator
+            }
+            updateMatchMongo(dc)
 
     notifyManulOutcome(json.dumps(send_dc))
 
