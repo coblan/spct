@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,director,page_dc,field_map,model_to_name,\
-     RowFilter,get_request_cache,RowSort
+     RowFilter,get_request_cache,RowSort,director_view
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
 from maindb.models import TbLeagueGroup,TbSetting,TbTournament,TbMarkets,TbLeaguegroupMarketweight
 import json
@@ -7,7 +7,7 @@ from django.db.models import Count
 from maindb.basic_data.league import League
 from helpers.director.access.permit import can_touch
 from maindb.rabbitmq_instance import notifyLeagueGroup
-
+from helpers.director.model_func.dictfy import sim_dict
 
 class LeagueGroupPage(TablePage):
     def get_label(self):
@@ -94,10 +94,29 @@ class LeagueGroupPage(TablePage):
             for op in ops:
                 if op['name'] !='delete_selected':
                     out_ops.append(op)
+            out_ops += [
+                 {'fun':'director_call','label':'复制玩法权重','editor':'com-op-btn','row_match':'one_row','action':'scope.ps.catch_row=scope.ps.selected[0];scope.ps.selected=[];cfg.toast("复制成功，请选择其他联赛组粘贴！")'},
+                 {'fun':'director_call','label':'粘贴玩法权重','editor':'com-op-btn','row_match':'many_row',
+                  'action':'(function(){ if(!scope.ps.catch_row){cfg.showError("请先复制!");return};cfg.show_load();ex.director_call("leaguegroup.paste_market_weight",{row:scope.ps.catch_row,dst_rows:scope.ps.selected}).then(res=>{cfg.hide_load();scope.ps.catch_row=null;scope.ps.search();cfg.toast("操作成功")}) })()'},
+                 
+            ]
+           
             return out_ops
         
         class filters(RowFilter):
             names = ['enabled']
+
+@director_view('leaguegroup.paste_market_weight')
+def paste_market_weight(row,dst_rows,**kw):
+    query = TbLeaguegroupMarketweight.objects.filter(leaguegroup_id=row.get('pk'))
+    src_list = list(query)
+    bulk_list =[]
+    for dst_row in dst_rows:
+        TbLeaguegroupMarketweight.objects.filter(leaguegroup_id = dst_row.get('pk')).delete()
+        for src_inst in src_list:
+            bulk_list.append(TbLeaguegroupMarketweight(leaguegroup_id=dst_row.get('pk'),market=src_inst.market,preweight = src_inst.preweight,liveweight=src_inst.liveweight))
+    
+    TbLeaguegroupMarketweight.objects.bulk_create(bulk_list)
 
 class LeagureGroupForm(ModelFields):
     hide_fields=['id']
