@@ -1369,7 +1369,9 @@ def out_com_save(rows,matchid):
                 match.winner = 3
     
             match.marketstatus=3
-            match.statuscode = 100
+            
+            statuscode= max([x for x in [100,110,120] if x in statuscode_list])
+            match.statuscode = statuscode
             match.terminator ='manual'
             match.save()
             dc={
