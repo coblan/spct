@@ -232,7 +232,12 @@ def get_permit(ui=None):
                  {'label':'编辑','value':'TbLimitusergroup.edit','depend':['TbLimitusergroup']}
              ]},
              {'label':'风险控制设置','value':'risk.RiskcontrolSetting'},
-             {'label':'联赛风控','value':'TbLeagueGroup.edit'},
+             {'label':'联赛风控','children':[
+                 {'label':'基本信息','value':'TbLeagueGroup.edit'},
+                 {'label':'玩法权重','value':'TbLeaguegroupMarketweight.edit'},
+                 {'label':'包含联赛','value':'virtual_include_league','depend':['TbTournament']}
+                 ] },
+             
              
             
             #{'label': _('Tb RC Filter'), 'value': 'TbRcFilter',}, 

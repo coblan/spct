@@ -5,7 +5,7 @@ from maindb.models import TbLeagueGroup,TbSetting,TbTournament,TbMarkets,TbLeagu
 import json
 from django.db.models import Count
 from maindb.basic_data.league import League
-from helpers.director.access.permit import can_touch
+from helpers.director.access.permit import can_touch,has_permit
 from maindb.rabbitmq_instance import notifyLeagueGroup
 from helpers.director.model_func.dictfy import sim_dict
 
@@ -73,17 +73,21 @@ class LeagueGroupPage(TablePage):
                      'label':'基本信息',
                      'com':'com-tab-fields-v1',
                      'init_express':'ex.vueAssign(scope.row,scope.vc.par_row)',
-                     'fields_ctx':LeagureGroupForm().get_head_context() },
+                     'fields_ctx':LeagureGroupForm().get_head_context(),
+                     'visible':can_touch(TbLeagueGroup,self.crt_user)},
                     {'name':'marketweight',
                      'label':'玩法权重',
                      'com':'com-tab-table',
                      'pre_set':'rt={leaguegroup:scope.par_row.pk}',
-                     'table_ctx':TbLeaguegroupMarketweightTable().get_head_context()},
+                     'table_ctx':TbLeaguegroupMarketweightTable().get_head_context(),
+                     'visible':can_touch(TbLeaguegroupMarketweight,self.crt_user),
+                     },
                     {'name':'included_league',
                      'label':'包含联赛',
                      'com':'com-tab-table',
                      'pre_set':'rt={group:scope.par_row.pk}',
-                     'table_ctx':League.tableCls().get_head_context()}
+                     'table_ctx':League.tableCls().get_head_context(),
+                     'visible':has_permit(self.crt_user,'virtual_include_league')}
                 ]
             })
             return ctx
@@ -95,8 +99,11 @@ class LeagueGroupPage(TablePage):
                 if op['name'] !='delete_selected':
                     out_ops.append(op)
             out_ops += [
-                 {'fun':'director_call','label':'复制玩法权重','editor':'com-op-btn','row_match':'one_row','action':'scope.ps.catch_row=scope.ps.selected[0];scope.ps.selected=[];cfg.toast("复制成功，请选择其他联赛组粘贴！")'},
+                 {'fun':'director_call','label':'复制玩法权重','editor':'com-op-btn','row_match':'one_row',
+                  'visible':can_touch(TbLeaguegroupMarketweight,self.crt_user),
+                  'action':'scope.ps.catch_row=scope.ps.selected[0];scope.ps.selected=[];cfg.toast("复制成功，请选择其他联赛组粘贴！")'},
                  {'fun':'director_call','label':'粘贴玩法权重','editor':'com-op-btn','row_match':'many_row',
+                   'visible':can_touch(TbLeaguegroupMarketweight,self.crt_user),
                   'action':'(function(){ if(!scope.ps.catch_row){cfg.showError("请先复制!");return};cfg.show_load();ex.director_call("leaguegroup.paste_market_weight",{row:scope.ps.catch_row,dst_rows:scope.ps.selected}).then(res=>{cfg.hide_load();scope.ps.catch_row=null;scope.ps.search();cfg.toast("操作成功")}) })()'},
                  
             ]
@@ -151,9 +158,9 @@ class LeagureGroupForm(ModelFields):
             head['fv_rule'] = 'integer(+)'
         if head['name'] == 'reopenmarketsdelay':
             head['fv_rule'] = 'integer(+)'
-        if head['name'] == 'ticketdelay':
-            head['suffix'] = '秒'
-            head['width'] = '19rem'
+        #if head['name'] == 'ticketdelay':
+            #head['suffix'] = '秒'
+            #head['width'] = '19rem'
         return head
     
     def dict_row(self, inst):
