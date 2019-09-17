@@ -18,7 +18,7 @@ class LeagueGroupPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbLeagueGroup
-        exclude = []
+        exclude = ['reopenmarketsdelay']
         #pop_edit_fields=['id']
         hide_fields=['riskleveldelay']
         
@@ -26,7 +26,7 @@ class LeagueGroupPage(TablePage):
             width = {
                 'groupname':200,
                 'league_count':100,
-                'reopenmarketsdelay':150,
+                #'reopenmarketsdelay':150,
             }
             if head['name'] in width:
                 head['width'] = width[head['name']]
@@ -129,7 +129,7 @@ class LeagureGroupForm(ModelFields):
     hide_fields=['id']
     class Meta:
         model = TbLeagueGroup
-        exclude =[]
+        exclude =['reopenmarketsdelay']
     
     def dict_head(self, head):
         if head['name'] == 'riskleveldelay':
@@ -156,8 +156,8 @@ class LeagureGroupForm(ModelFields):
             })
         if head['name']=='handicapcount':
             head['fv_rule'] = 'integer(+)'
-        if head['name'] == 'reopenmarketsdelay':
-            head['fv_rule'] = 'integer(+)'
+        #if head['name'] == 'reopenmarketsdelay':
+            #head['fv_rule'] = 'integer(+)'
         #if head['name'] == 'ticketdelay':
             #head['suffix'] = '秒'
             #head['width'] = '19rem'

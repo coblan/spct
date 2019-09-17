@@ -219,3 +219,5 @@ NOTICE = {
     'logo_text':'飞球体育运营',
     'water_mark':'/media/public/manual/shuiyin.png',
 }
+
+OPEN_SECRET = True
