@@ -69,6 +69,7 @@ def get_permit(ui=None):
                  {'label':'推荐','value':'TbTournament.isrecommend','depend': ['TbTournament']},
                  {'label': '编辑(除订阅、走地、推荐)', 'value': 'TbTournament.edit', 'depend': ['TbTournament'],}
                     ],}, 
+             {'label':'充值渠道组','value':'TbPaychannelgroup.edit'},
              {'label': '充值渠道', 'children': [
                  {'label': '查看', 'value': 'TbPaychannel',}, 
                  {'label': '编辑', 'value': 'TbPaychannel.edit', 'depend': ['TbPaychannel'],}

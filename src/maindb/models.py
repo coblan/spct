@@ -2427,11 +2427,12 @@ class TbAgentcommission(models.Model):
 
 
 class TbPaychannelgroup(models.Model):
-    groupid = models.AutoField(db_column='GroupID', primary_key=True)  # Field name made lowercase.
-    groupway = models.CharField(db_column='GroupWay', max_length=50)  # Field name made lowercase.
-    groupicon = models.CharField(db_column='GroupIcon', max_length=50)  # Field name made lowercase.
+    groupid = models.AutoField(db_column='GroupID', primary_key=True,verbose_name='ID')  # Field name made lowercase.
+    groupway = models.CharField(db_column='GroupWay', max_length=50,verbose_name='组名')  # Field name made lowercase.
+    groupicon = models.CharField(db_column='GroupIcon', max_length=50,verbose_name='图标')  # Field name made lowercase.
     groupsubtitle = models.CharField(db_column='GroupSubTitle', max_length=50, blank=True,
-                                     null=True)  # Field name made lowercase.
+                                     null=True,verbose_name='子标题')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort',verbose_name='排序')  # Field name made lowercase.
 
     class Meta:
         managed = False

@@ -40,6 +40,7 @@ from .basic_data import paychannel
 #from .basic_data import basketball_league
 from .basic_data import sporttype
 from .basic_data import teams_basketball
+from .basic_data import admin_paychanel_group
 
 
 from .riskcontrol import admin

@@ -67,6 +67,7 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbAppresource', model_read_permit(TbAppresource), model_to_name(TbAppresource), 'model'), 
            ('TbAppresource.edit', model_full_permit(TbAppresource), model_to_name(TbAppresource), 'model'), 
            
+           ('TbPaychannelgroup.edit',model_full_permit(TbPaychannelgroup),model_to_name(TbPaychannelgroup),'model'),
            ('TbPaychannel', model_read_permit(TbPaychannel), model_to_name(TbPaychannel), 'model'), 
            ('TbPaychannel.edit', model_full_permit(TbPaychannel), model_to_name(TbPaychannel), 'model'), 
            
