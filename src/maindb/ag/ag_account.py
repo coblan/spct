@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,SelectSearch
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,SelectSearch,RowSort
 from .. models import TbAgaccount
 from helpers.func.dict_list import sort_by_name
 from django.db.models import Sum
@@ -33,6 +33,10 @@ class AgAccountPage(TablePage):
             width={
                 'account__nickname':150,
                 'agusername':150,
+                'transferin':140,
+                'transferout':140,
+                'winorloss':140,
+                'availablescores':140,
             }
             if head['name'] in width:
                 head['width'] = width.get(head['name'])
@@ -85,6 +89,9 @@ class AgAccountPage(TablePage):
                                     'label': '用户昵称', }
                 else:
                     return super().get_option(name)
+        
+        class sort(RowSort):
+            names = ['transferin','transferout','winorloss','availablescores']
 
 class AgAccountForm(ModelFields):
     class Meta:

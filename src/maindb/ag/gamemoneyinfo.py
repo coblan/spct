@@ -34,6 +34,7 @@ class GameMoneyininfoPage(TablePage):
                 'username':150,
                 'memo':200,
                 'amount':150,
+                
             }
             if head['name'] in width:
                 head['width'] = width.get(head['name'])
