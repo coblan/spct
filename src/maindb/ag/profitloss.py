@@ -2,6 +2,7 @@ from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,d
 from ..models import TbAgprofitloss
 from helpers.func.dict_list import sort_by_name
 from django.db.models import Sum
+from django.utils import timezone
 
 class AgprofitlossPage(TablePage):
     def get_label(self):
@@ -13,6 +14,15 @@ class AgprofitlossPage(TablePage):
     class tableCls(ModelTable):
         model = TbAgprofitloss
         exclude = ['profitlosstype','refid','parentid','bettime','savetime']
+        
+        @classmethod
+        def clean_search_args(cls, search_args):
+            if '_searched' not in search_args:
+                now = timezone.now()
+                search_args['_start_profitlosstime'] = now.strftime('%Y-%m-%d '+'00:00:00')
+                search_args['_end_profitlosstime'] = now.strftime('%Y-%m-%d '+'23:59:59')
+                search_args['_searched'] = 1
+            return search_args
         
         def getExtraHead(self):
             return [

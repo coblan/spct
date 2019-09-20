@@ -2,6 +2,7 @@ from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,d
 from ..models import TbGamemoneyininfo
 from helpers.func.dict_list import sort_by_name
 from django.db.models import Sum
+from django.utils import timezone
 
 class GameMoneyininfoPage(TablePage):
     def get_label(self):
@@ -17,6 +18,15 @@ class GameMoneyininfoPage(TablePage):
             return [
                 {'name':'account__nickname','label':"账号昵称",}
             ]
+        
+        @classmethod
+        def clean_search_args(cls, search_args):
+            if '_searched' not in search_args:
+                now = timezone.now()
+                search_args['_start_ordertime'] = now.strftime('%Y-%m-%d '+'00:00:00')
+                search_args['_end_ordertime'] = now.strftime('%Y-%m-%d '+'23:59:59')
+                search_args['_searched'] = 1
+            return search_args
         
         def dict_head(self, head):
             width={
