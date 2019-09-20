@@ -152,7 +152,15 @@ class PcMenu(BaseEngine):
                  {'label': '代理用户', 'url': page('agent_user'),'visible': has_permit(crt_user, 'agent'), },
                  {'label': '代理佣金', 'url': page('agent_commission'),'visible': can_touch(TbAgentcommission, crt_user), },
              ]},
-
+            
+             {'label': 'AG系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
+             'submenu': [
+                {'label': '用户列表', 'url': page('agaccount'),'visible': can_touch(TbAgaccount, crt_user), },
+                {'label':'投注列表','url':page('agprofitloss'),'visible':can_touch(TbAgprofitloss,crt_user)},
+                {'label':'资金转入AG','url':page('gamemoneyininfo'),'visible':can_touch(TbGamemoneyininfo,crt_user)},
+                {'label':'资金转出AG','url':page('gamemoneyoutinfo'),'visible':can_touch(TbGamemoneyoutinfo,crt_user)},
+             ]},
+             
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
                  {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user)},

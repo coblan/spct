@@ -1,6 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.contrib import admin
+from django.conf import settings
 from helpers.director.shortcut import TablePage, ModelTable, model_dc, page_dc, ModelFields, FieldsPage, \
     TabPage, RowSearch, RowSort, RowFilter, director
 from .models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster
@@ -75,3 +76,9 @@ from .programer import admin
 from helpers.director.base_data import inspect_dict,field_map
 
 inspect_dict['field_map'] = field_map
+
+if getattr(settings,'OPEN_SECRET',False):
+    from . ag import ag_account
+    from . ag import profitloss
+    from . ag import gamemoneyinfo
+    from . ag import gamemoneyoutinfo

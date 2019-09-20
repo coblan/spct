@@ -1,8 +1,9 @@
 
 from helpers.director.shortcut import director_element
-
+from django.conf import settings
 from django.utils.translation import ugettext as _
 from helpers.func.nav_data import walk_dict
+from helpers.func.collection.container import evalue_container
 
 @director_element('permit.options')
 def get_permit(ui=None): 
@@ -272,7 +273,15 @@ def get_permit(ui=None):
             ],
         
         }, 
-        
+        {'label':'AG系统','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'AG账号','children':[
+                {'label':'查看','value':'TbAgaccount'},
+                {'label':'编辑','value':'TbAgaccount.edit','depend':['TbAgaccount']},
+                ]},
+            {'label':'投注列表','value':'TbAgprofitloss.edit'},
+            {'label':'资金流入','value':'TbGamemoneyininfo.edit'},
+            {'label':'资金流出','value':'TbGamemoneyoutinfo.edit'}
+        ]},
         {'label': _('User'),
          'children': [
             #{'label': _('查看用户'), 'value': 'User.read',}, 
@@ -285,6 +294,7 @@ def get_permit(ui=None):
              {'label': '域名管理', 'value': 'TbDomain.edit',}, 
              ],
          },
+         
     ]
     permit_member =  [ 
         {'label':'会员列表(标签页)','children':[
@@ -358,7 +368,7 @@ def get_permit(ui=None):
             #if ns.get('value') in out_list:
                 #raise UserWarning('%s发生了重复'%ns.get('value'))
             #out_list.append(out_list)
-    return out_permit
+    return  evalue_container(out_permit)
 
 @director_element('permit.ui_options')
 def permit_ui_options():

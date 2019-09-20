@@ -210,6 +210,14 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
             ('todolist_2','','','single'),
            ('todolist_100','','','single'),
            
+           
+           # AG
+           ('TbAgaccount',model_read_permit(TbAgaccount),model_to_name(TbAgaccount),'model'),
+           ('TbAgaccount.edit',model_full_permit(TbAgaccount),model_to_name(TbAgaccount),'model'),
+           ('TbAgprofitloss.edit',model_full_permit(TbAgprofitloss),model_to_name(TbAgprofitloss),'model'),
+           ('TbGamemoneyininfo.edit',model_full_permit(TbGamemoneyininfo),model_to_name(TbGamemoneyininfo),'model'),
+           ('TbGamemoneyoutinfo.edit',model_full_permit(TbGamemoneyoutinfo),model_to_name(TbGamemoneyoutinfo),'model'),
+           
            ]
 
 add_permits(permits)
