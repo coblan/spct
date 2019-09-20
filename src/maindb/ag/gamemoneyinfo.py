@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,SelectSearch,RowFilter
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,SelectSearch,RowFilter,RowSort
 from ..models import TbGamemoneyininfo
 from helpers.func.dict_list import sort_by_name
 from django.db.models import Sum
@@ -77,7 +77,11 @@ class GameMoneyininfoPage(TablePage):
                     return super().get_option(name)
         
         class filters(RowFilter):
+            names=['status']
             range_fields=['ordertime']
+        
+        class sort(RowSort):
+            names = ['amount','handtime','ordertime']
 
 director.update({
     'gamemoneyininfo':GameMoneyininfoPage.tableCls

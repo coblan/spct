@@ -18,14 +18,14 @@ class GamemoneyoutinfoPage(TablePage):
             heads = sort_by_name(heads,['moneyoutid','account','account__nickname','username']) 
             return heads
 
-class GamemoneyoutinfoForm(ModelFields):
-    class Meta:
-        model = TbGamemoneyoutinfo
-        exclude = []
+#class GamemoneyoutinfoForm(ModelFields):
+    #class Meta:
+        #model = TbGamemoneyoutinfo
+        #exclude = []
 
 director.update({
     'gamemoneyoutinfo':GamemoneyoutinfoPage.tableCls,
-    'gamemoneyoutinfo.edit':GamemoneyoutinfoForm,
+    #'gamemoneyoutinfo.edit':GamemoneyoutinfoForm,
 })
 
 page_dc.update({

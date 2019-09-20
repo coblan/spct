@@ -50,7 +50,7 @@ def call_client(rows,**kws):
         info = TbUserex.objects.get(userid = user.pk)
     except TbUserex.DoesNotExist:
         raise UserWarning('当前账号不具备分机号，请联系管理员!')
-    url = '%(domain)s/api/ola/agents/%(fenji)s/dial/%(mobile)s'%{'domain':getattr(settings,'OLA_DOMAIN','http://115.28.186.246:8080'),'fenji':info.extnumber,'mobile':client.phone}
+    url = '%(domain)s/api/ola/agents/%(fenji)s/dial/0086%(mobile)s'%{'domain':getattr(settings,'OLA_DOMAIN','http://115.28.186.246:8080'),'fenji':info.extnumber,'mobile':client.phone}
     #http://115.28.186.246:8080/api/ola/agents/1551/dial/17380565153
     general_log.info('给用户%s打电话'%client)
     rt = requests.put(url)

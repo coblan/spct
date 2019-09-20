@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,SelectSearch,RowFilter
+from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,SelectSearch,RowFilter,RowSort
 from ..models import TbAgprofitloss
 from helpers.func.dict_list import sort_by_name
 from django.db.models import Sum
@@ -82,6 +82,9 @@ class AgprofitlossPage(TablePage):
                     return super().get_option(name)
         class filters(RowFilter):
             range_fields=['profitlosstime']
+        
+        class sort(RowSort):
+            names = ['profitlossmoney','prizemoney','winmoney','profitlosstime']
 
 director.update({
     'agprofitloss':AgprofitlossPage.tableCls
