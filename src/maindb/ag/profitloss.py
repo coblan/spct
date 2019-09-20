@@ -31,7 +31,10 @@ class AgprofitlossPage(TablePage):
         
         def dict_head(self, head):
             width = {
-                'memo':200
+                'memo':200,
+                'profitlossmoney':140,
+                'prizemoney':140,
+                'winmoney':140,
             }
             if head['name'] in width:
                 head['width'] = width.get(head['name'])
