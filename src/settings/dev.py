@@ -45,13 +45,15 @@ DATABASES = {
             #'NAME': 'MainDB_20180522',
             #},        
        #} ,  
-    'Sports': {
-        'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
+    'Sports': { 
         'ENGINE': 'sql_server.pyodbc',
-        #'HOST': '192.168.40.79,1433',
         'HOST':'192.168.40.165,1433',
-        'USER':  'develop_admin',#'Backend'  ,  develop
-        'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
+        #'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
+        #'USER':  'develop_admin',#'Backend'  ,  develop
+        #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
+        'NAME':'Sports_20190610_Part1',
+        'USER':  'develop',#'Backend'  ,  
+        'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
         #'PORT': '1436',
         #192.168.40.6 Sports_20181214_2
         'OPTIONS': {
