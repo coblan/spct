@@ -48,10 +48,11 @@ class AjusttemplateForm(ModelFields):
         exclude =[]
         
     def dict_head(self, head):
-        bb= base64.b64encode('scope.value!="[]"'.encode('utf-8'))
+        
         if head['name'] =='adjustsettings':
+            bb= base64.b64encode('scope.value!="[]"'.encode('utf-8'))
             head['editor']='com-field-table-list'
-            head['fv_rule']='group_unique(Percent);express(%s)'%bb
+            head['fv_rule']='group_unique(Percent);express(%s)'%bb.decode('utf-8')
             head['fv_msg']='不能为空,且比值不能重复'
             head['table_heads']=[
                 {'name':'Percent','label':'比值','editor':'com-table-pop-fields-local'},
