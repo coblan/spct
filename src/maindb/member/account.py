@@ -215,7 +215,7 @@ class AccountPage(TablePage):
             for user in User.objects.filter(pk__in=csuserlist):
                 usermap[user.pk] = str(user)
             for row in rows:
-                row['_csuserid_label'] = usermap.get(row.get('csuserid'),'')
+                row['_csuserid_label'] = usermap.get(row.get('csuserid'),row.get('csuserid'))
             return rows
 
         def dict_head(self, head):
@@ -341,8 +341,10 @@ class AccountPage(TablePage):
                  })
                  cfg.show_load()
                  ex.director_call('d.save_rows',{rows:scope.ps.selected}).then(resp=>{
+                    scope.ps.update_rows(resp)
                     cfg.hide_load()
                     cfg.toast("操作完成")
+                    scope.ps.selected = []
                  })
                  
                  })'''}
