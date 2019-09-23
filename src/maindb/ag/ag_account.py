@@ -12,7 +12,7 @@ class AgAccountPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbAgaccount
-        exclude = ['bonusrate','rebate','fishavailablescores','lastfishupdatetime']
+        exclude = ['fishavailablescores','lastfishupdatetime']
         
         def getExtraHead(self):
             return [
@@ -37,6 +37,7 @@ class AgAccountPage(TablePage):
                 'transferout':140,
                 'winorloss':140,
                 'availablescores':140,
+                'rebate':140,
             }
             if head['name'] in width:
                 head['width'] = width.get(head['name'])

@@ -35,6 +35,8 @@ class AgprofitlossPage(TablePage):
                 'profitlossmoney':140,
                 'prizemoney':140,
                 'winmoney':140,
+                'rebate':140,
+                'validbetamount':140,
             }
             if head['name'] in width:
                 head['width'] = width.get(head['name'])
@@ -57,7 +59,8 @@ class AgprofitlossPage(TablePage):
         def statistics(self, query):
             dc = query.aggregate(total_profitlossmoney=Sum('profitlossmoney'),
                                  total_prizemoney=Sum('prizemoney'),
-                                 total_winmoney=Sum('winmoney'),)
+                                 total_winmoney=Sum('winmoney'),
+                                 total_rebate= Sum('rebate'))
      
             #for k in dc:
                 #dc[k] = str(round(dc.get(k, 0) or 0, 2))

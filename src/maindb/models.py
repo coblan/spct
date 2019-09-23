@@ -199,11 +199,11 @@ class TbAgaccount(models.Model):
     #accountid = models.BigIntegerField(db_column='AccountId', primary_key=True)  # Field name made lowercase.
     account = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
     agusername = models.CharField(db_column='AGUserName', max_length=150,verbose_name='AG用户名')  # Field name made lowercase.
-    bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='反点率')  # Field name made lowercase.
     transferin = models.DecimalField(db_column='TransferIn', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='转入')  # Field name made lowercase.
     transferout = models.DecimalField(db_column='TransferOut', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='转出')  # Field name made lowercase.
     winorloss = models.DecimalField(db_column='WinOrLoss', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='亏盈')  # Field name made lowercase.
-    rebate = models.DecimalField(db_column='Rebate', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    rebate = models.DecimalField(db_column='Rebate', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='总反水')  # Field name made lowercase.
     availablescores = models.DecimalField(db_column='AvailableScores', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='余额')  # Field name made lowercase.
     fishavailablescores = models.DecimalField(db_column='FishAvailableScores', max_digits=18, decimal_places=4, blank=True, null=True,)  # Field name made lowercase.
     lastfishupdatetime = models.DateTimeField(db_column='LastFishUpdateTime', blank=True, null=True,verbose_name='')  # Field name made lowercase.
@@ -233,6 +233,8 @@ class TbAgprofitloss(models.Model):
     bettime = models.DateTimeField(db_column='BetTime', blank=True, null=True)  # Field name made lowercase.
     iswin = models.IntegerField(db_column='IsWin', blank=True, null=True,verbose_name='赢')  # Field name made lowercase.
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='AG用户名')  # Field name made lowercase.
+    validbetamount = models.DecimalField(db_column='ValidBetAmount', max_digits=18, decimal_places=4,verbose_name='有效流水')  # Field name made lowercase.
+    rebate = models.DecimalField(db_column='Rebate', max_digits=18, decimal_places=4,verbose_name='返点金额')  # Field name made lowercase.
 
     class Meta:
         managed = False
