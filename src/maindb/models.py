@@ -2687,7 +2687,7 @@ class TbLeaguegroupMarketweight(models.Model):
     market = models.ForeignKey(to=TbMarkets,db_constraint=False,db_column='MarketID',verbose_name='玩法')
     preweight = models.DecimalField(db_column='PreWeight', max_digits=18, decimal_places=4,verbose_name='早盘权重')  # Field name made lowercase.
     liveweight = models.DecimalField(db_column='LiveWeight', max_digits=18, decimal_places=4,verbose_name='走地权重')  # Field name made lowercase.
-    extendweight = models.DecimalField(db_column='ExtendWeight', max_digits=18, decimal_places=2,verbose_name='扩展权重')  # Field name made lowercase.
+    extendweight = models.DecimalField(db_column='ExtendWeight', max_digits=18, decimal_places=2,default=1,verbose_name='扩展权重')  # Field name made lowercase.
     
     class Meta:
         managed = False
