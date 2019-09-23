@@ -330,7 +330,7 @@ class AccountPage(TablePage):
                  'value': 1, 'confirm_msg': '确认允许这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁止提现', 'field': 'isenablewithdraw',
                  'value': 0, 'confirm_msg': '确认禁止这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields},
-                {'editor':'com-op-btn','label':'选择客服',
+                {'editor':'com-op-btn','label':'选择客服','visible': 'csuserid' in changeable_fields,
                  'table_ctx':UserPicker().get_head_context(),
                  'action':''' cfg.pop_vue_com("com-table-panel",scope.head.table_ctx).
                  then((row)=>{
