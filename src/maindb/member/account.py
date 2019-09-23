@@ -29,6 +29,9 @@ from django.db.models import DecimalField
 from ..models import TbMoneyCategories,TbSetting,TbRisklevellog
 import json
 from maindb.rabbitmq_instance import notifyAccountFrozen
+from helpers.case.jb_admin.admin import UserPicker
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -141,12 +144,26 @@ class AccountPage(TablePage):
                    #'createtime', 'source','accounttype','weight','groupid']
         fields_sort = ['accountid', 'account', 'nickname', 'createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
-                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum']
+                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid']
 
         class filters(RowFilter):
-            names=['accounttype','groupid']
+            names=['accounttype','groupid','csuserid__name']
+            icontains=['csuserid__name']
             range_fields = ['createtime']
-
+            
+            def getExtraHead(self):
+                return [
+                    {'name':"csuserid__name",'label':'所属客服',}
+                ]
+            
+            def clean_search_args(self, search_args):
+                cs_user_name = search_args.pop('csuserid__name',None)
+                out = super().clean_search_args(search_args)
+                if cs_user_name:
+                    ls=[x.pk for x in User.objects.filter(Q(first_name__icontains=cs_user_name) | Q(username__icontains=cs_user_name))]
+                    out['csuserid__in'] = ls
+                return out
+            
         def inn_filter(self, query):
             """
             """
@@ -190,6 +207,16 @@ class AccountPage(TablePage):
                 'withdrawamount': round( inst.withdrawamount or 0,2),
                 'betfullrecord':round( inst.betfullrecord or 0,2) # round( sum( [x.consumeamount for x in  inst.tbbetfullrecord_set.all()] ),2),
             }
+        
+        def get_rows(self):
+            rows = super().get_rows()
+            csuserlist = [dc.get('csuserid') for dc in rows if dc.get('csuserid') !=None]
+            usermap ={}
+            for user in User.objects.filter(pk__in=csuserlist):
+                usermap[user.pk] = str(user)
+            for row in rows:
+                row['_csuserid_label'] = usermap.get(row.get('csuserid'),'')
+            return rows
 
         def dict_head(self, head):
             dc = {
@@ -204,6 +231,7 @@ class AccountPage(TablePage):
                 'status': 60,
                 'createtime': 150,
                 'anomalyticketnum':120,
+                'csuserid':140,
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -219,6 +247,8 @@ class AccountPage(TablePage):
             if head['name'] in ['bonusrate']:
                 head['editor'] = 'com-table-digit-shower'
                 head['digit'] = 3
+            if head['name'] =='csuserid':
+                head['editor'] = 'com-table-label-shower'
             return head
 
         #def statistics(self, query):
@@ -245,7 +275,7 @@ class AccountPage(TablePage):
                     {'name': 'betfullrecord', 'label': '提现限额'}]
 
         class search(SelectSearch):
-            names = ['nickname']
+            names = ['nickname',]
             exact_names = ['accountid']
 
             def get_option(self, name):
@@ -257,6 +287,7 @@ class AccountPage(TablePage):
                         'value': name,
                         'label': '昵称',
                     }
+                
 
             #def clean_search(self):
                 #if self.qf in ['accountid']:
@@ -298,7 +329,23 @@ class AccountPage(TablePage):
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '允许提现', 'field': 'isenablewithdraw',
                  'value': 1, 'confirm_msg': '确认允许这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁止提现', 'field': 'isenablewithdraw',
-                 'value': 0, 'confirm_msg': '确认禁止这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields}
+                 'value': 0, 'confirm_msg': '确认禁止这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields},
+                {'editor':'com-op-btn','label':'选择客服',
+                 'table_ctx':UserPicker().get_head_context(),
+                 'action':''' cfg.pop_vue_com("com-table-panel",scope.head.table_ctx).
+                 then((row)=>{
+                 debugger;
+                 ex.each(scope.ps.selected,account=>{
+                     account.csuserid = row.pk
+                     account._csuserid_label = row.first_name+'('+ row.username +')'
+                 })
+                 cfg.show_load()
+                 ex.director_call('d.save_rows',{rows:scope.ps.selected}).then(resp=>{
+                    cfg.hide_load()
+                    cfg.toast("操作完成")
+                 })
+                 
+                 })'''}
             ]
 
 

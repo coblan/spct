@@ -117,6 +117,7 @@ class TbAccount(models.Model):
     ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时',default=0)  # Field name made lowercase.
     anomalyticketnum = models.IntegerField(db_column='AnomalyTicketNum',default=0,verbose_name='异常单次数')  # Field name made lowercase.
     lastbettime = models.DateTimeField(db_column='LastBetTime', blank=True, null=True,verbose_name='最后投注时间')  # Field name made lowercase.
+    csuserid = models.IntegerField(db_column='CSUserID', blank=True, null=True,verbose_name='所属客服')  # Field name made lowercase.
     
     class Meta:
         managed = False
@@ -2686,7 +2687,8 @@ class TbLeaguegroupMarketweight(models.Model):
     market = models.ForeignKey(to=TbMarkets,db_constraint=False,db_column='MarketID',verbose_name='玩法')
     preweight = models.DecimalField(db_column='PreWeight', max_digits=18, decimal_places=4,verbose_name='早盘权重')  # Field name made lowercase.
     liveweight = models.DecimalField(db_column='LiveWeight', max_digits=18, decimal_places=4,verbose_name='走地权重')  # Field name made lowercase.
-
+    extendweight = models.DecimalField(db_column='ExtendWeight', max_digits=18, decimal_places=2,verbose_name='扩展权重')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_LeagueGroup_MarketWeight'

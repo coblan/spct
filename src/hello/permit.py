@@ -140,8 +140,11 @@ def get_permit(ui=None):
                     {'label': '查看', 'value': 'TbBetfullrecord',}, 
                     {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
                 ]},
-            {'label':'会员关怀','value':'member.kefu','depend':['TbAccount']},
-             ],
+            {'label':'会员关怀','children':[
+                {'label':'查看页面','value':'member.kefu','depend':['TbAccount']},
+                {'label':'查看所有会员','value':'kefu.watch_all_account'},
+                ],},
+            ]
          }, 
         {'label': _('MoneyFlow'),
          'children': [
