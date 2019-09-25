@@ -96,6 +96,14 @@ page_dc = {
     "newleaguegroup"	:maindb.riskcontrol.new_league_group.LeagueGroupPage,
     "userlog"	:maindb.member.userlog.UserlogPage,
     "activity_record"	:maindb.marketing.activity_record.ActivityRecoredPage,
+    
+    "TbPaychannelgroup"	:maindb.basic_data.admin_paychanel_group.PaychannelgroupPage,
+    "kefupage"	:maindb.kefu.KefuPage,
+    "userex"	:maindb.userex.UserExPage,
+    "agaccount"	:maindb.ag.ag_account.AgAccountPage,
+    "agprofitloss"	:maindb.ag.profitloss.AgprofitlossPage,
+    "gamemoneyininfo"	:maindb.ag.gamemoneyinfo.GameMoneyininfoPage,
+    "gamemoneyoutinfo"	:maindb.ag.gamemoneyoutinfo.GamemoneyoutinfoPage,
 }
 director = {
     "cloudfile_uploader"	:maindb.cus_models_fields.CloudFileUploader,
@@ -294,6 +302,20 @@ director = {
     "activity_record"	:maindb.marketing.activity_record.ActivityRecoredPage.tableCls,
     "permit.options"	:hello.permit.get_permit,
     "permit.ui_options"	:hello.permit.permit_ui_options,
+    
+    "user.picker"	:helpers.case.jb_admin.admin.UserPicker,
+    "TbPaychannelgroup"	:maindb.basic_data.admin_paychanel_group.PaychannelgroupPage.tableCls,
+    "TbPaychannelgroup.edit"	:maindb.basic_data.admin_paychanel_group.TbPaychannelgroupForm,
+    "TbLeaguegroupMarketweightTable"	:maindb.riskcontrol.new_league_group.TbLeaguegroupMarketweightTable,
+    "TbLeaguegroupMarketweightTable.edit"	:maindb.riskcontrol.new_league_group.TbLeaguegroupMarketweightForm,
+    "kefupage"	:maindb.kefu.KefuPage.tableCls,
+    "userex"	:maindb.userex.UserExPage.tableCls,
+    "userex.edit"	:maindb.userex.UserExForm,
+    "agaccount"	:maindb.ag.ag_account.AgAccountPage.tableCls,
+    "agaccount.edit"	:maindb.ag.ag_account.AgAccountForm,
+    "agprofitloss"	:maindb.ag.profitloss.AgprofitlossPage.tableCls,
+    "gamemoneyininfo"	:maindb.ag.gamemoneyinfo.GameMoneyininfoPage.tableCls,
+    "gamemoneyoutinfo"	:maindb.ag.gamemoneyoutinfo.GamemoneyoutinfoPage.tableCls,
 }
 director_views = {
     "get_row"	:helpers.director.dapi.get_row,
@@ -320,7 +342,12 @@ director_views = {
     "batch_recommand"	:maindb.matches.matches.batch_recommand,
     "d.save_row"	:helpers.director.dapi.save_row,
     "event_match.start_scrapy"	:maindb.matches.event_match.start_scrapy,
-    "event_match.stop_scrapy"	:maindb.matches.event_match.start_scrapy,
+    "d.get_row"	:helpers.director.dapi.get_row,
+    "d.save_rows"	:helpers.director.dapi.save_rows,
+    "match.makesure_ticketmaster"	:maindb.matches.ticket_master.make_sure_ticketmaster,
+    "event_match.stop_scrapy"	:maindb.matches.event_match.stop_scrapy,
+    "leaguegroup.paste_market_weight"	:maindb.riskcontrol.new_league_group.paste_market_weight,
+    "call_client"	:maindb.kefu.call_client,
 }
 sim_signal = {
     "notice.static.changed"	:[maindb.update_cache.clear_notice_cache],
@@ -365,5 +392,4 @@ field_map = {
     "maindb.tbrechargeareablacklist.status"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
     "maindb.tbleaguegroup.enabled"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
 }
-
 

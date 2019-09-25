@@ -61,11 +61,13 @@ class AgAccountPage(TablePage):
             dc = query.aggregate(total_winorloss=Sum('winorloss'),
                                  total_transferin=Sum('transferin'),
                                  total_transferout=Sum('transferout'),
+                                 total_rebate=Sum('rebate'),
                                  total_availablescores=Sum('availablescores'))
             mapper = {
                 'total_winorloss': 'winorloss' ,
                 'total_transferin':'transferin',
                 'total_transferout':'transferout',
+                'total_rebate':'rebate',
                 'total_availablescores':'availablescores'
             }
             #for k in dc:
