@@ -1965,7 +1965,8 @@ class TbTicketmaster(models.Model):
                                   decimal_places=4)  # 单注金额 .
     betamount = CusDecimalField(db_column='BetAmount', verbose_name=_('BetAmount'), max_digits=18,
                                 decimal_places=4)  # 总金额 Field name made lowercase.
-    parlayrule = models.IntegerField(db_column='ParlayRule', verbose_name=_('ParlayRule'))  # 串关规则
+    #parlayrule = models.IntegerField(db_column='ParlayRule', verbose_name=_('ParlayRule'))  # 串关规则
+    parlayrule = models.ForeignKey(to=TbParlayrules,db_constraint=False,db_column='ParlayRule', verbose_name=_('ParlayRule'))  # 串关规则
     allowauto = models.SmallIntegerField(db_column='AllowAuto', verbose_name=_('AllowAuto'))  # 自动接收最新赔率
     status = models.IntegerField(db_column='Status', verbose_name=_('Status'),
                                  choices=TbTicketmaster_STATUS)  # Field name made lowercase.
