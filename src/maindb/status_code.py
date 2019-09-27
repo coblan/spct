@@ -452,3 +452,7 @@ GAMEMONEY_OUT_STATUS = (
     (2,'收回完成'),
     (4,'收回失败'),
 )
+ACCOUNT_POWERTYPE = (
+    (1,'所有类型'),
+    (2,'仅限体育'),
+)
