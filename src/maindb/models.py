@@ -119,7 +119,7 @@ class TbAccount(models.Model):
     anomalyticketnum = models.IntegerField(db_column='AnomalyTicketNum',default=0,verbose_name='异常单次数')  # Field name made lowercase.
     lastbettime = models.DateTimeField(db_column='LastBetTime', blank=True, null=True,verbose_name='最后投注时间')  # Field name made lowercase.
     csuserid = models.IntegerField(db_column='CSUserID', blank=True, null=True,verbose_name='所属客服')  # Field name made lowercase.
-    powertype = MultiChoiceField(db_column='PowerType',max_length=50,seperator=',',full_choice='-1',choices=ACCOUNT_POWERTYPE,verbose_name='允许游戏类型')  # Field name made lowercase.
+    powertype = MultiChoiceField(db_column='PowerType',max_length=50,seperator=',',full_choice='-1',blank=True,choices=ACCOUNT_POWERTYPE,verbose_name='允许游戏类型')  # Field name made lowercase.
     #powertype = models.CharField(db_column='PowerType', max_length=50)
     class Meta:
         managed = False
