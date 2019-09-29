@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 
 from .status_code import *
 from .cus_models_fields import CusPictureField, CusFileField,CloudFileField
+from helpers.director.model_func.cus_fields.multichoice import MultiChoiceField
 
 from helpers.director.model_func.cus_fields.cus_picture import PictureField
 from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
@@ -118,8 +119,8 @@ class TbAccount(models.Model):
     anomalyticketnum = models.IntegerField(db_column='AnomalyTicketNum',default=0,verbose_name='异常单次数')  # Field name made lowercase.
     lastbettime = models.DateTimeField(db_column='LastBetTime', blank=True, null=True,verbose_name='最后投注时间')  # Field name made lowercase.
     csuserid = models.IntegerField(db_column='CSUserID', blank=True, null=True,verbose_name='所属客服')  # Field name made lowercase.
-    powertype = models.IntegerField(db_column='PowerType',default=1,choices=ACCOUNT_POWERTYPE,verbose_name='允许游戏类型')  # Field name made lowercase.
-    
+    powertype = MultiChoiceField(db_column='PowerType',max_length=50,seperator=',',full_choice='-1',choices=ACCOUNT_POWERTYPE,verbose_name='允许游戏类型')  # Field name made lowercase.
+    #powertype = models.CharField(db_column='PowerType', max_length=50)
     class Meta:
         managed = False
         db_table = 'TB_Account'
