@@ -209,7 +209,8 @@ class MatchesStatisticsPage(TablePage):
             'label': '注单', 
             'com': 'com-tab-table',
             'par_field': 'matchid',
-            'table_ctx': TickmasterTab(crt_user=crt_user).get_head_context(),
+            'lazy_init':'cfg.show_load();ex.director_call("d.get_head_context",{director_name:"match_statistic.ticket_master"}).then(resp=>{cfg.hide_load();scope.head.table_ctx=resp})',
+            #'table_ctx': TickmasterTab(crt_user=crt_user).get_head_context(),
             'visible': True, }        
         ]
         
