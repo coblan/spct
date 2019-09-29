@@ -222,7 +222,7 @@ class TbLeaguegroupMarketweightTable(ModelTable):
             elif self.sort_str =='-market':
                 return query.order_by('-market__marketid')
             else:
-                return query
+                return super().get_query(query)
 
 class TbLeaguegroupMarketweightForm(ModelFields):
     hide_fields=['leaguegroup']
