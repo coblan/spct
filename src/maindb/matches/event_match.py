@@ -248,7 +248,7 @@ class WebMatchForm(Fields):
             scope.head.table_ctx.search_args._qf = "teamname";
             Vue.set(scope.head.table_ctx.search_args,"_start_matchdate",scope.row.EventDateTime)
             Vue.set(scope.head.table_ctx.search_args,"_end_matchdate",scope.row.EventDateTime)
-
+            Vue.set(scope.head.table_ctx.search_args,"sportid",scope.row.SportId)
              ''',
              'after_select':'ex.vueAssign(scope.row,scope.selected_row);',
              'table_ctx':MatchPicker().get_head_context(),'options':[],},
@@ -308,6 +308,16 @@ class WebMatchForm(Fields):
     def get_org_dict(self,row=[]):
         return {}
     
+    def clean(self):
+        super().clean()
+        eventdatetime = timezone.datetime.strptime(self.kw.get('EventDateTime'), '%Y-%m-%d %H:%M:%S' ) 
+        matchdatetime = timezone.datetime.strptime(self.kw.get('matchdate') ,'%Y-%m-%d %H:%M:%S', ) 
+        if eventdatetime - matchdatetime > timezone.timedelta(minutes=10) or matchdatetime - eventdatetime > timezone.timedelta(minutes=10):
+            raise UserWarning('匹配比赛时间相差大于10分钟')
+        
+        
+        
+        
     def save_form(self):
         #if self.kw.get('_my_swap_team'):
             #if self.kw.get('TeamSwap'):
@@ -315,6 +325,7 @@ class WebMatchForm(Fields):
             #else:
                 #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':True}})
         #else:
+        
         dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid')}
         mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         

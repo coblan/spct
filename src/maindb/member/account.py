@@ -335,21 +335,32 @@ class AccountPage(TablePage):
                  'table_ctx':UserPicker().get_head_context(),
                  'action':''' cfg.pop_vue_com("com-table-panel",scope.head.table_ctx).
                  then((row)=>{
-                 debugger;
                  ex.each(scope.ps.selected,account=>{
                      account.csuserid = row.pk
                      account._csuserid_label = row.first_name+'('+ row.username +')'
+                     account.meta_change_fields='csuserid'
                  })
                  cfg.show_load()
-                 ex.director_call('d.save_rows',{rows:scope.ps.selected}).then(resp=>{
-                    scope.ps.update_rows(resp)
-                    cfg.hide_load()
-                    cfg.toast("操作完成")
-                    scope.ps.selected = []
-                 })
-                 
+
+                 scope.ps.save_rows(scope.ps.selected,option).then((resp)=>{
+                     scope.ps.update_rows(resp)
+                     cfg.hide_load()
+                     cfg.toast("操作完成")
+                     scope.ps.selected = []
+                 })  
                  })'''}
             ]
+          #var option={
+                     #after_save:"scope.ps.update_rows(resp);"
+                 #}
+        
+               #ex.director_call('d.save_rows',{rows:scope.ps.selected}).then(resp=>{
+                 #if(scope.ps.check_outdate(resp) ){
+                     #scope.ps.update_rows(resp)
+                     #cfg.hide_load()
+                     #cfg.toast("操作完成")
+                     #scope.ps.selected = []
+                 #}
 
 
 class AccoutBaseinfo(ModelFields):
