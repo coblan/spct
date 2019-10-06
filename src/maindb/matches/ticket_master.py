@@ -375,9 +375,9 @@ class TicketMasterPage(TablePage):
                  'confirm_msg':'确认该注单？',
                  #'icon':'fa-exclamation-triangle',
                  'row_match':'one_row',
-                 'match_express':'scope.row.status==0',
+                 'match_express':'ex.isin( scope.row.status,[0,11])',
                  'after_save':'scope.ps.search()',
-                 'match_msg':"只能选择确认中的注单"},
+                 'match_msg':"只能选择状态为[确认中,危险球]的注单"},
                  #'action':'ex.director_call("save_rows",scope.ps.selected_rows).then((rows)=>{ex.each(rows,(row)=>{scope.ps.update_or_insert(row)})})'}
             ]
         
@@ -590,7 +590,7 @@ class MatchForm(ModelFields):
 def make_sure_ticketmaster(rows,**kws):
     ticket_list = [row.get('pk') for row in rows]
     s30_ago = timezone.now() - timezone.timedelta(seconds=30)
-    count = TbTicketmaster.objects.filter(pk__in=ticket_list,status=0,createtime__lte=s30_ago).update(status=1)
+    count = TbTicketmaster.objects.filter(pk__in=ticket_list,createtime__lte=s30_ago).update(status=1)
     if count==0:
         raise UserWarning('确认不成功，可能是注定状态已经发生改变或者创建时间不足30秒。（该操作只能针对状态为“确认中”且创建时间为30秒以前的注单）')
     stake_count =TbTicketstake.objects.filter(ticket_master_id__in=ticket_list,status =0).update(status =1,confirmodds=F('odds'))
