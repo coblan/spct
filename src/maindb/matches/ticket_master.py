@@ -594,7 +594,7 @@ def make_sure_ticketmaster(rows,**kws):
     if count==0:
         raise UserWarning('确认不成功，可能是注定状态已经发生改变或者创建时间不足30秒。（该操作只能针对状态为“确认中”且创建时间为30秒以前的注单）')
     stake_count =TbTicketstake.objects.filter(ticket_master_id__in=ticket_list,status =0).update(status =1,confirmodds=F('odds'))
-    operation_log.info('确认注单%s'%row.get('pk'))
+    operation_log.info('确认注单%s'%ticket_list)
     #return {
         #'msg':'确认成功,修改小单%s条'%stake_count
     #}
