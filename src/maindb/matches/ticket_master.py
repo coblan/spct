@@ -589,10 +589,11 @@ class MatchForm(ModelFields):
 @director_view('match.makesure_ticketmaster')
 def make_sure_ticketmaster(rows,**kws):
     ticket_list = [row.get('pk') for row in rows]
-    s30_ago = timezone.now() - timezone.timedelta(seconds=30)
-    count = TbTicketmaster.objects.filter(pk__in=ticket_list,createtime__lte=s30_ago).update(status=1)
+    #s30_ago = timezone.now() - timezone.timedelta(seconds=30)
+    #count = TbTicketmaster.objects.filter(pk__in=ticket_list,createtime__lte=s30_ago).update(status=1)
+    count = TbTicketmaster.objects.filter(pk__in=ticket_list).update(status=1)
     if count==0:
-        raise UserWarning('确认不成功，可能是注定状态已经发生改变或者创建时间不足30秒。（该操作只能针对状态为“确认中”且创建时间为30秒以前的注单）')
+        raise UserWarning('确认不成功，不存在对应的注单')
     stake_count =TbTicketstake.objects.filter(ticket_master_id__in=ticket_list,status =0).update(status =1,confirmodds=F('odds'))
     operation_log.info('确认注单%s'%ticket_list)
     #return {
