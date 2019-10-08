@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
     RowSearch, RowSort, RowFilter, director, SelectSearch, model_to_name,director_view
-from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatch
+from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatch,TbMessageUnsend
 from django.db.models import Q, Sum, F, Case, When, FloatField,Count
 import re
 from django.db import connections
@@ -594,6 +594,8 @@ def make_sure_ticketmaster(rows,**kws):
     count = TbTicketmaster.objects.filter(pk__in=ticket_list).update(status=1)
     if count==0:
         raise UserWarning('确认不成功，不存在对应的注单')
+    master = TbTicketmaster.objects.get(pk = rows[0]['pk'])
+    TbMessageUnsend.objects.create(body='注单%s投注成功'%master.orderid,type=1,sender='Backend',accountid = master.accountid_id)
     stake_count =TbTicketstake.objects.filter(ticket_master_id__in=ticket_list,status =0).update(status =1,confirmodds=F('odds'))
     operation_log.info('确认注单%s'%ticket_list)
     #return {
