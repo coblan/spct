@@ -153,7 +153,7 @@ class OtherWebMatchPage(TablePage):
         def getRowFilters(self):
             league_options = [{'value':x['LeagueId'],'label':x['LeagueNameZh']} for x in mydb['League'].find({}).sort( [('LeagueNameZh',1)])]
             return [
-                {'name':'Team','label':'球队名称','editor':'com-filter-text'},
+                {'name':'Team','placeholder':'球队名称','editor':'com-filter-text'},
                 {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
                 {'name':'ContrastStatus','label':'采集状态','editor':'com-filter-select','options':[
                     {'value':1,'label':'采集中'},

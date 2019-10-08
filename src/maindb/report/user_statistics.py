@@ -41,6 +41,11 @@ class UserStatisticsPage(TablePage):
                 search_args['_end_date'] = search_args.get('_end_date') or def_end
                 search_args['AccountType'] = search_args.get('AccountType',0)
                 search_args['_first_access'] = 0
+            if 'minAmount' in search_args:
+                try:
+                    float(search_args.get('minAmount'))
+                except ValueError:
+                    raise UserWarning('投注金额输入格式不正确!')
             return search_args
 
         class search(SelectSearch):
@@ -59,6 +64,7 @@ class UserStatisticsPage(TablePage):
                 #return [{'name':'date','editor':'com-date-range-filter','label':'日期'}]
                 
                 return [
+                    {'name':'minAmount','placeholder':'投注金额大于','editor':'com-filter-text'},
                     {'name':'AccountType','label':'用户类型','editor':'com-filter-select','options':[
                         {'label':'普通用户','value':0},
                         {'label':'代理用户','value':1},
@@ -126,8 +132,9 @@ class UserStatisticsPage(TablePage):
                 'Sort': realsort,
                 'SortWay': sortway,
                 'AccountType':self.search_args.get('AccountType','-1'),
+                'minAmount':self.search_args.get('minAmount',0)
             }
-            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s'" \
+            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s',%(minAmount)s" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql, [nickname])

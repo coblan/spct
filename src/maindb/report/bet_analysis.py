@@ -142,7 +142,7 @@ class WinbetRatio(PlainTable):
     
     def getRowFilters(self):
         return [
-             {'name':'AccountID','label':'账号ID','editor':'com-filter-text'},
+             {'name':'AccountID','placeholder':'账号ID','editor':'com-filter-text'},
              {'name':'Type','label':'报表类型','editor':'com-filter-select','required':True,'options':[
                  {'value':0,'label':'日报'},
                  {'value':1,'label':'周报'},
@@ -332,7 +332,7 @@ class MarketAnalysis(PlainTable):
     
     def getRowFilters(self):
         return [
-            {'name':'accountid','label':'账号ID','editor':'com-filter-text'},
+            {'name':'accountid','placeholder':'账号ID','editor':'com-filter-text'},
             {'name':'oddkind','label':'盘口类型','editor':'com-filter-select','options':[
                 {'value':1,'label':'早盘'},
                 {'value':2,'label':'走地'},
@@ -431,8 +431,8 @@ class TournamentAnalysis(PlainTable):
     
     def getRowFilters(self):
         return [
-            {'name':'nickname','label':'用户昵称','editor':'com-filter-text'},
-            {'name':'tournamentID','label':'联赛ID','editor':'com-filter-text'},
+            {'name':'nickname','placeholder':'用户昵称','editor':'com-filter-text'},
+            {'name':'tournamentID','placeholder':'联赛ID','editor':'com-filter-text'},
             {'name':'sportID','label':'体育类型','editor':'com-filter-select','required':True,'options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
             {'name':'time','label':'时间','editor':'com-filter-datetime-range'}
         ]
@@ -462,7 +462,7 @@ class ReportTicketState(PlainTable):
     
     def getRowFilters(self):
         return [
-            {'name':'accountid','label':'账号ID','editor':'com-filter-text'},
+            {'name':'accountid','placeholder':'账号ID','editor':'com-filter-text'},
             {'name':'sportID','label':'体育类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
             {'name':'time','label':'日期','editor':'com-filter-date-range'}
         ]
