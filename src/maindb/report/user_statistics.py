@@ -41,7 +41,7 @@ class UserStatisticsPage(TablePage):
                 search_args['_end_date'] = search_args.get('_end_date') or def_end
                 search_args['AccountType'] = search_args.get('AccountType',0)
                 search_args['_first_access'] = 0
-            if 'minAmount' in search_args:
+            if 'minAmount' in search_args and search_args.get('minAmount').strip():
                 try:
                     float(search_args.get('minAmount'))
                 except ValueError:
@@ -132,7 +132,7 @@ class UserStatisticsPage(TablePage):
                 'Sort': realsort,
                 'SortWay': sortway,
                 'AccountType':self.search_args.get('AccountType','-1'),
-                'minAmount':self.search_args.get('minAmount',0)
+                'minAmount':self.search_args.get('minAmount') or  0
             }
             sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s',%(minAmount)s" \
                   % sql_args
