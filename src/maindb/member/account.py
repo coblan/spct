@@ -205,6 +205,7 @@ class AccountPage(TablePage):
             return {
                 'amount': str(inst.amount),
                 'account': out_str,
+                'group_color':inst.groupid.extension,
                 'rechargeamount': round( inst.rechargeamount or 0 ,2),
                 'withdrawamount': round( inst.withdrawamount or 0,2),
                 'betfullrecord':round( inst.betfullrecord or 0,2) # round( sum( [x.consumeamount for x in  inst.tbbetfullrecord_set.all()] ),2),
@@ -234,6 +235,7 @@ class AccountPage(TablePage):
                 'createtime': 150,
                 'anomalyticketnum':120,
                 'csuserid':140,
+                'groupid':120,
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -251,6 +253,10 @@ class AccountPage(TablePage):
                 head['digit'] = 3
             if head['name'] =='csuserid':
                 head['editor'] = 'com-table-label-shower'
+            if head['name'] == 'groupid':
+                head['inn_editor'] = head['editor']
+                head['editor'] = 'com-table-rich-span'
+                head['style'] = 'if(scope.vc.light_level(scope.row.group_color) > 192){var mycolor="black"}else{var mycolor="white"};rt={background:scope.row.group_color,color:mycolor}'
             return head
 
         #def statistics(self, query):

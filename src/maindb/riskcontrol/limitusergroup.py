@@ -10,7 +10,7 @@ class LimitUserGroupPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbLimitusergroup
-        exclude=['extension','betbase']
+        exclude=['betbase']
         pop_edit_field='groupid'
         
         def dict_head(self, head):
@@ -22,6 +22,8 @@ class LimitUserGroupPage(TablePage):
             }
             if width_dc.get(head['name']):
                 head['width']=width_dc.get(head['name'])
+            if head['name'] == 'extension':
+                head['editor'] = 'com-table-color'
             return head
         
         def get_operation(self):
@@ -31,13 +33,15 @@ class LimitUserForm(ModelFields):
     readonly=['groupid']
     class Meta:
         model = TbLimitusergroup
-        exclude = ['extension','betbase']
+        exclude = ['betbase']
     
     def dict_head(self, head):
         if head['name']=='singleweight':
             head['fv_rule']='range(0.001~5)'
         if head['name']=='betmatch':
             head['fv_rule']='range(1~1000)'
+        if head['name'] == 'extension':
+            head['editor'] = 'com-field-color'
         return head
 
 director.update({
