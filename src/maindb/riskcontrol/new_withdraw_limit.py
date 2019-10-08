@@ -49,7 +49,7 @@ class WithDrawForm(ModelFields):
         exclude = []
 
     def dict_head(self, head):
-        if head['name'] in ['daysnumber', 'value']:
+        if head['name'] in ['daysnumber']:
             head['editor'] = 'number'
             head['fv_rule'] = 'integer(+)'
         if head['name'] == 'value':
