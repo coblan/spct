@@ -1255,6 +1255,8 @@ class TbMessageUnsend(models.Model):
     sender = models.CharField(db_column='Sender', max_length=20)  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
     accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
+    relationno = models.CharField(db_column='RelationNo', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    haveread = models.NullBooleanField(db_column='HaveRead',default=0)  # Field name made lowercase.
 
     class Meta:
         managed = False
