@@ -70,7 +70,7 @@ class UserStatisticsPage(TablePage):
             names = ['Amount', 'GameCoinRechargeAmount', 'CommissionRechargeAmount', 'ReservedAmount',
                      'CommissionWithDrawAmount', 'BetAmount', 'Turnover', 'BetOutcome', 'BetBonus', 'OrderCount',
                      'WinCount', 'WinRate', 'FirstRechargeBonus', 'SecondRechargeBonus', 'RescueBonus', 'BirthdayBonus',
-                     'AdjustAmount', 'Profit']
+                     'AdjustAmount', 'Profit','ProfitRate']
             
         def get_rows(self):
             self.getData()
