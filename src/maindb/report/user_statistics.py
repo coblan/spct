@@ -35,7 +35,7 @@ class UserStatisticsPage(TablePage):
             sp = timezone.timedelta(days=30)
             last = today - sp
             def_start = last.strftime('%Y-%m-%d 00:00:00')
-            def_end = today.strftime('%Y-%m-%d %H:%M:%S')
+            def_end = today.strftime('%Y-%m-%d 23:59:59')
             if search_args.get('_first_access',1):
                 search_args['_start_date'] = search_args.get('_start_date') or def_start
                 search_args['_end_date'] = search_args.get('_end_date') or def_end
@@ -157,6 +157,8 @@ class UserStatisticsPage(TablePage):
             return [
                 {'name': 'NickName', 'label': '昵称 ', 'width': 150,'fixed':True},
                 {'name': 'Profit', 'label': '亏盈', 'width': 100,},
+                {'name': 'WinRate', 'label': '中注率', 'width': 100},
+                {'name':'ProfitRate','label':'盈利率','width':120},
                 {'name': 'BetAmount', 'label': '投注金额', 'width': 130},
                 {'name': 'BetOutcome', 'label': '派奖金额', 'width': 100},
                 {'name': 'AdjustAmount', 'label': '调账', 'width': 100},
@@ -171,7 +173,8 @@ class UserStatisticsPage(TablePage):
                 {'name': 'BetBonus', 'label': '返水', 'width': 100},
                 {'name': 'OrderCount', 'label': '注数', 'width': 100},
                 {'name': 'WinCount', 'label': '中注数', 'width': 100},
-                {'name': 'WinRate', 'label': '中注比', 'width': 100},
+               
+              
                 {'name': 'FirstRechargeBonus', 'label': '首存红利', 'width': 100},
                 {'name': 'SecondRechargeBonus', 'label': '再存红利', 'width': 100},
                 {'name': 'RescueBonus', 'label': '救援金', 'width': 100},
