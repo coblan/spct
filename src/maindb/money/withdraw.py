@@ -217,7 +217,6 @@ class WithDrawForm(ModelFields):
                 TbMessageUnsend.objects.create(
                     body='提现订单【{0}】,成功提现{1}元'.format(self.instance.orderid, self.instance.amount), type=3,
                     sender='Backend',
-                    createtime=datetime.now(),
                     accountid=self.instance.accountid_id)
             ex_log = {'content': '提现订单【{0}】,成功提现{1}元'.format(self.instance.orderid, self.instance.amount),
                       'memo': self.kw.get('fakememo')}
@@ -243,7 +242,6 @@ class WithDrawForm(ModelFields):
                                             cashflow=1)
                 TbMessageUnsend.objects.create(body='提现订单【{0}】处理失败'.format(self.instance.orderid), type=3,
                                                sender='Backend',
-                                               createtime=datetime.now(),
                                                accountid=self.instance.accountid_id)
             ex_log = {
                 'content': '提现订单【{0}】处理失败'.format(self.instance.orderid),
