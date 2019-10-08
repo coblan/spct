@@ -46,6 +46,12 @@ class UserStatisticsPage(TablePage):
                     float(search_args.get('minAmount'))
                 except ValueError:
                     raise UserWarning('投注金额输入格式不正确!')
+            if 'MinProfit' in search_args and search_args.get('MinProfit').strip():
+                try:
+                    float(search_args.get('MinProfit'))
+                except ValueError:
+                    raise UserWarning('亏盈输入格式不正确!')
+                    
             return search_args
 
         class search(SelectSearch):
@@ -65,6 +71,7 @@ class UserStatisticsPage(TablePage):
                 
                 return [
                     {'name':'minAmount','placeholder':'投注金额大于','editor':'com-filter-text'},
+                    {'name':'MinProfit','placeholder':'亏盈大于','editor':'com-filter-text'},
                     {'name':'AccountType','label':'用户类型','editor':'com-filter-select','options':[
                         {'label':'普通用户','value':0},
                         {'label':'代理用户','value':1},
@@ -132,9 +139,10 @@ class UserStatisticsPage(TablePage):
                 'Sort': realsort,
                 'SortWay': sortway,
                 'AccountType':self.search_args.get('AccountType','-1'),
-                'minAmount':self.search_args.get('minAmount') or  0
+                'minAmount':self.search_args.get('minAmount') or  0,
+                'MinProfit':self.search_args.get('MinProfit') or 0,
             }
-            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s',%(minAmount)s" \
+            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s',%(minAmount)s,%(MinProfit)s" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql, [nickname])
@@ -165,7 +173,7 @@ class UserStatisticsPage(TablePage):
                 {'name': 'NickName', 'label': '昵称 ', 'width': 150,'fixed':True},
                 {'name': 'Profit', 'label': '亏盈', 'width': 100,},
                 {'name': 'WinRate', 'label': '中注率', 'width': 100},
-                {'name':'ProfitRate','label':'盈利率','width':120},
+                {'name':'ProfitRate','label':'亏盈率','width':120},
                 {'name': 'BetAmount', 'label': '投注金额', 'width': 130},
                 {'name': 'BetOutcome', 'label': '派奖金额', 'width': 100},
                 {'name': 'AdjustAmount', 'label': '调账', 'width': 100},
