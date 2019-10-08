@@ -35,6 +35,10 @@
 </script>
 
 <div id="there" class="home-page">
+<div v-if="!today_heads">
+    欢迎访问管理后台!
+</div>
+<template v-if="today_heads">
     <b>今日统计</b>
     <div class="my-panel">
         <div class="today-item" v-for="head in today_heads">
@@ -54,6 +58,8 @@
             <!--<el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>-->
         </el-tabs>
     </div>
+</template>
+
 
 </div>
 

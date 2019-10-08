@@ -9,6 +9,7 @@ from helpers.func.collection.container import evalue_container
 def get_permit(ui=None): 
     
     permit1 =[
+        {'label':'首页统计','value':'home-statistic'},
         {'label': '待办事项',
          'children': [
              {'label': '结算相关', 'value': 'todolist_1',}, 

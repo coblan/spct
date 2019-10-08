@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import connections
 # Register your models here.
-from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,ModelFields,model_dc, director_view
+from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,ModelFields,model_dc, director_view,has_permit
 #from orgmodel.models import Exceptions
 
 #class ExceptionsPage(TablePage):
@@ -24,10 +24,18 @@ from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,Mo
 
 class Home(object):
     template='hello/home.html'
-    def __init__(self,request, engin):
-        pass
+    
+    def __init__(self, request, **kwargs):
+        self.request = request
+        self.crt_user = request.user
+    
     def get_context(self):
         # {"RegNum": 1, "BetNum": 232, "SumBetAmount": "180123", "SumPrizeAmount": "140617", "SumLostAmount": "49071"}
+        if not has_permit(self.crt_user,'home-statistic'):
+            return {
+                'today_heads':[],
+            }
+        
         today_heads = [
             {'name': 'RegNum', 'label': '注册人数',}, 
             {'name':'BetUserNum','label':'投注人数'},
