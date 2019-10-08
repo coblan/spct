@@ -867,7 +867,7 @@ class TbLimitusergroup(models.Model):
     betmatch = models.DecimalField(db_column='BetMatch', max_digits=18, decimal_places=4,verbose_name='单场限额系数')  # Field name made lowercase.
     enable = models.BooleanField(db_column='Enable',verbose_name='启用')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
-    extension = models.CharField(db_column='Extension', max_length=300, blank=True, null=True)  # Field name made lowercase.
+    extension = models.CharField(db_column='Extension', max_length=300, blank=True, null=True,verbose_name='颜色')  # Field name made lowercase.
 
     class Meta:
         managed = False

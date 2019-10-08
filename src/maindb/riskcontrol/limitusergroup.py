@@ -24,6 +24,7 @@ class LimitUserGroupPage(TablePage):
                 head['width']=width_dc.get(head['name'])
             if head['name'] == 'extension':
                 head['editor'] = 'com-table-color'
+                head['show_tooltip']=False
             return head
         
         def get_operation(self):
