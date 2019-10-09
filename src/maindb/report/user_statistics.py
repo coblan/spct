@@ -45,8 +45,8 @@ class UserStatisticsPage(TablePage):
             argument.validate_argument(search_args,{
                 '_start_date':[argument.failmsg(argument.not_null,'必须输入开始日期'),],
                 '_end_date':[argument.failmsg(argument.not_null,'必须输入结束日期')],
-                'minAmount':[argument.default(-10**10), argument.failmsg(argument.float_str,'投注金额输入格式不正确')],
-                'MinProfit':[argument.default(-10**10),argument.failmsg(argument.float_str,'亏盈输入格式不正确')]
+                'minAmount':[argument.null_break, argument.failmsg(argument.float_str,'投注金额输入格式不正确')],
+                'MinProfit':[argument.null_break,argument.failmsg(argument.float_str,'亏盈输入格式不正确')]
             })
             
             #if not search_args.get('_start_date') :
@@ -82,8 +82,8 @@ class UserStatisticsPage(TablePage):
                 #return [{'name':'date','editor':'com-date-range-filter','label':'日期'}]
                 
                 return [
-                    {'name':'minAmount','placeholder':'投注金额大于','editor':'com-filter-text'},
-                    {'name':'MinProfit','placeholder':'亏盈大于','editor':'com-filter-text'},
+                    {'name':'minAmount','placeholder':'投注金额大于等于','editor':'com-filter-text'},
+                    {'name':'MinProfit','placeholder':'亏盈大于等于','editor':'com-filter-text'},
                     {'name':'AccountType','label':'用户类型','editor':'com-filter-select','options':[
                         {'label':'普通用户','value':0},
                         {'label':'代理用户','value':1},
@@ -151,8 +151,8 @@ class UserStatisticsPage(TablePage):
                 'Sort': realsort,
                 'SortWay': sortway,
                 'AccountType':self.search_args.get('AccountType','-1'),
-                'minAmount':self.search_args.get('minAmount') ,
-                'MinProfit':self.search_args.get('MinProfit'),
+                'minAmount':self.search_args.get('minAmount') or -10**10,
+                'MinProfit':self.search_args.get('MinProfit') or -10**10,
             }
             sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s',%(minAmount)s,%(MinProfit)s" \
                   % sql_args
