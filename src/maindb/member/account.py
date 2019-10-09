@@ -6,7 +6,7 @@ import re
 from django.db.models import Sum, Case, When, F,Count,OuterRef,Subquery
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSearch, RowSort, RowFilter, director,field_map,model_to_name
+    RowSearch, RowSort, RowFilter, director,field_map,model_to_name,Fields,get_request_cache
 from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
@@ -146,7 +146,7 @@ class AccountPage(TablePage):
                    #'createtime', 'source','accounttype','weight','groupid']
         fields_sort = ['accountid', 'account', 'nickname', 'createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
-                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid']
+                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid','memo']
 
         class filters(RowFilter):
             names=['accounttype','groupid','csuserid__name']
@@ -220,7 +220,14 @@ class AccountPage(TablePage):
             for row in rows:
                 row['_csuserid_label'] = usermap.get(row.get('csuserid'),row.get('csuserid'))
             return rows
-
+        
+        def get_head_context(self):
+            named_ctx = get_request_cache()['named_ctx']
+            named_ctx.update({
+                'account.memo.form':MemoForm().get_head_context()
+            })
+            return super().get_head_context()
+        
         def dict_head(self, head):
             dc = {
                 'accountid': 80,
@@ -315,10 +322,20 @@ class AccountPage(TablePage):
             betfullmodify = ModifyBetFullRecord(crt_user=self.crt_user)
             changeable_fields = self.permit.changeable_fields()
             return [
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '解冻', 'field': 'status',
-                 'value': 1, 'confirm_msg': '确认解冻？', 'visible': 'status' in changeable_fields, },
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '冻结', 'field': 'status',
-                 'value': 0, 'confirm_msg': '确认冻结？', 'visible': 'status' in changeable_fields},
+                #'fun': 'selected_set_and_save', 
+                {
+                 'editor': 'com-op-btn', 
+                 'action':'var ctx=named_ctx["account.memo.form"];ctx.title="解冻账号";ctx.row=scope.ps.selected[0];ctx.row.status=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
+                 'label': '解冻', 
+                 #'field': 'status',
+                 #'value': 1,
+                 #'confirm_msg': '确认解冻？',
+                 'visible': 'status' in changeable_fields, },
+                { 'editor': 'com-op-btn',
+                  'label': '冻结', 
+                  #'field': 'status', 'value': 0, 'confirm_msg': '确认冻结？', 
+                'action':'var ctx=named_ctx["account.memo.form"];ctx.title="冻结账号";ctx.row=scope.ps.selected[0];ctx.row.status=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
+                 'visible': 'status' in changeable_fields},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置登录密码', 'field': 'password',
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？',
                  'visible': 'password' in changeable_fields},
@@ -334,10 +351,14 @@ class AccountPage(TablePage):
                  'after_error':'scope.fs.showErrors(scope.errors)',
                  'fields_ctx': betfullmodify.get_head_context(), 'visible': 'amount' in changeable_fields},
                 
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '允许提现', 'field': 'isenablewithdraw',
-                 'value': 1, 'confirm_msg': '确认允许这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields},
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '禁止提现', 'field': 'isenablewithdraw',
-                 'value': 0, 'confirm_msg': '确认禁止这些用户提现？', 'visible': 'isenablewithdraw' in changeable_fields},
+                { 'editor': 'com-op-btn', 'label': '允许提现',
+                  #'field': 'isenablewithdraw','value': 1, 'confirm_msg': '确认允许这些用户提现？', 
+                'action':'var ctx=named_ctx["account.memo.form"];ctx.title="允许提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
+                 'visible': 'isenablewithdraw' in changeable_fields},
+                { 'editor': 'com-op-btn', 'label': '禁止提现', 
+                  #'field': 'isenablewithdraw','value': 0, 'confirm_msg': '确认禁止这些用户提现？', 
+                'action':'var ctx=named_ctx["account.memo.form"];ctx.title="禁止提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
+                 'visible': 'isenablewithdraw' in changeable_fields},
                 {'editor':'com-op-btn','label':'选择客服','visible': 'csuserid' in changeable_fields,
                  'table_ctx':UserPicker().get_head_context(),
                  'action':''' cfg.pop_vue_com("com-table-panel",scope.head.table_ctx).
@@ -369,6 +390,31 @@ class AccountPage(TablePage):
                      #scope.ps.selected = []
                  #}
 
+
+class MemoForm(Fields):
+    def get_heads(self):
+        return [
+            {'name':'new_memo','label':'备注','editor':'com-field-linetext','required':True,'fv_rule':'length(5~)'}
+        ]
+    
+    #def clean(self):
+        #try:
+            #self.instance = TbAccount.objects.get(pk = self.kw.get('pk'))
+        #except TbAccount.DoesNotExist:
+            #raise UserWarning('账号不存在')
+    
+    #def get_row(self):
+        #return {
+            #'memo':self.instance.memo
+        #}
+    
+    #def save_form(self):
+        #if self.instance.memo:
+            #self.instance.memo += ';'+self.kw.get('memo')
+        #else:
+            #self.instance.memo = self.kw.get('memo')
+        #self.instance.save()
+ 
 
 class AccoutBaseinfo(ModelFields):
     #'agentamount', 
@@ -431,6 +477,11 @@ class AccoutBaseinfo(ModelFields):
             dc = {'AccountID':self.instance.accountid}
             msg = json.dumps(dc)
             notifyAccountFrozen(msg)
+        if self.kw.get('new_memo'):
+            if self.instance.memo:
+                self.instance.memo += ';'+self.kw.get('new_memo')
+            else:
+                self.instance.memo = self.kw.get('new_memo')
 
     class Meta:
         model = TbAccount
@@ -722,6 +773,8 @@ director.update({
     'account.statistc': UserStatisticsTab,
     'account.matches_statistics': MatchesStatisticsTab,
     'account.betfullrecordtab':BetFullRecordTab,
+    
+    'account.memo.form':MemoForm,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),

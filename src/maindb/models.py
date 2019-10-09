@@ -121,6 +121,7 @@ class TbAccount(models.Model):
     csuserid = models.IntegerField(db_column='CSUserID', blank=True, null=True,verbose_name='所属客服')  # Field name made lowercase.
     powertype = MultiChoiceField(db_column='PowerType',max_length=50,seperator=',',full_choice='-1',blank=True,choices=ACCOUNT_POWERTYPE,verbose_name='允许游戏类型')  # Field name made lowercase.
     #powertype = models.CharField(db_column='PowerType', max_length=50)
+    memo = models.TextField(db_column='Memo', blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'TB_Account'
