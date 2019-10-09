@@ -105,7 +105,7 @@ def account_tab(self):
          #'com': 'com-tab-table',
          'par_field': 'accountid',
          'editor':'com-tab-lazy-wrap',
-         'lazy_init':'debugger;cfg.show_load();ex.director_call("d.get_head_context",{director_name:"account.matches_statistics"}).then(resp=>{cfg.hide_load();scope.head.editor="com-tab-table";scope.head.table_ctx=resp})',
+         'lazy_init':'cfg.show_load();ex.director_call("d.get_head_context",{director_name:"account.matches_statistics"}).then(resp=>{cfg.hide_load();scope.head.editor="com-tab-table";scope.head.table_ctx=resp})',
          #'table_ctx': MatchesStatisticsTab(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbMatch, self.crt_user)},
         {'name':'BetFullRecordTab',

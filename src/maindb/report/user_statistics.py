@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.core.exceptions import PermissionDenied
 from helpers.director.access.permit import has_permit
 from helpers.func.sql import qn
+from helpers.director.network import argument
 
 class UserStatisticsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -41,16 +42,27 @@ class UserStatisticsPage(TablePage):
                 search_args['_end_date'] = search_args.get('_end_date') or def_end
                 search_args['AccountType'] = search_args.get('AccountType',0)
                 search_args['_first_access'] = 0
-            if 'minAmount' in search_args and search_args.get('minAmount').strip():
-                try:
-                    float(search_args.get('minAmount'))
-                except ValueError:
-                    raise UserWarning('投注金额输入格式不正确!')
-            if 'MinProfit' in search_args and search_args.get('MinProfit').strip():
-                try:
-                    float(search_args.get('MinProfit'))
-                except ValueError:
-                    raise UserWarning('亏盈输入格式不正确!')
+            argument.validate_argument(search_args,{
+                '_start_date':[argument.failmsg(argument.not_null,'必须输入开始日期'),],
+                '_end_date':[argument.failmsg(argument.not_null,'必须输入结束日期')],
+                'minAmount':[argument.default(-10**10), argument.failmsg(argument.float_str,'投注金额输入格式不正确')],
+                'MinProfit':[argument.default(-10**10),argument.failmsg(argument.float_str,'亏盈输入格式不正确')]
+            })
+            
+            #if not search_args.get('_start_date') :
+                #raise UserWarning('必须输入开始日期')
+            #if not search_args.get('_end_date'):
+                #raise UserWarning('必须输入结束日期')
+            #if 'minAmount' in search_args and search_args.get('minAmount').strip():
+                #try:
+                    #float(search_args.get('minAmount'))
+                #except ValueError:
+                    #raise UserWarning('投注金额输入格式不正确!')
+            #if 'MinProfit' in search_args and search_args.get('MinProfit').strip():
+                #try:
+                    #float(search_args.get('MinProfit'))
+                #except ValueError:
+                    #raise UserWarning('亏盈输入格式不正确!')
                     
             return search_args
 
@@ -139,8 +151,8 @@ class UserStatisticsPage(TablePage):
                 'Sort': realsort,
                 'SortWay': sortway,
                 'AccountType':self.search_args.get('AccountType','-1'),
-                'minAmount':self.search_args.get('minAmount') or  0,
-                'MinProfit':self.search_args.get('MinProfit') or 0,
+                'minAmount':self.search_args.get('minAmount') ,
+                'MinProfit':self.search_args.get('MinProfit'),
             }
             sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s',%(minAmount)s,%(MinProfit)s" \
                   % sql_args

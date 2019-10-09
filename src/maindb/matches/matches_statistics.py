@@ -207,9 +207,11 @@ class MatchesStatisticsPage(TablePage):
             },
            {'name': 'ticket_master',
             'label': '注单', 
-            'com': 'com-tab-table',
+            #'com': 'com-tab-table',
             'par_field': 'matchid',
-            'lazy_init':'cfg.show_load();ex.director_call("d.get_head_context",{director_name:"match_statistic.ticket_master"}).then(resp=>{cfg.hide_load();scope.head.table_ctx=resp})',
+            'editor':'com-tab-lazy-wrap',
+            'lazy_init':'cfg.show_load();ex.director_call("d.get_head_context",{director_name:"match_statistic.ticket_master"}).then(resp=>{cfg.hide_load();scope.head.editor="com-tab-table";scope.head.table_ctx=resp})',
+            #'lazy_init':'cfg.show_load();ex.director_call("d.get_head_context",{director_name:"match_statistic.ticket_master"}).then(resp=>{cfg.hide_load();scope.head.table_ctx=resp})',
             #'table_ctx': TickmasterTab(crt_user=crt_user).get_head_context(),
             'visible': True, }        
         ]
