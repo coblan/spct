@@ -20,7 +20,7 @@ class PayChannelPage(TablePage):
         exclude = []
         pop_edit_fields = ['paychannelid']
         fields_sort = ['paychannelid', 'channelgroupid', 'channelname', 'channeltype','sort','isrecommend', 'active', 'minamount',
-                       'maxamount', 'optionalamount','isonline', 'channelicon', 'memo','helpurl']
+                       'maxamount', 'optionalamount','isonline', 'channelicon', 'memo','helpurl','tips','ispaytocard']
 
         def get_operation(self):
             create = super().get_operation()[0]
@@ -72,6 +72,7 @@ class PayChannelPage(TablePage):
                 'channelicon': 150,
                 'memo': 150,
                 'maxamount':150,
+                'tips':130,
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])

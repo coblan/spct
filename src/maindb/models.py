@@ -2354,6 +2354,9 @@ class TbPaychannel(models.Model):
     sort = models.IntegerField(db_column='Sort',verbose_name='排序')  # Field name made lowercase.
     helpurl = CusPictureField(db_column='HelpUrl', max_length=255, blank=True, null=True,verbose_name='帮助地址')  # Field name made lowercase.
 
+    tips = models.CharField(db_column='Tips', max_length=100, blank=True, null=True,verbose_name='提示')  # Field name made lowercase.
+    ispaytocard = models.IntegerField(db_column='IsPayToCard', blank=True, null=True,verbose_name='是否转卡',default=0,choices=REQUIRED)  # Field name made lowercase.
+
     class Meta:
         managed = False
         db_table = 'TB_PayChannel'
@@ -3004,7 +3007,10 @@ class TbMarketlistwithsport(models.Model):
 class TbUserex(models.Model):
     userid = models.IntegerField(db_column='UserID', primary_key=True,verbose_name='账号')  # Field name made lowercase.
     extnumber = models.CharField(db_column='ExtNumber', max_length=50, blank=True, null=True,verbose_name='分机号')  # Field name made lowercase.
-
+    
+    usedpassword = models.CharField(db_column='UsedPassword', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    passwordexpiretime = models.DateTimeField(db_column='PasswordExpireTime', blank=True, null=True)  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_UserEx'
