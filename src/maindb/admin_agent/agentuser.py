@@ -362,10 +362,13 @@ class ParentForm(Fields):
         accout = TbAccount.objects.get(accountid=self.kw.get('AccountID') )
         if accout.accountid == self.kw.get('parentid'):
             raise UserWarning('不能选择自己作为自己的上级')
+        old_parentid = accout.parentid
+        old_source = accout.source
         accout.parentid = self.kw.get('parentid')
         accout.source = 4
         accout.save()
-        modelfields_log.info('修改账号%(accountid)s的上级为%(parentid)s,source为4'%{'accountid':accout.accountid,'parentid':accout.parentid})
+        modelfields_log.info('修改账号%(accountid)s的上级从%(old_parentid)s改为%(parentid)s,source从%(old_source)s为4'%{'accountid':accout.accountid,'parentid':accout.parentid,
+                                                                                                                        'old_parentid':old_parentid,'old_source':old_source})
         
         
     
