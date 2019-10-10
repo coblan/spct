@@ -365,6 +365,8 @@ class ParentForm(Fields):
         accout.parentid = self.kw.get('parentid')
         accout.source = 4
         accout.save()
+        modelfields_log.info('修改账号%(accountid)s的上级为%(parentid)s,source为4'%{'accountid':accout.accountid,'parentid':accout.parentid})
+        
         
     
 
