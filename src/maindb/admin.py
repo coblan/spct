@@ -66,6 +66,7 @@ from . import admin_todolist
 from . import permit
 
 from . import js_cfg
+from . import login
 
 from .yunwei import domain
 from .yunwei import badurl

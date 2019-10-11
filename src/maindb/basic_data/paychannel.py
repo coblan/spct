@@ -49,7 +49,7 @@ class PayChannelPage(TablePage):
                     ]
 
         class filters(RowFilter):
-            names = ['active']
+            names = ['active','isrecommend']
 
             def dict_head(self, head):
                 return head
