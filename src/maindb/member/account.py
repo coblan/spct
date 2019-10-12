@@ -789,9 +789,9 @@ class SingleUserStatistic(PlainTable):
         start =  timezone.datetime.strptime(search_args['StartTime'],'%Y-%m-%d %H:%M:%S')
         end = timezone.datetime.strptime(search_args['EndTime'],'%Y-%m-%d %H:%M:%S')
         if end < start:
-            raise UserWarning('结束时间必须大于开始日期')
+            raise UserWarning('结束时间必须大于开始时间')
         if (end -start ).days > 31:
-            raise UserWarning('查询时间相差不能超过31天')
+            raise UserWarning('最多只能查询31天的数据')
         
         return search_args
     
