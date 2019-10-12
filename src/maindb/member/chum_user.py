@@ -95,7 +95,7 @@ class ChumUser(TablePage):
                 elif self.sort_str =='-sleep_days':
                     return  query.order_by('lastbettime')
                 else:
-                    return query
+                    return super().get_query(query)
                 
         class filters(RowFilter):
             names=['accounttype','groupid','source','sumrechargecount']
