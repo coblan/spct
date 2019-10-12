@@ -135,6 +135,6 @@ director.update({
     'chum_user':ChumUser.tableCls
 })
 
-page_dc.update({
-    'chum_user':ChumUser
-})
+#page_dc.update({
+    #'chum_user':ChumUser
+#})
