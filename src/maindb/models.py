@@ -3009,7 +3009,7 @@ class TbUserex(models.Model):
     extnumber = models.CharField(db_column='ExtNumber', max_length=50, blank=True, null=True,verbose_name='分机号')  # Field name made lowercase.
     
     usedpassword = models.CharField(db_column='UsedPassword', max_length=200, blank=True, null=True)  # Field name made lowercase.
-    passwordexpiretime = models.DateTimeField(db_column='PasswordExpireTime', blank=True, null=True)  # Field name made lowercase.
+    passwordexpiretime = models.DateTimeField(db_column='PasswordExpireTime', blank=True, null=True,verbose_name='密码过期')  # Field name made lowercase.
     
     class Meta:
         managed = False
