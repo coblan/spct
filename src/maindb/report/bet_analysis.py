@@ -32,7 +32,7 @@ class BetAnalysisPage(object):
         
         bet_week_chart = BetWeekChart().get_head_context()
         bet_week_chart.update({
-            'content_editor':'com-bet-week-chart',
+            'inn_editor':'com-bet-week-chart',
             'autoload':False
         })
         
@@ -43,7 +43,7 @@ class BetAnalysisPage(object):
                 'menu':[
                     {'name':'ss','label':'中注率','open_editor':'live_table','open_ctx':WinbetRatio().get_head_context()},
                     {'name':'bbb','label':'用户活跃度统计','open_editor':'live_table','open_ctx':LoginNumer().get_head_context()},
-                    {'name':'aaa','label':'投注概况','open_editor':'live_table_type','open_ctx': chart_ctx,'render_type':'chart'},
+                    {'name':'aaa','label':'投注概况','open_editor':'live_table_type','open_ctx': chart_ctx,'render_type':'chart'}, # TODO 确认一下 render_type 可能没用
                     {'name':'cc','label':'投注总额-周推移','open_editor':'live_table_type','open_ctx':bet_week_chart,'render_type':'chart'},
                     {'name':'dd','label':'玩法统计','open_editor':'live_table','open_ctx':MarketAnalysis().get_head_context() },
                     {'name':'TournamentAnalysis','label':'联赛统计', 'open_editor':'live_table','open_ctx':TournamentAnalysis().get_head_context()  },

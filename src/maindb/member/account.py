@@ -6,7 +6,7 @@ import re
 from django.db.models import Sum, Case, When, F,Count,OuterRef,Subquery
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSearch, RowSort, RowFilter, director,field_map,model_to_name,Fields,get_request_cache
+    RowSearch, RowSort, RowFilter, director,field_map,model_to_name,Fields,get_request_cache,PlainTable
 from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
@@ -15,7 +15,7 @@ from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch
 from helpers.func.random_str import get_str, get_random_number
 from helpers.director.model_func.field_procs.decimalproc import DecimalProc
-
+from django.db import connections
 import hashlib
 from decimal import Decimal
 from ..matches.ticket_master import TicketMasterPage
@@ -32,10 +32,26 @@ from maindb.rabbitmq_instance import notifyAccountFrozen
 from helpers.case.jb_admin.admin import UserPicker
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.utils import timezone
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
     ls = [
+        {'name':'dashborad',
+         'label':'数据看板',
+         'editor':'com-tab-chart',
+         'table_ctx':SingleUserStatistic().get_head_context(),
+         'pre_set':'rt={accountid:scope.par_row.accountid}',
+         'foot_heads':[{'name':'Profit','label':'亏盈'},{'name':'BetAmount','label':'投注'},{'name':'BetOutcome','label':'派奖'},
+                       {'name':'RechargeAmount','label':'充值'},{'name':'WithdrawAmount','label':'提现'}],
+         'chart_heads':[
+              {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'Profit','label':'亏盈','type':'bar',}],},
+              {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetAmount','label':'投注','type':'bar'}],},
+              {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetOutcome','label':'派奖','type':'bar'}]},
+              {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'RechargeAmount','label':'充值','type':'bar'}]},
+              {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WithdrawAmount','label':'提现','type':'bar'}]},
+         ]
+        },
         {'name': 'baseinfo',
          'label': _('Basic Info'),
          'com': 'com-tab-fields',
@@ -249,7 +265,7 @@ class AccountPage(TablePage):
             if head['name'] == 'accountid':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['ctx_name'] = 'account_tabs'
-                head['tab_name'] = 'baseinfo'
+                head['tab_name'] = 'dashborad'
             if head['name'] == 'status':
                 head['editor'] = 'com-table-bool-shower'
             if head['name'] in ['agentamount', 'amount']:
@@ -753,7 +769,68 @@ class BetFullRecordTab(WithAccoutInnFilter):
             head['width'] = width_dc.get(head['name'])
         return head
 
-
+class SingleUserStatistic(PlainTable):
+    
+    def getRowFilters(self):
+        return [
+            {'name':'StartTime','label':'开始时间','editor':'com-filter-datetime'},
+            {'name':'EndTime','label':'结束时间','editor':'com-filter-datetime'},
+        ]
+    
+    def get_heads(self):
+        return []
+    
+    @classmethod
+    def clean_search_args(cls, search_args):
+        ago_30= timezone.now()-timezone.timedelta(days=30)
+        search_args['StartTime'] = search_args.get('StartTime',ago_30.strftime('%Y-%m-%d 00:00:00'))
+        search_args['EndTime'] = search_args.get('EndTime',timezone.now().strftime('%Y-%m-%d 23:59:59'))
+        
+        start =  timezone.datetime.strptime(search_args['StartTime'],'%Y-%m-%d %H:%M:%S')
+        end = timezone.datetime.strptime(search_args['EndTime'],'%Y-%m-%d %H:%M:%S')
+        if end < start:
+            raise UserWarning('结束时间必须大于开始日期')
+        if (end -start ).days > 31:
+            raise UserWarning('查询时间相差不能超过31天')
+        
+        return search_args
+    
+    def get_rows(self):
+        sql_args ={
+            'AccountID':self.kw.get('accountid'),
+            'StartTime':self.search_args.get('StartTime'),
+            'EndTime':self.search_args.get('EndTime'),
+        }
+        sql = r"exec dbo.SP_UserStasticTrend %(AccountID)s,'%(StartTime)s','%(EndTime)s'" \
+                  % sql_args
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql)
+            set0 = cursor.fetchall()
+            #self.total = set0[0][0]
+            footer = {}
+            for col_data, col in zip(set0[0], cursor.description):
+                head_name = col[0]
+                if head_name.startswith('Sum'):
+                    head_name = head_name[3:]
+                footer[head_name] = col_data
+            footer.update({
+                '_label':'合计'
+            })
+            self.footer =  footer 
+            
+            cursor.nextset()
+            rows =[]
+            for row in cursor:
+                row_dc = {}
+                for index, head in enumerate(cursor.description):
+                    row_dc[head[0]] = row[index]
+                rows.append(row_dc)
+            print(rows)
+        
+        return rows
+            
+            
+    
 
 
 director.update({
@@ -775,6 +852,7 @@ director.update({
     'account.betfullrecordtab':BetFullRecordTab,
     
     'account.memo.form':MemoForm,
+    'account.single_user_statistic':SingleUserStatistic,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
