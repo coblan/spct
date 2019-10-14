@@ -26,7 +26,7 @@ from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
 from maindb.send_phone_message import send_message_password, send_message_fundspassword
 from django.db.models import DecimalField
-from ..models import TbMoneyCategories,TbSetting,TbRisklevellog
+from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss
 import json
 from maindb.rabbitmq_instance import notifyAccountFrozen
 from helpers.case.jb_admin.admin import UserPicker
@@ -34,6 +34,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
 from . relevent_user import ReleventUserPage
+from ..ag.profitloss import AgprofitlossPage
+from django.conf import settings
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -146,6 +148,13 @@ def account_tab(self):
              'pre_set':'rt={accountid:scope.par_row.accountid}',
              'table_ctx':RelatedUserTab().get_head_context(),
             'visible':has_permit(self.crt_user, 'member.relevent_user')
+         },{
+             'name':'agprofitloss',
+             'label':'AG投注',
+             'editor':'com-tab-table',
+             'pre_set':'rt={accountid:scope.par_row.accountid}',
+             'table_ctx':AgprofitLosTab().get_head_context(),
+             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbAgprofitloss, self.crt_user)
          }
     ]
     dc = {
@@ -856,6 +865,13 @@ class RelatedUserTab(ReleventUserPage.tableCls):
             {'name':'EndTime','label':'结束时间','editor':'com-filter-datetime'},
         ]
 
+class AgprofitLosTab(AgprofitlossPage.tableCls):
+    
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
 
 director.update({
     'account': AccountPage.tableCls,
@@ -878,6 +894,7 @@ director.update({
     'account.memo.form':MemoForm,
     'account.single_user_statistic':SingleUserStatistic,
     'account.related_user':RelatedUserTab,
+    'account.agprofitloss':AgprofitLosTab,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
