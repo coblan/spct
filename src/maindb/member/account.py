@@ -42,14 +42,22 @@ def account_tab(self):
          'editor':'com-tab-chart',
          'table_ctx':SingleUserStatistic().get_head_context(),
          'pre_set':'rt={accountid:scope.par_row.accountid}',
-         'foot_heads':[{'name':'Profit','label':'亏盈'},{'name':'BetAmount','label':'投注'},{'name':'BetOutcome','label':'派奖'},
+         'foot_heads':[{'name':'Profit','label':'亏盈'},{'name':'BetAmount','label':'投注'},
+                       {'name':'BetOutcome','label':'派奖'},{'name':'ProfitRate','label':'利润率'},
+                       {'name':'WinRate','label':'胜率'},
                        {'name':'RechargeAmount','label':'充值'},{'name':'WithdrawAmount','label':'提现'}],
          'chart_heads':[
-              {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'Profit','label':'亏盈','type':'bar',}],},
-              {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetAmount','label':'投注','type':'bar'}],},
-              {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetOutcome','label':'派奖','type':'bar'}]},
-              {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'RechargeAmount','label':'充值','type':'bar'}]},
-              {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WithdrawAmount','label':'提现','type':'bar'}]},
+              {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'Profit','label':'亏盈','type':'line',},
+                                                                              {'name':'BetAmount','label':'投注','type':'line',},
+                                                                              {'name':'BetOutcome','label':'派奖','type':'line','color':'#27B6AC'}],}, #'color':'#27B6AC'
+              #{'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetAmount','label':'投注','type':'bar'}],},
+              #{'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetOutcome','label':'派奖','type':'bar'}]},
+              
+               {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'ProfitRate','label':'利润率','type':'bar','color':'#27B6AC'}]},
+                {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WinRate','label':'胜率','type':'bar','color':'blue'}]},
+              {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'RechargeAmount','label':'充值','type':'line'},
+                                                                              {'name':'WithdrawAmount','label':'提现','type':'line'}]},
+              #{'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WithdrawAmount','label':'提现','type':'bar'}]},
          ]
         },
         {'name': 'baseinfo',
@@ -801,7 +809,7 @@ class SingleUserStatistic(PlainTable):
             'StartTime':self.search_args.get('StartTime'),
             'EndTime':self.search_args.get('EndTime'),
         }
-        sql = r"exec dbo.SP_UserStasticTrend %(AccountID)s,'%(StartTime)s','%(EndTime)s'" \
+        sql = r"exec dbo.SP_UserStatisticsTrend %(AccountID)s,'%(StartTime)s','%(EndTime)s'" \
                   % sql_args
         with connections['Sports'].cursor() as cursor:
             cursor.execute(sql)
