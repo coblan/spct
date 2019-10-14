@@ -13,11 +13,14 @@ class Login(object):
     @staticmethod
     @director_view('do_login')
     def run(row):
-        user = User.objects.get(username=row.get('username'))
-        inst,_ = TbUserex.objects.get_or_create(userid= user.pk)
-        if not inst.passwordexpiretime or inst.passwordexpiretime < timezone.now():
-            return {'success':False,'action':'cfg.toast("用户密码已经过期，请重新设置密码");setTimeout(function(){location="/accounts/pswd"},2000)'}
-        
+        try:
+            user = User.objects.get(username=row.get('username'))
+            inst,_ = TbUserex.objects.get_or_create(userid= user.pk)
+            if not inst.passwordexpiretime or inst.passwordexpiretime < timezone.now():
+                return {'success':False,'action':'cfg.toast("用户密码已经过期，请重新设置密码");setTimeout(function(){location="/accounts/pswd?username=%s"},2000)'%row.get('username')}
+        except User.DoesNotExist:
+            pass
+            #return {'success':False,'errors':{'username':['用户名不存在']}}
         loger = Login(row)
         if not loger.check_code():
             code,url = code_and_url()
