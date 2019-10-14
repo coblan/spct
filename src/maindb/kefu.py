@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,director_view,get_request_cache
+from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,director_view,get_request_cache,RowSort
 from maindb.models import TbAccount
 import requests
 from django.conf import settings
@@ -44,6 +44,9 @@ class KefuPage(TablePage):
                 return query
             else:
                 return  query.filter(csuserid=self.crt_user.pk)  #query.filter(sumrechargecount__lte=1)
+        
+  
+            
         
 @director_view('call_client')
 def call_client(rows,**kws):

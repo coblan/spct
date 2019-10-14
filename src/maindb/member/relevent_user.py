@@ -1,6 +1,6 @@
 from helpers.director.shortcut import TablePage,PlainTable,page_dc,director
 from django.db import connections
-from .account import account_tab
+
 from helpers.director.access.permit import can_touch
 from ..models import TbAccount
 from django.utils import timezone
@@ -13,6 +13,7 @@ class ReleventUserPage(TablePage):
         return 'jb_admin/table.html'
     
     def get_context(self):
+        from .account import account_tab
         ctx = super().get_context()
         named_ctx =  account_tab(self)
         ctx['named_ctx'] = named_ctx

@@ -11,7 +11,7 @@ class UserExPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbUserex
-        exclude =[]
+        exclude =['usedpassword']
         pop_edit_fields=['userid']
 
         def dict_head(self, head):
@@ -28,7 +28,7 @@ class UserExPage(TablePage):
 class UserExForm(ModelFields):
     class Meta:
         model = TbUserex
-        exclude =[]
+        exclude =['usedpassword']
     
     def dict_head(self, head):
         if head['name'] == 'userid':

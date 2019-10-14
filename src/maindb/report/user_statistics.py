@@ -11,6 +11,7 @@ from helpers.director.access.permit import has_permit
 from helpers.func.sql import qn
 from helpers.director.network import argument
 
+
 class UserStatisticsPage(TablePage):
     template = 'jb_admin/table.html'
 
@@ -21,6 +22,12 @@ class UserStatisticsPage(TablePage):
     def get_label(self):
         return '会员统计'
 
+    def get_context(self):
+        from ..member.account import account_tab
+        ctx = super().get_context()
+        ctx['named_ctx'] = account_tab(self)
+        return ctx
+    
     class tableCls(ModelTable):
         model = TbAccount
         include = ['accountid','date']
@@ -28,6 +35,9 @@ class UserStatisticsPage(TablePage):
         def dict_head(self, head):
             if head['name']=='accountid':
                 head['fixed']=True
+                head['editor'] = 'com-table-switch-to-tab'
+                head['tab_name'] = 'dashborad'
+                head['ctx_name'] = 'account_tabs'
             return head
         
         @classmethod

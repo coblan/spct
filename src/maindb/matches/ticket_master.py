@@ -216,7 +216,7 @@ class TicketMasterPage(TablePage):
                 search_args['accountid__accounttype'] = search_args.get('accountid__accounttype',0)
                 search_args['_first_access'] = 0 
                 now = timezone.now()
-                start = ( now-timezone.timedelta(days=2) ) .strftime('%Y-%m-%d %H:%M:%S')
+                start = ( now-timezone.timedelta(days=1) ) .strftime('%Y-%m-%d 00:00:00')
                 search_args['_start_createtime'] = start
             return search_args
         
