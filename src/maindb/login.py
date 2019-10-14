@@ -6,12 +6,18 @@ from .redisInstance import redisInst6
 from helpers.authuser.validate_code import code_and_url
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.shortcuts import redirect
 
 class Login(object):
    
     @staticmethod
     @director_view('do_login')
     def run(row):
+        user = User.objects.get(username=row.get('username'))
+        inst,_ = TbUserex.objects.get_or_create(userid= user.pk)
+        if not inst.passwordexpiretime or inst.passwordexpiretime < timezone.now():
+            return {'success':False,'msg':'用户密码已经过期，请重新设置密码','action':'location="/accounts/pswd"'}
+        
         loger = Login(row)
         if not loger.check_code():
             code,url = code_and_url()
