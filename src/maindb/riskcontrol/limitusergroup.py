@@ -43,6 +43,10 @@ class LimitUserForm(ModelFields):
             head['fv_rule']='range(1~1000)'
         if head['name'] == 'extension':
             head['editor'] = 'com-field-color'
+        if head['name'] =='ticketdelay':
+            head['fv_rule'] = 'integer(+0)'
+            head['suffix']='秒'
+            
         return head
 
 director.update({

@@ -869,6 +869,7 @@ class TbLimitusergroup(models.Model):
     enable = models.BooleanField(db_column='Enable',verbose_name='启用')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
     extension = models.CharField(db_column='Extension', max_length=300, blank=True, null=True,verbose_name='颜色')  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
 
     class Meta:
         managed = False
