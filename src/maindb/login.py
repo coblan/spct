@@ -16,7 +16,7 @@ class Login(object):
         user = User.objects.get(username=row.get('username'))
         inst,_ = TbUserex.objects.get_or_create(userid= user.pk)
         if not inst.passwordexpiretime or inst.passwordexpiretime < timezone.now():
-            return {'success':False,'msg':'用户密码已经过期，请重新设置密码','action':'location="/accounts/pswd"'}
+            return {'success':False,'action':'cfg.toast("用户密码已经过期，请重新设置密码");setTimeout(function(){location="/accounts/pswd"},2000)'}
         
         loger = Login(row)
         if not loger.check_code():
