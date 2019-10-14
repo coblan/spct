@@ -38,6 +38,10 @@ class UserStatisticsPage(TablePage):
                 head['editor'] = 'com-table-switch-to-tab'
                 head['tab_name'] = 'dashborad'
                 head['ctx_name'] = 'account_tabs'
+            if head['name'] =='GroupName':
+                head['inn_editor'] = head['editor']
+                head['editor'] = 'com-table-rich-span'
+                head['style'] = 'if(scope.vc.light_level(scope.row.Extension) > 192){var mycolor="black"}else{var mycolor="white"};rt={background:scope.row.Extension,color:mycolor}'
             return head
         
         @classmethod
@@ -194,6 +198,7 @@ class UserStatisticsPage(TablePage):
         def getExtraHead(self):
             return [
                 {'name': 'NickName', 'label': '昵称 ', 'width': 150,'fixed':True},
+                {'name':'GroupName','label':'用户组','width':100,},
                 {'name': 'Profit', 'label': '亏盈', 'width': 100,},
                 {'name': 'WinRate', 'label': '中注率', 'width': 100},
                 {'name':'ProfitRate','label':'亏盈率','width':120},
