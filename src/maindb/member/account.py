@@ -12,7 +12,7 @@ from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatch,TbBetfullrecord
 from helpers.func.collection.container import evalue_container
-from helpers.director.access.permit import can_touch
+from helpers.director.access.permit import can_touch,has_permit
 from helpers.func.random_str import get_str, get_random_number
 from helpers.director.model_func.field_procs.decimalproc import DecimalProc
 from django.db import connections
@@ -33,6 +33,7 @@ from helpers.case.jb_admin.admin import UserPicker
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
+from . relevent_user import ReleventUserPage
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -54,7 +55,7 @@ def account_tab(self):
               #{'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetOutcome','label':'派奖','type':'bar'}]},
               
                {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'ProfitRate','label':'利润率','type':'bar','color':'#27B6AC'}]},
-                {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WinRate','label':'胜率','type':'bar','color':'blue'}]},
+                {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WinRate','label':'胜率','type':'bar','color':'#27B6AC'}]},
               {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'RechargeAmount','label':'充值','type':'line'},
                                                                               {'name':'WithdrawAmount','label':'提现','type':'line'}]},
               #{'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WithdrawAmount','label':'提现','type':'bar'}]},
@@ -138,6 +139,13 @@ def account_tab(self):
          'pre_set':'rt={accountid:scope.par_row.accountid}',
          'table_ctx': BetFullRecordTab(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbBetfullrecord, self.crt_user)
+         },{
+             'name':'related_user',
+             'label':'关联用户',
+             'editor':'com-tab-table',
+             'pre_set':'rt={accountid:scope.par_row.accountid}',
+             'table_ctx':RelatedUserTab().get_head_context(),
+            'visible':has_permit(self.crt_user, 'member.relevent_user')
          }
     ]
     dc = {
@@ -837,8 +845,16 @@ class SingleUserStatistic(PlainTable):
         
         return rows
             
-            
-    
+class RelatedUserTab(ReleventUserPage.tableCls):
+    def get_rows(self):
+        self.search_args['accountid'] = self.kw.get('accountid')
+        rows = self.get_data_from_db()
+        return rows
+    def getRowFilters(self):
+        return [
+            {'name':'StartTime','label':'开始时间','editor':'com-filter-datetime','width':'200px'},
+            {'name':'EndTime','label':'结束时间','editor':'com-filter-datetime'},
+        ]
 
 
 director.update({
@@ -861,6 +877,7 @@ director.update({
     
     'account.memo.form':MemoForm,
     'account.single_user_statistic':SingleUserStatistic,
+    'account.related_user':RelatedUserTab,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
