@@ -111,6 +111,7 @@ class UserStatisticsPage(TablePage):
             self.getData()
             for row in self.matches:
                 row['accountid'] = row['AccountID']
+                row['_label'] = row['NickName']
                 row['Amount'] = round(row['Amount'], 2)
                 row['BetAmount'] = round(row['BetAmount'], 2)
                 row['Turnover'] = round(row['Turnover'], 2)
