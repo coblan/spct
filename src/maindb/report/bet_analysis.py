@@ -25,7 +25,7 @@ class BetAnalysisPage(object):
     def get_context(self):
         chart_ctx = BetCondition().get_head_context()
         chart_ctx.update({
-            'content_editor':'com-bet-chart',
+            'inn_editor':'com-bet-chart',
             'autoload':True,
             
         })
