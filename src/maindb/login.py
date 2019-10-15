@@ -80,19 +80,107 @@ class Login(object):
         return dc
     
 
-@director_view('authuser.changepswd')
-def changepswd(row):
-    if row.get('first_pswd')!=row.get('second_pswd'):
-        return  {'errors':{'second_pswd':['second password not match']}}
-    elif not row.get('first_pswd'):
-        return {'errors':{'first_pswd':['must input password']}}
+class ChangePswdLogic(object):
+    @staticmethod
+    @director_view('authuser.changepswd')
+    def changepswd(row):
+        changer = ChangePswdLogic(row)
+        if changer.check_code():
+            return changer.gen_code()
         
-    md_user= User.objects.get(pk=row.get('uid'))
-    if md_user.check_password(row.get('old_pswd')):
-        md_user.set_password(row.get('first_pswd'))
-        md_user.save()
-        dc={'status':'success'}
-    else:
-        dc={'errors':{'old_pswd':['old password not match']}}
+        infoerror= changer.get_info_error()
+        if infoerror:
+            dc = changer.export_code()
+            dc.update({'success':False,'errors':infoerror})
+            return dc
+        else:
+            changer.user.set_password(row.get('first_pswd'))
+            changer.user.save()
+            changer.after_change()
+            return {'success':True}
+        
+        
+    
+    def __init__(self,row):
+        self.request = get_request_cache()['request']
+        self.row = row
+        try:
+            self.user = User.objects.get(username =row.get('username'))
+        except User.DoesNotExist:
+            raise UserWarning('用户名不存在')
+        
+        self.code_key = 'user_%(username)s_validate_code'%self.row
+        self.count_key = 'user_%(username)s_login_count'%self.row
+    
+    def check_code(self):
+        if  redisInst6.get(self.code_key):
+            if not self.row.get('validate_code') or  redisInst6.get(self.code_key).lower() != self.row.get('validate_code').lower():
+                return False
+        return True
 
-    return dc
+    def gen_code(self):
+        code,url = code_and_url()
+        redisInst6.set(self.code_key,code,ex=60*3)
+        return {'success':False,'errors':{'validate_code':['验证码错误']},'validate_img':url}
+    
+    def get_info_error(row):
+        errors ={}
+        if row.get('first_pswd')!=row.get('second_pswd'):
+            errors.update(
+                {'second_pswd':['second password not match']}
+            )
+        elif not row.get('first_pswd'):
+            errors.update(
+                {'first_pswd':['must input password']}
+            )
+    
+        try:
+            md_user= User.objects.get(username =row.get('username'))
+        except User.DoesNotExist:
+            raise UserWarning('用户名不存在')
+        if md_user.check_password(row.get('old_pswd')):
+            pass 
+        else:
+            errors.update(
+                {'old_pswd':['当前密码不匹配']}
+            )
+       
+        return errors
+    
+    def export_code(self):
+        dc ={}
+        if not redisInst6.get(self.count_key) :
+            redisInst6.set(self.count_key,1,ex=60*60*2)
+        else:
+            old_value = redisInst6.get(self.count_key) 
+            redisInst6.set(self.count_key,int(old_value)+1,ex=60*60*2)
+            
+        if int( redisInst6.get(self.count_key) ) >5:
+            code,url = code_and_url()
+            redisInst6.set(self.code_key,code,ex=60*3)
+            dc.update( {'validate_img':url} ) 
+        return dc
+    
+    def after_change(self):
+        redisInst6.delete(self.count_key)
+        redisInst6.delete(self.code_key)
+
+    
+#@director_view('authuser.changepswd')
+#def changepswd(row):
+    #if row.get('first_pswd')!=row.get('second_pswd'):
+        #return  {'errors':{'second_pswd':['second password not match']}}
+    #elif not row.get('first_pswd'):
+        #return {'errors':{'first_pswd':['must input password']}}
+    #try:
+        #md_user= User.objects.get(username =row.get('username'))
+    #except User.DoesNotExist:
+        #raise UserWarning('用户名不存在')
+    #if md_user.check_password(row.get('old_pswd')):
+        #md_user.set_password(row.get('first_pswd'))
+        #md_user.save()
+        #dc={'status':'success'}
+    #else:
+        #dc={'errors':{'old_pswd':['当前密码不匹配']}}
+
+    #return dc
