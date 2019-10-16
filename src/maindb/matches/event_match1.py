@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.db.models import Q
 from ..rabbitmq_instance import notifyCreateNewMatch
 from helpers.director.shortcut import DirectorEncoder,get_request_cache
+import datetime
 
 class OtherWebMatchPage(TablePage):
     def get_label(self):
@@ -116,10 +117,16 @@ class OtherWebMatchPage(TablePage):
             #for item in mydb['Event'].find(self.filter_args).sort('CreateTime',-1).skip(start_index).limit(self.perpage):
             rows =[]
             #'Event'
+            beijin = datetime.timezone(datetime.timedelta(hours=8))
+            utc = datetime.timezone(datetime.timedelta(hours=0))
             for item in mydb['ThirdPartEvent'].find(self.filter_args).sort( [('EventDateTime',1)]).skip(start_index).limit(self.perpage):
                 dc ={
                     '_director_name':'web_match_data1.edit_self'
                 }
+                dd = item.get('EventDateTime')
+                yy = dd.replace(tzinfo=utc)
+                dd = yy.astimezone(beijin)
+                item['EventDateTime'] = dd.strftime('%Y-%m-%d %H:%M:%S')
                 item.pop('_id')
                 dc.update(item)
                 rows.append(dc)
