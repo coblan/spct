@@ -460,10 +460,10 @@ class TicketMasterPage(TablePage):
             
             def getExtraHead(self):
                 return [
-                    {'name':'is_multi_stake','label':'单注/串关','editor':'com-filter-select','options':[
+                    {'name':'is_multi_stake','placeholder':'单注/串关','editor':'com-filter-select','options':[
                         {'value':1,'label':'单注'},{'value':2,'label':'串关'}
                     ]},
-                    {'name':'accountid__accounttype','label':'账号类型','editor':'com-filter-select',
+                    {'name':'accountid__accounttype','placeholder':'账号类型','editor':'com-filter-select',
                      'options':[{'value':value,'label':label} for value,label in status_code.ACCOUNT_TYPE]},
                     #{'name':'meta_need_audit','label':'正常/异常','editor':'com-filter-select',
                      #'options':[{'value':'0','label':'正常注单'},

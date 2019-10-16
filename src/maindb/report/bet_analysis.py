@@ -25,7 +25,7 @@ class BetAnalysisPage(object):
     def get_context(self):
         chart_ctx = BetCondition().get_head_context()
         chart_ctx.update({
-            'content_editor':'com-bet-chart',
+            'inn_editor':'com-bet-chart',
             'autoload':True,
             
         })
@@ -143,14 +143,14 @@ class WinbetRatio(PlainTable):
     def getRowFilters(self):
         return [
              {'name':'AccountID','placeholder':'账号ID','editor':'com-filter-text'},
-             {'name':'Type','label':'报表类型','editor':'com-filter-select','required':True,'options':[
+             {'name':'Type','placeholder':'报表类型','editor':'com-filter-select','required':True,'options':[
                  {'value':0,'label':'日报'},
                  {'value':1,'label':'周报'},
                  {'value':2,'label':'月报'},
                  #{'value':3,'label':'季报'},
                  #{'value':4,'label':'年报'},
                  ]},
-             {'name':'SportID','label':'运动类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
+             {'name':'SportID','placeholder':'运动类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
              {'name':'Date','label':'日期','editor':'com-filter-date-range','show':'scope.ps.search_args.Type==0'},
              {'name':'Week','label':'周','editor':'com-filter-week-range','show':'scope.ps.search_args.Type==1'},
              {'name':'Month','label':'月份','editor':'com-filter-month-range','show':'scope.ps.search_args.Type==2'}
@@ -333,11 +333,11 @@ class MarketAnalysis(PlainTable):
     def getRowFilters(self):
         return [
             {'name':'accountid','placeholder':'账号ID','editor':'com-filter-text'},
-            {'name':'oddkind','label':'盘口类型','editor':'com-filter-select','options':[
+            {'name':'oddkind','placeholder':'盘口类型','editor':'com-filter-select','options':[
                 {'value':1,'label':'早盘'},
                 {'value':2,'label':'走地'},
             ]},
-            {'name':'sportid','label':'体育类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
+            {'name':'sportid','placeholder':'体育类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
             {'name':'time','label':'时间','editor':'com-filter-datetime-range'}
         ]
     
@@ -433,7 +433,7 @@ class TournamentAnalysis(PlainTable):
         return [
             {'name':'nickname','placeholder':'用户昵称','editor':'com-filter-text'},
             {'name':'tournamentID','placeholder':'联赛ID','editor':'com-filter-text'},
-            {'name':'sportID','label':'体育类型','editor':'com-filter-select','required':True,'options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
+            {'name':'sportID','placeholder':'体育类型','editor':'com-filter-select','required':True,'options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
             {'name':'time','label':'时间','editor':'com-filter-datetime-range'}
         ]
     
@@ -463,7 +463,7 @@ class ReportTicketState(PlainTable):
     def getRowFilters(self):
         return [
             {'name':'accountid','placeholder':'账号ID','editor':'com-filter-text'},
-            {'name':'sportID','label':'体育类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
+            {'name':'sportID','placeholder':'体育类型','editor':'com-filter-select','options':[{'value':x.sportid,'label':str(x)} for x in TbSporttypes.objects.filter(enabled=True)]},
             {'name':'time','label':'日期','editor':'com-filter-date-range'}
         ]
     

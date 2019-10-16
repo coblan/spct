@@ -82,8 +82,8 @@ class BadurlPage(TablePage):
         
         def getRowFilters(self):
             return [
-                {'name':'url','label':'url','editor':'com-filter-text'},
-                {'name':'UrlType','label':'url类型','editor':'com-filter-select','options':[
+                {'name':'url','placeholder':'url','editor':'com-filter-text'},
+                {'name':'UrlType','placeholder':'url类型','editor':'com-filter-select','options':[
                     {'value':1,'label':'AppService'},
                     {'value':2,'label':'Mq'},
                     {'value':3,'label':'Cdn'},

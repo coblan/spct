@@ -196,7 +196,7 @@ class AccountPage(TablePage):
             
             def getExtraHead(self):
                 return [
-                    {'name':"csuserid__name",'label':'所属客服',}
+                    {'name':"csuserid__name",'placeholder':'所属客服',}
                 ]
             
             def clean_search_args(self, search_args):

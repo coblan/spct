@@ -59,7 +59,7 @@ class AgentUser(TablePage):
             
             def getExtraHead(self):
                 return [
-                    {'name':'accounttype','label':'用户类型','editor':'com-filter-select','required':True,'options':[
+                    {'name':'accounttype','placeholder':'用户类型','editor':'com-filter-select','required':True,'options':[
                         #{'value':'NULL','label':'全部'},
                         {'value':'0','label':'普通'},
                         {'value':'1','label':'内部'}

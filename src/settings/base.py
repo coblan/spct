@@ -62,6 +62,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     #'maindb.middleware.password_expire.PasswordExpire',
+    'maindb.middleware.login_expire.LoginExpire',
     'helpers.director.middleware.request_cache.RequestCacheMiddleware',
 ]
 
@@ -176,3 +177,4 @@ MEDIA_ROOT= os.path.join( os.path.dirname(BASE_DIR),'media')
 MEDIA_URL = '/media/'
 
 BET_DATA_SOURCE=2
+LOGIN_SPAN=60

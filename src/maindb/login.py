@@ -1,12 +1,20 @@
 from helpers.authuser.forms import LoginForm
 from helpers.director.shortcut import director_view,get_request_cache
-from .models import TbUserex
+from .models import TbUserex,TbBackendwhiteip,TbBackendloginlog,TbIpdata
 from django.utils import timezone
 from .redisInstance import redisInst6
 from helpers.authuser.validate_code import code_and_url
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
+import json
+from django.db import transaction
+from django.contrib.auth.hashers import make_password, check_password
+from .riskcontrol.white_ip_rangelist import ip2num
+from django.conf import settings
+
+import logging
+general_log = logging.getLogger('general_log')
 
 class Login(object):
    
@@ -22,6 +30,9 @@ class Login(object):
             pass
             #return {'success':False,'errors':{'username':['用户名不存在']}}
         loger = Login(row)
+        if not loger.check_ip():
+            raise UserWarning('访问地址不在可用范围')
+        
         if not loger.check_code():
             code,url = code_and_url()
             redisInst6.set(loger.code_key,code,ex=60*3)
@@ -36,6 +47,20 @@ class Login(object):
         
         self.code_key = 'user_%(username)s_validate_code'%self.row
         self.count_key = 'user_%(username)s_login_count'%self.row
+    
+    def check_ip(self):
+        ip = self.get_ip()
+        general_log.info('ip=%s 登录'%ip)
+        ipnum = ip2num(ip)
+        return TbBackendwhiteip.objects.filter(startipnum__lte=ipnum,endipnum__gte=ipnum,iswork=True).exists()
+    
+    def get_ip(self):
+        request = get_request_cache()['request']
+        if request.META.get('HTTP_X_FORWARDED_FOR'):
+            ip =  request.META['HTTP_X_FORWARDED_FOR']
+        else:
+            ip = request.META['REMOTE_ADDR']
+        return ip
     
     def check_code(self):
        
@@ -55,10 +80,23 @@ class Login(object):
     def login(self,user):
         if not self.row.get('auto_login'):
             self.request.session.set_expiry(0)
+            self.request.session['auto_login'] = False
+        else:
+            self.request.session['auto_login'] = True
+            self.request.session.set_expiry(settings.LOGIN_SPAN) # 2小时过期
+            
         auth.login(self.request, user)
-        
         redisInst6.delete(self.count_key)
         redisInst6.delete(self.code_key)
+        ip = self.get_ip()
+        ipnum = ip2num(ip)
+        inst = TbIpdata.objects.filter(sartipnum__lte=ipnum,endipnum__gte = ipnum).first()
+        if inst:
+            area = inst.area
+        else:
+            area = ''
+        TbBackendloginlog.objects.create(userid=user.pk,username=user.username,ipaddress=ip,area=area)
+        
         return {'success':True,'token':self.request.session.session_key}
         
     
@@ -85,20 +123,56 @@ class ChangePswdLogic(object):
     @director_view('authuser.changepswd')
     def changepswd(row):
         changer = ChangePswdLogic(row)
-        if changer.check_code():
-            return changer.gen_code()
+        if not changer.check_code():
+            return changer.wrap_fail_info({
+                'errors':{'validate_code':['验证码错误']}
+            })
         
-        infoerror= changer.get_info_error()
+        infoerror= changer.get_info_error(row)
         if infoerror:
-            dc = changer.export_code()
-            dc.update({'success':False,'errors':infoerror})
-            return dc
+            return changer.wrap_fail_info({
+                'errors':infoerror
+            })
+
         else:
+            userinfo,_ = TbUserex.objects.get_or_create(userid=changer.user.pk)      
+            used_passwd= []
+            if userinfo.usedpassword:
+                used_passwd = json.loads(userinfo.usedpassword)
+                for old_ps in used_passwd:
+                    if check_password(row.get('first_pswd'),old_ps):
+                        return changer.wrap_fail_info({
+                            'errors':{'first_pswd':['新密码已经被使用过']}
+                        })
             changer.user.set_password(row.get('first_pswd'))
             changer.user.save()
+            userinfo.passwordexpiretime = timezone.now() + timezone.timedelta(days=30)
+            used_passwd.append(changer.user.password)
+            if len(used_passwd )>3:
+                userinfo.usedpassword=json.dumps(used_passwd[-4:-1])
+            else:
+                userinfo.usedpassword=json.dumps(used_passwd)
+            userinfo.save()
+            
             changer.after_change()
             return {'success':True}
+            
         
+    def wrap_fail_info(self,infodc):
+        if not redisInst6.get(self.count_key) :
+            redisInst6.set(self.count_key,1,ex=60*60*2)
+        else:
+            old_value = redisInst6.get(self.count_key) 
+            redisInst6.set(self.count_key,int(old_value)+1,ex=60*60*2)
+            
+        if int( redisInst6.get(self.count_key) ) >5:
+            code,url = code_and_url()
+            redisInst6.set(self.code_key,code,ex=60*3)
+            infodc.update( {'validate_img':url} )
+        infodc.update({
+            'success':False
+        })
+        return infodc
         
     
     def __init__(self,row):
@@ -117,13 +191,8 @@ class ChangePswdLogic(object):
             if not self.row.get('validate_code') or  redisInst6.get(self.code_key).lower() != self.row.get('validate_code').lower():
                 return False
         return True
-
-    def gen_code(self):
-        code,url = code_and_url()
-        redisInst6.set(self.code_key,code,ex=60*3)
-        return {'success':False,'errors':{'validate_code':['验证码错误']},'validate_img':url}
     
-    def get_info_error(row):
+    def get_info_error(self,row):
         errors ={}
         if row.get('first_pswd')!=row.get('second_pswd'):
             errors.update(
@@ -147,19 +216,6 @@ class ChangePswdLogic(object):
        
         return errors
     
-    def export_code(self):
-        dc ={}
-        if not redisInst6.get(self.count_key) :
-            redisInst6.set(self.count_key,1,ex=60*60*2)
-        else:
-            old_value = redisInst6.get(self.count_key) 
-            redisInst6.set(self.count_key,int(old_value)+1,ex=60*60*2)
-            
-        if int( redisInst6.get(self.count_key) ) >5:
-            code,url = code_and_url()
-            redisInst6.set(self.code_key,code,ex=60*3)
-            dc.update( {'validate_img':url} ) 
-        return dc
     
     def after_change(self):
         redisInst6.delete(self.count_key)

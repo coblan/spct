@@ -52,6 +52,7 @@ from .riskcontrol import paychannel_blackiprange
 from .riskcontrol import area_blacklist
 from .riskcontrol import paychannel_area_blacklist
 from .riskcontrol import white_ip_rangelist
+from .riskcontrol import new_withdraw_limit
 
 from .money import vip_paychannel
 from .money import recharge
@@ -60,10 +61,12 @@ from .money import balancelog
 
 from .admin_agent import agentuser
 from .admin_agent import agent_commission
-from .riskcontrol import new_withdraw_limit
+
 
 from . import admin_todolist
 from . import permit
+from . import admin_administrator_ip
+from . admin_backend import login_log
 
 from . import js_cfg
 from . import login

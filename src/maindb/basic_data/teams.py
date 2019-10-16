@@ -52,7 +52,7 @@ class TeamsPage(TablePage):
                 return [
                     {
                         'name': 'leaguename',
-                        'label': '联赛',
+                        'placeholder': '联赛',
                         #'editor': 'com-related-select-filter',
                         'editor': 'com-filter-select',
                         'options': [],
