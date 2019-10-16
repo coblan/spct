@@ -156,21 +156,21 @@ class OtherWebMatchPage(TablePage):
             return [
                 {'name':'Team','placeholder':'球队名称','editor':'com-filter-text'},
                 {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
-                {'name':'ContrastStatus','label':'采集状态','editor':'com-filter-select','options':[
+                {'name':'ContrastStatus','placeholder':'采集状态','editor':'com-filter-select','options':[
                     {'value':1,'label':'采集中'},
                     {'value':2,'label':'手动停止'},
                     {'value':3,'label':'异常停止'},
                     {'value':4,'label':'采集完成'},
                 ]},
-                {'name':'TeamSwap','label':'交换主客队','editor':'com-filter-select','options':[
+                {'name':'TeamSwap','placeholder':'交换主客队','editor':'com-filter-select','options':[
                     {'value':1,'label':'是'},
                     {'value':2,'label':'否'}
                 ]},
-                {'name':'has_matched','label':'匹配','editor':'com-filter-select','options':[
+                {'name':'has_matched','placeholder':'匹配','editor':'com-filter-select','options':[
                     {'value':1,'label':'是'},
                     {'value':2,'label':'否'}
                 ]},
-                {'name':'SportId','label':'体育类型','editor':'com-filter-select','options':[
+                {'name':'SportId','placeholder':'体育类型','editor':'com-filter-select','options':[
                     {'label':str(x),'value':x.pk} for x in TbSporttypes.objects.filter(enabled=True)
                     ]},
                 {'name':'LeagueId','label':'联赛','editor':'com-filter-single-select2',
