@@ -20,6 +20,7 @@ from .matches import basketball_matches
 from .matches import basketball_matches_statistics
 from .matches import ajusttemplate
 from .matches import event_match
+from .matches import event_match1
 
 from .marketing import admin
 from .marketing import feedback
