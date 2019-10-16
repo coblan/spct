@@ -1,13 +1,14 @@
-from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fields,ModelTable,director_view
+from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fields,ModelTable,director_view,ModelFields
 from maindb.mongoInstance import mydb
-from maindb.models import TbMatch,TbSporttypes
+from maindb.models import TbMatch,TbSporttypes,TbTournament
 from maindb.matches.matches import MatchsPage
 from maindb.rabbitmq_instance import notifyScrapyMatch
 import json
 from helpers.director.model_func.dictfy import sim_dict
 from django.utils import timezone
 from django.db.models import Q
-
+from ..rabbitmq_instance import notifyCreateNewMatch
+from helpers.director.shortcut import DirectorEncoder
 class OtherWebMatchPage(TablePage):
     def get_label(self):
         return '比赛匹配'
@@ -110,8 +111,8 @@ class OtherWebMatchPage(TablePage):
             start_index = ( self.page -1 ) * self.perpage
             #for item in mydb['Event'].find(self.filter_args).sort('CreateTime',-1).skip(start_index).limit(self.perpage):
             rows =[]
-            
-            for item in mydb['Event'].find(self.filter_args).sort( [('EventDateTime',1)]).skip(start_index).limit(self.perpage):
+            #'Event'
+            for item in mydb['ThirdPartEvent'].find(self.filter_args).sort( [('EventDateTime',1)]).skip(start_index).limit(self.perpage):
                 dc ={
                     '_director_name':'web_match_data.edit_self'
                 }
@@ -179,7 +180,7 @@ class OtherWebMatchPage(TablePage):
         def getRowPages(self):
             return {
                 'crt_page':self.page,
-                'total':mydb['Event'].find(self.filter_args).count(),
+                'total':mydb['ThirdPartEvent'].find(self.filter_args).count(),
                 'perpage':self.perpage,
             }
         
@@ -231,7 +232,75 @@ class OtherWebMatchPage(TablePage):
             ]
         
 
+class NewMatchForm(ModelFields):
+    class Meta:
+        model =TbMatch
+        fields=['sportid','team1en','team1zh','team2en','team2zh','eventid','hasliveodds','matchdate','tournamentid']
+    
+    def clean(self):
+        pass
+    
+    def dict_head(self, head):
+        if head['name'] == 'sportid':
+            head['editor'] = 'com-field-select'
+            head['options'] =[
+                {'value':x.sportid,'label':x.sportnamezh } for x in TbSporttypes.objects.all()
+            ]
+        if head['name'] == 'tournamentid':
+            head['editor'] = 'com-field-single-select2'
+            head['options'] = [
+                {'value':x.pk,'label':x.tournamentnamezh} for x in TbTournament.objects.all()
+            ]
+        return head
+    
+    def get_row(self):
+        return {}
+    
+    def save_form(self):
+        tournment = TbTournament.objects.get(pk = self.kw.get('tournamentid'))
+        
+        dc = {
+            'SportId':self.kw.get('sportid'),
+            'CategoryId':tournment.categoryid,
+            'EventId':self.kw.get('eventid'),
+            'HasLiveOdds':self.kw.get('hasliveodds',False),
+            'Team1Id':0,
+            'Team2Id':0,
+            'Team1Zh':self.kw.get('team1zh'),
+            'Team2Zh':self.kw.get('team2zh'),
+            'Team1En':self.kw.get('team1en'),
+            'Team2En':self.kw.get('team2en'),
+            'UniqueTournamentId':tournment.uniquetournamentid,
+            'TournamentId':tournment.tournamentid,
+            'TournamentName':tournment.tournamentname,
+            'MatchDate':self.kw.get('matchdate'),
+            'Source':self.kw.get('source')
+        }
+        notifyCreateNewMatch(json.dumps([dc],cls=DirectorEncoder,ensure_ascii=False))
+    
+
 class WebMatchForm(Fields):
+    
+    def get_operations(self):
+        ops = super().get_operations()
+        return [
+            {'label':'创建比赛','editor':'com-op-btn',
+             'fields_ctx':NewMatchForm().get_head_context(),
+             'action':''' debugger;var prow=scope.ps.vc.row;
+             scope.head.fields_ctx.row={sportid:prow.SportId,
+             team1en:prow.Team1En.replace(/-/g,' '),
+             team1zh:prow.Team1Zh,
+             team2en:prow.Team2En.replace(/-/g,' '),
+             team2zh:prow.Team2Zh,
+             hasliveodds:prow.HasLiveOdds,
+             eventid:prow.Eid+'-'+prow.Source,
+             matchdate:prow.EventDateTime,
+             source:prow.Source,
+             _director_name:'new_match_form'}; 
+             cfg.pop_vue_com("com-form-one",scope.head.fields_ctx)'''
+             }
+            ]+ops
+    
     def get_heads(self):
         return [
             {'name':'LeagueZh','label':'联赛','editor':'com-field-linetext','readonly':True,},
@@ -286,7 +355,7 @@ class WebMatchForm(Fields):
         return ctx
     
     def dict_row(self):
-        dc = mydb['Event'].find_one({'Eid':self.kw.get('Eid')})
+        dc = mydb['ThirdPartEvent'].find_one({'Eid':self.kw.get('Eid')})
         out_dc = {
              '_director_name':'web_match_data.edit_self'
         }
@@ -327,7 +396,7 @@ class WebMatchForm(Fields):
         #else:
         
         dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid')}
-        mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
+        mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         
         
 
@@ -394,7 +463,8 @@ def stop_scrapy(rows,**kws):
 director.update({
     'web_match_data':OtherWebMatchPage.tableCls,
     'web_match_data.edit_self':WebMatchForm,
-    'matchpicker':MatchPicker
+    'matchpicker':MatchPicker,
+    'new_match_form':NewMatchForm,
 })
 
 page_dc.update({

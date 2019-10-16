@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -88,11 +88,24 @@ Vue.component('com-login-banner', com_login_banner);
 "use strict";
 
 
-var _com_login_banner = __webpack_require__(0);
+var validate_code = {
+    props: ['row', 'head'],
+    template: '<div style="position: relative;">\n    <input type="text" class="form-control input-sm" v-model="row[head.name]" :id="\'id_\'+head.name" :name="head.name">\n    <div>\n    <div style="display: inline-block;border: 1px solid #9e9e9e;">\n        <img  :src="row.validate_img" alt="">\n    </div>\n    <!--<span class="clickable" @click="change_code" style="white-space:nowrap;">\u770B\u4E0D\u6E05\uFF0C\u6362\u4E00\u5F20</span>-->\n    </div>\n    </div>',
+    methods: {
+        change_code: function change_code() {
+            var self = this;
+            var post_data = [{ fun: 'new_validate_code' }];
+            cfg.show_load();
+            ex.post('/d/ajax/authuser', JSON.stringify(post_data), function (resp) {
+                self.head.code_img = resp.new_validate_code;
+                cfg.hide_load();
+            });
+        }
+    }
 
-var com_login_banner = _interopRequireWildcard(_com_login_banner);
+};
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+Vue.component('com-field-auth-validate-code', validate_code);
 
 /***/ }),
 /* 2 */
@@ -441,6 +454,23 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _com_login_banner = __webpack_require__(0);
+
+var com_login_banner = _interopRequireWildcard(_com_login_banner);
+
+var _auth_validate_code = __webpack_require__(1);
+
+var fields_editor_auth_validate_code = _interopRequireWildcard(_auth_validate_code);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 /***/ })
 /******/ ]);
