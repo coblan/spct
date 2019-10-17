@@ -10,6 +10,7 @@ from django.db.models import Q
 from ..rabbitmq_instance import notifyCreateNewMatch
 from helpers.director.shortcut import DirectorEncoder,get_request_cache
 import datetime
+import time
 
 class OtherWebMatchPage(TablePage):
     def get_label(self):
@@ -246,7 +247,7 @@ class OtherWebMatchPage(TablePage):
 class NewMatchForm(ModelFields):
     class Meta:
         model =TbMatch
-        fields=['sportid','team1en','team1zh','team2en','team2zh','eventid','hasliveodds','matchdate','tournamentid']
+        fields=['sportid','team1en','team1zh','team2en','team2zh','hasliveodds','matchdate','tournamentid']
     
     def clean(self):
         pass
@@ -268,11 +269,11 @@ class NewMatchForm(ModelFields):
     
     def save_form(self):
         tournment = TbTournament.objects.get(pk = self.kw.get('tournamentid'))
-        
+        eventid = int( time.time()*1000 )
         dc = {
             'SportId':self.kw.get('sportid'),
             'CategoryId':tournment.categoryid,
-            'EventId':self.kw.get('eventid'),
+            'EventId': eventid, # self.kw.get('eventid'),
             'HasLiveOdds':self.kw.get('hasliveodds',False),
             'Team1Id':0,
             'Team2Id':0,
