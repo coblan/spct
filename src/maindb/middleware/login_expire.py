@@ -15,6 +15,9 @@ class LoginExpire(MiddlewareMixin):
             return 
         if request.user.is_authenticated() and request.session.get('auto_login'):
             request.session.set_expiry(settings.LOGIN_SPAN) # 滑动 2小时过期
+        else:
+            request.session.set_expiry(0) # 关闭浏览器后，立即过期
+            
         #if request.user and request.user.is_authenticated():
             #inst,_ = TbUserex.objects.get_or_create(userid= request.user.pk)
             #if not inst.passwordexpiretime or inst.passwordexpiretime < timezone.now():

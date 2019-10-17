@@ -12,6 +12,7 @@ from django.db import transaction
 from django.contrib.auth.hashers import make_password, check_password
 from .riskcontrol.white_ip_rangelist import ip2num
 from django.conf import settings
+import re
 
 import logging
 general_log = logging.getLogger('general_log')
@@ -126,6 +127,11 @@ class ChangePswdLogic(object):
         if not changer.check_code():
             return changer.wrap_fail_info({
                 'errors':{'validate_code':['验证码错误']}
+            })
+        
+        if not re.search( '^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$',row.get('first_pswd') ) :
+            return changer.wrap_fail_info({
+                'errors':{'first_pswd':['密码必须为8到16位的字母与数字的组合!']}
             })
         
         infoerror= changer.get_info_error(row)
