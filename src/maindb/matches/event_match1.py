@@ -12,6 +12,14 @@ from helpers.director.shortcut import DirectorEncoder,get_request_cache
 import datetime
 import time
 
+def tm2mongo(dt):
+    beijin = datetime.timezone(datetime.timedelta(hours=8))
+    #utc = datetime.timezone(datetime.timedelta(hours=0))
+    tmp = dt.replace(tzinfo=beijin)
+    #return tmp.astimezone(beijin)
+    return tmp
+         
+
 class OtherWebMatchPage(TablePage):
     def get_label(self):
         return '比赛匹配'
@@ -25,13 +33,13 @@ class OtherWebMatchPage(TablePage):
             super().__init__(*arg,**kws)
             self.filter_args={}
             if self.search_args.get('_start_EventDateTime'):
-                self.filter_args['EventDateTime'] = {'$gte' : timezone.datetime.strptime( self.search_args.get('_start_EventDateTime'),'%Y-%m-%d %H:%M:%S' ) }
+                self.filter_args['EventDateTime'] = {'$gte' : tm2mongo( timezone.datetime.strptime( self.search_args.get('_start_EventDateTime'),'%Y-%m-%d %H:%M:%S' ) ) }
             if self.search_args.get('_end_EventDateTime'):
                 if 'EventDateTime' not in  self.filter_args:
-                    self.filter_args['EventDateTime'] = {'$lte' : timezone.datetime.strptime( self.search_args.get('_end_EventDateTime'),'%Y-%m-%d %H:%M:%S' ) }
+                    self.filter_args['EventDateTime'] = {'$lte' : tm2mongo( timezone.datetime.strptime( self.search_args.get('_end_EventDateTime'),'%Y-%m-%d %H:%M:%S' ) )}
                 else:
                     self.filter_args['EventDateTime'].update(
-                        {'$lte' : timezone.datetime.strptime( self.search_args.get('_end_EventDateTime'),'%Y-%m-%d %H:%M:%S' )}
+                        {'$lte' : tm2mongo( timezone.datetime.strptime( self.search_args.get('_end_EventDateTime'),'%Y-%m-%d %H:%M:%S' ) )}
                     )
             if self.search_args.get('LeagueId'):
                 self.filter_args['LeagueId'] =  int( self.search_args.get('LeagueId') )#{'$regex' : ".*%s.*"%self.search_args.get('LeagueZh')}
