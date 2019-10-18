@@ -45,18 +45,18 @@ def account_tab(self):
          'editor':'com-tab-chart',
          'table_ctx':SingleUserStatistic().get_head_context(),
          'pre_set':'rt={accountid:scope.par_row.accountid}',
-         'foot_heads':[{'name':'Profit','label':'亏盈'},{'name':'BetAmount','label':'投注'},
-                       {'name':'BetOutcome','label':'派奖'},{'name':'ProfitRate','label':'利润率'},
-                       {'name':'WinRate','label':'胜率'},
+         'foot_heads':[{'name':'Profit','label':'盈利'},{'name':'BetAmount','label':'投注金额'},
+                       {'name':'BetOutcome','label':'派奖金额'},{'name':'ProfitRate','label':'盈利率'},
+                       {'name':'WinRate','label':'中注率'},
                        {'name':'RechargeAmount','label':'充值'},{'name':'WithdrawAmount','label':'提现'}],
          'chart_heads':[
-            {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'Profit','label':'亏盈','type':'line',},
-                                                                              {'name':'BetAmount','label':'投注','type':'line',},
-                                                                              {'name':'BetOutcome','label':'派奖','type':'line','color':'#27B6AC'}],}, #'color':'#27B6AC'
+            {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'Profit','label':'盈利','type':'line',},
+                                                                              {'name':'BetAmount','label':'投注金额','type':'line',},
+                                                                              {'name':'BetOutcome','label':'派奖金额','type':'line','color':'#27B6AC'}],}, #'color':'#27B6AC'
           
               
-            {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'ProfitRate','label':'利润率','type':'bar','color':'#27B6AC'}]},
-            {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WinRate','label':'胜率','type':'bar','color':'#27B6AC'}]},
+            {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'ProfitRate','label':'盈利率','type':'bar','color':'#27B6AC'}]},
+            {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WinRate','label':'中注率','type':'bar','color':'#27B6AC'}]},
             {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'RechargeAmount','label':'充值','type':'line'},
                                                                               {'name':'WithdrawAmount','label':'提现','type':'line'}]},
             
@@ -76,11 +76,11 @@ def account_tab(self):
               }
               var row=scope.rows[0];
             scope.ydata_list.splice(0,scope.ydata_list.length,...[
-              {name:'投注额',type:'bar',data:[row.SumParlayBetAmount,row.SumSingleBetAmount],barMaxWidth: 30,},
-              {name:'派奖',type:'bar',data:[row.SumParlayBetOutcome,row.SumSingleBetOutcome],barMaxWidth: 30,},
+              {name:'投注金额',type:'bar',data:[row.SumParlayBetAmount,row.SumSingleBetAmount],barMaxWidth: 30,},
+              {name:'派奖金额',type:'bar',data:[row.SumParlayBetOutcome,row.SumSingleBetOutcome],barMaxWidth: 30,},
               {name:'盈利',type:'bar',data:[row.SumParlayProfit,row.SumSingleProfit],barMaxWidth: 30,}
               ])
-              scope.legend_list.splice(0, scope.legend_list.length,...['投注额','派奖','盈利'])
+              scope.legend_list.splice(0, scope.legend_list.length,...['投注金额','派奖金额','盈利'])
               })()''',
            
               },
