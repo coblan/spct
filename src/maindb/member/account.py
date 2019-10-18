@@ -50,15 +50,16 @@ def account_tab(self):
                        {'name':'WinRate','label':'中注率'},
                        {'name':'RechargeAmount','label':'充值'},{'name':'WithdrawAmount','label':'提现'}],
          'chart_heads':[
-            {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'Profit','label':'盈利','type':'line',},
-                                                                              {'name':'BetAmount','label':'投注金额','type':'line',},
-                                                                              {'name':'BetOutcome','label':'派奖金额','type':'line','color':'#27B6AC'}],}, #'color':'#27B6AC'
+            {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetAmount','label':'投注金额','type':'line',},
+                                                                              {'name':'BetOutcome','label':'派奖金额','type':'line','color':'#27B6AC'},
+                                                                              {'name':'Profit','label':'盈利','type':'line',},
+                                                                              ],}, #'color':'#27B6AC'
           
               
             {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'ProfitRate','label':'盈利率','type':'bar','color':'#27B6AC'}]},
             {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WinRate','label':'中注率','type':'bar','color':'#27B6AC'}]},
-            {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'RechargeAmount','label':'充值','type':'line'},
-                                                                              {'name':'WithdrawAmount','label':'提现','type':'line'}]},
+            {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'RechargeAmount','label':'充值金额','type':'line'},
+                                                                              {'name':'WithdrawAmount','label':'提现金额','type':'line'}]},
             
             {'name':'ss','editor':'com-chart-plain','source_rows':'rt=scope.ps.option.chart_data_sporttype_group',
              'xdata':'SportNameZH','ydata':[{'name':'SumBetAmount','label':'投注金额','type':'bar'},
