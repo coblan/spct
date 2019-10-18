@@ -293,7 +293,8 @@ class NewMatchForm(ModelFields):
             'TournamentId':tournment.tournamentid,
             'TournamentName':tournment.tournamentname,
             'MatchDate':self.kw.get('matchdate'),
-            'Source':self.kw.get('source')
+            'Source':self.kw.get('source'),
+            
         }
         notifyCreateNewMatch(json.dumps([dc],cls=DirectorEncoder,ensure_ascii=False))
     

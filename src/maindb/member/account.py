@@ -50,17 +50,94 @@ def account_tab(self):
                        {'name':'WinRate','label':'胜率'},
                        {'name':'RechargeAmount','label':'充值'},{'name':'WithdrawAmount','label':'提现'}],
          'chart_heads':[
-              {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'Profit','label':'亏盈','type':'line',},
+            {'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'Profit','label':'亏盈','type':'line',},
                                                                               {'name':'BetAmount','label':'投注','type':'line',},
                                                                               {'name':'BetOutcome','label':'派奖','type':'line','color':'#27B6AC'}],}, #'color':'#27B6AC'
-              #{'name':'xx','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetAmount','label':'投注','type':'bar'}],},
-              #{'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'BetOutcome','label':'派奖','type':'bar'}]},
+          
               
-               {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'ProfitRate','label':'利润率','type':'bar','color':'#27B6AC'}]},
-                {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WinRate','label':'胜率','type':'bar','color':'#27B6AC'}]},
-              {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'RechargeAmount','label':'充值','type':'line'},
+            {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'ProfitRate','label':'利润率','type':'bar','color':'#27B6AC'}]},
+            {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WinRate','label':'胜率','type':'bar','color':'#27B6AC'}]},
+            {'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'RechargeAmount','label':'充值','type':'line'},
                                                                               {'name':'WithdrawAmount','label':'提现','type':'line'}]},
-              #{'name':'bb','editor':'com-chart-plain','xdata':'Date','ydata':[{'name':'WithdrawAmount','label':'提现','type':'bar'}]},
+            
+            {'name':'ss','editor':'com-chart-plain','source_rows':'rt=scope.ps.option.chart_data_sporttype_group',
+             'xdata':'SportNameZH','ydata':[{'name':'SumBetAmount','label':'投注金额','type':'bar'},
+                                            {'name':'SumBetOutcome','label':'派奖金额','type':'bar'},
+                                            #{'name':'SumTurnOver','label':'','type':'bar'},
+                                            #{'name':'SumBetBonus','label':'','type':'bar'},
+                                            {'name':'SumProfit','label':'盈利','type':'bar'}
+                                            ]},
+              {'name':'bb','editor':'com-chart-plain','xdata_express':'rt=["串关","单注"]',
+               'title':'注单统计',
+              'source_rows':'rt=scope.ps.option.chart_data_ticket_amount',
+              'ydata_express':'''(function(){
+              if(scope.rows.length ==0){
+                 return
+              }
+              var row=scope.rows[0];
+            scope.ydata_list.splice(0,scope.ydata_list.length,...[
+              {name:'投注额',type:'bar',data:[row.SumParlayBetAmount,row.SumSingleBetAmount],barMaxWidth: 30,},
+              {name:'派奖',type:'bar',data:[row.SumParlayBetOutcome,row.SumSingleBetOutcome],barMaxWidth: 30,},
+              {name:'盈利',type:'bar',data:[row.SumParlayProfit,row.SumSingleProfit],barMaxWidth: 30,}
+              ])
+              scope.legend_list.splice(0, scope.legend_list.length,...['投注额','派奖','盈利'])
+              })()''',
+           
+              },
+            {'name':'bb','title':'划单率','editor':'com-chart-plain',
+             'source_rows':'rt=scope.ps.option.chart_data_void_rate',
+               'xdata':'VoidReason','ydata':[{'name':'VoidRate','label':'划单率','type':'bar'},]},
+             {'name':'ss','editor':'com-chart-plain','source_rows':'rt=scope.ps.option.chart_data_market_data',
+              'title':'玩法',
+              'style':{'heigth':'600px','width':'1000px'},
+              'echarts_option':{
+                  'xAxis':{
+                        'axisLabel':{
+                            'interval':0,
+                            'fontSize':10,
+                            'rotate':20,
+                          },
+                        'splitLine':{
+                            'show':True
+                        },
+                  }
+                
+                  },
+             'xdata':'MarketNameZH','ydata':[
+                 {'name':'SumBetAmount','label':'投注金额','type':'bar'},
+                 {'name':'SumBetOutcome','label':'派奖金额','type':'bar'}, 
+                  {'name':'SumProfit','label':'盈利','type':'bar'}
+                                           ]},
+            #{'name':'ss','editor':'com-chart-radar',
+             #'title':'基础图',
+             #'source_rows':'rt=scope.ps.option.chart_data_market_data',
+             #'xdata':'MarketNameZH','ydata':[
+                 #{'name':'SumBetAmount','label':'投注金额','type':'radar'},
+                 #{'name':'SumBetOutcome','label':'派奖金额','type':'radar'}, 
+                  #{'name':'SumProfit','label':'盈利','type':'radar'}
+                                           #]},
+            {'name':'ss','editor':'com-chart-plain','source_rows':'rt=scope.ps.option.chart_data_league_group',
+             'title':'联赛组',
+              'style':{'heigth':'600px','width':'1000px'},
+              'echarts_option':{
+                  'xAxis':{
+                        'axisLabel':{
+                            'interval':0,
+                            'fontSize':10,
+                            'rotate':20,
+                          },
+                        'splitLine':{
+                            'show':True
+                        },
+                  }
+                
+                  },
+             'xdata':'GroupName','ydata':[
+                 {'name':'SumBetAmount','label':'投注金额','type':'bar'},
+                 {'name':'SumBetOutcome','label':'派奖金额','type':'bar'}, 
+                  {'name':'SumProfit','label':'盈利','type':'bar'}
+                                           ]},
+            
          ]
         },
         {'name': 'baseinfo',
@@ -820,6 +897,37 @@ class SingleUserStatistic(PlainTable):
         
         return search_args
     
+    def get_head_context(self):
+        ctx = super().get_head_context()
+        ctx.update({
+            'option':{
+                'chart_data_sporttype_group':[],
+                'chart_data_market_data':[],
+                'chart_data_league_group':[],
+                'chart_data_ticket_amount':[],
+                'chart_data_void_rate':[],
+            },
+
+            'after_get_rows':'''scope.ps.option.chart_data_sporttype_group = scope.resp.get_rows.sporttype_group;
+            scope.ps.option.chart_data_market_data = scope.resp.get_rows.chart_data_market_data;
+            scope.ps.option.chart_data_league_group = scope.resp.get_rows.chart_data_league_group;
+            scope.ps.option.chart_data_ticket_amount = scope.resp.get_rows.chart_data_ticket_amount;
+            scope.ps.option.chart_data_void_rate = scope.resp.get_rows.chart_data_void_rate;
+             '''
+        })
+        return ctx
+    
+    def get_data_context(self):
+        ctx = super().get_data_context()
+        ctx.update({
+            'sporttype_group':self.sporttype_group,
+            'chart_data_market_data':self.chart_data_market_data,
+            'chart_data_league_group':self.chart_data_league_group,
+            'chart_data_ticket_amount':self.chart_data_ticket_amount,
+            'chart_data_void_rate':self.chart_data_void_rate,
+        })
+        return ctx
+    
     def get_rows(self):
         sql_args ={
             'AccountID':self.kw.get('accountid'),
@@ -850,8 +958,72 @@ class SingleUserStatistic(PlainTable):
                 for index, head in enumerate(cursor.description):
                     row_dc[head[0]] = row[index]
                 rows.append(row_dc)
-            print(rows)
-        
+                
+            cursor.nextset()
+            self.sporttype_group =[]
+            for row in cursor:
+                row_dc = {}
+                for index, head in enumerate(cursor.description):
+                    row_dc[head[0]] = row[index]
+                self.sporttype_group.append(row_dc)
+                
+            cursor.nextset()
+            self.chart_data_market_data = []
+            count = 0
+            other_dc={}
+            for row in cursor:
+                count += 1
+                if count > 14:
+                    for index, head in enumerate(cursor.description):
+                        if head[0]=='MarketNameZH':
+                            other_dc['MarketNameZH'] ='其他'
+                        else:
+                            other_dc[head[0]] = other_dc.get(head[0],0) + row[index]
+                else:
+                    row_dc = {}
+                    for index, head in enumerate(cursor.description):
+                        row_dc[head[0]] = row[index]
+                    self.chart_data_market_data.append(row_dc)
+                    
+            if other_dc:
+                self.chart_data_market_data.append(other_dc)
+            
+            # 处理联赛组
+            cursor.nextset()
+            count = 0
+            other_dc={}
+            self.chart_data_league_group =[]
+            for row in cursor:
+                count += 1
+                if count >14:
+                    for index, head in enumerate(cursor.description):
+                        if head[0]=='GroupName':
+                            other_dc['GroupName'] ='其他'
+                        else:
+                            other_dc[head[0]] = other_dc.get(head[0],0) + row[index]    
+                else:
+                    row_dc = {}
+                    for index, head in enumerate(cursor.description):
+                        row_dc[head[0]] = row[index]
+                    self.chart_data_league_group.append(row_dc)
+            if other_dc:
+                self.chart_data_league_group.append(other_dc)
+                
+            cursor.nextset()
+            self.chart_data_ticket_amount=[]
+            for row in cursor:
+                row_dc = {}
+                for index, head in enumerate(cursor.description):
+                    row_dc[head[0]] = row[index]
+                self.chart_data_ticket_amount.append(row_dc)
+                
+            cursor.nextset()
+            self.chart_data_void_rate=[]
+            for row in cursor:
+                row_dc = {}
+                for index, head in enumerate(cursor.description):
+                    row_dc[head[0]] = row[index]
+                self.chart_data_void_rate.append(row_dc)
         return rows
             
 class RelatedUserTab(ReleventUserPage.tableCls):

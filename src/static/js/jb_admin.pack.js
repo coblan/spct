@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 232);
+/******/ 	return __webpack_require__(__webpack_require__.s = 236);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -833,7 +833,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 //require('./scss/tab_fields.scss')
-__webpack_require__(210);
+__webpack_require__(213);
 var fields_all_in_one = exports.fields_all_in_one = {
     props: ['ctx'],
     data: function data() {
@@ -1073,7 +1073,7 @@ var mix_editor = exports.mix_editor = {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(166);
+var content = __webpack_require__(168);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1099,7 +1099,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(170);
+var content = __webpack_require__(172);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1125,7 +1125,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(178);
+var content = __webpack_require__(180);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1151,7 +1151,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(198);
+var content = __webpack_require__(200);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1177,7 +1177,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(199);
+var content = __webpack_require__(201);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -1800,7 +1800,7 @@ Vue.component('com-field-table-list', order_list);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-__webpack_require__(205);
+__webpack_require__(208);
 
 /*
  * config={
@@ -2113,7 +2113,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 * 可能无用了。
 * */
 
-__webpack_require__(207);
+__webpack_require__(210);
 
 var com_plain_fields = {
     props: {
@@ -2258,7 +2258,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 "use strict";
 
 
-__webpack_require__(208);
+__webpack_require__(211);
 
 Vue.component('com-head-dropdown', {
     props: ['head'],
@@ -2297,7 +2297,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 "use strict";
 
 
-__webpack_require__(209);
+__webpack_require__(212);
 
 // header 上的小链接,例如右上角的  [登录 | 注册  ]
 Vue.component('com-head-sm-link', {
@@ -2613,7 +2613,7 @@ window.pop_table_layer = pop_table_layer;
 "use strict";
 
 
-__webpack_require__(211);
+__webpack_require__(214);
 
 Vue.component('com-widget-stack', {
     props: ['ctx_list'],
@@ -2645,7 +2645,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 "use strict";
 
 
-__webpack_require__(212);
+__webpack_require__(215);
 
 var mix_ele_table_adapter = {
     mounted: function mounted() {
@@ -3514,41 +3514,45 @@ var _fields_panel = __webpack_require__(7);
 
 var fields_panel = _interopRequireWildcard(_fields_panel);
 
-var _html_panel = __webpack_require__(133);
+var _html_panel = __webpack_require__(135);
 
 var html_panel = _interopRequireWildcard(_html_panel);
 
-var _table_panel = __webpack_require__(136);
+var _table_panel = __webpack_require__(138);
 
 var table_panel = _interopRequireWildcard(_table_panel);
 
-var _iframe = __webpack_require__(134);
+var _iframe = __webpack_require__(136);
 
 var iframe = _interopRequireWildcard(_iframe);
 
-var _html_content_panel = __webpack_require__(132);
+var _html_content_panel = __webpack_require__(134);
 
 var html_content_panel = _interopRequireWildcard(_html_content_panel);
 
-var _form_panel = __webpack_require__(130);
+var _form_panel = __webpack_require__(132);
 
 var form_panel = _interopRequireWildcard(_form_panel);
 
-var _pop_fields_panel = __webpack_require__(135);
+var _pop_fields_panel = __webpack_require__(137);
 
 var pop_fields_panel = _interopRequireWildcard(_pop_fields_panel);
 
-var _table_setting = __webpack_require__(137);
+var _table_setting = __webpack_require__(139);
 
 var table_setting = _interopRequireWildcard(_table_setting);
 
-var _grid_layout = __webpack_require__(131);
+var _grid_layout = __webpack_require__(133);
 
 var grid_layout = _interopRequireWildcard(_grid_layout);
 
 var _chart = __webpack_require__(129);
 
 var chart = _interopRequireWildcard(_chart);
+
+var _main = __webpack_require__(130);
+
+var charts_main = _interopRequireWildcard(_main);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -3849,7 +3853,7 @@ Vue.component('com-table-call-fun', call_fun);
 "use strict";
 
 
-__webpack_require__(217);
+__webpack_require__(220);
 var change_order = {
     props: ['rowData', 'field', 'index'],
     template: '<span class="change-order">\n    <span class="arrow" @click="up()">\n    <i  class="fa fa-long-arrow-up"></i>\n    </span>\n    <span class="arrow" @click="down()">\n     <i  class="fa fa-long-arrow-down"></i>\n    </span>\n    </span>',
@@ -3875,7 +3879,7 @@ Vue.component('com-table-change-order', change_order);
 
 var _mix_editor = __webpack_require__(8);
 
-__webpack_require__(218);
+__webpack_require__(221);
 
 var check_box = {
     props: ['rowData', 'field', 'index'],
@@ -3991,7 +3995,7 @@ Vue.component('com-table-extraclick', extra_click);
 
  * */
 
-__webpack_require__(219);
+__webpack_require__(222);
 
 var extra_click_plus = {
     props: ['rowData', 'field', 'index'],
@@ -4165,7 +4169,7 @@ Vue.component('com-table-label-shower', label_shower);
 "use strict";
 
 
-__webpack_require__(220);
+__webpack_require__(223);
 var line_text = {
     props: ['rowData', 'field', 'index'],
     template: '<div :class="[\'com-table-linetext\',{\'dirty\':is_dirty}]">\n        <span v-if="readonly" v-text="rowData[field]"></span>\n        <input v-else @change="on_changed()" style="width: 100%" type="text" v-model="rowData[field]">\n    </div>',
@@ -4238,59 +4242,59 @@ var _readonly = {
 "use strict";
 
 
-var _pop_fields_from_row = __webpack_require__(147);
+var _pop_fields_from_row = __webpack_require__(149);
 
 var pop_fields_from_row = _interopRequireWildcard(_pop_fields_from_row);
 
-var _sequence = __webpack_require__(149);
+var _sequence = __webpack_require__(151);
 
 var sequence = _interopRequireWildcard(_sequence);
 
-var _style_block = __webpack_require__(151);
+var _style_block = __webpack_require__(153);
 
 var style_block = _interopRequireWildcard(_style_block);
 
-var _ops_cell = __webpack_require__(146);
+var _ops_cell = __webpack_require__(148);
 
 var ops_cell = _interopRequireWildcard(_ops_cell);
 
-var _span = __webpack_require__(150);
+var _span = __webpack_require__(152);
 
 var table_span = _interopRequireWildcard(_span);
 
-var _array_shower = __webpack_require__(138);
+var _array_shower = __webpack_require__(140);
 
 var array_shower = _interopRequireWildcard(_array_shower);
 
-var _click = __webpack_require__(139);
+var _click = __webpack_require__(141);
 
 var click = _interopRequireWildcard(_click);
 
-var _json = __webpack_require__(141);
+var _json = __webpack_require__(143);
 
 var my_json = _interopRequireWildcard(_json);
 
-var _multi_image = __webpack_require__(144);
+var _multi_image = __webpack_require__(146);
 
 var multi_image = _interopRequireWildcard(_multi_image);
 
-var _map_html = __webpack_require__(143);
+var _map_html = __webpack_require__(145);
 
 var map_html = _interopRequireWildcard(_map_html);
 
-var _link = __webpack_require__(142);
+var _link = __webpack_require__(144);
 
 var link = _interopRequireWildcard(_link);
 
-var _rich_span = __webpack_require__(148);
+var _rich_span = __webpack_require__(150);
 
 var rich_span = _interopRequireWildcard(_rich_span);
 
-var _multi_row = __webpack_require__(145);
+var _multi_row = __webpack_require__(147);
 
 var multi_row = _interopRequireWildcard(_multi_row);
 
-var _color = __webpack_require__(140);
+var _color = __webpack_require__(142);
 
 var color = _interopRequireWildcard(_color);
 
@@ -4575,7 +4579,7 @@ Vue.component('com-table-pop-table', pop_table);
 
 var _mix_editor = __webpack_require__(8);
 
-__webpack_require__(221);
+__webpack_require__(224);
 
 
 var select = {
@@ -4731,7 +4735,7 @@ Vue.component('com-table-switch-to-tab', switch_to_tab);
 "use strict";
 
 
-var _cascader_filter = __webpack_require__(152);
+var _cascader_filter = __webpack_require__(154);
 
 var cascader_filter = _interopRequireWildcard(_cascader_filter);
 
@@ -4744,23 +4748,23 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 "use strict";
 
 
-var _table_grid = __webpack_require__(157);
+var _table_grid = __webpack_require__(159);
 
 var table_grid = _interopRequireWildcard(_table_grid);
 
-var _operations = __webpack_require__(154);
+var _operations = __webpack_require__(156);
 
 var operations = _interopRequireWildcard(_operations);
 
-var _filter = __webpack_require__(153);
+var _filter = __webpack_require__(155);
 
 var filter = _interopRequireWildcard(_filter);
 
-var _pagination = __webpack_require__(155);
+var _pagination = __webpack_require__(157);
 
 var pagination = _interopRequireWildcard(_pagination);
 
-var _parents = __webpack_require__(156);
+var _parents = __webpack_require__(158);
 
 var parents = _interopRequireWildcard(_parents);
 
@@ -4800,11 +4804,11 @@ Vue.component('com-op-delete', delete_op);
 "use strict";
 
 
-var _group_check = __webpack_require__(159);
+var _group_check = __webpack_require__(161);
 
 var group_check = _interopRequireWildcard(_group_check);
 
-var _auto_fresh = __webpack_require__(158);
+var _auto_fresh = __webpack_require__(160);
 
 var auto_fresh = _interopRequireWildcard(_auto_fresh);
 
@@ -5320,27 +5324,27 @@ Vue.component('com_tab_table', ajax_table);
 "use strict";
 
 
-var _tab_table = __webpack_require__(164);
+var _tab_table = __webpack_require__(166);
 
 var tab_table = _interopRequireWildcard(_tab_table);
 
-var _tab_fields = __webpack_require__(161);
+var _tab_fields = __webpack_require__(163);
 
 var tab_fields = _interopRequireWildcard(_tab_fields);
 
-var _tab_fields_v = __webpack_require__(162);
+var _tab_fields_v = __webpack_require__(164);
 
 var tab_fields_v1 = _interopRequireWildcard(_tab_fields_v);
 
-var _tab_lazy_wrap = __webpack_require__(163);
+var _tab_lazy_wrap = __webpack_require__(165);
 
 var tab_lazy_wrap = _interopRequireWildcard(_tab_lazy_wrap);
 
-var _tab_table_type = __webpack_require__(165);
+var _tab_table_type = __webpack_require__(167);
 
 var tab_table_type = _interopRequireWildcard(_tab_table_type);
 
-var _tab_chart = __webpack_require__(160);
+var _tab_chart = __webpack_require__(162);
 
 var tab_chart = _interopRequireWildcard(_tab_chart);
 
@@ -5353,7 +5357,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(181);
+var content = __webpack_require__(183);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5379,7 +5383,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(182);
+var content = __webpack_require__(184);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5405,7 +5409,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(183);
+var content = __webpack_require__(185);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5431,7 +5435,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(184);
+var content = __webpack_require__(186);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5457,7 +5461,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(185);
+var content = __webpack_require__(187);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5483,7 +5487,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(191);
+var content = __webpack_require__(193);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5509,7 +5513,7 @@ if(false) {
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(201);
+var content = __webpack_require__(204);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -5766,7 +5770,7 @@ Vue.component('com-field-linetext', line_text);
 "use strict";
 
 
-__webpack_require__(224);
+__webpack_require__(227);
 
 var list_ctn_field = {
     props: ['row', 'head'],
@@ -5887,7 +5891,7 @@ Vue.component('com-field-number', number);
 "use strict";
 
 
-__webpack_require__(206);
+__webpack_require__(209);
 
 Vue.component('com-field-phone-code', {
     /*
@@ -5993,7 +5997,7 @@ Vue.component('com-field-phone-code', {
 "use strict";
 
 
-__webpack_require__(225);
+__webpack_require__(228);
 
 var pop_tree_select = {
     props: ['row', 'head'],
@@ -6072,7 +6076,7 @@ Vue.component('com-field-radio', field_bool);
 "use strict";
 
 
-__webpack_require__(226);
+__webpack_require__(229);
 
 var range_field = {
     props: ['row', 'head'],
@@ -6254,7 +6258,7 @@ Vue.component('com-form', com_form);
 "use strict";
 
 
-__webpack_require__(227);
+__webpack_require__(230);
 
 Vue.component('com-fields-table-block', {
     props: ['heads', 'row', 'option'],
@@ -7406,7 +7410,9 @@ var table_store = {
             changed_rows: [],
             event_slots: [],
             option: {},
-            table_layout: {}
+            table_layout: {},
+            after_get_rows: null
+
         };
     },
     mixins: [mix_ele_table_adapter],
@@ -7480,6 +7486,9 @@ var table_store = {
                 self.footer = resp.get_rows.footer;
                 self.parents = resp.get_rows.parents;
                 self.table_layout = resp.get_rows.table_layout;
+                if (self.after_get_rows) {
+                    ex.eval(self.after_get_rows, { ps: self, resp: resp });
+                }
                 self.$emit('data-updated-backend');
             });
         },
@@ -8098,7 +8107,7 @@ Vue.component('com-op-plain-btn', op_a);
 "use strict";
 
 
-__webpack_require__(213);
+__webpack_require__(216);
 
 Vue.component('com-op-search', {
     props: ['head'],
@@ -8127,7 +8136,7 @@ Vue.component('com-op-search', {
 "use strict";
 
 
-__webpack_require__(214);
+__webpack_require__(217);
 
 Vue.component('com-op-switch', {
     props: ['head'],
@@ -8192,21 +8201,27 @@ function switch_get_value(self) {
 "use strict";
 
 
+__webpack_require__(231);
+
 Vue.component('com-chart-plain', {
     props: ['ctx'],
     data: function data() {
         return {
             barRows: [],
+            rows: [],
             parStore: ex.vueParStore(this)
         };
     },
-    template: ' <div class="com-chart-plain" style="height:400px;width: 500px;display: inline-block"></div>',
+    template: ' <div class="com-chart-plain" :class="ctx.class" :style="ctx.style"></div>',
     mounted: function mounted() {
         //$('#mainjj').width($(this.$el).width()-30)
         //this. myChart = echarts.init(document.getElementById('mainjj'));
         this.myChart = echarts.init(this.$el);
         //this.getRows()
         this.parStore.$on('data-updated-backend', this.update_chart);
+        if (this.ctx.css) {
+            ex.append_css(this.ctx.css);
+        }
     },
     methods: {
         //getRows:function(){
@@ -8221,30 +8236,42 @@ Vue.component('com-chart-plain', {
             var _this = this;
 
             var self = this;
-            var rows = this.parStore.rows;
-            var x_data = ex.map(rows, function (row) {
-                return row[_this.ctx.xdata];
-            });
+            if (this.ctx.source_rows) {
+                var rows = ex.eval(this.ctx.source_rows, { ps: this.parStore });
+            } else {
+                var rows = this.parStore.rows;
+            }
+            if (this.ctx.xdata) {
+                var x_data = ex.map(rows, function (row) {
+                    return row[_this.ctx.xdata];
+                });
+            } else {
+                var x_data = ex.eval(this.ctx.xdata_express, { rows: rows });
+            }
 
             var ydata_list = [];
             var legend_list = [];
-            ex.each(this.ctx.ydata, function (head) {
-                var y_data = ex.map(rows, function (row) {
-                    return row[head.name];
-                });
-                ydata_list.push({
-                    name: head.label,
-                    type: head.type,
-                    data: y_data,
-                    barMaxWidth: 30,
-                    itemStyle: {
-                        normal: {
-                            color: head.color // || '#27B6AC'
+            if (this.ctx.ydata) {
+                ex.each(this.ctx.ydata, function (head) {
+                    var y_data = ex.map(rows, function (row) {
+                        return row[head.name];
+                    });
+                    ydata_list.push({
+                        name: head.label,
+                        type: head.type,
+                        data: y_data,
+                        barMaxWidth: 30,
+                        itemStyle: {
+                            normal: {
+                                color: head.color // || '#27B6AC'
+                            }
                         }
-                    }
+                    });
+                    legend_list.push(head.label);
                 });
-                legend_list.push(head.label);
-            });
+            } else {
+                ex.eval(this.ctx.ydata_express, { rows: rows, ydata_list: ydata_list, legend_list: legend_list });
+            }
 
             var option = {
                 title: {
@@ -8260,6 +8287,46 @@ Vue.component('com-chart-plain', {
                 yAxis: {},
                 series: ydata_list
             };
+            if (this.ctx.echarts_option) {
+                ex.mergeObject(option, this.ctx.echarts_option);
+            }
+
+            //if(this.ctx.x_interval != undefined){
+            //    var axisLabel={
+            //        interval:this.ctx.x_interval,//横轴信息全部显示
+            //        fontSize:10,
+            //        //formatter:function(value){//只显示7个字 其余省略号
+            //        //    //return value.length > 7?value.substring(0,7)+'...':value;
+            //        //    var out=''
+            //        //    for(var i=0;i<value.length;i+=7){
+            //        //        out+= value.substring(i,i+7)+'\n'
+            //        //    }
+            //        //    return out
+            //        //    //return value.length > 7?value.substring(0,7)+'...':value;
+            //        //},
+            //        //formatter: [
+            //        //    '{mylabel|这段文本采用样式mylabel}',
+            //        //
+            //        //].join('\n'),
+            //        //formatter:  '{a|{value}a}',
+            //                //formatter:function(val){
+            //                //    return val.split("").join("\n");
+            //                //},
+            //        //rich: {
+            //        //    a: {
+            //        //        color: 'red',
+            //        //        textOverflow:'ellipsis',
+            //        //        width:'100px'
+            //        //    },
+            //        //}
+            //    }
+            //    if(this.ctx.x_rotate){
+            //        axisLabel.rotate = this.ctx.x_rotate
+            //    }
+            //    option.xAxis.axisLabel = axisLabel
+            //}
+
+
             this.myChart.setOption(option);
         }
     },
@@ -8298,6 +8365,123 @@ Vue.component('com-chart-plain', {
 
 /***/ }),
 /* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _radar = __webpack_require__(131);
+
+var radar = _interopRequireWildcard(_radar);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+/***/ }),
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Vue.component('com-chart-radar', {
+    props: ['ctx'],
+    data: function data() {
+        return {
+            barRows: [],
+            rows: [],
+            parStore: ex.vueParStore(this)
+        };
+    },
+    template: ' <div class="com-chart-plain com-chart-radar" style="height:400px;width: 500px;display: inline-block"></div>',
+    mounted: function mounted() {
+        //$('#mainjj').width($(this.$el).width()-30)
+        //this. myChart = echarts.init(document.getElementById('mainjj'));
+        this.myChart = echarts.init(this.$el);
+        //this.getRows()
+        this.parStore.$on('data-updated-backend', this.update_chart);
+        this.update_chart();
+    },
+    methods: {
+        update_chart: function update_chart() {
+            var _this = this;
+
+            var self = this;
+            if (this.ctx.source_rows) {
+                var rows = ex.eval(this.ctx.source_rows, { ps: this.parStore });
+            } else {
+                var rows = this.parStore.rows;
+            }
+
+            var x_data = ex.map(rows, function (row) {
+                return { name: row[_this.ctx.xdata], max: 5000, min: -5000 };
+            });
+
+            var ydata_list = [];
+            var legend_list = [];
+            debugger;
+            ex.each(this.ctx.ydata, function (head) {
+                var y_data = ex.map(rows, function (row) {
+                    return row[head.name];
+                });
+                ydata_list.push({
+                    name: head.label,
+                    value: y_data
+                    //itemStyle: {
+                    //    normal: {
+                    //        color: head.color // || '#27B6AC'
+                    //    },
+                    //},
+                });
+                legend_list.push(head.label);
+            });
+
+            var option = {
+                title: {
+                    text: self.ctx.title
+                },
+                tooltip: {},
+                legend: {
+                    data: legend_list
+                },
+                radar: {
+                    // shape: 'circle',
+                    name: {
+                        textStyle: {
+                            color: '#fff',
+                            backgroundColor: '#999',
+                            borderRadius: 3,
+                            padding: [3, 5]
+                        }
+                    },
+                    indicator: x_data
+                    //    [
+                    //    { name: '销售（sales）', max: 6500},
+                    //    { name: '管理（Administration）', max: 16000},
+                    //    { name: '信息技术（Information Techology）', max: 30000},
+                    //    { name: '客服（Customer Support）', max: 38000},
+                    //    { name: '研发（Development）', max: 52000},
+                    //    { name: '市场（Marketing）', max: 25000}
+                    //]
+                },
+                //xAxis: {
+                //    data: x_data
+                //},
+                //yAxis: {},
+                series: [{
+                    name: 'xxx',
+                    type: 'radar',
+                    data: ydata_list
+
+                }]
+            };
+            this.myChart.setOption(option);
+        }
+    }
+
+});
+
+/***/ }),
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8348,7 +8532,7 @@ window.com_form_panel = com_form_panel;
 Vue.component('com-form-panel', com_form_panel);
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8360,13 +8544,13 @@ Vue.component('com-layout-grid', {
 });
 
 /***/ }),
-/* 132 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(215);
+__webpack_require__(218);
 
 var html_panel = {
     props: ['ctx'],
@@ -8376,7 +8560,7 @@ var html_panel = {
 Vue.component('com-html-content-panel', html_panel);
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8390,13 +8574,13 @@ var html_panel = {
 Vue.component('com-html-panel', html_panel);
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(216);
+__webpack_require__(219);
 
 var iframe_panel = {
     props: ['ctx'],
@@ -8406,7 +8590,7 @@ var iframe_panel = {
 Vue.component('com-iframe-panel', iframe_panel);
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8428,7 +8612,7 @@ var com_pop_fields_panel = {
 Vue.component('com-panel-pop-fields', com_pop_fields_panel);
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8507,7 +8691,7 @@ window.com_table_panel = table_panel;
 Vue.component('com-table-panel', table_panel);
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8515,7 +8699,7 @@ Vue.component('com-table-panel', table_panel);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-__webpack_require__(228);
+__webpack_require__(232);
 
 var table_setting_panel = {
     props: ['ctx'],
@@ -8680,7 +8864,7 @@ Vue.component('com-panel-table-setting', function (resolve, reject) {
 });
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8723,7 +8907,7 @@ var array_mapper = {
 Vue.component('com-table-array-shower', array_mapper);
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8761,7 +8945,7 @@ var my_click = {
 Vue.component('com-table-click', my_click);
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8795,7 +8979,7 @@ var my_link = {
 Vue.component('com-table-color', my_link);
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8816,7 +9000,7 @@ Vue.component('com-table-json', {
 });
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8856,7 +9040,7 @@ var my_link = {
 Vue.component('com-table-link', my_link);
 
 /***/ }),
-/* 143 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8899,7 +9083,7 @@ var html_shower = {
 Vue.component('com-table-map-html', html_shower);
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8954,13 +9138,13 @@ var mapper = {
 Vue.component('com-table-multi-image', mapper);
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(229);
+__webpack_require__(233);
 
 var multi_row = {
     props: ['rowData', 'field', 'index'],
@@ -9041,7 +9225,7 @@ var multi_row = {
 Vue.component('com-field-multi-row', multi_row);
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9101,7 +9285,7 @@ var operations = {
 Vue.component('com-table-ops-cell', operations);
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9190,7 +9374,7 @@ var after_save = {
 };
 
 /***/ }),
-/* 148 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9198,7 +9382,7 @@ var after_save = {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(230);
+__webpack_require__(234);
 
 var label_shower = {
     props: ['rowData', 'field', 'index'],
@@ -9294,7 +9478,7 @@ var label_shower = {
 Vue.component('com-table-rich-span', label_shower);
 
 /***/ }),
-/* 149 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9333,7 +9517,7 @@ var com_table_sequence = {
 Vue.component('com-table-sequence', com_table_sequence);
 
 /***/ }),
-/* 150 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9361,7 +9545,7 @@ var label_shower = {
 Vue.component('com-table-span', label_shower);
 
 /***/ }),
-/* 151 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9395,7 +9579,7 @@ var money_shower = {
 Vue.component('com-table-style-block', money_shower);
 
 /***/ }),
-/* 152 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9410,7 +9594,7 @@ var cascasder_filter = {
 Vue.component('com-filter-cascasder', cascasder_filter);
 
 /***/ }),
-/* 153 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9452,7 +9636,7 @@ var ele_filter = {
 Vue.component('com-table-filters', ele_filter);
 
 /***/ }),
-/* 154 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9508,7 +9692,7 @@ var count = 0;
 Vue.component('com-table-operations', ele_operations);
 
 /***/ }),
-/* 155 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9544,7 +9728,7 @@ var ele_page = {
 Vue.component('com-table-pagination', ele_page);
 
 /***/ }),
-/* 156 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9572,13 +9756,13 @@ var table_parents = {
 Vue.component('com-table-parents', table_parents);
 
 /***/ }),
-/* 157 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(222);
+__webpack_require__(225);
 var ele_table = {
     props: ['ctx'],
     created: function created() {
@@ -9836,7 +10020,7 @@ Vue.component('com-element-table-colomu', {
 });
 
 /***/ }),
-/* 158 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9874,7 +10058,7 @@ var op_a = {
 Vue.component('com-op-table-refresh', op_a);
 
 /***/ }),
-/* 159 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9924,13 +10108,13 @@ var group_check = {
 Vue.component('com-table-op-group-check', group_check);
 
 /***/ }),
-/* 160 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(231);
+__webpack_require__(235);
 
 var tab_chart = {
     props: ['tab_head', 'par_row'],
@@ -9955,7 +10139,9 @@ var tab_chart = {
                     del_info: [],
                     search_args: {},
                     vc: vc,
-                    parStore: ex.vueParStore(vc)
+                    parStore: ex.vueParStore(vc),
+                    after_get_rows: heads_ctx.after_get_rows,
+                    option: heads_ctx.option || {}
                 };
             },
             mixins: [table_store],
@@ -10005,13 +10191,13 @@ Vue.component('com-tab-chart', function (resolve, reject) {
 });
 
 /***/ }),
-/* 161 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(223);
+__webpack_require__(226);
 
 var tab_fields = {
     props: ['tab_head', 'par_row'],
@@ -10160,7 +10346,7 @@ var after_save = {
 };
 
 /***/ }),
-/* 162 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10185,7 +10371,7 @@ var tab_fields = {
 Vue.component('com-tab-fields-v1', tab_fields);
 
 /***/ }),
-/* 163 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10209,7 +10395,7 @@ var lazy_wrap = {
 Vue.component('com-tab-lazy-wrap', lazy_wrap);
 
 /***/ }),
-/* 164 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10303,7 +10489,7 @@ var tab_table = {
 Vue.component('com-tab-table', tab_table);
 
 /***/ }),
-/* 165 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10375,7 +10561,7 @@ var tab_table_type = {
 Vue.component('com-tab-table-type', tab_table_type);
 
 /***/ }),
-/* 166 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10389,7 +10575,7 @@ exports.push([module.i, ".com-field-ele-tree-name-layer {\n  min-width: 20em;\n 
 
 
 /***/ }),
-/* 167 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10403,7 +10589,7 @@ exports.push([module.i, ".file-uploader .item img {\n  max-width: 300px;\n  curs
 
 
 /***/ }),
-/* 168 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10417,7 +10603,7 @@ exports.push([module.i, ".com-field-phone-code input {\n  flex-grow: 10; }\n\n.c
 
 
 /***/ }),
-/* 169 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10431,7 +10617,7 @@ exports.push([module.i, ".plain-field-panel .submit-block {\n  text-align: cente
 
 
 /***/ }),
-/* 170 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10445,7 +10631,7 @@ exports.push([module.i, ".sim-fields .table-fields {\n  width: 100%; }\n\n.sim-f
 
 
 /***/ }),
-/* 171 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10459,7 +10645,7 @@ exports.push([module.i, ".com-head-dropdown-action {\n  display: inline-block;\n
 
 
 /***/ }),
-/* 172 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10473,7 +10659,7 @@ exports.push([module.i, "@media (max-width: 900px) {\n  /*.small-link{*/\n  /*.i
 
 
 /***/ }),
-/* 173 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10487,7 +10673,7 @@ exports.push([module.i, ".com-form-one {\n  height: 100%; }\n  .com-form-one .op
 
 
 /***/ }),
-/* 174 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10501,7 +10687,7 @@ exports.push([module.i, ".com-widget-stack {\n  position: absolute;\n  bottom: 0
 
 
 /***/ }),
-/* 175 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10515,7 +10701,7 @@ exports.push([module.i, ".table .el-table__row > td, .table tr > th, table.el-ta
 
 
 /***/ }),
-/* 176 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10529,7 +10715,7 @@ exports.push([module.i, ".com-op-search {\n  display: inline-block; }\n", ""]);
 
 
 /***/ }),
-/* 177 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10543,7 +10729,7 @@ exports.push([module.i, ".com-op-switch {\n  display: inline-block; }\n", ""]);
 
 
 /***/ }),
-/* 178 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10557,7 +10743,7 @@ exports.push([module.i, ".com-fields-panel {\n  padding: 2rem;\n  border-radius:
 
 
 /***/ }),
-/* 179 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10571,7 +10757,7 @@ exports.push([module.i, ".com-html-content-panel {\n  padding: 4rem 3rem; }\n  .
 
 
 /***/ }),
-/* 180 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10585,7 +10771,7 @@ exports.push([module.i, ".com-iframe-panel {\n  width: 100%;\n  height: 100%; }\
 
 
 /***/ }),
-/* 181 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10599,7 +10785,7 @@ exports.push([module.i, ".el-select-dropdown {\n  z-index: 99891020 !important; 
 
 
 /***/ }),
-/* 182 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10613,7 +10799,7 @@ exports.push([module.i, ".msg-hide .field .msg {\n  display: none; }\n\n.field .
 
 
 /***/ }),
-/* 183 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10627,7 +10813,7 @@ exports.push([module.i, ".active-tab-hightlight-top .el-tabs__item.is-top.is-act
 
 
 /***/ }),
-/* 184 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10641,7 +10827,7 @@ exports.push([module.i, ".table.flat-head th .cell {\n  white-space: nowrap; }\n
 
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10655,7 +10841,7 @@ exports.push([module.i, ".jb-table-parent {\n  margin-bottom: 0; }\n", ""]);
 
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10669,7 +10855,7 @@ exports.push([module.i, ".change-order .arrow {\n  cursor: pointer;\n  display: 
 
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10683,7 +10869,7 @@ exports.push([module.i, ".com-table-checkbox.dirty input {\n  background-color: 
 
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10697,7 +10883,7 @@ exports.push([module.i, ".extra-click-plus .icon .item {\n  display: inline-bloc
 
 
 /***/ }),
-/* 189 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10711,7 +10897,7 @@ exports.push([module.i, ".com-table-linetext.dirty input {\n  background-color: 
 
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10725,7 +10911,7 @@ exports.push([module.i, ".el-dropdown-menu__item.crt-value {\n  background-color
 
 
 /***/ }),
-/* 191 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10739,7 +10925,7 @@ exports.push([module.i, ".dirty {\n  background-color: yellow; }\n", ""]);
 
 
 /***/ }),
-/* 192 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10753,7 +10939,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n.el-table .success {\n  background
 
 
 /***/ }),
-/* 193 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10767,7 +10953,7 @@ exports.push([module.i, ".com-tab-fields .oprations {\n  background: #fbfbf8;\n 
 
 
 /***/ }),
-/* 194 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10781,7 +10967,7 @@ exports.push([module.i, ".com-field-list-ctn {\n  display: flex;\n}\n.field-pane
 
 
 /***/ }),
-/* 195 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10795,7 +10981,7 @@ exports.push([module.i, ".com-field-pop-tree-select .label-shower {\n  backgroun
 
 
 /***/ }),
-/* 196 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10809,7 +10995,7 @@ exports.push([module.i, ".com-field-range {\n  display: flex;\n  padding: 0 0 10
 
 
 /***/ }),
-/* 197 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10823,7 +11009,7 @@ exports.push([module.i, ".com-fields-table-block.field-panel {\n  background-col
 
 
 /***/ }),
-/* 198 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10837,7 +11023,7 @@ exports.push([module.i, ".com-filter-datetime-range .el-input__inner {\n  width:
 
 
 /***/ }),
-/* 199 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)();
@@ -10851,34 +11037,6 @@ exports.push([module.i, ".com-headbar-sys-link {\n  height: 100%;\n  padding: 15
 
 
 /***/ }),
-/* 200 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".com-panel-table-setting .head-panel {\n  padding: 20px;\n}\n.com-panel-table-setting .mybtn-panel {\n  padding: 30px 50px;\n  text-align: right;\n}\n.com-panel-table-setting label[role=checkbox]:first-child {\n  margin-left: 10px;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 201 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".main-header {\n  z-index: 900;\n}\n.input-group .input-group-addon {\n  background-color: #eee;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
 /* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10887,7 +11045,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-field-multi-row .myrow:not(:last-child):after {\n  content: '';\n  display: block;\n  width: 100%;\n  height: 0;\n  border-bottom: 1px solid #e2e2e2;\n  left: 0;\n  position: absolute;\n}\n.com-field-multi-row div.myrow {\n  padding: 5px 0;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n.com-field-multi-row div.myrow span {\n  display: inline-block;\n  height: 1em;\n}\n", ""]);
+exports.push([module.i, ".com-chart-plain {\n  border: 1px dashed #e5e5e5;\n  height: 400px;\n  width: 500px;\n  display: inline-block;\n}\n", ""]);
 
 // exports
 
@@ -10901,7 +11059,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-table-grid .middle-col {\n  text-align: center !important;\n}\n.com-table-grid .btn-like-col .com-table-rich-span {\n  border-radius: 3px;\n  font-size: 80%;\n  display: inline-block;\n  height: 16px;\n  padding: 0 5px;\n  line-height: 16px;\n  min-width: 40px;\n}\n.com-table-grid .btn-like-col .com-table-rich-span.warning {\n  color: #fff;\n  background-color: #f56d6d;\n}\n.com-table-grid .btn-like-col .com-table-rich-span.success {\n  color: #fff;\n  background-color: #3db035;\n}\n.com-table-grid .btn-like-col .com-table-rich-span.primary {\n  color: #fff;\n  background-color: #499cff;\n}\n", ""]);
+exports.push([module.i, ".com-panel-table-setting .head-panel {\n  padding: 20px;\n}\n.com-panel-table-setting .mybtn-panel {\n  padding: 30px 50px;\n  text-align: right;\n}\n.com-panel-table-setting label[role=checkbox]:first-child {\n  margin-left: 10px;\n}\n", ""]);
 
 // exports
 
@@ -10915,7 +11073,7 @@ exports = module.exports = __webpack_require__(0)();
 
 
 // module
-exports.push([module.i, ".com-tab-chart .box {\n  background-color: #ecf0f5;\n}\n.com-tab-chart .statistic-panel,\n.com-tab-chart .chart-panel {\n  margin: 20px;\n  padding: 20px;\n  background-color: #fff;\n  position: relative;\n}\n.com-tab-chart .statistic-panel .title-label,\n.com-tab-chart .chart-panel .title-label {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n}\n.com-tab-chart .statistic-panel .foot-item,\n.com-tab-chart .chart-panel .foot-item {\n  display: inline-block;\n  margin: 2rem;\n  width: 20rem;\n  padding-bottom: 1rem;\n  text-align: center;\n  border-bottom: 1px solid #dadada;\n}\n", ""]);
+exports.push([module.i, ".main-header {\n  z-index: 900;\n}\n.input-group .input-group-addon {\n  background-color: #eee;\n}\n", ""]);
 
 // exports
 
@@ -10924,10 +11082,52 @@ exports.push([module.i, ".com-tab-chart .box {\n  background-color: #ecf0f5;\n}\
 /* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-field-multi-row .myrow:not(:last-child):after {\n  content: '';\n  display: block;\n  width: 100%;\n  height: 0;\n  border-bottom: 1px solid #e2e2e2;\n  left: 0;\n  position: absolute;\n}\n.com-field-multi-row div.myrow {\n  padding: 5px 0;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  overflow: hidden;\n}\n.com-field-multi-row div.myrow span {\n  display: inline-block;\n  height: 1em;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 206 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-table-grid .middle-col {\n  text-align: center !important;\n}\n.com-table-grid .btn-like-col .com-table-rich-span {\n  border-radius: 3px;\n  font-size: 80%;\n  display: inline-block;\n  height: 16px;\n  padding: 0 5px;\n  line-height: 16px;\n  min-width: 40px;\n}\n.com-table-grid .btn-like-col .com-table-rich-span.warning {\n  color: #fff;\n  background-color: #f56d6d;\n}\n.com-table-grid .btn-like-col .com-table-rich-span.success {\n  color: #fff;\n  background-color: #3db035;\n}\n.com-table-grid .btn-like-col .com-table-rich-span.primary {\n  color: #fff;\n  background-color: #499cff;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, ".com-tab-chart .box {\n  background-color: #ecf0f5;\n}\n.com-tab-chart .statistic-panel,\n.com-tab-chart .chart-panel {\n  margin: 20px;\n  padding: 20px;\n  background-color: #fff;\n  position: relative;\n}\n.com-tab-chart .statistic-panel .title-label,\n.com-tab-chart .chart-panel .title-label {\n  position: absolute;\n  top: 5px;\n  left: 5px;\n}\n.com-tab-chart .statistic-panel .foot-item,\n.com-tab-chart .chart-panel .foot-item {\n  display: inline-block;\n  margin: 2rem;\n  width: 20rem;\n  padding-bottom: 1rem;\n  text-align: center;\n  border-bottom: 1px solid #dadada;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(167);
+var content = __webpack_require__(169);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -10947,13 +11147,13 @@ if(false) {
 }
 
 /***/ }),
-/* 206 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(168);
+var content = __webpack_require__(170);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -10973,13 +11173,13 @@ if(false) {
 }
 
 /***/ }),
-/* 207 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(169);
+var content = __webpack_require__(171);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -10999,13 +11199,13 @@ if(false) {
 }
 
 /***/ }),
-/* 208 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(171);
+var content = __webpack_require__(173);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11025,13 +11225,13 @@ if(false) {
 }
 
 /***/ }),
-/* 209 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(172);
+var content = __webpack_require__(174);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11051,13 +11251,13 @@ if(false) {
 }
 
 /***/ }),
-/* 210 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(173);
+var content = __webpack_require__(175);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11077,13 +11277,13 @@ if(false) {
 }
 
 /***/ }),
-/* 211 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(174);
+var content = __webpack_require__(176);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11103,13 +11303,13 @@ if(false) {
 }
 
 /***/ }),
-/* 212 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(175);
+var content = __webpack_require__(177);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11129,13 +11329,13 @@ if(false) {
 }
 
 /***/ }),
-/* 213 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(176);
+var content = __webpack_require__(178);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11155,13 +11355,13 @@ if(false) {
 }
 
 /***/ }),
-/* 214 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(177);
+var content = __webpack_require__(179);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11181,13 +11381,13 @@ if(false) {
 }
 
 /***/ }),
-/* 215 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(179);
+var content = __webpack_require__(181);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11207,13 +11407,13 @@ if(false) {
 }
 
 /***/ }),
-/* 216 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(180);
+var content = __webpack_require__(182);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11233,13 +11433,13 @@ if(false) {
 }
 
 /***/ }),
-/* 217 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(186);
+var content = __webpack_require__(188);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11259,13 +11459,13 @@ if(false) {
 }
 
 /***/ }),
-/* 218 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(187);
+var content = __webpack_require__(189);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11285,13 +11485,13 @@ if(false) {
 }
 
 /***/ }),
-/* 219 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(188);
+var content = __webpack_require__(190);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11311,13 +11511,13 @@ if(false) {
 }
 
 /***/ }),
-/* 220 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(189);
+var content = __webpack_require__(191);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11337,13 +11537,13 @@ if(false) {
 }
 
 /***/ }),
-/* 221 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(190);
+var content = __webpack_require__(192);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11363,13 +11563,13 @@ if(false) {
 }
 
 /***/ }),
-/* 222 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(192);
+var content = __webpack_require__(194);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11389,13 +11589,13 @@ if(false) {
 }
 
 /***/ }),
-/* 223 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(193);
+var content = __webpack_require__(195);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11415,13 +11615,13 @@ if(false) {
 }
 
 /***/ }),
-/* 224 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(194);
+var content = __webpack_require__(196);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11441,13 +11641,13 @@ if(false) {
 }
 
 /***/ }),
-/* 225 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(195);
+var content = __webpack_require__(197);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11467,13 +11667,13 @@ if(false) {
 }
 
 /***/ }),
-/* 226 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(196);
+var content = __webpack_require__(198);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11493,13 +11693,13 @@ if(false) {
 }
 
 /***/ }),
-/* 227 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(197);
+var content = __webpack_require__(199);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11519,13 +11719,39 @@ if(false) {
 }
 
 /***/ }),
-/* 228 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(200);
+var content = __webpack_require__(202);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/stylus-loader/index.js!./chart.styl", function() {
+			var newContent = require("!!../../../../../../../../../coblan/webcode/node_modules/css-loader/index.js!../../../../../../../../../coblan/webcode/node_modules/stylus-loader/index.js!./chart.styl");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(203);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11545,13 +11771,13 @@ if(false) {
 }
 
 /***/ }),
-/* 229 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(202);
+var content = __webpack_require__(205);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11571,13 +11797,13 @@ if(false) {
 }
 
 /***/ }),
-/* 230 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(203);
+var content = __webpack_require__(206);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11597,13 +11823,13 @@ if(false) {
 }
 
 /***/ }),
-/* 231 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(204);
+var content = __webpack_require__(207);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(1)(content, {});
@@ -11623,7 +11849,7 @@ if(false) {
 }
 
 /***/ }),
-/* 232 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
