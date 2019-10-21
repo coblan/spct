@@ -44,7 +44,7 @@ class ReleventUserPage(TablePage):
         
         def getRowFilters(self):
             return [
-                {'name':'NickName','placeholder':'昵称','editor':'com-filter-text'},
+                {'name':'NickName','label':'昵称','editor':'com-filter-text'},
                 {'name':'StartTime','label':'开始时间','editor':'com-filter-datetime','width':'200px'},
                 {'name':'EndTime','label':'结束时间','editor':'com-filter-datetime'},
                 #{'name':'relevent','label':'查询条件','editor':'com-filter-select',

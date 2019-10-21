@@ -25,7 +25,7 @@ class ActivityRecordPage(TablePage):
             icontains=['account__nickname']
             def getExtraHead(self):
                 return [
-                    {'name':'account__nickname','placeholder':'用户昵称','editor':'com-filter-text'}
+                    {'name':'account__nickname','label':'用户昵称','editor':'com-filter-text'}
                 ]
         
 

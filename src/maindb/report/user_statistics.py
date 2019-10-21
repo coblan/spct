@@ -96,8 +96,8 @@ class UserStatisticsPage(TablePage):
                 #return [{'name':'date','editor':'com-date-range-filter','label':'日期'}]
                 
                 return [
-                    {'name':'minAmount','placeholder':'投注金额大于等于','editor':'com-filter-text'},
-                    {'name':'MinProfit','placeholder':'亏盈大于等于','editor':'com-filter-text'},
+                    {'name':'minAmount','label':'投注金额大于等于','editor':'com-filter-text'},
+                    {'name':'MinProfit','label':'亏盈大于等于','editor':'com-filter-text'},
                     {'name':'AccountType','label':'用户类型','editor':'com-filter-select','options':[
                         {'label':'普通用户','value':0},
                         {'label':'代理用户','value':1},

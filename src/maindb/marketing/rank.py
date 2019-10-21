@@ -95,18 +95,18 @@ class RankForm(ModelFields):
         
         if head['name'] == 'period':
             head['editor'] = 'com-field-select'
-            head['placeholder'] = '请选择周期'
+            head['label'] = '请选择周期'
         if head['name'] == 'type':
             head['editor'] = 'com-field-select'
-            head['placeholder'] = '请选择榜单'
+            head['label'] = '请选择榜单'
             
         if head['name'] == 'userid':
             head['style'] = 'width:20em;'
-            head['placeholder'] = '选择用户'
+            head['label'] = '选择用户'
             head['editor'] = 'com-field-single-select2'  #  'com-field-single-chosen'# 
             head['options'] = [{'value':x.id, 'label':str(x)} for x in TbUserConst.objects.all()]
         if head['name'] == 'parlayid':
-            head['placeholder'] = '请选择串关类型'
+            head['label'] = '请选择串关类型'
             head['fv_rule'] = 'required'
             head['show'] = 'rt=scope.row.type==2'
             head['editor'] = 'com-field-select'

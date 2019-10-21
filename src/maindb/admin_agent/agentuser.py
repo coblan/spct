@@ -54,7 +54,7 @@ class AgentUser(TablePage):
                 if head['name'] == 'createtime':
                     head['label'] = '产生时间'
                     head['editor']='com-filter-month'
-                    head['placeholder']='选择月份'
+                    head['show_label']= True
                 return head
             
             def getExtraHead(self):
