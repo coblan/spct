@@ -206,7 +206,7 @@ class TicketMasterPage(TablePage):
     class tableCls(ModelTable):
         model = TbTicketmaster
         exclude = ['accountid']
-        fields_sort = ['ticketid','createtime', 'accountid__nickname', 'ticketstake',] +TicketstakeEmbedTable.fields_sort + \
+        fields_sort = ['sp_status','ticketid','createtime', 'accountid__nickname', 'ticketstake',] +TicketstakeEmbedTable.fields_sort + \
         ['orderid','audit',  'status','winbet','parlayrule', 'stakeamount', 'betamount', 'betoutcome', 'profit',
          'turnover', 'bonuspa', 'bonus', 'settletime', 'memo','voidreason','terminal',]
         
@@ -252,6 +252,12 @@ class TicketMasterPage(TablePage):
         def getExtraHead(self):
             stake_heads = TicketstakeEmbedTable().get_heads()
             return [
+                {'name':'sp_status','label':'状态提示','editor':'com-table-icon-cell','width':80,'show_tooltip':False,
+                 'icon_express':'''var pig=[];rt=pig;
+                 if(scope.row.long_time_no_confirm){pig.push({url:"/static/images/超时.png",label:"长期未确认"})}
+                 if(scope.row.audit==1){pig.push({"url":"/static/images/异常.png","label":"异常注单"})} 
+               ''' },
+                
                 {'name': 'profit', 'label': '亏盈'}, 
                 {'name': 'accountid__nickname','label': '昵称',},
                 {'name':'ticketstake','label':'子注单','children':TicketstakeEmbedTable.fields_sort,
@@ -259,6 +265,7 @@ class TicketMasterPage(TablePage):
                     ]+ stake_heads
 
         def dict_row(self, inst):
+            now = timezone.now()
             dc = {
                 'accountid__nickname': inst.accountid__nickname,
                 'stake_count':inst.stake_count,
@@ -279,6 +286,8 @@ class TicketMasterPage(TablePage):
 
             if inst.status != 2:
                 dc['winbet'] = None
+            if inst.status ==0 and ( now - inst.createtime ) > timezone.timedelta(minutes=5):
+                dc['long_time_no_confirm']=True
             return dc
 
         def inn_filter(self, query):
