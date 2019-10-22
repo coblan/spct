@@ -218,6 +218,9 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbGamemoneyininfo.edit',model_full_permit(TbGamemoneyininfo),model_to_name(TbGamemoneyininfo),'model'),
            ('TbGamemoneyoutinfo.edit',model_full_permit(TbGamemoneyoutinfo),model_to_name(TbGamemoneyoutinfo),'model'),
            
+           # system
+           ('TbUserex',model_read_permit(TbUserex),model_to_name(TbUserex),'model'),
+           ('TbUserex.edit',model_full_permit(TbUserex),model_to_name(TbUserex),'model'),
            ]
 
 add_permits(permits)

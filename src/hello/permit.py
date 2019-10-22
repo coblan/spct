@@ -286,11 +286,15 @@ def get_permit(ui=None):
             {'label':'资金流入','value':'TbGamemoneyininfo.edit'},
             {'label':'资金流出','value':'TbGamemoneyoutinfo.edit'}
         ]},
-        {'label': _('User'),
+        {'label': '系统管理',
          'children': [
             #{'label': _('查看用户'), 'value': 'User.read',}, 
              {'label': _('User'), 'value': 'User.write',}, 
-             {'label': _('Role'), 'value': 'Group',}
+             {'label': _('Role'), 'value': 'Group',},
+             {'label':'用户扩展','children':[
+                 {'label':'查看','value':'TbUserex'},
+                 {'label':'编辑','value':'TbUserex.edit','depend':['TbUserex']},
+             ]}
              ],
          },
          {'label': '运维管理',
