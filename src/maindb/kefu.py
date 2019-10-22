@@ -62,7 +62,7 @@ def call_client(rows,**kws):
     operation_log.info('给用户%s打电话'%client)
     rt = requests.put(url)
     if rt.status_code != 200:
-        operation_log.info('请求网络电话出现错误，返回内容为:%s'%rt.text)
+        operation_log.info('请求网络电话出现错误，返回内容为:%s ,状态码:%s'%(rt.text,rt.status_code))
         raise UserWarning('请求网络电话出现问题,请联系管理员')
     
 
