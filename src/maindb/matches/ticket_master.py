@@ -252,7 +252,7 @@ class TicketMasterPage(TablePage):
         def getExtraHead(self):
             stake_heads = TicketstakeEmbedTable().get_heads()
             return [
-                {'name':'sp_status','label':'状态提示','editor':'com-table-icon-cell','width':80,'show_tooltip':False,
+                {'name':'sp_status','label':'图标提示','editor':'com-table-icon-cell','width':70,'show_tooltip':False,
                  'icon_express':'''var pig=[];rt=pig;
                  if(scope.row.long_time_no_confirm){pig.push({url:"/static/images/超时.png",label:"长期未确认"})}
                  if(scope.row.audit==1){pig.push({"url":"/static/images/异常.png","label":"异常注单"})} 
