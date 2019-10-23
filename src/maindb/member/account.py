@@ -909,11 +909,11 @@ class SingleUserStatistic(PlainTable):
                 'chart_data_void_rate':[],
             },
 
-            'after_get_rows':'''scope.ps.option.chart_data_sporttype_group = scope.resp.get_rows.sporttype_group;
-            scope.ps.option.chart_data_market_data = scope.resp.get_rows.chart_data_market_data;
-            scope.ps.option.chart_data_league_group = scope.resp.get_rows.chart_data_league_group;
-            scope.ps.option.chart_data_ticket_amount = scope.resp.get_rows.chart_data_ticket_amount;
-            scope.ps.option.chart_data_void_rate = scope.resp.get_rows.chart_data_void_rate;
+            'after_get_rows':'''scope.ps.option.chart_data_sporttype_group = scope.resp.sporttype_group;
+            scope.ps.option.chart_data_market_data = scope.resp.chart_data_market_data;
+            scope.ps.option.chart_data_league_group = scope.resp.chart_data_league_group;
+            scope.ps.option.chart_data_ticket_amount = scope.resp.chart_data_ticket_amount;
+            scope.ps.option.chart_data_void_rate = scope.resp.chart_data_void_rate;
              '''
         })
         return ctx

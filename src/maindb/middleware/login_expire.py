@@ -11,7 +11,7 @@ from django.conf import settings
 class LoginExpire(MiddlewareMixin):
 
     def process_request(self, request):
-        if request.get_full_path() in ['/accounts/pswd',]:
+        if request.get_full_path() in ['/accounts/pswd','/dapi/todolist.hasnew_todolist']:
             return 
         if request.user.is_authenticated() and request.session.get('auto_login'):
             request.session.set_expiry(settings.LOGIN_SPAN) # 滑动 2小时过期

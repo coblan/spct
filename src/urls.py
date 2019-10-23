@@ -23,6 +23,7 @@ from django.views.generic import RedirectView
 from maindb.views import test
 from helpers.authuser.engin_view import AuthEngine
 from maindb.views import Notice, Help,Activity,TestAppH5View #,ActivityIndex
+from helpers.director.views import director_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -39,6 +40,7 @@ urlpatterns = [
     url(r'^main/',include('maindb.urls')),
     
     url(r'^d/',include('helpers.director.urls'),name='director'),
+    url(r'^dapi/(?P<director_name>[\w\/\.]+)?/?$',director_view),
     
     url(r'^pa/([\w\.]+)/?$', ProgramerAdmin.as_view(), name= ProgramerAdmin.url_name), 
     url(r'^pa/?$', RedirectView.as_view(url='/pa/marketgroup')), 
