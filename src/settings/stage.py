@@ -87,3 +87,7 @@ NOTICE = {
 }
 
 OLA_DOMAIN='http://115.28.186.246:8080'
+
+# 登录滑动过期时长秒
+LOGIN_SPAN=60
+ADMIN_USER_CHECK_IP=False

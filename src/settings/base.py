@@ -178,5 +178,6 @@ MEDIA_URL = '/media/'
 
 BET_DATA_SOURCE=2
 
-# 登录滑动过期时长
+# 登录滑动过期时长秒
 LOGIN_SPAN=60
+ADMIN_USER_CHECK_IP=True

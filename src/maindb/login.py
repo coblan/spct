@@ -52,8 +52,11 @@ class Login(object):
     def check_ip(self):
         ip = self.get_ip()
         general_log.info('ip=%s 登录'%ip)
-        ipnum = ip2num(ip)
-        return TbBackendwhiteip.objects.filter(startipnum__lte=ipnum,endipnum__gte=ipnum,iswork=True).exists()
+        if getattr(settings,'ADMIN_USER_CHECK_IP',False):
+            return True
+        else:
+            ipnum = ip2num(ip)
+            return TbBackendwhiteip.objects.filter(startipnum__lte=ipnum,endipnum__gte=ipnum,iswork=True).exists()
     
     def get_ip(self):
         request = get_request_cache()['request']
