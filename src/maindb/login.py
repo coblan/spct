@@ -155,7 +155,7 @@ class ChangePswdLogic(object):
                         })
             changer.user.set_password(row.get('first_pswd'))
             changer.user.save()
-            userinfo.passwordexpiretime = timezone.now() + timezone.timedelta(days=30)
+            userinfo.passwordexpiretime = timezone.now() + timezone.timedelta(days=settings.LOGIN_PSWD_EXPIRE)
             used_passwd.append(changer.user.password)
             if len(used_passwd )>3:
                 userinfo.usedpassword=json.dumps(used_passwd[-4:-1])
