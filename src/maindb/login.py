@@ -31,7 +31,7 @@ class Login(object):
             pass
             #return {'success':False,'errors':{'username':['用户名不存在']}}
         loger = Login(row)
-        if not loger.check_ip():
+        if  not loger.check_ip():
             raise UserWarning('访问地址不在可用范围')
         
         if not loger.check_code():
@@ -52,7 +52,7 @@ class Login(object):
     def check_ip(self):
         ip = self.get_ip()
         general_log.info('ip=%s 登录'%ip)
-        if getattr(settings,'ADMIN_USER_CHECK_IP',False):
+        if not getattr(settings,'ADMIN_USER_CHECK_IP',False):
             return True
         else:
             ipnum = ip2num(ip)
