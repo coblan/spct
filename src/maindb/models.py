@@ -410,6 +410,30 @@ class TbAppversion(models.Model):
         managed = False
         db_table = 'Tb_AppVersion'
 
+class TbBackendwhiteip(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    startip = models.CharField(db_column='StartIp', max_length=16, blank=True, null=True,verbose_name='开始IP')  # Field name made lowercase.
+    startipnum = models.BigIntegerField(db_column='StartIpNum', blank=True, null=True)  # Field name made lowercase.
+    endip = models.CharField(db_column='EndIp', max_length=16, blank=True, null=True,verbose_name='结束IP')  # Field name made lowercase.
+    endipnum = models.BigIntegerField(db_column='EndIpNum', blank=True, null=True)  # Field name made lowercase.
+    iswork = models.BooleanField(db_column='IsWork',verbose_name='启用')  # Field name made lowercase.
+    type = models.IntegerField(db_column='Type', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_BackendWhiteIP'
+
+class TbBackendloginlog(models.Model):
+    id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    userid = models.IntegerField(db_column='UserId',verbose_name='管理员ID')  # Field name made lowercase.
+    username = models.CharField(db_column='UserName', max_length=50,verbose_name='管理员')  # Field name made lowercase.
+    ipaddress = models.CharField(db_column='IPAddress', max_length=20,verbose_name='ip地址')  # Field name made lowercase.
+    area = models.CharField(db_column='Area', max_length=200, blank=True, null=True,verbose_name="区域")  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='登录时间',auto_now_add=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_BackendLoginLog'
 
 class TbBalance(models.Model):
     # accountsn = models.CharField(db_column='AccountSN', max_length=36)  # Field name made lowercase.
@@ -957,6 +981,7 @@ class TbLivefeed(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Livefeed'
+
 
 class TbMaintournament(models.Model):
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID')  # Field name made lowercase.
@@ -3009,7 +3034,7 @@ class TbUserex(models.Model):
     userid = models.IntegerField(db_column='UserID', primary_key=True,verbose_name='账号')  # Field name made lowercase.
     extnumber = models.CharField(db_column='ExtNumber', max_length=50, blank=True, null=True,verbose_name='分机号')  # Field name made lowercase.
     
-    usedpassword = models.CharField(db_column='UsedPassword', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    usedpassword = models.CharField(db_column='UsedPassword', max_length=1000, blank=True, null=True)  # Field name made lowercase.
     passwordexpiretime = models.DateTimeField(db_column='PasswordExpireTime', blank=True, null=True,verbose_name='密码过期')  # Field name made lowercase.
     
     class Meta:

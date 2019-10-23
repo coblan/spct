@@ -169,6 +169,8 @@ class PcMenu(BaseEngine):
                  {'label': '操作日志', 'url': page('operation_log'), 'visible': can_touch(TbOperationlog, crt_user)},
                  {'label':'异常地址','url':page('badurl')},
                  {'label':'账号扩展信息','url':page('userex'),'visible':can_touch(TbUserex,crt_user)},
+                 {'label':'管理员IP白名单','url':page('admin_ip'),'visible':can_touch(TbBackendwhiteip,crt_user)},
+                 {'label':'登录日志','url':page('bacnend_loginlog'),'visible':can_touch(TbBackendloginlog,crt_user)}
                  # {'label':'权限分组','url':page('group_human'),'visible':can_touch(Group)},
              ]},
 

@@ -108,7 +108,8 @@ class League(TablePage):
             names = ['issubscribe','sport','isrecommend','adjusttemplate','group']
             def getExtraHead(self): 
                 return [
-                    {'name': 'openlivebet','label': '走地',
+                    {'name': 'openlivebet',
+                     'placeholder': '走地',
                      'editor': 'com-filter-select',
                      'options': [
                          {'value': 0, 'label': '关闭',}, 

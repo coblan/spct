@@ -174,7 +174,7 @@ class MatchsPage(TablePage):
 
             def getExtraHead(self):
                 return [
-                    {'name':'specialcategoryid','editor':'com-filter-select','label':'类型',
+                    {'name':'specialcategoryid','editor':'com-filter-select','placeholder':'类型',
                      'options':[
                          {'value':0,'label':'常规'},
                         {'value':1,'label':'特殊'}

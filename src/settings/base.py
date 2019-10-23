@@ -61,7 +61,9 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'helpers.director.middleware.request_cache.RequestCacheMiddleware'
+    #'maindb.middleware.password_expire.PasswordExpire',
+    'maindb.middleware.login_expire.LoginExpire',
+    'helpers.director.middleware.request_cache.RequestCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'urls'
@@ -175,3 +177,6 @@ MEDIA_ROOT= os.path.join( os.path.dirname(BASE_DIR),'media')
 MEDIA_URL = '/media/'
 
 BET_DATA_SOURCE=2
+
+# 登录滑动过期时长
+LOGIN_SPAN=60
