@@ -16,6 +16,7 @@ class AdminIpForm(WhiteIPRangeForm):
     class Meta:
         model = TbBackendwhiteip
         exclude =['type']
+        
 
 
 director.update({

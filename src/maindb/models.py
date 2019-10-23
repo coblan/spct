@@ -412,9 +412,9 @@ class TbAppversion(models.Model):
 
 class TbBackendwhiteip(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    startip = models.CharField(db_column='StartIp', max_length=16, blank=True, null=True,verbose_name='开始IP')  # Field name made lowercase.
+    startip = models.CharField(db_column='StartIp', max_length=16,  null=True,verbose_name='开始IP')  # Field name made lowercase.
     startipnum = models.BigIntegerField(db_column='StartIpNum', blank=True, null=True)  # Field name made lowercase.
-    endip = models.CharField(db_column='EndIp', max_length=16, blank=True, null=True,verbose_name='结束IP')  # Field name made lowercase.
+    endip = models.CharField(db_column='EndIp', max_length=16,  null=True,verbose_name='结束IP')  # Field name made lowercase.
     endipnum = models.BigIntegerField(db_column='EndIpNum', blank=True, null=True)  # Field name made lowercase.
     iswork = models.BooleanField(db_column='IsWork',verbose_name='启用')  # Field name made lowercase.
     type = models.IntegerField(db_column='Type', blank=True, null=True)  # Field name made lowercase.

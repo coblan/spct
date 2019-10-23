@@ -968,7 +968,7 @@ class OutcomeTab(ModelTable):
             .then(()=>{
                 return ex.director_call("get_row",
                     {
-                        director_name:scope.ps.vc.par_row._director_name,filter_kws:{matchid:scope.ps.vc.par_row.matchid} 
+                        director_name:scope.ps.vc.par_row._director_name,matchid:scope.ps.vc.par_row.matchid
                     })
                  })
             .then((res)=>{ex.vueAssign(scope.ps.vc.par_row,res)}) ''' },

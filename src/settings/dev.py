@@ -114,10 +114,10 @@ BET_DATA_SOURCE=2
 
 INSPECT_DICT_STATIC = 'D:\work\sportscenter\src\index.py'
 
-#from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
-#SET(globals()) 
+from helpers.maintenance.debug.debug_toolbar.debugtoolbar_setting import SET
+SET(globals()) 
 
-#MIDDLEWARE_CLASSES += ['django_cprofile_middleware.middleware.ProfilerMiddleware']
+MIDDLEWARE_CLASSES += ['django_cprofile_middleware.middleware.ProfilerMiddleware']
 
 
 import os
