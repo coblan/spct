@@ -96,6 +96,7 @@ class OtherWebMatchPage(TablePage):
                  #scope.head.table_ctx.search_args._start_matchdate=scope.row.EventDateTime;
                  #scope.head.table_ctx.search_args._end_matchdate=scope.row.EventDateTime; 
                  #cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)'''},
+                 {'name':'Eid','label':'EID'},
                 {'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
                  'fields_ctx':WebMatchForm().get_head_context(),
                  'action':"var ctx =scope.head.fields_ctx;ctx.row=scope.row;ctx.ops_loc='bottom';cfg.pop_vue_com('com-form-one',ctx).then(row=>{ex.vueAssign(scope.row,row)})"},
