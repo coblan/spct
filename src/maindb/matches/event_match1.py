@@ -18,7 +18,12 @@ def tm2mongo(dt):
     tmp = dt.replace(tzinfo=beijin)
     #return tmp.astimezone(beijin)
     return tmp
-         
+
+def mongo2tm(dt):
+    beijin = datetime.timezone(datetime.timedelta(hours=8))
+    utc = datetime.timezone(datetime.timedelta(hours=0))
+    dd = dt.replace(tzinfo=utc)
+    return dd.astimezone(beijin)
 
 class OtherWebMatchPage(TablePage):
     def get_label(self):
@@ -390,7 +395,9 @@ class WebMatchForm(Fields):
             })
         out_dc.update({
             'pk':dc.get('Eid'),
-            'TeamSwap':bool(dc.get('TeamSwap'))
+            'TeamSwap':bool(dc.get('TeamSwap')),
+            'CreateTime':mongo2tm(dc.get('CreateTime')),
+            'EventDateTime':mongo2tm(dc.get('EventDateTime'))
         })
         return out_dc
     
