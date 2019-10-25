@@ -444,7 +444,6 @@ class AccountPage(TablePage):
                      'rechargeamount', 'withdrawamount','anomalyticketnum']
 
         def get_operation(self):
-            modifyer = AccoutModifyAmount(crt_user=self.crt_user)
             betfullmodify = ModifyBetFullRecord(crt_user=self.crt_user)
             changeable_fields = self.permit.changeable_fields()
             return [
@@ -471,7 +470,8 @@ class AccountPage(TablePage):
                 # selected_pop_set_and_save
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
                  'after_error':'scope.fs.showErrors(scope.errors)',
-                 'fields_ctx': modifyer.get_head_context(), 'visible': 'amount' in changeable_fields},
+                 'fields_ctx': AccoutModifyAmount().get_head_context(), 
+                 'visible': 'amount' in changeable_fields},
                 
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '调整限额',
                  'after_error':'scope.fs.showErrors(scope.errors)',
@@ -615,7 +615,7 @@ class AccoutBaseinfo(ModelFields):
 
 
 class AccoutModifyAmount(ModelFields):
-    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory']
+    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype']
     readonly = ['accountid', 'nickname','amount']
     
     def __init__(self, *args, **kw):
@@ -636,6 +636,7 @@ class AccoutModifyAmount(ModelFields):
         return [
             {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', },
             {'name':'moenycategory','label':'类型','editor':'com-field-select','required':True,'options':desp_options},
+            {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
         ]
 
     #def clean_dict(self, dc):
@@ -666,6 +667,11 @@ class AccoutModifyAmount(ModelFields):
                                         amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='Backend',
                                         memo='调账', accountid=self.instance, categoryid_id=moenycategory,
                                         cashflow=cashflow)
+            if add_amount > 0:
+                TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,
+                                               consumeamount = add_amount,
+                                               fundtype = 1 if self.kw.get('fundtype')  else 0,
+                                               consumestatus=1,rftype=3,rfid=0,content='后台管理员调账')
             return {'memo': '调账', 'ex_before': {'amount': self.before_amount},
                     'ex_after': {'amount': self.instance.amount, }}
 
