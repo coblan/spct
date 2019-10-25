@@ -19,7 +19,7 @@ class AgprofitlossPage(TablePage):
         def clean_search_args(cls, search_args):
             if '_searched' not in search_args:
                 now = timezone.now()
-                search_args['_start_profitlosstime'] = (now-timezone.timedelta(days=1)).strftime('%Y-%m-%d '+'00:00:00')
+                search_args['_start_profitlosstime'] = now.strftime('%Y-%m-%d '+'00:00:00')
                 search_args['_end_profitlosstime'] = now.strftime('%Y-%m-%d '+'23:59:59')
                 search_args['_searched'] = 1
             return search_args
