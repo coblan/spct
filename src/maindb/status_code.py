@@ -272,6 +272,10 @@ NEW_MATCH_STATUS=(
     
 )
 
+MATCH_SOURCE=(
+    (1,'Betrader'),
+    (2,'188Bet'),
+)
 
 #MATCH_STATUS = (
     #(-1,'已取消'),

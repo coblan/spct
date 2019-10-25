@@ -552,12 +552,7 @@ class AccoutBaseinfo(ModelFields):
             pk = kw.get('accountid')
         super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
         self.orgin_risklevel= self.instance.risklevel
-    
-    def getExtraHeads(self):
-        return [
-            {'name':'createtime','label':'注册时间','editor':'com-field-linetext'},
-        ]
-    
+
     def dict_head(self, head):
         if head['name'] == 'bonusrate':
             head['step'] = 0.001

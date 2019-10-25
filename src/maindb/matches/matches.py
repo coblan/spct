@@ -103,7 +103,7 @@ class MatchsPage(TablePage):
         exclude = []  # 'ishidden', 'iscloseliveodds'
         fields_sort = ['sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
-                       'eventid'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
+                       'eventid','source'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'},

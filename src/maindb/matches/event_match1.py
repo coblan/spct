@@ -11,6 +11,7 @@ from ..rabbitmq_instance import notifyCreateNewMatch
 from helpers.director.shortcut import DirectorEncoder,get_request_cache
 import datetime
 import time
+from ..status_code import MATCH_SOURCE
 
 def tm2mongo(dt):
     beijin = datetime.timezone(datetime.timedelta(hours=8))
@@ -111,6 +112,12 @@ class OtherWebMatchPage(TablePage):
                 {'name':'LeagueZh','label':'联赛','editor':'com-table-span','width':120},
                 {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-table-label-shower','width':120,'class':'matched_match'},
                 {'name':"MatchID",'label':'比赛(比对结果)','editor':'com-table-label-shower','width':300},
+                {'name':"MatchSource",'label':'比赛来源','editor':'com-table-mapper','options':[
+                    {'value':x[0],'label':x[1]} for x in MATCH_SOURCE
+                    ]},
+                {'name':'SportId','label':'体育类型','editor':'com-table-mapper','width':120,'options':[
+                    {'value':x.sportid,'label':x.sportnamezh} for x in TbSporttypes.objects.all()
+                    ]},
                 {'name':'ContrastStatus','label':'采集状态',
                  'editor':'com-table-rich-span',
                  'inn_editor':'com-table-mapper',
@@ -411,10 +418,7 @@ class WebMatchForm(Fields):
         matchdatetime = timezone.datetime.strptime(self.kw.get('matchdate') ,'%Y-%m-%d %H:%M:%S', ) 
         if eventdatetime - matchdatetime > timezone.timedelta(minutes=10) or matchdatetime - eventdatetime > timezone.timedelta(minutes=10):
             raise UserWarning('匹配比赛时间相差大于10分钟')
-        
-        
-        
-        
+         
     def save_form(self):
         #if self.kw.get('_my_swap_team'):
             #if self.kw.get('TeamSwap'):
@@ -422,14 +426,15 @@ class WebMatchForm(Fields):
             #else:
                 #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':True}})
         #else:
-        
-        dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid')}
+        match = TbMatch.objects.get(matchid=self.kw.get('matchid'))
+        dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid'),
+              'MatchSource':match.source}
         mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         
         
 
 class MatchPicker(MatchsPage.tableCls):
-    fields_sort=['sportid','matchid', 'tournamentid','team1en', 'team1zh', 'team2en','team2zh', 'matchdate',]
+    fields_sort=['sportid','matchid', 'tournamentid','team1en', 'team1zh', 'team2en','team2zh', 'matchdate','source']
     def dict_head(self, head):
         head = super().dict_head(head)
         width={
