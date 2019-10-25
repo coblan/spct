@@ -273,7 +273,7 @@ NEW_MATCH_STATUS=(
 )
 
 MATCH_SOURCE=(
-    (1,'Betrader'),
+    (1,'Betradar'),
     (2,'188Bet'),
 )
 

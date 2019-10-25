@@ -101,9 +101,9 @@ class MatchsPage(TablePage):
         sportid=1
         model = TbMatch
         exclude = []  # 'ishidden', 'iscloseliveodds'
-        fields_sort = ['sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
+        fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
-                       'eventid','source'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
+                       'eventid',] #'oddsadjustment','oddsadjustmax','baseticketeamout',
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'},
