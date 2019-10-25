@@ -61,9 +61,9 @@ class Login(object):
     def get_ip(self):
         request = get_request_cache()['request']
         if request.META.get('HTTP_X_FORWARDED_FOR'):
-            ip =  request.META['HTTP_X_FORWARDED_FOR']
+            ip =  request.META['HTTP_X_FORWARDED_FOR'].split(',')[0]
         else:
-            ip = request.META['REMOTE_ADDR']
+            ip = request.META['REMOTE_ADDR'].split(',')[0]
         return ip
     
     def check_code(self):
