@@ -6,11 +6,11 @@ import re
 from django.db.models import Sum, Case, When, F,Count,OuterRef,Subquery
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSearch, RowSort, RowFilter, director,field_map,model_to_name,Fields,get_request_cache,PlainTable
+    RowSearch, RowSort, RowFilter, director,field_map,model_to_name,Fields,get_request_cache,PlainTable,director_element
 from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
-from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatch,TbBetfullrecord
+from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatch,TbBetfullrecord,TbUserLog
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch,has_permit
 from helpers.func.random_str import get_str, get_random_number
@@ -36,6 +36,7 @@ from django.utils import timezone
 from . relevent_user import ReleventUserPage
 from ..ag.profitloss import AgprofitlossPage
 from django.conf import settings
+from .userlog import UserlogPage
 
 def account_tab(self):
     baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
@@ -199,6 +200,12 @@ def account_tab(self):
          'par_field': 'accountid',
          'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
          'visible': can_touch(TbLoginlog, self.crt_user), },
+        {'name':'userlog',
+         'label':'用户日志',
+         'editor':'com-tab-table',
+         'pre_set':'rt={accountid:scope.par_row.accountid}',
+         'table_ctx':UserlogTab().get_head_context(),
+         'visible':can_touch(TbUserLog,self.crt_user)},
         {'name': 'UserStatistics',
          'label': '会员统计',
          'com': 'com-tab-table',
@@ -836,6 +843,11 @@ class AccountLoginTable(WithAccoutInnFilter, LoginLogPage.tableCls):
     class search(RowSearch):
         names = []
 
+@director_element('account.userlogtab')
+class UserlogTab(UserlogPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id = self.kw.get('accountid'))
+    
 
 class UserStatisticsTab(UserStatisticsPage.tableCls):
     class search(RowSearch):

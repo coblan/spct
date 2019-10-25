@@ -23,7 +23,7 @@ class UserlogPage(TablePage):
             return head
         
         class filters(RowFilter):
-            names=['account__nickname']
+            names=['account__nickname','operatetype']
             range_fields=['createtime']
             icontains=['account__nickname']
             def getExtraHead(self):
