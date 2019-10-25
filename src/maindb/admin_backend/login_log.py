@@ -12,6 +12,15 @@ class BackendLoginlogPage(TablePage):
         model = TbBackendloginlog
         exclude =[]
         
+        def dict_head(self, head):
+            width ={
+                'ipaddress':100,
+                'area':150,
+            }
+            if head['name'] in width:
+                head['width'] =width.get(head['name'])
+            return head
+        
         class filters(RowFilter):
             names = ['username','area']
             icontains=['username','area']

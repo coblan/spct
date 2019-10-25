@@ -3,7 +3,7 @@ from .models import TbBackendwhiteip
 from .riskcontrol.white_ip_rangelist import WhiteIPRangeList,WhiteIPRangeForm
 class AdminIpPage(TablePage):
     def get_label(self):
-        return '管理员IP白名单'
+        return '后台登录IP白名单'
     
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
