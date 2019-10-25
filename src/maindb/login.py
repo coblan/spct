@@ -51,7 +51,7 @@ class Login(object):
     
     def check_ip(self):
         ip = self.get_ip()
-        general_log.info('ip=%s 登录'%ip)
+        general_log.warning('ip=%s 登录'%ip)
         if not getattr(settings,'ADMIN_USER_CHECK_IP',False):
             return True
         else:
