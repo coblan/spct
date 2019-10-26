@@ -242,8 +242,8 @@ class MatchSelect(ModelTable):
     model = TbMatches
     include = ['matchid', 'tournamentzh', 'team1zh', 'team2zh', 'matchdate']
 
-    def inn_filter(self, query): 
-        return query.filter(source=settings.BET_DATA_SOURCE)
+    #def inn_filter(self, query): 
+        #return query.filter(source=settings.BET_DATA_SOURCE)
     
     def dict_head(self, head):
         dc = {

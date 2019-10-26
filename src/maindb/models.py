@@ -1039,9 +1039,9 @@ class TbMatch(models.Model):
     oddsadjustment = models.DecimalField(db_column='OddsAdjustment', max_digits=2, decimal_places=2,verbose_name='赔率调整值')  # Field name made lowercase.
     oddsadjustmax = models.DecimalField(db_column='OddsAdjustMax', max_digits=2, decimal_places=2,verbose_name='赔率调整最大值')  # Field name made lowercase.
     baseticketeamout = models.DecimalField(db_column='BaseTicketeAmout', max_digits=18, decimal_places=2,verbose_name='投注差额基数',help_text='每投注X元赔率调整一次')  # Field name made lowercase.
-    coveragesource = models.CharField(db_column='CoverageSource', max_length=16, blank=True, null=True)  # Field name made lowercase.
-    coveragelevel = models.CharField(db_column='CoverageLevel', max_length=16, blank=True, null=True)  # Field name made lowercase.
-    source = models.IntegerField(db_column='Source',choices=MATCH_SOURCE,verbose_name='数据源')  # Field name made lowercase.
+    #coveragesource = models.CharField(db_column='CoverageSource', max_length=16, blank=True, null=True)  # Field name made lowercase.
+    #coveragelevel = models.CharField(db_column='CoverageLevel', max_length=16, blank=True, null=True)  # Field name made lowercase.
+    #source = models.IntegerField(db_column='Source',choices=MATCH_SOURCE,verbose_name='数据源')  # Field name made lowercase.
     
     class Meta:
         managed = False

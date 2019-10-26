@@ -562,8 +562,8 @@ class TicketparlayTable(ModelTable):
         return dc
 
 class MatchForm(ModelFields):
-    field_sort = ['matchdate', 'team1zh', 'team2zh', 'period1score','matchscore', 'winner', 'statuscode', 'roundinfo'
-                    'livebet', 'generatedat','tournamentzh']
+    field_sort = ['matchdate', 'team1zh', 'team2zh', 'period1score','winner', 'statuscode', 'roundinfo'
+                    'livebet', 'generatedat','tournamentzh'] #'matchscore', 
     readonly = field_sort
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
         if kw.get('matchid'):
