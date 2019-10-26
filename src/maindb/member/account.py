@@ -482,7 +482,9 @@ class AccountPage(TablePage):
                 'action':'var ctx=named_ctx["account.memo.form"];ctx.title="允许提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
                  'visible': 'isenablewithdraw' in changeable_fields},
                 { 'editor': 'com-op-btn', 'label': '禁止提现', 
-                  #'field': 'isenablewithdraw','value': 0, 'confirm_msg': '确认禁止这些用户提现？', 
+                  #'field': 'isenablewithdraw','value': 0, 
+                  'confirm_msg': '确认禁止这些用户提现？', 
+                  'row_match':'one_row',
                 'action':'var ctx=named_ctx["account.memo.form"];ctx.title="禁止提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
                  'visible': 'isenablewithdraw' in changeable_fields},
                 {'editor':'com-op-btn','label':'选择客服','visible': 'csuserid' in changeable_fields,
@@ -615,7 +617,7 @@ class AccoutBaseinfo(ModelFields):
 
 
 class AccoutModifyAmount(ModelFields):
-    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype']
+    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory',] #'fundtype']
     readonly = ['accountid', 'nickname','amount']
     
     def __init__(self, *args, **kw):
@@ -636,17 +638,8 @@ class AccoutModifyAmount(ModelFields):
         return [
             {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', },
             {'name':'moenycategory','label':'类型','editor':'com-field-select','required':True,'options':desp_options},
-            {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
+            #{'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
         ]
-
-    #def clean_dict(self, dc):
-        #if dc.get('add_amount'):
-            #add_amount = Decimal(dc.get('add_amount', 0))
-             ##Decimal(dc['amount'])
-            #self.changed_amount = add_amount
-            ##dc['amount'] = Decimal(dc['amount']) + add_amount
-        #return dc
-
 
     def extra_valid(self):
         dc = {}
@@ -670,7 +663,7 @@ class AccoutModifyAmount(ModelFields):
             if add_amount > 0:
                 TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,
                                                consumeamount = add_amount,
-                                               fundtype = 1 if self.kw.get('fundtype')  else 0,
+                                               #fundtype = 1 if self.kw.get('fundtype')  else 0,
                                                consumestatus=1,rftype=3,rfid=0,content='后台管理员调账')
             return {'memo': '调账', 'ex_before': {'amount': self.before_amount},
                     'ex_after': {'amount': self.instance.amount, }}
