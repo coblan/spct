@@ -17,7 +17,7 @@ from helpers.director.model_func.cus_fields.multichoice import MultiChoiceField
 
 from helpers.director.model_func.cus_fields.cus_picture import PictureField
 from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
-from helpers.director.shortcut import FormDatetime
+#from helpers.director.shortcut import FormDatetime
 
 from maindb.create_user import CreateUserField,UpdateUserField
 
@@ -79,8 +79,12 @@ class TbAccount(models.Model):
     agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
     viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'), choices=VIP_LEVEL, null=False,
                                 default=1)  # Field name made lowercase.
-    createtime = FormDatetime(db_column='CreateTime', verbose_name='注册时间',
-                              auto_now_add=True)  # Field name made lowercase.
+    
+    createtime = models.DateTimeField(db_column='CreateTime', verbose_name='注册时间',
+                              auto_now_add=True)  # 
+    
+    #createtime = FormDatetime(db_column='CreateTime', verbose_name='注册时间',
+                              #auto_now_add=True)  # Field name made lowercase.
     pwupdatetime = models.DateTimeField(db_column='PWUpdateTime', auto_now=True)  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4,
                                  verbose_name='游戏账户余额', default=0)  # Field name made lowercase.

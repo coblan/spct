@@ -546,15 +546,20 @@ class MemoForm(Fields):
 
 class AccoutBaseinfo(ModelFields):
     #'agentamount', 
-    field_sort = ['account', 'nickname', 'amount', 'status', 'agent', 'verify', 'viplv', 'bonusrate',
-                  'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','createtime','anomalyticketnum','powertype']
+    field_sort = ['account', 'nickname', 'amount', 'status', 'createtime','agent', 'verify', 'viplv', 'bonusrate',
+                  'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','anomalyticketnum','powertype']
     readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount']
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('accountid'):
             pk = kw.get('accountid')
         super().__init__(dc, pk, crt_user, nolimit, *args, **kw)
         self.orgin_risklevel= self.instance.risklevel
-
+    
+    def getExtraHeads(self):
+        return [
+            {'name':'createtime','label':'注册时间','editor':'com-field-linetext'}
+        ]
+    
     def dict_head(self, head):
         if head['name'] == 'bonusrate':
             head['step'] = 0.001
@@ -578,6 +583,7 @@ class AccoutBaseinfo(ModelFields):
         out_str = ''.join(tmp)
         return {
             'account': out_str,
+            'createtime':inst.createtime.strftime('%Y-%m-%d %H:%M:%S')
         }
 
     def clean_save(self):
