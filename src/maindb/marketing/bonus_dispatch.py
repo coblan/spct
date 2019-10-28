@@ -32,7 +32,7 @@ class BonusPage(object):
                         'init_express':'scope.vc.row =  {_director_name:"bonuslog_list.edit"}',
                         #'get_row':'scope.vc.row= {_director_name:"bonuslog_list.edit"}',
                         #'row_express':
-                        'after_save':'scope.vc.row={_director_name:"bonuslog_list.edit"}'
+                        'after_save':'scope.vc.row={_director_name:"bonuslog_list.edit"};cfg.toast("发放成功")'
                     },
                     {'name': 'bonustype-list',
                      'label': '红利类型',
