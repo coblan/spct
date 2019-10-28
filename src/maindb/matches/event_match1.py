@@ -112,9 +112,9 @@ class OtherWebMatchPage(TablePage):
                 {'name':'LeagueZh','label':'联赛','editor':'com-table-span','width':120},
                 {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-table-label-shower','width':120,'class':'matched_match'},
                 {'name':"MatchID",'label':'比赛(比对结果)','editor':'com-table-label-shower','width':300},
-                #{'name':"MatchSource",'label':'比赛来源','editor':'com-table-mapper','options':[
-                    #{'value':x[0],'label':x[1]} for x in MATCH_SOURCE
-                    #]},
+                {'name':"MatchSource",'label':'比赛来源','editor':'com-table-mapper','options':[
+                    {'value':x[0],'label':x[1]} for x in MATCH_SOURCE
+                    ]},
                 {'name':'SportId','label':'体育类型','editor':'com-table-mapper','width':120,'options':[
                     {'value':x.sportid,'label':x.sportnamezh} for x in TbSporttypes.objects.all()
                     ]},
@@ -428,7 +428,8 @@ class WebMatchForm(Fields):
         #else:
         match = TbMatch.objects.get(matchid=self.kw.get('matchid'))
         dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid'),
-              } #'MatchSource':match.source
+              'MatchSource':match.source
+              } 
         mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         
         

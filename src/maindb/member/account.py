@@ -649,7 +649,7 @@ class AccoutModifyAmount(ModelFields):
         return [
             {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', },
             {'name':'moenycategory','label':'类型','editor':'com-field-select','required':True,'options':desp_options},
-            #{'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
+            {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
         ]
 
     def extra_valid(self):
@@ -674,7 +674,7 @@ class AccoutModifyAmount(ModelFields):
             if add_amount > 0:
                 TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,
                                                consumeamount = add_amount,
-                                               #fundtype = 1 if self.kw.get('fundtype')  else 0,
+                                               fundtype = 1 if self.kw.get('fundtype')  else 0,
                                                consumestatus=1,rftype=3,rfid=0,content='后台管理员调账')
             return {'memo': '调账', 'ex_before': {'amount': self.before_amount},
                     'ex_after': {'amount': self.instance.amount, }}

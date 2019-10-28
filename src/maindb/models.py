@@ -584,7 +584,7 @@ class TbBetfullrecord(models.Model):
     
     createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间', blank=True, null=True,auto_now=True)  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount',verbose_name='原始限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    #fundtype = models.IntegerField(db_column='FundType')  # Field name made lowercase.
+    fundtype = models.IntegerField(db_column='FundType')  # Field name made lowercase.
     
     class Meta:
         managed = False
@@ -1043,9 +1043,9 @@ class TbMatch(models.Model):
     oddsadjustment = models.DecimalField(db_column='OddsAdjustment', max_digits=2, decimal_places=2,verbose_name='赔率调整值')  # Field name made lowercase.
     oddsadjustmax = models.DecimalField(db_column='OddsAdjustMax', max_digits=2, decimal_places=2,verbose_name='赔率调整最大值')  # Field name made lowercase.
     baseticketeamout = models.DecimalField(db_column='BaseTicketeAmout', max_digits=18, decimal_places=2,verbose_name='投注差额基数',help_text='每投注X元赔率调整一次')  # Field name made lowercase.
-    #coveragesource = models.CharField(db_column='CoverageSource', max_length=16, blank=True, null=True)  # Field name made lowercase.
-    #coveragelevel = models.CharField(db_column='CoverageLevel', max_length=16, blank=True, null=True)  # Field name made lowercase.
-    #source = models.IntegerField(db_column='Source',choices=MATCH_SOURCE,verbose_name='数据源')  # Field name made lowercase.
+    coveragesource = models.CharField(db_column='CoverageSource', max_length=16, blank=True, null=True)  # Field name made lowercase.
+    coveragelevel = models.CharField(db_column='CoverageLevel', max_length=16, blank=True, null=True)  # Field name made lowercase.
+    source = models.IntegerField(db_column='Source',choices=MATCH_SOURCE,verbose_name='数据源')  # Field name made lowercase.
     
     class Meta:
         managed = False
@@ -2391,7 +2391,8 @@ class TbPaychannel(models.Model):
 
     tips = models.CharField(db_column='Tips', max_length=100, blank=True, null=True,verbose_name='提示')  # Field name made lowercase.
     ispaytocard = models.IntegerField(db_column='IsPayToCard', blank=True, null=True,verbose_name='是否转卡',default=0,choices=REQUIRED)  # Field name made lowercase.
-
+    isfixedamount = models.BooleanField(db_column='IsFixedAmount',verbose_name='是否固定金额',default=False)  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_PayChannel'
