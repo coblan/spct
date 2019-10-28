@@ -59,6 +59,11 @@ class BonuslogForm(ModelFields):
         model = TbBonuslog
         exclude=[]
     
+    def getExtraHeads(self):
+        return [
+            {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
+        ]
+    
     def clean_dict(self, dc):
         dc['createuser']=self.crt_user.pk
         if dc.get('bonustypeid'):
@@ -111,6 +116,7 @@ class BonuslogForm(ModelFields):
                                        rfid=self.instance.pk,
                                        rftype=37,
                                        amount=self.instance.amount,
+                                       fundtype = 1 if self.kw.get('fundtype')  else 0,
                                        accountid=self.instance.accountid)
         self.op_log.update({
             'clean_save_desp':'生成了对应的TbBalancelog.pk=%s,计算了用户余额'%ban.pk

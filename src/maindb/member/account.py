@@ -628,7 +628,7 @@ class AccoutBaseinfo(ModelFields):
 
 
 class AccoutModifyAmount(ModelFields):
-    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype'] #'fundtype']
+    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype'] 
     readonly = ['accountid', 'nickname','amount']
     
     def __init__(self, *args, **kw):
