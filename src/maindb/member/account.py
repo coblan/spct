@@ -444,7 +444,6 @@ class AccountPage(TablePage):
                      'rechargeamount', 'withdrawamount','anomalyticketnum']
 
         def get_operation(self):
-            betfullmodify = ModifyBetFullRecord(crt_user=self.crt_user)
             changeable_fields = self.permit.changeable_fields()
             return [
                 #'fun': 'selected_set_and_save', 
@@ -478,7 +477,7 @@ class AccountPage(TablePage):
                  'label': '调整限额',
                   'row_match':'one_row',
                  'after_error':'scope.fs.showErrors(scope.errors)',
-                 'fields_ctx': betfullmodify.get_head_context(), 'visible': 'amount' in changeable_fields},
+                 'fields_ctx': ModifyBetFullRecord().get_head_context(), 'visible': 'amount' in changeable_fields},
                 
                 { 'editor': 'com-op-btn', 'label': '允许提现',
                   #'field': 'isenablewithdraw','value': 1, 
@@ -681,7 +680,7 @@ class AccoutModifyAmount(ModelFields):
 
 
 class ModifyBetFullRecord(ModelFields):
-    field_sort = ['accountid', 'nickname', 'betfullrecord', 'add_amount','fundtype']
+    field_sort = ['accountid', 'nickname', 'betfullrecord', 'add_amount',] #'fundtype']
     readonly = ['accountid', 'nickname',]
     
     class Meta:
@@ -707,7 +706,7 @@ class ModifyBetFullRecord(ModelFields):
         return [
             {'name': 'betfullrecord', 'label': '当前限额', 'editor': 'number', 'readonly':True },
             {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', },
-            {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
+            #{'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
         ] 
     
     def clean(self):
@@ -741,7 +740,7 @@ class ModifyBetFullRecord(ModelFields):
                         break
             else:
                 TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,consumeamount = add_amount,consumestatus=1,rftype=3,rfid=0,
-                                               fundtype = 1 if self.kw.get('fundtype')  else 0,
+                                               #fundtype = 1 if self.kw.get('fundtype')  else 0,
                                                content='后台管理员限额调整')
                 
             after_amount = Decimal(self.kw.get('betfullrecord')) + add_amount
