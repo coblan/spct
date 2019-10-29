@@ -681,7 +681,7 @@ class AccoutModifyAmount(ModelFields):
 
 
 class ModifyBetFullRecord(ModelFields):
-    field_sort = ['accountid', 'nickname', 'betfullrecord', 'add_amount']
+    field_sort = ['accountid', 'nickname', 'betfullrecord', 'add_amount','fundtype']
     readonly = ['accountid', 'nickname',]
     
     class Meta:
@@ -706,8 +706,9 @@ class ModifyBetFullRecord(ModelFields):
     def getExtraHeads(self):
         return [
             {'name': 'betfullrecord', 'label': '当前限额', 'editor': 'number', 'readonly':True },
-            {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', }
-        ]    
+            {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', },
+            {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
+        ] 
     
     def clean(self):
         super().clean()
@@ -739,7 +740,9 @@ class ModifyBetFullRecord(ModelFields):
                         item.save()
                         break
             else:
-                TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,consumeamount = add_amount,consumestatus=1,rftype=3,rfid=0,content='后台管理员限额调整')
+                TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,consumeamount = add_amount,consumestatus=1,rftype=3,rfid=0,
+                                               fundtype = 1 if self.kw.get('fundtype')  else 0,
+                                               content='后台管理员限额调整')
                 
             after_amount = Decimal(self.kw.get('betfullrecord')) + add_amount
             return {'memo': '提现限额调整', 'ex_before': {'betfullrecord': self.kw.get('betfullrecord')},
