@@ -29,18 +29,18 @@ class WithdrawPage(TablePage):
     
     @classmethod
     def get_tabs(cls):
-        named_ctx={
-            'withdraw_tab':[
-                 {'name': 'ticketmaster',
-                  'label': '注单列表',
-                  'com': 'com-tab-table',
-                  'pre_set': 'rt={accountid:scope.par_row.accountid}',
-                  'table_ctx': TicketmasterTab().get_head_context(),
-                  'visible': True,
-                  },
-            ]
-        }
-        return named_ctx
+        named_ctx = get_request_cache()['named_ctx']
+        if 'withdraw_tab' not in named_ctx:
+            named_ctx['withdraw_tab'] = [
+                {'name': 'ticketmaster',
+                 'label': '注单列表',
+                 'com': 'com-tab-table',
+                 'pre_set': 'rt={accountid:scope.par_row.accountid}',
+                 'table_ctx': TicketmasterTab().get_head_context(),
+                 'visible': True,
+                 },
+           ]
+        return {}
 
     class tableCls(ModelTable):
         model = TbWithdraw

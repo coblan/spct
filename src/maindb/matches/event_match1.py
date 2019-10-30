@@ -81,8 +81,8 @@ class OtherWebMatchPage(TablePage):
                 'advise_heads':heads_names,
             })
             named_ctx = get_request_cache()['named_ctx']
-            if 'sql_league_options' not in named_ctx:
-                named_ctx['sql_league_options'] =[{'value':x.pk,'label':x.tournamentnamezh} for x in TbTournament.objects.all()]
+            #if 'sql_league_options' not in named_ctx:
+                #named_ctx['sql_league_options'] =[{'value':x.pk,'label':x.tournamentnamezh} for x in TbTournament.objects.all()]
             return ctx
         
         def get_heads(self):
@@ -281,7 +281,8 @@ class NewMatchForm(ModelFields):
             ]
         if head['name'] == 'tournamentid':
             head['editor'] = 'com-field-single-select2'
-            head['init_express']='scope.vc.inn_options= named_ctx["sql_league_options"];Vue.nextTick(()=>{scope.vc.update_select2()})'
+            head['init_express']='ex.director_call("get_league_options",{sportid:scope.row.sportid}).then( resp=>{scope.vc.inn_options=resp;Vue.nextTick(()=>{scope.vc.update_select2()}) })'
+            #head['init_express']='scope.vc.inn_options= named_ctx["sql_league_options"];Vue.nextTick(()=>{scope.vc.update_select2()})'
             head['options'] = []
         return head
     
@@ -311,6 +312,9 @@ class NewMatchForm(ModelFields):
         }
         notifyCreateNewMatch(json.dumps([dc],cls=DirectorEncoder,ensure_ascii=False))
     
+@director_view('get_league_options')
+def get_league_options(sportid):
+    return [{'value':x.pk,'label':x.tournamentnamezh} for x in TbTournament.objects.filter(sport_id = sportid)]
 
 class WebMatchForm(Fields):
     
@@ -319,7 +323,7 @@ class WebMatchForm(Fields):
         return [
             {'label':'创建比赛','editor':'com-op-btn',
              'fields_ctx':NewMatchForm().get_head_context(),
-             'action':''' debugger;var prow=scope.ps.vc.row;
+             'action':''' var prow=scope.ps.vc.row;
              scope.head.fields_ctx.row={sportid:prow.SportId,
              team1en:prow.Team1En.replace(/-/g,' '),
              team1zh:prow.Team1Zh,

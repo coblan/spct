@@ -13,6 +13,7 @@ from .matches import get_match_tab
 from helpers.func.collection.container import evalue_container
 from django.utils import timezone
 from helpers.director.model_func.dictfy import sim_dict
+
 from django.db.models import Prefetch
 import logging
 
@@ -143,8 +144,12 @@ class TicketMasterPage(TablePage):
     
     @staticmethod
     def get_tabs(): 
-        catch = get_request_cache()
-        crt_user =  catch.get('request').user
+        from ..member.account import account_tab
+        named_ctx = get_request_cache()['named_ctx']
+        crt_user =  get_request_cache().get('request').user
+        if 'ticketmaster' in named_ctx:
+            return {}
+        named_ctx['ticketmaster'] = []
         ls = [
             {'name': 'ticketstake',
              'label': '子注单',
@@ -159,10 +164,14 @@ class TicketMasterPage(TablePage):
              'table_ctx': TicketparlayTable(crt_user=crt_user).get_head_context()
              }
         ]
-        return {
-             'ticketmaster': ls,
-              'match_tabs':evalue_container( get_match_tab(crt_user) ),
-        }
+        named_ctx['ticketmaster'] = ls
+        
+        if 'match_tabs' not in named_ctx:
+            named_ctx['match_tabs'] = evalue_container( get_match_tab(crt_user) )
+        account_tab()
+        #if 'account_tabs' not in named_ctx:
+            #named_ctx['account_tabs'] = account_tab()
+        return {}
     
     @classmethod
     def get_named_ctx(cls): 
@@ -232,7 +241,11 @@ class TicketMasterPage(TablePage):
                 #head['editor'] = 'com-table-switch-to-tab'
                 #head['tab_name'] = 'ticketstake'
                 #head['ctx_name'] = 'ticketmaster'
-            
+            if head['name']=='accountid__nickname':
+                head['editor'] ='com-table-switch-to-tab'
+                head['ctx_name']='account_tabs'
+                head['tab_name'] ='dashborad'
+                #head['']
             if head['name'] =='betamount':
                 head['inn_editor'] = head['editor']
                 head['editor']='com-table-rich-span'
@@ -269,6 +282,7 @@ class TicketMasterPage(TablePage):
             dc = {
                 'accountid__nickname': inst.accountid__nickname,
                 'stake_count':inst.stake_count,
+                'accountid':inst.accountid_id , # 在 fields 中 exclude 了，但是为了显示 account_tabs，需要par_row 具备accountid 属性，所以这里手动导出
             }
             # if inst.status == 2:
             #     dc.update( {'profit': round(inst.betoutcome - inst.betamount + inst.bonus, 2)} )

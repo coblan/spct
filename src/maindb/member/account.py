@@ -38,8 +38,14 @@ from ..ag.profitloss import AgprofitlossPage
 from django.conf import settings
 from .userlog import UserlogPage
 
-def account_tab(self):
-    baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
+def account_tab(self=None):
+    named_ctx = get_request_cache()['named_ctx']
+    crt_user = get_request_cache()['request'].user
+    if 'account_tabs' in named_ctx:
+        return {}
+    
+    named_ctx['account_tabs'] = [] 
+    #baseinfo = AccoutBaseinfo(crt_user=self.crt_user)
     ls = [
         {'name':'dashborad',
          'label':'数据看板',
@@ -155,62 +161,63 @@ def account_tab(self):
          'after_save': {
              'fun': 'update_or_insert'
          },
-         'heads': baseinfo.get_heads(),
-         'ops': baseinfo.get_operations()
+         **AccoutBaseinfo().get_head_context()
+         #'heads': baseinfo.get_heads(),
+         #'ops': baseinfo.get_operations()
          },
         {'name': 'balance_log',
          'label': '账目记录',
          'com': 'com-tab-table',
          'par_field': 'accountid',
-         'table_ctx': AccountBalanceTable(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbBalancelog, self.crt_user),
+         'table_ctx': AccountBalanceTable().get_head_context(),
+         'visible': can_touch(TbBalancelog, crt_user),
          },
         {'name': 'backcard',
          'label': '银行卡',
          'com': 'com-tab-table',
          'par_field': 'accountid',
-         'table_ctx': UserBankCard(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbBankcard, self.crt_user),
+         'table_ctx': UserBankCard().get_head_context(),
+         'visible': can_touch(TbBankcard, crt_user),
          },
         {'name': 'UserRecharge',
          'label': '充值记录',
          'com': 'com-tab-table',
          'par_field': 'accountid',
-         'table_ctx': UserRecharge(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbRecharge, self.crt_user),
+         'table_ctx': UserRecharge().get_head_context(),
+         'visible': can_touch(TbRecharge, crt_user),
          },
         {'name': 'UserWithdraw',
          'label': '提现记录',
          'com': 'com-tab-table',
          'par_field': 'accountid',
-         'table_ctx': UserWithdraw(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbWithdraw, self.crt_user),
+         'table_ctx': UserWithdraw().get_head_context(),
+         'visible': can_touch(TbWithdraw, crt_user),
          },
 
         {'name': 'account_ticket',
          'label': _('Ticket'),
          'com': 'com-tab-table',
          'par_field': 'accountid',
-         'table_ctx': AccountTicketTable(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbTicketmaster, self.crt_user),
+         'table_ctx': AccountTicketTable().get_head_context(),
+         'visible': can_touch(TbTicketmaster, crt_user),
          },
         {'name': 'account_login',
          'label': _('Login Log'),
          'com': 'com-tab-table',
          'par_field': 'accountid',
-         'table_ctx': AccountLoginTable(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbLoginlog, self.crt_user), },
+         'table_ctx': AccountLoginTable().get_head_context(),
+         'visible': can_touch(TbLoginlog, crt_user), },
         {'name':'userlog',
          'label':'用户日志',
          'editor':'com-tab-table',
          'pre_set':'rt={accountid:scope.par_row.accountid}',
          'table_ctx':UserlogTab().get_head_context(),
-         'visible':can_touch(TbUserLog,self.crt_user)},
+         'visible':can_touch(TbUserLog,crt_user)},
         {'name': 'UserStatistics',
          'label': '会员统计',
          'com': 'com-tab-table',
          'par_field': 'accountid',
-         'table_ctx': UserStatisticsTab(crt_user=self.crt_user).get_head_context(),
+         'table_ctx': UserStatisticsTab().get_head_context(),
          'visible': True},
         {'name': 'MatchesStatistics',
          'label': '赛事统计',
@@ -219,35 +226,35 @@ def account_tab(self):
          'editor':'com-tab-lazy-wrap',
          'lazy_init':'cfg.show_load();ex.director_call("d.get_head_context",{director_name:"account.matches_statistics"}).then(resp=>{cfg.hide_load();scope.head.editor="com-tab-table";scope.head.table_ctx=resp})',
          #'table_ctx': MatchesStatisticsTab(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbMatch, self.crt_user)},
+         'visible': can_touch(TbMatch, crt_user)},
         {'name':'BetFullRecordTab',
          'label':'限额记录',
          'com':'com-tab-table',
          'pre_set':'rt={accountid:scope.par_row.accountid}',
-         'table_ctx': BetFullRecordTab(crt_user=self.crt_user).get_head_context(),
-         'visible': can_touch(TbBetfullrecord, self.crt_user)
+         'table_ctx': BetFullRecordTab().get_head_context(),
+         'visible': can_touch(TbBetfullrecord, crt_user)
          },{
              'name':'related_user',
              'label':'关联用户',
              'editor':'com-tab-table',
              'pre_set':'rt={accountid:scope.par_row.accountid}',
              'table_ctx':RelatedUserTab().get_head_context(),
-            'visible':has_permit(self.crt_user, 'member.relevent_user')
+            'visible':has_permit(crt_user, 'member.relevent_user')
          },{
              'name':'agprofitloss',
              'label':'AG投注',
              'editor':'com-tab-table',
              'pre_set':'rt={accountid:scope.par_row.accountid}',
              'table_ctx':AgprofitLosTab().get_head_context(),
-             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbAgprofitloss, self.crt_user)
+             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbAgprofitloss,crt_user)
          }
     ]
-    dc = {
-        'account_tabs':evalue_container(ls)
-    }
-    dc.update(MatchesStatisticsPage.get_tabs(self.crt_user))
-    dc.update(WithdrawPage.get_tabs())
-    return dc
+    named_ctx['account_tabs'] =  evalue_container(ls)
+    #if 'account_tabs' not in named_ctx:
+        #named_ctx['account_tabs'] = evalue_container(ls)
+    named_ctx.update(MatchesStatisticsPage.get_tabs(crt_user))
+    WithdrawPage.get_tabs()
+    return {}
 
 
 class AccountPage(TablePage):

@@ -84,10 +84,10 @@ class Login(object):
     def login(self,user):
         if not self.row.get('auto_login'):
             self.request.session.set_expiry(0)
-            self.request.session['auto_login'] = False
-        else:
-            self.request.session['auto_login'] = True
-            self.request.session.set_expiry(settings.LOGIN_SPAN) # 2小时过期
+            #self.request.session['auto_login'] = False
+        #else:
+            #self.request.session['auto_login'] = True
+            #self.request.session.set_expiry(settings.LOGIN_SPAN) # 2小时过期
             
         auth.login(self.request, user)
         redisInst6.delete(self.count_key)

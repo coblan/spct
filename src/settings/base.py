@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     #'maindb.middleware.password_expire.PasswordExpire',
-    'maindb.middleware.login_expire.LoginExpire',
+    #'maindb.middleware.login_expire.LoginExpire',
     'helpers.director.middleware.request_cache.RequestCacheMiddleware',
 ]
 
@@ -178,7 +178,11 @@ MEDIA_URL = '/media/'
 
 BET_DATA_SOURCE=2
 
+
 # 登录滑动过期时长秒
-LOGIN_SPAN=60*60*2
+SESSION_SAVE_EVERY_REQUEST=True
+SESSION_COOKIE_AGE=60*60*2
+
+#LOGIN_SPAN= 60*60*2
 ADMIN_USER_CHECK_IP=True
 LOGIN_PSWD_EXPIRE=30 # 天
