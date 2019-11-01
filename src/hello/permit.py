@@ -286,6 +286,18 @@ def get_permit(ui=None):
             {'label':'资金流入','value':'TbGamemoneyininfo.edit'},
             {'label':'资金流出','value':'TbGamemoneyoutinfo.edit'}
         ]},
+        
+         {'label':'沙巴系统','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'账号','children':[
+                {'label':'查看','value':'TbSportaccount'},
+                {'label':'编辑','value':'TbSportaccount.edit','depend':['TbSportaccount']},
+                ]},
+            {'label':'投注列表','value':'TbSportprofitloss.edit'},
+            {'label':'资金流入','value':'TbSportmoneyininfo.edit'},
+            {'label':'资金流出','value':'TbSportmoneyoutinfo.edit'}
+        ]},
+        
+        
         {'label': '系统管理',
          'children': [
             #{'label': _('查看用户'), 'value': 'User.read',}, 

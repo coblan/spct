@@ -218,6 +218,13 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbGamemoneyininfo.edit',model_full_permit(TbGamemoneyininfo),model_to_name(TbGamemoneyininfo),'model'),
            ('TbGamemoneyoutinfo.edit',model_full_permit(TbGamemoneyoutinfo),model_to_name(TbGamemoneyoutinfo),'model'),
            
+           # 沙巴
+           ('TbSportaccount',model_read_permit(TbSportaccount),model_to_name(TbSportaccount),'model'),
+           ('TbSportaccount.edit',model_full_permit(TbSportaccount),model_to_name(TbSportaccount),'model'),
+           ('TbSportprofitloss.edit',model_full_permit(TbSportprofitloss),model_to_name(TbSportprofitloss),'model'),
+           ('TbSportmoneyininfo.edit',model_full_permit(TbSportmoneyininfo),model_to_name(TbSportmoneyininfo),'model'),
+           ('TbSportmoneyoutinfo.edit',model_full_permit(TbSportmoneyoutinfo),model_to_name(TbSportmoneyoutinfo),'model'),
+           
            # system
            ('TbUserex',model_read_permit(TbUserex),model_to_name(TbUserex),'model'),
            ('TbUserex.edit',model_full_permit(TbUserex),model_to_name(TbUserex),'model'),

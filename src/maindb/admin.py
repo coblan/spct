@@ -87,3 +87,8 @@ if getattr(settings,'OPEN_SECRET',False):
     from . ag import profitloss
     from . ag import gamemoneyinfo
     from . ag import gamemoneyoutinfo
+    
+    from . sport import sport_account
+    from . sport import sport_profitloss
+    from . sport import sport_money_in_info
+    from . sport import sport_money_out

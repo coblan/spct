@@ -161,6 +161,13 @@ class PcMenu(BaseEngine):
                 {'label':'资金转入AG','url':page('gamemoneyininfo'),'visible':can_touch(TbGamemoneyininfo,crt_user)},
                 {'label':'资金转出AG','url':page('gamemoneyoutinfo'),'visible':can_touch(TbGamemoneyoutinfo,crt_user)},
              ]},
+            {'label': '沙巴系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
+             'submenu': [
+                {'label': '用户列表', 'url': page('sportaccount'),'visible': can_touch(TbSportaccount, crt_user), },
+                {'label':'投注列表','url':page('sportprofitloss'),'visible':can_touch(TbSportprofitloss,crt_user)},
+                {'label':'资金转入','url':page('sportmoneyinfo'),'visible':can_touch(TbSportmoneyininfo,crt_user)},
+                {'label':'资金转出','url':page('sportmoneyout'),'visible':can_touch(TbSportmoneyoutinfo,crt_user)},
+             ]},
              
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
