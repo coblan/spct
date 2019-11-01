@@ -11,6 +11,15 @@ class MarketSportPage(TablePage):
         pop_edit_field = 'tid'
         model = TbMarketlistwithsport
         exclude = []
+        
+        def dict_head(self, head):
+            width = {
+                'market':200,
+                'marketshowname':160,
+            }
+            if head['name'] in width:
+                head['width'] = width.get(head['name'])
+            return head
 
 class MarketSportForm(ModelFields):
     class Meta:
