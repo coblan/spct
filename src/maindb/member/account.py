@@ -634,7 +634,7 @@ class AccoutBaseinfo(ModelFields):
 
 
 class AccoutModifyAmount(ModelFields):
-    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype'] 
+    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype','is_Betfullrecord'] 
     readonly = ['accountid', 'nickname','amount']
     
     def __init__(self, *args, **kw):
@@ -651,11 +651,12 @@ class AccoutModifyAmount(ModelFields):
         return head
     
     def getExtraHeads(self):
-        desp_options = [{'value':x.pk,'label':x.categoryname} for x in  TbMoneyCategories.objects.all()]
+        desp_options = [{'value':x.pk,'label':x.categoryname} for x in  TbMoneyCategories.objects.filter(categoryid__in=[4,34,35,37])]
         return [
             {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', },
             {'name':'moenycategory','label':'类型','editor':'com-field-select','required':True,'options':desp_options},
             {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
+            {'name':'is_Betfullrecord','label':'是否添加流水','editor':'com-field-bool',},
         ]
 
     def extra_valid(self):
@@ -677,7 +678,7 @@ class AccoutModifyAmount(ModelFields):
                                         amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='Backend',
                                         memo='调账', accountid=self.instance, categoryid_id=moenycategory,
                                         cashflow=cashflow)
-            if add_amount > 0:
+            if add_amount > 0 and self.kw.get('is_Betfullrecord'):
                 TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,
                                                consumeamount = add_amount,
                                                fundtype = 1 if self.kw.get('fundtype')  else 0,
