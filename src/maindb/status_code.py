@@ -461,3 +461,9 @@ ACCOUNT_POWERTYPE = (
     ('2','AG游戏'),
     ('3','沙巴'),
 )
+
+ODDSOURCE =(
+    (0,'--'),
+    (1,'Betradar'),
+    (2,'Bet188')
+)

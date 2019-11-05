@@ -24,7 +24,7 @@ class TicketstakeTable(ModelTable):
     model = TbTicketstake
     exclude = ['marketid']
     fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketname','specialbetname','outcomename','score', 'odds', 'confirmodds', 'realodds', 
-                   'status', 'createtime', 'updatetime','ticketbetstopdiff']
+                   'status', 'createtime', 'updatetime','ticketbetstopdiff','oddsource']
 
     def inn_filter(self, query):
         ticketid = self.kw.get('ticketid')
