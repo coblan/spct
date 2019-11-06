@@ -274,7 +274,7 @@ NEW_MATCH_STATUS=(
 
 MATCH_SOURCE=(
     (1,'Betradar'),
-    (2,'188Bet'),
+    (2,'188'),
 )
 
 #MATCH_STATUS = (
@@ -465,5 +465,5 @@ ACCOUNT_POWERTYPE = (
 ODDSOURCE =(
     (0,'--'),
     (1,'Betradar'),
-    (2,'Bet188')
+    (2,'188')
 )
