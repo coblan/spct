@@ -5,7 +5,7 @@ from helpers.director.shortcut import RowSort
 from helpers.director.table.row_search import SelectSearch
 from ..models import TbBalancelog
 from .chargeflow import *
-
+from ..status_code import ACCOUNT_TYPE
 
 class BalancelogPage(TablePage):
     template = 'jb_admin/table.html'
@@ -32,6 +32,18 @@ class BalancelogPage(TablePage):
                 head['width'] = dc.get(head['name'])
             return head
 
+        def getExtraHead(self):
+            return [
+                {'name':'accountid__accounttype','label':'账号类型','editor':'com-table-label-shower',}
+            ]
+        
+        def dict_row(self, inst):
+            dc= dict(ACCOUNT_TYPE)
+            return {
+                
+                '_accountid__accounttype_label': dc.get( inst.accountid.accounttype ,'')
+            }
+        
         def get_operation(self):
             return [
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
@@ -59,13 +71,18 @@ class BalancelogPage(TablePage):
             return query.order_by('-createtime')
 
         class filters(RowFilter):
-            names = ['categoryid']
+            names = ['categoryid','accountid__accounttype']
             range_fields = ['createtime']
             
             def dict_head(self, head):
                 if head['name']=='createtime':
                     head['editor']='com-filter-datetime-range'
                 return head
+            
+            def getExtraHead(self):
+                return [
+                    {'name':'accountid__accounttype','label':'账号类型','editor':'com-filter-select','options':[{'value':x[0],'label':x[1]} for x in ACCOUNT_TYPE]}
+                ]
 
         class search(SelectSearch):
             names = ['accountid__nickname']

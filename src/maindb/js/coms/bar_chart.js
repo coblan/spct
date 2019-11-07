@@ -48,6 +48,17 @@ Vue.component('com-bar-chart',{
                     name: self.trend.label,
                     type: 'bar',
                     data: y_data,
+                    itemStyle: {
+                        normal: {
+                            color: function(params) {
+                                if(params.value>=0){
+                                    return '#C33531'
+                                }else{
+                                    return 'green'
+                                }
+                            }
+                        },
+                    },
                 }]
             };
             this.myChart.setOption(option);
