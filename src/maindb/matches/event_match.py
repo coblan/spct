@@ -54,6 +54,9 @@ class OtherWebMatchPage(TablePage):
                     self.filter_args['MatchID'] = {'$exists':False}
             if self.search_args.get('SportId'):
                 self.filter_args['SportId'] = self.search_args.get('SportId')
+            if self.search_args.get('IsLive') != None:
+                self.filter_args['IsLive'] = self.search_args.get('IsLive')
+                
   
         
         def get_head_context(self):
@@ -91,6 +94,7 @@ class OtherWebMatchPage(TablePage):
                 {'name':'LeagueZh','label':'联赛','editor':'com-table-span','width':120},
                 {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-table-label-shower','width':120,'class':'matched_match'},
                 {'name':"MatchID",'label':'比赛(比对结果)','editor':'com-table-label-shower','width':300},
+                {'name':"IsLive",'label':'是否走地','editor':'com-table-bool-shower',},
                 {'name':'ContrastStatus','label':'采集状态',
                  'editor':'com-table-rich-span',
                  'inn_editor':'com-table-mapper',
@@ -169,6 +173,10 @@ class OtherWebMatchPage(TablePage):
                 {'name':'has_matched','placeholder':'匹配','editor':'com-filter-select','options':[
                     {'value':1,'label':'是'},
                     {'value':2,'label':'否'}
+                ]},
+                {'name':'IsLive','label':'是否走地','editor':'com-filter-select','options':[
+                    {'value':True,'label':'是'},
+                    {'value':False,'label':'否'}
                 ]},
                 {'name':'SportId','placeholder':'体育类型','editor':'com-filter-select','options':[
                     {'label':str(x),'value':x.pk} for x in TbSporttypes.objects.filter(enabled=True)
