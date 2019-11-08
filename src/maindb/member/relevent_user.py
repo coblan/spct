@@ -75,7 +75,7 @@ class ReleventUserPage(TablePage):
                 self.search_args['_searched'] =1
                 return []
             else: 
-                nickname = self.search_args.get('NickName').strip()
+                nickname = self.search_args.get('NickName','').strip()
                 if not nickname:
                     raise UserWarning('必须输入用户昵称')
                 try:

@@ -150,7 +150,7 @@ class ConfirmRechargeForm(ModelFields):
             'Code': '',
             'CallBackInfo': inst.memo
         }
-        sql = "exec [dbo].[SP_RechargeCallBack] '%(OrderID)s','%(AccountID)s',%(Amount)s,1,'%(ChannelType)s','%(OrderTime)s','%(Code)s','%(CallBackInfo)s',0" % dc
+        sql = "exec [dbo].[SP_RechargeCallBack] '%(OrderID)s','%(AccountID)s',%(Amount)s,1,'%(ChannelType)s','%(OrderTime)s','%(Code)s','%(CallBackInfo)s',0,'',''" % dc
         cursor = connections['Sports'].cursor()
         cursor.execute(sql)
         result = cursor.fetchone()
