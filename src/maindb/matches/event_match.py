@@ -87,6 +87,7 @@ class OtherWebMatchPage(TablePage):
                 {'name':'Team2Zh','label':'客队中文名','editor':'com-table-span','width':130},
                 {'name':'team2zh','label':'客队中文名(Betradar)','editor':'com-table-span','width':130,'class':'matched_match'},
                 {'name':'EventDateTime','label':'比赛日期','editor':'com-table-span','width':150},
+                 {'name':'EventTime','label':'EventTime','editor':'com-table-span','width':100},
                 {'name':'LeagueZh','label':'联赛','editor':'com-table-span','width':120},
                 {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-table-label-shower','width':120,'class':'matched_match'},
                 {'name':"MatchID",'label':'比赛(比对结果)','editor':'com-table-label-shower','width':300},
