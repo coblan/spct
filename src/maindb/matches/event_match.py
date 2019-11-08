@@ -321,9 +321,26 @@ class WebMatchForm(Fields):
         super().clean()
         eventdatetime = timezone.datetime.strptime(self.kw.get('EventDateTime'), '%Y-%m-%d %H:%M:%S' ) 
         matchdatetime = timezone.datetime.strptime(self.kw.get('matchdate') ,'%Y-%m-%d %H:%M:%S', ) 
-        if eventdatetime - matchdatetime > timezone.timedelta(minutes=10) or matchdatetime - eventdatetime > timezone.timedelta(minutes=10):
-            raise UserWarning('匹配比赛时间相差大于60分钟')
-            #raise QuestionException(json.dumps({}))
+        
+        # 调试代码
+        #if self.kw.get('meta_force_save'):
+            #pass
+        #else:
+            #raise QuestionException(''' cfg.hide_load();cfg.select("匹配比赛时间相差大于10分钟",
+            #[{label:'仍然匹配',action:'cfg.show_load();layer.close(scope.index);var out_scope = scope.option;out_scope.kws.row.meta_force_save=1;ex.director_call(out_scope.director_name,out_scope.kws).then(resp=>{out_scope.resolve(resp)})'},
+            #{label:'取消',action:'layer.close(scope.index);'}],
+            #scope
+            #) ''' )
+        if  self.kw.get('meta_force_save'):
+            # 如果是强制保存，就不用在询问了。
+            pass 
+        elif eventdatetime - matchdatetime > timezone.timedelta(minutes=10) or matchdatetime - eventdatetime > timezone.timedelta(minutes=10):
+            ##raise UserWarning('匹配比赛时间相差大于10分钟')
+            raise QuestionException(''' cfg.hide_load();cfg.select("匹配比赛时间相差大于10分钟",
+            [{label:'仍然匹配',action:'cfg.show_load();layer.close(scope.index);var out_scope = scope.option;out_scope.kws.row.meta_force_save=1;ex.director_call(out_scope.director_name,out_scope.kws).then(resp=>{out_scope.resolve(resp)})'},
+            {label:'取消',action:'layer.close(scope.index);'}],
+            scope
+            ) ''')
         
         
         
