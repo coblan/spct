@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fields,ModelTable,director_view
+from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fields,ModelTable,director_view,QuestionException
 from maindb.mongoInstance import mydb
 from maindb.models import TbMatch,TbSporttypes
 from maindb.matches.matches import MatchsPage
@@ -322,7 +322,8 @@ class WebMatchForm(Fields):
         eventdatetime = timezone.datetime.strptime(self.kw.get('EventDateTime'), '%Y-%m-%d %H:%M:%S' ) 
         matchdatetime = timezone.datetime.strptime(self.kw.get('matchdate') ,'%Y-%m-%d %H:%M:%S', ) 
         if eventdatetime - matchdatetime > timezone.timedelta(minutes=10) or matchdatetime - eventdatetime > timezone.timedelta(minutes=10):
-            raise UserWarning('匹配比赛时间相差大于10分钟')
+            raise UserWarning('匹配比赛时间相差大于60分钟')
+            #raise QuestionException(json.dumps({}))
         
         
         
