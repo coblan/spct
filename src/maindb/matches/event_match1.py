@@ -12,6 +12,7 @@ from helpers.director.shortcut import DirectorEncoder,get_request_cache
 import datetime
 import time
 from ..status_code import MATCH_SOURCE
+from helpers.director.exceptions.question import QuestionException
 
 def tm2mongo(dt):
     beijin = datetime.timezone(datetime.timedelta(hours=8))
@@ -260,7 +261,14 @@ class OtherWebMatchPage(TablePage):
                  'confirm_msg':'确定取消交换主客队?', 
                  'class':'btn-default',
                 },
-                
+                {'name':'selected_set_and_save',
+                 'editor':'com-op-btn',
+                 'label':'清除匹配',
+                 'row_match':'many_row',
+                 'pre_set':  'rt={matchid:null}',
+                 'confirm_msg':'确定清除比赛匹配?', 
+                 'class':'btn-default',
+                },
                 
             ]
         
@@ -405,6 +413,9 @@ class WebMatchForm(Fields):
             out_dc.update({
                 '_MatchID_label':str(inst) ,
             })
+        else:
+            for key in ['matchdate','team1en','team1zh','team2en','team2zh','tournamentid']:
+                out_dc[key]=''
         out_dc.update({
             'pk':dc.get('Eid'),
             'TeamSwap':bool(dc.get('TeamSwap')),
@@ -417,11 +428,34 @@ class WebMatchForm(Fields):
         return {}
     
     def clean(self):
-        super().clean()
-        eventdatetime = timezone.datetime.strptime(self.kw.get('EventDateTime'), '%Y-%m-%d %H:%M:%S' ) 
-        matchdatetime = timezone.datetime.strptime(self.kw.get('matchdate') ,'%Y-%m-%d %H:%M:%S', ) 
-        if eventdatetime - matchdatetime > timezone.timedelta(minutes=10) or matchdatetime - eventdatetime > timezone.timedelta(minutes=10):
-            raise UserWarning('匹配比赛时间相差大于10分钟')
+        
+        if self.kw.get('matchid'):
+            org_match = mydb['Event'].find_one({'MatchID':self.kw.get('matchid')})
+            if org_match and org_match['Eid'] != self.kw.get('Eid'):
+                raise UserWarning('比赛已经被%s vs %s匹配过了'%(org_match['Team1En'],org_match['Team2En']))
+        
+            super().clean()
+            eventdatetime = timezone.datetime.strptime(self.kw.get('EventDateTime'), '%Y-%m-%d %H:%M:%S' ) 
+            matchdatetime = timezone.datetime.strptime(self.kw.get('matchdate') ,'%Y-%m-%d %H:%M:%S', ) 
+            
+            # 调试代码
+            #if self.kw.get('meta_force_save'):
+                #pass
+            #else:
+                #raise QuestionException(''' debugger;cfg.hide_load();cfg.confirm("匹配比赛时间相差大于10分钟").then(()=>{
+                    #cfg.show_load();layer.close(scope.index);scope.kws.row.meta_force_save=1;ex.director_call(scope.director_name,scope.kws).then(resp=>{scope.resolve(resp)})
+                #})
+                 #''' )
+            if  self.kw.get('meta_force_save'):
+                # 如果是强制保存，就不用在询问了。
+                pass 
+            elif eventdatetime - matchdatetime > timezone.timedelta(minutes=10) or matchdatetime - eventdatetime > timezone.timedelta(minutes=10):
+                raise QuestionException('''debugger;cfg.hide_load();cfg.confirm("匹配比赛时间相差大于10分钟").then(()=>{
+                    cfg.show_load();layer.close(scope.index);scope.kws.row.meta_force_save=1;ex.director_call(scope.director_name,scope.kws).then(resp=>{scope.resolve(resp)})
+                })
+                 ''' )
+        
+    
          
     def save_form(self):
         #if self.kw.get('_my_swap_team'):
@@ -430,10 +464,15 @@ class WebMatchForm(Fields):
             #else:
                 #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':True}})
         #else:
-        match = TbMatch.objects.get(matchid=self.kw.get('matchid'))
-        dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid'),
-              'MatchSource':match.source
-              } 
+        if self.kw.get('matchid'):
+            match = TbMatch.objects.get(matchid=self.kw.get('matchid'))
+            dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid'),
+                  'MatchSource':match.source
+                  } 
+        else:
+            dc = {'MatchID':None,'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid'),
+                  'MatchSource':None
+                  } 
         mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         
         
