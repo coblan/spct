@@ -371,8 +371,14 @@ class WebMatchForm(Fields):
             #else:
                 #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':True}})
         #else:
-        
-        dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid')}
+        if self.kw.get('matchid'):
+            dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid')}
+        else:
+            dc = {
+                'MatchID':None,
+                'TeamSwap':None,
+                'EventId':None,
+            }
         mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
         
