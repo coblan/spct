@@ -52,7 +52,10 @@ class EveryDayReportPage(TablePage):
             dc = query.aggregate(**filters)
             self.footer = {'_label':'合计'}
             for item in sum_list:
-                self.footer[item] = dc.get('total_%s'%item)
+                if dc.get('total_%s'%item,None) is not None  and item == 'userprofit':
+                    self.footer[item] = - dc.get('total_%s'%item)
+                else:
+                    self.footer[item] = dc.get('total_%s'%item)
                 
             #dc = query.aggregate(total_betnum=Sum('betnum'),total_betamount=Sum('betamount'),total_finishbetamount=Sum('finishbetamount'),
                                  #total_turnover=Sum('turnover'),total_betoutcome=Sum('betoutcome'),total_bonusamount=Sum('bonusamount'),
