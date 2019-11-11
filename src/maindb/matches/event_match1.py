@@ -14,9 +14,11 @@ import time
 from ..status_code import MATCH_SOURCE
 from helpers.director.exceptions.question import QuestionException
 
+import logging
+operation_log = logging.getLogger('operation_log')
+
+beijin = datetime.timezone(datetime.timedelta(hours=8))
 def tm2mongo(dt):
-    beijin = datetime.timezone(datetime.timedelta(hours=8))
-    #utc = datetime.timezone(datetime.timedelta(hours=0))
     tmp = dt.replace(tzinfo=beijin)
     #return tmp.astimezone(beijin)
     return tmp
@@ -222,29 +224,29 @@ class OtherWebMatchPage(TablePage):
             return [
                  {'editor':'com-op-btn','label':'设置列','icon': 'fa-gear',
                   'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"列调整"})'},
-                {'name':'director_call',
-                 'director_name':'event_match.start_scrapy',
-                 'editor':'com-op-btn',
-                 'label':'启动采集',
-                 'row_match':'many_row',
-                 'match_express':'Boolean( scope.row.MatchID )',
-                 'match_msg':'只能选择已经匹配完成的比赛',
-                 'confirm_msg':'确定启动这些比赛抓取', 
-                 'class':'btn-success',
-                 'icon':'fa-play',
-                },
-                {'name':'director_call',
-                 'director_name':'event_match.stop_scrapy',
-                 'editor':'com-op-btn',
-                 'label':'停止采集',
-                 'row_match':'many_row',
+                #{'name':'director_call',
+                 #'director_name':'event_match.start_scrapy',
+                 #'editor':'com-op-btn',
+                 #'label':'启动采集',
+                 #'row_match':'many_row',
+                 #'match_express':'Boolean( scope.row.MatchID )',
+                 #'match_msg':'只能选择已经匹配完成的比赛',
+                 #'confirm_msg':'确定启动这些比赛抓取', 
+                 #'class':'btn-success',
+                 #'icon':'fa-play',
+                #},
+                #{'name':'director_call',
+                 #'director_name':'event_match.stop_scrapy',
+                 #'editor':'com-op-btn',
+                 #'label':'停止采集',
+                 #'row_match':'many_row',
                  
-                 'match_express':'Boolean( scope.row.MatchID )',
-                 'match_msg':'只能选择已经匹配完成的比赛',
-                 'confirm_msg':'确定停止这些比赛抓取', 
-                 'class':'btn-default',
-                 'icon':'fa-pause',
-                },
+                 #'match_express':'Boolean( scope.row.MatchID )',
+                 #'match_msg':'只能选择已经匹配完成的比赛',
+                 #'confirm_msg':'确定停止这些比赛抓取', 
+                 #'class':'btn-default',
+                 #'icon':'fa-pause',
+                #},
                 {'name':'selected_set_and_save',
                  'editor':'com-op-btn',
                  'label':'交换主客队',
@@ -268,6 +270,13 @@ class OtherWebMatchPage(TablePage):
                  'pre_set':  'rt={matchid:null}',
                  'confirm_msg':'确定清除比赛匹配?', 
                  'class':'btn-default',
+                },
+                {
+                 'editor':'com-op-btn',
+                 'label':'同步匹配关系',
+                 'confirm_msg':'确定同步匹配关系?', 
+                 'class':'btn-default',
+                 'action':'cfg.show_load();ex.director_call("event_match.sync_match_relation").then((resp)=>{cfg.hide_load();cfg.toast("同步完成!")})'
                 },
                 
             ]
@@ -474,7 +483,7 @@ class WebMatchForm(Fields):
                   'MatchSource':None
                   } 
         mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
-        
+        operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
         
 
 class MatchPicker(MatchsPage.tableCls):
@@ -535,6 +544,19 @@ def stop_scrapy(rows,**kws):
         msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop','TeamSwap':row.get('TeamSwap'),
                'EventId':row.get('eventid'),'SportId':row.get('SportId')}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
+
+@director_view('event_match.sync_match_relation')
+def sync_match_relation():
+    now = timezone.now().replace(tzinfo=beijin)
+    ago_3hour= now - timezone.timedelta(hours=3)
+    
+    for item in mydb['Event'].find({'EventDateTime':{'$gte':ago_3hour},'MatchID':{'$exists':True}}):
+        dc={}
+        for k,v in item.items():
+            if k in ['MatchID','TeamSwap','EventId']:
+                dc[k] =v
+            dc['MatchSource'] = 1
+        mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
 
 
 director.update({

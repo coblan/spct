@@ -7,6 +7,9 @@ import json
 from helpers.director.model_func.dictfy import sim_dict
 from django.utils import timezone
 from django.db.models import Q
+import logging
+
+operation_log = logging.getLogger('operation_log')
 
 class OtherWebMatchPage(TablePage):
     def get_label(self):
@@ -371,6 +374,7 @@ class WebMatchForm(Fields):
         
         dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid')}
         mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
+        operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
         
         
 
