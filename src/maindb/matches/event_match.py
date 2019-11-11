@@ -380,6 +380,7 @@ class WebMatchForm(Fields):
                 'EventId':None,
             }
         mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
+        dc['Eid'] = self.kw.get('Eid')
         operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
         
         
