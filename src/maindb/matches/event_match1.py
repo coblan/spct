@@ -267,7 +267,7 @@ class OtherWebMatchPage(TablePage):
                  'editor':'com-op-btn',
                  'label':'清除匹配',
                  'row_match':'many_row',
-                 'pre_set':  'rt={matchid:null}',
+                 'pre_set':  'rt={matchid:null,}',
                  'confirm_msg':'确定清除比赛匹配?', 
                  'class':'btn-default',
                 },
@@ -479,7 +479,9 @@ class WebMatchForm(Fields):
                   'MatchSource':match.source
                   } 
         else:
-            dc = {'MatchID':None,'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid'),
+            dc = {'MatchID':None,
+                  'TeamSwap':None,
+                  'EventId':None,
                   'MatchSource':None
                   } 
         mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
