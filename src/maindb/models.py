@@ -204,7 +204,7 @@ class TbAccountMatchFav(models.Model):
 
 
 class TbAgaccount(models.Model):
-    account = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
+    accountid = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
     agusername = models.CharField(db_column='AGUserName', max_length=150,verbose_name='AG用户名')  # Field name made lowercase.
     bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='反点率')  # Field name made lowercase.
     transferin = models.DecimalField(db_column='TransferIn', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='转入')  # Field name made lowercase.

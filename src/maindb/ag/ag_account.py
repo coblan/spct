@@ -14,7 +14,7 @@ class AgAccountPage(TablePage):
     
     class tableCls(RawTable):
         model = TbAgaccount
-        exclude = ['fishavailablescores','lastfishupdatetime','account']
+        exclude = ['fishavailablescores','lastfishupdatetime',]
         db ='Sports'
         def getExtraHead(self):
             return [
@@ -27,50 +27,44 @@ class AgAccountPage(TablePage):
             sort = self.get_sort()
             start,end = self.pagenum.get_slice_index()
             page ='OFFSET %(start)s ROWS  FETCH NEXT %(pagesize)s ROWS ONLY'%{'start':start,'pagesize':self.pagenator.perPage}
-      
-            sql = '''
-            IF OBJECT_ID('tempdb..#tmp') IS NOT NULL
-            BEGIN
-            DROP TABLE #tmp;
-            END;
-            SELECT TB_AgAccount.*, TB_Account.NickName AS account__nickname
-            INTO #tmp
-            FROM TB_AgAccount WITH ( NOLOCK )
-            INNER JOIN TB_Account ON TB_Account.AccountID = TB_AgAccount.AccountId
-            %(where)s
+            names = self.get_model_field_name()
+            fields = ','.join( ['main.%s'%x for x in names] )
+            if where:
+                sql = '''
+                IF OBJECT_ID('tempdb..#tmp') IS NOT NULL
+                BEGIN
+                DROP TABLE #tmp;
+                END;
+                SELECT %(fields)s, TB_Account.NickName AS account__nickname
+                INTO #tmp
+                FROM TB_AgAccount main WITH (NOLOCK)
+                INNER JOIN TB_Account WITH(NOLOCK) ON TB_Account.AccountID = main.AccountId
+                %(where)s
+    
+                SELECT  * FROM #tmp main %(sort)s %(page)s;
+                SELECT COUNT(1) as count FROM #tmp;
+                SELECT SUM(winorloss) as winorloss,
+                    SUM(transferin) as transferin,
+                    SUM(transferout) AS transferout,
+                    SUM(rebate) AS rebate,
+                    SUM(availablescores) as availablescores FROM #tmp;
+                '''%{'where':where,'sort':sort,'page':page,'fields':fields}
+            else:
+                sql ='''
+                SELECT %(fields)s,TB_Account.NickName AS account__nickname FROM TB_AgAccount main WITH(NOLOCK) INNER JOIN TB_Account WITH( NOLOCK ) 
+                ON TB_Account.AccountID = main.AccountId %(sort)s %(page)s;
+                
+                SELECT COUNT(1) as count FROM TB_AgAccount  WITH(NOLOCK);
+                SELECT SUM(winorloss) as winorloss,
+                    SUM(transferin) as transferin,
+                    SUM(transferout) AS transferout,
+                    SUM(rebate) AS rebate,
+                    SUM(availablescores) as availablescores FROM TB_AgAccount WITH(NOLOCK);
+                '''%{'where':where,'sort':sort,'page':page,'fields':fields}
 
-            SELECT  * FROM #tmp %(sort)s %(page)s;
-            SELECT COUNT(1) as count FROM #tmp;
-            SELECT SUM(winorloss) as winorloss,
-                SUM(transferin) as transferin,
-                SUM(transferout) AS transferout,
-                SUM(rebate) AS rebate,
-                SUM(availablescores) as availablescores FROM #tmp;
-            '''%{'where':where,'sort':sort,'page':page}
             return sql
-        
-        def inject_sql(self):
-            
-            self.sql = 'SELECT TB_AgAccount.* , TB_Account.Nickname as account__nickname FROM TB_AgAccount with(nolock) INNER JOIN TB_Account with(nolock) ON TB_Account.AccountID=TB_AgAccount.AccountID'
-            search_args = self.kw.get('search_args')
-            
-            if search_args.get('_q'):
-                value = search_args.get('_q')
-                if search_args.get('_qf') =='account__nickname':
-                    self.sql += " WHERE TB_Account.Nickname like %s "
-                    self.params.append('%s%%'%value)
-                elif search_args.get('_qf') =='account':
-                    self.sql += r' WHERE TB_Account.AccountID =%s'%value
-                elif search_args.get('_qf') =='agusername':
-                    self.sql += ' WHERE TB_AgAccount.agusername = %s '
-                    self.params.append(value)
-            if search_args.get('_sort'):
-                if search_args.get('_sort').startswith('-'):
-                    self.order_by = ' ORDER BY %s DESC '%search_args.get('_sort')[1:] 
-                else:
-                    self.order_by = ' ORDER BY %s'%search_args.get('_sort')
-        
-        
+
+ 
         def get_operation(self):
             return [
                 {'fun':'selected_set_and_save','editor': 'com-op-btn','label':'打开资金开关','row_match':'many_row','pre_set':'rt={fundswitch:true}',
@@ -149,12 +143,13 @@ class AgAccountPage(TablePage):
         
         class search(SelectSearch):
             names = ['account__nickname','agusername']
-            exact_names=['account']
+            exact_names=['accountid']
             db_map={
-                'account__nickname':'TB_Account.NickName'
+                'account__nickname':'TB_Account.NickName',
+                'accountid':'TB_AgAccount.AccountID',
             }
             def get_option(self, name):
-                if name == 'account':
+                if name == 'accountid':
                     return {'value':name,'label':'账号ID'}
                 elif name == 'account__nickname':
                     return {'value': name,
@@ -164,7 +159,7 @@ class AgAccountPage(TablePage):
         
         class sort(RowSort):
             names = ['transferin','transferout','winorloss','availablescores']
-            general_sort ='-AccountId'
+            general_sort ='-main.AccountId'
 
 class AgAccountForm(ModelFields):
     class Meta:
