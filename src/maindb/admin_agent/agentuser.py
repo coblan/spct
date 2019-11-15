@@ -90,7 +90,6 @@ class AgentUser(TablePage):
             @NickName VARCHAR(20) =NULL --帐号查询昵称 默认全部  
             @AccountType INT (NULL 0 1) 全部/普通/内部
             """
-
             order_by = self.search_args.get('_sort', '')
             par = self.search_args.get('_par', 0)
             nickname = self.search_args.get('_q', '')
@@ -102,11 +101,14 @@ class AgentUser(TablePage):
             self.search_args['_cach_nickname'] = nickname
             self.search_args['_cach_par'] = par
             self.search_args['_cach_sort'] = order_by
+            
+            
             if par != cach_par:
                 # 点击的par
                 nickname = ''
                 order_by = ''
                 self.search_args['_cach_op'] = 'click_par'
+                self.search_args['_q'] =''
 
             elif nickname and cach_nickname != nickname:
                 # 搜索昵称，第一次点击[搜索]
