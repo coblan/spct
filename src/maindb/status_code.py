@@ -16,6 +16,11 @@ ONLINE_STATUS = (
     (0, '离线')
 )
 
+IS_AUTO = (
+    (0,'手动'),
+    (1,'自动'),
+)
+
 CHANNEL_STATUS = (
     (0, 'close'),
     (1, 'open')

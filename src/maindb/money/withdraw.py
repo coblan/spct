@@ -198,14 +198,15 @@ class WithDrawForm(ModelFields):
     
     def clean_save(self):
         # super().save_form()
+        append_memo = '[%s]'%self.crt_user.username + self.kw.get('fakememo')
         if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
-            self.instance.memo = (self.instance.memo or '') + '\r\n' + self.kw.get('fakememo')
+            self.instance.memo = (self.instance.memo or '') + '\r\n' + append_memo
             self.instance.confirmtime = datetime.now()
             self.instance.save()
             ex_log = {'memo': self.kw.get('fakememo'), }
             # self.instance.save()
         elif 'status' in self.changed_data and self.instance.status == 2:  # 确认到账
-            self.instance.memo += '\r\n' + self.kw.get('fakememo')
+            self.instance.memo += '\r\n' + append_memo
             self.instance.confirmtime = datetime.now()
             with transaction.atomic():
                 self.instance.save()
@@ -216,7 +217,7 @@ class WithDrawForm(ModelFields):
             ex_log = {'content': '提现订单【{0}】,成功提现{1}元'.format(self.instance.orderid, self.instance.amount),
                       'memo': self.kw.get('fakememo')}
         elif 'status' in self.changed_data and self.instance.status == 5:  # 退款
-            self.instance.memo += '\r\n' + self.kw.get('fakememo')
+            self.instance.memo += '\r\n' + append_memo
             self.instance.confirmtime = datetime.now()
             # self.instance.save()
             category = 35
