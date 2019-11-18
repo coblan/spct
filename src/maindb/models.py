@@ -1944,7 +1944,7 @@ class TbSourcecontrol(models.Model):
 
 # 沙巴 --start
 class TbSportaccount(models.Model):
-    account = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
+    accountid = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
     #accountid = models.BigIntegerField(db_column='AccountId', primary_key=True)  # Field name made lowercase.
     username = models.CharField(db_column='UserName', max_length=50,verbose_name='沙巴用户名')  # Field name made lowercase.
     transferin = models.DecimalField(db_column='TransferIn', max_digits=18, decimal_places=4,verbose_name='转入')  # Field name made lowercase.

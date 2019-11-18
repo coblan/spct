@@ -15,6 +15,7 @@ class AgAccountPage(TablePage):
     class tableCls(RawTable):
         model = TbAgaccount
         exclude = ['fishavailablescores','lastfishupdatetime',]
+        hide_fields=['accountid']
         db ='Sports'
         def getExtraHead(self):
             return [
@@ -64,7 +65,11 @@ class AgAccountPage(TablePage):
 
             return sql
 
- 
+        def dict_row(self, row_dc):
+            return {
+                'pk':row_dc.get('accountid')
+            }
+        
         def get_operation(self):
             return [
                 {'fun':'selected_set_and_save','editor': 'com-op-btn','label':'打开资金开关','row_match':'many_row','pre_set':'rt={fundswitch:true}',
@@ -92,14 +97,6 @@ class AgAccountPage(TablePage):
                 head['editor'] = 'com-table-span'
             return head
                 
-        
-        def dict_row(self, inst):
-            return {
-                'account':inst.account_id,
-                'account__nickname':inst.account__nickname
-                #'account__nickname':inst.account.nickname,
-            }
-        
         def get_heads(self):
             heads = super().get_heads()
             heads = sort_by_name(heads,['account','account__nickname']) 
@@ -146,7 +143,7 @@ class AgAccountPage(TablePage):
             exact_names=['accountid']
             db_map={
                 'account__nickname':'TB_Account.NickName',
-                'accountid':'TB_AgAccount.AccountID',
+                'accountid':'main.AccountID',
             }
             def get_option(self, name):
                 if name == 'accountid':

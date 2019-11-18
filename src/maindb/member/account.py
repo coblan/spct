@@ -37,6 +37,7 @@ from . relevent_user import ReleventUserPage
 from ..ag.profitloss import AgprofitlossPage
 from django.conf import settings
 from .userlog import UserlogPage
+from maindb.google_validate import valide_google_code
 
 def account_tab(self=None):
     named_ctx = get_request_cache()['named_ctx']
@@ -634,7 +635,7 @@ class AccoutBaseinfo(ModelFields):
 
 
 class AccoutModifyAmount(ModelFields):
-    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype','is_Betfullrecord'] 
+    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype','is_Betfullrecord','google_code'] 
     readonly = ['accountid', 'nickname','amount']
     
     def __init__(self, *args, **kw):
@@ -657,6 +658,7 @@ class AccoutModifyAmount(ModelFields):
             {'name':'moenycategory','label':'类型','editor':'com-field-select','required':True,'options':desp_options},
             {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
             {'name':'is_Betfullrecord','label':'是否添加流水','editor':'com-field-bool',},
+            {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
         ]
 
     def extra_valid(self):
@@ -666,6 +668,9 @@ class AccoutModifyAmount(ModelFields):
         return dc
 
     def clean_save(self):
+        if not valide_google_code(self.kw.get('google_code')):
+            raise UserWarning('身份验证码错误，请联系管理员!')
+        
         if 'add_amount' in self.kw:
             add_amount = Decimal(self.kw.get('add_amount', 0))
             self.changed_amount = add_amount
@@ -714,11 +719,13 @@ class ModifyBetFullRecord(ModelFields):
         return [
             {'name': 'betfullrecord', 'label': '当前限额', 'editor': 'number', 'readonly':True },
             {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', },
+           
             #{'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
         ] 
     
     def clean(self):
         super().clean()
+        
         add_amount = self.kw.get('add_amount')
         if not add_amount :
             self._errors['add_amount']= '调整值不能为0或者空'
