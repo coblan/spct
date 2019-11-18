@@ -141,6 +141,7 @@ class ConfirmRechargeForm(ModelFields):
 
     def save_form(self):
         inst = self.instance
+        memo = '[%s]'%self.crt_user.username + inst.memo 
         dc = {
             'OrderID': inst.orderid,
             'AccountID': inst.accountid_id,
@@ -148,11 +149,11 @@ class ConfirmRechargeForm(ModelFields):
             'ChannelType': '',
             'OrderTime': inst.createtime.strftime('%Y-%m-%d %H:%M:%S'),
             'Code': '',
-            'CallBackInfo': inst.memo
+            #'CallBackInfo': inst.memo
         }
         sql = "exec [dbo].[SP_RechargeCallBack] '%(OrderID)s','%(AccountID)s',%(Amount)s,1,'%(ChannelType)s','%(OrderTime)s','%(Code)s',%%s,0,'',''" % dc
         cursor = connections['Sports'].cursor()
-        cursor.execute(sql,[inst.memo])
+        cursor.execute(sql,[memo])
         result = cursor.fetchone()
         cursor.commit()
         if '@ok' not in str(result):
