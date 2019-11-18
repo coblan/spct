@@ -5,6 +5,8 @@ from decimal import Decimal
 from django.contrib.auth.models import User
 from django.db.models import Q
 import json
+from maindb.google_validate import valide_google_code
+
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
 
@@ -62,6 +64,7 @@ class BonuslogForm(ModelFields):
     def getExtraHeads(self):
         return [
             {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
+            {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
         ]
     
     def clean_dict(self, dc):
@@ -73,6 +76,11 @@ class BonuslogForm(ModelFields):
             total_mount = Decimal(amount)  * multi
             dc['withdrawlimitamount'] = round( total_mount ,4)
         return dc
+    
+    def clean(self):
+        super().clean()
+        if not valide_google_code(self.kw.get('google_code')):
+            raise UserWarning('身份验证码错误，请联系管理员!')
     
     def dict_head(self, head):
         if head['name'] == 'accountid':

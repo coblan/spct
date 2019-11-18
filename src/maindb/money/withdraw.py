@@ -187,8 +187,16 @@ class WithDrawForm(ModelFields):
         fields = ['orderid', 'account', 'memo', 'status', 'confirmtime']
 
     def getExtraHeads(self):
-        return [{'name': 'fakememo', 'editor': 'blocktext', 'required': True, 'label': '备注'}]
-
+        return [
+            {'name': 'fakememo', 'editor': 'blocktext', 'required': True, 'label': '备注'},
+            {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
+        ]
+    
+    def clean(self):
+        super().clean()
+        if not valide_google_code(self.kw.get('google_code')):
+            raise UserWarning('身份验证码错误，请联系管理员!')
+        
     def dict_head(self, head):
         if head['name'] == 'memo':
             head['editor'] = 'blocktext'
