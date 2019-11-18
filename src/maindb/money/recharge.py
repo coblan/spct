@@ -141,7 +141,7 @@ class ConfirmRechargeForm(ModelFields):
     
     def getExtraHeads(self):
         return [
-            {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'helper_text':'关键操作，需要身份验证码，请联系管理员!'}
+            {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
         ]
     
     def clean(self):
