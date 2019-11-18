@@ -10,6 +10,7 @@ from ..models import TbWithdraw, TbBalancelog, TbMessageUnsend,TbTicketmaster
 from maindb.rabbitmq_instance import notifyWithdraw
 from maindb.matches.ticket_master import TicketMasterPage
 from helpers.director.decorator import get_request_cache
+from maindb.google_validate import valide_google_code
 
 class WithdrawPage(TablePage):
     template = 'jb_admin/table.html'
@@ -114,7 +115,7 @@ class WithdrawPage(TablePage):
                     'match_field': 'status',
                     'match_values': [3,4],
                     'match_msg': '只能选择状态为异常/失败的订单！',
-                    'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context(),
+                    'fields_ctx': WithDrawFormGoogle(crt_user=self.crt_user).get_head_context(),
                     'visible': 'status' in self.permit.changeable_fields(), },
                 {
                     'fun': 'selected_set_and_save',
@@ -165,14 +166,6 @@ class WithdrawPage(TablePage):
                         'label': '昵称',
                     }
 
-            #def clean_search(self):
-                #if self.qf == 'orderid':
-                    ##if re.search('^\d*$', self.q):
-                    #return self.q
-                #if self.qf =='accountid__nickname':
-                    #return self.qf
-                #else:
-                    #return super().clean_search()
 
         class filters(RowFilter):
             range_fields = ['createtime', 'confirmtime']
@@ -189,14 +182,8 @@ class WithDrawForm(ModelFields):
     def getExtraHeads(self):
         return [
             {'name': 'fakememo', 'editor': 'blocktext', 'required': True, 'label': '备注'},
-            {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
         ]
-    
-    def clean(self):
-        super().clean()
-        if not valide_google_code(self.kw.get('google_code')):
-            raise UserWarning('身份验证码错误，请联系管理员!')
-        
+
     def dict_head(self, head):
         if head['name'] == 'memo':
             head['editor'] = 'blocktext'
@@ -256,6 +243,18 @@ class WithDrawForm(ModelFields):
                 'memo': '提现退款'}
         return ex_log
 
+class WithDrawFormGoogle(WithDrawForm):
+    def getExtraHeads(self):
+        return [
+            {'name': 'fakememo', 'editor': 'blocktext', 'required': True, 'label': '备注'},
+            {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
+        ]
+    
+    def clean(self):
+        super().clean()
+        if not valide_google_code(self.kw.get('google_code')):
+            raise UserWarning('身份验证码错误，请联系管理员!')
+
 @director_view("has_audit_ticketmaster")
 def has_audit_ticketmaster(accountid):
     audit_count = TbTicketmaster.objects.filter(accountid_id = accountid,audit = 1).count()
@@ -286,6 +285,7 @@ class TicketmasterTab(TicketMasterPage.tableCls):
 director.update({
     'Withdraw': WithdrawPage.tableCls,
     'Withdraw.edit': WithDrawForm,
+    'Withdraw_GoogleCode':WithDrawFormGoogle
 })
 
 page_dc.update({
