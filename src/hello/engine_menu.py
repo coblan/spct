@@ -177,7 +177,9 @@ class PcMenu(BaseEngine):
                  {'label':'异常地址','url':page('badurl')},
                  {'label':'账号扩展信息','url':page('userex'),'visible':can_touch(TbUserex,crt_user)},
                  {'label':'后台登录IP白名单','url':page('admin_ip'),'visible':can_touch(TbBackendwhiteip,crt_user)},
-                 {'label':'后台登录日志','url':page('bacnend_loginlog'),'visible':can_touch(TbBackendloginlog,crt_user)}
+                 {'label':'后台登录日志','url':page('bacnend_loginlog'),'visible':can_touch(TbBackendloginlog,crt_user)},
+                 {'label': '谷歌身份验证', 'url': page('googlecode'), 'visible': crt_user.is_superuser},
+                 
                  # {'label':'权限分组','url':page('group_human'),'visible':can_touch(Group)},
              ]},
 

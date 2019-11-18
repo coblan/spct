@@ -8,7 +8,7 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, 
 from helpers.director.table.row_search import SelectSearch
 from helpers.director.table.table import RowSort
 from ..models import TbRecharge
-
+from maindb.google_validate import valide_google_code
 
 class RechargePage(TablePage):
     template = 'jb_admin/table.html'
@@ -138,7 +138,17 @@ class ConfirmRechargeForm(ModelFields):
         if head['name'] == 'memo':
             head['editor'] = 'blocktext'
         return head
-
+    
+    def getExtraHeads(self):
+        return [
+            {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'helper_text':'关键操作，需要身份验证码，请联系管理员!'}
+        ]
+    
+    def clean(self):
+        super().clean()
+        if not valide_google_code(self.kw.get('google_code')):
+            raise UserWarning('身份验证码错误，请联系管理员!')
+    
     def save_form(self):
         inst = self.instance
         memo = '[%s]'%self.crt_user.username + inst.memo 

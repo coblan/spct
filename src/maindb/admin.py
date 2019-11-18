@@ -68,6 +68,7 @@ from . import admin_todolist
 from . import permit
 from . import admin_administrator_ip
 from . admin_backend import login_log
+from . admin_backend import admin_google_code
 
 from . import js_cfg
 from . import login
