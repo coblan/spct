@@ -1,6 +1,8 @@
 from helpers.director.kv import get_value,set_value
 from helpers.director.shortcut import FieldsPage,Fields,page_dc,director
 from maindb.google_validate import random_base32
+from django.core.exceptions import PermissionDenied
+
 class GoogleCode(FieldsPage):
     def get_label(self):
         return '谷歌身份验证'
@@ -8,6 +10,10 @@ class GoogleCode(FieldsPage):
     def get_template(self, prefer=None):
         return 'jb_admin/fields.html'
     
+    def check_permit(self):
+        if not self.request.user.is_superuser:
+            raise PermissionDenied('没有权限访问')
+
     class fieldsCls(Fields):
         def get_heads(self):
             return [

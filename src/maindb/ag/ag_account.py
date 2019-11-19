@@ -1,9 +1,11 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,SelectSearch,RowSort,RawTable
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,SelectSearch,RowSort,RawTable,director_view
 from .. models import TbAgaccount
 from helpers.func.dict_list import sort_by_name
 from django.db.models import Sum
 from helpers.director.model_func.dictfy import sim_dict,to_dict
-from maindb.models import TbAccount
+from maindb.models import TbAccount,TbGamemoneyoutinfo
+from django.utils import timezone
+import time
 
 class AgAccountPage(TablePage):
     def get_label(self):
@@ -17,6 +19,7 @@ class AgAccountPage(TablePage):
         exclude = ['fishavailablescores','lastfishupdatetime',]
         hide_fields=['accountid']
         db ='Sports'
+        
         def getExtraHead(self):
             return [
                 {'name':'account__nickname','label':"账号昵称",}
@@ -78,6 +81,9 @@ class AgAccountPage(TablePage):
                 {'fun':'selected_set_and_save','editor': 'com-op-btn','label':'关闭资金开关','row_match':'many_row','pre_set':'rt={fundswitch:false}',
                   'confirm_msg':'确定要关闭选中用户的资金开关?',
                  'visible': 'fundswitch' in self.permit.changeable_fields()},
+                {'label':'余额收回','editor':'com-op-btn','row_match':'many_row',
+                 'confirm_msg':'确定要回收这些用户的余额?',
+                 'action':'var rows= ex.map(scope.ps.selected,(item)=>{return item.pk});cfg.show_load();ex.director_call("ag/redraw_left_money",{rows:rows}).then(()=>{cfg.hide_load();cfg.toast("提交成功")})'},
             ]
         
         def dict_head(self, head):
@@ -163,7 +169,16 @@ class AgAccountForm(ModelFields):
         model = TbAgaccount
         exclude = []
         
-
+@director_view('ag/redraw_left_money')
+def redraw_left_money(rows):
+    out_list =[]
+    now = timezone.now()
+    start = int(time.time() *100000)
+    for inst in TbAgaccount.objects.filter(accountid_id__in=rows):
+        start += 1
+        orderid = 'B%s'%start
+        out_list.append( TbGamemoneyoutinfo(account=inst.accountid,amount=inst.availablescores,status=0,username=inst.agusername,ordertime=now,orderid=orderid) )
+    TbGamemoneyoutinfo.objects.bulk_create(out_list)
 
 director.update({
     'agaccount':AgAccountPage.tableCls,

@@ -10,7 +10,8 @@ from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelField
 from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
-from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatch,TbBetfullrecord,TbUserLog
+from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatch,TbBetfullrecord,\
+     TbUserLog,TbSportprofitloss
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch,has_permit
 from helpers.func.random_str import get_str, get_random_number
@@ -35,6 +36,7 @@ from django.db.models import Q
 from django.utils import timezone
 from . relevent_user import ReleventUserPage
 from ..ag.profitloss import AgprofitlossPage
+from ..sport.sport_profitloss import SportProfitlossPage
 from django.conf import settings
 from .userlog import UserlogPage
 from maindb.google_validate import valide_google_code
@@ -248,6 +250,12 @@ def account_tab(self=None):
              'pre_set':'rt={accountid:scope.par_row.accountid}',
              'table_ctx':AgprofitLosTab().get_head_context(),
              'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbAgprofitloss,crt_user)
+         },{  'name':'sports',
+             'label':'沙巴体育',
+             'editor':'com-tab-table',
+             'pre_set':'rt={accountid:scope.par_row.accountid}',
+             'table_ctx':SBprofitLosTab().get_head_context(),
+             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbSportprofitloss,crt_user)
          }
     ]
     named_ctx['account_tabs'] =  evalue_container(ls)
@@ -1084,6 +1092,13 @@ class AgprofitLosTab(AgprofitlossPage.tableCls):
     class search(RowSearch):
         pass
 
+class SBprofitLosTab(SportProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
+
 director.update({
     'account': AccountPage.tableCls,
     'account.edit': AccoutBaseinfo,
@@ -1106,6 +1121,7 @@ director.update({
     'account.single_user_statistic':SingleUserStatistic,
     'account.related_user':RelatedUserTab,
     'account.agprofitloss':AgprofitLosTab,
+    'account.sbprofitloss':SBprofitLosTab,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
