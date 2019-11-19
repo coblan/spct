@@ -74,15 +74,17 @@ class AgAccountPage(TablePage):
             }
         
         def get_operation(self):
+            changeable_fields = self.permit.changeable_fields()
             return [
                 {'fun':'selected_set_and_save','editor': 'com-op-btn','label':'打开资金开关','row_match':'many_row','pre_set':'rt={fundswitch:true}',
                  'confirm_msg':'确定要打开选中用户的资金开关?',
-                 'visible': 'fundswitch' in self.permit.changeable_fields()},
+                 'visible': 'fundswitch' in changeable_fields},
                 {'fun':'selected_set_and_save','editor': 'com-op-btn','label':'关闭资金开关','row_match':'many_row','pre_set':'rt={fundswitch:false}',
                   'confirm_msg':'确定要关闭选中用户的资金开关?',
-                 'visible': 'fundswitch' in self.permit.changeable_fields()},
+                 'visible': 'fundswitch' in changeable_fields},
                 {'label':'余额收回','editor':'com-op-btn','row_match':'many_row',
                  'confirm_msg':'确定要回收这些用户的余额?',
+                 'visible':'availablescores' in changeable_fields,
                  'action':'var rows= ex.map(scope.ps.selected,(item)=>{return item.pk});cfg.show_load();ex.director_call("ag/redraw_left_money",{rows:rows}).then(()=>{cfg.hide_load();cfg.toast("提交成功")})'},
             ]
         
