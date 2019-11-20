@@ -82,3 +82,10 @@ def notifyCreateNewMatch(msg):
     channel.basic_publish(exchange='service.topic',
                           routing_key= 'newbetradar.matches',
                           body=msg)
+
+def notifyMatchMaping(msg):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
+    channel = connection.channel()
+    channel.basic_publish(exchange='center.topic',
+                          routing_key= 'spider.event.mapping',
+                          body=msg)

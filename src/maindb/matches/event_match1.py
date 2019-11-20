@@ -2,7 +2,7 @@ from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fiel
 from maindb.mongoInstance import mydb
 from maindb.models import TbMatch,TbSporttypes,TbTournament
 from maindb.matches.matches import MatchsPage
-from maindb.rabbitmq_instance import notifyScrapyMatch
+from maindb.rabbitmq_instance import notifyScrapyMatch,notifyMatchMaping
 import json
 from helpers.director.model_func.dictfy import sim_dict
 from django.utils import timezone
@@ -13,6 +13,7 @@ import datetime
 import time
 from ..status_code import MATCH_SOURCE
 from helpers.director.exceptions.question import QuestionException
+
 
 import logging
 operation_log = logging.getLogger('operation_log')
@@ -491,6 +492,7 @@ class WebMatchForm(Fields):
         mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         dc['Eid'] = self.kw.get('Eid')
         operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
+        notifyMatchMaping(json.dumps({'Eid':self.kw.get('Eid')}))
         
 
 class MatchPicker(MatchsPage.tableCls):
