@@ -492,7 +492,7 @@ class WebMatchForm(Fields):
         mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
         dc['Eid'] = self.kw.get('Eid')
         operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
-        notifyMatchMaping(json.dumps({'Eid':self.kw.get('Eid')}))
+        #notifyMatchMaping(json.dumps({'Eid':self.kw.get('Eid')}))
         
 
 class MatchPicker(MatchsPage.tableCls):
