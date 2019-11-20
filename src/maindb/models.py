@@ -822,7 +822,7 @@ class TbGamemoneyininfo(models.Model):
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='用户名')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', blank=True, null=True,verbose_name='状态',choices=GAMEMONEY_IN_STATUS)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=2000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
-    tsamp = models.TextField(db_column='Tsamp', blank=True, null=True,)  # Field name made lowercase. This field type is a guess.
+    #tsamp = models.TextField(db_column='Tsamp', blank=True, null=True,)  # Field name made lowercase. This field type is a guess.
 
     class Meta:
         managed = False

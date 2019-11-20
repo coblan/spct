@@ -11,7 +11,7 @@ class GamemoneyoutinfoPage(TablePage):
     
     class tableCls(GameMoneyininfoPage.tableCls):
         model = TbGamemoneyoutinfo
-        exclude = ['tsamp']
+        exclude = []
         
         def get_heads(self):
             heads = super().get_heads()

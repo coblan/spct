@@ -12,7 +12,7 @@ class GameMoneyininfoPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbGamemoneyininfo
-        exclude =['tsamp']
+        exclude =[]
         
         def getExtraHead(self):
             return [
