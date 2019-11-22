@@ -55,7 +55,7 @@ Vue.component('com-home-area-chart',{
                     }
                 },
                 legend: {
-                    data:['Android','Ios','Pc','H5','Unknown']
+                    data:['Android','iOS','PC','H5','Unknown']
                 },
                 xAxis: {
                     data: x_data
@@ -71,7 +71,7 @@ Vue.component('com-home-area-chart',{
                     smooth:true,
                     symbol: 'none',
                 },{
-                    name: 'Ios',
+                    name: 'iOS',
                     data: ios,
                     type:'line',
                     areaStyle: {},
@@ -80,7 +80,7 @@ Vue.component('com-home-area-chart',{
                     smooth:true,
                     symbol: 'none',
                 },{
-                    name: 'Pc',
+                    name: 'PC',
                     data: pc,
                     type:'line',
                     areaStyle: {},
