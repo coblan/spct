@@ -2,6 +2,10 @@ from django.contrib import admin
 from django.db import connections
 # Register your models here.
 from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,ModelFields,model_dc, director_view,has_permit
+
+from maindb.mongoInstance import mydb,add_tzinfo,utc2local
+from django.utils import timezone
+import datetime
 #from orgmodel.models import Exceptions
 
 #class ExceptionsPage(TablePage):
@@ -43,6 +47,7 @@ class Home(object):
             {'name': 'SumBetAmount', 'label': '投注金额',}, 
             {'name': 'SumPrizeAmount', 'label': '派彩金额',}, 
             {'name': 'SumLostAmount', 'label': '亏盈金额',},
+           
             
         ]
         
@@ -54,6 +59,7 @@ class Home(object):
             {'key': '4','label': '平台亏盈',}, 
             {'key': '5','label': '充值', }, 
             {'key': '6','label': '提现', }, 
+            {'key':'100','label':'在线人数','kind':'my_line'},
             
         ]
         
@@ -75,12 +81,22 @@ class Home(object):
     
 @director_view('trend_data')
 def trend_data(key): 
-    sql = "exec SP_TrendChart %s" % key
-    rows = []
-    with connections['Sports'].cursor() as cursor:
-        cursor.execute(sql)
-        for par in cursor:
-            rows.append({'time': par[0], 'amount': round(par[1], 2), })
+    if int(key) < 100:
+        sql = "exec SP_TrendChart %s" % key
+        rows = []
+        with connections['Sports'].cursor() as cursor:
+            cursor.execute(sql)
+            for par in cursor:
+                rows.append({'time': par[0], 'amount': round(par[1], 2), })
+    else:
+        rows =[]
+        now = timezone.now()
+        now = add_tzinfo( now)
+        ago_24 = now - timezone.timedelta(hours =24)
+        for row in  mydb['OnlineDogs'].find({'CreateTime':{'$gte':ago_24,'$lte':now}}):
+            createtime = utc2local( row.get('CreateTime') )
+            rows.append({'time':createtime,'amount':row.get('Total')})
+        
     return rows
 
 

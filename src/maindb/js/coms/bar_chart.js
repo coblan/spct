@@ -32,6 +32,12 @@ Vue.component('com-bar-chart',{
                 return item.amount
             })
 
+            var my_series ={
+                name: self.trend.label,
+                data: y_data,
+            }
+            var extra_option=char_kind[this.trend.kind || 'my_bar']
+            Object.assign(my_series,extra_option)
             var option = {
                 title: {
 //                text: 'ECharts 入门示例'
@@ -44,24 +50,33 @@ Vue.component('com-bar-chart',{
                     data: x_data
                 },
                 yAxis: {},
-                series: [{
-                    name: self.trend.label,
-                    type: 'bar',
-                    data: y_data,
-                    itemStyle: {
-                        normal: {
-                            color: function(params) {
-                                if(params.value>=0){
-                                    return '#C33531'
-                                }else{
-                                    return 'green'
-                                }
-                            }
-                        },
-                    },
-                }]
+                series: [my_series]
             };
             this.myChart.setOption(option);
         }
     }
 })
+
+var char_kind={
+    my_bar:{
+        type:'bar',
+        itemStyle: {
+            normal: {
+                color: function(params) {
+                    if(params.value>=0){
+                        return '#C33531'
+                    }else{
+                        return 'green'
+                    }
+                }
+            },
+        },
+    },
+    my_area:{
+        type:'line',
+        areaStyle: {},
+    },
+    my_line:{
+        type:'line',
+    }
+}
