@@ -52,7 +52,8 @@
         <el-tabs v-model="activeName" >
             <el-tab-pane v-for="trend in trend_list" :label="trend.label" :name="trend.key" lazy>
                 <div style="height:400px;width: 100%">
-                    <com-bar-chart :trend="trend"></com-bar-chart>
+                    <component :is="trend.editor" :ctx="trend"></component>
+                    <!--<com-bar-chart :trend="trend"></com-bar-chart>-->
                 </div>
             </el-tab-pane>
             <!--<el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>-->

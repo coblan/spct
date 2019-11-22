@@ -52,14 +52,14 @@ class Home(object):
         ]
         
         trend = [
-            {'key': '7','label': '投注人数', }, 
-            {'key': '1','label': '投注', }, 
-            {'key': '2','label': '派奖', }, 
-            {'key': '3','label': '流水', }, 
-            {'key': '4','label': '平台亏盈',}, 
-            {'key': '5','label': '充值', }, 
-            {'key': '6','label': '提现', }, 
-            {'key':'100','label':'在线人数','kind':'my_line'},
+            {'key': '7','label': '投注人数', 'editor':'com-bar-chart'}, 
+            {'key': '1','label': '投注', 'editor':'com-bar-chart'}, 
+            {'key': '2','label': '派奖', 'editor':'com-bar-chart'}, 
+            {'key': '3','label': '流水', 'editor':'com-bar-chart'}, 
+            {'key': '4','label': '平台亏盈','editor':'com-bar-chart'}, 
+            {'key': '5','label': '充值', 'editor':'com-bar-chart'}, 
+            {'key': '6','label': '提现', 'editor':'com-bar-chart'}, 
+            {'key':'100','label':'在线人数','editor':'com-home-area-chart'},
             
         ]
         
@@ -93,9 +93,20 @@ def trend_data(key):
         now = timezone.now()
         now = add_tzinfo( now)
         ago_24 = now - timezone.timedelta(hours =24)
-        for row in  mydb['OnlineDogs'].find({'CreateTime':{'$gte':ago_24,'$lte':now}}):
+        for row in  mydb['OnlineDogs'].find({'CreateTime':{'$gte':ago_24,'$lte':now}}).sort([('CreateTime',1)]):
             createtime = utc2local( row.get('CreateTime') )
-            rows.append({'time':createtime,'amount':row.get('Total')})
+            term = row.get('Terminal')
+            dc ={}
+            for item in term:
+                dc[item['Key']] = item['Count']
+            rows.append({
+                'time':createtime,
+                'android':dc.get('Android',0),
+                'ios':dc.get('Ios',0),
+                'pc':dc.get('Pc',0),
+                'h5':dc.get('H5',0),
+                'unknown':dc.get('Unknown',0)
+                         })
         
     return rows
 
