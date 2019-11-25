@@ -409,6 +409,7 @@ class TbAppversion(models.Model):
     valid = models.BooleanField(db_column='Valid', verbose_name='状态')  # Field name made lowercase.
     plisturl = models.CharField(db_column='PListUrl', max_length=200, blank=True,
                                 null=True)  # Field name made lowercase.
+    minversionname = models.CharField(db_column='MinVersionName', max_length=64, blank=True, null=True,verbose_name='最小版本号')  # Field name made lowercase.
 
     class Meta:
         managed = False
