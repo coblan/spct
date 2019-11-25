@@ -280,8 +280,7 @@ class OtherWebMatchPage(TablePage):
                  'label':'同步匹配关系',
                  'confirm_msg':'确定同步匹配关系?', 
                  'class':'btn-default',
-                  'action':'cfg.show_load();ex.director_call("event_match.sync_match_relation").then((resp)=>{return scope.ps.search()}).then((resp)=>{cfg.hide_load(); cfg.toast("同步完成!")} )'
-                 #'action':'cfg.show_load();ex.director_call("event_match.sync_match_relation").then((resp)=>{cfg.hide_load();cfg.toast("同步完成!");setTimeout(()=>{scope.ps.search()},1500)})'
+                  'action':'cfg.show_load();ex.director_call("event_match_v2.sync_match_relation").then((resp)=>{return scope.ps.search()}).then((resp)=>{cfg.hide_load(); cfg.toast("同步完成!")} )'
                 },
                 
             ]
@@ -554,7 +553,7 @@ def stop_scrapy(rows,**kws):
                'EventId':row.get('eventid'),'SportId':row.get('SportId')}
         notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
-@director_view('event_match.sync_match_relation')
+@director_view('event_match_v2.sync_match_relation')
 def sync_match_relation():
     now = timezone.now().replace(tzinfo=beijin)
     ago_3hour= now - timezone.timedelta(hours=3)
