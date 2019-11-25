@@ -28,6 +28,7 @@ from django.db.models import Count,Q,QuerySet
 from maindb.rabbitmq_instance import notifyMatchRecommond,notifyAdjustOddsBase
 from django.utils import timezone
 from helpers.director.dapi import save_rows
+from maindb.mongoInstance import mydb
 
 import logging
 op_log = logging.getLogger('operation_log')
@@ -121,12 +122,6 @@ class MatchsPage(TablePage):
 
 
         def inn_filter(self, query):
-            #return query.annotate(num_stake = Count('tbticketstake',filter=Q(tbticketstake__status=1) )).extra(select={
-                #'_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
-                #'_sportid_label':'SELECT TB_SportTypes.SportNameZH'},
-                #where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID'],
-                #tables =['TB_Tournament','TB_SportTypes']
-            #).values('num_stake','_tournamentid_label','_sportid_label')
             query = query.extra(select={
                 '_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
                 '_sportid_label':'SELECT TB_SportTypes.SportNameZH',
@@ -135,37 +130,9 @@ class MatchsPage(TablePage):
                 where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1'],
                 tables =['TB_Tournament','TB_SportTypes']
                 )
-            #.values('sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','ishidden',
-                    #'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'marketstatus','weight','ticketdelay','isdangerous',
-                    #'_tournamentid_label','_sportid_label'
-            #)
-            #.extra(select={
-                    #'num_stake':'COUNT( TB_TicketStake.Tid)'},    
-                    #where=['TB_TicketStake.MatchID = TB_Match.MatchID AND TB_TicketStake.Status =1'] ,
-                    #tables =['TB_TicketStake']
-            #)
 
-            #.values('sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','ishidden',
-                    #'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'marketstatus','weight','ticketdelay','isdangerous',
-                    #'_tournamentid_label','_sportid_label'
-            #).extra(select={
-                    #'num_stake':'COUNT( TB_TicketStake.Tid)'},    
-                    #where=['TB_TicketStake.MatchID = TB_Match.MatchID AND TB_TicketStake.Status =1'] ,
-                    #tables =['TB_TicketStake']
-            #)
-            #query.group_by = ['sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','ishidden',
-                    #'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'marketstatus','weight','ticketdelay','isdangerous',
-                    #'_tournamentid_label','_sportid_label']
-            #query = QuerySet(query=query,model=TbMatch)
             return query
-            #.values('sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','ishidden',
-                        #'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'marketstatus','weight','ticketdelay','isdangerous',
-                    #'_tournamentid_label','_sportid_label')
 
-                    #.values('sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','ishidden',
-                    #'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'marketstatus','weight','ticketdelay','isdangerous',
-                    #'_tournamentid_label','_sportid_label'
-            #)
 
         class filters(RowFilter):
             range_fields = ['matchdate']
@@ -230,12 +197,6 @@ class MatchsPage(TablePage):
             names = ['matchdate','ticketdelay']
 
         def get_operation(self):
-            #points_form =  FootBallPoints(crt_user= self.crt_user)
-            #corner_form = NumberOfCorner(crt_user= self.crt_user)
-
-            #PeriodTypeForm_form =  PeriodTypeForm(crt_user= self.crt_user)
-
-            #spoutcome_form =  SpOutcome(crt_user= self.crt_user)
             ops = [
             
                 #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
@@ -276,6 +237,7 @@ class MatchsPage(TablePage):
                   #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
                   #'fields_ctx': PeriodTypeForm_form.get_head_context(),
                  'visible': has_permit(self.crt_user,'TbMatch.quit_ticket')},
+                {'label':'清空直播','editor':'com-op-btn','confirm_msg':'确定要清空','row_match':'many_row','action':'var matchs=ex.map(scope.ps.selected,(item)=>{return item.pk});cfg.show_load();ex.director_call("match.clear_live_url",{matchs:matchs}).then((resp)=>{cfg.hide_load();cfg.toast("清空"+resp.count+"条")})'}
 
             ]
             return ops
@@ -350,6 +312,14 @@ class MatchsPage(TablePage):
                 'num_stake':inst.num_stake,
             }
 
+@director_view('match.clear_live_url')
+def clear_liveurl(matchs):
+    rt = mydb['Match'].update({'MatchID':{'$in':matchs},'LiveUrl':{'$ne':None}},{'$set':{'LiveUrl':None}})
+    return {
+        'count':rt.get('nModified')
+    }
+ 
+    
 #@director_view('get_football_league_options')
 #def get_football_league_options(source=0):
     #ls =[{'label':str(x) ,'value':x.tournamentid} for x in TbTournament.objects.filter(source=source)]
