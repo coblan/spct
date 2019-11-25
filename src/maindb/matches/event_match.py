@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fields,ModelTable,director_view,QuestionException
-from maindb.mongoInstance import mydb
+from maindb.mongoInstance import mydb,beijin,utc
 from maindb.models import TbMatch,TbSporttypes
 from maindb.matches.matches import MatchsPage
 from maindb.rabbitmq_instance import notifyScrapyMatch
@@ -452,7 +452,7 @@ def stop_scrapy(rows,**kws):
 
 @director_view('event_match.sync_match_relation')
 def sync_match_relation():
-    now = timezone.now().replace(tzinfo=beijin)
+    now = timezone.now().replace(tzinfo = beijin)
     ago_3hour= now - timezone.timedelta(hours=3)
     
     for item in mydb['ThirdPartEvent'].find({'EventDateTime':{'$gte':ago_3hour},'MatchID':{'$exists':True}}):
