@@ -44,13 +44,13 @@ class DBOperationHandler(logging.Handler):
                                       #createtime = datetime.datetime.now())
 
 def pop_content(dc, user): 
-    after = dc.pop('after', {})
-    after.update( dc.pop('ex_after', {}) )
+    after = dc.pop('_after', {})
+    after.update( dc.pop('after', {}) )
     model = dc.get('model', 'NULL')
     pk = dc.pop('pk', 'NULL')
     if after:
-        before = dc.pop('before', {})
-        before.update( dc.pop('ex_before', {}) )
+        before = dc.pop('_before', {})
+        before.update( dc.pop('before', {}) )
         
         before_str =  ';'.join( ['%s=%s' % (k, v) for (k, v) in before.items()])
         after_str = ';'.join( ['%s=%s' % (k, v) for (k, v) in after.items()])

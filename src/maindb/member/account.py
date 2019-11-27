@@ -705,8 +705,8 @@ class AccoutModifyAmount(ModelFields):
                                                consumeamount = add_amount,
                                                fundtype = 1 if self.kw.get('fundtype')  else 0,
                                                consumestatus=1,rftype=3,rfid=0,content='后台管理员调账')
-            return {'memo': '调账', 'ex_before': {'amount': self.before_amount},
-                    'ex_after': {'amount': self.instance.amount, }}
+            return {'memo': '调账', 'before': {'amount': self.before_amount},
+                    'after': {'amount': self.instance.amount, }}
 
 
 class ModifyBetFullRecord(ModelFields):
@@ -776,8 +776,8 @@ class ModifyBetFullRecord(ModelFields):
                                                content='后台管理员限额调整')
                 
             after_amount = Decimal(self.kw.get('betfullrecord')) + add_amount
-            return {'memo': '提现限额调整', 'ex_before': {'betfullrecord': self.kw.get('betfullrecord')},
-                    'ex_after': {'betfullrecord': str(after_amount) , }}
+            return {'memo': '提现限额调整', 'before': {'betfullrecord': self.kw.get('betfullrecord')},
+                    'after': {'betfullrecord': str(after_amount) , }}
 
 class AccountTabBase(ModelTable):
     def __init__(self, *args, **kws):
