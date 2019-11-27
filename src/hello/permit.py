@@ -105,6 +105,7 @@ def get_permit(ui=None):
                 {'label':'基本信息','children':[
                       {'label': '查看', 'value': 'TbAccount',}, 
                       {'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
+                      {'label':'指定客服','value':'TbAccount.csuserid','depend':['User.read']}
                     ]},
                 #{'label':'账目记录','value':'TbBalancelog'},
                 #{'label':'银行卡','children':[
@@ -300,8 +301,8 @@ def get_permit(ui=None):
         
         {'label': '系统管理',
          'children': [
-            #{'label': _('查看用户'), 'value': 'User.read',}, 
-             {'label': _('User'), 'value': 'User.write',}, 
+             {'label': '管理员信息查看', 'value': 'User.read',}, 
+             {'label': '管理员信息编辑', 'value': 'User.write',}, 
              {'label': _('Role'), 'value': 'Group',},
              {'label':'用户扩展','children':[
                  {'label':'查看','value':'TbUserex'},

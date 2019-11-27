@@ -76,7 +76,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            #----------------------------------------------------------------
            
            ('TbAccount', model_read_permit(TbAccount), model_to_name(TbAccount), 'model'), 
-           ('TbAccount.edit', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'), 
+           ('TbAccount.edit', model_full_permit(TbAccount,write_exclude=['csuserid']), model_to_name(TbAccount), 'model'), 
+           ('TbAccount.csuserid',json.dumps({"write":['csuserid']}),model_to_name(TbAccount),'model'),
            ('TbBalancelog', model_read_permit(TbBalancelog), model_to_name(TbBalancelog), 'model'), 
            
            ('TbBankcard', model_read_permit(TbBankcard), model_to_name(TbBankcard), 'model'), 
