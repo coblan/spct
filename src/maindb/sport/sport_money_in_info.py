@@ -12,6 +12,10 @@ class SportMoneyInPage(TablePage):
         model =TbSportmoneyininfo
         exclude =[]
 
+director.update({
+    'sportmoneyinfo':SportMoneyInPage.tableCls
+})
+
 page_dc.update({
     'sportmoneyinfo':SportMoneyInPage
 })

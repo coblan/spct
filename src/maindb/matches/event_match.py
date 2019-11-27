@@ -428,27 +428,28 @@ class MatchPicker(MatchsPage.tableCls):
             else:
                 return super().get_express(q_str)
     
-
-@director_view('event_match.start_scrapy')
-def start_scrapy(rows,**kws):
-    matchid_list = [row.get('MatchID') for row in rows]
-    for inst in TbMatch.objects.filter(matchid__in = matchid_list).exclude(marketstatus=2):
-        raise UserWarning('%s不是滚球状态，不能触发抓取'% inst)
+# 被Event_match1 同名替换了
+#@director_view('event_match.start_scrapy')
+#def start_scrapy(rows,**kws):
+    #matchid_list = [row.get('MatchID') for row in rows]
+    #for inst in TbMatch.objects.filter(matchid__in = matchid_list).exclude(marketstatus=2):
+        #raise UserWarning('%s不是滚球状态，不能触发抓取'% inst)
     
-    #if mydb['Event'].find({"ContrastStatus":1}).count() +len(rows) > 20:
-        #raise UserWarning('最多同时爬取20场比赛!')
+    ##if mydb['Event'].find({"ContrastStatus":1}).count() +len(rows) > 20:
+        ##raise UserWarning('最多同时爬取20场比赛!')
     
-    for row in rows:
-        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start','TeamSwap':row.get('TeamSwap'),
-               'EventId':row.get('eventid'),'SportId':row.get('SportId')}
-        notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
+    #for row in rows:
+        #msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Start','TeamSwap':row.get('TeamSwap'),
+               #'EventId':row.get('eventid'),'SportId':row.get('SportId')}
+        #notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
-@director_view('event_match.stop_scrapy')
-def stop_scrapy(rows,**kws):
-    for row in rows:
-        msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop','TeamSwap':row.get('TeamSwap'),
-               'EventId':row.get('eventid'),'SportId':row.get('SportId')}
-        notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
+# 被Event_match1 同名替换了
+#@director_view('event_match.stop_scrapy')
+#def stop_scrapy(rows,**kws):
+    #for row in rows:
+        #msg = {'MatchID':row.get('MatchID'),'Eid':row.get('Eid'),'EventTeam':row.get('EventTeam'),'Source':'Backend','Action':'Stop','TeamSwap':row.get('TeamSwap'),
+               #'EventId':row.get('eventid'),'SportId':row.get('SportId')}
+        #notifyScrapyMatch( json.dumps( msg,ensure_ascii=False) )
 
 @director_view('event_match.sync_match_relation')
 def sync_match_relation():

@@ -30,7 +30,7 @@ page_dc = {
     "account"	:maindb.member.account.AccountPage,
     "operation_log"	:maindb.member.operation_log.OperationLog,
     "ReleventUser"	:maindb.member.relevent_user.ReleventUserPage,
-    "chum_user"	:maindb.member.chum_user.ChumUser,
+    #"chum_user"	:maindb.member.chum_user.ChumUser,
     "maindb.TbOdds"	:maindb.matches.odds.OddsPage,
     "basketball_matchs"	:maindb.matches.basketball_matches.BasketMatchsPage,
     "BasketballMatchesStatisticsPage"	:maindb.matches.basketball_matches_statistics.BasketballMatchesStatisticsPage,
@@ -104,6 +104,15 @@ page_dc = {
     "agprofitloss"	:maindb.ag.profitloss.AgprofitlossPage,
     "gamemoneyininfo"	:maindb.ag.gamemoneyinfo.GameMoneyininfoPage,
     "gamemoneyoutinfo"	:maindb.ag.gamemoneyoutinfo.GamemoneyoutinfoPage,
+    
+    "sportprofitloss"	:maindb.sport.sport_profitloss.SportProfitlossPage,
+    "web_match_data1"	:maindb.matches.event_match1.OtherWebMatchPage,
+    "admin_ip"	:maindb.admin_administrator_ip.AdminIpPage,
+    "bacnend_loginlog"	:maindb.admin_backend.login_log.BackendLoginlogPage,
+    "googlecode"	:maindb.admin_backend.admin_google_code.GoogleCode,
+    "sportaccount"	:maindb.sport.sport_account.SportAccountPage,
+    "sportmoneyinfo"	:maindb.sport.sport_money_in_info.SportMoneyInPage,
+    "sportmoneyout"	:maindb.sport.sport_money_out.SportmoneyOutInfo,
 }
 director = {
     "cloudfile_uploader"	:maindb.cus_models_fields.CloudFileUploader,
@@ -316,11 +325,31 @@ director = {
     "agprofitloss"	:maindb.ag.profitloss.AgprofitlossPage.tableCls,
     "gamemoneyininfo"	:maindb.ag.gamemoneyinfo.GameMoneyininfoPage.tableCls,
     "gamemoneyoutinfo"	:maindb.ag.gamemoneyoutinfo.GamemoneyoutinfoPage.tableCls,
+    
+    "Withdraw_GoogleCode"	:maindb.money.withdraw.WithDrawFormGoogle,
+    "sportprofitloss"	:maindb.sport.sport_profitloss.SportProfitlossPage.tableCls,
+    "account.userlogtab"	:maindb.member.account.UserlogTab,
+    "account.memo.form"	:maindb.member.account.MemoForm,
+    "account.single_user_statistic"	:maindb.member.account.SingleUserStatistic,
+    "account.related_user"	:maindb.member.account.RelatedUserTab,
+    "account.agprofitloss"	:maindb.member.account.AgprofitLosTab,
+    "account.sbprofitloss"	:maindb.member.account.SBprofitLosTab,
+    "web_match_data1"	:maindb.matches.event_match1.OtherWebMatchPage.tableCls,
+    "web_match_data1.edit_self"	:maindb.matches.event_match1.WebMatchForm,
+    "matchpicker1"	:maindb.matches.event_match1.MatchPicker,
+    "new_match_form1"	:maindb.matches.event_match1.NewMatchForm,
+    "admin_ip"	:maindb.admin_administrator_ip.AdminIpPage.tableCls,
+    "admin_ip.edit"	:maindb.admin_administrator_ip.AdminIpForm,
+    "bacnend_loginlog"	:maindb.admin_backend.login_log.BackendLoginlogPage.tableCls,
+    "googlecode"	:maindb.admin_backend.admin_google_code.GoogleCode.fieldsCls,
+    "sportaccount"	:maindb.sport.sport_account.SportAccountPage.tableCls,
+    "sportaccount.edit"	:maindb.sport.sport_account.SportAccountForm,
+    "sportmoneyout"	:maindb.sport.sport_money_out.SportmoneyOutInfo.tableCls,
 }
 director_views = {
     "get_row"	:helpers.director.dapi.get_row,
     "save_rows"	:helpers.director.dapi.save_rows,
-    "do_login"	:helpers.authuser.admin_login.do_login,
+    #"do_login"	:helpers.authuser.admin_login.do_login,
     "match.quit_ticket"	:maindb.matches.matches.quit_ticket,
     "match.livescout_status"	:maindb.matches.matches.match_livescout_status,
     "match.add_livescout"	:maindb.matches.matches.add_livescout,
@@ -341,13 +370,29 @@ director_views = {
     "trend_data"	:hello.admin.trend_data,
     "batch_recommand"	:maindb.matches.matches.batch_recommand,
     "d.save_row"	:helpers.director.dapi.save_row,
-    "event_match.start_scrapy"	:maindb.matches.event_match.start_scrapy,
+    
+    #"event_match.start_scrapy"	:maindb.matches.event_match.start_scrapy, 
+    #"event_match.stop_scrapy"	:maindb.matches.event_match.stop_scrapy,
+    "event_match.start_scrapy"	:maindb.matches.event_match1.start_scrapy,
+    "event_match.stop_scrapy"	:maindb.matches.event_match1.stop_scrapy,
+    
     "d.get_row"	:helpers.director.dapi.get_row,
     "d.save_rows"	:helpers.director.dapi.save_rows,
     "match.makesure_ticketmaster"	:maindb.matches.ticket_master.make_sure_ticketmaster,
-    "event_match.stop_scrapy"	:maindb.matches.event_match.stop_scrapy,
+    
     "leaguegroup.paste_market_weight"	:maindb.riskcontrol.new_league_group.paste_market_weight,
     "call_client"	:maindb.kefu.call_client,
+     "d.get_rows"	:helpers.director.dapi.get_rows,
+    "d.get_head_context"	:helpers.director.dapi.get_head_context,
+    "d.director_element_call"	:helpers.director.dapi.director_element_call,
+    "do_login"	:maindb.login.Login.run,
+    "do_logout"	:helpers.authuser.admin_login.do_logout,
+    "authuser.changepswd"	:maindb.login.ChangePswdLogic.changepswd,
+    "match.clear_live_url"	:maindb.matches.matches.clear_liveurl,
+    "event_match.sync_match_relation"	:maindb.matches.event_match.sync_match_relation,
+    "get_league_options"	:maindb.matches.event_match1.get_league_options,
+    "event_match_v2.sync_match_relation"	:maindb.matches.event_match1.sync_match_relation,
+    "ag/redraw_left_money"	:maindb.ag.ag_account.redraw_left_money,
 }
 sim_signal = {
     "notice.static.changed"	:[maindb.update_cache.clear_notice_cache],
@@ -391,5 +436,8 @@ field_map = {
     "maindb.tbareablacklist.status"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
     "maindb.tbrechargeareablacklist.status"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
     "maindb.tbleaguegroup.enabled"	:helpers.director.model_func.field_procs.intBoolProc.IntBoolProc,
+    
+    helpers.director.model_func.cus_fields.form_datetime.FormDatetime	:helpers.director.model_func.cus_fields.form_datetime.FormDatetimeProc,
+    helpers.director.model_func.cus_fields.multichoice.MultiChoiceField	:helpers.director.model_func.cus_fields.multichoice.MultiChoiceProc,
 }
 
