@@ -131,7 +131,12 @@ class League(TablePage):
 
 class LeagueForm(ModelFields):
     readonly = ['source']
-
+    
+    def clean_dict(self, dc):
+        if 'tournamentid' in dc:
+            dc['tournamentid']=self.get_new_tournament_id()
+        return dc
+    
     def dict_head(self, head):
         if head['name'] == 'tournamentid':
             head['readonly']=True
@@ -158,8 +163,13 @@ class LeagueForm(ModelFields):
             ishiddern =  not bool( self.cleaned_data.get('issubscribe') )
             TbMatch.objects.filter(tournamentid=self.instance.tournamentid,matchdate__gte=timezone.now() ).update(ishidden=True)
         if not self.instance.pk:
-            self.instance.tournamentid = self.get_new_tournament_id()
+            #self.instance.tournamentid = self.get_new_tournament_id()
+            self.instance.uniquetournamentid = self.instance.tournamentid
             self.instance.categoryid = 0
+            self.instance.oddsadjustment = 0
+            self.instance.oddsadjustmax= 0
+            self.instance.baseticketeamout = 0
+            
             
     
     def save_form(self):
@@ -183,7 +193,7 @@ class LeagueForm(ModelFields):
             notifyLeagueGroup(json.dumps({'type':2,'id':self.instance.tournamentid}))
         
     def get_new_tournament_id(self):
-        lastone = TbTournament.objects.order_by('tournamentid').first() 
+        lastone = TbTournament.objects.order_by('-tournamentid').first() 
         return max([1*1000*1000,lastone.tournamentid]) +1
     
     def dict_row(self, inst): 
