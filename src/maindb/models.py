@@ -2265,9 +2265,9 @@ class TbTicketstake(models.Model):
 class TbTournament(models.Model):
     tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
     #sportid = models.IntegerField(db_column='SportID', blank=True, null=True,choices=SPORTID_OPTION_2,verbose_name='运动类型')  # Field name made lowercase.
-    tournamentid = models.IntegerField(db_column='TournamentID', verbose_name='联赛ID',unique=True)  # Field name made lowercase.
+    tournamentid = models.IntegerField(db_column='TournamentID', verbose_name='联赛ID',unique=True,)  # Field name made lowercase.
     tournamentname = models.CharField(db_column='TournamentName', max_length=200,
-                                      verbose_name='联赛名称')  # Field name made lowercase.
+                                      verbose_name='英文名')  # Field name made lowercase.
     tournamentnamezh = models.CharField(db_column='TournamentNameZH', max_length=200,verbose_name='中文名')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.
     

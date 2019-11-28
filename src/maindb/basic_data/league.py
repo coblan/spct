@@ -21,7 +21,7 @@ class League(TablePage):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime',]
         pop_edit_field = 'tournamentid'
-        fields_sort = ['sport','tournamentid', 'tournamentname', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',
+        fields_sort = ['sport','tournamentid', 'tournamentname','tournamentnamezh', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',
                        'adjusttemplate','handicapcount','group']
 
         # hide_fields = ['tournamentid']
@@ -40,6 +40,7 @@ class League(TablePage):
                 'tournamentid': 120,
                 'categoryid': 100,
                 'tournamentname': 250,
+                'tournamentnamezh':250,
                 'createtime': 120,
                 'typegroupswitch': 300,
                 'oddsadjustment' :100,
@@ -62,41 +63,45 @@ class League(TablePage):
             }
 
         def get_operation(self):
-            if can_write(self.model,self.crt_user):
-                return [
-                    {'fun':'selected_set_and_save','label':'订阅','editor':'com-op-btn',
-                     'confirm_msg':'确认订阅这些联赛?',
-                     'row_match':'many_row','pre_set':'rt={issubscribe:1}',
-                     'visible':'issubscribe' in self.permit.changeable_fields()
-                     },
-                    {'fun':'selected_set_and_save','label':'取消订阅','editor':'com-op-btn',
-                     'confirm_msg':'确认取消订阅这些联赛?',
-                     'row_match':'many_row','pre_set':'rt={issubscribe:0}',
-                     'visible':'issubscribe' in self.permit.changeable_fields()
-                     },
-                    {'fun':'selected_set_and_save','label':'走地','editor':'com-op-btn',
-                     'confirm_msg':'确认开启这些联赛的走地?',
-                     'row_match':'many_row','pre_set':'rt={closelivebet:0}',
-                     'visible':'closelivebet'in self.permit.changeable_fields()},
-                    {'fun':'selected_set_and_save','label':'取消走地','editor':'com-op-btn',
-                      'confirm_msg':'确认关闭这些联赛的走地?',
-                     'row_match':'many_row','pre_set':'rt={closelivebet:1}',
-                     'visible':'closelivebet'in self.permit.changeable_fields()},
-                    {'fun':'selected_set_and_save','label':'推荐','editor':'com-op-btn',
-                      'confirm_msg':'确认推介这些联赛?', 
-                      #'after_save':'ex.director_call("notify_tournament_recommend",{rows:scope.rows})',
-                     'row_match':'many_row','pre_set':'rt={isrecommend:1}',
-                     'visible':'isrecommend'in self.permit.changeable_fields()},
-                    {'fun':'selected_set_and_save','label':'取消推荐','editor':'com-op-btn',
-                      'confirm_msg':'取消推介这些联赛?',
-                     'row_match':'many_row','pre_set':'rt={isrecommend:0}',
-                     'visible':'isrecommend'in self.permit.changeable_fields()},
-                    #{'label':'推介','editor':'com-op-btn','row_match':'many_row',
-                     #'action':''' if(scope.ps.check_selected(scope.head)){ cfg.confirm("确定推介联赛?").then(()=>{
-                     #scope.selected.forEach(item=>{item.isrecommend=true}) ; return ex.director_call("save_rows",{rows:})}) }'''}
+            ops =[]
+            super_ops = super().get_operation()
+            for op in super_ops:
+                if op['name'] =='add_new':
+                    ops.append(op)
+            #if can_write(self.model,self.crt_user):
+            ops +=  [
+                {'fun':'selected_set_and_save','label':'订阅','editor':'com-op-btn',
+                 'confirm_msg':'确认订阅这些联赛?',
+                 'row_match':'many_row','pre_set':'rt={issubscribe:1}',
+                 'visible':'issubscribe' in self.permit.changeable_fields()
+                 },
+                {'fun':'selected_set_and_save','label':'取消订阅','editor':'com-op-btn',
+                 'confirm_msg':'确认取消订阅这些联赛?',
+                 'row_match':'many_row','pre_set':'rt={issubscribe:0}',
+                 'visible':'issubscribe' in self.permit.changeable_fields()
+                 },
+                {'fun':'selected_set_and_save','label':'走地','editor':'com-op-btn',
+                 'confirm_msg':'确认开启这些联赛的走地?',
+                 'row_match':'many_row','pre_set':'rt={closelivebet:0}',
+                 'visible':'closelivebet'in self.permit.changeable_fields()},
+                {'fun':'selected_set_and_save','label':'取消走地','editor':'com-op-btn',
+                  'confirm_msg':'确认关闭这些联赛的走地?',
+                 'row_match':'many_row','pre_set':'rt={closelivebet:1}',
+                 'visible':'closelivebet'in self.permit.changeable_fields()},
+                {'fun':'selected_set_and_save','label':'推荐','editor':'com-op-btn',
+                  'confirm_msg':'确认推介这些联赛?', 
+                  #'after_save':'ex.director_call("notify_tournament_recommend",{rows:scope.rows})',
+                 'row_match':'many_row','pre_set':'rt={isrecommend:1}',
+                 'visible':'isrecommend'in self.permit.changeable_fields()},
+                {'fun':'selected_set_and_save','label':'取消推荐','editor':'com-op-btn',
+                  'confirm_msg':'取消推介这些联赛?',
+                 'row_match':'many_row','pre_set':'rt={isrecommend:0}',
+                 'visible':'isrecommend'in self.permit.changeable_fields()},
+                #{'label':'推介','editor':'com-op-btn','row_match':'many_row',
+                 #'action':''' if(scope.ps.check_selected(scope.head)){ cfg.confirm("确定推介联赛?").then(()=>{
+                 #scope.selected.forEach(item=>{item.isrecommend=true}) ; return ex.director_call("save_rows",{rows:})}) }'''}
                 ]
-            else:
-                return []
+            return ops
 
         class sort(RowSort):
             names = ['sort','weight','ticketdelay','handicapcount']
@@ -125,9 +130,11 @@ class League(TablePage):
 
 
 class LeagueForm(ModelFields):
-    readonly = ['tournamentid','source']
+    readonly = ['source']
 
     def dict_head(self, head):
+        if head['name'] == 'tournamentid':
+            head['readonly']=True
         if head['name'] == 'typegroupswitch':
             head['options'] = [{'value': str(x.marketid), 'label': x.marketnamezh, } for x in
                                TbMarkets.objects.filter(enabled=1)]
@@ -150,6 +157,10 @@ class LeagueForm(ModelFields):
         if 'issubscribe' in self.changed_data:
             ishiddern =  not bool( self.cleaned_data.get('issubscribe') )
             TbMatch.objects.filter(tournamentid=self.instance.tournamentid,matchdate__gte=timezone.now() ).update(ishidden=True)
+        if not self.instance.pk:
+            self.instance.tournamentid = self.get_new_tournament_id()
+            self.instance.categoryid = 0
+            
     
     def save_form(self):
         super().save_form()
@@ -171,10 +182,14 @@ class LeagueForm(ModelFields):
         if 'group' in self.changed_data or 'handicapcount' in self.changed_data or 'minodds' in self.changed_data:
             notifyLeagueGroup(json.dumps({'type':2,'id':self.instance.tournamentid}))
         
-        
+    def get_new_tournament_id(self):
+        lastone = TbTournament.objects.order_by('tournamentid').first() 
+        return max([1*1000*1000,lastone.tournamentid]) +1
+    
     def dict_row(self, inst): 
         return {
             'openlivebet': not inst.closelivebet,
+            'tournamentid': inst.tournamentid or self.get_new_tournament_id()
         }
 
     class Meta:

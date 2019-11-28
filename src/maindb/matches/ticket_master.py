@@ -41,7 +41,7 @@ class TicketstakeTable(ModelTable):
 
     def getExtraHead(self):
         return [
-            {'name': 'matchname', 'label': '比赛', 'width': 200, },
+            {'name': 'matchname', 'label': '比赛', 'width': 200,'editor':'com-table-rich-span','cell_class':'scope.row.ticketstake_match_source==2?"jjyy":""','css':'.jjyy{color:black;background-color:#F7DF9C}' },
             {'name': 'tournament', 'label': '联赛', 'width': 160, },
         ]
 
@@ -54,6 +54,7 @@ class TicketstakeTable(ModelTable):
             'matchname': '{team1zh} VS {team2zh}'.format(team1zh=inst.matchid.team1zh, team2zh=inst.matchid.team2zh),
             'ticketbetstopdiff':inst.ticketbetstopdiff/1000 if inst.ticketbetstopdiff else '',
             'ticket_master':inst.ticket_master_id,
+            'match_source':inst.matchid.source
         }
 
     def dict_head(self, head):
@@ -102,7 +103,7 @@ class TicketstakeEmbedTable(TicketstakeTable):
         
         if head['name'] == 'matchid':
             head['editor'] = 'com-table-click'
-            head['action']='debugger;scope.head["par_row"]={matchid:scope.row.ticketstake_matchid,sportid:scope.row.ticketstake_sportid};scope.ps.switch_to_tab(scope.head)'
+            head['action']='scope.head["par_row"]={matchid:scope.row.ticketstake_matchid,sportid:scope.row.ticketstake_sportid};scope.ps.switch_to_tab(scope.head)'
             head['tab_name']='match_base_info'
             head['ctx_name']='match_tabs'
         
