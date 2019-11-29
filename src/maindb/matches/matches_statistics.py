@@ -160,7 +160,7 @@ class MatchesStatisticsPage(TablePage):
 
         def getExtraHead(self):
             return [
-                {'name':'Source','label':'来源','editor':'com-table-mapper','options':[{'value':1,'label':'Betradar',},{'value':2,'label':'188'}]},
+                {'name':'Source','label':'数据源','editor':'com-table-mapper','options':[{'value':1,'label':'Betradar',},{'value':2,'label':'188'}]},
                 {'name': 'TournamentName', 'label': '联赛 ', 'width': 150},
                 # {'name': 'MatchID', 'label': 'MatchID', },
                 
