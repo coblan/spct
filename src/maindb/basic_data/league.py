@@ -171,6 +171,9 @@ class LeagueForm(ModelFields):
             self.instance.baseticketeamout = 0
             
             
+    def after_save(self):
+        if self.is_create:
+            redisInst.delete('tournament:')
     
     def save_form(self):
         super().save_form()
