@@ -64,10 +64,12 @@ class League(TablePage):
 
         def get_operation(self):
             ops =[]
-            super_ops = super().get_operation()
-            for op in super_ops:
-                if op['name'] =='add_new':
-                    ops.append(op)
+            # 临时屏蔽
+            #super_ops = super().get_operation()
+            #for op in super_ops:
+                #if op['name'] =='add_new':
+                    #ops.append(op)
+                    
             #if can_write(self.model,self.crt_user):
             ops +=  [
                 {'fun':'selected_set_and_save','label':'订阅','editor':'com-op-btn',
