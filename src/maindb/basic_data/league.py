@@ -134,10 +134,6 @@ class League(TablePage):
 class LeagueForm(ModelFields):
     readonly = ['source']
     
-    def clean_dict(self, dc):
-        if 'tournamentid' in dc:
-            dc['tournamentid']=self.get_new_tournament_id()
-        return dc
     
     def dict_head(self, head):
         if head['name'] == 'tournamentid':
@@ -164,8 +160,9 @@ class LeagueForm(ModelFields):
         if 'issubscribe' in self.changed_data:
             ishiddern =  not bool( self.cleaned_data.get('issubscribe') )
             TbMatch.objects.filter(tournamentid=self.instance.tournamentid,matchdate__gte=timezone.now() ).update(ishidden=True)
-        if not self.instance.pk:
-            #self.instance.tournamentid = self.get_new_tournament_id()
+        #if not self.instance.pk:
+        if self.is_create:
+            self.instance.tournamentid = self.get_new_tournament_id()
             self.instance.uniquetournamentid = self.instance.tournamentid
             self.instance.categoryid = 0
             self.instance.oddsadjustment = 0
