@@ -105,7 +105,7 @@ class League(TablePage):
             return ops
 
         class sort(RowSort):
-            names = ['sort','weight','ticketdelay','handicapcount']
+            names = ['sort','weight','ticketdelay','handicapcount','tournamentid']
 
         class search(SelectSearch):
             names = ['tournamentname', 'tournamentid']

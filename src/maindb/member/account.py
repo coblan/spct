@@ -697,7 +697,7 @@ class AccoutModifyAmount(ModelFields):
             #before_amount = self.instance.amount
             self.instance.amount = self.before_amount + add_amount
             TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
-                                        amount=abs( self.changed_amount), afteramount=self.instance.amount, creater=self.crt_user.username,
+                                        amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='Backend',
                                         memo='调账', accountid=self.instance, categoryid_id=moenycategory,
                                         cashflow=cashflow)
             if add_amount > 0 and self.kw.get('is_Betfullrecord'):
