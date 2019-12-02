@@ -64,11 +64,10 @@ class League(TablePage):
 
         def get_operation(self):
             ops =[]
-            # 临时屏蔽
-            #super_ops = super().get_operation()
-            #for op in super_ops:
-                #if op['name'] =='add_new':
-                    #ops.append(op)
+            super_ops = super().get_operation()
+            for op in super_ops:
+                if op['name'] =='add_new':
+                    ops.append(op)
                     
             #if can_write(self.model,self.crt_user):
             ops +=  [
