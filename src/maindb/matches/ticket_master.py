@@ -228,6 +228,7 @@ class TicketMasterPage(TablePage):
                 now = timezone.now()
                 start = ( now-timezone.timedelta(days=1) ) .strftime('%Y-%m-%d 00:00:00')
                 search_args['_start_createtime'] = start
+                search_args['status'] =[0,1,2,11]
             return search_args
         
         def dict_head(self, head):
@@ -481,6 +482,12 @@ class TicketMasterPage(TablePage):
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
             names = ['status','audit', 'winbet','terminal','accountid__accounttype']
+            
+            def dict_head(self, head):
+                if head['name'] =='status':
+                    head['editor'] = 'com-filter-multi-select'
+                    head['width']='170px'
+                return head
             
             def getExtraHead(self):
                 return [
