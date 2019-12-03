@@ -15,7 +15,7 @@ class EveryDayReportPage(TablePage):
                   'deductionamount','ddditionamount','ebankamount','createtime']
         fields_sort=['starttime','userprofit','betamount','finishbetamount','betoutcome','bonusamount','turnover',
                      'rechargeamount','withdrawamount','activityamount','backendamount','betusernum','newusernum','withdrawusernum',
-                     'rechargeusernum','betnum',]
+                     'rechargeusernum','betnum','loginusernum','rechargeonsignindaynum']
         
         def dict_row(self, inst):
             return {
@@ -44,7 +44,8 @@ class EveryDayReportPage(TablePage):
         
         def statistics(self, query):
             sum_list = ['betnum','betamount','finishbetamount','turnover','betoutcome','bonusamount','firstrechargeamount','secondrechargeamount',
-                        'birthdayamount','backendamount','userprofit','activityamount','rechargeamount','withdrawamount','betusernum','newusernum','withdrawusernum','rechargeusernum']
+                        'birthdayamount','backendamount','userprofit','activityamount','rechargeamount','withdrawamount','betusernum','newusernum','withdrawusernum','rechargeusernum',
+                        'loginusernum','rechargeonsignindaynum']
             filters={}
             for item in sum_list:
                 filters['total_%s'%item] = Sum(item)

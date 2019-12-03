@@ -3076,7 +3076,9 @@ class TbTrendstatistics(models.Model):
     newusernum = models.IntegerField(db_column='NewUserNum',verbose_name='注册人数')  # Field name made lowercase.
     withdrawusernum = models.IntegerField(db_column='WithdrawUserNum',verbose_name='提现人数')  # Field name made lowercase.
     rechargeusernum = models.IntegerField(db_column='RechargeUserNum',verbose_name='充值人数')  # Field name made lowercase.
-
+    loginusernum = models.IntegerField(db_column='LoginUserNum',verbose_name='登录用户数')  # Field name made lowercase.
+    rechargeonsignindaynum = models.IntegerField(db_column='RechargeOnSignInDayNum',verbose_name='每日首冲')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_TrendStatistics'
