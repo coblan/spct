@@ -22,7 +22,7 @@ class League(TablePage):
         exclude = ['categoryid', 'uniquetournamentid', 'createtime','reopenmarketsdelay']
         pop_edit_field = 'tournamentid'
         fields_sort = ['sport','tournamentid', 'tournamentname','tournamentnamezh', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',
-                       'adjusttemplate','handicapcount','group']
+                       'adjusttemplate','liveadjusttemplateid','handicapcount','group']
 
         # hide_fields = ['tournamentid']
 
