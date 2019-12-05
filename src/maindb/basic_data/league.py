@@ -141,7 +141,7 @@ class LeagueForm(ModelFields):
             head['options'] = [{'value': str(x.marketid), 'label': x.marketnamezh, } for x in
                                TbMarkets.objects.filter(enabled=1)]
         if head['name']=='weight':
-            head['fv_rule']='range(0.001~500)'
+            head['fv_rule']='range(0~500)'
             
         if head['name'] in [ 'oddsadjustment','oddsadjustmax']:
             head['fv_rule']='range(0~0.99);digit(2)'
