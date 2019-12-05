@@ -18,7 +18,7 @@ class LeagueGroupPage(TablePage):
     
     class tableCls(ModelTable):
         model = TbLeagueGroup
-        exclude = ['reopenmarketsdelay']
+        exclude = []
         #pop_edit_fields=['id']
         hide_fields=['riskleveldelay']
         
@@ -129,7 +129,7 @@ class LeagureGroupForm(ModelFields):
     hide_fields=['id']
     class Meta:
         model = TbLeagueGroup
-        exclude =['reopenmarketsdelay']
+        exclude =[]
     
     def dict_head(self, head):
         if head['name'] == 'riskleveldelay':
