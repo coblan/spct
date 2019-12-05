@@ -19,7 +19,7 @@ class League(TablePage):
 
     class tableCls(ModelTable):
         model = TbTournament
-        exclude = ['categoryid', 'uniquetournamentid', 'createtime',]
+        exclude = ['categoryid', 'uniquetournamentid', 'createtime','reopenmarketsdelay']
         pop_edit_field = 'tournamentid'
         fields_sort = ['sport','tournamentid', 'tournamentname','tournamentnamezh', 'isrecommend','issubscribe', 'openlivebet', 'weight','ticketdelay','sort', 'typegroupswitch',
                        'adjusttemplate','handicapcount','group']
@@ -206,7 +206,7 @@ class LeagueForm(ModelFields):
     class Meta:
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid',
-                   'oddsadjustment','oddsadjustmax','baseticketeamout',]
+                   'oddsadjustment','oddsadjustmax','baseticketeamout','reopenmarketsdelay']
 
 #def notify_tournament_recommend(rows):
     #ls =[x['pk'] for x in rows]

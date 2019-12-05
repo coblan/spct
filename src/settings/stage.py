@@ -19,7 +19,7 @@ DATABASES = {
         'NAME':'BackendUserInfo',
         'USER':  'develop',#'Backend'  ,  
         'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
-        #'PORT': '1436',
+        #'PORT': '1436', 
         #192.168.40.6 Sports_20181214_2
         'OPTIONS': {
             'autocommit': True,
