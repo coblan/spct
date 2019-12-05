@@ -22,9 +22,11 @@ DATABASES = {
         #'PORT': '1436',
         #192.168.40.6 Sports_20181214_2
         'OPTIONS': {
-            #'driver': 'ODBC Driver 11 for SQL Server',
-            #'driver':'SQL Server Native Client 11.0',
-            #'MARS_Connection': True,
+            'autocommit': True,
+            'host_is_server': True,
+            'unicode_results': True,
+            'driver': 'FreeTDS',
+            'extra_params': 'tds_version=8.0',
               },
                
        } ,
