@@ -125,7 +125,11 @@ class MatchsPage(TablePage):
             query = query.extra(select={
                 '_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
                 '_sportid_label':'SELECT TB_SportTypes.SportNameZH',
-                'num_stake':'SELECT COUNT( 1) FROM TB_TicketMaster, TB_TicketStake  WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND TB_TicketMaster.Status =1'
+                'num_stake':'''SELECT COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
+                TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
+                TB_TicketMaster.Status =1 AND 
+                TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
                 },
                 where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1'],
                 tables =['TB_Tournament','TB_SportTypes']

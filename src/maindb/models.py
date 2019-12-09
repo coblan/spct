@@ -3140,3 +3140,17 @@ class TbUserex(models.Model):
     
     def __str__(self):
         return self.extnumber or ''
+    
+class TbTeammapping(models.Model):
+    id = models.AutoField(db_column='ID',primary_key=True)  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID')  # Field name made lowercase.
+    source = models.IntegerField(db_column='Source')  # Field name made lowercase.
+    sourceteamnameen = models.CharField(db_column='SourceTeamNameEn', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    sourceteamnamezh = models.CharField(db_column='SourceTeamNameZh', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    teamnameen = models.CharField(db_column='TeamNameEn', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    teamnamezh = models.CharField(db_column='TeamNameZh', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    teamid = models.IntegerField(db_column='TeamID', blank=True, null=True)  # Field name made lowercase.
+    mappingkey = models.CharField(db_column='MappingKey', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    class Meta:
+        managed = False
+        db_table = 'TB_TeamMapping'

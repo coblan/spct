@@ -1,6 +1,6 @@
 from helpers.director.shortcut import TablePage,PlainTable,page_dc,director,Fields,ModelTable,director_view,ModelFields
-from maindb.mongoInstance import mydb
-from maindb.models import TbMatch,TbSporttypes,TbTournament
+from maindb.mongoInstance import mydb,mongo2tm
+from maindb.models import TbMatch,TbSporttypes,TbTournament,TbTeammapping
 from maindb.matches.matches import MatchsPage
 from maindb.rabbitmq_instance import notifyScrapyMatch,notifyMatchMaping
 import json
@@ -27,11 +27,11 @@ def tm2mongo(dt):
     #return tmp.astimezone(beijin)
     return tmp
 
-def mongo2tm(dt):
-    if not dt:
-        return dt
-    dd = dt.replace(tzinfo=utc)
-    return dd.astimezone(beijin)
+#def mongo2tm(dt):
+    #if not dt:
+        #return dt
+    #dd = dt.replace(tzinfo=utc)
+    #return dd.astimezone(beijin)
 
 class OtherWebMatchPage(TablePage):
     def get_label(self):
@@ -139,6 +139,7 @@ class OtherWebMatchPage(TablePage):
                     ]},
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-table-bool-shower'},
                 {'name':'Reason','label':'原因','editor':'com-table-span'},
+                {'name':'AutoMap','label':'自动匹配','editor':'com-table-bool-shower'},
             ]
         
         def get_rows(self):
@@ -282,6 +283,22 @@ class OtherWebMatchPage(TablePage):
                  'class':'btn-default',
                   'action':'cfg.show_load();ex.director_call("event_match_v2.sync_match_relation").then((resp)=>{return scope.ps.search()}).then((resp)=>{cfg.hide_load(); cfg.toast("同步完成!")} )'
                 },
+                {
+                    'editor':'com-op-btn',
+                    'label':'自动批量匹配',
+                    'action':'''
+                    cfg.confirm("批量匹配需要花费一定时间，是否开始自动匹配？").then(()=>{
+                         cfg.show_load();
+                         return ex.director_call("event_match.auto_mapping_match")
+                   }).then((resp)=>{
+                        cfg.hide_load()
+                        scope.ps.search()
+                        cfg.showMsg("自动匹配"+resp.count + " 条比赛!")
+                    })
+                    ''',
+                    'visible':False
+                
+                }
                 
             ]
         
@@ -482,6 +499,7 @@ class WebMatchForm(Fields):
             dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid'),
                   'MatchSource':match.source
                   } 
+            self.record_team_map(match)
         else:
             dc = {'MatchID':None,
                   'TeamSwap':None,
@@ -492,6 +510,60 @@ class WebMatchForm(Fields):
         dc['Eid'] = self.kw.get('Eid')
         operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
         #notifyMatchMaping(json.dumps({'Eid':self.kw.get('Eid')}))
+    def record_team_map(self,match):
+        if self.kw.get('TeamSwap'):
+            home_id = match.team2id
+            away_id = match.team1id
+            home_source ={
+                'sourceteamnameen':self.kw.get('Team2En'),
+                'sourceteamnamezh':self.kw.get('Team2Zh'),
+            }
+            home_local ={
+                'teamnameen':self.kw.get('team2en'),
+                'teamnamezh':self.kw.get('team2zh'),
+            }
+            away_source={
+                'sourceteamnameen':self.kw.get('Team1En'),
+                'sourceteamnamezh':self.kw.get('Team1Zh'),
+            }
+            away_local={
+                'teamnameen':self.kw.get('team1en'),
+                'teamnamezh':self.kw.get('team1zh'),
+            }
+        else:
+            home_id = match.team1id
+            away_id = match.team2id
+            home_source ={
+                'sourceteamnameen':self.kw.get('Team1En'),
+                'sourceteamnamezh':self.kw.get('Team1Zh'),
+            }
+            home_local ={
+                'teamnameen':self.kw.get('team1en'),
+                'teamnamezh':self.kw.get('team1zh'),
+            }
+            away_source={
+                'sourceteamnameen':self.kw.get('Team2En'),
+                'sourceteamnamezh':self.kw.get('Team2Zh'),
+            }
+            away_local={
+                'teamnameen':self.kw.get('team2en'),
+                'teamnamezh':self.kw.get('team2zh'),
+            }
+        TbTeammapping.objects.update_or_create(sportid=self.kw.get('sportid'),
+                                               source = self.kw.get('Source'),
+                                               **home_source,
+                                               defaults={
+                                                   'teamid':home_id,
+                                                   **home_local
+                                               })
+        TbTeammapping.objects.update_or_create(sportid=self.kw.get('sportid'),
+                                                source = self.kw.get('Source'),
+                                           **away_source,
+                                           defaults={
+                                               'teamid':away_id,
+                                               **away_local
+                                           })
+        
         
 
 class MatchPicker(MatchsPage.tableCls):
@@ -531,6 +603,81 @@ class MatchPicker(MatchsPage.tableCls):
             else:
                 return super().get_express(q_str)
     
+@director_view('event_match.auto_mapping_match')
+def auto_mapping_match():
+    now = tm2mongo(timezone.now())
+    
+    mapping_list =[]
+    for item in mydb['ThirdPartEvent'].find({'MatchID':None,'EventDateTime':{'$gte':now}}):
+        key1 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
+            'sportid':item.get('SportId'),
+            'source':item.get('Source'),
+            'sourceteamnameen':item.get('Team1En'),
+            'sourceteamnamezh':item.get('Team1Zh')
+        }
+        mapping_list.append(key1)
+        key2 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
+            'sportid':item.get('SportId'),
+            'source':item.get('Source'),
+            'sourceteamnameen':item.get('Team2En'),
+            'sourceteamnamezh':item.get('Team2Zh')
+        }
+        mapping_list.append(key2)
+    
+    mapping_dc={}
+    for mapping in TbTeammapping.objects.filter(mappingkey__in=mapping_list):
+        mapping_dc[mapping.mappingkey] = mapping
+    
+    op_list =[]
+    for item in mydb['ThirdPartEvent'].find({'MatchID':None,'EventDateTime':{'$gte':now}}):
+        key1 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
+            'sportid':item.get('SportId'),
+            'source':item.get('Source'),
+            'sourceteamnameen':item.get('Team1En'),
+            'sourceteamnamezh':item.get('Team1Zh')
+        }
+        key2 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
+            'sportid':item.get('SportId'),
+            'source':item.get('Source'),
+            'sourceteamnameen':item.get('Team2En'),
+            'sourceteamnamezh':item.get('Team2Zh')
+        }
+        
+        home = mapping_dc.get(key1)
+        away = mapping_dc.get(key2)
+        sportid = item.get('SportId')
+        
+        if home and away:
+            eventdate = mongo2tm( item.get('EventDateTime') ).strftime('%Y-%m-%d %H:%M:%S')
+            match = TbMatch.objects.filter(sportid=sportid,
+                                           team1id=home.teamid,team1en = home.teamnameen,team1zh=home.teamnamezh,
+                                           team2id=away.teamid,team2en = away.teamnameen,team2zh=away.teamnamezh,
+                                           matchdate=eventdate).first()
+            if match:
+                dc={
+                    'MatchID':match.matchid,
+                    'AutoMap':True,
+                }
+                mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
+                op_list.append('%s=>%s'%(item.get('Eid'),match.matchid))
+            else:
+                match = TbMatch.objects.filter(sportid=sportid,
+                                               team1id=away.teamid,team1en = away.teamnameen,team1zh=away.teamnamezh,
+                                               team2id=home.teamid,team2en = home.teamnameen,team2zh=home.teamnamezh,
+                                               matchdate=eventdate).first()
+                if match:
+                    dc={
+                        'MatchID':match.matchid,
+                        'TeamSwap':True,
+                        'AutoMap':True,
+                    }
+                    mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
+                    op_list.append('%s=>%s'%(item.get('Eid'),match.matchid))
+            
+    operation_log.info('自动匹配比赛:%s'%(';'.join(op_list) ) )
+    return {'count':len(op_list)}
+
+       
 
 @director_view('event_match.start_scrapy')
 def start_scrapy(rows,**kws):
