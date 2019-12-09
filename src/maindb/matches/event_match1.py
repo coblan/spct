@@ -548,11 +548,13 @@ class WebMatchForm(Fields):
                 'teamnameen':self.kw.get('team2en'),
                 'teamnamezh':self.kw.get('team2zh'),
             }
+        
         TbTeammapping.objects.update_or_create(sportid=self.kw.get('sportid'),
                                                source = self.kw.get('Source'),
                                                **home_source,
                                                defaults={
                                                    'teamid':home_id,
+                                                    'mappingkey':'%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{**self.kw,**home_source},
                                                    **home_local
                                                })
         TbTeammapping.objects.update_or_create(sportid=self.kw.get('sportid'),
@@ -560,6 +562,7 @@ class WebMatchForm(Fields):
                                            **away_source,
                                            defaults={
                                                'teamid':away_id,
+                                               'mappingkey':'%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{**self.kw,**away_source},
                                                **away_local
                                            })
         
@@ -655,6 +658,7 @@ def auto_mapping_match():
             if match:
                 dc={
                     'MatchID':match.matchid,
+                    'Source':match.source,
                     'AutoMap':True,
                 }
                 mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
@@ -667,6 +671,7 @@ def auto_mapping_match():
                 if match:
                     dc={
                         'MatchID':match.matchid,
+                        'Source':match.source,
                         'TeamSwap':True,
                         'AutoMap':True,
                     }
