@@ -554,7 +554,10 @@ class WebMatchForm(Fields):
                                                **home_source,
                                                defaults={
                                                    'teamid':home_id,
-                                                    'mappingkey':'%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{**self.kw,**home_source},
+                                                    'mappingkey':'%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{'sportid':self.kw.get('sportid'),
+                                                                                                                                     'source':2, # 现在写死的，因为都是球队来源都是188。
+                                                                                                                                                 # 注意 self.kw.Source 是比赛来源，不要搞混了
+                                                                                                                                     **home_source},
                                                    **home_local
                                                })
         TbTeammapping.objects.update_or_create(sportid=self.kw.get('sportid'),
@@ -562,7 +565,10 @@ class WebMatchForm(Fields):
                                            **away_source,
                                            defaults={
                                                'teamid':away_id,
-                                               'mappingkey':'%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{**self.kw,**away_source},
+                                               'mappingkey':'%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{'sportid':self.kw.get('sportid'),
+                                                                                                                                'source':2, # 现在写死的，因为都是球队来源都是188。
+                                                                                                                                            # 注意 self.kw.Source 是比赛来源，不要搞混了
+                                                                                                                                **away_source},
                                                **away_local
                                            })
         
@@ -610,7 +616,10 @@ def auto_mapping_match():
     now = tm2mongo(timezone.now())
     
     mapping_list =[]
-    for item in mydb['ThirdPartEvent'].find({'MatchID':None,'EventDateTime':{'$gte':now}}):
+    for item in mydb['ThirdPartEvent'].find({'$and': [
+        {'$or':[{'MatchID':{'$exists':False}},{'MatchID':None}]},
+        {'EventDateTime':{'$gte':now}},
+    ] }):
         key1 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
             'sportid':item.get('SportId'),
             'source':item.get('Source'),

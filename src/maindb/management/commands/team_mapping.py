@@ -29,6 +29,8 @@ class Command(BaseCommand):
         for item in mydb['ThirdPartEvent'].find({'MatchID':{'$ne':None}}):
             match = match_dc.get(item.get('MatchID'))
             if not item.get('TeamSwap'):
+                # 现在的外部球队来源都是 188 所以source都是2 ，
+                # 注意item.get('Source') 是比赛来源，不要搞混了
                 home={
                     'sourceteamnameen':item.get('Team1En'),
                     'sourceteamnamezh':item.get('Team1Zh'),
@@ -36,7 +38,7 @@ class Command(BaseCommand):
                     'teamnamezh':match.team1zh,
                     'teamid':match.team1id,
                     'sportid':item.get('SportId'),
-                    'source':item.get('Source'),
+                    'source':2,
                 }
                 away={
                     'sourceteamnameen':item.get('Team2En'),
@@ -45,7 +47,7 @@ class Command(BaseCommand):
                     'teamnamezh':match.team2zh,
                     'teamid':match.team2id,
                     'sportid':item.get('SportId'),
-                    'source':item.get('Source'),
+                    'source':2,
                 }
             else:
                 home={
@@ -55,7 +57,7 @@ class Command(BaseCommand):
                     'teamnamezh':match.team2zh,
                     'teamid':match.team2id,
                     'sportid':item.get('SportId'),
-                    'source':item.get('Source'),
+                    'source':2,
                 }
                 away={
                     'sourceteamnameen':item.get('Team1En'),
@@ -64,7 +66,7 @@ class Command(BaseCommand):
                     'teamnamezh':match.team1zh,
                     'teamid':match.team1id,
                     'sportid':item.get('SportId'),
-                    'source':item.get('Source'),
+                    'source':2,
                 }
             key1 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%home
             key2 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%away
