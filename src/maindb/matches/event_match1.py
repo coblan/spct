@@ -137,6 +137,15 @@ class OtherWebMatchPage(TablePage):
                     {'value':3,'label':'异常停止'},
                     {'value':4,'label':'采集完成'},
                     ]},
+                {'name':'bat_liveodds','label':'走地(Betradar)',
+                 'inn_editor':'com-table-mapper',
+                 'editor':'com-table-rich-span','class':'middle-col btn-like-col',
+                 'cell_class':'var mymap={0:"warning",1:"success"};rt=mymap[scope.row.bat_liveodds]',
+                 'options':[
+                     {'value':0,'label':'否'},
+                     {'value':1,'label':'是'},
+                     ]},
+                
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-table-bool-shower'},
                 {'name':'Reason','label':'原因','editor':'com-table-span'},
                 {'name':'AutoMap','label':'自动匹配','editor':'com-table-bool-shower'},
@@ -182,6 +191,20 @@ class OtherWebMatchPage(TablePage):
                     'pk':row.get('Eid'),
                     'TeamSwap':bool(row.get('TeamSwap'))
                 })
+            
+            bat_matchlist = [x.get('MatchID') for x in rows if x.get('MatchID')]
+            bat_match_dc ={}
+            for match in TbMatch.objects.filter(matchid__in=bat_matchlist,source=1):
+                bat_match_dc[match.matchid] = match
+            for row in rows:
+                if row.get('MatchID'):
+                    bat_match = bat_match_dc.get(row.get('MatchID'))
+                    if bat_match:
+                        row['bat_liveodds'] = 1 if bat_match.hasliveodds else 0
+                if 'bat_liveodds' not in row:
+                    row['bat_liveodds'] =''
+                        
+            
             return rows
         
         @classmethod
