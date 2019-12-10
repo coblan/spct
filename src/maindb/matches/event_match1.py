@@ -616,20 +616,21 @@ def auto_mapping_match():
     now = tm2mongo(timezone.now())
     
     mapping_list =[]
-    for item in mydb['ThirdPartEvent'].find({'$and': [
+    match_in_mongo = list( mydb['ThirdPartEvent'].find({'$and': [
         {'$or':[{'MatchID':{'$exists':False}},{'MatchID':None}]},
         {'EventDateTime':{'$gte':now}},
-    ] }):
+    ] }))
+    for item in match_in_mongo:
         key1 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
             'sportid':item.get('SportId'),
-            'source':item.get('Source'),
+            'source':2,
             'sourceteamnameen':item.get('Team1En'),
             'sourceteamnamezh':item.get('Team1Zh')
         }
         mapping_list.append(key1)
         key2 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
             'sportid':item.get('SportId'),
-            'source':item.get('Source'),
+            'source':2,
             'sourceteamnameen':item.get('Team2En'),
             'sourceteamnamezh':item.get('Team2Zh')
         }
@@ -640,16 +641,16 @@ def auto_mapping_match():
         mapping_dc[mapping.mappingkey] = mapping
     
     op_list =[]
-    for item in mydb['ThirdPartEvent'].find({'MatchID':None,'EventDateTime':{'$gte':now}}):
+    for item in match_in_mongo:
         key1 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
             'sportid':item.get('SportId'),
-            'source':item.get('Source'),
+            'source': 2 , # item.get('Source'),
             'sourceteamnameen':item.get('Team1En'),
             'sourceteamnamezh':item.get('Team1Zh')
         }
         key2 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
             'sportid':item.get('SportId'),
-            'source':item.get('Source'),
+            'source':2, # item.get('Source'),
             'sourceteamnameen':item.get('Team2En'),
             'sourceteamnamezh':item.get('Team2Zh')
         }
@@ -667,7 +668,7 @@ def auto_mapping_match():
             if match:
                 dc={
                     'MatchID':match.matchid,
-                    'Source':match.source,
+                    'MatchSource':match.source,
                     'AutoMap':True,
                 }
                 mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
@@ -680,7 +681,7 @@ def auto_mapping_match():
                 if match:
                     dc={
                         'MatchID':match.matchid,
-                        'Source':match.source,
+                        'MatchSource':match.source,
                         'TeamSwap':True,
                         'AutoMap':True,
                     }
