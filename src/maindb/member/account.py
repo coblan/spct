@@ -288,10 +288,10 @@ class AccountPage(TablePage):
                    #'createtime', 'source','accounttype','weight','groupid']
         fields_sort = ['accountid', 'account', 'nickname', 'createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
-                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid','memo']
+                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid','memo','parlayoddscheck']
 
         class filters(RowFilter):
-            names=['accounttype','groupid','csuserid__name']
+            names=['accounttype','groupid','csuserid__name','parlayoddscheck']
             icontains=['csuserid__name']
             range_fields = ['createtime']
             
@@ -576,7 +576,7 @@ class MemoForm(Fields):
 class AccoutBaseinfo(ModelFields):
     #'agentamount', 
     field_sort = ['account', 'nickname', 'amount', 'status', 'createtime','agent', 'verify', 'viplv', 'bonusrate',
-                  'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','anomalyticketnum','powertype']
+                  'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','anomalyticketnum','powertype','parlayoddscheck']
     readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount']
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('accountid'):
