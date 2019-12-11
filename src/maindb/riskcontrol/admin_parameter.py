@@ -21,7 +21,7 @@ class ParameterPage(FieldsPage):
                 {'name': 'MinStakeAmount','label': '单注最低投注','editor': 'number','required': True,'fv_rule': 'range(0~)',}, 
                 {'name': 'MaxSinglePayout','label': '单注最高赔付','editor': 'number','required': True,'fv_rule': 'range(0~)'}, 
                 {'name': 'MaxMatchPayout','label': '单场最高赔付','editor': 'number','required': True,'fv_rule': 'range(0~)'}, 
-                {'name': 'SeriesMaxSinglePayout','label': '串关最大赔付','editor': 'number','required': True,'fv_rule': 'range(0~)'},
+                {'name': 'SeriesMaxSinglePayout','label': '串关系数','editor': 'number','required': True,'fv_rule': 'range(0~)'},
                 {'name':'MaxMatchUserBet','label':'用户单场<br>最大投注','editor':'number','required': True,'fv_rule': 'range(0~)'},
             ]
         
