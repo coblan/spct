@@ -26,7 +26,7 @@ class AgprofitlossPage(TablePage):
         
         def getExtraHead(self):
             return [
-                {'name':'account__nickname','label':'昵称','editor':'com-table-span'}
+                {'name':'account__nickname','label':'昵称','editor':'com-table-span'},
             ]
         
         def dict_head(self, head):
@@ -70,6 +70,11 @@ class AgprofitlossPage(TablePage):
             })
             self.footer = normed_dc
             return query
+        
+        def get_operation(self):
+            return [
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
+            ]
         
         class search(SelectSearch):
             names = ['account__nickname','username']
