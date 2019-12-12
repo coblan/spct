@@ -175,12 +175,12 @@ outcome_header = {
             'heads':[
                 {'name':'home_6_1','label':'主队上半场得分','editor':'com-field-number','required':True,'fv_rule':'主队上半场:integer(+0)'},
                 {'name':'away_6_1','label':'客队上半场得分','editor':'com-field-number','required':True,'fv_rule':'客队上半场:integer(+0)'},
-                {'name':'home_100_1','label':'主队全场得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, home_6_1)'},
-                {'name':'away_100_1','label':'客队全场得分','editor':'com-field-number','required':True,'show':'scope.row.has_half2','fv_rule':'integer(+0);match(gte, away_6_1)'},
+                {'name':'home_100_1','label':'主队全场得分','editor':'com-field-number','required':True,'show':'scope.row.has_100_1','fv_rule':'integer(+0);match(gte, home_6_1)'},
+                {'name':'away_100_1','label':'客队全场得分','editor':'com-field-number','required':True,'show':'scope.row.has_100_1','fv_rule':'integer(+0);match(gte, away_6_1)'},
                 {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                 {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                  
-                {'name':'has_half1','label':'上半场','editor':'com-field-bool','readonly':True},
+                {'name':'has_6_1','label':'上半场','editor':'com-field-bool','readonly':True},
                 {'name':'has_100_1','label':'全场','editor':'com-field-bool'},
                 {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_finish)','fv_msg':'必须勾选比赛结束!'},
                 {'name':'has_finish','label':'比赛结束','editor':'com-field-bool','fv_rule':'depend_check(has_100_1)','fv_msg':'必须勾选全场!'}
@@ -189,9 +189,9 @@ outcome_header = {
             'editor':'com-form-one', 
             
             'table_grid':[['has_finish'],
-                        ['has_half1','has_half2','has_overtime'],
+                        ['has_6_1','has_100_1','has_overtime'],
                           ['home_6_1','away_6_1'],
-                          ['home_7_1','away_7_1'],
+                          ['home_100_1','away_100_1'],
                           ['home_40_1','away_40_1'],
                           ],
             'ops_loc':'down',
