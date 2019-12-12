@@ -879,7 +879,7 @@ class OutcomeTab(ModelTable):
                 {'marketid':'','pk':-1,'marketname':'score','marketnamezh':'比分型'}
             ]
         elif self.match.sportid == 2:
-            if self.match.tournamentid == 698:
+            if self.match.tournamentid in[ 698,7557]:
                 bf = [
                     {'marketid':'','pk':-3,'marketname':'score','marketnamezh':'比分型'}
                 ]
