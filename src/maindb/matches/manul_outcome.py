@@ -196,7 +196,7 @@ outcome_header = {
                           ],
             'ops_loc':'down',
             'ops':pop_edit_ops,
-            'init_express':'ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res))'
+            'init_express':'if(ex.isEmpty(scope.row)){ ex.director_call("get_match_outcome_info",{matchid:scope.vc.ctx.par_row.matchid}).then(res=>ex.vueAssign(scope.row,res)) }'
         },
         -2:{ # 篮球分数
             'heads':[
