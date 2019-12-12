@@ -1191,21 +1191,21 @@ def out_com_save(rows,matchid):
             send_dc['IsSettleByScore']=True
             dc = {}
             has_overtime = row.pop('has_overtime',False)
-
+            has_half2 = row.pop('has_half2',False)
+            
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
 
             home_6_1 = int( row.get('home_6_1') )
             away_6_1 = int( row.get('away_6_1') )
-
-            home_100_1 = int( row.get('home_100_1') )
-            away_100_1 = int( row.get('away_100_1') )
-
-            home_7_1 = home_100_1 - home_6_1
-            away_7_1 = away_100_1 - away_6_1
-
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home_6_1,away=away_6_1 ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
+            if  has_half2 :
+                home_100_1 = int( row.get('home_100_1') )
+                away_100_1 = int( row.get('away_100_1') )
+    
+                home_7_1 = home_100_1 - home_6_1
+                away_7_1 = away_100_1 - away_6_1
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
+                batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
 
             if has_overtime:
                 home_40_1 = int( row.pop('home_40_1') )
@@ -1214,6 +1214,7 @@ def out_com_save(rows,matchid):
                 away_110_1 = away_100_1 + away_40_1
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=40,scoretype=1,type=1,home=home_40_1,away=away_40_1)) 
                 batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=1,type=1,home=home_110_1,away=away_110_1)) 
+                
         if row['pk'] == -109:
             send_dc['IsSettleByScore']=True
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
