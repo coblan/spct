@@ -179,15 +179,17 @@ outcome_header = {
                 {'name':'away_100_1','label':'客队全场得分','editor':'com-field-number','required':True,'fv_rule':'integer(+0);match(gte, away_6_1)'},
                 {'name':'home_40_1','label':'主队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                 {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
-                        
+                 
+                {'name':'has_half1','label':'上半场','editor':'com-field-bool','readonly':True},
+                {'name':'has_half2','label':'全场','editor':'com-field-bool'},
                 {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_100_1)','fv_msg':'必须勾选比赛结束!'},
-                {'name':'has_100_1','label':'比赛结束','editor':'com-field-bool','fv_rule':'depend_check(has_16_1)','fv_msg':'必须勾选全场!'}
+                {'name':'has_100_1','label':'比赛结束','editor':'com-field-bool','fv_rule':'depend_check(has_half2)','fv_msg':'必须勾选全场!'}
     
             ],
             'editor':'com-form-one', 
             
             'table_grid':[['has_100_1'],
-                ['has_overtime'],
+                        ['has_half1','has_half2','has_overtime'],
                           ['home_6_1','away_6_1'],
                           ['home_100_1','away_100_1'],
                           ['home_40_1','away_40_1'],
