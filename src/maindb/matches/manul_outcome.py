@@ -181,17 +181,17 @@ outcome_header = {
                 {'name':'away_40_1','label':'客队加时赛得分','editor':'com-field-number','required':True,'show':'scope.row.has_overtime','fv_rule':'integer(+0)'},
                  
                 {'name':'has_half1','label':'上半场','editor':'com-field-bool','readonly':True},
-                {'name':'has_half2','label':'全场','editor':'com-field-bool'},
-                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_100_1)','fv_msg':'必须勾选比赛结束!'},
-                {'name':'has_100_1','label':'比赛结束','editor':'com-field-bool','fv_rule':'depend_check(has_half2)','fv_msg':'必须勾选全场!'}
+                {'name':'has_100_1','label':'全场','editor':'com-field-bool'},
+                {'name':'has_overtime','label':'加时赛','editor':'com-field-bool','fv_rule':'depend_check(has_finish)','fv_msg':'必须勾选比赛结束!'},
+                {'name':'has_finish','label':'比赛结束','editor':'com-field-bool','fv_rule':'depend_check(has_100_1)','fv_msg':'必须勾选全场!'}
     
             ],
             'editor':'com-form-one', 
             
-            'table_grid':[['has_100_1'],
+            'table_grid':[['has_finish'],
                         ['has_half1','has_half2','has_overtime'],
                           ['home_6_1','away_6_1'],
-                          ['home_100_1','away_100_1'],
+                          ['home_7_1','away_7_1'],
                           ['home_40_1','away_40_1'],
                           ],
             'ops_loc':'down',
