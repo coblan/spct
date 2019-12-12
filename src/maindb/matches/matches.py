@@ -1204,7 +1204,7 @@ def out_com_save(rows,matchid):
             away_7_1 = away_100_1 - away_6_1
 
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home_6_1,away=away_6_1 ,type=0) )
-            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_6_1 ,type=0) )
+            batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,home=home_100_1,away=away_100_1 ,type=0) )
 
             if has_overtime:
