@@ -22,8 +22,11 @@ class Command(BaseCommand):
         match_dc ={}
         for item in mydb['ThirdPartEvent'].find({'MatchID':{'$ne':None}}):
             matchid_list.append(item.get('MatchID'))
-            
+        
+        count = 1
         for batch_match_list in get_matchlist(matchid_list):
+            print('查询 %s批 matchid'%count)
+            count += 1
             for match in TbMatch.objects.filter(matchid__in=batch_match_list):
                 match_dc[match.matchid] = match
             
