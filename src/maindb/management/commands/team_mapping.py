@@ -89,7 +89,7 @@ def get_matchlist(matchlist):
     rows =[]
     for matchid in matchlist:
         rows.append(matchid)
-        if len(rows) > 1000:
+        if len(rows) > 500:
             yield rows
             rows =[]
-            
+    return rows
