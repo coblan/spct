@@ -92,4 +92,4 @@ def get_matchlist(matchlist):
         if len(rows) > 500:
             yield rows
             rows =[]
-    return rows
+    yield rows
