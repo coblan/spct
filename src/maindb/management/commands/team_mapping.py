@@ -23,10 +23,9 @@ class Command(BaseCommand):
         for item in mydb['ThirdPartEvent'].find({'MatchID':{'$ne':None}}):
             matchid_list.append(item.get('MatchID'))
             
-        print(matchid_list)
-        
-        for match in TbMatch.objects.filter(matchid__in=matchid_list):
-            match_dc[match.matchid] = match
+        for batch_match_list in get_matchlist(matchid_list):
+            for match in TbMatch.objects.filter(matchid__in=batch_match_list):
+                match_dc[match.matchid] = match
             
         team_dc ={}
         for item in mydb['ThirdPartEvent'].find({'MatchID':{'$ne':None}}):
@@ -82,3 +81,12 @@ class Command(BaseCommand):
             rows.append(TbTeammapping(mappingkey=k,**v))
         TbTeammapping.objects.bulk_create(rows)
         
+
+def get_matchlist(matchlist):
+    rows =[]
+    for matchid in matchlist:
+        rows.append(matchid)
+        if len(rows) > 1000:
+            yield rows
+            rows =[]
+            
