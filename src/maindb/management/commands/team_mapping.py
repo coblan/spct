@@ -33,6 +33,9 @@ class Command(BaseCommand):
         team_dc ={}
         for item in mydb['ThirdPartEvent'].find({'MatchID':{'$ne':None}}):
             match = match_dc.get(item.get('MatchID'))
+            if not match:
+                print('未找到比赛 %s'% item.get('MatchID') )
+                continue
             if not item.get('TeamSwap'):
                 # 现在的外部球队来源都是 188 所以source都是2 ，
                 # 注意item.get('Source') 是比赛来源，不要搞混了
