@@ -128,6 +128,7 @@ class TbAccount(models.Model):
     #powertype = models.CharField(db_column='PowerType', max_length=50)
     memo = models.TextField(db_column='Memo', blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
     parlayoddscheck = models.BooleanField(db_column='ParlayOddsCheck',verbose_name='串关低赔限制',default=False)  # Field name made lowercase.
+    singleoddscheck = models.BooleanField(db_column='SingleOddsCheck',verbose_name='单注低陪限制',default =False)  # Field name made lowercase.
     
     class Meta:
         managed = False
