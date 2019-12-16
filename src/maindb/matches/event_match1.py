@@ -71,7 +71,8 @@ class OtherWebMatchPage(TablePage):
                                                       {'TeamSwap':False}
                                                       ]}
                                               ]
-                    
+            if self.search_args.get('Source'):
+                self.filter_args['Source'] =self.search_args.get('Source')
             if self.search_args.get('has_matched'):
                 if self.search_args.get('has_matched') ==1:
                     self.filter_args['MatchID'] = {'$exists':True}
@@ -119,6 +120,10 @@ class OtherWebMatchPage(TablePage):
                 {'name':'LeagueZh','label':'联赛','editor':'com-table-span','width':120},
                 {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-table-label-shower','width':120,'class':'matched_match'},
                 {'name':"MatchID",'label':'比赛(比对结果)','editor':'com-table-label-shower','width':300},
+                {'name':'Source','label':'抓取源','editor':'com-table-mapper','options':[
+                    {'value':2,'label':'188'},
+                    {'value':3,'label':'沙巴'},
+                    ]},
                 {'name':"MatchSource",'label':'比赛来源','editor':'com-table-mapper','options':[
                     {'value':x[0],'label':x[1]} for x in MATCH_SOURCE
                     ]},
@@ -234,6 +239,10 @@ class OtherWebMatchPage(TablePage):
                     {'value':1,'label':'是'},
                     {'value':2,'label':'否'}
                 ]},
+                {'name':'Source','label':'抓取源','editor':'com-filter-select','options':[
+                    {'value':2,'label':'188'},
+                    {'value':3,'label':'沙巴'}
+                    ]},
                 {'name':'SportId','label':'体育类型','editor':'com-filter-select','options':[
                     {'label':str(x),'value':x.pk} for x in TbSporttypes.objects.filter(enabled=True)
                     ]},
@@ -647,14 +656,14 @@ def auto_mapping_match():
     for item in match_in_mongo:
         key1 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
             'sportid':item.get('SportId'),
-            'source':2,
+            'source':item.get('Source'),
             'sourceteamnameen':item.get('Team1En'),
             'sourceteamnamezh':item.get('Team1Zh')
         }
         mapping_list.append(key1)
         key2 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
             'sportid':item.get('SportId'),
-            'source':2,
+            'source':item.get('Source'),
             'sourceteamnameen':item.get('Team2En'),
             'sourceteamnamezh':item.get('Team2Zh')
         }
@@ -668,13 +677,13 @@ def auto_mapping_match():
     for item in match_in_mongo:
         key1 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
             'sportid':item.get('SportId'),
-            'source': 2 , # item.get('Source'),
+            'source': item.get('Source'),
             'sourceteamnameen':item.get('Team1En'),
             'sourceteamnamezh':item.get('Team1Zh')
         }
         key2 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{
             'sportid':item.get('SportId'),
-            'source':2, # item.get('Source'),
+            'source': item.get('Source'),
             'sourceteamnameen':item.get('Team2En'),
             'sourceteamnamezh':item.get('Team2Zh')
         }

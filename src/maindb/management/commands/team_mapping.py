@@ -46,7 +46,7 @@ class Command(BaseCommand):
                     'teamnamezh':match.team1zh,
                     'teamid':match.team1id,
                     'sportid':item.get('SportId'),
-                    'source':2,
+                    'source':item.get('Source'),
                 }
                 away={
                     'sourceteamnameen':item.get('Team2En'),
@@ -55,7 +55,7 @@ class Command(BaseCommand):
                     'teamnamezh':match.team2zh,
                     'teamid':match.team2id,
                     'sportid':item.get('SportId'),
-                    'source':2,
+                    'source':item.get('Source'),
                 }
             else:
                 home={
@@ -65,7 +65,7 @@ class Command(BaseCommand):
                     'teamnamezh':match.team2zh,
                     'teamid':match.team2id,
                     'sportid':item.get('SportId'),
-                    'source':2,
+                    'source':item.get('Source'),
                 }
                 away={
                     'sourceteamnameen':item.get('Team1En'),
@@ -74,7 +74,7 @@ class Command(BaseCommand):
                     'teamnamezh':match.team1zh,
                     'teamid':match.team1id,
                     'sportid':item.get('SportId'),
-                    'source':2,
+                    'source':item.get('Source'),
                 }
             key1 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%home
             key2 = '%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%away
