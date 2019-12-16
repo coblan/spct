@@ -26,7 +26,7 @@ class Command(BaseCommand):
         KVModel.objects.all().delete()
         PermitModel.objects.all().delete()
         print('导入用户信息')
-        self.import_model(User,'auth_user')
+        self.import_model(User,'auth_user',include=lambda x:x.get('is_staff'))
         print('导入角色分组')
         self.import_model(Group,'auth_group')
         
