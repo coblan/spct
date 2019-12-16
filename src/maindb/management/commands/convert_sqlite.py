@@ -39,8 +39,12 @@ class Command(BaseCommand):
                 user_dc[user_pk] =[group_pk]
         print('导入用户分组信息')
         for k,v in user_dc.items():
-            user = User.objects.get(pk = k)
-            user.groups.add(*v)
+            try:
+                user = User.objects.get(pk = k)
+                user.groups.add(*v)
+            except User.DoesNotExist as e:
+                pass
+            
         print('导入kvmodel')
         self.import_model(KVModel,'director_kvmodel')
         print('导入权限')
