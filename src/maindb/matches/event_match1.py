@@ -512,8 +512,8 @@ class WebMatchForm(Fields):
                 # 如果是强制保存，就不用在询问了。
                 pass 
             elif eventdatetime - matchdatetime > timezone.timedelta(minutes=10) or matchdatetime - eventdatetime > timezone.timedelta(minutes=10):
-                raise QuestionException('''debugger;cfg.hide_load();cfg.confirm("匹配比赛时间相差大于10分钟").then(()=>{
-                    cfg.show_load();layer.close(scope.index);scope.kws.row.meta_force_save=1;ex.director_call(scope.director_name,scope.kws).then(resp=>{scope.resolve(resp)})
+                raise QuestionException('''debugger;cfg.hide_load();cfg.confirm("匹配比赛时间相差大于10分钟,确定要保存?").then(()=>{
+                    cfg.show_load();layer.close(scope.index); ex.each(scope.kws.rows,row=>{row.meta_force_save=1};ex.director_call(scope.director_name,scope.kws).then(resp=>{scope.resolve(resp)})
                 })
                  ''' )
         
