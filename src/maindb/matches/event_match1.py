@@ -328,7 +328,7 @@ class OtherWebMatchPage(TablePage):
                         cfg.showMsg("自动匹配"+resp.count + " 条比赛!")
                     })
                     ''',
-                    'visible':False,
+                    #'visible':False,
                 
                 }
                 
