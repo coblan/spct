@@ -703,6 +703,7 @@ def auto_mapping_match():
                     'MatchID':match.matchid,
                     'MatchSource':match.source,
                     'AutoMap':True,
+                    'EventId':match.eventid,
                 }
                 mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
                 op_list.append('%s=>%s'%(item.get('Eid'),match.matchid))
@@ -717,6 +718,7 @@ def auto_mapping_match():
                         'MatchSource':match.source,
                         'TeamSwap':True,
                         'AutoMap':True,
+                        'EventId':match.eventid,
                     }
                     mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
                     op_list.append('%s=>%s'%(item.get('Eid'),match.matchid))
