@@ -69,7 +69,7 @@ class Login(object):
     def check_code(self):
        
         if  redisInst6.get(self.code_key):
-            if  redisInst6.get(self.code_key).lower() != self.row.get('validate_code').lower():
+            if  redisInst6.get(self.code_key).lower() != self.row.get('validate_code','').lower():
                 return False
         return True
     
