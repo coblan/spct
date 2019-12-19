@@ -515,7 +515,7 @@ class WebMatchForm(Fields):
                 raise QuestionException('''debugger;cfg.hide_load();cfg.confirm("匹配比赛时间相差大于10分钟,确定要保存?")
                 .then(()=>{
                     cfg.show_load();layer.close(scope.index); 
-                    ex.each(scope.kws.rows,row=>{row.meta_force_save=1});
+                    scope.kws.row.meta_force_save=1;
                     return ex.director_call(scope.director_name,scope.kws)
                 }).then(resp=>{scope.resolve(resp)})
                  ''' )
