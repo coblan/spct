@@ -131,9 +131,9 @@ RAB_PSWD = 'YXNkZmFmc2RmbAo'
 RABBIT_FORWORD={
     'ip':'61.220.213.93',
     'port':'5672',
-    'username':'d3_publisher',
-    'password':'d3spider',
-    'virtual_host':'d3'
+    'username':'angela',
+    'password':'baby123',
+    'virtual_host':'uat'
 }
 
 
