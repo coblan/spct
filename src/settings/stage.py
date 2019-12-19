@@ -69,6 +69,15 @@ RABBITMA_PORT = '5673'
 RAB_USER = 'publisher'
 RAB_PSWD = 'publisher@123'
 
+RABBIT_FORWORD={
+    'ip':'61.220.213.93',
+    'port':'5672',
+    'username':'d3_publisher',
+    'password':'d3spider',
+    'virtual_host':'d3'
+}
+
+
 REDIS_SERVER = '192.168.40.222'
 
 
