@@ -58,7 +58,8 @@ class EsHandler(logging.Handler):
     def emit(self, record): 
         msg =   record.getMessage()
         if record.levelname == 'ERROR':
-            msg += '\n' + record.exc_text
+            if record.exc_text:
+                msg += '\n' + record.exc_text
         dc = {
             '@timestamp': datetime.datetime.utcnow(),
             'level': record.levelname,
