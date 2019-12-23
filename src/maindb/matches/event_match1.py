@@ -381,6 +381,7 @@ class NewMatchForm(ModelFields):
             
         }
         notifyCreateNewMatch(json.dumps([dc],cls=DirectorEncoder,ensure_ascii=False))
+        operation_log.info('创建比赛 %s'%json.dumps(dc))
     
 @director_view('get_league_options')
 def get_league_options(sportid):
