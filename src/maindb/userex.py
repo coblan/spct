@@ -19,11 +19,25 @@ class UserExPage(TablePage):
                 head['inn_editor'] = 'com-table-label-shower'
             return head
         
-        def dict_row(self, inst):
-            user = User.objects.get(pk = inst.userid)
-            return {
-                '_userid_label':str(user)
-            }
+        def get_rows(self):
+            rows = super().get_rows()
+            userid_list = [x.get('userid') for x in rows]
+            userdc ={}
+            for user in User.objects.filter(pk__in=userid_list):
+                userdc[user.pk] = user
+            for row in rows:
+                if userdc.get(row.get('userid')):
+                    user = userdc.get(row.get('userid'))
+                    row['_userid_label'] = str(user)
+                else:
+                    row['_userid_label'] = row.get('userid')
+            return rows
+        
+        #def dict_row(self, inst):
+            #user = User.objects.get(pk = inst.userid)
+            #return {
+                #'_userid_label':str(user)
+            #}
 
 class UserExForm(ModelFields):
     class Meta:
