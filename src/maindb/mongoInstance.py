@@ -3,7 +3,9 @@ from django.conf import settings
 import datetime
 myclient = pymongo.MongoClient(settings.MONGO_SERVER)
 mydb = myclient["MatchData_SA"]
+
 spiderman = myclient["SpiderMan"]
+
 def updateMatchMongo(dc): 
     #dc.update({
         #'CloseLiveBet': bool(dc['CloseLiveBet']),

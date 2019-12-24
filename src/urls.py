@@ -36,16 +36,16 @@ urlpatterns = [
     url(r'^actv2/(?P<pk>[^/]+)/?$', Activity.as_view()),
     url(r'^app_h5/?$', TestAppH5View.as_view()),
      
-    url(r'^pc/([\w\.]+)/?$',PcMenu.as_view(),name=PcMenu.url_name),
+    url(r'^pc/([\w\.-]+)/?$',PcMenu.as_view(),name=PcMenu.url_name),
     url(r'^main/',include('maindb.urls')),
     
     url(r'^d/',include('helpers.director.urls'),name='director'),
     url(r'^dapi/(?P<director_name>[\w\/\.]+)?/?$',director_view),
     
-    url(r'^pa/([\w\.]+)/?$', ProgramerAdmin.as_view(), name= ProgramerAdmin.url_name), 
+    url(r'^pa/([\w\.-]+)/?$', ProgramerAdmin.as_view(), name= ProgramerAdmin.url_name), 
     url(r'^pa/?$', RedirectView.as_view(url='/pa/marketgroup')), 
     
-    url(r'^yw/([\w\.]+)/?$', YunweiEngin.as_view(), name= YunweiEngin.url_name), 
+    url(r'^yw/([\w\.-]+)/?$', YunweiEngin.as_view(), name= YunweiEngin.url_name), 
     url(r'^yw/?$', RedirectView.as_view(url='/yw/domain')), 
     
     
