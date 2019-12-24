@@ -12,7 +12,7 @@ class MappingSetting(FieldsPage):
     class fieldsCls(Fields):
         def get_heads(self):
             return [
-                {'name':'EnabledSource','label':'跟水来源','editor':'com-field-select','options':[
+                {'name':'EnabledSource','label':'跟水来源','editor':'com-field-select','required':True,'options':[
                     {'value':x[0],'label':x[1] } for x in OUT_MATCH_SOURCE
                 ]}
             ]
