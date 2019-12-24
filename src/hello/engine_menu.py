@@ -110,7 +110,7 @@ class PcMenu(BaseEngine):
                 {'label':'调水模板','url':page('adjusttemplate'),'visible':can_touch(TbAdjusttemplate,crt_user)},
                 {'label':'赛事匹配','url':page('web_match_data')},
                 {'label':'赛事匹配V2','url':page('web_match_data1')},
-                {'label':'匹配设置','url':page('mapping-setting')},
+                {'label':'跟水设置','url':page('mapping-setting')},
                  
              ]},
 
