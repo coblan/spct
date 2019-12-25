@@ -1,6 +1,8 @@
 from helpers.director.shortcut import FieldsPage,Fields,page_dc,director
 from maindb.status_code import OUT_MATCH_SOURCE
 from maindb.mongoInstance import mydb
+from maindb.rabbitmq_instance import notifyMapingSetting
+import json
 
 class MappingSetting(FieldsPage):
     def get_label(self):
@@ -34,7 +36,7 @@ class MappingSetting(FieldsPage):
                 mydb['Settings'].update({'_id':dd.get('_id')},{'$set':{'EnabledSource': EnabledSource }})
             else:
                 mydb['Settings'].insert({'EnabledSource': EnabledSource })
-     
+            notifyMapingSetting(json.dumps({'EnabledSource':EnabledSource}))
 
 director.update({
     'mapping-setting':MappingSetting.fieldsCls,

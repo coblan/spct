@@ -117,4 +117,11 @@ def rabbit_forword_publish(exchange,routing_key,body):
     channel.basic_publish(exchange=exchange,
                           routing_key= routing_key,
                           body=body)
-    
+
+
+def notifyMapingSetting(msg):
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, credentials = credentials))    
+    channel = connection.channel()
+    channel.basic_publish(exchange='spider.topic',
+                          routing_key= 'spider.source.update',
+                          body=msg)
