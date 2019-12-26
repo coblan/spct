@@ -60,6 +60,7 @@ class Home(object):
             {'key': '5','label': '充值', 'editor':'com-bar-chart'}, 
             {'key': '6','label': '提现', 'editor':'com-bar-chart'}, 
             {'key':'100','label':'在线人数','editor':'com-home-area-chart'},
+            {'key': '8','label': '注册人数', 'editor':'com-bar-chart'}, 
             
         ]
         

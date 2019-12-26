@@ -87,9 +87,10 @@ def notifyCreateNewMatch(msg):
                           body=msg)
     
     try:
-        rabbit_forword_publish(exchange='service.topic',
-                              routing_key= 'newbetradar.matches',
-                              body=msg)
+        if getattr(settings,'RABBIT_FORWORD'):
+            rabbit_forword_publish(exchange='service.topic',
+                                  routing_key= 'newbetradar.matches',
+                                  body=msg)
     except Exception as e:
         general_log.error('新建比赛发送forword消息报错:%s'%str(e))
     
