@@ -616,7 +616,7 @@ class WebMatchForm(Fields):
         
 
 class MatchPicker(MatchsPage.tableCls):
-    fields_sort=['sportid','matchid', 'tournamentid','team1en', 'team1zh', 'team2en','team2zh', 'matchdate','source']
+    fields_sort=['source','sportid','matchid', 'tournamentid','team1en', 'team1zh', 'team2en','team2zh', 'matchdate',]
     def dict_head(self, head):
         head = super().dict_head(head)
         width={
