@@ -147,8 +147,8 @@ class AgAccountPage(TablePage):
        
         
         class search(SelectSearch):
-            names = ['account__nickname','agusername']
-            exact_names=['accountid']
+            #names = ['account__nickname','agusername']
+            exact_names=['account__nickname','agusername','accountid',]
             db_map={
                 'account__nickname':'TB_Account.NickName',
                 'accountid':'main.AccountID',

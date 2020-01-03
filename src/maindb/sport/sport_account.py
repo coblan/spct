@@ -56,7 +56,7 @@ class SportAccountPage(TablePage):
             return sql
         
         class search(AgAccountPage.tableCls.search):
-            names = ['account__nickname','username']
+            exact_names = ['account__nickname','username']
             #exact_names=['account']
             
             #def get_option(self, name):
