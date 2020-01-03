@@ -226,6 +226,14 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbSportmoneyininfo.edit',model_full_permit(TbSportmoneyininfo),model_to_name(TbSportmoneyininfo),'model'),
            ('TbSportmoneyoutinfo.edit',model_full_permit(TbSportmoneyoutinfo),model_to_name(TbSportmoneyoutinfo),'model'),
            
+            # 龙城
+           ('TbLcityaccount',model_read_permit(TbLcityaccount),model_to_name(TbLcityaccount),'model'),
+           ('TbLcityaccount.edit',model_full_permit(TbLcityaccount),model_to_name(TbLcityaccount),'model'),
+           ('TbLcityprofitloss.edit',model_full_permit(TbLcityprofitloss),model_to_name(TbLcityprofitloss),'model'),
+           ('TbLcitymoneyininfo.edit',model_full_permit(TbLcitymoneyininfo),model_to_name(TbLcitymoneyininfo),'model'),
+           ('TbLcitymoneyoutinfo.edit',model_full_permit(TbLcitymoneyoutinfo),model_to_name(TbLcitymoneyoutinfo),'model'),
+           
+           
            # system
            ('TbUserex',model_read_permit(TbUserex),model_to_name(TbUserex),'model'),
            ('TbUserex.edit',model_full_permit(TbUserex),model_to_name(TbUserex),'model'),

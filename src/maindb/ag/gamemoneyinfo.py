@@ -64,8 +64,8 @@ class GameMoneyininfoPage(TablePage):
             return query
         
         class search(SelectSearch):
-            names = ['account__nickname','username']
-            exact_names=['account']
+            #names = ['account__nickname','username']
+            exact_names=['account__nickname','username','account']
             
             def get_option(self, name):
                 if name == 'account':

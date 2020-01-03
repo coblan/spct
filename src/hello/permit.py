@@ -297,7 +297,16 @@ def get_permit(ui=None):
             {'label':'资金流入','value':'TbSportmoneyininfo.edit'},
             {'label':'资金流出','value':'TbSportmoneyoutinfo.edit'}
         ]},
-        
+        {'label':'龙城系统','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'账号','children':[
+                {'label':'查看','value':'TbLcityaccount'},
+                {'label':'编辑','value':'TbLcityaccount.edit','depend':['TbLcityaccount']},
+                ]},
+            {'label':'投注列表','value':'TbLcityprofitloss.edit'},
+            {'label':'资金流入','value':'TbLcitymoneyininfo.edit'},
+            {'label':'资金流出','value':'TbLcitymoneyoutinfo.edit'}
+        ]},
+          
         
         {'label': '系统管理',
          'children': [

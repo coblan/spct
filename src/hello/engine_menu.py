@@ -169,6 +169,13 @@ class PcMenu(BaseEngine):
                 {'label':'资金转入','url':page('sportmoneyinfo'),'visible':can_touch(TbSportmoneyininfo,crt_user)},
                 {'label':'资金转出','url':page('sportmoneyout'),'visible':can_touch(TbSportmoneyoutinfo,crt_user)},
              ]},
+             {'label': '龙城系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
+             'submenu': [
+                {'label': '用户列表', 'url': page('lcityaccount'),'visible': can_touch(TbLcityaccount, crt_user), },
+                {'label':'投注列表','url':page('lcityprofitloss'),'visible':can_touch(TbLcityprofitloss,crt_user)},
+                {'label':'资金转入','url':page('lcitymoneyinfo'),'visible':can_touch(TbLcitymoneyininfo,crt_user)},
+                {'label':'资金转出','url':page('lcitymoneyout'),'visible':can_touch(TbLcitymoneyoutinfo,crt_user)},
+             ]},
              
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
