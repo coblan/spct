@@ -574,9 +574,11 @@ class MemoForm(Fields):
  
 
 class AccoutBaseinfo(ModelFields):
-    #'agentamount', 
     field_sort = ['account', 'nickname', 'amount', 'status', 'createtime','agent', 'verify', 'viplv', 'bonusrate',
-                  'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','anomalyticketnum','powertype','parlayoddscheck','singleoddscheck']
+                  'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','anomalyticketnum',
+                  'powertype' if getattr(settings,'OPEN_SECRET',False) else '',
+                  'parlayoddscheck','singleoddscheck']
+    
     readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount','accounttype']
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('accountid'):

@@ -470,7 +470,8 @@ GAMEMONEY_OUT_STATUS = (
 ACCOUNT_POWERTYPE = (
     ('1','体育类型'),
     ('2','AG游戏'),
-    ('3','沙巴'),
+    ('3','沙巴体育'),
+    ('4','龙城棋牌')
 )
 
 ODDSOURCE =(
