@@ -382,7 +382,7 @@ class TicketMasterPage(TablePage):
                     'heads': [{'name': 'voidreason', 'label': '备注', 'editor': 'blocktext', }],
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
                 }, 'visible': 'status' in self.permit.changeable_fields(),},
-                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
+                #{'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
                 {'editor':'com-op-btn','label':'审核通过','row_match':'one_row','match_express':' rt = scope.row.audit == 1', 'match_msg': '只能选择异常注单',
                  'action':'''(function(){
                  if (!scope.ps.check_selected(scope.head)){return};
@@ -482,6 +482,13 @@ class TicketMasterPage(TablePage):
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
             names = ['status','audit', 'winbet','terminal','accountid__accounttype']
+            
+            def clean_search_args(self, search_args):
+                if search_args.get('createtime__gte'):
+                    start = timezone.datetime.strptime(search_args.get('createtime__gte'),'%Y-%m-%d %H:%M:%S')
+                    if timezone.now() - start > timezone.timedelta(days=2):
+                        raise UserWarning('只能查询两天内的注单信息')
+                return search_args
             
             def dict_head(self, head):
                 if head['name'] =='status':

@@ -56,9 +56,6 @@ class RechargePage(TablePage):
                 'amount':dc.get('total_amount'),
                 'confirmamount':dc.get('total_confirmamount')
             }
-            #footer = [dc.get(mapper.get(name), '') for name in self.fields_sort]
-            #self.footer = footer
-            #self.footer = ['合计'] + self.footer
             return query
 
         def inn_filter(self, query):
@@ -92,7 +89,7 @@ class RechargePage(TablePage):
                 'match_msg':'只能选择状态为未充值的',
                  'fields_ctx': ConfirmRechargeForm(crt_user=self.crt_user).get_head_context(),
                  'visible': 'status' in self.permit.changeable_fields(), },
-                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
+                #{'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
             ]
 
         class sort(RowSort):
