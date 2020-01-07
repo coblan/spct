@@ -20,7 +20,7 @@ from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
 #from helpers.director.shortcut import FormDatetime
 
 from maindb.create_user import CreateUserField,UpdateUserField
-
+from helpers.director.model_func.validator.integer import int_0_p
 
 class Blackiplist(models.Model):
     blackiplistid = models.AutoField(db_column='BlackIpListID', primary_key=True)  # Field name made lowercase.
@@ -120,7 +120,7 @@ class TbAccount(models.Model):
     risklevel = models.IntegerField(db_column='RiskLevel',verbose_name='风控等级',default=1)  # Field name made lowercase.
     isriskleveldown = models.BooleanField(db_column='IsRiskLevelDown',default=False)  # Field name made lowercase.
     cashchannel = models.IntegerField(db_column='CashChannel',verbose_name='允许提款渠道',default=0)  # Field name made lowercase.
-    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时',default=0)  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',verbose_name='注单延时',default=0,validators=[int_0_p])  # Field name made lowercase.
     anomalyticketnum = models.IntegerField(db_column='AnomalyTicketNum',default=0,verbose_name='异常单次数')  # Field name made lowercase.
     lastbettime = models.DateTimeField(db_column='LastBetTime', blank=True, null=True,verbose_name='最后投注时间')  # Field name made lowercase.
     csuserid = models.IntegerField(db_column='CSUserID', blank=True, null=True,verbose_name='所属客服')  # Field name made lowercase.
@@ -902,7 +902,7 @@ class TbLimitusergroup(models.Model):
     enable = models.BooleanField(db_column='Enable',verbose_name='启用')  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=200, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
     extension = models.CharField(db_column='Extension', max_length=300, blank=True, null=True,verbose_name='颜色')  # Field name made lowercase.
-    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',verbose_name='注单延时',default=0,validators=[int_0_p])  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1040,7 +1040,7 @@ class TbMatch(models.Model):
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4, blank=True, null=True ,verbose_name='权重')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
-    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',verbose_name='注单延时',default=0,validators=[int_0_p])  # Field name made lowercase.
     isdangerous = models.IntegerField(db_column='IsDangerous', blank=True, null=True,verbose_name='危险球')  # Field name made lowercase.
    
     oddsadjustment = models.DecimalField(db_column='OddsAdjustment', max_digits=2, decimal_places=2,verbose_name='赔率调整值')  # Field name made lowercase.
@@ -1382,7 +1382,7 @@ class TbMarkets(models.Model):
     #templateid = models.IntegerField(db_column='TemplateID', blank=True, null=True)  # Field name made lowercase.
     templateid = models.ForeignKey(to='TbTemplate',db_constraint=False,db_column='TemplateID',verbose_name='模板',null=True)  # Field name made lowercase.
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重')  # Field name made lowercase.
-    ticketdelay = models.IntegerField(db_column='TicketDelay',blank=True,verbose_name='注单延时')  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',verbose_name='注单延时',default=0,validators=[int_0_p])  # Field name made lowercase.
     extendweight = models.DecimalField(db_column='ExtendWeight', max_digits=18, decimal_places=2 ,verbose_name='扩展权重')  # Field name made lowercase.
    
     class Meta:
@@ -2370,7 +2370,7 @@ class TbTournament(models.Model):
     #source = models.IntegerField(db_column='Source',choices=DATA_SOURCE,verbose_name='数据源')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重',null=True,blank=True)  # Field name made lowercase.
-    ticketdelay = models.IntegerField(db_column='TicketDelay',verbose_name='注单延时',null=True,blank=True)  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',verbose_name='注单延时',null=True,default=0,validators=[int_0_p])  # Field name made lowercase.
     #sportid = models.IntegerField(db_column='SportID',)  # Field name made lowercase.
     sport = models.ForeignKey(to= 'TbSporttypes',to_field='sportid',db_column='SportID',db_constraint=False,verbose_name='体育类型')  # Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name = '推荐')  # Field name made lowercase.
@@ -2879,7 +2879,7 @@ class TbLeagueGroup(models.Model):
     riskleveldelay = models.CharField(db_column='RiskLevelDelay', max_length=3000,verbose_name='风控等级延迟')  # Field name made lowercase
     minodds = models.DecimalField(db_column='MinOdds', max_digits=18, decimal_places=2,verbose_name='最小赔率',help_text='上下盘玩法非主盘口封盘最低赔率')  # Field name made lowercase.
     handicapcount = models.IntegerField(db_column='HandicapCount',verbose_name='走地盘口显示数量')  # Field name made lowercase.
-    ticketdelay = models.IntegerField(db_column='TicketDelay',verbose_name='注单延时')  # Field name made lowercase.
+    ticketdelay = models.IntegerField(db_column='TicketDelay',verbose_name='注单延时',default=0,validators=[int_0_p])  # Field name made lowercase.
     #adjusttemplateid = models.IntegerField(db_column='AdjustTemplateID')  # Field name made lowercase.
     adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='早盘调水模板')  # Field name made lowercase.
     liveadjusttemplateid = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='LiveAdjustTemplateID',related_name='liveLeagueGroup',null=True,verbose_name='走地调水模板')
