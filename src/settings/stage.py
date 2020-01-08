@@ -41,7 +41,25 @@ DATABASES = {
             'extra_params': 'tds_version=8.0',
               },
                
-       } ,       
+       } ,  
+     'Sports_nolock': {
+        'NAME': 'Sports_20190610_Part1',#'Sports',
+        'ENGINE': 'sql_server.pyodbc',
+         'HOST':'192.168.40.165,1433',
+          'USER': 'develop',#'Backend',
+        'PASSWORD': 'develop_cheer',#'SSDEVdev@123',
+        #'PORT': '1436',
+        'OPTIONS': {
+             
+            'autocommit': True,
+            'host_is_server': True,
+            'unicode_results': True,
+            'driver': 'FreeTDS',
+            'extra_params': 'tds_version=8.0',
+            'isolation_level':'READ UNCOMMITTED'
+              },
+               
+       } , 
 }
 
 #ALLOWED_HOSTS=['103.246.219.202', '192.168.40.116', '103.242.109.37']
