@@ -143,11 +143,11 @@ class WithdrawPage(TablePage):
                     'visible': 'status' in self.permit.changeable_fields(),
                     'match_msg': '只能选择状态为处理中，失败或异常的订单',
                     'fields_ctx': WithDrawForm(crt_user=self.crt_user).get_head_context()},
-                #{'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o'}
             ]
 
         def inn_filter(self, query):
-            return query.order_by('-createtime')
+            return query.using('Sports_nolock').order_by('-createtime')
 
         class sort(RowSort):
             names = ['amount', 'createtime', 'confirmtime']
