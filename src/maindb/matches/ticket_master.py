@@ -418,14 +418,14 @@ class TicketMasterPage(TablePage):
             operation_log.info('开始导出注单列表excel')
             query=self.get_query()
             query = query.prefetch_related( 
-                Prefetch('tbticketstake_set',queryset=TbTicketstake.objects.select_related('matchid','marketid').extra(select={
+                Prefetch('tbticketstake_set',queryset=TbTicketstake.objects.using('Sports_nolock').select_related('matchid','marketid').extra(select={
             'tournament':'select TB_Tournament.tournamentnamezh'},
                             tables=['TB_Tournament','TB_Match'],
                             where=['TB_Tournament.tournamentid=TB_Match.tournamentid and TB_Match.sportid=TB_Tournament.sportid',
                                    'TB_Match.matchid=TB_TicketStake.matchid']
                             ) ) 
                 ).all()  #'tbticketstake_set',
-            query = query[:5000] 
+            query = query[:2000] 
             out=[]
             permit_fields =  self.permited_fields()
             for inst in query:
