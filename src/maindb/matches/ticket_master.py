@@ -234,10 +234,6 @@ class TicketMasterPage(TablePage):
                 search_args['status'] =[0,1,2,11]
             return search_args
         
-        
-        #def init_query(self):
-            #return self.model.objects.using('Sports_nolock').all()
-    
         def dict_head(self, head):
             if head['name'] in ['createtime', 'settletime']:
                 head['width'] = 140
@@ -425,7 +421,7 @@ class TicketMasterPage(TablePage):
                                    'TB_Match.matchid=TB_TicketStake.matchid']
                             ) ) 
                 ).all()  #'tbticketstake_set',
-            query = query[:2000] 
+            query = query[:1000] 
             out=[]
             permit_fields =  self.permited_fields()
             for inst in query:
