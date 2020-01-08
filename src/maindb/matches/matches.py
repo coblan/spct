@@ -122,7 +122,7 @@ class MatchsPage(TablePage):
 
 
         def inn_filter(self, query):
-            query = query.extra(select={
+            query = query.using('Sports_nolock').extra(select={
                 '_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
                 '_sportid_label':'SELECT TB_SportTypes.SportNameZH',
                 'num_stake':'''SELECT COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
