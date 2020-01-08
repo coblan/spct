@@ -13,6 +13,7 @@ from .matches import get_match_tab
 from helpers.func.collection.container import evalue_container
 from django.utils import timezone
 from helpers.director.model_func.dictfy import sim_dict
+from helpers.func.collection.mylist import split_list
 
 from django.db.models import Prefetch
 import logging
@@ -26,9 +27,10 @@ class TicketstakeTable(ModelTable):
     fields_sort = ['tournament', 'matchid', 'matchname','oddskind','marketname','specialbetname','outcomename','score', 'odds', 'confirmodds', 'realodds', 
                    'status', 'createtime', 'updatetime','ticketbetstopdiff','oddsource']
 
+    
     def inn_filter(self, query):
         ticketid = self.kw.get('ticketid')
-        query = query.extra(select={
+        query = query.using('Sports_nolock').extra(select={
             'tournament':'select TB_Tournament.tournamentnamezh'},
                             tables=['TB_Tournament','TB_Match'],
                             where=['TB_Tournament.tournamentid=TB_Match.tournamentid and TB_Match.sportid=TB_Tournament.sportid',
@@ -88,6 +90,7 @@ class TicketstakeTable(ModelTable):
 
 class TicketstakeEmbedTable(TicketstakeTable):
     fields_sort = ['ticketstake_'+x for x in TicketstakeTable.fields_sort]
+    
     def inn_filter(self, query):
         query = query.extra(select={
             'tournament':'select TB_Tournament.tournamentnamezh'},
@@ -231,6 +234,10 @@ class TicketMasterPage(TablePage):
                 search_args['status'] =[0,1,2,11]
             return search_args
         
+        
+        #def init_query(self):
+            #return self.model.objects.using('Sports_nolock').all()
+    
         def dict_head(self, head):
             if head['name'] in ['createtime', 'settletime']:
                 head['width'] = 140
@@ -307,7 +314,7 @@ class TicketMasterPage(TablePage):
             return dc
 
         def inn_filter(self, query):
-            return query.order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus')) \
+            return query.using('Sports_nolock').order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus')) \
                 .annotate(accountid__nickname=F('accountid__nickname'),stake_count=Count('tbticketstake'))
         
         def get_rows(self):
@@ -316,8 +323,9 @@ class TicketMasterPage(TablePage):
             dc={}
             for row in rows:
                 dc[row['pk']]=[]
-            for stake in  TicketstakeEmbedTable(master_id_list = rows_pklist,perpage=1000).get_rows():
-                dc[stake.get('ticketstake_ticket_master')].append(stake)
+            for batch_pklist in split_list(rows_pklist, 200):
+                for stake in  TicketstakeEmbedTable(master_id_list = batch_pklist,perpage=2000).get_rows():
+                    dc[stake.get('ticketstake_ticket_master')].append(stake)
                 
             for row in rows:
                 row.update({
@@ -382,7 +390,7 @@ class TicketMasterPage(TablePage):
                     'heads': [{'name': 'voidreason', 'label': '备注', 'editor': 'blocktext', }],
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
                 }, 'visible': 'status' in self.permit.changeable_fields(),},
-                #{'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
                 {'editor':'com-op-btn','label':'审核通过','row_match':'one_row','match_express':' rt = scope.row.audit == 1', 'match_msg': '只能选择异常注单',
                  'action':'''(function(){
                  if (!scope.ps.check_selected(scope.head)){return};
@@ -407,6 +415,7 @@ class TicketMasterPage(TablePage):
             ]
         
         def getExcelRows(self):
+            operation_log.info('开始导出注单列表excel')
             query=self.get_query()
             query = query.prefetch_related( 
                 Prefetch('tbticketstake_set',queryset=TbTicketstake.objects.select_related('matchid','marketid').extra(select={
@@ -416,7 +425,7 @@ class TicketMasterPage(TablePage):
                                    'TB_Match.matchid=TB_TicketStake.matchid']
                             ) ) 
                 ).all()  #'tbticketstake_set',
-            query = query[:1000] 
+            query = query[:5000] 
             out=[]
             permit_fields =  self.permited_fields()
             for inst in query:
@@ -443,6 +452,7 @@ class TicketMasterPage(TablePage):
 
                     mydc.update(stake_norm_dc)
                     out.append(mydc)
+            operation_log.info('导出注单列表excel查询完成')
             return out
         
         class search(SelectSearch):
