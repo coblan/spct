@@ -490,10 +490,10 @@ class TicketMasterPage(TablePage):
             names = ['status','audit', 'winbet','terminal','accountid__accounttype']
             
             def clean_search_args(self, search_args):
-                if search_args.get('createtime__gte'):
-                    start = timezone.datetime.strptime(search_args.get('createtime__gte'),'%Y-%m-%d %H:%M:%S')
-                    if timezone.now() - start > timezone.timedelta(days=2):
-                        raise UserWarning('只能查询两天内的注单信息')
+                #if search_args.get('createtime__gte'):
+                    #start = timezone.datetime.strptime(search_args.get('createtime__gte'),'%Y-%m-%d %H:%M:%S')
+                    #if timezone.now() - start > timezone.timedelta(days=2):
+                        #raise UserWarning('只能查询两天内的注单信息')
                 return search_args
             
             def dict_head(self, head):
