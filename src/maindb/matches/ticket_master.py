@@ -452,8 +452,8 @@ class TicketMasterPage(TablePage):
             return out
         
         class search(SelectSearch):
-            names = ['accountid__nickname','ticketid']
-            exact_names = ['orderid', 'tbticketstake__matchid']
+            names = ['accountid__nickname']
+            exact_names = ['ticketid','orderid', 'tbticketstake__matchid']
 
             def get_option(self, name):
 
