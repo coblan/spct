@@ -107,7 +107,7 @@ def notifyMatchMaping(msg):
 def rabbit_forword_publish(exchange,routing_key,body):
     rabbitHost = settings.RABBIT_FORWORD.get('ip')
     rabbitPort = settings.RABBIT_FORWORD.get('port')
-    virtual_host= settings.RABBIT_FORWORD.get('virtual_host')
+    virtual_host= settings.RABBIT_FORWORD.get('virtual_host','/')
     credentials = pika.PlainCredentials(settings.RABBIT_FORWORD.get('username'), 
                                         settings.RABBIT_FORWORD.get('password'))
     connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitHost, 
