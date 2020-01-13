@@ -37,6 +37,7 @@ from django.utils import timezone
 from . relevent_user import ReleventUserPage
 from ..ag.profitloss import AgprofitlossPage
 from ..sport.sport_profitloss import SportProfitlossPage
+from ..city.city_profitloss import LcityProfitlossPage
 from django.conf import settings
 from .userlog import UserlogPage
 from maindb.google_validate import valide_google_code
@@ -256,7 +257,16 @@ def account_tab(self=None):
              'pre_set':'rt={accountid:scope.par_row.accountid}',
              'table_ctx':SBprofitLosTab().get_head_context(),
              'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbSportprofitloss,crt_user)
+         },
+        {  'name':'lcity',
+             'label':'龙城棋牌',
+             'editor':'com-tab-table',
+             'pre_set':'rt={accountid:scope.par_row.accountid}',
+             'table_ctx':LCprofitLosTab().get_head_context(),
+             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbLcityprofitloss,crt_user)
          }
+        
+        
     ]
     named_ctx['account_tabs'] =  evalue_container(ls)
     #if 'account_tabs' not in named_ctx:
@@ -1104,6 +1114,13 @@ class AgprofitLosTab(AgprofitlossPage.tableCls):
         pass
 
 class SBprofitLosTab(SportProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
+
+class LCprofitLosTab(LcityProfitlossPage.tableCls):
     def inn_filter(self, query):
         return query.filter(account_id=self.kw.get('accountid'))
     

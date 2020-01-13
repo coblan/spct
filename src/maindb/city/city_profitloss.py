@@ -3,7 +3,7 @@ from ..ag.profitloss import AgprofitlossPage
 from ..models import TbLcityprofitloss
 from django.db.models import Sum
 
-class SportProfitlossPage(TablePage):
+class LcityProfitlossPage(TablePage):
     def get_label(self):
         return '投注列表'
     def get_template(self, prefer=None):
@@ -30,9 +30,9 @@ class SportProfitlossPage(TablePage):
 
 
 director.update({
-    'lcityprofitloss':SportProfitlossPage.tableCls,
+    'lcityprofitloss':LcityProfitlossPage.tableCls,
 })
 
 page_dc.update({
-    'lcityprofitloss':SportProfitlossPage
+    'lcityprofitloss':LcityProfitlossPage
 })
