@@ -11,7 +11,7 @@ from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatch,TbBetfullrecord,\
-     TbUserLog,TbSportprofitloss
+     TbUserLog,TbSportprofitloss,TbLcityprofitloss
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch,has_permit
 from helpers.func.random_str import get_str, get_random_number

@@ -17,7 +17,7 @@ class SportAccountPage(TablePage):
             where = self.get_where()
             sort = self.get_sort()
             start,end = self.pagenum.get_slice_index()
-            page ='OFFSET %(start)s ROWS  FETCH NEXT %(pagesize)s ROWS ONLY'%{'start':start,'pagesize':self.pagenator.perPage}
+            page ='OFFSET %(start)s ROWS  FETCH NEXT %(pagesize)s ROWS ONLY'%{'start':start,'pagesize':self.pagenum.perPage}
             names = self.get_model_field_name()
             fields = ','.join( ['main.%s'%x for x in names] )
             if where:
