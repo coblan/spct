@@ -1150,6 +1150,7 @@ director.update({
     'account.related_user':RelatedUserTab,
     'account.agprofitloss':AgprofitLosTab,
     'account.sbprofitloss':SBprofitLosTab,
+    'account.lcprofitloss':LCprofitLosTab,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
