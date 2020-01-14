@@ -540,15 +540,18 @@ class WebMatchForm(Fields):
                   'MatchSource':match.source
                   } 
             self.record_team_map(match)
+            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
+            dc['Eid'] = self.kw.get('Eid')
+            operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
         else:
-            dc = {'MatchID':None,
-                  'TeamSwap':None,
-                  'EventId':None,
-                  'MatchSource':None
+            dc = {'MatchID':"",
+                  'TeamSwap':"",
+                  'EventId':"",
+                  'MatchSource':""
                   } 
-        mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid')}, {'$set': dc})
-        dc['Eid'] = self.kw.get('Eid')
-        operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
+            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'MatchSource':self.kw.get('MatchSource')}, {'$unset': dc})   
+            operation_log.info('清除匹配比赛:%s'%self.kw.get('Eid'))
+        
         #notifyMatchMaping(json.dumps({'Eid':self.kw.get('Eid')}))
     def record_team_map(self,match):
         if self.kw.get('TeamSwap'):
