@@ -75,7 +75,7 @@ class OtherWebMatchPage(TablePage):
                 self.filter_args['Source'] =self.search_args.get('Source')
             if self.search_args.get('has_matched'):
                 if self.search_args.get('has_matched') ==1:
-                    self.filter_args['MatchID'] = {'$exists':True}
+                    self.filter_args['MatchID'] =  {'$gt':0}  #{'$exists':True}
                 else:
                     self.filter_args['MatchID'] = {'$exists':False}
             if self.search_args.get('SportId'):
