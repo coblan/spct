@@ -154,6 +154,7 @@ class OtherWebMatchPage(TablePage):
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-table-bool-shower'},
                 {'name':'Reason','label':'原因','editor':'com-table-span'},
                 {'name':'AutoMap','label':'自动匹配','editor':'com-table-bool-shower'},
+                {'name':'Active','label':'使用比赛赔率','editor':'com-table-bool-shower'},
             ]
         
         def get_rows(self):
@@ -172,6 +173,8 @@ class OtherWebMatchPage(TablePage):
                 dd = yy.astimezone(beijin)
                 item['EventDateTime'] = dd.strftime('%Y-%m-%d %H:%M:%S')
                 item.pop('_id')
+                if 'Active' not in item:
+                    item['Active']=True
                 dc.update(item)
                 rows.append(dc)
             
@@ -318,6 +321,7 @@ class OtherWebMatchPage(TablePage):
                 {
                     'editor':'com-op-btn',
                     'label':'自动批量匹配',
+                    'class':'btn-danger',
                     'action':'''
                     cfg.confirm("批量匹配需要花费一定时间，是否开始自动匹配？").then(()=>{
                          cfg.show_load();
@@ -330,7 +334,25 @@ class OtherWebMatchPage(TablePage):
                     ''',
                     #'visible':False,
                 
-                }
+                },
+                {'name':'selected_set_and_save',
+                 'editor':'com-op-btn',
+                 'label':'启用跟水数据',
+                 'help_text':'可控制单场是否跟水',
+                 'row_match':'many_row',
+                 'pre_set':  'rt={Active:true,_op:"active"}',
+                 'confirm_msg':'确定开启这些比赛?', 
+                 'class':'btn-default',
+                },
+                {'name':'selected_set_and_save',
+                 'editor':'com-op-btn',
+                 'label':'弃用跟水数据',
+                  'help_text':'可控制单场是否跟水',
+                 'row_match':'many_row',
+                 'pre_set':  'rt={Active:false,_op:"active"}',
+                 'confirm_msg':'确定关闭这些比赛?', 
+                 'class':'btn-default',
+                },
                 
             ]
         
@@ -534,13 +556,22 @@ class WebMatchForm(Fields):
             #else:
                 #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':True}})
         #else:
+        if self.kw.get('_op')=='active':
+            dc={
+                'Active':self.kw.get('Active')
+            }
+            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$set': dc})
+            operation_log.info('操作比赛匹配 [%s]:跟水数据: Active = [%s]'%(self.kw.get('Eid') , self.kw.get('Active')) )
+            return
+        
         if self.kw.get('matchid'):
             match = TbMatch.objects.get(matchid=self.kw.get('matchid'))
             dc = {'MatchID':self.kw.get('matchid'),'TeamSwap':self.kw.get('TeamSwap'),'EventId':self.kw.get('eventid'),
-                  'MatchSource':match.source
+                  'MatchSource':match.source,
+                  'Active':self.kw.get('Active'),
                   } 
             self.record_team_map(match)
-            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),}, {'$set': dc})
+            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$set': dc})
             dc['Eid'] = self.kw.get('Eid')
             operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
         else:
@@ -550,7 +581,8 @@ class WebMatchForm(Fields):
                   'MatchSource':"",
                   'AutoMap':"",
                   } 
-            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'MatchSource':self.kw.get('MatchSource')}, {'$unset': dc})   
+            
+            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$unset': dc})   
             operation_log.info('清除匹配比赛:%s'%self.kw.get('Eid'))
         
         #notifyMatchMaping(json.dumps({'Eid':self.kw.get('Eid')}))
