@@ -94,7 +94,7 @@ class OtherWebMatchPage(TablePage):
             return ctx
         
         def get_heads(self):
-            select_table_ctx =MatchPicker().get_head_context()
+            #select_table_ctx =MatchPicker().get_head_context()
             
             return [
                  #{'name':'Team1En','label':'主队英文名','editor':'com-table-click','width':130,
