@@ -574,6 +574,7 @@ class WebMatchForm(Fields):
                   'EventId':"",
                   'MatchSource':"",
                   'AutoMap':"",
+                  'Active':"",
                   } 
             mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$unset': dc}) 
             operation_log.info('清除匹配比赛:%s'%self.kw.get('Eid'))
