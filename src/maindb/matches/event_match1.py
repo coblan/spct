@@ -635,7 +635,7 @@ class WebMatchForm(Fields):
                                                defaults={
                                                    'teamid':home_id,
                                                     'mappingkey':'%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{'sportid':self.kw.get('sportid'),
-                                                                                                                                     'source':2, # 现在写死的，因为都是球队来源都是188。
+                                                                                                                                     'source': self.kw.get('Source') ,#2, # 现在写死的，因为都是球队来源都是188。
                                                                                                                                                  # 注意 self.kw.Source 是比赛来源，不要搞混了
                                                                                                                                      **home_source},
                                                    **home_local
@@ -646,7 +646,7 @@ class WebMatchForm(Fields):
                                            defaults={
                                                'teamid':away_id,
                                                'mappingkey':'%(sportid)s_%(source)s_%(sourceteamnameen)s_%(sourceteamnamezh)s'%{'sportid':self.kw.get('sportid'),
-                                                                                                                                'source':2, # 现在写死的，因为都是球队来源都是188。
+                                                                                                                                'source':self.kw.get('Source'),#2, # 现在写死的，因为都是球队来源都是188。
                                                                                                                                             # 注意 self.kw.Source 是比赛来源，不要搞混了
                                                                                                                                 **away_source},
                                                **away_local
