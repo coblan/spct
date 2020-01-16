@@ -39,7 +39,7 @@ class MappingSetting(FieldsPage):
             else:
                 mydb['Settings'].insert({'EnabledSource': EnabledSource })
             notifyMapingSetting(json.dumps({'EnabledSource':EnabledSource}))
-            operation_log.info('调整跟随来源总开关[%s]'%EnabledSource)
+            operation_log.info('调整跟随来源总开关为 [%s]'%EnabledSource)
 
 director.update({
     'mapping-setting':MappingSetting.fieldsCls,
