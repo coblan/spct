@@ -499,7 +499,7 @@ class WebMatchForm(Fields):
                 '_MatchID_label':str(inst) ,
             })
         else:
-            for key in ['matchdate','team1en','team1zh','team2en','team2zh','tournamentid']:
+            for key in ['matchdate','team1en','team1zh','team2en','team2zh','tournamentid','_tournamentid_id','_MatchID_label','MatchSource','bat_liveodds']:
                 out_dc[key]=''
         out_dc.update({
             'pk':dc.get('Eid'),
