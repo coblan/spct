@@ -307,7 +307,7 @@ class OtherWebMatchPage(TablePage):
                  'editor':'com-op-btn',
                  'label':'清除匹配',
                  'row_match':'many_row',
-                 'pre_set':  'rt={matchid:null,}',
+                 'pre_set':  'rt={matchid:null,_op:"clear_match"}',
                  'confirm_msg':'确定清除比赛匹配?', 
                  'class':'btn-default',
                 },
@@ -335,24 +335,24 @@ class OtherWebMatchPage(TablePage):
                     #'visible':False,
                 
                 },
-                {'name':'selected_set_and_save',
-                 'editor':'com-op-btn',
-                 'label':'启用跟水数据',
-                 'help_text':'可控制单场是否跟水',
-                 'row_match':'many_row',
-                 'pre_set':  'rt={Active:true,_op:"active"}',
-                 'confirm_msg':'确定开启这些比赛?', 
-                 'class':'btn-default',
-                },
-                {'name':'selected_set_and_save',
-                 'editor':'com-op-btn',
-                 'label':'弃用跟水数据',
-                  'help_text':'可控制单场是否跟水',
-                 'row_match':'many_row',
-                 'pre_set':  'rt={Active:false,_op:"active"}',
-                 'confirm_msg':'确定关闭这些比赛?', 
-                 'class':'btn-default',
-                },
+                #{'name':'selected_set_and_save',
+                 #'editor':'com-op-btn',
+                 #'label':'启用跟水数据',
+                 #'help_text':'可控制单场是否跟水',
+                 #'row_match':'many_row',
+                 #'pre_set':  'rt={Active:true,_op:"active"}',
+                 #'confirm_msg':'确定开启这些比赛?', 
+                 #'class':'btn-default',
+                #},
+                #{'name':'selected_set_and_save',
+                 #'editor':'com-op-btn',
+                 #'label':'弃用跟水数据',
+                  #'help_text':'可控制单场是否跟水',
+                 #'row_match':'many_row',
+                 #'pre_set':  'rt={Active:false,_op:"active"}',
+                 #'confirm_msg':'确定关闭这些比赛?', 
+                 #'class':'btn-default',
+                #},
                 
             ]
         
@@ -452,7 +452,7 @@ class WebMatchForm(Fields):
              'after_select':'ex.vueAssign(scope.row,scope.selected_row);',
              'table_ctx':MatchPicker().get_head_context(),'options':[],},
             
-            {'name':'TeamSwap','label':'交换主客队','editor':'com-field-bool','help_text':'当第三方赛事主客队顺序和Betrader不一致时，必须勾选此选项，否则会导致赔率严重错误!!!'},
+            {'name':'TeamSwap','label':'交换主客队','class':'myteamswap','css':'.myteamswap .field-input{width:250px}','editor':'com-field-bool','help_text':'当第三方赛事主客队顺序和Betrader不一致时，必须勾选此选项，否则会导致赔率严重错误!!!'},
             
             {'name':'tournamentid','label':'联赛(Betradar)','editor':'com-field-label-shower','readonly':True,},
             {'name':'matchdate','label':'比赛日期(Betradar)','editor':'com-field-datetime','readonly':True},
@@ -460,7 +460,7 @@ class WebMatchForm(Fields):
             {'name':'team1zh','label':'主队中文名(Betradar)','editor':'com-field-linetext','readonly':True},
             {'name':'team2en','label':'客队英文名(Betradar)','editor':'com-field-linetext','readonly':True,'class':'enname2'},
             {'name':'team2zh','label':'客队中文名(Betradar)','editor':'com-field-linetext','readonly':True},
-
+            {'name':'Active','label':'启用跟水','editor':'com-field-bool','help_text':'勾选后，即加入跟水名单组'},
         ]
     
     
@@ -475,11 +475,11 @@ class WebMatchForm(Fields):
                 ['Team2En','team2en'],
                 ['Team2Zh','team2zh'],
                 ['MatchID'],
-                ['TeamSwap'],
+                ['TeamSwap','Active'],
                           ],
             'fields_group':[
                 {'name':'info_compare','label':'信息对比','heads':['LeagueZh','tournamentid','EventDateTime','matchdate','Team1En','team1en','Team1Zh','team1zh','Team2En','team2en','Team2Zh','team2zh']},
-                {'name':'jj','label':'匹配选择','heads':['MatchID','TeamSwap']}
+                {'name':'jj','label':'匹配选择','heads':['MatchID','TeamSwap','Active']}
             ]
         })
         return ctx
@@ -550,19 +550,13 @@ class WebMatchForm(Fields):
     
          
     def save_form(self):
-        #if self.kw.get('_my_swap_team'):
-            #if self.kw.get('TeamSwap'):
-                #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':False}})
-            #else:
-                #mydb['Event'].update({'Eid':self.kw.get('Eid')}, {'$set': {'TeamSwap':True}})
-        #else:
-        if self.kw.get('_op')=='active':
-            dc={
-                'Active':self.kw.get('Active')
-            }
-            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$set': dc})
-            operation_log.info('操作比赛匹配 [%s]:跟水数据: Active = [%s]'%(self.kw.get('Eid') , self.kw.get('Active')) )
-            return
+        #if self.kw.get('_op')=='active':
+            #dc={
+                #'Active':self.kw.get('Active')
+            #}
+            #mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$set': dc})
+            #operation_log.info('操作比赛匹配 [%s]:跟水数据: Active = [%s]'%(self.kw.get('Eid') , self.kw.get('Active')) )
+            #return
         
         if self.kw.get('matchid'):
             match = TbMatch.objects.get(matchid=self.kw.get('matchid'))
@@ -574,16 +568,23 @@ class WebMatchForm(Fields):
             mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$set': dc})
             dc['Eid'] = self.kw.get('Eid')
             operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
-        else:
+        elif self.kw.get('_op') == "clear_match":
             dc = {'MatchID':"",
                   'TeamSwap':"",
                   'EventId':"",
                   'MatchSource':"",
                   'AutoMap':"",
                   } 
-            
-            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$unset': dc})   
+            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$unset': dc}) 
             operation_log.info('清除匹配比赛:%s'%self.kw.get('Eid'))
+        else:
+            dc ={
+                'TeamSwap':self.kw.get('TeamSwap'),
+                'Active':self.kw.get('Active'),
+            }
+            mydb['ThirdPartEvent'].update({'Eid':self.kw.get('Eid'),'Source':self.kw.get('Source')}, {'$set': dc})
+            dc['Eid'] = self.kw.get('Eid')
+            operation_log.info('操作匹配比赛:%s'%json.dumps(dc))
         
         #notifyMatchMaping(json.dumps({'Eid':self.kw.get('Eid')}))
     def record_team_map(self,match):
@@ -695,6 +696,7 @@ def auto_mapping_match():
     mapping_list =[]
     match_in_mongo = list( mydb['ThirdPartEvent'].find({'$and': [
         {'$or':[{'MatchID':{'$exists':False}},{'MatchID':None}]},
+        {'Active':{'$exists':False}},
         {'EventDateTime':{'$gte':now}},
     ] }))
     for item in match_in_mongo:
@@ -748,6 +750,7 @@ def auto_mapping_match():
                     'MatchSource':match.source,
                     'AutoMap':True,
                     'EventId':match.eventid,
+                    'Active':True
                 }
                 mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
                 op_list.append('%s=>%s'%(item.get('Eid'),match.matchid))
@@ -763,6 +766,7 @@ def auto_mapping_match():
                         'TeamSwap':True,
                         'AutoMap':True,
                         'EventId':match.eventid,
+                        'Active':True
                     }
                     mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
                     op_list.append('%s=>%s'%(item.get('Eid'),match.matchid))
