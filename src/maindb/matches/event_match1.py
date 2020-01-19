@@ -154,7 +154,7 @@ class OtherWebMatchPage(TablePage):
                 {'name':'TeamSwap','label':'交换主客队','editor':'com-table-bool-shower'},
                 {'name':'Reason','label':'原因','editor':'com-table-span'},
                 {'name':'AutoMap','label':'自动匹配','editor':'com-table-bool-shower'},
-                {'name':'Active','label':'使用比赛赔率','editor':'com-table-bool-shower'},
+                {'name':'Active','label':'启用跟水','editor':'com-table-bool-shower'},
             ]
         
         def get_rows(self):
