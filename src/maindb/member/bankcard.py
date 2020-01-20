@@ -12,8 +12,8 @@ class BankCard(TablePage):
 
     class tableCls(ModelTable):
         model = TbBankcard
-        exclude = ['account', 'banktypeid']
-        fields_sort = ['bankcardid', 'accountid', 'cardno', 'bankaccountname', 'bankaccountmobil', 'banktypename',
+        exclude = ['account',]
+        fields_sort = ['bankcardid', 'accountid', 'cardno', 'bankaccountname', 'bankaccountmobil','banktypeid', 
                        'bankprovince', 'bankcity', 'banksitename','createtime', 'active']
         pop_edit_field='bankcardid'
 
@@ -38,7 +38,7 @@ class BankCard(TablePage):
                 'bankaccountname': 140,
                 'createtime': 150,
                 'bankaccountmobil': 120,
-                'banktypename': 120,
+                'banktypeid': 120,
                 'banksitename': 150
             }
             if head['name'] in dc:
@@ -95,13 +95,15 @@ class BankCardForm(ModelFields):
     class Meta:
         model = TbBankcard
         #exclude = ['account', 'banktypeid']
-        fields = ['bankaccountname','active','bankprovince','bankcity','banksitename']
+        fields = ['bankaccountname','active','bankprovince','bankcity','banksitename','banktypeid']
     
     def dict_head(self, head):
         if head['name'] in ['bankcardid','bankaccountname']: #not in ['active']:
             head['readonly'] = True
         return head
     
+    def clean_save(self):
+        self.instance.banktypename= self.instance.banktypeid.banktypename
 
         
 

@@ -2487,7 +2487,8 @@ class TbBankcard(models.Model):
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountId',
                                   db_constraint=False, verbose_name='用户昵称')  # Field name made lowercase.
     account = models.CharField(db_column='Account', max_length=50)  # Field name made lowercase.
-    banktypeid = models.IntegerField(db_column='BankTypeID')  # Field name made lowercase.
+    #banktypeid = models.IntegerField(db_column='BankTypeID')  # Field name made lowercase.
+    banktypeid = models.ForeignKey(to='TbBanktypes',db_constraint=False,db_column='BankTypeID',verbose_name='银行卡类型')  # Field name made lowercase.
     cardno = models.CharField(db_column='CardNo', max_length=50, verbose_name='卡号')  # Field name made lowercase.
     bankaccountname = models.CharField(db_column='BankAccountName', max_length=50,
                                        verbose_name='开户人')  # Field name made lowercase.
@@ -2671,7 +2672,9 @@ class TbBanktypes(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_BankTypes'
-
+    
+    def __str__(self):
+        return self.banktypename
 
 class TbAgentcommission(models.Model):
     commid = models.BigAutoField(db_column='CommID', primary_key=True, verbose_name='记录ID')  # Field name made lowercase.
