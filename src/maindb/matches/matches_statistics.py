@@ -10,6 +10,7 @@ from django.utils import timezone
 from helpers.director.table.table import PlainTable
 from .ticket_master import TicketMasterPage,TicketMasterForm
 from helpers.director.engine import BaseEngine, page, fa, can_list, can_touch
+from maindb.status_code import MATCH_SOURCE
 
 class MatchesStatisticsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -160,7 +161,9 @@ class MatchesStatisticsPage(TablePage):
 
         def getExtraHead(self):
             return [
-                {'name':'Source','label':'数据源','editor':'com-table-mapper','options':[{'value':1,'label':'Betradar',},{'value':2,'label':'188'}]},
+                {'name':'Source','label':'数据源','editor':'com-table-mapper','options':[
+                    {'value':x[0],'label':x[1]} for x in MATCH_SOURCE]},
+                
                 {'name': 'TournamentName', 'label': '联赛 ', 'width': 150},
                 # {'name': 'MatchID', 'label': 'MatchID', },
                 
