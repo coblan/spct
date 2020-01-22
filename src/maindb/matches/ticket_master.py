@@ -43,7 +43,7 @@ class TicketstakeTable(ModelTable):
 
     def getExtraHead(self):
         return [
-            {'name': 'matchname', 'label': '比赛', 'width': 200,'editor':'com-table-rich-span','cell_class':'scope.row.ticketstake_match_source==2?"jjyy":""','css':'.jjyy{color:black;background-color:#F7DF9C}' },
+            {'name': 'matchname', 'label': '比赛', 'width': 200,'editor':'com-table-rich-span','cell_class':'scope.row.ticketstake_match_source != 1?"jjyy":""','css':'.jjyy{color:black;background-color:#F7DF9C}' },
             {'name': 'tournament', 'label': '联赛', 'width': 160, },
         ]
 
