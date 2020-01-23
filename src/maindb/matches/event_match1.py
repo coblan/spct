@@ -506,7 +506,7 @@ class WebMatchForm(Fields):
             'TeamSwap':bool(dc.get('TeamSwap')),
             'CreateTime':mongo2tm(dc.get('CreateTime')),
             'EventDateTime':mongo2tm(dc.get('EventDateTime')),
-            'Active':True
+            'Active':dc.get('Active',True)
         })
         return out_dc
     
