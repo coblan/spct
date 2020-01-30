@@ -43,7 +43,8 @@ async def es_save(dc):
         info = await client.index('adminbackend', 'user', body = dc)
         print(info)
     except Exception as e:
-        log.error('[异步]请求adminbackend出现了问题,%s' % e)
+        print('[异步]请求adminbackend出现了问题,%s' % e)
+        #log.error('[异步]请求adminbackend出现了问题,%s' % e)
     
 
 #loop = asyncio.get_event_loop()
