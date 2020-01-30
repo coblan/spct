@@ -46,7 +46,7 @@ async def es_save(dc):
         log.error('[异步]请求adminbackend出现了问题,%s' % e)
     
 
-loop = asyncio.get_event_loop()
+#loop = asyncio.get_event_loop()
 #loop.run_until_complete(print_info())
 
 ###############################################################
@@ -69,7 +69,10 @@ class EsHandler(logging.Handler):
         try:
             #res = es.index('adminbackend', 'user', body = dc)
             #print(res)
+            loop = asyncio.get_event_loop()
             loop.run_until_complete(es_save(dc))
+            loop.run_until_complete(client.transport.close())
+            loop.close()
         except Exception as e:
             log.error('请求adminbackend出现了问题,%s' % e)
     
