@@ -2020,7 +2020,7 @@ class TbSportprofitloss(models.Model):
     iswin = models.IntegerField(db_column='IsWin', blank=True, null=True,verbose_name='赢')  # Field name made lowercase.
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='沙巴用户名')  # Field name made lowercase.
     rebate = models.DecimalField(db_column='Rebate', max_digits=18, decimal_places=4,verbose_name='返点金额')  # Field name made lowercase.
-    turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=0,verbose_name='有效流水')  # Field name made lowercase.
+    turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=0,verbose_name='流水')  # Field name made lowercase.
      
     class Meta:
         managed = False
@@ -2101,7 +2101,7 @@ class TbLcityprofitloss(models.Model):
     iswin = models.IntegerField(db_column='IsWin', blank=True, null=True,verbose_name='赢')  # Field name made lowercase.
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='龙城用户名')  # Field name made lowercase.
     rebate = models.DecimalField(db_column='Rebate', max_digits=18, decimal_places=4,verbose_name='返点金额')  # Field name made lowercase.
-    turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=0,verbose_name='有效流水')  # Field name made lowercase.
+    turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=0,verbose_name='流水')  # Field name made lowercase.
     
 
     class Meta:
