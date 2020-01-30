@@ -56,6 +56,11 @@ def get_permit(ui=None):
                 {'label': '查看', 'value': 'Bonuse-dispatch',}, 
                 {'label': '编辑', 'value': 'Bonuse-dispatch.edit', 'depend': ['Bonuse-dispatch','TbAccount'],}, 
                          ]}, 
+            
+             { 'label': '启动广告', 'children': [
+                {'label': '查看', 'value': 'TbAdvertisement',}, 
+                {'label': '编辑', 'value': 'TbAdvertisement.edit', 'depend': ['TbAdvertisement'],}, 
+                         ]}, 
              ]
          }, 
          { 'label': '基本信息',
