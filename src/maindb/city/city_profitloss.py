@@ -16,7 +16,8 @@ class LcityProfitlossPage(TablePage):
         def statistics(self, query):
             dc = query.aggregate(total_profitlossmoney=Sum('profitlossmoney'),
                                  total_prizemoney=Sum('prizemoney'),
-                                 total_winmoney=Sum('winmoney')
+                                 total_winmoney=Sum('winmoney'),
+                                 total_turnover=Sum('turnover'),
                                  )
      
             #for k in dc:
