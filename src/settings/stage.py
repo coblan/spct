@@ -116,10 +116,15 @@ WEBSOCKET={
     'pswd': "YXNkZmFmc2RmbAo"
 }
 
+#ELK={
+    #'elastic':'http://192.168.40.199:9200',
+    #'user':'elastic',
+    #'pwsd':'Nr2IFuu78CYDKR4qNask'
+#}
 ELK={
     'elastic':'http://192.168.40.199:9200',
-    'user':'elastic',
-    'pwsd':'Nr2IFuu78CYDKR4qNask'
+    'user':'hello',
+    'pwsd':'#V$fsnKaS2b9b'
 }
 
 NOTICE = {
