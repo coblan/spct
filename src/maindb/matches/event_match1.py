@@ -525,7 +525,7 @@ class WebMatchForm(Fields):
                 raise UserWarning('只能选取Betradar或本抓取源的比赛。')
             if  self.kw.get('source') == self.kw.get('Source') and self.kw.get('TeamSwap'):
                 # @source 本地的matchsource   @Source   mongodb 中的抓取源
-                raise UserWarning('抓取源与本地比赛源一致，不能交换队伍。')
+                raise UserWarning('抓取源与本地比赛源一致，不能交换主客队。')
             super().clean()
             eventdatetime = timezone.datetime.strptime(self.kw.get('EventDateTime'), '%Y-%m-%d %H:%M:%S' ) 
             matchdatetime = timezone.datetime.strptime(self.kw.get('matchdate') ,'%Y-%m-%d %H:%M:%S', ) 
