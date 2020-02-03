@@ -11,6 +11,7 @@ from ..riskcontrol.black_users import AccountSelect
 from dateutil.relativedelta import relativedelta
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
+from maindb.member.account import UserPicker,can_touch,User
 
 class AgentUser(TablePage):
     template = 'jb_admin/table.html'
@@ -287,6 +288,7 @@ class AgentUser(TablePage):
             agent = NewAgentUserForm(crt_user= self.crt_user)
             yong = YongJingForm(crt_user=self.crt_user)
             par_form = ParentForm(crt_user=self.crt_user)
+            changeable_fields = self.permit.changeable_fields()
             return [
                 {'fun': 'add_new', 'editor': 'com-op-btn' ,
                  'after_save': 'rt=scope.ps.search()', #'preset':'rt={meta_only_add_root_next_level:1}',
@@ -308,7 +310,40 @@ class AgentUser(TablePage):
                  'after_save': 'rt=scope.ps.search()','row_match':'many_row',
                  'label': '修改上级','fields_ctx': par_form.get_head_context(),
                  'visible':has_permit(self.crt_user, 'agent.parent.edit')}, 
+                {'editor':'com-op-btn','label':'选择客服',
+                 'visible': 'csuserid' in changeable_fields and can_touch(User,self.crt_user),
+                 'table_ctx':UserPicker().get_head_context(),
+                 'row_match':'many_row',
+                 'action':''' cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)
+            .then((row)=>{
+                cfg.show_load()
+                var accounts = ex.map(scope.ps.selected,(item)=>{return item.AccountID})
+                return ex.director_call("agent/change-customer-server",{accounts:accounts,csuserid:row.pk})
+                
+            }).then(()=>{
+                cfg.hide_load()
+                cfg.toast("操作完成")
+                scope.ps.selected = []
+                 })
+                 
+                 '''}
             ]
+
+ #ex.each(scope.ps.selected,account=>{
+                     #account.csuserid = row.pk
+                     #account._csuserid_label = row.first_name+'('+ row.username +')'
+                     #account.meta_change_fields='csuserid'
+                 #})
+                 #cfg.show_load()
+                 
+                 #return ex.director_call('d.save_rows',{rows:scope.ps.selected})
+
+
+@director_view('agent/change-customer-server')
+def change_customer_server(accounts,csuserid):
+    TbAccount.objects.filter(accountid__in=accounts).update(csuserid=csuserid)
+
+
 
 @director_element('YongJingForm')
 class YongJingForm(Fields):

@@ -40,7 +40,7 @@ urlpatterns = [
     url(r'^main/',include('maindb.urls')),
     
     url(r'^d/',include('helpers.director.urls'),name='director'),
-    url(r'^dapi/(?P<director_name>[\w\/\.]+)?/?$',director_view),
+    url(r'^dapi/(?P<director_name>[\w\/\.-]+)?/?$',director_view),
     
     url(r'^pa/([\w\.-]+)/?$', ProgramerAdmin.as_view(), name= ProgramerAdmin.url_name), 
     url(r'^pa/?$', RedirectView.as_view(url='/pa/marketgroup')), 
