@@ -376,7 +376,7 @@ class TicketMasterPage(TablePage):
                     {'value':1*60*1000,'label':'1分钟'},
                     #{'value':2*60*1000,'label':'2分钟'},
                     #{'value':3*60*1000,'label':'3分钟'},
-                ],'action':'scope.ps.search()'},
+                ],'action':'rt= scope.ps.search()'},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废',
                  'pre_set': 'rt={status:-1,voidreason:""}',
                  #'field': 'status', 'value': 30,
