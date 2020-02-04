@@ -371,9 +371,11 @@ class TicketMasterPage(TablePage):
                 {'editor':'com-op-btn','label':'设置列','icon': 'fa-gear',
                  'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"设置列"})'},
                 {'editor':'com-op-table-refresh','label':'自动刷新频率','options':[
+                    {'value':10*1000,'label':'10秒'},
+                    {'value':30*1000,'label':'30秒'},
                     {'value':1*60*1000,'label':'1分钟'},
-                    {'value':2*60*1000,'label':'2分钟'},
-                    {'value':3*60*1000,'label':'3分钟'},
+                    #{'value':2*60*1000,'label':'2分钟'},
+                    #{'value':3*60*1000,'label':'3分钟'},
                 ],'action':'scope.ps.search()'},
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废',
                  'pre_set': 'rt={status:-1,voidreason:""}',
