@@ -108,7 +108,17 @@ class MatchsPage(TablePage):
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'},
-                    {'name':'num_stake','label':'未结算订单','editor':'com-table-span'}]
+                    {'name':'num_stake','label':'未结算订单',
+                     'editor':'com-table-rich-span',
+                     'action':'scope.head.tab_ctx.par_row = scope.row;scope.ps.switch_to_tab(scope.head.tab_ctx)',
+                     'tab_ctx':{
+                         'tab_name':'manul_outcome',
+                         'ctx_name':'match_tabs',
+                     },
+                     'inn_editor':'com-table-span',
+                     'cell_class':'scope.row.num_stake !="0/0"?"mywarning clickable":"clickable"',
+                     'css':'.mywarning{background-color:#ff410e;color:white}'
+                     }]
 
         @classmethod
         def clean_search_args(cls, search_args):
@@ -125,7 +135,7 @@ class MatchsPage(TablePage):
             query = query.using('Sports_nolock').extra(select={
                 '_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
                 '_sportid_label':'SELECT TB_SportTypes.SportNameZH',
-                'num_stake':'''SELECT COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                'num_stake':'''SELECT concat( COUNT( CASE WHEN TB_TicketMaster.ParlayRule =11 then 1 ELSE null END),'/', COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END)) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
                 WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
                 TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
                 TB_TicketMaster.Status =1 AND 
