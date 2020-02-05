@@ -5,6 +5,7 @@ from helpers.director.access.permit import has_permit
 from django.db.models import F
 from django.utils import timezone
 from helpers.director.network import argument
+import re
 
 class ChumUser(TablePage):
     
@@ -110,7 +111,7 @@ class ChumUser(TablePage):
             
         class search(SelectSearch):
             names = ['nickname']
-            exact_names = ['accountid']
+            exact_names = ['accountid','parentid']
 
             def get_option(self, name):
                 if name == 'accountid':
@@ -121,9 +122,14 @@ class ChumUser(TablePage):
                         'value': name,
                         'label': '昵称',
                     }
+                elif name =='parentid':
+                    return {
+                        'value':name,
+                        'label':'父级ID',
+                    }
 
             def clean_search(self):
-                if self.qf in ['accountid']:
+                if self.qf in ['accountid','parentid']:
                     if not re.search('^\d*$', self.q):
                         return None
                     else:
