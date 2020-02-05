@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowFilter,SelectSearch,RowSort
+from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowFilter,SelectSearch,RowSort,RawTable
 from ..models import TbAccount 
 from django.core.exceptions import PermissionDenied
 from helpers.director.access.permit import has_permit
@@ -6,6 +6,7 @@ from django.db.models import F
 from django.utils import timezone
 from helpers.director.network import argument
 import re
+from django.db import connections
 
 class ChumUser(TablePage):
     
@@ -34,7 +35,7 @@ class ChumUser(TablePage):
                 'sumrechargecount':[argument.int_str]
             })
             return search_args
-        
+         
         def get_heads(self):
             heads = super().get_heads()
             out_heads = []
@@ -135,7 +136,14 @@ class ChumUser(TablePage):
                     else:
                         return self.q
                 else:
-                    return super().clean_search()        
+                    return super().clean_search() 
+                
+            def get_query(self, query):
+                if self.qf == 'parentid':
+                    return query
+                else:
+                    return super().get_query(query)
+
 
 director.update({
     'chum_user':ChumUser.tableCls

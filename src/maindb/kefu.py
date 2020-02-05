@@ -1,4 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,director_view,get_request_cache,RowSort
+from helpers.director.network import argument
 from maindb.models import TbAccount
 import requests
 from django.conf import settings
@@ -40,6 +41,17 @@ class KefuPage(TablePage):
             ]
         
         def inn_filter(self, query):
+            if self.search_args.get('_q') and self.search_args.get('_qf') =='parentid':
+                argument.validate_argument(self.search_args,{
+                    '_q':[argument.failmsg(argument.int_str, '父级ID只能为整数') ,]
+                })
+                query =query.extra(
+                    where=[''' TB_Account.accountid in (
+                    SELECT accountid from f_account_children(%s)
+                    )
+                    ''' % self.search_args.get('_q') ],
+                #tables=['(SELECT accountid FROM TB_Account mm WHERE mm.ParentID=2022) as t']
+            )
             if has_permit(self.crt_user,'kefu.watch_all_account'):
                 return query
             else:
