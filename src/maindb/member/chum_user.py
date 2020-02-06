@@ -23,7 +23,7 @@ class ChumUser(TablePage):
     class tableCls(ModelTable):
         model = TbAccount
         exclude=['password','fundspassword','agent','pwupdatetime','avatar',
-                 'gender','birthday','points','codeid','parentid','isriskleveldown','phone','cashchannel','agentamount']
+                 'gender','birthday','points','codeid','parentid','isriskleveldown','phone','cashchannel','agentamount','powertype']
         #hide_fields =['lastbettime']
         selectable = False
         
