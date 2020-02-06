@@ -4,8 +4,9 @@ from maindb.models import TbAccount
 import requests
 from django.conf import settings
 from .member.chum_user import ChumUser
-from .models import TbUserex
+from .models import TbUserex,User
 from helpers.director.access.permit import has_permit
+
 import logging
 operation_log = logging.getLogger('operation_log')
 
@@ -28,6 +29,22 @@ class KefuPage(TablePage):
             })
             return ctx
         
+        
+        def get_rows(self):
+            rows = super().get_rows()
+            csuserid_list = [row.get('csuserid') for row in rows]
+            names = {}
+            for row in User.objects.filter(id__in = csuserid_list):
+                names[row.id] = str(row)
+            for row in rows:
+                row['_csuserid_label'] = names.get(row.get('csuserid') )
+            return rows
+          
+        def dict_head(self, head):
+            head = super().dict_head(head)
+            if head['name'] == 'csuserid':
+                head['editor'] = 'com-table-label-shower'
+            return head
         
         def get_operation(self):
             return [
