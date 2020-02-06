@@ -102,6 +102,9 @@ class MatchsPage(TablePage):
         sportid=1
         model = TbMatch
         exclude = []  # 'ishidden', 'iscloseliveodds'
+        #fields=['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
+                       #'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
+                       #'eventid',]
         fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
                        'eventid',] #'oddsadjustment','oddsadjustmax','baseticketeamout',
@@ -135,11 +138,28 @@ class MatchsPage(TablePage):
             query = query.using('Sports_nolock').extra(select={
                 '_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
                 '_sportid_label':'SELECT TB_SportTypes.SportNameZH',
-                'num_stake':'''SELECT concat( COUNT( CASE WHEN TB_TicketMaster.ParlayRule =11 then 1 ELSE null END),'/', COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END)) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                #'num_stake':'''SELECT concat( COUNT( CASE WHEN TB_TicketMaster.ParlayRule =11 then 1 ELSE null END),'/', COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END)) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                #WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
+                #TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
+                #TB_TicketMaster.Status =1 AND 
+                #TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
+                'num_stake_total':'''SELECT  COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
                 WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
                 TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
                 TB_TicketMaster.Status =1 AND 
-                TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
+                TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
+                'num_stake_parlay':'''SELECT  COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
+                TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
+                TB_TicketMaster.Status =1 AND 
+                TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
+                
+                #'num_stake':'''SELECT COUNT( CASE WHEN TB_TicketMaster.ParlayRule =11 then 1 ELSE null END) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                #WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
+                #TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
+                #TB_TicketMaster.Status =1 AND 
+                #TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
+                #'num_stake':'SELECT 0',
                 },
                 where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1'],
                 tables =['TB_Tournament','TB_SportTypes']
@@ -352,7 +372,7 @@ class MatchsPage(TablePage):
                 'isshow': not bool(inst.ishidden),
                 '_tournamentid_label':inst._tournamentid_label,
                 '_sportid_label':inst._sportid_label,
-                'num_stake':inst.num_stake,
+                'num_stake': '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
             }
 
 @director_view('match.clear_live_url')
