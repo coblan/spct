@@ -5,7 +5,7 @@ from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelField
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import has_permit,can_touch,can_write
 from ..models import  TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,\
-     TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch,TbLivefeed,TbSporttypes
+     TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch,TbLivefeed,TbSporttypes,TbManualsettlemsg
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
 from maindb.mongoInstance import updateMatchMongo
@@ -78,7 +78,10 @@ def get_match_tab(crt_user):
             'label':'手动结算',
             'com':'com-tab-table',
             'pre_set': 'rt={matchid:scope.par_row.matchid}',
-            'table_ctx': OutcomeTab(crt_user= crt_user).get_head_context(),
+            'table_ctx': {
+                'init_express':'scope.ps.search()',
+                **OutcomeTab(crt_user= crt_user).get_head_context()
+                },
             'visible': has_permit( crt_user, 'manual_outcome'), 
             },     
     ]
@@ -1057,7 +1060,13 @@ def get_match_outcome_info(matchid):
 
 @director_view('out_com_save')
 def out_com_save(rows,matchid):
-
+    if matchid:
+        count  = TbManualsettlemsg.objects.filter(matchid = matchid).update(settlemsg = json.dumps(rows),status = 1)
+        if not count:
+            TbManualsettlemsg.objects.create(matchid = matchid,settlemsg = json.dumps(rows),status = 1)
+            
+@director_view('out_com_save1')
+def real_out_come_save(matchid):
     send_dc = {
         'MatchID':matchid,
         'SendTime':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
