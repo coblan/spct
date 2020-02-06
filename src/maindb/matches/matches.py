@@ -430,7 +430,7 @@ class MatchForm(ModelFields):
                    'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', 'prematchdate','createtime']
 
     field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','weight','ticketdelay', ] #'oddsadjustment','oddsadjustmax','baseticketeamout'
-
+    overlap_fields =['updatetime']
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('matchid'):
             matchid = kw.get('matchid')
