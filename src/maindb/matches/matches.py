@@ -1,7 +1,7 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowFilter, RowSort, \
-     SelectSearch, Fields, director_view,director_element
+     SelectSearch, Fields, director_view,director_element,director_save_row
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import has_permit,can_touch,can_write
 from ..models import  TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,\
@@ -266,13 +266,26 @@ class MatchsPage(TablePage):
                  #'pre_set': 'rt={isrecommend:true}', 'row_match': 'many_row', 
                  #'after_save':' ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  #'visible': 'isrecommend' in self.permit.changeable_fields(),},
-                 {'fun':'director_call','editor':'com-op-btn','label':'推荐','confirm_msg': '确认推荐吗？',
-                  'pre_set': 'rt={isrecommend:true}', 
-                  'director_name':'batch_recommand',
+                {'action':''' ex.each(scope.ps.selected,row=>{row.meta_change_fields="isrecommend";row.isrecommend=true});
+                cfg.show_load();
+                ex.director_call("batch_recommand",{rows:scope.ps.selected})
+                .then((resp)=>{
+                    cfg.hide_load();
+                    ex.each(scope.ps.selected,row=>{delete row.meta_change_fields});
+                    scope.ps.update_rows(resp); ex.director_call("notify_match_recommend",{rows:resp});
+                    scope.ps.selected =[]
+                    })''' ,
+                 'editor':'com-op-btn','label':'推荐','confirm_msg': '确认推荐吗？',
                   'row_match': 'many_row',
-                  'after_save':'scope.ps.update_rows(scope.resp); ex.director_call("notify_match_recommend",{rows:scope.resp})',
                   'visible': 'isrecommend' in self.permit.changeable_fields()
                   },
+                 #{'fun':'director_call','editor':'com-op-btn','label':'推荐','confirm_msg': '确认推荐吗？',
+                  #'pre_set': 'rt={isrecommend:true}', 
+                  #'director_name':'batch_recommand',
+                  #'row_match': 'many_row',
+                  #'after_save':'scope.ps.update_rows(scope.resp); ex.director_call("notify_match_recommend",{rows:scope.resp})',
+                  #'visible': 'isrecommend' in self.permit.changeable_fields()
+                  #},
                  
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
                  'pre_set': 'rt={isrecommend:false}', 'row_match': 'many_row',
@@ -284,12 +297,18 @@ class MatchsPage(TablePage):
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消走地', 'confirm_msg': '确认取消走地吗？',
                  'field': 'hasliveodds',
                  'value': False, 'visible': 'hasliveodds' in self.permit.changeable_fields()},
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '显示', 'confirm_msg': '确认显示比赛吗？',
-                 'field': 'ishidden',
-                 'value': 0, 'visible': 'ishidden' in self.permit.changeable_fields()},
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '隐藏', 'confirm_msg': '确认隐藏比赛吗？',
-                 'field': 'ishidden',
-                 'value': 1, 'visible': 'ishidden' in self.permit.changeable_fields()},
+                {'fun': 'selected_set_and_save', 
+                 'editor': 'com-op-btn', 
+                 'label': '显示', 
+                 'confirm_msg': '确认显示比赛吗？',
+                 'pre_set':'rt={meta_change_fields:"ishidden",ishidden:0}',
+                 'visible': 'ishidden' in self.permit.changeable_fields()},
+                {'fun': 'selected_set_and_save', 
+                 'editor': 'com-op-btn', 
+                 'label': '隐藏', 
+                 'confirm_msg': '确认隐藏比赛吗？',
+                 'pre_set':'rt={meta_change_fields:"ishidden",ishidden:1}',
+                  'visible': 'ishidden' in self.permit.changeable_fields()},
                 #{'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
                 #'express': 'rt=scope.ps.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_iscloseliveodds_tabs",par_row:scope.ps.selected[0]})',
                     #'visible': self.permit.can_edit(),}, 
@@ -1421,7 +1440,7 @@ def out_com_save(rows,matchid):
     notifyManulOutcome(json.dumps(send_dc))
 
 @director_view('batch_recommand')
-def batch_recommand(rows,new_row):
+def batch_recommand(rows):
     sportid_dc={}
     matchlist = []
     for row in rows:
@@ -1430,14 +1449,23 @@ def batch_recommand(rows,new_row):
             sportid_dc[sportid] = []
         sportid_dc[sportid] .append(row['matchid'])
         matchlist.append(row['matchid'])
-        row.update(new_row)
-    now = timezone.now()
-    for k,v in sportid_dc.items():
-        count = TbMatch.objects.filter(sportid=k,isrecommend=True,matchdate__gte=now).count()
+#def batch_recommand(rows,new_row):
+    #sportid_dc={}
+    #matchlist = []
+    #for row in rows:
+        #sportid = row['sportid']
+        #if sportid not in sportid_dc:
+            #sportid_dc[sportid] = []
+        #sportid_dc[sportid] .append(row['matchid'])
+        #matchlist.append(row['matchid'])
+        #row.update(new_row)
+    #now = timezone.now()
+    #for k,v in sportid_dc.items():
+        #count = TbMatch.objects.filter(sportid=k,isrecommend=True,matchdate__gte=now).count()
         #if count + len(v) > 5:
             #raise UserWarning('每种体育类型最多5场推荐,但是经过这次操作后,%s已经超过了此限制.'% TbSporttypes.objects.get(sportid=k) )
-    
-    return save_rows(rows)
+    return  save_rows(rows)
+
    
         
     #TbMatch.objects.filter(matchid__in=matchlist).update(isrecommend = True)
