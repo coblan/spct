@@ -1112,7 +1112,7 @@ def confirm_manual_settle_to_audit(matchid):
         return {'msg':'没有结算数据可以审核'}
     else:
         rows = json.loads(settlemsg.settlemsg)
-        real_out_come_save(matchid,rows)
+        real_out_come_save(rows ,matchid)
         settlemsg.delete()
         return {}
         
