@@ -479,3 +479,8 @@ ODDSOURCE =(
     (1,'Betradar'),
     (2,'188')
 )
+
+SETTLEMSG_STATUS=(
+    (0,'编辑中'),
+    (1,'审核中'),
+)

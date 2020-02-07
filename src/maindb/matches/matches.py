@@ -12,7 +12,7 @@ from maindb.mongoInstance import updateMatchMongo
 from maindb.rabbitmq_instance import closeHandicap
 import json
 from ..redisInstance import redisInst,redisInst0
-from django.db.models import Q
+from django.db.models import Q,F
 import urllib
 import requests
 from django.conf import settings
@@ -110,7 +110,7 @@ class MatchsPage(TablePage):
                        #'eventid',]
         fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
-                       'eventid',] #'oddsadjustment','oddsadjustmax','baseticketeamout',
+                       'eventid','manual_settle_need_audit'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'},
@@ -124,6 +124,9 @@ class MatchsPage(TablePage):
                      'inn_editor':'com-table-span',
                      'cell_class':'scope.row.num_stake !="0/0"?"mywarning clickable":"clickable"',
                      'css':'.mywarning{background-color:#ff410e;color:white}'
+                     },
+                    {'name':'manual_settle_need_audit','label':'需要审核',
+                     'editor':'com-table-bool-shower'
                      }]
 
         @classmethod
@@ -156,16 +159,11 @@ class MatchsPage(TablePage):
                 TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
                 TB_TicketMaster.Status =1 AND 
                 TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
+                'manual_settle_need_audit':'SELECT status FROM TB_ManualSettleMsg WHERE TB_Match.MatchID=TB_ManualSettleMsg.MatchID',
                 
-                #'num_stake':'''SELECT COUNT( CASE WHEN TB_TicketMaster.ParlayRule =11 then 1 ELSE null END) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
-                #WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
-                #TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
-                #TB_TicketMaster.Status =1 AND 
-                #TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
-                #'num_stake':'SELECT 0',
                 },
-                where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1'],
-                tables =['TB_Tournament','TB_SportTypes']
+                where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1',],
+                tables =['TB_Tournament','TB_SportTypes',]
                 )
             #query = query.extra(select={
                 #'_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
@@ -202,8 +200,8 @@ class MatchsPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['sportid','isrecommend', 'marketstatus','statuscode','hasliveodds','tournamentid']
-            fields_sort=['sportid','isrecommend', 'marketstatus', 'statuscode','hasliveodds','tournamentid','matchdate']
+            names = ['sportid','isrecommend', 'marketstatus','statuscode','hasliveodds','tournamentid',]
+            fields_sort=['sportid','isrecommend', 'marketstatus', 'statuscode','hasliveodds','manual_settle_need_audit','tournamentid','matchdate']
 
             def getExtraHead(self):
                 return [
@@ -212,16 +210,28 @@ class MatchsPage(TablePage):
                          {'value':0,'label':'常规'},
                         {'value':1,'label':'特殊'}
                         ],
-                     }
+                     },
+                    {'name':'manual_settle_need_audit','label':'手动结算状态','editor':'com-filter-select',
+                     'options':[
+                         {'value':0,'label':'编辑中'},
+                         {'value':1,'label':'审核中'},
+                     ]}
                 ]
 
             def clean_query(self, query):
-                if self.kw.get('specialcategoryid')==0:
-                    return query.filter(specialcategoryid__lte=0)
-                elif self.kw.get('specialcategoryid')==1:
-                    return query.filter(specialcategoryid__gt=0)
-                else:
-                    return query
+                #if self.kw.get('specialcategoryid')==0:
+                    #return query.filter(specialcategoryid__lte=0)
+                #elif self.kw.get('specialcategoryid')==1:
+                    #return query.filter(specialcategoryid__gt=0)
+                if self.kw.get('manual_settle_need_audit') == 1:
+                    query = query.extra(where=['TB_ManualSettleMsg.status=1','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
+                                       tables=['TB_ManualSettleMsg'])
+                elif self.kw.get('manual_settle_need_audit') == 0:
+                    query = query.extra(where=['TB_ManualSettleMsg.status=0','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
+                                       tables=['TB_ManualSettleMsg'])
+                    #return query.annotate(need_audit =F('manual_settle_need_audit')).filter(need_audit=1)
+                
+                return query
 
             def dict_head(self, head):
                 if head['name']=='statuscode':
@@ -395,6 +405,7 @@ class MatchsPage(TablePage):
                 '_tournamentid_label':inst._tournamentid_label,
                 '_sportid_label':inst._sportid_label,
                 'num_stake': '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
+                'manual_settle_need_audit':inst.manual_settle_need_audit
             }
 
 @director_view('match.clear_live_url')
@@ -470,8 +481,11 @@ class MatchForm(ModelFields):
         return head
 
     def dict_row(self, inst):
+        settlemsg = TbManualsettlemsg.objects.filter(matchid = inst.matchid).first()
+        
         return {'isshow': not bool(inst.ishidden),
                 '_matchdate_label':inst.matchdate.strftime('%Y-%m-%d %H:%M') if inst.matchdate else '',
+                'manual_settle_need_audit': settlemsg.status if settlemsg else ''
                 }
 
     def clean_save(self):
@@ -974,7 +988,19 @@ class OutcomeTab(ModelTable):
             ]
 
         rows = super().get_rows()
-        return bf+rows
+        rows = bf+rows
+        try:
+            settlemsg = TbManualsettlemsg.objects.get(matchid= self.kw.get('matchid'))
+            match_outcome = json.loads(settlemsg.settlemsg)
+            for msg_row in match_outcome:
+                for row in rows:
+                    if msg_row.get('pk')==row.get('pk'):
+                        row['outcome'] = msg_row
+                        break
+        except TbManualsettlemsg.DoesNotExist as e:
+            pass
+        
+        return rows
 
     def dict_head(self, head):
 
@@ -1018,7 +1044,7 @@ class OutcomeTab(ModelTable):
 
     def get_operation(self):
         return [
-            {'name':'outcome','label':'结算','editor':'com-op-btn','class':'btn btn-info','action':'''rt=cfg.confirm("确定发送手动结算信息?")
+            {'name':'outcome','label':'保存结果','editor':'com-op-btn','class':'btn btn-info','action':'''rt=Promise.resolve()
             .then(()=>{ return out_come_save(scope.ps.rows,scope.ps.vc.par_row.matchid)} )
             .then(()=>{
                 return ex.director_call("get_row",
@@ -1027,7 +1053,77 @@ class OutcomeTab(ModelTable):
                     })
                  })
             .then((res)=>{ex.vueAssign(scope.ps.vc.par_row,res)}) ''' },
+            {'label':'提交审核','editor':'com-op-btn','class':'btn btn-info',
+             'action':''' cfg.confirm("确定提交手动结算信息?审核过程中，将不能修改数据。")
+             .then(()=>{
+                cfg.show_load()
+                return ex.director_call("submit_manual_settle_to_audit",{matchid:scope.ps.vc.par_row.matchid})
+             }).then((resp)=>{
+                cfg.hide_load()
+                if(resp.msg){
+                     cfg.toast(resp.msg)
+                }else{
+                    cfg.toast('提交审核成功，等待管理员审核。')
+                }
+             })
+             ''' },
+            
+            {'label':'审核通过','editor':'com-op-btn','class':'btn btn-info',
+             'action':'''cfg.confirm("审核通过会立即通知后台进行结算，结果不可挽回，确定通过?")
+             .then(()=>{
+                 cfg.show_load()
+                 return ex.director_call("confirm_manual_settle_to_audit",{matchid:scope.ps.vc.par_row.matchid})
+             }).then((resp)=>{
+                 cfg.hide_load()
+                  if(resp.msg){
+                     cfg.toast(resp.msg)
+                  }else{
+                    cfg.toast('操作成功')
+                  }
+             })'''},
+            {'label':'审核拒绝','editor':'com-op-btn',
+             'action':'''cfg.confirm('拒绝审核后，结算数据会把打回，重新填写，确定要拒绝？')
+             .then(()=>{
+                cfg.show_load()
+                return ex.director_call("reject_manual_settle_to_audit",{matchid:scope.ps.vc.par_row.matchid})
+             }).then((resp)=>{ 
+                cfg.hide_load()
+                  if(resp.msg){
+                     cfg.toast(resp.msg)
+                  }else{
+                    cfg.toast('操作成功')
+                  }
+             })
+             '''},
         ]
+
+@director_view('submit_manual_settle_to_audit')
+def submit_manual_settle_to_audit(matchid):
+    count = TbManualsettlemsg.objects.filter(matchid = matchid,status =0).update(status = 1)
+    if not count:
+        return {'msg':'没有可提交的结算数据'}
+    else:
+        return {}
+    
+@director_view('confirm_manual_settle_to_audit')
+def confirm_manual_settle_to_audit(matchid):
+    settlemsg = TbManualsettlemsg.objects.filter(matchid = matchid,status =1).first()
+    if not settlemsg:
+        return {'msg':'没有结算数据可以审核'}
+    else:
+        rows = json.loads(settlemsg.settlemsg)
+        real_out_come_save(matchid,rows)
+        settlemsg.delete()
+        return {}
+        
+@director_view('reject_manual_settle_to_audit')
+def reject_manual_settle_to_audit(matchid):
+    count = TbManualsettlemsg.objects.filter(matchid = matchid,status =1).update(status =0)
+    if not count:
+        return {'msg':'没有结算数据'}
+    else:
+        return {}
+
 
 def get_score_heads(ls):
     dc = dict((
@@ -1080,12 +1176,18 @@ def get_match_outcome_info(matchid):
 @director_view('out_com_save')
 def out_com_save(rows,matchid):
     if matchid:
-        count  = TbManualsettlemsg.objects.filter(matchid = matchid).update(settlemsg = json.dumps(rows),status = 1)
-        if not count:
-            TbManualsettlemsg.objects.create(matchid = matchid,settlemsg = json.dumps(rows),status = 1)
+        try:
+            settlemsg = TbManualsettlemsg.objects.get(matchid = matchid)
+            if settlemsg.status != 0:
+                raise UserWarning('当前正在审核中，不能进行编辑')
             
-@director_view('out_com_save1')
-def real_out_come_save(matchid):
+        except TbManualsettlemsg.DoesNotExist as e:
+            settlemsg = TbManualsettlemsg.objects.create(matchid = matchid,status=0)
+        settlemsg .settlemsg = json.dumps(rows)
+        settlemsg.save()
+
+            
+def real_out_come_save(rows,matchid):
     send_dc = {
         'MatchID':matchid,
         'SendTime':datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),

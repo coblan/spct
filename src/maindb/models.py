@@ -3251,7 +3251,7 @@ class TbManualsettlemsg(models.Model):
     id = models.AutoField(db_column='ID',primary_key=True)  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID', verbose_name='比赛ID')  # Field name made lowercase.
     settlemsg = models.TextField(db_column='SettleMsg', verbose_name='结算内容')  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status', verbose_name='状态')  # Field 
+    status = models.IntegerField(db_column='Status', verbose_name='状态',default=0,choices=SETTLEMSG_STATUS)  # Field 
     
     class Meta:
         managed = False
