@@ -1044,7 +1044,8 @@ class OutcomeTab(ModelTable):
 
     def get_operation(self):
         return [
-            {'name':'outcome','label':'保存结果','editor':'com-op-btn','class':'btn btn-info','action':'''rt=Promise.resolve()
+            {'name':'outcome','label':'保存结果','editor':'com-op-btn',
+             'class':'btn btn-info','action':'''rt=Promise.resolve()
             .then(()=>{ return out_come_save(scope.ps.rows,scope.ps.vc.par_row.matchid)} )
             .then(()=>{
                 return ex.director_call("get_row",
@@ -1052,8 +1053,10 @@ class OutcomeTab(ModelTable):
                         director_name:scope.ps.vc.par_row._director_name,matchid:scope.ps.vc.par_row.matchid
                     })
                  })
-            .then((res)=>{ex.vueAssign(scope.ps.vc.par_row,res)}) ''' },
-            {'label':'提交审核','editor':'com-op-btn','class':'btn btn-info',
+            .then((res)=>{ex.vueAssign(scope.ps.vc.par_row,res)}) ''', 
+            'visible':has_permit(self.crt_user, 'save_manual_outcome')},
+            {'label':'提交审核','editor':'com-op-btn',
+             'class':'btn btn-primary',
              'action':''' cfg.confirm("确定提交手动结算信息?审核过程中，将不能修改数据。")
              .then(()=>{
                 cfg.show_load()
@@ -1066,9 +1069,10 @@ class OutcomeTab(ModelTable):
                     cfg.toast('提交审核成功，等待管理员审核。')
                 }
              })
-             ''' },
+             ''',
+             'visible':has_permit(self.crt_user, 'save_manual_outcome')},
             
-            {'label':'审核通过','editor':'com-op-btn','class':'btn btn-info',
+            {'label':'审核通过','editor':'com-op-btn','class':'btn btn-success',
              'action':'''cfg.confirm("审核通过会立即通知后台进行结算，结果不可挽回，确定通过?")
              .then(()=>{
                  cfg.show_load()
@@ -1080,9 +1084,11 @@ class OutcomeTab(ModelTable):
                   }else{
                     cfg.toast('操作成功')
                   }
-             })'''},
+             })''',
+             'visible':has_permit(self.crt_user,'audit_manual_outcome')},
             {'label':'审核拒绝','editor':'com-op-btn',
-             'action':'''cfg.confirm('拒绝审核后，结算数据会把打回，重新填写，确定要拒绝？')
+             'class':'btn btn-danger',
+             'action':'''cfg.confirm('审核拒绝后，结算数据会被退回重新填写，确定要拒绝？')
              .then(()=>{
                 cfg.show_load()
                 return ex.director_call("reject_manual_settle_to_audit",{matchid:scope.ps.vc.par_row.matchid})
@@ -1094,7 +1100,8 @@ class OutcomeTab(ModelTable):
                     cfg.toast('操作成功')
                   }
              })
-             '''},
+             ''',
+             'visible':has_permit(self.crt_user,'audit_manual_outcome')},
         ]
 
 @director_view('submit_manual_settle_to_audit')
@@ -1103,6 +1110,7 @@ def submit_manual_settle_to_audit(matchid):
     if not count:
         return {'msg':'没有可提交的结算数据'}
     else:
+        op_log.info('提交手动结算审核 matchid = %s'%matchid)
         return {}
     
 @director_view('confirm_manual_settle_to_audit')
@@ -1113,6 +1121,7 @@ def confirm_manual_settle_to_audit(matchid):
     else:
         rows = json.loads(settlemsg.settlemsg)
         real_out_come_save(rows ,matchid)
+        op_log.info('审核手动结算:matchid=%s ;settlemsg = %s '%(matchid,settlemsg.settlemsg,))
         settlemsg.delete()
         return {}
         
@@ -1122,6 +1131,7 @@ def reject_manual_settle_to_audit(matchid):
     if not count:
         return {'msg':'没有结算数据'}
     else:
+        op_log.info('拒绝手动结算审核 matchid = %s'%matchid)
         return {}
 
 
