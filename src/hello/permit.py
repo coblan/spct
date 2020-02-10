@@ -382,7 +382,11 @@ def get_permit(ui=None):
             {'label':'比分','value':'TbPeriodscore'},
             {'label':'危险球','value':'TbLivefeed.edit'},
             {'label':'盘口','value':'manual_specialbetvalue'},
-            {'label':'手动结算','value':'manual_outcome','depend':['TbMarkets']},
+            {'label':'手动结算','children':[
+                    {'label':'进入结算页面','value':'manual_outcome','depend':['TbMarkets']},
+                    {'label':'提交手动结算','value':'save_manual_outcome'},
+                    {'label':'审批手动结算','value':'audit_manual_outcome'},
+               ]}
             ]},
         {'label': '玩法设置', 'children':[
                  {'label':'查看','value':'TbMarkets'},

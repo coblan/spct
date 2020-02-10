@@ -1302,23 +1302,23 @@ class TbMessageUnsend(models.Model):
         db_table = 'TB_Message_Unsend'
 
 
-class TbMessages(models.Model):
-    messagesid = models.AutoField(db_column='MessagesId', primary_key=True)  # Field name made lowercase.
-    accountid = models.IntegerField(db_column='AccountId')  # Field name made lowercase.
-    spearkeraccountid = models.IntegerField(db_column='SpearkerAccountId')  # Field name made lowercase.
-    spearkername = models.CharField(db_column='SpearkerName', max_length=10)  # Field name made lowercase.
-    listeneraccountid = models.IntegerField(db_column='ListenerAccountId')  # Field name made lowercase.
-    listenername = models.CharField(db_column='ListenerName', max_length=10)  # Field name made lowercase.
-    body = models.CharField(db_column='Body', max_length=512)  # Field name made lowercase.
-    haveread = models.BooleanField(db_column='HaveRead')  # Field name made lowercase.
-    received = models.BooleanField(db_column='Received')  # Field name made lowercase.
-    status = models.SmallIntegerField(db_column='Status')  # Field name made lowercase.
+class TbMessage(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    typeid = models.IntegerField(db_column='TypeId')  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=255)  # Field name made lowercase.
+    content = models.TextField(db_column='Content')  # Field name made lowercase.
+    abstract = models.CharField(db_column='Abstract', max_length=512, blank=True, null=True)  # Field name made lowercase.
+    sender = models.CharField(db_column='Sender', max_length=64)  # Field name made lowercase.
+    sendway = models.IntegerField(db_column='SendWay')  # Field name made lowercase.
+    userids = models.TextField(db_column='UserIds', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    usergroupids = models.TextField(db_column='UserGroupIds', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    vipgroupids = models.TextField(db_column='VipGroupIds', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
-    updatetime = models.DateTimeField(db_column='UpdateTime')  # Field name made lowercase.
 
     class Meta:
         managed = False
-        db_table = 'TB_Messages'
+        db_table = 'TB_Message'
+
 
 
 class TbMoneyCategories(models.Model):
