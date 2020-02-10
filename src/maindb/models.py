@@ -21,6 +21,7 @@ from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
 
 from maindb.create_user import CreateUserField,UpdateUserField
 from helpers.director.model_func.validator.integer import int_0_p
+from helpers.director.model_func.cus_fields.richtext import RichtextField
 
 class Blackiplist(models.Model):
     blackiplistid = models.AutoField(db_column='BlackIpListID', primary_key=True)  # Field name made lowercase.
@@ -1302,24 +1303,50 @@ class TbMessageUnsend(models.Model):
         db_table = 'TB_Message_Unsend'
 
 
+class TbMessagetype(models.Model):
+    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=64)  # Field name made lowercase.
+    needread = models.BooleanField(db_column='NeedRead')  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_MessageType'
+    
+    def __str__(self):
+        return self.name
+
 class TbMessage(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    typeid = models.IntegerField(db_column='TypeId')  # Field name made lowercase.
-    title = models.CharField(db_column='Title', max_length=255)  # Field name made lowercase.
-    content = models.TextField(db_column='Content')  # Field name made lowercase.
-    abstract = models.CharField(db_column='Abstract', max_length=512, blank=True, null=True)  # Field name made lowercase.
-    sender = models.CharField(db_column='Sender', max_length=64)  # Field name made lowercase.
-    sendway = models.IntegerField(db_column='SendWay')  # Field name made lowercase.
-    userids = models.TextField(db_column='UserIds', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
-    usergroupids = models.TextField(db_column='UserGroupIds', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
-    vipgroupids = models.TextField(db_column='VipGroupIds', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
-
+    #typeid = models.IntegerField(db_column='TypeId')  # Field name made lowercase.
+    typeid = models.ForeignKey(to= TbMessagetype,db_constraint=False,db_column='TypeId',verbose_name='消息类别')
+    title = models.CharField(db_column='Title', max_length=255,verbose_name='标题')  # Field name made lowercase.
+    
+    abstract = models.CharField(db_column='Abstract', max_length=512, blank=True, null=True,verbose_name='摘要')  # Field name made lowercase.
+    sender = models.CharField(db_column='Sender', max_length=64,verbose_name='创建者')  # Field name made lowercase.
+    sendway = models.IntegerField(db_column='SendWay',verbose_name='发送方式')  # Field name made lowercase.
+    userids = models.TextField(db_column='UserIds', blank=True, null=True,verbose_name='玩家id')  # Field name made lowercase. This field type is a guess.
+    usergroupids = models.TextField(db_column='UserGroupIds', blank=True, null=True,verbose_name='用户组别')  # Field name made lowercase. This field type is a guess.
+    vipgroupids = models.TextField(db_column='VipGroupIds', blank=True, null=True,verbose_name='VIP组别')  # Field name made lowercase. This field type is a guess.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
+    #content = models.TextField(db_column='Content',verbose_name='内容')  # Field name made lowercase.
+    content = RichtextField(db_column='Content',verbose_name='内容')
+    
     class Meta:
         managed = False
         db_table = 'TB_Message'
 
 
+class TbMessageReceiver(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    messageid = models.IntegerField(db_column='MessageId')  # Field name made lowercase.
+    receiverid = models.IntegerField(db_column='ReceiverId')  # Field name made lowercase.
+    receivertype = models.IntegerField(db_column='ReceiverType')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Message_Receiver'
+        
 
 class TbMoneyCategories(models.Model):
     categoryid = models.IntegerField(db_column='CategoryID', primary_key=True)  # Field name made lowercase.

@@ -69,6 +69,7 @@ class PcMenu(BaseEngine):
                      ],},
                 {'label': '红利发放', 'url': page('bonuspage'),'visible': can_touch(TbBonuslog, crt_user), },
                 {'label':'启动广告','url':page('advertise'),'visible':can_touch(TbAdvertisement,crt_user)},
+                {'label':'推送消息','url':page('message'),'visible':can_touch(TbMessage,crt_user)},
                
                 
              ]},
