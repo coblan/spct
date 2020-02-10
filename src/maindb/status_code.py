@@ -477,7 +477,8 @@ ACCOUNT_POWERTYPE = (
 ODDSOURCE =(
     (0,'--'),
     (1,'Betradar'),
-    (2,'188')
+    (2,'188'),
+    (3,'沙巴'),
 )
 
 SETTLEMSG_STATUS=(

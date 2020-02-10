@@ -126,7 +126,10 @@ class MatchsPage(TablePage):
                      'css':'.mywarning{background-color:#ff410e;color:white}'
                      },
                     {'name':'manual_settle_need_audit','label':'需要审核',
-                     'editor':'com-table-bool-shower'
+                     'editor':'com-table-mapper','options':[
+                         {'value':0,'label':'编辑中'},
+                         {'value':1,'label':'审核中'},
+                     ]
                      }]
 
         @classmethod
