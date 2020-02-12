@@ -139,3 +139,8 @@ OLA_DOMAIN='http://115.28.186.246:8080'
 LOGIN_SPAN=60*60*2
 ADMIN_USER_CHECK_IP=True
 LOGIN_PSWD_EXPIRE=30 # 天
+
+JPUSH = {
+    'app_key': '28ee0a4aae701e01d974bce6',
+    'master_secret' : '38fa20f39645037ce2eb6667',
+}
