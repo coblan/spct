@@ -1358,7 +1358,7 @@ class TbMessage(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
     #content = models.TextField(db_column='Content',verbose_name='内容')  # Field name made lowercase.
     
-    issent = models.BooleanField(db_column='IsSent',verbose_name='已发送')  # Field name made lowercase.
+    issent = models.BooleanField(db_column='IsSent',verbose_name='发送')  # Field name made lowercase.
     content = RichtextField(db_column='Content',verbose_name='内容')
    
     
