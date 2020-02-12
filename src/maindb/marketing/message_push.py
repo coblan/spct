@@ -5,7 +5,7 @@ import jpush
 from django.conf import settings
 from helpers.func.collection.mylist import split_list
 import logging
-general_log = logging.getLogger('general_log')
+operation_log = logging.getLogger('operation_log')
 
 class MessagePage(TablePage):
     def get_label(self):
@@ -76,7 +76,7 @@ def send_user_message(inst):
         vipgroupids= inst.vipgroupids.split(';')
         query = query.filter(viplv__in =  vipgroupids,)
     userids = [str( account.accountid ) for account in query]
-    jiguang_push_message(userids, inst.title)
+    jiguang_push_message(userids, inst)
 
 def broad_message(inst):
     jiguang_broad_message(inst.msg)
@@ -102,19 +102,14 @@ def jiguang_broad_message(msg):
     app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
     _jpush = jpush.JPush(app_key, master_secret)
     push = _jpush.create_push()
-    #single_payload_list = [
-        #{'platform':'all', "audience" : "all", 'notification':{'alert':msg}},
-        ##{'platform':'all', 'target':'regid2', 'notification':{'alert':'alert content'}}
-    #]
-    #response = push.batch_push_by_regid(single_payload_list)
     push.audience = jpush.all_
     push.notification = jpush.notification(alert=msg)
     push.platform = jpush.all_
     response=push.send()
-    general_log.debug('广播消息返回结果: %s'%response)
+    operation_log.debug('广播消息返回结果: %s'%response)
     print(response)
     
-def jiguang_push_message(uids,msg):
+def jiguang_push_message(uids,inst):
     app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
     for batch_uids in split_list(uids, 1000):
         _jpush = jpush.JPush(app_key, master_secret)
@@ -122,14 +117,15 @@ def jiguang_push_message(uids,msg):
         push.audience = jpush.audience(
                     jpush.alias(*batch_uids)
                 )
-        push.notification = jpush.notification(alert=msg)
+        push.notification = jpush.notification(alert=inst.title)
+        push.message =  jpush.message(msg_content='',extras= {'message_id':inst.pk} )
         push.platform = jpush.all_
         try:
             response=push.send()
-            general_log.debug('推送消息:uids=%s ;返回结果: %s'%(batch_uids,response))
+            operation_log.debug('推送消息:uids=%s ;返回结果: %s'%(batch_uids,response))
             print(response)
         except jpush.common.JPushFailure as e:
-            general_log.debug('推送消息:uids=%s ;返回结果报错: %s'%(batch_uids,e))
+            operation_log.debug('推送消息:uids=%s ;返回结果报错: %s'%(batch_uids,e))
  
 director.update({
     'message':MessagePage.tableCls,
