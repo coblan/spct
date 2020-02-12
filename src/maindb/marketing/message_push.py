@@ -3,6 +3,8 @@ from maindb.models import TbMessage,TbMessageReceiver,TbMessagetype,TbAccount
 from django.utils.html import strip_tags
 import jpush
 from django.conf import settings
+import logging
+general_log = logging.getLogger('general_log')
 
 class MessagePage(TablePage):
     def get_label(self):
@@ -102,6 +104,7 @@ def jiguang_broad_message(msg):
     push.notification = jpush.notification(alert=msg)
     push.platform = jpush.all_
     response=push.send()
+    general_log.debug('广播消息返回结果: %s'%response)
     print(response)
     
 def jiguang_push_message(uids,msg):
@@ -120,7 +123,7 @@ def jiguang_push_message(uids,msg):
     push.notification = jpush.notification(alert=msg)
     push.platform = jpush.all_
     response=push.send()
-    
+    general_log.debug('推送消息:uids=%s ;返回结果: %s'%(uids,response))
     print(response)
  
 director.update({
