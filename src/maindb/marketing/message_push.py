@@ -32,8 +32,10 @@ class MessageForm(ModelFields):
 
     def after_save(self):
         if self.instance.sendway ==0 :
+            self.instance.refresh_from_db()
             if 'issent' in self.changed_data and self.instance.issent:
                 if self.instance. typeid . needread :
+                   
                     send_user_message(self.instance)
                 else:
                     broad_message(self.instance)
