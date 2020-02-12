@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 
 from .status_code import *
 from .cus_models_fields import CusPictureField, CusFileField,CloudFileField
-from helpers.director.model_func.cus_fields.multichoice import MultiChoiceField
+from helpers.director.model_func.cus_fields.multichoice import MultiChoiceField,MultiChoiceTextField
 
 from helpers.director.model_func.cus_fields.cus_picture import PictureField
 from helpers.director.model_func.cus_fields.cus_decimal import CusDecimalField
@@ -1302,6 +1302,29 @@ class TbMessageUnsend(models.Model):
         managed = False
         db_table = 'TB_Message_Unsend'
 
+class TbVip(models.Model):
+    level = models.IntegerField(db_column='Level', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=300, blank=True, null=True)  # Field name made lowercase.
+    icon = models.CharField(db_column='Icon', max_length=300, blank=True, null=True)  # Field name made lowercase.
+    points = models.DecimalField(db_column='Points', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    keeppoints = models.DecimalField(db_column='KeepPoints', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    keepdays = models.IntegerField(db_column='KeepDays')  # Field name made lowercase.
+    rankgifts = models.DecimalField(db_column='RankGifts', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    rebate = models.DecimalField(db_column='Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game1rebate = models.DecimalField(db_column='Game1Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game2rebate = models.DecimalField(db_column='Game2Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game3rebate = models.DecimalField(db_column='Game3Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    rebatemaxamount = models.DecimalField(db_column='RebateMaxAmount', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
+    sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Vip'
+    
+    def __str__(self):
+        return self.name
+        
 
 class TbMessagetype(models.Model):
     id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
@@ -1324,24 +1347,35 @@ class TbMessage(models.Model):
     
     abstract = models.CharField(db_column='Abstract', max_length=512, blank=True, null=True,verbose_name='摘要')  # Field name made lowercase.
     sender = models.CharField(db_column='Sender', max_length=64,verbose_name='创建者')  # Field name made lowercase.
-    sendway = models.IntegerField(db_column='SendWay',verbose_name='发送方式')  # Field name made lowercase.
-    userids = models.TextField(db_column='UserIds', blank=True, null=True,verbose_name='玩家id')  # Field name made lowercase. This field type is a guess.
-    usergroupids = models.TextField(db_column='UserGroupIds', blank=True, null=True,verbose_name='用户组别')  # Field name made lowercase. This field type is a guess.
-    vipgroupids = models.TextField(db_column='VipGroupIds', blank=True, null=True,verbose_name='VIP组别')  # Field name made lowercase. This field type is a guess.
+    sendway = models.IntegerField(db_column='SendWay',verbose_name='发送方式',choices=MESSAGE_SENDWAY,default= 0)  # Field name made lowercase.
+    sendtime = models.DateTimeField(db_column='SendTime', blank=True, null=True,verbose_name='预计发送时间')  # Field name made lowercase.
+    userids = models.TextField(db_column='UserIds', blank=True, null=True,verbose_name='玩家id',help_text='用分号分割，例如1234;1235;1236')  # Field name made lowercase. This field type is a guess.
+    #usergroupids = models.TextField(db_column='UserGroupIds', blank=True, null=True,verbose_name='用户组别')  # Field name made lowercase. This field type is a guess.
+    usergroupids = MultiChoiceTextField(db_column='UserGroupIds', blank=True, null=True,verbose_name='用户组别', choices=lambda:[(x.pk,str(x)) for x in TbLimitusergroup.objects.all()]) 
+    #vipgroupids = MultiChoiceFromFunField(db_column='UserGroupIds', blank=True, null=True,verbose_name='用户组别',choices=lambda:[(x.pk,str(x)) for x in TbVip.objects.all()])
+    vipgroupids = MultiChoiceTextField(db_column='VipGroupIds', blank=True, null=True,verbose_name='VIP组别',choices=lambda:[(x.pk,str(x)) for x in TbVip.objects.all()])
+    #vipgroupids = models.TextField(db_column='VipGroupIds', blank=True, null=True,verbose_name='VIP组别')  # Field name made lowercase. This field type is a guess.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
     #content = models.TextField(db_column='Content',verbose_name='内容')  # Field name made lowercase.
+    
+    issent = models.BooleanField(db_column='IsSent',verbose_name='已发送')  # Field name made lowercase.
     content = RichtextField(db_column='Content',verbose_name='内容')
+   
+    
     
     class Meta:
         managed = False
         db_table = 'TB_Message'
+    
+    def __str__(self):
+        return self.title
 
 
 class TbMessageReceiver(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     messageid = models.IntegerField(db_column='MessageId')  # Field name made lowercase.
     receiverid = models.IntegerField(db_column='ReceiverId')  # Field name made lowercase.
-    receivertype = models.IntegerField(db_column='ReceiverType')  # Field name made lowercase.
+    receivertype = models.IntegerField(db_column='ReceiverType',choices=MESSAGE_RECIVER_TYPE)  # Field name made lowercase.
 
     class Meta:
         managed = False

@@ -485,3 +485,15 @@ SETTLEMSG_STATUS=(
     (0,'编辑中'),
     (1,'审核中'),
 )
+
+MESSAGE_SENDWAY=(
+    (0,'立即推送'),
+    (1,'定时推送'),
+)
+
+MESSAGE_RECIVER_TYPE=(
+    (0,'全部'),
+    (1,'用户ID'),
+    (2,'用户组ID'),
+    (3,'会员组ID'),
+)
