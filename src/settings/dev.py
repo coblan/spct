@@ -241,7 +241,7 @@ LOGGING = {
             'propagate': True,                 
             },
         'operation_log': {
-            'handlers': ['operation_log'],
+            'handlers': ['operation_log','console'],
             'level': 'DEBUG',
             'propagate': True,               
             },        

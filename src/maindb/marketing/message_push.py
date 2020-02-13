@@ -1,9 +1,12 @@
-from helpers.director.shortcut import ModelTable,TablePage,director,page_dc,ModelFields
+from helpers.director.shortcut import ModelTable,TablePage,director,page_dc,ModelFields,get_request_cache
+from helpers.director.access.permit import can_touch
+
 from maindb.models import TbMessage,TbMessageReceiver,TbMessagetype,TbAccount
 from django.utils.html import strip_tags
 import jpush
 from django.conf import settings
 from helpers.func.collection.mylist import split_list
+
 import logging
 operation_log = logging.getLogger('operation_log')
 
@@ -14,11 +17,46 @@ class MessagePage(TablePage):
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
     
+    
+    def get_context(self):
+        ctx = super().get_context()
+        named_ctx =  {
+            'message_edit_tags':[
+                {'name':'baseinfo',
+                'label':'消息编辑',
+                'com':'com-tab-fields-v1',
+                'init_express':'ex.vueAssign(scope.row,scope.vc.par_row)',
+                'after_save':'cfg.toast("操作成功sssss");scope.ps.update_or_insert(scope.row)',
+                'fields_ctx':MessageForm().get_head_context(),
+                'visible':can_touch(TbMessage,self.crt_user)
+                },
+            ]
+        }
+        ctx['named_ctx'] = named_ctx
+        return ctx
+    
     class tableCls(ModelTable):
         model = TbMessage
         exclude =[]
-        pop_edit_fields=['id']
+        #pop_edit_fields=['id']
         hide_fields = ['content']
+        
+        def dict_head(self, head):
+            if head['name'] =='id':
+                head['editor'] = 'com-table-switch-to-tab'
+                head['ctx_name'] = 'message_edit_tags'
+                head['tab_name'] = 'baseinfo'
+            return head
+        
+        def get_operation(self):
+            ops = super().get_operation()
+            for op in ops:
+                if op['name'] =='add_new':
+                    op.update({
+                         'tab_name': 'baseinfo',
+                         'ctx_name': 'message_edit_tags',
+                    })
+            return ops
         
     
 class MessageForm(ModelFields):
@@ -59,6 +97,7 @@ class MessageForm(ModelFields):
         return {
             'sender':inst.sender,
             'abstract':inst.abstract,
+            'createtime':inst.createtime,
         }
     
     
@@ -85,15 +124,15 @@ def dispatch_message(inst):
     if inst.userids:
         userids = inst.userids.split(';')
         reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = userid,receivertype=1, ) for userid in userids]
-        total_list.append(*reciever_insts)
+        total_list += reciever_insts 
     if inst.usergroupids:
         groupids = inst.usergroupids
         reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = groupid,receivertype=2, ) for groupid in groupids]
-        total_list.append(*reciever_insts)
+        total_list += reciever_insts 
     if inst.vipgroupids:
         vipgroupids = inst.vipgroupids
         reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = groupid,receivertype=3, ) for groupid in vipgroupids]
-        total_list.append(*reciever_insts)
+        total_list += reciever_insts
         
     TbMessageReceiver.objects.bulk_create(total_list)
 
