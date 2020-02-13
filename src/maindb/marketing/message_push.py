@@ -28,13 +28,12 @@ class MessageForm(ModelFields):
         exclude =['sender','abstract']
     
     def clean_save(self):
-        self.instance.sender = self.crt_user.username
-        self.instance.abstract = strip_tags( self.instance.content)[:50]
-        
-    def clean(self):
         if self.instance.typeid.needread == True:
             if not self.instance.userids and not self.instance.usergroupids and not self.instance.vipgroupids:
                 raise UserWarning('非广播类型消息，必须选择筛选条件')
+        self.instance.sender = self.crt_user.username
+        self.instance.abstract = strip_tags( self.instance.content)[:50]
+        
         
     def after_save(self):
         if self.instance.sendway ==0 :
