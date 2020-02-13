@@ -126,11 +126,11 @@ def dispatch_message(inst):
         reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = userid,receivertype=1, ) for userid in userids]
         total_list += reciever_insts 
     if inst.usergroupids:
-        groupids = inst.usergroupids
+        groupids = inst.usergroupids.split(';')
         reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = groupid,receivertype=2, ) for groupid in groupids]
         total_list += reciever_insts 
     if inst.vipgroupids:
-        vipgroupids = inst.vipgroupids
+        vipgroupids = inst.vipgroupids.split(';')
         reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = groupid,receivertype=3, ) for groupid in vipgroupids]
         total_list += reciever_insts
         
