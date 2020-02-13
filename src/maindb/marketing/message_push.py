@@ -144,7 +144,7 @@ def jiguang_broad_message(msg):
     push.notification = jpush.notification(alert=msg)
     push.platform = jpush.all_
     response=push.send()
-    operation_log.debug('广播消息返回结果: %s'%response)
+    operation_log.info('广播消息返回结果: %s'%response)
     print(response)
     
 def jiguang_push_message(uids,inst):
@@ -160,10 +160,10 @@ def jiguang_push_message(uids,inst):
         push.platform = jpush.all_
         try:
             response=push.send()
-            operation_log.debug('推送消息:uids=%s ;返回结果: %s'%(batch_uids,response))
+            operation_log.info('推送消息:uids=%s ;返回结果: %s'%(batch_uids,response))
             print(response)
         except jpush.common.JPushFailure as e:
-            operation_log.debug('推送消息:uids=%s ;返回结果报错: %s'%(batch_uids,e))
+            operation_log.info('推送消息:uids=%s ;返回结果报错: %s'%(batch_uids,e))
  
 director.update({
     'message':MessagePage.tableCls,
