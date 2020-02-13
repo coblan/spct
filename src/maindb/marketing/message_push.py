@@ -117,7 +117,7 @@ def send_user_message(inst):
     jiguang_push_message(userids, inst)
 
 def broad_message(inst):
-    jiguang_broad_message(inst.msg)
+    jiguang_broad_message(inst.title)
   
 def dispatch_message(inst):
     total_list =[]
