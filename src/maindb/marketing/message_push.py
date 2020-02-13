@@ -114,10 +114,10 @@ def send_user_message(inst):
         vipgroupids= inst.vipgroupids.split(';')
         query = query.filter(viplv__in =  vipgroupids,)
     userids = [str( account.accountid ) for account in query]
-    jiguang_push_message(userids, inst)
+    jiguang_push_message(userids, inst.title,inst.pk)
 
 def broad_message(inst):
-    jiguang_broad_message(inst.title)
+    jiguang_broad_message(inst.title,inst.pk)
   
 def dispatch_message(inst):
     total_list =[]
@@ -136,18 +136,21 @@ def dispatch_message(inst):
         
     TbMessageReceiver.objects.bulk_create(total_list)
 
-def jiguang_broad_message(msg):
+def jiguang_broad_message(msg,msgid):
     app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
     _jpush = jpush.JPush(app_key, master_secret)
     push = _jpush.create_push()
     push.audience = jpush.all_
-    push.notification = jpush.notification(alert=msg)
+    #push.message =  jpush.message(msg_content='',extras= {'message_id':msgid} )
+    android = jpush.android(alert=msg,extras={'message_id':msgid})
+    ios = jpush.ios(alert=msg,extras={'message_id':msgid})
+    push.notification = jpush.notification(alert= msg,android=android,ios=ios)
     push.platform = jpush.all_
     response=push.send()
     operation_log.info('广播消息返回结果: %s'%response)
     print(response)
     
-def jiguang_push_message(uids,inst):
+def jiguang_push_message(uids,msg,msgid):
     app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
     for batch_uids in split_list(uids, 1000):
         _jpush = jpush.JPush(app_key, master_secret)
@@ -155,8 +158,11 @@ def jiguang_push_message(uids,inst):
         push.audience = jpush.audience(
                     jpush.alias(*batch_uids)
                 )
-        push.notification = jpush.notification(alert=inst.title)
-        push.message =  jpush.message(msg_content='',extras= {'message_id':inst.pk} )
+        
+        #push.message =  jpush.message(msg_content='',extras= {'message_id':msgid} )
+        android = jpush.android(alert=msg,extras={'message_id':msgid})
+        ios = jpush.ios(alert=msg,extras={'message_id':msgid})
+        push.notification = jpush.notification(alert= msg,android=android,ios=ios)
         push.platform = jpush.all_
         try:
             response=push.send()
