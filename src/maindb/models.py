@@ -588,6 +588,8 @@ class TbBetfullrecord(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间', blank=True, null=True,auto_now=True)  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount',verbose_name='原始限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
     fundtype = models.IntegerField(db_column='FundType',default=0)  # Field name made lowercase.
+    turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    multiple = models.DecimalField(db_column='Multiple', max_digits=18, decimal_places=1)  # Field name made lowercase.
     
     class Meta:
         managed = False
