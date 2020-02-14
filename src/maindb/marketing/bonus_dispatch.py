@@ -104,7 +104,7 @@ class BonuslogForm(ModelFields):
 
         return ops
     
-    def clean_save(self):
+    def after_save(self):
         account = self.instance.accountid
         before = account.amount
         account.amount +=  self.instance.amount #self.instance.withdrawlimitamount
