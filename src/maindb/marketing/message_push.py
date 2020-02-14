@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelTable,TablePage,director,page_dc,ModelFields,get_request_cache
+from helpers.director.shortcut import ModelTable,TablePage,director,page_dc,ModelFields,get_request_cache,RowFilter,RowSearch
 from helpers.director.access.permit import can_touch
 
 from maindb.models import TbMessage,TbMessageReceiver,TbMessagetype,TbAccount
@@ -58,6 +58,12 @@ class MessagePage(TablePage):
                     })
             return ops
         
+        class filters(RowFilter):
+            names = ['typeid']
+        
+        class search(RowSearch):
+            names = ['title']
+        
     
 class MessageForm(ModelFields):
 
@@ -91,6 +97,9 @@ class MessageForm(ModelFields):
         if head['name'] in ['userids','usergroupids','vipgroupids']:
             head['allids'] = self.allids
             head['show'] = '!ex.isin(scope.row.typeid,scope.head.allids)'
+        if head['name'] == 'title':
+            head['css'] = '.title-form input{width:400px !important}'
+            head['class'] = 'title-form'
         return head
     
     def dict_row(self, inst):
