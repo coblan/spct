@@ -716,7 +716,9 @@ class AccoutModifyAmount(ModelFields):
                 TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,
                                                consumeamount = add_amount,
                                                fundtype = 1 if self.kw.get('fundtype')  else 0,
-                                               consumestatus=1,rftype=3,rfid=0,content='后台管理员调账')
+                                               consumestatus=1,rftype=3,rfid=0,content='后台管理员调账',
+                                               turnover = add_amount,
+                                               multiple= 1)
             return {'memo': '调账', 'before': {'amount': self.before_amount},
                     'after': {'amount': self.instance.amount, }}
 
@@ -785,7 +787,7 @@ class ModifyBetFullRecord(ModelFields):
             else:
                 TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,consumeamount = add_amount,consumestatus=1,rftype=3,rfid=0,
                                                #fundtype = 1 if self.kw.get('fundtype')  else 0,
-                                               content='后台管理员限额调整')
+                                               content='后台管理员限额调整',turnover=add_amount,multiple=1)
                 
             after_amount = Decimal(self.kw.get('betfullrecord')) + add_amount
             return {'memo': '提现限额调整', 'before': {'betfullrecord': self.kw.get('betfullrecord')},

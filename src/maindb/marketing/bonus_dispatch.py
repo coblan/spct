@@ -75,6 +75,7 @@ class BonuslogForm(ModelFields):
             multi = bonustype.withdrawlimitmultiple
             total_mount = Decimal(amount)  * multi
             dc['withdrawlimitamount'] = round( total_mount ,4)
+            self.multiple = multi
         return dc
     
     def clean(self):
@@ -103,7 +104,7 @@ class BonuslogForm(ModelFields):
 
         return ops
     
-    def clean_save(self):
+    def after_save(self):
         account = self.instance.accountid
         before = account.amount
         account.amount +=  self.instance.amount #self.instance.withdrawlimitamount
@@ -125,7 +126,11 @@ class BonuslogForm(ModelFields):
                                        rftype=37,
                                        amount=self.instance.amount,
                                        fundtype = 1 if self.kw.get('fundtype')  else 0,
-                                       accountid=self.instance.accountid)
+                                       accountid=self.instance.accountid,
+                                       turnover= self.instance.withdrawlimitamount,
+                                       multiple = self.multiple
+                                       )
+         # turnover =  consumeamount ;  multiple = withdrawlimitamount / amount
         self.op_log.update({
             'clean_save_desp':'生成了对应的TbBalancelog.pk=%s,计算了用户余额'%ban.pk
         })
