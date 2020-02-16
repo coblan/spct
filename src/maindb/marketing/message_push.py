@@ -154,6 +154,7 @@ def jiguang_broad_message(msg,msgid):
     android = jpush.android(alert=msg,extras={'message_id':msgid})
     ios = jpush.ios(alert=msg,extras={'message_id':msgid})
     push.notification = jpush.notification(alert= msg,android=android,ios=ios)
+    push.options = {'apns_production':settings.JPUSH.get('ios_production')}
     push.platform = jpush.all_
     response=push.send()
     operation_log.info('广播消息返回结果: %s'%response)
@@ -170,8 +171,9 @@ def jiguang_push_message(uids,msg,msgid):
         
         #push.message =  jpush.message(msg_content='',extras= {'message_id':msgid} )
         android = jpush.android(alert=msg,extras={'message_id':msgid})
-        ios = jpush.ios(alert=msg,extras={'message_id':msgid})
+        ios = jpush.ios(alert=msg,extras={'message_id':msgid},)
         push.notification = jpush.notification(alert= msg,android=android,ios=ios)
+        push.options = {'apns_production':settings.JPUSH.get('ios_production')}
         push.platform = jpush.all_
         try:
             response=push.send()

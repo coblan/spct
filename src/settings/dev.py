@@ -276,4 +276,5 @@ OPEN_SECRET = True
 JPUSH = {
     'app_key': '28ee0a4aae701e01d974bce6',
     'master_secret' : '38fa20f39645037ce2eb6667',
+    'ios_production':False
 }
