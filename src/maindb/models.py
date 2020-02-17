@@ -1327,6 +1327,21 @@ class TbVip(models.Model):
     def __str__(self):
         return self.name
         
+class TbVipgift(models.Model):
+    tid = models.AutoField(db_column='TId', primary_key=True,verbose_name='TID')  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=500, blank=True, null=True,verbose_name='标题')  # Field name made lowercase.
+    content = models.TextField(db_column='Content', blank=True, null=True,verbose_name='内容')  # Field name made lowercase. This field type is a guess.
+    image = CusPictureField(db_column='Image', max_length=200, blank=True, null=True,verbose_name='图片')  # Field name made lowercase.
+    #image = models.CharField(db_column='Image', max_length=200, blank=True, null=True)  #
+    enabled = models.BooleanField(db_column='Enabled',verbose_name = '启用')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_VIPGift'
+        
+    def __str__(self):
+        return self.title
+        
 
 class TbMessagetype(models.Model):
     id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.

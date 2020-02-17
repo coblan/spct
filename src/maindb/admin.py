@@ -28,6 +28,7 @@ from .marketing import feedback
 from .marketing import agent_qa
 from .marketing import advertisement
 from .marketing import activity_record
+from . marketing import vip_gift
 
 from .report import user_statistics
 from .report import report_channel

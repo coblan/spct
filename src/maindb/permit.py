@@ -24,6 +24,11 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbQa.edit', model_full_permit(TbQa), model_to_name(TbQa), 'model'), 
            ('TbQa.update_cache', '', '', 'single'), 
            
+           ('TbMessage',model_read_permit(TbMessage),model_to_name(TbMessage),'model'),
+           ('TbMessage.edit',model_full_permit(TbMessage),model_to_name(TbMessage),'model'),
+           ('TbVipgift',model_read_permit(TbVipgift),model_to_name(TbVipgift),'model'),
+           ('TbVipgift.edit',model_full_permit(TbVipgift),model_to_name(TbVipgift),'model'),
+           
            #------活动2--------
            ('TbActivityV2', model_read_permit(TbActivityV2), model_to_name(TbActivityV2), 'model'), 
            ('TbActivityV2.edit', model_full_permit(TbActivityV2), model_to_name(TbActivityV2), 'model'), 

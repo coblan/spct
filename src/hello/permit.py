@@ -61,6 +61,14 @@ def get_permit(ui=None):
                 {'label': '查看', 'value': 'TbAdvertisement',}, 
                 {'label': '编辑', 'value': 'TbAdvertisement.edit', 'depend': ['TbAdvertisement'],}, 
                          ]}, 
+              { 'label': '推送消息', 'children': [
+                {'label': '查看', 'value': 'TbMessage',}, 
+                {'label': '编辑', 'value': 'TbMessage.edit', 'depend': ['TbMessage'],}, 
+                         ]}, 
+               { 'label': 'VIP豪礼', 'children': [
+                {'label': '查看', 'value': 'TbVipgift',}, 
+                {'label': '编辑', 'value': 'TbVipgift.edit', 'depend': ['TbVipgift'],}, 
+                         ]}, 
              ]
          }, 
          { 'label': '基本信息',
