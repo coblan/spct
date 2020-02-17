@@ -62,6 +62,7 @@ class MessagePage(TablePage):
                          'tab_name': 'baseinfo',
                          'ctx_name': 'message_edit_tags',
                     })
+            ops = [op for op in ops if op['name'] !='delete_selected']
             return ops
         
         class filters(RowFilter):

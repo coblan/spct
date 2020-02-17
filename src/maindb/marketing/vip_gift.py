@@ -22,6 +22,11 @@ class VipgiftPage(TablePage):
                 head['width'] = width.get(head['name'])
             return head
         
+        def get_operation(self):
+            ops = super().get_operation()
+            ops = [op for op in ops if op['name'] !='delete_selected']
+            return ops
+        
         class filters(RowFilter):
             names = ['enabled']
         
