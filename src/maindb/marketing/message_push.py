@@ -134,15 +134,18 @@ class MessageForm(ModelFields):
 
 @director_view('do_push_message')
 def do_push_message(pk):
-    instance = TbMessage.objects.get(pk = pk)
-    if instance. typeid . needread :
-        send_user_message(instance)
-    else:
-        broad_message(instance)
-
-    dispatch_message(instance)
-    instance.issent = True
-    instance.save()
+    try:
+        instance = TbMessage.objects.get(pk = pk)
+        if instance. typeid . needread :
+            send_user_message(instance)
+        else:
+            broad_message(instance)
+    
+        dispatch_message(instance)
+        instance.issent = True
+        instance.save()
+    except TbMessage.DoesNotExist:
+        raise UserWarning('请先保存消息后，再推送消息。')
     
     
 def send_user_message(inst):
