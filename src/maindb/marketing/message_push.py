@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelTable,TablePage,director,page_dc,ModelFields,get_request_cache,RowFilter,RowSearch
+from helpers.director.shortcut import ModelTable,TablePage,director,page_dc,ModelFields,get_request_cache,RowFilter,RowSearch,director_view
 from helpers.director.access.permit import can_touch
 
 from maindb.models import TbMessage,TbMessageReceiver,TbMessagetype,TbAccount
@@ -42,6 +42,12 @@ class MessagePage(TablePage):
         hide_fields = ['content']
         
         def dict_head(self, head):
+            width = {
+                'title':160,
+                'abstract':200,
+            }
+            if head['name'] in width:
+                head['width'] = width.get(head['name'])
             if head['name'] =='id':
                 head['editor'] = 'com-table-switch-to-tab'
                 head['ctx_name'] = 'message_edit_tags'
@@ -66,7 +72,7 @@ class MessagePage(TablePage):
         
     
 class MessageForm(ModelFields):
-
+    hide_fields = ['issent']
     class Meta:
         model = TbMessage
         exclude =['sender','abstract']
@@ -79,14 +85,14 @@ class MessageForm(ModelFields):
         self.instance.abstract = strip_tags( self.instance.content)[:50]
         
         
-    def after_save(self):
-        if self.instance.sendway ==0 :
-            self.instance.refresh_from_db()
-            if 'issent' in self.changed_data and self.instance.issent:
-                if self.instance. typeid . needread :
-                    send_user_message(self.instance)
-                else:
-                    broad_message(self.instance)
+    #def after_save(self):
+        #if self.instance.sendway ==0 :
+            #self.instance.refresh_from_db()
+            #if 'issent' in self.changed_data and self.instance.issent:
+                #if self.instance. typeid . needread :
+                    #send_user_message(self.instance)
+                #else:
+                    #broad_message(self.instance)
     
     def dict_head(self, head):
         if getattr(self,'allids',None) == None:
@@ -114,9 +120,32 @@ class MessageForm(ModelFields):
             'createtime':inst.createtime,
         }
     
+    def get_operations(self):
+        ops = super().get_operations()
+        ops+= [
+            {'label':'立即推送',
+             'editor':'com-field-op-btn',
+             'class':'btn btn-warning btn-sm',
+             'action':''' cfg.confirm("确认推送内容正确且已经保存,定时任务被手动推送后不会再被定时推送,确认要手动推送?")
+             .then(()=>{cfg.show_load();return ex.director_call("do_push_message",{pk:scope.row.pk})})
+             .then(()=>{cfg.hide_load();cfg.toast("推送命令发送成功！")})''' }
+        ]
+        return ops
+
+@director_view('do_push_message')
+def do_push_message(pk):
+    instance = TbMessage.objects.get(pk = pk)
+    if instance. typeid . needread :
+        send_user_message(instance)
+    else:
+        broad_message(instance)
+
+    dispatch_message(instance)
+    instance.issent = True
+    instance.save()
+    
     
 def send_user_message(inst):
-    dispatch_message(inst)
     query =TbAccount.objects.all()
     if inst.userids:
         userids = inst.userids.split(';')
@@ -135,6 +164,9 @@ def broad_message(inst):
   
 def dispatch_message(inst):
     total_list =[]
+    
+    TbMessageReceiver.objects.filter(messageid = inst.pk) .delete()
+    
     if inst.typeid . needread:
         if inst.userids:
             userids = inst.userids.split(';')
