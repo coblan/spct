@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter,RowSearch
 from ..models import TbVipgift
 
 class VipgiftPage(TablePage):
@@ -21,6 +21,12 @@ class VipgiftPage(TablePage):
             if head['name'] in width:
                 head['width'] = width.get(head['name'])
             return head
+        
+        class filters(RowFilter):
+            names = ['enabled']
+        
+        class search(RowSearch):
+            names = ['title']
 
 class VipgiftForm(ModelFields):
     class Meta:
