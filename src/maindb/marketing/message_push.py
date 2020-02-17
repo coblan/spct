@@ -100,6 +100,11 @@ class MessageForm(ModelFields):
         if head['name'] == 'title':
             head['css'] = '.title-form input{width:400px !important}'
             head['class'] = 'title-form'
+        if head['name'] == 'content':
+            head['config']={
+                'imageUploadUrl':'/d/ckeditor_image?save_path=public/images',
+                'filebrowserImageUploadUrl':'/d/ckeditor_image?save_path=public/images',
+            }
         return head
     
     def dict_row(self, inst):
