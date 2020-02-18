@@ -13,13 +13,14 @@ from maindb.models import TbMessage
 from maindb.marketing.message_push import send_user_message,broad_message,dispatch_message
 import logging
 
-general_log = logging.getLogger('general_log')
+operation_log = logging.getLogger('operation_log')
 
 class Command(BaseCommand):
     """
     """
     def handle(self, *args, **options):
         now = timezone.now()
+        push = []
         for instance in TbMessage.objects.filter(issent=False,sendway=1,sendtime__lte= now):
             if instance. typeid . needread :
                 send_user_message(instance)
@@ -29,4 +30,6 @@ class Command(BaseCommand):
             dispatch_message(instance)
             instance.issent = True
             instance.save()
-            general_log.info('推送定时消息 id = %s ;title=%s '%(instance.pk,instance.title))
+            push.append(instance.pk)
+            
+        operation_log.info('推送定时消息 %s '%push)
