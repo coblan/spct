@@ -13,7 +13,7 @@ from maindb.models import TbMessage
 from maindb.marketing.message_push import send_user_message,broad_message,dispatch_message
 import logging
 
-general_log = logging.getLogger('general_log')
+operation_log = logging.getLogger('operation_log')
 
 class Command(BaseCommand):
     """
@@ -32,4 +32,4 @@ class Command(BaseCommand):
             instance.save()
             push.append(instance.pk)
             
-        general_log.info('推送定时消息 %s '%push)
+        operation_log.info('推送定时消息 %s '%push)
