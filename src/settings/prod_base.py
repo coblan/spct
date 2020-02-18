@@ -65,7 +65,7 @@ LOGGING = {
             'level': 'INFO',
             },
         'general_log': {
-            'handlers': ['console', 'djangoout_warning', 'elk_warning' ],
+            'handlers': ['console', 'djangoout_warning', 'elk_warning','general_log' ],
             'level': 'DEBUG',
             'propagate': True,            
             },
