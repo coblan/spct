@@ -78,8 +78,9 @@ class TbAccount(models.Model):
     status = models.SmallIntegerField(db_column='Status', choices=ACCOUNT_STATUS, null=False,
                                       default=0,verbose_name='用户状态')  # Field name made lowercase.
     agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
-    viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'), choices=VIP_LEVEL, null=False,
-                                default=1)  # Field name made lowercase.
+    #viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'), choices=VIP_LEVEL, null=False,
+                                #default=1)  # Field name made lowercase.
+    viplv = models.ForeignKey(to='TbVip',db_column='VIPLv', verbose_name='VIP等级',  null=False,default=0)  # Field name made lowercase.
     
     createtime = models.DateTimeField(db_column='CreateTime', verbose_name='注册时间',
                               auto_now_add=True)  # 
