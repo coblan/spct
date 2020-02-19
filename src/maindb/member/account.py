@@ -589,7 +589,7 @@ class AccoutBaseinfo(ModelFields):
                   'powertype' if getattr(settings,'OPEN_SECRET',False) else '',
                   'parlayoddscheck','singleoddscheck']
     
-    readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount','accounttype']
+    readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount','accounttype','viplv','bonusrate']
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
         if kw.get('accountid'):
             pk = kw.get('accountid')
