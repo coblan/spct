@@ -14,6 +14,7 @@ from .member import operation_log
 from .member import relevent_user
 from .member import chum_user
 from .member import userlog
+from .member import vipbonus
 
 from .matches import admin, matches, ticket_master,matches_statistics
 from .matches import basketball_matches
@@ -28,7 +29,7 @@ from .marketing import feedback
 from .marketing import agent_qa
 from .marketing import advertisement
 from .marketing import activity_record
-from . marketing import vip_gift
+from .marketing import vip_gift
 
 from .report import user_statistics
 from .report import report_channel

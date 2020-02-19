@@ -1347,6 +1347,44 @@ class TbVipgift(models.Model):
         return self.title
         
 
+class TbVipbonus(models.Model):
+    tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
+    accountid = models.ForeignKey(to=TbAccount,db_constraint=False,db_column='AccountID',verbose_name='账号')
+    #level = models.IntegerField(db_column='Level')  # Field name made lowercase.
+    level = models.ForeignKey(to=TbVip,db_constraint=False,db_column='Level',verbose_name='VIP等级')  # Field name made lowercase.
+    #ruleid = models.IntegerField(db_column='RuleId')  # Field name made lowercase.
+    ruleid = models.ForeignKey(to='TbMoneyCategories',db_constraint=False,db_column='RuleId',verbose_name='发放规则')  # Field name made lowercase.
+    
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4,verbose_name='红利金额')  # Field name made lowercase.
+ 
+    drawtime = models.DateTimeField(db_column='DrawTime', blank=True, null=True,verbose_name='领取时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
+    arrivetime = models.DateTimeField(db_column='ArriveTime', blank=True, null=True,verbose_name='发放到账时间')  # Field name made lowercase.
+    endtime = models.DateTimeField(db_column='EndTime', blank=True, null=True,verbose_name='领取过期截止时间')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',verbose_name='状态')  # Field name made lowercase.
+    loginfo = models.CharField(db_column='LogInfo', max_length=3000, blank=True, null=True,verbose_name='日志信息')  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=3000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
+    sourceid = models.BigIntegerField(db_column='SourceId',verbose_name='关联ID')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_VipBonus'
+
+
+class TbProductContactUser(models.Model):
+    accountid = models.IntegerField(db_column='AccountId', primary_key=True)  # Field name made lowercase.
+    userrealname = models.CharField(db_column='UserRealName', max_length=30)  # Field name made lowercase.
+    phone = models.CharField(db_column='Phone', max_length=11)  # Field name made lowercase.
+    province = models.CharField(db_column='Province', max_length=32, blank=True, null=True)  # Field name made lowercase.
+    city = models.CharField(db_column='City', max_length=32, blank=True, null=True)  # Field name made lowercase.
+    county = models.CharField(db_column='County', max_length=32, blank=True, null=True)  # Field name made lowercase.
+    address = models.CharField(db_column='Address', max_length=128)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Product_Contact_User'
+
 class TbMessagetype(models.Model):
     id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=64)  # Field name made lowercase.

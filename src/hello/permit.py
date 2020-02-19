@@ -159,6 +159,10 @@ def get_permit(ui=None):
                 {'label':'查看页面','value':'member.kefu','depend':['TbAccount']},
                 {'label':'查看所有会员','value':'kefu.watch_all_account'},
                 ],},
+            {'label':'VIP红利','value':'TbVipbonus',},
+            
+            
+            
             ]
          }, 
         {'label': _('MoneyFlow'),

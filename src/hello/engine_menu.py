@@ -45,6 +45,7 @@ class PcMenu(BaseEngine):
                 #{'label': '流失用户', 'url': page('chum_user'), 'visible': has_permit( crt_user,'member.chum_user'), },
                 {'label':'用户日志','url':page('userlog'),'visible':can_touch(TbUserLog,crt_user)},
                 {'label': '会员关怀', 'url': page('kefupage'), 'icon': fa('fa-clock-o'),  'visible': has_permit( crt_user,'member.kefu')},
+                {'label':'VIP红利','url':page('vipbonus'),'icon': fa('fa-clock-o'),'visible':can_touch(TbVipbonus,crt_user)},
                  
              ]},
             {'label': '市场活动', 'icon': fa('fa-image'), 'visible': True,

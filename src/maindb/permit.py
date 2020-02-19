@@ -28,6 +28,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbMessage.edit',model_full_permit(TbMessage),model_to_name(TbMessage),'model'),
            ('TbVipgift',model_read_permit(TbVipgift),model_to_name(TbVipgift),'model'),
            ('TbVipgift.edit',model_full_permit(TbVipgift),model_to_name(TbVipgift),'model'),
+           ('TbVipbonus',model_read_permit(TbVipbonus),model_to_name(TbVipbonus),'model'),
+           #('TbVipbonus.edit',model_read_permit(TbVipbonus),model_to_name(TbVipbonus),'model'),
            
            #------活动2--------
            ('TbActivityV2', model_read_permit(TbActivityV2), model_to_name(TbActivityV2), 'model'), 
