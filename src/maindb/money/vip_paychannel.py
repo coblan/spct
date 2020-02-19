@@ -9,7 +9,7 @@ class VIPPayChannelPage(TablePage):
     template = 'jb_admin/table.html'
 
     def get_label(self):
-        return '充值渠道'
+        return '风控充值渠道'
 
     class tableCls(ModelTable):
         model = TbPaychanneljoinlevel
@@ -61,7 +61,7 @@ class VIPPayChannelPage(TablePage):
                 head['fields_ctx'] = form_obj.get_head_context()
                 head['relat_field'] = 'accountlevel'
                 head['inn_editor'] = 'com-table-mapper'
-                head['options'] = getVipOptions()
+                head['options'] =  getRiskOptions()  # getVipOptions()   改版后改页面使用风控等级替代vip等级
 
             if head['name'] == 'paychannelid':
                 head['show_tooltip'] = False
@@ -150,19 +150,31 @@ class ChargeTypeForm(ModelFields):
             TbPaychanneljoinlevel.objects.filter(accountlevel = accountlevel).delete()
       
 
+
+def getRiskOptions():
+    level = TbSetting.objects.get(settingname='RiskControlLevel')
+    level_dc = json.loads(level.settingvalue) 
+    options = [{'value': x['Level'], 'label': x['Memo']} for x in level_dc ]       
+    return options
+
+
 def getVipOptions():
+    "改版后，页面将vip等级改成风控等级，这个函数无用了。"
     level = TbSetting.objects.get(settingname='Static:VIPTOTier')
     level_dc = json.loads(level.settingvalue) 
     options = [{'value': x['VipLv'], 'label': x['Memo']} for x in level_dc ]       
     return options
 
 def get_left_vip_options(**kw): 
-    print(kw)
+    '由vip 调整为 RiskControlLevel'
     crt_value = kw.get('crt_value')
     already = [x.accountlevel for x in TbPaychanneljoinlevel.objects.exclude(accountlevel = crt_value)]
-    level = TbSetting.objects.get(settingname='Static:VIPTOTier')
+    #level = TbSetting.objects.get(settingname='Static:VIPTOTier')
+    #level_dc = json.loads(level.settingvalue) 
+    #options = [{'value': x['VipLv'], 'label': x['Memo']} for x in level_dc if x['VipLv'] not in already]  
+    level = TbSetting.objects.get(settingname='RiskControlLevel')
     level_dc = json.loads(level.settingvalue) 
-    options = [{'value': x['VipLv'], 'label': x['Memo']} for x in level_dc if x['VipLv'] not in already]  
+    options = [{'value': x['Level'], 'label': x['Memo']} for x in level_dc if x['Level'] not in already] 
     return options
 
 

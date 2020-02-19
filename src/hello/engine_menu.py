@@ -86,7 +86,7 @@ class PcMenu(BaseEngine):
                  {'label': '玩法设置', 'url': page('usermarket'), 'visible': can_touch(TbMarkets, crt_user), },
                  {'label':'充值渠道组','url':page('TbPaychannelgroup'),'visible':can_touch(TbPaychannelgroup,crt_user)},
                  {'label': '充值渠道', 'url': page('paychannel'), 'visible': can_touch(TbPaychannel, crt_user), },
-                  {'label': 'VIP充值渠道', 'url': page('vip_paychannel'),
+                  {'label': '风控充值渠道', 'url': page('vip_paychannel'),
                   'visible': can_touch(TbPaychanneljoinlevel, crt_user), },
                  {'label': '银行卡类型', 'url': page('banktypes'), 'visible': can_touch(TbBanktypes, crt_user), },
                  {'label': _('AppResource'), 'url': page('app_resource'),
