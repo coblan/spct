@@ -18,7 +18,7 @@ class VIPPayChannelPage(TablePage):
         #pop_edit_field = 'levelname'
         def getExtraHead(self):
             return [
-                {'name': 'accountlevel', 'label': '用户等级',},
+                {'name': 'accountlevel', 'label': '风控等级',},
                 #{'name': 'channelid', 'label': '渠道ID'},
             ]
 
@@ -100,7 +100,7 @@ class ChargeTypeForm(ModelFields):
     def get_heads(self): 
         
         heads = [
-            {'name': 'accountlevel', 'label': '用户等级','readonly': 'accountlevel'  in self.permit.readonly_fields()}, 
+            {'name': 'accountlevel', 'label': '风控等级','readonly': 'accountlevel'  in self.permit.readonly_fields()}, 
             {'name': 'paychannelid','label': '渠道','readonly' : 'paychannelid' in self.permit.readonly_fields()}
         ]
         heads = [self.dict_head(head) for head in heads]
