@@ -13,7 +13,7 @@ import datetime
 import time
 from ..status_code import MATCH_SOURCE
 from helpers.director.exceptions.question import QuestionException
-
+from helpers.director.access.permit import has_permit
 
 import logging
 operation_log = logging.getLogger('operation_log')
@@ -40,8 +40,11 @@ class OtherWebMatchPage(TablePage):
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
     
+    def check_permit(self):
+        return has_permit(self.request.user,'web_match_data1')
+  
     class tableCls(PlainTable):
-        
+    
         def __init__(self, *arg,**kws):
             super().__init__(*arg,**kws)
             self.filter_args={}

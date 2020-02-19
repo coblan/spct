@@ -201,9 +201,12 @@ def get_permit(ui=None):
                  {'label': '查看', 'value': 'TbTicketmaster_all_tab_read','depend':['TbMatches']}, 
                  {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', ],}
                  ]},   
-             {'label': '调水模板', 'value':'TbAdjusttemplate.edit'},  
+             {'label': '调水模板', 'value':'TbAdjusttemplate.edit'}, 
+             {'label':'比赛匹配','value':'web_match_data1','depend':['TbMatches']},
+            #{'label':'跟水设置','value':'web_match_data1','depend':['TbMatches']},
              ],
         }, 
+        
        
         {'label': _('RiskControl'),
          'children': [
