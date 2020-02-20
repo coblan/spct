@@ -1,6 +1,7 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter
 from ..models import TbVipbonus,TbProductContactUser,TbMoneyCategories
 from django.db.models import Case,When,Value,Subquery,OuterRef
+from helpers.director.shortcut import has_permit
 
 class VipBonusPage(TablePage):
     def get_label(self):
@@ -15,7 +16,9 @@ class VipBonusPage(TablePage):
         
         def getExtraHead(self):
             return [
-                {'name':'user_address','label':'收货地址','editor':'com-table-click','action':'cfg.showMsg(scope.row.user_address_detail)'}
+                {'name':'user_address','label':'收货地址','editor':'com-table-click',
+                 'visible':has_permit(self.crt_user,'vipbonus.account_real_address'),
+                 'action':'cfg.showMsg(scope.row.user_address_detail)'}
             ]
         
         def inn_filter(self, query):
@@ -31,6 +34,9 @@ class VipBonusPage(TablePage):
                                tables=['TB_Product_Contact_User'])
         
         def dict_row(self, inst):
+            if not has_permit(self.crt_user,'vipbonus.account_real_address'):
+                return {}
+            
             dc = {
                 'userrealname':inst.userrealname,
                 'phone':inst.phone,
@@ -49,7 +55,7 @@ class VipBonusPage(TablePage):
             }
         
         class filters(RowFilter):
-            names=['level','status','accountid__nickname']
+            names=['level','status','ruleid','accountid__nickname']
             icontains=['accountid__nickname']
             range_fields=['createtime','arrivetime','drawtime']
             
