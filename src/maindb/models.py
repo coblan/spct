@@ -1344,7 +1344,7 @@ class TbVipgift(models.Model):
         db_table = 'TB_VIPGift'
         
     def __str__(self):
-        return self.title
+        return self.title or '未命名'
         
 
 class TbVipbonus(models.Model):
