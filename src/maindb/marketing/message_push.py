@@ -39,7 +39,7 @@ class MessagePage(TablePage):
         model = TbMessage
         exclude =[]
         #pop_edit_fields=['id']
-        hide_fields = ['content']
+        hide_fields = ['content','receivertype']
         
         def dict_head(self, head):
             width = {
@@ -73,7 +73,7 @@ class MessagePage(TablePage):
         
     
 class MessageForm(ModelFields):
-    hide_fields = ['issent']
+    hide_fields = ['issent','receivertype']
     class Meta:
         model = TbMessage
         exclude =['sender','abstract']
