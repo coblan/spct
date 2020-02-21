@@ -82,10 +82,25 @@ class MessageForm(ModelFields):
         if self.instance.typeid.needread == True:
             if not self.instance.userids and not self.instance.usergroupids and not self.instance.vipgroupids:
                 raise UserWarning('非广播类型消息，必须选择筛选条件')
+        if self.instance.userids and (self.instance.usergroupids or self.instance.vipgroupids) :
+            raise UserWarning('选择[玩家id]后不能再选择[用户组别]和[VIP组别]')
         self.instance.sender = self.crt_user.username
         self.instance.abstract = strip_tags( self.instance.content)[:50]
+        # 0 全部,1 用户ID,2 用户组别,3 vip组别,4 用户组别+vip组别
+        if not self.instance.typeid.needread:
+            self.instance.receivertype=0
+        else:
+            if self.instance.userids:
+                self.instance.receivertype=1
+            elif self.instance.usergroupids:
+                if self.instance.vipgroupids:
+                    self.instance.receivertype=4
+                else:
+                    self.instance.receivertype =2
+            else:
+                self.instance.receivertype =3
         
-        
+
     #def after_save(self):
         #if self.instance.sendway ==0 :
             #self.instance.refresh_from_db()

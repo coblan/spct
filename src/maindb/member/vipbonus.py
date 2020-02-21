@@ -2,6 +2,15 @@ from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,d
 from ..models import TbVipbonus,TbProductContactUser,TbMoneyCategories
 from django.db.models import Case,When,Value,Subquery,OuterRef
 from helpers.director.shortcut import has_permit
+from maindb.aes_crypto import prpcrypt
+from django.conf import settings
+
+def des3_decode(code):
+    try:
+        return prpcrypt(settings.DES3_KEY).decrypt(code)
+    except ValueError:
+        return code
+        
 
 class VipBonusPage(TablePage):
     def get_label(self):
@@ -38,13 +47,14 @@ class VipBonusPage(TablePage):
                 return {}
             
             dc = {
-                'userrealname':inst.userrealname,
-                'phone':inst.phone,
+                'userrealname': des3_decode( inst.userrealname ),
+                'phone':des3_decode( inst.phone ),
                 'province':inst.province,
                 'city':inst.city,
                 'county':inst.county,
-                'address':inst.address,
+                'address':des3_decode( inst.address),
             }
+            
             return {
                 'user_address':inst.userrealname if inst.ruleid_id ==17 else '',
                 'user_address_detail':'''<table>

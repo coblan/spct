@@ -278,3 +278,5 @@ JPUSH = {
     'master_secret' : '38fa20f39645037ce2eb6667',
     'ios_production':False
 }
+
+DES3_KEY= '3E35EB83050243D589482F2E'

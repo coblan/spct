@@ -1419,7 +1419,7 @@ class TbMessage(models.Model):
     
     issent = models.BooleanField(db_column='IsSent',verbose_name='发送')  # Field name made lowercase.
     content = RichtextField(db_column='Content',verbose_name='内容')
-   
+    receivertype = models.IntegerField(db_column='ReceiverType')  # Field name made lowercase.
     
     
     class Meta:

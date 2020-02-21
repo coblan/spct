@@ -5,6 +5,7 @@ import base64
 class TripleDesUtils:
     des_mode = {"CBC": pyDes.CBC, "ECB": pyDes.ECB}
     des_pad_mode = {"PAD_PKCS5": pyDes.PAD_PKCS5, "PAD_NORMAL": pyDes.PAD_NORMAL}
+    
 
     def __init__(self, mode, pad_mode, key, iv, pad=None, trans_base64=False):
         """
