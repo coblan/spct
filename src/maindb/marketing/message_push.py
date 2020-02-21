@@ -174,15 +174,15 @@ def dispatch_message(inst):
     if inst.typeid . needread:
         if inst.userids:
             userids = inst.userids.split(';')
-            reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = userid,receivertype=1, ) for userid in userids]
+            reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = userid,receivertype=1, ) for userid in userids if userid !='']
             total_list += reciever_insts 
         if inst.usergroupids:
             groupids = inst.usergroupids.split(';')
-            reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = groupid,receivertype=2, ) for groupid in groupids]
+            reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = groupid,receivertype=2, ) for groupid in groupids if groupid !='']
             total_list += reciever_insts 
         if inst.vipgroupids:
             vipgroupids = inst.vipgroupids.split(';')
-            reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = groupid,receivertype=3, ) for groupid in vipgroupids]
+            reciever_insts = [TbMessageReceiver(messageid=inst.pk,receiverid = groupid,receivertype=3, ) for groupid in vipgroupids if groupid !='']
             total_list += reciever_insts
     else:
         total_list.append(TbMessageReceiver(messageid=inst.pk,receiverid = 0,receivertype=0,))
