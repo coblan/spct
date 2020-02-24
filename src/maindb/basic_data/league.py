@@ -30,6 +30,8 @@ class League(TablePage):
             return [{'name': 'openlivebet', 'label': '走地', 'editor': 'com-table-bool-shower'}]
 
         def inn_filter(self, query):
+            if self.is_export_excel:
+                query =  query.using('Sports_nolock')
             if self.kw.get('group_id'):
                 return query.filter(group_id = self.kw.get('group_id'))
             else:
@@ -98,6 +100,7 @@ class League(TablePage):
                   'confirm_msg':'取消推介这些联赛?',
                  'row_match':'many_row','pre_set':'rt={isrecommend:0}',
                  'visible':'isrecommend'in self.permit.changeable_fields()},
+                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
                 #{'label':'推介','editor':'com-op-btn','row_match':'many_row',
                  #'action':''' if(scope.ps.check_selected(scope.head)){ cfg.confirm("确定推介联赛?").then(()=>{
                  #scope.selected.forEach(item=>{item.isrecommend=true}) ; return ex.director_call("save_rows",{rows:})}) }'''}

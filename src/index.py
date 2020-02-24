@@ -113,6 +113,15 @@ page_dc = {
     "sportaccount"	:maindb.sport.sport_account.SportAccountPage,
     "sportmoneyinfo"	:maindb.sport.sport_money_in_info.SportMoneyInPage,
     "sportmoneyout"	:maindb.sport.sport_money_out.SportmoneyOutInfo,
+    
+    "lcityprofitloss"	:maindb.city.city_profitloss.LcityProfitlossPage,
+    "vipbonus"	:maindb.member.vipbonus.VipBonusPage,
+    "mapping-setting"	:maindb.matches.mapping_setting.MappingSetting,
+    "message"	:maindb.marketing.message_push.MessagePage,
+    "vipgift"	:maindb.marketing.vip_gift.VipgiftPage,
+    "lcityaccount"	:maindb.city.city_account.LCityAccountPage,
+    "lcitymoneyinfo"	:maindb.city.city_money_in.SportMoneyInPage,
+    "lcitymoneyout"	:maindb.city.city_money_out.SportmoneyOutInfo,
 }
 director = {
     "cloudfile_uploader"	:maindb.cus_models_fields.CloudFileUploader,
@@ -345,6 +354,20 @@ director = {
     "sportaccount"	:maindb.sport.sport_account.SportAccountPage.tableCls,
     "sportaccount.edit"	:maindb.sport.sport_account.SportAccountForm,
     "sportmoneyout"	:maindb.sport.sport_money_out.SportmoneyOutInfo.tableCls,
+    
+    "lcityprofitloss"	:maindb.city.city_profitloss.LcityProfitlossPage.tableCls,
+    "account.lcprofitloss"	:maindb.member.account.LCprofitLosTab,
+    "vipbonus"	:maindb.member.vipbonus.VipBonusPage.tableCls,
+    "mapping-setting"	:maindb.matches.mapping_setting.MappingSetting.fieldsCls,
+    "message"	:maindb.marketing.message_push.MessagePage.tableCls,
+    "message.edit"	:maindb.marketing.message_push.MessageForm,
+    "vipgift"	:maindb.marketing.vip_gift.VipgiftPage.tableCls,
+    "vipgift.edit"	:maindb.marketing.vip_gift.VipgiftForm,
+    "sportmoneyinfo"	:maindb.sport.sport_money_in_info.SportMoneyInPage.tableCls,
+    "lcityaccount"	:maindb.city.city_account.LCityAccountPage.tableCls,
+    "lcityaccount.edit"	:maindb.city.city_account.LCityAccountForm,
+    "lcitymoneyinfo"	:maindb.city.city_money_in.SportMoneyInPage.tableCls,
+    "lcitymoneyout"	:maindb.city.city_money_out.SportmoneyOutInfo.tableCls,
 }
 director_views = {
     "get_row"	:helpers.director.dapi.get_row,
@@ -393,6 +416,13 @@ director_views = {
     "get_league_options"	:maindb.matches.event_match1.get_league_options,
     "event_match_v2.sync_match_relation"	:maindb.matches.event_match1.sync_match_relation,
     "ag/redraw_left_money"	:maindb.ag.ag_account.redraw_left_money,
+    
+    "submit_manual_settle_to_audit"	:maindb.matches.matches.submit_manual_settle_to_audit,
+    "confirm_manual_settle_to_audit"	:maindb.matches.matches.confirm_manual_settle_to_audit,
+    "reject_manual_settle_to_audit"	:maindb.matches.matches.reject_manual_settle_to_audit,
+    "event_match.auto_mapping_match"	:maindb.matches.event_match1.auto_mapping_match,
+    "do_push_message"	:maindb.marketing.message_push.do_push_message,
+    "agent/change-customer-server"	:maindb.admin_agent.agentuser.change_customer_server,
 }
 sim_signal = {
     "notice.static.changed"	:[maindb.update_cache.clear_notice_cache],
@@ -439,5 +469,8 @@ field_map = {
     
     helpers.director.model_func.cus_fields.form_datetime.FormDatetime	:helpers.director.model_func.cus_fields.form_datetime.FormDatetimeProc,
     helpers.director.model_func.cus_fields.multichoice.MultiChoiceField	:helpers.director.model_func.cus_fields.multichoice.MultiChoiceProc,
+    
+    helpers.director.model_func.cus_fields.multichoice.MultiChoiceTextField	:helpers.director.model_func.cus_fields.multichoice.MultiChoiceProc,
+    helpers.director.model_func.cus_fields.richtext.RichtextField	:helpers.director.model_func.cus_fields.richtext.RichtextProc,
 }
 
