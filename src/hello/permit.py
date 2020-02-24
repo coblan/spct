@@ -118,7 +118,6 @@ def get_permit(ui=None):
                 {'label':'基本信息','children':[
                       {'label': '查看', 'value': 'TbAccount',}, 
                       {'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
-                      {'label':'指定客服','value':'TbAccount.csuserid','depend':['User.read']}
                     ]},
                 #{'label':'账目记录','value':'TbBalancelog'},
                 #{'label':'银行卡','children':[
@@ -163,8 +162,7 @@ def get_permit(ui=None):
                 {'label':'查看页面','value':'TbVipbonus'},
                 {'label':'收货地址','value':'vipbonus.account_real_address','depend':['TbVipbonus']}
             ]},
-            
-            
+            {'label':'指定客服','value':'TbAccount.csuserid','depend':['TbAccount','User.read']}
             
             ]
          }, 
