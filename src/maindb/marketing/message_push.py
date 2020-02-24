@@ -6,7 +6,7 @@ from django.utils.html import strip_tags
 import jpush
 from django.conf import settings
 from helpers.func.collection.mylist import split_list
-
+import re
 import logging
 operation_log = logging.getLogger('operation_log')
 
@@ -80,7 +80,9 @@ class MessageForm(ModelFields):
     
     def clean_dict(self, dc):
         if dc.get('userids'):
-            dc['userids'] = dc.get('userids').replace(',',';')
+            ls = re.split('[^\d]+',dc.get('userids'))
+            ls = [x for x in ls if x !='']
+            dc['userids'] = ';'.join(ls)
         return dc
     
     def clean_save(self):
