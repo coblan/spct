@@ -78,6 +78,11 @@ class MessageForm(ModelFields):
         model = TbMessage
         exclude =['sender','abstract']
     
+    def clean_dict(self, dc):
+        if dc.get('userids'):
+            dc['userids'] = dc.get('userids').replace(',',';')
+        return dc
+    
     def clean_save(self):
         if self.instance.typeid.needread == True:
             if not self.instance.userids and not self.instance.usergroupids and not self.instance.vipgroupids:
