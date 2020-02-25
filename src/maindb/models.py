@@ -474,7 +474,7 @@ class TbBalancelog(models.Model):
     memo = models.CharField(db_column='Memo', verbose_name='备注', max_length=50, blank=True,
                             null=True)  # Field name made lowercase.
     createtime = models.DateTimeField(verbose_name=_('Change Time'),
-                                      db_column='CreateTime', auto_now=True)  # Field name made lowercase.
+                                      db_column='CreateTime', auto_now_add=True)  # Field name made lowercase.
     creater = models.CharField(db_column='Creater', verbose_name=_('Operator'), max_length=20, blank=True,
                                null=True)  # Field name made lowercase.
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',
@@ -499,7 +499,7 @@ class TbBankcard(models.Model):
     banktypename = models.CharField(db_column='BankTypeName', max_length=150)  # Field name made lowercase.
     bankprovince = models.CharField(db_column='BankProvince', max_length=150)  # Field name made lowercase.
     banksitename = models.CharField(db_column='BankSiteName', max_length=250)  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
     active = models.BooleanField(db_column='Active')  # Field name made lowercase.
 
     class Meta:
@@ -585,7 +585,7 @@ class TbBetfullrecord(models.Model):
     #accountid = models.BigIntegerField(db_column='AccountID')  # Field name made lowercase.
     content = models.CharField(db_column='Content',verbose_name='详细说明', max_length=150, blank=True, null=True)  # Field name made lowercase.
     
-    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间', blank=True, null=True,auto_now=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间', blank=True, null=True,auto_now_add=True)  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount',verbose_name='原始限额', max_digits=18, decimal_places=4)  # Field name made lowercase.
     fundtype = models.IntegerField(db_column='FundType',default=0)  # Field name made lowercase.
     turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=4)  # Field name made lowercase.
@@ -879,7 +879,7 @@ class TbLoginlog(models.Model):
     # deviceip = models.CharField(db_column='DeviceIP', max_length=20)  # Field name made lowercase.
     ternimal = models.IntegerField(db_column='Ternimal', verbose_name=_('Terminal'))  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',
-                                      verbose_name=_('Login Time'))  # Field name made lowercase.
+                                      verbose_name=_('Login Time'),auto_now_add=True)  # Field name made lowercase.
     appversion = models.CharField(db_column='AppVersion', verbose_name='App版本', max_length=20, blank=True,
                                   null=True)  # Field name made lowercase.
     devicename = models.CharField(db_column='DeviceName', max_length=40, blank=True,
@@ -987,7 +987,7 @@ class TbLivefeed(models.Model):
     statuscode = models.IntegerField(db_column='StatusCode')  # Field name made lowercase.
     betstatus = models.IntegerField(db_column='BetStatus',verbose_name='投注状态')  # Field name made lowercase.
     servertime = models.DateTimeField(db_column='ServerTime',auto_now=True,verbose_name='服务器时间')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime',auto_now=True,verbose_name='创建时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1160,7 +1160,7 @@ class TbMatchesoddsswitch(models.Model):
     specialbetvalue = models.CharField(db_column='SpecialBetValue', max_length=12,
                                        blank=True, )  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', help_text='0无用/1启用')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', auto_now=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
 
     bettypeid = models.IntegerField(db_column='BetTypeID', blank=True, default=0)  # Field name made lowercase.
@@ -1229,7 +1229,7 @@ class TbMaxpayout(models.Model):
                                  choices=COMMON_STATUS)  # Field name made lowercase.
     description = models.CharField(db_column='Description', max_length=500, blank=True,
                                    null=True, verbose_name='备注')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now=True,
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True, auto_now_add=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True)  # Field name made lowercase.
 
@@ -1434,7 +1434,7 @@ class TbNotice(models.Model):
                              verbose_name='标题')  # Field name made lowercase.
     url = models.CharField(db_column='Url', max_length=512, blank=True, null=True,
                            verbose_name='链接Url')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
     displaytype = models.IntegerField(db_column='DisplayType',default=0,choices=BANNER_DISPLAYTYPE,verbose_name='对内/对外')  # Field name made lowercase.
 
@@ -1762,7 +1762,7 @@ class TbPeriodscore(models.Model):
     periodnumber = models.IntegerField(db_column='PeriodNumber', blank=True, null=True,verbose_name='阶段')  # Field name made lowercase.
     home = models.IntegerField(db_column='Home', blank=True, null=True,verbose_name='主队')  # Field name made lowercase.
     away = models.IntegerField(db_column='Away', blank=True, null=True,verbose_name='客队')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True,verbose_name='创建时间',auto_now=True)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True,verbose_name='创建时间',auto_now_add=True)  # Field name made lowercase.
     type = models.IntegerField(db_column='Type', blank=True, null=True,verbose_name='常规/加时',choices=PERIOD_TYP)  # Field name made lowercase.
     #periodtype = models.IntegerField(db_column='PeriodType', blank=True, null=True)  # Field name made lowercase.
 
@@ -2409,7 +2409,7 @@ class TbBanner(models.Model):
     pcpicturename = CusPictureField(db_column='PcPictureName', max_length=255, null=True,verbose_name ='pc图片')  # Field name made lowercase.
     # picturename = models.CharField(db_column='PictureName',verbose_name=_('Picture Name'), max_length=255)  # Field name made lowercase.
     order = models.IntegerField(db_column='Order', verbose_name=_('Priority'))  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
     #createuser = models.IntegerField(db_column='CreateUser', blank=True, null=True,
                                      #verbose_name='创建人')  # Field name made lowercase.
@@ -2504,7 +2504,7 @@ class TbBankcard(models.Model):
                                     verbose_name='省份')  # Field name made lowercase.
     banksitename = models.CharField(db_column='BankSiteName', max_length=250,
                                     verbose_name='支行名称')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
     active = models.BooleanField(db_column='Active', verbose_name='激活')  # Field name made lowercase.
 
@@ -2950,7 +2950,7 @@ class TbAgentnotice(models.Model):
                              verbose_name='标题')  # Field name made lowercase.
     url = models.CharField(db_column='Url', max_length=512, blank=True, null=True,
                            verbose_name='链接Url')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime', auto_now=True,
+    createtime = models.DateTimeField(db_column='CreateTime', auto_now_add=True,
                                       verbose_name='创建时间')  # Field name made lowercase.
 
     createuser = CreateUserField(db_column='CreateUser', blank=True, null=True,
