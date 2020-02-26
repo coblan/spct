@@ -102,7 +102,7 @@ class UserStatisticsPage(TablePage):
                         {'label':'普通用户','value':0},
                         {'label':'代理用户','value':1},
                         ]},
-                    {'name':'date','editor':'com-filter-datetime-range','label':'时间'}
+                    {'name':'date','editor':'com-filter-datetime-range','label':'时间'},
                 ]
 
         class sort(RowSort):
@@ -225,6 +225,7 @@ class UserStatisticsPage(TablePage):
                 {'name':'WinDayRate','label':'盈利天数率','width':100},
                 {'name':'WinDay','label':'盈利天数'},
                 {'name':'TotalDay','label':'投注天数'},
+                {'name':'VoidRate','label':'划单率'},
                 
             ]
 
