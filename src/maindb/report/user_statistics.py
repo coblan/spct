@@ -225,7 +225,7 @@ class UserStatisticsPage(TablePage):
                 {'name':'WinDayRate','label':'盈利天数率','width':100},
                 {'name':'WinDay','label':'盈利天数'},
                 {'name':'TotalDay','label':'投注天数'},
-                {'name':'VoidRate','label':'划单率'},
+                #{'name':'VoidRate','label':'划单率'},
                 
             ]
 
