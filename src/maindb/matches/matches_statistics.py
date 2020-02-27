@@ -49,20 +49,29 @@ class MatchesStatisticsPage(TablePage):
             return search_args
 
         class search(SelectSearch):
-            names = ['teamzh', 'nickname']
-            exact_names = ['matchid']
-
+            names = ['teamzh', 'nickname',]
+            exact_names = ['matchid','eventid']
+            field_sort=['matchid','eventid','teamzh', 'nickname']
             def get_option(self, name):
                 if name == 'nickname':
                     return {'value': 'nickname', 'label': '用户昵称', }
                 elif name == 'teamzh':
                     return {'value': 'teamzh', 'label': '球队名称', }
+                #elif name =='eventid':
+                    #return {'value': 'teamzh', 'label': 'sss', }
                 else:
                     return super().get_option(name)
 
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['sportid','tournamentid', 'statuscode',]
+            names = ['sportid','tournamentid', 'statuscode','source',]
+            
+            def getExtraHead(self):
+                return [
+                    {'name':'source','label':'数据源','editor':'com-filter-select','options':[
+                        {'value':x[0],'label':x[1]} for x in MATCH_SOURCE
+                    ]}
+                ]
 
             def dict_head(self, head):
                 if head['name'] == 'tournamentid':
@@ -102,14 +111,15 @@ class MatchesStatisticsPage(TablePage):
                 row['_label'] = '比赛(%s)'%row['MatchID']
             return self.matches
 
-        def get_statistic_sql(self, sql_args): 
-            sql = r"exec dbo.SP_MatchesStatistics %(sportid)s,%(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
-                  % sql_args
-            return sql
+        #def get_statistic_sql(self, sql_args): 
+            #sql = r"exec dbo.SP_MatchesStatistics %(sportid)s,%(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+                  #% sql_args
+            #return sql
         
         def getData(self):
             nickname = ""
             matchid = 0
+            eventid = 0
             teamzh = ''
             if self.search_args.get('_qf') == 'nickname':
                 nickname = self.search_args.get('_q', '')
@@ -117,6 +127,9 @@ class MatchesStatisticsPage(TablePage):
                 matchid = self.search_args.get('_q', 0) or 0
             elif self.search_args.get('_qf') == 'teamzh':
                 teamzh = self.search_args.get('_q', '')
+            elif self.search_args.get('_qf') =='eventid':
+                eventid = self.search_args.get('_q', '')
+                
             if not re.search('^\d*$', str(matchid)):
                 matchid = -1
             sort = self.search_args.get('_sort') or '-MatchDate'
@@ -136,9 +149,13 @@ class MatchesStatisticsPage(TablePage):
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
                 'Sort': sort,
-                'sportid': self.search_args.get('sportid',-1) #self.sportid
+                'sportid': self.search_args.get('sportid',-1), #self.sportid
+                'Source':self.search_args.get('source',0),
+                'EventID':eventid,
             }            
-            sql = self.get_statistic_sql(sql_args)
+            #sql = self.get_statistic_sql(sql_args)
+            sql = r"exec dbo.SP_MatchesStatistics %(sportid)s,%(TournamentID)s,%(Source)s,%(MatchID)s,%(EventID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+                  % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql, [teamzh, nickname ])
                 self.total = cursor.fetchall()[0][0]
