@@ -150,11 +150,11 @@ class MatchesStatisticsPage(TablePage):
                 'PageSize': self.search_args.get('_perpage', 20),
                 'Sort': sort,
                 'sportid': self.search_args.get('sportid',-1), #self.sportid
-                'Source':self.search_args.get('source',0),
-                'EventID':eventid,
+                #'Source':self.search_args.get('source',0),
+                #'EventID':eventid,
             }            
             #sql = self.get_statistic_sql(sql_args)
-            sql = r"exec dbo.SP_MatchesStatistics %(sportid)s,%(TournamentID)s,%(Source)s,%(MatchID)s,%(EventID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+            sql = r"exec dbo.SP_MatchesStatistics %(sportid)s,%(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql, [teamzh, nickname ])
