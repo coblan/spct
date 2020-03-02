@@ -300,7 +300,8 @@ def get_permit(ui=None):
             {'label': '代理佣金', 'children': [
                 {'label': '查看', 'value': 'TbAgentcommission',}, 
                 {'label': '编辑', 'value': 'TbAgentcommission.edit',},
-                         ],}
+                         ],},
+            {'label':'指定客服','value':'agent.csuserid-btn','depend':['TbAccount.csuserid']}
             ],
         
         }, 

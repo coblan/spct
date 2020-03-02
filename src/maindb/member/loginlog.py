@@ -44,7 +44,14 @@ class LoginLogPage(TablePage):
                 {'name': 'accountid_id', 'label': '用户ID'}
             ]
 
+        def get_operation(self):
+            return [
+                    {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
+                ]
+        
         def inn_filter(self, query):
+            if self.is_export_excel:
+                query =  query.using('Sports_nolock')
             return query.values(*self.fields_sort).order_by('-createtime')
 
         class search(SelectSearch):

@@ -70,7 +70,7 @@ class AgentUser(TablePage):
         class sort(RowSort):
             names = ['AgentAmount', 'BeaeAmount', 'SumActive', 'BalanceLostAmount', 'SumLostAmount',
                      'SumBonusAmount', 'SumWithdrawalAmount', 'SumBetAmount', 'Poundage',
-                     'SumTurnover', 'bonusrate', 'SumExpend', 'SumRechargeAmount']
+                     'SumTurnover', 'bonusrate', 'SumExpend', 'SumRechargeAmount','CreateTime']
 
         class search(SelectSearch):
             names = ['nickname']
@@ -311,7 +311,7 @@ class AgentUser(TablePage):
                  'label': '修改上级','fields_ctx': par_form.get_head_context(),
                  'visible':has_permit(self.crt_user, 'agent.parent.edit')}, 
                 {'editor':'com-op-btn','label':'选择客服',
-                 'visible': 'csuserid' in changeable_fields and can_touch(User,self.crt_user),
+                 'visible':  has_permit(self.crt_user, 'agent.csuserid-btn'),#'csuserid' in changeable_fields and can_touch(User,self.crt_user),
                  'table_ctx':UserPicker().get_head_context(),
                  'row_match':'many_row',
                  'action':''' cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)
