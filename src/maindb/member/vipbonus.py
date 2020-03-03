@@ -33,26 +33,34 @@ class VipBonusPage(TablePage):
         def inn_filter(self, query):
             #subque= TbProductContactUser.objects.filter(accountid = OuterRef('accountid'))
             #return query.annotate(user_address = Subquery(subque.values('userrealname')[:1]))
-            return query.using('Sports_nolock').extra(select={'userrealname':'TB_Product_Contact_User.userrealname',
-                                       'phone':'TB_Product_Contact_User.phone',
-                                       'province':'TB_Product_Contact_User.province',
-                                       'city':'TB_Product_Contact_User.city',
-                                       'county':'TB_Product_Contact_User.county',
-                                       'address':'TB_Product_Contact_User.address'},
-                               where=['TB_Product_Contact_User.accountid=TB_VipBonus.accountid'],
-                               tables=['TB_Product_Contact_User'])
+            #return query.using('Sports_nolock').anotate(accountid__)
+            return query.using('Sports_nolock').extra(select={'userrealname':'(SELECT userrealname FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 'phone':' (SELECT phone FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 'province':' (SELECT province FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 'city':'(SELECT city FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 'county':'(SELECT county FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 'address':'(SELECT address FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )'},
+                         )
+            #return query.using('Sports_nolock').extra(select={'userrealname':'TB_Product_Contact_User.userrealname',
+                                       #'phone':'TB_Product_Contact_User.phone',
+                                       #'province':'TB_Product_Contact_User.province',
+                                       #'city':'TB_Product_Contact_User.city',
+                                       #'county':'TB_Product_Contact_User.county',
+                                       #'address':'TB_Product_Contact_User.address'},
+                               #where=['TB_Product_Contact_User.accountid=TB_VipBonus.accountid'],
+                               #tables=['TB_Product_Contact_User'])
         
         def dict_row(self, inst):
             if not has_permit(self.crt_user,'vipbonus.account_real_address'):
                 return {}
             
             dc = {
-                'userrealname': des3_decode( inst.userrealname ),
-                'phone':des3_decode( inst.phone ),
+                'userrealname': des3_decode( inst.userrealname ) if inst.userrealname else '',
+                'phone':des3_decode( inst.phone ) if inst.phone else '',
                 'province':inst.province,
                 'city':inst.city,
                 'county':inst.county,
-                'address':des3_decode( inst.address),
+                'address':des3_decode( inst.address) if inst.address else '',
             }
             
             return {
