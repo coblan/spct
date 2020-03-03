@@ -532,6 +532,7 @@ class MatchForm(ModelFields):
             #'Period1Score': match.period1score,
             'MatchScore': match.score,
             'Winner': match.winner,
+            'MarketStatus':match.marketstatus,
             'MatchDate':match.matchdate.replace(tzinfo = beijin_tz ) ,#.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
             'PreMatchDate':match.prematchdate.replace(tzinfo = beijin_tz) ,#.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc)
         }        
