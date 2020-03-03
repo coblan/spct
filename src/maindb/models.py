@@ -1373,7 +1373,8 @@ class TbVipbonus(models.Model):
 
 
 class TbProductContactUser(models.Model):
-    accountid = models.IntegerField(db_column='AccountId', primary_key=True)  # Field name made lowercase.
+    accountid = models.ForeignKey(to=TbAccount,db_constraint=False,db_column='AccountId', primary_key=True)
+    #accountid = models.IntegerField(db_column='AccountId', primary_key=True)  # Field name made lowercase.
     userrealname = models.CharField(db_column='UserRealName', max_length=30)  # Field name made lowercase.
     phone = models.CharField(db_column='Phone', max_length=11)  # Field name made lowercase.
     province = models.CharField(db_column='Province', max_length=32, blank=True, null=True)  # Field name made lowercase.

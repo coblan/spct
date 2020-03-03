@@ -4,6 +4,7 @@ from django.db.models import Case,When,Value,Subquery,OuterRef
 from helpers.director.shortcut import has_permit
 from maindb.aes_crypto import prpcrypt
 from django.conf import settings
+from django.db.models import F
 
 def des3_decode(code):
     try:
@@ -34,13 +35,19 @@ class VipBonusPage(TablePage):
             #subque= TbProductContactUser.objects.filter(accountid = OuterRef('accountid'))
             #return query.annotate(user_address = Subquery(subque.values('userrealname')[:1]))
             #return query.using('Sports_nolock').anotate(accountid__)
-            return query.using('Sports_nolock').extra(select={'userrealname':'(SELECT userrealname FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
-                                 'phone':' (SELECT phone FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
-                                 'province':' (SELECT province FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
-                                 'city':'(SELECT city FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
-                                 'county':'(SELECT county FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
-                                 'address':'(SELECT address FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )'},
-                         )
+            return  query.using('Sports_nolock').annotate (userrealname =F('accountid__tbproductcontactuser__userrealname'),
+                                                         phone =F('accountid__tbproductcontactuser__phone'),
+                                                         province =F('accountid__tbproductcontactuser__province'),
+                                                         city =F('accountid__tbproductcontactuser__city'),
+                                                         county =F('accountid__tbproductcontactuser__county'),
+                                                         address =F('accountid__tbproductcontactuser__address'),)
+            #return query.using('Sports_nolock').extra(select={'userrealname':'(SELECT userrealname FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 #'phone':' (SELECT phone FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 #'province':' (SELECT province FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 #'city':'(SELECT city FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 #'county':'(SELECT county FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )',
+                                 #'address':'(SELECT address FROM TB_Product_Contact_User WHERE TB_Product_Contact_User.accountid= TB_VipBonus.accountid )'},
+                         #)
             #return query.using('Sports_nolock').extra(select={'userrealname':'TB_Product_Contact_User.userrealname',
                                        #'phone':'TB_Product_Contact_User.phone',
                                        #'province':'TB_Product_Contact_User.province',
@@ -62,9 +69,23 @@ class VipBonusPage(TablePage):
                 'county':inst.county,
                 'address':des3_decode( inst.address) if inst.address else '',
             }
-            
+            #tbproductcontactuser = inst.accountid__tbproductcontactuser
+            #dc = {
+                #'userrealname': des3_decode( tbproductcontactuser.userrealname ) if tbproductcontactuser.userrealname else '',
+                #'phone':des3_decode( tbproductcontactuser.phone ) if tbproductcontactuser.phone else '',
+                #'province':tbproductcontactuser.province,
+                #'city':tbproductcontactuser.city,
+                #'county':tbproductcontactuser.county,
+                #'address':des3_decode( tbproductcontactuser.address) if tbproductcontactuser.address else '',
+            #}
+            if inst.userrealname and  inst.ruleid_id ==17:
+                decode_user_address = des3_decode(inst.userrealname)
+                long = len(decode_user_address)
+                user_address = '*'*(long-1)+ decode_user_address[-1]
+            else:
+                user_address = ''
             return {
-                'user_address':inst.userrealname if inst.ruleid_id ==17 else '',
+                'user_address':user_address,
                 'user_address_detail':'''<table>
                 <tr><td style="width:50px;vertical-align:top">地址:</td><td>%(province)s|%(city)s|%(county)s|%(address)s</td></tr>
                 <tr><td>姓名:</td><td>%(userrealname)s</td></tr>
@@ -81,6 +102,13 @@ class VipBonusPage(TablePage):
                 return [
                     {'name':'accountid__nickname','label':'账号昵称','editor':'com-filter-text'}
                 ]
+            
+            def dict_head(self, head):
+                if head['name'] =='ruleid':
+                    head['options']=[
+                        {'label':str(x),'value':x.pk} for x in TbMoneyCategories.objects.filter(categoryid__gte=14,categoryid__lte=18)
+                    ]
+                return head
             
             #def clean_query(self, query):
                 #if self.search_args.get('accountid__name'):
