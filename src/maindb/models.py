@@ -1362,7 +1362,7 @@ class TbVipbonus(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
     arrivetime = models.DateTimeField(db_column='ArriveTime', blank=True, null=True,verbose_name='发放到账时间')  # Field name made lowercase.
     endtime = models.DateTimeField(db_column='EndTime', blank=True, null=True,verbose_name='领取过期截止时间')  # Field name made lowercase.
-    status = models.IntegerField(db_column='Status',verbose_name='状态')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',verbose_name='状态',choices=VIPBONUS_STATUS)  # Field name made lowercase.
     loginfo = models.CharField(db_column='LogInfo', max_length=3000, blank=True, null=True,verbose_name='日志信息')  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=3000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
     sourceid = models.BigIntegerField(db_column='SourceId',verbose_name='关联ID')  # Field name made lowercase.

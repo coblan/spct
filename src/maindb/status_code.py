@@ -497,3 +497,8 @@ MESSAGE_RECIVER_TYPE=(
     (2,'用户组ID'),
     (3,'会员组ID'),
 )
+
+VIPBONUS_STATUS = (
+    (0,'待领取'),
+    (1,'已领取'),
+)
