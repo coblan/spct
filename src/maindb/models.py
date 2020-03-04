@@ -1354,7 +1354,7 @@ class TbVipbonus(models.Model):
     #level = models.IntegerField(db_column='Level')  # Field name made lowercase.
     level = models.ForeignKey(to=TbVip,db_constraint=False,db_column='Level',verbose_name='VIP等级')  # Field name made lowercase.
     #ruleid = models.IntegerField(db_column='RuleId')  # Field name made lowercase.
-    ruleid = models.ForeignKey(to='TbMoneyCategories',db_constraint=False,db_column='RuleId',verbose_name='发放规则')  # Field name made lowercase.
+    ruleid = models.ForeignKey(to='TbMoneyCategories',db_constraint=False,db_column='RuleId',verbose_name='红利类型')  # Field name made lowercase.
     
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4,verbose_name='红利金额')  # Field name made lowercase.
  
