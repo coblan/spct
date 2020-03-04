@@ -179,7 +179,8 @@ def redraw_left_money(rows):
     for inst in TbAgaccount.objects.filter(accountid_id__in=rows):
         start += 1
         orderid = 'B%s'%start
-        out_list.append( TbGamemoneyoutinfo(account=inst.accountid,amount=inst.availablescores,status=0,username=inst.agusername,ordertime=now,orderid=orderid) )
+        if inst.availablescores >=1:
+            out_list.append( TbGamemoneyoutinfo(account=inst.accountid,amount= int( inst.availablescores),status=0,username=inst.agusername,ordertime=now,orderid=orderid) )
     TbGamemoneyoutinfo.objects.bulk_create(out_list)
 
 director.update({
