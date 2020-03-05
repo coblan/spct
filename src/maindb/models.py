@@ -2751,7 +2751,7 @@ class TbRecharge(models.Model):
                                         verbose_name='确认金额')  # Field name made lowercase.
     consumeamount = models.DecimalField(db_column='ConsumeAmount', max_digits=18, decimal_places=2)  # Field name made lowercase.
     consumestatus = models.IntegerField(db_column='ConsumeStatus')  # Field name made lowercase.
-    bankcardno = models.CharField(db_column='BankCardNo', max_length=50, blank=True, null=True,verbose_name='申请转账卡号')  # Field name made lowercase.
+    bankcardno = models.CharField(db_column='BankCardNo', max_length=50, blank=True, null=True,verbose_name='收款账号')  # Field name made lowercase.
     accountip = models.CharField(db_column='AccountIP', max_length=50, blank=True, null=True,verbose_name='充值ip')  # Field name made lowercase.    
 
     class Meta:

@@ -96,8 +96,8 @@ class RechargePage(TablePage):
             names = ['amount', 'confirmamount', 'createtime', 'confirmtime']
 
         class search(SelectSearch):
-            names = ['accountid__nickname']
-            exact_names = ['orderid']
+            names = ['accountid__nickname',]
+            exact_names = ['orderid','bankcardno']
 
             def get_option(self, name):
                 if name == 'orderid':
@@ -107,6 +107,11 @@ class RechargePage(TablePage):
                     return {
                         'value': name,
                         'label': '昵称',
+                    }
+                elif name =='bankcardno':
+                    return {
+                        'value':name,
+                        'label':'收款账号'
                     }
 
             #def clean_search(self):
@@ -122,6 +127,12 @@ class RechargePage(TablePage):
         class filters(RowFilter):
             range_fields = ['createtime', 'confirmtime']
             names = ['channelid', 'status', 'amounttype']
+            #def dict_head(self, head):
+                #if head['name'] =='bankcardno':
+                    #head['editor'] = 'com-filter-text'
+                    #head['options'] =[]
+                #return head
+                
 
 
 class ConfirmRechargeForm(ModelFields):

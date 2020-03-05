@@ -8,6 +8,7 @@ import requests
 from androguard import misc
 import hashlib
 import os
+from maindb.tool_bucket.ios_ipa_parse import analyze_ipa_with_plistlib
 
 class AppPackageReciever(BasicReciever):
 
@@ -33,6 +34,9 @@ class AppPackageReciever(BasicReciever):
             if ext=='apk':
                 pkg_code,pkg_name = self.parsePKGInfo(file_path)            
                 relative_path+='?version_code=%(code)s&version_name=%(name)s&md5=%(md5)s&size=%(size)s'%{'code':pkg_code,'name':pkg_name,'md5':md5,'size':size}
+            elif ext =='ipa':
+                dc = analyze_ipa_with_plistlib(file_path)
+                relative_path+='?version_code=%(code)s&version_name=%(name)s&md5=%(md5)s&size=%(size)s'%{'code':dc.get('version_code'),'name':dc.get('version_name'),'md5':md5,'size':size}
             else:
                 relative_path+='?md5=%(md5)s&size=%(size)s'%{'md5':md5,'size':size}
                 
