@@ -222,9 +222,11 @@ def jiguang_broad_message(msg,msgid):
     push.notification = jpush.notification(alert= msg,android=android,ios=ios)
     push.options = {'apns_production':settings.JPUSH.get('ios_production')}
     push.platform = jpush.all_
+    
+    operation_log.info('发送广播命令!')
     response=push.send()
     operation_log.info('广播消息返回结果: %s'%response)
-    print(response)
+    #print(response)
     
 def jiguang_push_message(uids,msg,msgid):
     app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
@@ -242,9 +244,10 @@ def jiguang_push_message(uids,msg,msgid):
         push.options = {'apns_production':settings.JPUSH.get('ios_production')}
         push.platform = jpush.all_
         try:
+            operation_log.info('发送推送命令:uids=%s'%batch_uids)
             response=push.send()
             operation_log.info('推送消息:uids=%s ;返回结果: %s'%(batch_uids,response))
-            print(response)
+            #print(response)
         except jpush.common.JPushFailure as e:
             operation_log.info('推送消息:uids=%s ;返回结果报错: %s'%(batch_uids,e))
  
