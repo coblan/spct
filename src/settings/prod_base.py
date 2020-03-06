@@ -30,6 +30,10 @@ LOGGING = {
             'class': 'hello.log_to_elastic.EsHandler',         
             }, 
         'elk_info':{
+            'level': 'INFO',
+            'class': 'hello.log_to_elastic.EsHandler',         
+        },   
+        'elk_debug':{
             'level': 'DEBUG',
             'class': 'hello.log_to_elastic.EsHandler',         
             },         
@@ -70,17 +74,17 @@ LOGGING = {
             'propagate': True,            
             },
         'ModelFields.save_form': {
-            'handlers': ['operation_log', 'elk_info'],
+            'handlers': ['operation_log', 'elk_debug'],
             'level': 'DEBUG',
             'propagate': True,              
             },
         'operation_log': {
-            'handlers': ['operation_log', 'elk_info'],
+            'handlers': ['operation_log', 'elk_debug'],
             'level': 'DEBUG',
             'propagate': True,               
             },
         'task': {
-            'handlers': ['elk_info'],
+            'handlers': ['elk_debug'],
             'level': 'DEBUG',
             'propagate': True,                 
             },             
