@@ -87,7 +87,11 @@ LOGGING = {
             'handlers': ['elk_debug'],
             'level': 'DEBUG',
             'propagate': True,                 
-            },             
+            },   
+        'jpush':{
+            'handlers': ['console','elk_info'],
+            'level': 'INFO',
+        }
     }
 }
 

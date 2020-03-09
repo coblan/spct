@@ -278,6 +278,7 @@ JPUSH = {
     'master_secret' : '38fa20f39645037ce2eb6667',
     'ios_production':False,
     'proxy':{
+        #'https':'http://jg.cnd3.com'
         },
 }
 
