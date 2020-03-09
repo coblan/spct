@@ -10,6 +10,39 @@ import re
 import logging
 operation_log = logging.getLogger('operation_log')
 
+import requests
+logger = logging.getLogger('jpush')
+from jpush import common
+
+class MyJpush(jpush.JPush):
+
+    def _request(self, method, body, url, content_type=None, version=None, params=None):
+        
+        headers = {}
+        headers['user-agent'] = 'jpush-api-python-client'
+        headers['connection'] = 'keep-alive'
+        headers['content-type'] = 'application/json;charset:utf-8'
+
+        logger.debug("Making %s request to %s. Headers:\n\t%s\nBody:\n\t%s",
+                     method, url, '\n\t'.join('%s: %s' % (key, value) for (key, value) in headers.items()), body)
+        try:
+            response = self.session.request(method, url, data=body, params=params,
+                                            headers=headers, timeout=self.timeout,proxies=settings.JPUSH.get('proxy'))
+        except requests.exceptions.ConnectTimeout:
+            raise common.APIConnectionException("Connection to api.jpush.cn timed out.")
+        except Exception:
+            raise common.APIRequestException("Connection to api.jpush.cn error.")
+
+        logger.debug("Received %s response. Headers:\n\t%s\nBody:\n\t%s", response.status_code, '\n\t'.join(
+                '%s: %s' % (key, value) for (key, value) in response.headers.items()), response.content)
+
+        if response.status_code == 401:
+            raise common.Unauthorized("Please check your AppKey and Master Secret")
+        elif not (200 <= response.status_code < 300):
+            raise common.JPushFailure.from_response(response)
+        return response
+        
+
 class MessagePage(TablePage):
     def get_label(self):
         return '消息推送'
@@ -213,7 +246,7 @@ def dispatch_message(inst):
 
 def jiguang_broad_message(msg,msgid):
     app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
-    _jpush = jpush.JPush(app_key, master_secret)
+    _jpush = MyJpush(app_key, master_secret)
     push = _jpush.create_push()
     push.audience = jpush.all_
     #push.message =  jpush.message(msg_content='',extras= {'message_id':msgid} )
@@ -231,7 +264,7 @@ def jiguang_broad_message(msg,msgid):
 def jiguang_push_message(uids,msg,msgid):
     app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
     for batch_uids in split_list(uids, 1000):
-        _jpush = jpush.JPush(app_key, master_secret)
+        _jpush = MyJpush(app_key, master_secret)
         push = _jpush.create_push()
         push.audience = jpush.audience(
                     jpush.alias(*batch_uids)
