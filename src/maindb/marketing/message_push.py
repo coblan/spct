@@ -96,6 +96,14 @@ class MessagePage(TablePage):
                          'ctx_name': 'message_edit_tags',
                     })
             ops = [op for op in ops if op['name'] !='delete_selected']
+            ops += [
+                {'fun':'selected_set_and_save',
+                 'editor':'com-op-btn',
+                 'label':'删除',
+                 'row_match':'many_row',
+                 'pre_set':'rt = {status:0}'
+                 }
+            ]
             return ops
         
         class filters(RowFilter):
