@@ -1419,9 +1419,10 @@ class TbMessage(models.Model):
     #content = models.TextField(db_column='Content',verbose_name='内容')  # Field name made lowercase.
     
     issent = models.BooleanField(db_column='IsSent',verbose_name='发送')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status',default=1,verbose_name='状态',choices=VALID_STATUS)  # Field name made lowercase.
     content = RichtextField(db_column='Content',verbose_name='内容')
     receivertype = models.IntegerField(db_column='ReceiverType',default=0,blank=True)  # Field name made lowercase.
-    
+   
     
     class Meta:
         managed = False

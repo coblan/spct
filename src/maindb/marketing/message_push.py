@@ -99,7 +99,7 @@ class MessagePage(TablePage):
             return ops
         
         class filters(RowFilter):
-            names = ['typeid']
+            names = ['typeid','status']
         
         class search(RowSearch):
             names = ['title']

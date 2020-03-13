@@ -26,7 +26,7 @@ LOGGING = {
             'formatter':'standard',
         },
         'elk_warning':{
-            'level': 'ERROR',
+            'level': 'WARNING',
             'class': 'hello.log_to_elastic.EsHandler',         
             }, 
         'elk_info':{
@@ -64,33 +64,39 @@ LOGGING = {
             },         
     },
     'loggers': {
-        'django': {
-            'handlers': ['console', 'djangoout_warning', 'mail_admins', 'elk_warning'],
-            'level': 'INFO',
-            },
+        '': {
+            'handlers': ['mail_admins', 'elk_warning','djangoout_warning'],
+            'level': 'WARNING',
+            'propagate': False,
+        },
+        #'django': {
+            #'handlers': ['console', ] , #'djangoout_warning', 'mail_admins', 'elk_warning'],
+            #'level': 'INFO',
+            #},
         'general_log': {
-            'handlers': ['console', 'djangoout_warning', 'elk_info','general_log' ],
+            'handlers': ['console', 'general_log',  'elk_info' ],  #'djangoout_warning',
             'level': 'DEBUG',
-            'propagate': True,            
+            'propagate': False,            
             },
         'ModelFields.save_form': {
             'handlers': ['operation_log', 'elk_debug'],
             'level': 'DEBUG',
-            'propagate': True,              
+            'propagate': False,              
             },
         'operation_log': {
             'handlers': ['operation_log', 'elk_debug'],
             'level': 'DEBUG',
-            'propagate': True,               
+            'propagate': False,               
             },
         'task': {
             'handlers': ['elk_debug'],
             'level': 'DEBUG',
-            'propagate': True,                 
+            'propagate': False,                 
             },   
         'jpush':{
             'handlers': ['console','elk_info'],
             'level': 'INFO',
+            'propagate': False,
         }
     }
 }
