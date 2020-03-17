@@ -19,6 +19,7 @@ class AgAccountPage(TablePage):
         exclude = ['fishavailablescores','lastfishupdatetime',]
         hide_fields=['accountid']
         db ='Sports'
+        redraw_left_money_director = 'ag/redraw_left_money'
         
         def getExtraHead(self):
             return [
@@ -85,7 +86,7 @@ class AgAccountPage(TablePage):
                 {'label':'余额收回','editor':'com-op-btn','row_match':'many_row',
                  'confirm_msg':'确定要回收这些用户的余额?',
                  'visible':'availablescores' in changeable_fields,
-                 'action':'var rows= ex.map(scope.ps.selected,(item)=>{return item.pk});cfg.show_load();ex.director_call("ag/redraw_left_money",{rows:rows}).then(()=>{cfg.hide_load();cfg.toast("提交成功")})'},
+                 'action':'var rows= ex.map(scope.ps.selected,(item)=>{return item.pk});cfg.show_load();ex.director_call("%s",{rows:rows}).then(()=>{cfg.hide_load();cfg.toast("提交成功")})'%self.redraw_left_money_director },
             ]
         
         def dict_head(self, head):

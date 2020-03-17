@@ -27,7 +27,7 @@ from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
 from maindb.send_phone_message import send_message_password, send_message_fundspassword
 from django.db.models import DecimalField
-from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss
+from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss,TbImprofitloss
 import json
 from maindb.rabbitmq_instance import notifyAccountFrozen
 from helpers.case.jb_admin.admin import UserPicker
@@ -38,6 +38,8 @@ from . relevent_user import ReleventUserPage
 from ..ag.profitloss import AgprofitlossPage
 from ..sport.sport_profitloss import SportProfitlossPage
 from ..city.city_profitloss import LcityProfitlossPage
+from ..im.im_profitloss import IMProfitlossPage
+
 from django.conf import settings
 from .userlog import UserlogPage
 from maindb.google_validate import valide_google_code
@@ -264,6 +266,13 @@ def account_tab(self=None):
              'pre_set':'rt={accountid:scope.par_row.accountid}',
              'table_ctx':LCprofitLosTab().get_head_context(),
              'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbLcityprofitloss,crt_user)
+         },
+         {  'name':'im',
+             'label':'IM体育/电竞',
+             'editor':'com-tab-table',
+             'pre_set':'rt={accountid:scope.par_row.accountid}',
+             'table_ctx':IMporfitLosTab().get_head_context(),
+             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbImprofitloss,crt_user)
          }
         
         
@@ -1129,6 +1138,13 @@ class LCprofitLosTab(LcityProfitlossPage.tableCls):
     class search(RowSearch):
         pass
 
+class IMporfitLosTab(IMProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
+
 director.update({
     'account': AccountPage.tableCls,
     'account.edit': AccoutBaseinfo,
@@ -1153,6 +1169,7 @@ director.update({
     'account.agprofitloss':AgprofitLosTab,
     'account.sbprofitloss':SBprofitLosTab,
     'account.lcprofitloss':LCprofitLosTab,
+    'account.IMporfitLoss':IMporfitLosTab,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),

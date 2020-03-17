@@ -243,6 +243,16 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbLcitymoneyininfo.edit',model_full_permit(TbLcitymoneyininfo),model_to_name(TbLcitymoneyininfo),'model'),
            ('TbLcitymoneyoutinfo.edit',model_full_permit(TbLcitymoneyoutinfo),model_to_name(TbLcitymoneyoutinfo),'model'),
            
+            # IM
+            ('TbImaccount',model_read_permit(TbImaccount),model_to_name(TbImaccount),'model'),
+            ('TbImaccount.edit',model_full_permit(TbImaccount),model_to_name(TbImaccount),'model'),
+            ('TbImeaccount',model_read_permit(TbImeaccount),model_to_name(TbImeaccount),'model'),
+            ('TbImeaccount.edit',model_full_permit(TbImeaccount),model_to_name(TbImeaccount),'model'),
+            ('TbImprofitloss.edit',model_full_permit(TbImprofitloss),model_to_name(TbImprofitloss),'model'),
+            ('TbImmoneyininfo.edit',model_full_permit(TbImmoneyininfo),model_to_name(TbImmoneyininfo),'model'),
+            ('TbImmoneyoutinfo.edit',model_full_permit(TbImmoneyoutinfo),model_to_name(TbImmoneyoutinfo),'model'),
+           
+           
            
            # system
            ('TbUserex',model_read_permit(TbUserex),model_to_name(TbUserex),'model'),

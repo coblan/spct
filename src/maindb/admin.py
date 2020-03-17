@@ -101,3 +101,9 @@ if getattr(settings,'OPEN_SECRET',False):
     from . city import city_profitloss
     from . city import city_money_in
     from . city import city_money_out
+    
+    from . im import im_account
+    from . im import im_esb_account
+    from . im import im_money_in
+    from . im import im_money_out
+    from . im import im_profitloss

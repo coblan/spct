@@ -333,7 +333,19 @@ def get_permit(ui=None):
             {'label':'资金流入','value':'TbLcitymoneyininfo.edit'},
             {'label':'资金流出','value':'TbLcitymoneyoutinfo.edit'}
         ]},
-          
+        {'label':'IM体育/电竞','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'体育账号','children':[
+                {'label':'查看','value':'TbImaccount'},
+                {'label':'编辑','value':'TbImaccount.edit','depend':['TbImaccount']},
+                ]},
+            {'label':'体育账号','children':[
+                {'label':'查看','value':'TbImeaccount'},
+                {'label':'编辑','value':'TbImeaccount.edit','depend':['TbImeaccount']},
+                ]},
+            {'label':'投注列表','value':'TbImprofitloss.edit'},
+            {'label':'资金流入','value':'TbImmoneyininfo.edit'},
+            {'label':'资金流出','value':'TbImmoneyoutinfo.edit'}
+        ]},
         
         {'label': '系统管理',
          'children': [

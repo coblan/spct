@@ -1,6 +1,8 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,SelectSearch,ModelFields
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,SelectSearch,ModelFields,director_view
 from ..ag.ag_account import AgAccountPage
-from ..models import TbSportaccount
+from ..models import TbSportaccount,TbSportmoneyoutinfo
+from django.utils import timezone
+import time
 
 class SportAccountPage(TablePage):
     def get_label(self):
@@ -11,6 +13,7 @@ class SportAccountPage(TablePage):
     class tableCls(AgAccountPage.tableCls):
         model = TbSportaccount
         exclude =[]
+        redraw_left_money_director = 'sport/redraw_left_money'
         
         def get_sql(self):
             
@@ -73,6 +76,21 @@ class SportAccountForm(ModelFields):
     class Meta:
         model = TbSportaccount
         exclude =[]
+
+
+@director_view('sport/redraw_left_money')
+def redraw_left_money(rows):
+    out_list =[]
+    now = timezone.now()
+    start = int(time.time() *100000)
+    for inst in TbSportaccount.objects.filter(accountid_id__in=rows):
+        start += 1
+        orderid = 'B%s'%start
+        if inst.availablescores >=1:
+            out_list.append( TbSportmoneyoutinfo(account=inst.accountid,amount= int( inst.availablescores),status=0,username=inst.username,ordertime=now,orderid=orderid) )
+    TbSportmoneyoutinfo.objects.bulk_create(out_list)
+
+
 
 director.update({
     'sportaccount':SportAccountPage.tableCls,

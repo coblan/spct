@@ -179,6 +179,17 @@ class PcMenu(BaseEngine):
                 {'label':'资金转入','url':page('lcitymoneyinfo'),'visible':can_touch(TbLcitymoneyininfo,crt_user)},
                 {'label':'资金转出','url':page('lcitymoneyout'),'visible':can_touch(TbLcitymoneyoutinfo,crt_user)},
              ]},
+             {'label': 'IM系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
+             'submenu': [
+                {'label': '体育用户列表', 'url': page('im_account'),'visible': can_touch(TbImaccount, crt_user), },
+                {'label': '电竞用户列表', 'url': page('im_esb_account'),'visible': can_touch(TbImeaccount, crt_user), },
+                
+                {'label':'投注列表','url':page('improfitloss'),'visible':can_touch(TbImprofitloss,crt_user)},
+                {'label':'资金转入','url':page('immoneyinfo'),'visible':can_touch(TbImmoneyininfo,crt_user)},
+                {'label':'资金转出','url':page('immoneyout'),'visible':can_touch(TbImmoneyoutinfo,crt_user)},
+             ]},
+             
+             
              
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
