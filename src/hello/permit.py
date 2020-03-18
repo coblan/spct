@@ -338,7 +338,7 @@ def get_permit(ui=None):
                 {'label':'查看','value':'TbImaccount'},
                 {'label':'编辑','value':'TbImaccount.edit','depend':['TbImaccount']},
                 ]},
-            {'label':'体育账号','children':[
+            {'label':'电竞账号','children':[
                 {'label':'查看','value':'TbImeaccount'},
                 {'label':'编辑','value':'TbImeaccount.edit','depend':['TbImeaccount']},
                 ]},
