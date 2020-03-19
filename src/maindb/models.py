@@ -1045,7 +1045,7 @@ class TbImmoneyoutinfo(models.Model):
     status = models.IntegerField(db_column='Status', blank=True, null=True,verbose_name='状态',choices=GAMEMONEY_OUT_STATUS)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=2000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
     #tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
-    productid = models.IntegerField(db_column='ProductId',verbose_name='产品号')  # Field name made lowercase.
+    productid = models.IntegerField(db_column='ProductId',verbose_name='产品号',choices=IM_PRODUCTID)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1066,7 +1066,7 @@ class TbImmoneyininfo(models.Model):
     status = models.IntegerField(db_column='Status', blank=True, null=True,verbose_name='状态',choices=GAMEMONEY_IN_STATUS)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=2000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
     tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
-    productid = models.IntegerField(db_column='ProductId',verbose_name='产品号')  # Field name made lowercase.
+    productid = models.IntegerField(db_column='ProductId',verbose_name='产品号',choices=IM_PRODUCTID)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1092,7 +1092,7 @@ class TbImprofitloss(models.Model):
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='用户名')  # Field name made lowercase.
     rebate = models.DecimalField(db_column='Rebate', max_digits=18, decimal_places=4,verbose_name='返点金额')  # Field name made lowercase.
     turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=0,verbose_name='流水')  # Field name made lowercase.
-    productid = models.IntegerField(db_column='ProductId',verbose_name='产品号')  # Field name made lowercase.
+    productid = models.IntegerField(db_column='ProductId',verbose_name='产品号',choices=IM_PRODUCTID)  # Field name made lowercase.
 
     class Meta:
         managed = False

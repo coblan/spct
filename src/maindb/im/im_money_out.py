@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter
 from ..ag.gamemoneyoutinfo import GamemoneyoutinfoPage
 from ..models import TbImmoneyoutinfo
 
@@ -11,6 +11,10 @@ class IMmoneyOutInfoPage(TablePage):
     class tableCls(GamemoneyoutinfoPage.tableCls):
         model = TbImmoneyoutinfo
         exclude =[]
+        
+        class filters(RowFilter):
+            names=['status','productid']
+            range_fields=['ordertime']
 
 director.update({
     'immoneyout':IMmoneyOutInfoPage.tableCls,

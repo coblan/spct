@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,page_dc,director
+from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowFilter
 from ..ag.profitloss import AgprofitlossPage
 from ..models import TbImprofitloss
 from django.db.models import Sum
@@ -26,6 +26,10 @@ class IMProfitlossPage(TablePage):
             })
             self.footer = normed_dc
             return query
+        
+        class filters(RowFilter):
+            names = ['productid']
+            range_fields=['profitlosstime']
 
 
 director.update({
