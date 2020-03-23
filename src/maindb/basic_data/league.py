@@ -108,7 +108,17 @@ class League(TablePage):
             return ops
 
         class sort(RowSort):
-            names = ['sort','weight','ticketdelay','handicapcount','tournamentid']
+            names = ['sort','weight','ticketdelay','handicapcount','tournamentid','group']
+            
+            def get_query(self, query):
+                if self.sort_str =='group':
+                    query = query.order_by('group__groupname')
+                elif self.sort_str =='-group':
+                    query = query.order_by('-group__groupname')
+                else:
+                    query= super().get_query(query)
+                return query
+            
 
         class search(SelectSearch):
             names = ['tournamentname', 'tournamentid']
