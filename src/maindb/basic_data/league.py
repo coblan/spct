@@ -49,6 +49,8 @@ class League(TablePage):
                 'oddsadjustmax' :120,
                 'baseticketeamout':100,
                 'handicapcount':140,
+                'adjusttemplate':130,
+                'liveadjusttemplateid':130,
             }
             if head['name'] in dc:
                 head['width'] = dc.get(head['name'])
@@ -108,13 +110,21 @@ class League(TablePage):
             return ops
 
         class sort(RowSort):
-            names = ['sort','weight','ticketdelay','handicapcount','tournamentid','group']
+            names = ['sort','weight','ticketdelay','handicapcount','tournamentid','group','adjusttemplate','liveadjusttemplateid']
             
             def get_query(self, query):
-                if self.sort_str =='group':
-                    query = query.order_by('group__groupname')
-                elif self.sort_str =='-group':
-                    query = query.order_by('-group__groupname')
+                qstr =''
+                if self.sort_str .endswith('group'):
+                    qstr = 'group__groupname'
+                elif self.sort_str .endswith('adjusttemplate'):
+                    qstr = 'adjusttemplate__templatename'
+                elif self.sort_str .endswith('liveadjusttemplateid'):
+                    qstr = 'liveadjusttemplateid__templatename'
+                if qstr and self.sort_str.startswith('-'):
+                    qstr = '-' + qstr
+                    
+                if qstr:
+                    query = query.order_by(qstr)
                 else:
                     query= super().get_query(query)
                 return query
