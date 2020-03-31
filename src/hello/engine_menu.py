@@ -157,40 +157,47 @@ class PcMenu(BaseEngine):
                  {'label': '代理用户', 'url': page('agent_user'),'visible': has_permit(crt_user, 'agent'), },
                  {'label': '代理佣金', 'url': page('agent_commission'),'visible': can_touch(TbAgentcommission, crt_user), },
              ]},
+            {'label':'三方平台','icon': fa('fa-chrome'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
+             'submenu':[
+                {'label': 'AG系统', 
+                 'submenu': [
+                    {'label': '用户列表', 'url': page('agaccount'),'visible': can_touch(TbAgaccount, crt_user), },
+                    {'label':'投注列表','url':page('agprofitloss'),'visible':can_touch(TbAgprofitloss,crt_user)},
+                    {'label':'资金转入AG','url':page('gamemoneyininfo'),'visible':can_touch(TbGamemoneyininfo,crt_user)},
+                    {'label':'资金转出AG','url':page('gamemoneyoutinfo'),'visible':can_touch(TbGamemoneyoutinfo,crt_user)},
+                 ]},
+                  {'label': '沙巴系统', 
+                   'submenu': [
+                      {'label': '用户列表', 'url': page('sportaccount'),'visible': can_touch(TbSportaccount, crt_user), },
+                      {'label':'投注列表','url':page('sportprofitloss'),'visible':can_touch(TbSportprofitloss,crt_user)},
+                      {'label':'资金转入','url':page('sportmoneyinfo'),'visible':can_touch(TbSportmoneyininfo,crt_user)},
+                      {'label':'资金转出','url':page('sportmoneyout'),'visible':can_touch(TbSportmoneyoutinfo,crt_user)},
+                   ]},
+                    {'label': '龙城系统' ,
+                     'submenu': [
+                        {'label': '用户列表', 'url': page('lcityaccount'),'visible': can_touch(TbLcityaccount, crt_user), },
+                        {'label':'投注列表','url':page('lcityprofitloss'),'visible':can_touch(TbLcityprofitloss,crt_user)},
+                        {'label':'资金转入','url':page('lcitymoneyinfo'),'visible':can_touch(TbLcitymoneyininfo,crt_user)},
+                        {'label':'资金转出','url':page('lcitymoneyout'),'visible':can_touch(TbLcitymoneyoutinfo,crt_user)},
+                     ]},
+                    {'label': 'IM系统',
+                     'submenu': [
+                        {'label': '体育用户列表', 'url': page('im_account'),'visible': can_touch(TbImaccount, crt_user), },
+                        {'label': '电竞用户列表', 'url': page('im_esb_account'),'visible': can_touch(TbImeaccount, crt_user), },
+                        
+                        {'label':'投注列表','url':page('improfitloss'),'visible':can_touch(TbImprofitloss,crt_user)},
+                        {'label':'资金转入','url':page('immoneyinfo'),'visible':can_touch(TbImmoneyininfo,crt_user)},
+                        {'label':'资金转出','url':page('immoneyout'),'visible':can_touch(TbImmoneyoutinfo,crt_user)},
+                     ]},
+                      {'label': 'RG系统', 'icon': fa('fa-street-view'), 
+                       'submenu': [
+                          {'label': '用户列表', 'url': page('rgaccount'),'visible': can_touch(TbRgaccount, crt_user), },
+                          {'label':'投注列表','url':page('rg_profitloss'),'visible':can_touch(TbRgprofitloss,crt_user)},
+                          {'label':'资金转入','url':page('rg_moneyinfo'),'visible':can_touch(TbRgmoneyininfo,crt_user)},
+                          {'label':'资金转出','url':page('rg_moneyout'),'visible':can_touch(TbRgmoneyoutinfo,crt_user)},
+                       ]},
+            ]},
             
-             {'label': 'AG系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
-             'submenu': [
-                {'label': '用户列表', 'url': page('agaccount'),'visible': can_touch(TbAgaccount, crt_user), },
-                {'label':'投注列表','url':page('agprofitloss'),'visible':can_touch(TbAgprofitloss,crt_user)},
-                {'label':'资金转入AG','url':page('gamemoneyininfo'),'visible':can_touch(TbGamemoneyininfo,crt_user)},
-                {'label':'资金转出AG','url':page('gamemoneyoutinfo'),'visible':can_touch(TbGamemoneyoutinfo,crt_user)},
-             ]},
-            {'label': '沙巴系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
-             'submenu': [
-                {'label': '用户列表', 'url': page('sportaccount'),'visible': can_touch(TbSportaccount, crt_user), },
-                {'label':'投注列表','url':page('sportprofitloss'),'visible':can_touch(TbSportprofitloss,crt_user)},
-                {'label':'资金转入','url':page('sportmoneyinfo'),'visible':can_touch(TbSportmoneyininfo,crt_user)},
-                {'label':'资金转出','url':page('sportmoneyout'),'visible':can_touch(TbSportmoneyoutinfo,crt_user)},
-             ]},
-             {'label': '龙城系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
-             'submenu': [
-                {'label': '用户列表', 'url': page('lcityaccount'),'visible': can_touch(TbLcityaccount, crt_user), },
-                {'label':'投注列表','url':page('lcityprofitloss'),'visible':can_touch(TbLcityprofitloss,crt_user)},
-                {'label':'资金转入','url':page('lcitymoneyinfo'),'visible':can_touch(TbLcitymoneyininfo,crt_user)},
-                {'label':'资金转出','url':page('lcitymoneyout'),'visible':can_touch(TbLcitymoneyoutinfo,crt_user)},
-             ]},
-             {'label': 'IM系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
-             'submenu': [
-                {'label': '体育用户列表', 'url': page('im_account'),'visible': can_touch(TbImaccount, crt_user), },
-                {'label': '电竞用户列表', 'url': page('im_esb_account'),'visible': can_touch(TbImeaccount, crt_user), },
-                
-                {'label':'投注列表','url':page('improfitloss'),'visible':can_touch(TbImprofitloss,crt_user)},
-                {'label':'资金转入','url':page('immoneyinfo'),'visible':can_touch(TbImmoneyininfo,crt_user)},
-                {'label':'资金转出','url':page('immoneyout'),'visible':can_touch(TbImmoneyoutinfo,crt_user)},
-             ]},
-             
-             
-             
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
                  {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user)},

@@ -107,3 +107,8 @@ if getattr(settings,'OPEN_SECRET',False):
     from . im import im_money_in
     from . im import im_money_out
     from . im import im_profitloss
+    
+    from . rg import rg_account
+    from . rg import rg_profitloss
+    from . rg import rg_money_in
+    from . rg import rg_money_out

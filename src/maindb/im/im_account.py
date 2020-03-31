@@ -41,7 +41,7 @@ class ImAccountPage(TablePage):
         
         def dict_head(self, head):
             width={
-                'accountid':150,
+                'account':150,
                 'username':150,
                 'transferin':140,
                 'transferout':140,
@@ -90,9 +90,9 @@ class ImAccountPage(TablePage):
         
         class search(SelectSearch):
             #names = ['account__nickname','agusername']
-            exact_names=['account__nickname','username','accountid',]
+            exact_names=['account__nickname','username','account',]
             def get_option(self, name):
-                if name == 'accountid':
+                if name == 'account':
                     return {'value':name,'label':'账号ID'}
                 elif name == 'account__nickname':
                     return {'value': name,
@@ -103,7 +103,7 @@ class ImAccountPage(TablePage):
             def clean_search(self):
                 if self.qf =='account__nickname':
                     return {
-                        'accountid__nickname':self.q
+                        'account__nickname':self.q
                     }
                 else:
                     return super().clean_search()
@@ -122,11 +122,11 @@ def redraw_left_money(rows):
     out_list =[]
     now = timezone.now()
     start = int(time.time() *100000)
-    for inst in TbImaccount.objects.filter(accountid_id__in=rows):
+    for inst in TbImaccount.objects.filter(account_id__in=rows):
         start += 1
         orderid = 'B%s'%start
         if inst.availablescores >=1:
-            out_list.append( TbImmoneyoutinfo(account=inst.accountid,amount= inst.availablescores ,status=0,username=inst.username,ordertime=now,orderid=orderid,productid = 301) )
+            out_list.append( TbImmoneyoutinfo(account=inst.account,amount= inst.availablescores ,status=0,username=inst.username,ordertime=now,orderid=orderid,productid = 301) )
     TbImmoneyoutinfo.objects.bulk_create(out_list)
     
 director.update({

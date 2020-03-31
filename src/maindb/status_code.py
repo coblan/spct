@@ -473,6 +473,7 @@ ACCOUNT_POWERTYPE = (
     (3,'沙巴体育'),
     (4,'龙城棋牌'),
     (5,'IM体育/电竞'),
+    (6,'RG电竞'),
 )
 
 ODDSOURCE =(

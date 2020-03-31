@@ -998,7 +998,7 @@ class TbLivefeed(models.Model):
 
 
 class TbImaccount(models.Model):
-    accountid = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
+    account = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
     #accountid = models.BigIntegerField(db_column='AccountId', primary_key=True)  # Field name made lowercase.
     username = models.CharField(db_column='UserName', max_length=50,verbose_name='IM体育用户名')  # Field name made lowercase.
     transferin = models.DecimalField(db_column='TransferIn', max_digits=18, decimal_places=4,verbose_name='转入')  # Field name made lowercase.
@@ -2091,6 +2091,86 @@ class TbRisklevellog(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_RiskLevelLog'
+
+
+class TbRgaccount(models.Model):
+    account = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
+    #accountid = models.BigIntegerField(db_column='AccountId', primary_key=True)  # Field name made lowercase.
+    username = models.CharField(db_column='UserName', max_length=50,verbose_name='用户名')  # Field name made lowercase.
+    transferin = models.DecimalField(db_column='TransferIn', max_digits=18, decimal_places=4,verbose_name='转入')  # Field name made lowercase.
+    transferout = models.DecimalField(db_column='TransferOut', max_digits=18, decimal_places=4,verbose_name='转出')  # Field name made lowercase.
+    winorloss = models.DecimalField(db_column='WinOrLoss', max_digits=18, decimal_places=4,verbose_name='亏盈')  # Field name made lowercase.
+    bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4,verbose_name='返点率')  # Field name made lowercase.
+    rebate = models.DecimalField(db_column='Rebate', max_digits=18, decimal_places=4,verbose_name='总反水')  # Field name made lowercase.
+    availablescores = models.DecimalField(db_column='AvailableScores', max_digits=18, decimal_places=4,verbose_name='余额')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
+    fundswitch = models.BooleanField(db_column='FundSwitch',verbose_name='资金开关')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_RgAccount'
+
+
+class TbRgprofitloss(models.Model):
+    profitlossid = models.AutoField(db_column='ProfitLossID', primary_key=True,verbose_name='记录ID')  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
+    account = models.ForeignKey(to=TbAccount,db_constraint=False,db_column='AccountID', blank=True, null=True,verbose_name='账号') 
+    profitlosstime = models.DateTimeField(db_column='ProfitLossTime', blank=True, null=True,verbose_name='游戏时间')  # Field name made lowercase.
+    profitlosstype = models.CharField(db_column='ProfitLossType', max_length=50, blank=True, null=True)  # Field name made lowercase.
+    profitlossmoney = models.DecimalField(db_column='ProfitLossMoney', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='投注额')  # Field name made lowercase.
+    winmoney = models.DecimalField(db_column='WinMoney', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='亏盈')  # Field name made lowercase.
+    prizemoney = models.DecimalField(db_column='PrizeMoney', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='派奖额')  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=500, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
+    playid = models.CharField(db_column='PlayID', max_length=50, blank=True, null=True,verbose_name ='游戏ID')  # Field name made lowercase.
+    gametype = models.CharField(db_column='GameType', max_length=50, blank=True, null=True,verbose_name='游戏类型')  # Field name made lowercase.
+    refid = models.IntegerField(db_column='RefID', blank=True, null=True)  # Field name made lowercase.
+    savetime = models.DateTimeField(db_column='SaveTime', blank=True, null=True,verbose_name='数据保存时间')  # Field name made lowercase.
+    parentid = models.IntegerField(db_column='ParentID', blank=True, null=True)  # Field name made lowercase.
+    bettime = models.DateTimeField(db_column='BetTime', blank=True, null=True)  # Field name made lowercase.
+    iswin = models.IntegerField(db_column='IsWin', blank=True, null=True,verbose_name='赢')  # Field name made lowercase.
+    username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='用户名')  # Field name made lowercase.
+    rebate = models.DecimalField(db_column='Rebate', max_digits=18, decimal_places=4,verbose_name='返点金额')  # Field name made lowercase.
+    turnover = models.DecimalField(db_column='Turnover', max_digits=18, decimal_places=0,verbose_name='流水')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_RgProfitLoss'
+        
+class TbRgmoneyininfo(models.Model):
+    moneyinid = models.AutoField(db_column='MoneyInID', primary_key=True,verbose_name='记录ID')  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='金额')  # Field name made lowercase.
+    orderid = models.CharField(db_column='OrderID', max_length=50, blank=True, null=True,verbose_name='订单号')  # Field name made lowercase.
+    ordertime = models.DateTimeField(db_column='OrderTime', blank=True, null=True,verbose_name='时间')  # Field name made lowercase.
+    handle = models.CharField(db_column='Handle', max_length=50, blank=True, null=True,verbose_name='操作者')  # Field name made lowercase.
+    handtime = models.DateTimeField(db_column='HandTime', blank=True, null=True,verbose_name='操作时间')  # Field name made lowercase.
+    account = models.ForeignKey(to=TbAccount,db_constraint=False,db_column='AccountID', blank=True, null=True,verbose_name='账号') 
+    #accountid = models.IntegerField(db_column='AccountId', blank=True, null=True)  # Field name made lowercase.
+    username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='用户名')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', blank=True, null=True,verbose_name='状态',choices=GAMEMONEY_IN_STATUS)  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=2000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
+    tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_RgMoneyInInfo'
+
+class TbRgmoneyoutinfo(models.Model):
+    moneyoutid = models.AutoField(db_column='MoneyOutID', primary_key=True,verbose_name='记录ID')  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='金额')  # Field name made lowercase.
+    orderid = models.CharField(db_column='OrderID', max_length=50, blank=True, null=True,verbose_name='订单号')  # Field name made lowercase.
+    ordertime = models.DateTimeField(db_column='OrderTime', blank=True, null=True,verbose_name='时间')  # Field name made lowercase.
+    #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
+    account = models.ForeignKey(to=TbAccount,db_constraint=False,db_column='AccountID', blank=True, null=True,verbose_name='账号') 
+    username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='用户名')  # Field name made lowercase.
+    handle = models.CharField(db_column='Handle', max_length=50, blank=True, null=True,verbose_name='操作者')  # Field name made lowercase.
+    handtime = models.DateTimeField(db_column='HandTime', blank=True, null=True,verbose_name='操作时间')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status', blank=True, null=True,verbose_name='状态',choices=GAMEMONEY_OUT_STATUS)  # Field name made lowercase.
+    memo = models.CharField(db_column='Memo', max_length=2000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
+    tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_RgMoneyOutInfo'
 
 class TbSplist(models.Model):
     spid = models.IntegerField(db_column='SPID', primary_key=True)  # Field name made lowercase.
