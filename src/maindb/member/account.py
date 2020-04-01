@@ -11,7 +11,7 @@ from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatch,TbBetfullrecord,\
-     TbUserLog,TbSportprofitloss,TbLcityprofitloss
+     TbUserLog,TbSportprofitloss,TbLcityprofitloss,TbRgprofitloss
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch,has_permit
 from helpers.func.random_str import get_str, get_random_number
@@ -39,6 +39,7 @@ from ..ag.profitloss import AgprofitlossPage
 from ..sport.sport_profitloss import SportProfitlossPage
 from ..city.city_profitloss import LcityProfitlossPage
 from ..im.im_profitloss import IMProfitlossPage
+from ..rg.rg_profitloss import RGProfitlossPage
 
 from django.conf import settings
 from .userlog import UserlogPage
@@ -273,7 +274,15 @@ def account_tab(self=None):
              'pre_set':'rt={accountid:scope.par_row.accountid}',
              'table_ctx':IMporfitLosTab().get_head_context(),
              'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbImprofitloss,crt_user)
-         }
+         },
+         {  'name':'rg_esports',
+             'label':'RG电竞',
+             'editor':'com-tab-table',
+             'pre_set':'rt={accountid:scope.par_row.accountid}',
+             'table_ctx':RGporfitLosTab().get_head_context(),
+             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbRgprofitloss,crt_user)
+         },
+         
         
         
     ]
@@ -1145,6 +1154,13 @@ class IMporfitLosTab(IMProfitlossPage.tableCls):
     class search(RowSearch):
         pass
 
+class RGporfitLosTab(RGProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
+
 director.update({
     'account': AccountPage.tableCls,
     'account.edit': AccoutBaseinfo,
@@ -1170,6 +1186,7 @@ director.update({
     'account.sbprofitloss':SBprofitLosTab,
     'account.lcprofitloss':LCprofitLosTab,
     'account.IMporfitLoss':IMporfitLosTab,
+    'account.RGprofitLoss':RGporfitLosTab,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
