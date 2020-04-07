@@ -1,5 +1,6 @@
 # encoding:utf-8
 from __future__ import unicode_literals
+from django.conf import settings
 
 ACCOUNT_TYPE = (
     (0, '普通'),
@@ -514,3 +515,20 @@ IM_PRODUCTID=(
     (301,'IM体育'),
     (401,'IM电竞')
 )
+
+if getattr(settings,'OPEN_SECRET',False):
+    ACTIVITY2_CATAGORY = (
+        (1,'新人优惠'),
+        (2,'体育优惠'),
+        (3,'真人优惠') ,
+        (4,'彩票优惠') ,
+        (5,'其他优惠'),
+        #全部，新人优惠，体育优惠, 真人优惠,彩票优惠，其他优惠
+    )
+else:
+    ACTIVITY2_CATAGORY = (
+        (1,'新人优惠'),
+        (2,'体育优惠'),
+        (5,'其他优惠'),
+        #全部，新人优惠，体育优惠, 真人优惠,彩票优惠，其他优惠
+    )

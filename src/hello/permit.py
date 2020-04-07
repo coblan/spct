@@ -355,6 +355,15 @@ def get_permit(ui=None):
             {'label':'资金流入','value':'TbRgmoneyininfo.edit'},
             {'label':'资金流出','value':'TbRgmoneyoutinfo.edit'}
         ]},
+        {'label':'PT系统','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'账号','children':[
+                {'label':'查看','value':'TbPtaccount'},
+                {'label':'编辑','value':'TbPtaccount.edit','depend':['TbPtaccount']},
+                ]},
+            {'label':'投注列表','value':'TbPtprofitloss.edit'},
+            {'label':'资金流入','value':'TbPtmoneyininfo.edit'},
+            {'label':'资金流出','value':'TbPtmoneyoutinfo.edit'}
+        ]},
         
         {'label': '系统管理',
          'children': [

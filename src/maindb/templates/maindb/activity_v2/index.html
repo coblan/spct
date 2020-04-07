@@ -26,6 +26,7 @@
 
     //   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
     rows={{ rows | jsonify }}
+    tabs = {{ tabs | jsonify }}
 
 </script>
 
@@ -34,7 +35,8 @@
         font-size: 14px;
     }
     body{
-        background-color: #eeeeee;
+        /*background-color: #eeeeee;*/
+        background-color: #020202;
     }
     * {
         moz-user-select: -moz-none;
@@ -60,6 +62,19 @@
             el:'#there',
             data:{
                 rows:rows,
+                tabs:tabs,
+                filter_key:-1
+            },
+            computed:{
+                valid_rows(){
+                    return ex.filter(this.rows,(row)=>{
+                                if(this.filter_key != -1 ){
+                                    return row.categoryid == this.filter_key
+                                }else{
+                                    return true
+                                }
+                            })
+                }
             },
             methods:{
                 goto:function(url){
@@ -77,7 +92,11 @@
                         location='chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
                     }
 
-                }
+                },
+                on_click(tab){
+                    this.filter_key = tab.key
+                },
+
             }
         })
     })
@@ -89,16 +108,65 @@
         width: 96%;
         margin: 20px auto;
     }
+    .block img{
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
     .foot-block{
         border-bottom-left-radius: 10px;
         border-bottom-right-radius: 10px;
         background-color: white;
         padding: 10px;
     }
+
+    .red-wrap{
+        background-color: #b9291b;
+        position: absolute;
+        top:-10px;
+        left: 0;
+        right: 0;
+        bottom: -120px;
+        z-index: -1;
+        border-bottom-right-radius: 10px 20px;
+        border-bottom-left-radius: 10px 20px;
+    }
+    .tab-wrap{
+        position: relative;
+    }
+
+    .my-tab{
+        /*height: 2.3em;*/
+        /*line-height:  2.1em;*/
+        width: 100%;
+        margin: 10px 0 20px 0;
+        background-color: rgba(255,255,255,.3);
+        white-space: nowrap;
+        overflow: auto;
+    }
+
+    .tab-item{
+        display: inline-block;
+        padding: .5rem 1rem;
+        color: #e3e3e3;
+        font-size: 120%;
+    }
+    .tab-item.active{
+        color: white;
+        border-bottom: 1px solid white;
+    }
 </style>
 
 <div id="there">
-    <div class="block" v-for="row in rows" @click="goto(row.url)">
+
+    <div class="tab-wrap">
+        <div class="red-wrap"></div>
+        <div class="my-tab">
+            <span class="tab-item" :class="{active:filter_key==tab.key}" v-for="tab in tabs" v-text="tab.label" @click="on_click(tab)"></span>
+        </div>
+
+    </div>
+
+    <div class="block" v-for="row in valid_rows" @click="goto(row.url)">
         <img :src="row.banner" alt="" width="100%">
         <div class="foot-block">
             <div style="font-size: 120%">

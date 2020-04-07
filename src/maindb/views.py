@@ -13,6 +13,7 @@ from helpers.director.model_func.dictfy import sim_dict
 from helpers.director.engine import BaseEngine
 from helpers.func.html import truncatehtml
 from django.conf import settings
+from maindb.status_code import ACTIVITY2_CATAGORY
 
 def test(request):
     gen_help()
@@ -117,8 +118,13 @@ class Activity(View):
                 dc= sim_dict(row)
                 dc['url'] = '%s.html?t=%s'%(row.pk,time.time())
                 rows.append(dc)
+                
+            tabs = []
+            for item in ACTIVITY2_CATAGORY:
+                tabs.append({'key':item[0],'label':item[1]})
             ctx = {
                 'rows':rows,
+                'tabs':[{'key':-1,'label':'全部'}] + tabs,
                 'js_config':baseengine.getJsConfig()
             }        
             return render(request,'maindb/activity_v2/index.html',context=ctx)                

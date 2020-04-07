@@ -49,7 +49,7 @@ class ActiviyV2Page(TablePage):
     
     class tableCls(ModelTable):
         #hide_fields=['rules','content','componentname','componentparams','templateid','ismutex']
-        fields_sort=['id','title','subtitle','enabled','begintime','endtime','banner','image','target','displaytype','sort','remark','editorid','creatorid','createtime','edittime']
+        fields_sort=['id','title','subtitle','enabled','categoryid','begintime','endtime','banner','image','target','displaytype','sort','remark','editorid','creatorid','createtime','edittime']
         model = TbActivityV2
         exclude=['url']
         pop_edit_field = 'id'

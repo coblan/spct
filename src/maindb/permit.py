@@ -259,6 +259,12 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
             ('TbRgmoneyininfo.edit',model_full_permit(TbRgmoneyininfo),model_to_name(TbRgmoneyininfo),'model'),
             ('TbRgmoneyoutinfo.edit',model_full_permit(TbRgmoneyoutinfo),model_to_name(TbRgmoneyoutinfo),'model'),
            
+             # PT
+            ('TbPtaccount',model_read_permit(TbPtaccount),model_to_name(TbPtaccount),'model'),
+            ('TbPtaccount.edit',model_full_permit(TbPtaccount),model_to_name(TbPtaccount),'model'),
+            ('TbPtprofitloss.edit',model_full_permit(TbPtprofitloss),model_to_name(TbPtprofitloss),'model'),
+            ('TbPtmoneyininfo.edit',model_full_permit(TbPtmoneyininfo),model_to_name(TbPtmoneyininfo),'model'),
+            ('TbPtmoneyoutinfo.edit',model_full_permit(TbPtmoneyoutinfo),model_to_name(TbPtmoneyoutinfo),'model'),
            
            # system
            ('TbUserex',model_read_permit(TbUserex),model_to_name(TbUserex),'model'),

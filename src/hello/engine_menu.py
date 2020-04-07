@@ -196,6 +196,15 @@ class PcMenu(BaseEngine):
                           {'label':'资金转入','url':page('rg_moneyinfo'),'visible':can_touch(TbRgmoneyininfo,crt_user)},
                           {'label':'资金转出','url':page('rg_moneyout'),'visible':can_touch(TbRgmoneyoutinfo,crt_user)},
                        ]},
+                      {'label': 'PT系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
+                       'submenu': [
+                          {'label': '用户列表', 'url': page('pt_account'),'visible': can_touch(TbPtaccount, crt_user), },
+                          {'label':'投注列表','url':page('pt_profitloss'),'visible':can_touch(TbRgprofitloss,crt_user)},
+                          {'label':'资金转入','url':page('pt_moneyinfo'),'visible':can_touch(TbRgmoneyininfo,crt_user)},
+                          {'label':'资金转出','url':page('pt_moneyout'),'visible':can_touch(TbRgmoneyoutinfo,crt_user)},
+                       ]},
+                      
+                      
             ]},
             
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,

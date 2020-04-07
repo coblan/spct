@@ -112,3 +112,8 @@ if getattr(settings,'OPEN_SECRET',False):
     from . rg import rg_profitloss
     from . rg import rg_money_in
     from . rg import rg_money_out
+    
+    from . pt import pt_account
+    from . pt import pt_money_in
+    from . pt import pt_money_out
+    from . pt import pt_profitloss
