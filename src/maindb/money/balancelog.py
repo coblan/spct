@@ -15,7 +15,7 @@ class BalancelogPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbBalancelog
-        include = ['accountid', 'categoryid', 'beforeamount', 'amount', 'afteramount',  'createtime', 'creater','memo']
+        include = ['accountid', 'categoryid', 'beforeamount', 'amount', 'afteramount',  'createtime','memo'] # creater
 
         def dict_head(self, head):
             dc = {
