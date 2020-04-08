@@ -126,6 +126,7 @@ class OtherWebMatchPage(TablePage):
                 {'name':'Source','label':'抓取源','editor':'com-table-mapper','options':[
                     {'value':2,'label':'188'},
                     {'value':3,'label':'沙巴'},
+                    {'value':4,'label':'IM'},
                     ]},
                 {'name':"MatchSource",'label':'比赛来源','editor':'com-table-mapper','options':[
                     {'value':x[0],'label':x[1]} for x in MATCH_SOURCE
