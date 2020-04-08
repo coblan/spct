@@ -36,7 +36,8 @@
     }
     body{
         /*background-color: #eeeeee;*/
-        background-color: #020202;
+        /*background-color: #020202;*/
+        background-color: white;
     }
     * {
         moz-user-select: -moz-none;
@@ -117,6 +118,7 @@
         border-bottom-right-radius: 10px;
         background-color: white;
         padding: 10px;
+        background-color: #363636;
     }
 
     .red-wrap{
@@ -169,10 +171,10 @@
     <div class="block" v-for="row in valid_rows" @click="goto(row.url)">
         <img :src="row.banner" alt="" width="100%">
         <div class="foot-block">
-            <div style="font-size: 120%">
+            <div style="font-size: 120%;color: white;">
                 <b v-text="row.title"></b>
             </div>
-            <div style="color: grey">
+            <div style="color: white;">
                 <span v-text="row.subtitle"></span>
             </div>
         </div>

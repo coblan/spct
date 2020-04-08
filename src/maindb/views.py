@@ -124,7 +124,7 @@ class Activity(View):
                 tabs.append({'key':item[0],'label':item[1]})
             ctx = {
                 'rows':rows,
-                'tabs':[{'key':-1,'label':'全部'}] + tabs,
+                'tabs':[{'key':-1,'label':'公用'}] + tabs,
                 'js_config':baseengine.getJsConfig()
             }        
             return render(request,'maindb/activity_v2/index.html',context=ctx)                
