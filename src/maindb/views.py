@@ -117,6 +117,7 @@ class Activity(View):
             for row in query:
                 dc= sim_dict(row)
                 dc['url'] = '%s.html?t=%s'%(row.pk,time.time())
+                dc['time_span'] = '%s-%s'%( row.begintime.strftime('%Y/%m/%d'),row.endtime.strftime('%Y/%m/%d') )
                 rows.append(dc)
                 
             tabs = []
