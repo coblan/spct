@@ -248,7 +248,8 @@ class OtherWebMatchPage(TablePage):
                 ]},
                 {'name':'Source','label':'抓取源','editor':'com-filter-select','options':[
                     {'value':2,'label':'188'},
-                    {'value':3,'label':'沙巴'}
+                    {'value':3,'label':'沙巴'},
+                     {'value':4,'label':'IM'},
                     ]},
                 {'name':'SportId','label':'体育类型','editor':'com-filter-select','options':[
                     {'label':str(x),'value':x.pk} for x in TbSporttypes.objects.filter(enabled=True)
