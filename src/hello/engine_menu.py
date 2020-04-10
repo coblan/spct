@@ -23,6 +23,7 @@ class PcMenu(BaseEngine):
     title = 'SportsCenter'
     brand = '<img src="/static/images/logo.png" style="height:46px">'
     mini_brand = '<img src="/static/images/logo2.png" style="height:46px">'
+    login_url = '/pc/login'
     need_staff=True
     access_from_internet=True
     @property
