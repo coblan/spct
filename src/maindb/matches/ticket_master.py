@@ -637,7 +637,8 @@ def make_sure_ticketmaster(rows,**kws):
     ticket_list = [row.get('pk') for row in rows]
     #s30_ago = timezone.now() - timezone.timedelta(seconds=30)
     #count = TbTicketmaster.objects.filter(pk__in=ticket_list,createtime__lte=s30_ago).update(status=1)
-    count = TbTicketmaster.objects.filter(pk__in=ticket_list).update(status=1)
+    now = timezone.now()
+    count = TbTicketmaster.objects.filter(pk__in=ticket_list).update(status=1,updatetime=now)
     if count==0:
         raise UserWarning('确认不成功，不存在对应的注单')
     master = TbTicketmaster.objects.get(pk = rows[0]['pk'])
