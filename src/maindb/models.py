@@ -2593,7 +2593,8 @@ class TbTicketmaster(models.Model):
     handicap = models.IntegerField(db_column='Handicap', blank=True, null=True)  # Field name made lowercase.
     terminal = models.IntegerField(db_column='Terminal', blank=True, null=True,choices= TERMINAL_TYPE,verbose_name='终端')  # Field name made lowercase.
     audit = models.IntegerField(db_column='Audit',verbose_name='待审核',choices=AUDIT_OPTIONS)  # Field name made lowercase.
-
+    updatetime = models.DateTimeField(db_column='UpdateTime', blank=True, null=True,verbose_name='更新时间')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_TicketMaster'
