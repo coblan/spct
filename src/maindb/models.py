@@ -299,7 +299,8 @@ class TbActivityV2(models.Model):
     displaytype = models.IntegerField(db_column='DisplayType',default=0,choices=BANNER_DISPLAYTYPE,verbose_name='对内/对外')  # Field name made lowercase.
     
     target = models.CharField(db_column='Target',verbose_name='活动对象', max_length=256, blank=True, null=True)  # Field name made lowercase.
-    content = models.CharField(db_column='Content', max_length=2048, blank=True, null=True,verbose_name='活动详情')  # Field name made lowercase.
+    #content = models.CharField(db_column='Content', max_length=2048, blank=True, null=True,verbose_name='活动详情')  # Field name made lowercase.
+    content = models.TextField(db_column='Content', blank=True, null=True,verbose_name='活动详情')
     rules = models.CharField(db_column='Rules', max_length=3000,verbose_name='规则')  # Field name made lowercase.
     banner = CusPictureField(db_column='Banner', max_length=512, blank=True, null=True,verbose_name='列表封面')  # Field name made lowercase.
     url = models.CharField(db_column='Url', max_length=512)  # Field name made lowercase.
