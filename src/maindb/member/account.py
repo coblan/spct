@@ -701,7 +701,7 @@ class AccoutModifyAmount(ModelFields):
     def getExtraHeads(self):
         desp_options = [{'value':x.pk,'label':x.categoryname} for x in  TbMoneyCategories.objects.filter(categoryid__in=[4,34,35,37])]
         return [
-            {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(-50000~50000)', },
+            {'name': 'add_amount', 'label': '调整金额', 'editor': 'number', 'required': True,'fv_rule': 'range(0~50000)', },
             {'name':'moenycategory','label':'类型','editor':'com-field-select','required':True,'options':desp_options},
             {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
             {'name':'is_Betfullrecord','label':'是否添加流水','editor':'com-field-bool',},
@@ -720,10 +720,14 @@ class AccoutModifyAmount(ModelFields):
         
         if 'add_amount' in self.kw:
             add_amount = Decimal(self.kw.get('add_amount', 0))
-            self.changed_amount = add_amount
+            
             moenycategory_pk = self.kw.get('moenycategory')
             moenycategory_inst = TbMoneyCategories.objects.get(categoryid =moenycategory_pk)
             cashflow, moenycategory =moenycategory_inst.cashflow,moenycategory_pk
+            if cashflow == 0:
+                add_amount = - add_amount
+                
+            self.changed_amount = add_amount
             #before_amount = self.instance.amount
             self.instance.amount = self.before_amount + add_amount
             TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
