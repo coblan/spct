@@ -1,11 +1,12 @@
 from helpers.director.shortcut import TablePage,ModelFields,page_dc,ModelTable,director,RowFilter,RowSearch
-from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord
+from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord,TbAgentdaysummary
 from ..riskcontrol.black_users import AccountSelect
 from decimal import Decimal
 from django.contrib.auth.models import User
 from django.db.models import Q
 import json
 from maindb.google_validate import valide_google_code
+from django.utils import timezone
 
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
@@ -131,6 +132,16 @@ class BonuslogForm(ModelFields):
                                        multiple = self.multiple
                                        )
          # turnover =  consumeamount ;  multiple = withdrawlimitamount / amount
+        dc = {
+            'sumtype':4,
+            'gameid':1,
+            'accountid':self.instance.accountid_id,
+            'sumdate': timezone.now().date(),
+        } 
+        sum_inst,_  =TbAgentdaysummary.objects.get_or_create(**dc) 
+        sum_inst.sumamount += self.instance.amount
+        sum_inst.save()
+        
         self.op_log.update({
             'clean_save_desp':'生成了对应的TbBalancelog.pk=%s,计算了用户余额'%ban.pk
         })

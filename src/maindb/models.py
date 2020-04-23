@@ -396,6 +396,27 @@ class TbAreacode(models.Model):
         db_table = 'TB_AreaCode'
 
 
+class TbAgentdaysummary(models.Model):
+    tid = models.BigAutoField(db_column='TID', primary_key=True)  # Field name made lowercase.
+    accountid = models.IntegerField(db_column='AccountID')  # Field name made lowercase.
+    sumtype = models.IntegerField(db_column='SumType')  # Field name made lowercase.
+    sumlostamount = models.DecimalField(db_column='SumLostAmount', max_digits=18, decimal_places=4,default=0)  # Field name made lowercase.
+    sumamount = models.DecimalField(db_column='SumAmount', max_digits=18, decimal_places=4,default=0)  # Field name made lowercase.
+    sumdate = models.DateField(db_column='SumDate', max_length=10)  # Field name made lowercase.
+    #sumdate = models.CharField(db_column='SumDate', max_length=10)  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime', blank=True, null=True)  # Field name made lowercase.
+    sumbonusamount = models.DecimalField(db_column='SumBonusAmount', max_digits=18, decimal_places=4,default =0 )  # Field name made lowercase.
+    sumturnover = models.DecimalField(db_column='SumTurnover', max_digits=18, decimal_places=4,default =0)  # Field name made lowercase.
+    sumexpend = models.DecimalField(db_column='SumExpend', max_digits=18, decimal_places=4,default =0)  # Field name made lowercase.
+    levelpoints = models.DecimalField(db_column='LevelPoints', max_digits=18, decimal_places=4,default =0)  # Field name made lowercase.
+    sumpieaward = models.DecimalField(db_column='SumPieAward', max_digits=18, decimal_places=4,default =0)  # Field name made lowercase.
+    gameid = models.IntegerField(db_column='GameId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_AgentDaySummary'
+        
+
 class TbAppversion(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     terminal = models.IntegerField(db_column='Terminal', choices=PLATFORM,
