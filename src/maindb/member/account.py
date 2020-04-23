@@ -684,7 +684,7 @@ class AccoutBaseinfo(ModelFields):
 class AccoutModifyAmount(ModelFields):
     field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype','is_Betfullrecord','google_code'] 
     readonly = ['accountid', 'nickname','amount']
-    
+    readonly_change_warning = ['amount']
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
         self.before_amount = self.instance.amount
