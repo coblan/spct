@@ -637,7 +637,8 @@ class TbBonustype(models.Model):
     #createuser = models.IntegerField(db_column='CreateUser')  # Field name made lowercase.
     createuser = CreateUserField(db_column='CreateUser',verbose_name='创建人',blank=True,null=True)  #
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
-
+    deductionmultiple = models.IntegerField(db_column='DeductionMultiple',default=1, null=True,verbose_name='抵扣倍数')
+    
     class Meta:
         managed = False
         db_table = 'TB_BonusType'

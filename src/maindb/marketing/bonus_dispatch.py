@@ -76,7 +76,7 @@ class BonuslogForm(ModelFields):
             multi = bonustype.withdrawlimitmultiple
             total_mount = Decimal(amount)  * multi
             dc['withdrawlimitamount'] = round( total_mount ,4)
-            self.multiple = multi
+            self.multiple = bonustype.deductionmultiple  # multi
         return dc
     
     def clean(self):
