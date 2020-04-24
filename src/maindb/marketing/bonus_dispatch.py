@@ -238,6 +238,11 @@ class BonusTypeForm(ModelFields):
         model = TbBonustype
         exclude=[]
     
+    def dict_head(self, head):
+        if head['name'] in ['withdrawlimitmultiple','deductionmultiple']:
+            head['fv_rule']='integer(+)'
+        return head
+        
     def clean_dict(self, dc):
         dc['createuser']=self.crt_user.pk
         dc.pop('createtime',None)
