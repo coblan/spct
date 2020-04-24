@@ -633,7 +633,7 @@ class TbBetstopreason(models.Model):
 class TbBonustype(models.Model):
     bonustypeid = models.AutoField(db_column='BonusTypeID',primary_key=True,verbose_name='红利ID')  # Field name made lowercase.
     bonustypename = models.CharField(db_column='BonusTypeName', max_length=50,verbose_name='红利名称')  # Field name made lowercase.
-    withdrawlimitmultiple = models.DecimalField(db_column='WithdrawLimitMultiple', max_digits=18, decimal_places=4,verbose_name='倍数')  # Field name made lowercase.
+    withdrawlimitmultiple = models.DecimalField(db_column='WithdrawLimitMultiple', max_digits=18, decimal_places=4,verbose_name='流水倍数')  # Field name made lowercase.
     #createuser = models.IntegerField(db_column='CreateUser')  # Field name made lowercase.
     createuser = CreateUserField(db_column='CreateUser',verbose_name='创建人',blank=True,null=True)  #
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
