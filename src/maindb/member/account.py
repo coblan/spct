@@ -11,7 +11,7 @@ from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
 from ..models import TbAccount, TbBalancelog, TbLoginlog, TbTicketmaster, TbBankcard, TbRecharge, TbWithdraw, TbMatch,TbBetfullrecord,\
-     TbUserLog,TbSportprofitloss,TbLcityprofitloss,TbRgprofitloss
+     TbUserLog,TbSportprofitloss,TbLcityprofitloss,TbRgprofitloss,TbPtprofitloss,TbSgprofitloss
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import can_touch,has_permit
 from helpers.func.random_str import get_str, get_random_number
@@ -40,6 +40,8 @@ from ..sport.sport_profitloss import SportProfitlossPage
 from ..city.city_profitloss import LcityProfitlossPage
 from ..im.im_profitloss import IMProfitlossPage
 from ..rg.rg_profitloss import RGProfitlossPage
+from ..pt.pt_profitloss import PtProfitlossPage
+from ..sg.sg_profitloss import SgProfitlossPage
 
 from django.conf import settings
 from .userlog import UserlogPage
@@ -281,6 +283,20 @@ def account_tab(self=None):
              'pre_set':'rt={accountid:scope.par_row.accountid}',
              'table_ctx':RGporfitLosTab().get_head_context(),
              'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbRgprofitloss,crt_user)
+         },
+           {  'name':'pt_system',
+             'label':'PT系统',
+             'editor':'com-tab-table',
+             'pre_set':'rt={accountid:scope.par_row.accountid}',
+             'table_ctx':PTporfitLosTab().get_head_context(),
+             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbPtprofitloss,crt_user)
+         },
+         {  'name':'sg_system',
+             'label':'SG系统',
+             'editor':'com-tab-table',
+             'pre_set':'rt={accountid:scope.par_row.accountid}',
+             'table_ctx':SgporfitLosTab().get_head_context(),
+             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbSgprofitloss,crt_user)
          },
          
         
@@ -1164,6 +1180,20 @@ class RGporfitLosTab(RGProfitlossPage.tableCls):
     
     class search(RowSearch):
         pass
+    
+class PTporfitLosTab(PtProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
+
+class SgporfitLosTab(SgProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
 
 director.update({
     'account': AccountPage.tableCls,
@@ -1191,6 +1221,8 @@ director.update({
     'account.lcprofitloss':LCprofitLosTab,
     'account.IMporfitLoss':IMporfitLosTab,
     'account.RGprofitLoss':RGporfitLosTab,
+    'account.PTprofitLoss':PTporfitLosTab,
+    'account.SGprofitLoss':SgporfitLosTab,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),

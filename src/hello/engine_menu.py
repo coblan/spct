@@ -204,7 +204,13 @@ class PcMenu(BaseEngine):
                           {'label':'资金转入','url':page('pt_moneyinfo'),'visible':can_touch(TbRgmoneyininfo,crt_user)},
                           {'label':'资金转出','url':page('pt_moneyout'),'visible':can_touch(TbRgmoneyoutinfo,crt_user)},
                        ]},
-                      
+                    {'label': 'SG系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
+                       'submenu': [
+                          {'label': '用户列表', 'url': page('sg_account'),'visible': can_touch(TbSgaccount, crt_user), },
+                          {'label':'投注列表','url':page('sg_profitloss'),'visible':can_touch(TbSgprofitloss,crt_user)},
+                          {'label':'资金转入','url':page('sg_moneyinfo'),'visible':can_touch(TbSgmoneyininfo,crt_user)},
+                          {'label':'资金转出','url':page('sg_moneyout'),'visible':can_touch(TbSgmoneyoutinfo,crt_user)},
+                       ]},
                       
             ]},
             

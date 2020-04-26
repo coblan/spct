@@ -364,6 +364,15 @@ def get_permit(ui=None):
             {'label':'资金流入','value':'TbPtmoneyininfo.edit'},
             {'label':'资金流出','value':'TbPtmoneyoutinfo.edit'}
         ]},
+        {'label':'SG系统','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'账号','children':[
+                {'label':'查看','value':'TbSgaccount'},
+                {'label':'编辑','value':'TbSgaccount.edit','depend':['TbSgaccount']},
+                ]},
+            {'label':'投注列表','value':'TbSgprofitloss.edit'},
+            {'label':'资金流入','value':'TbSgmoneyininfo.edit'},
+            {'label':'资金流出','value':'TbSgmoneyoutinfo.edit'}
+        ]},
         
         {'label': '系统管理',
          'children': [

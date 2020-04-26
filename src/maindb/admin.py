@@ -117,3 +117,8 @@ if getattr(settings,'OPEN_SECRET',False):
     from . pt import pt_money_in
     from . pt import pt_money_out
     from . pt import pt_profitloss
+    
+    from .sg import sg_account
+    from .sg import sg_money_in
+    from .sg import sg_money_out
+    from .sg import sg_profitloss
