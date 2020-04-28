@@ -83,7 +83,7 @@ if(search_args.client =='web'){
                 url:baseurl+ url,
                 headers: {
                     Authorization:'Bearer '+search_args.token,
-                    'x-api-version':'2.0',
+                    'x-api-version':'2.2',
                     'x-device': search_args.xdevice ? atob( search_args.xdevice ) : '' ,
 
                 },
