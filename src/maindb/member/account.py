@@ -325,6 +325,7 @@ class AccountPage(TablePage):
         return ctx
 
     class tableCls(ModelTable):
+        
         model = TbAccount
         exclude=['password']
         #include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
@@ -333,7 +334,7 @@ class AccountPage(TablePage):
         fields_sort = ['accountid', 'account', 'nickname', 'createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
                        'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid','memo','parlayoddscheck','singleoddscheck']
-
+        
         class filters(RowFilter):
             names=['accounttype','groupid','csuserid__name','parlayoddscheck']
             icontains=['csuserid__name']
