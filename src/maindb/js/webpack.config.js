@@ -8,7 +8,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 module.exports =
 {
     //context:__dirname,
-    mode: 'development', //'production', //
+    mode: 'production', //'development', //
     entry: {
         maindb:'./main.js',
         activity_v2:'./activity_v2/main.js'
