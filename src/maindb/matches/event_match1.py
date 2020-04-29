@@ -14,7 +14,7 @@ import time
 from ..status_code import MATCH_SOURCE,OUT_MATCH_SOURCE
 from helpers.director.exceptions.question import QuestionException
 from helpers.director.access.permit import has_permit
-
+from helpers.director.network import argument
 import logging
 operation_log = logging.getLogger('operation_log')
 
@@ -59,11 +59,16 @@ class OtherWebMatchPage(TablePage):
                     )
             if self.search_args.get('LeagueId'):
                 self.filter_args['LeagueId'] =  int( self.search_args.get('LeagueId') )#{'$regex' : ".*%s.*"%self.search_args.get('LeagueZh')}
-            if self.search_args.get('Team'):
-                self.filter_args['$or'] = [{'Team1En':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
-                                           {'Team2En':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
-                                           {'Team1Zh':{'$regex' : ".*%s.*"%self.search_args.get('Team')}},
-                                           {'Team2Zh':{'$regex' : ".*%s.*"%self.search_args.get('Team')}}]
+            if self.search_args.get('_q'):
+                if self.search_args.get('_qf') == 'Team':
+                    self.filter_args['$or'] = [{'Team1En':{'$regex' : ".*%s.*"%self.search_args.get('_q')}},
+                                               {'Team2En':{'$regex' : ".*%s.*"%self.search_args.get('_q')}},
+                                               {'Team1Zh':{'$regex' : ".*%s.*"%self.search_args.get('_q')}},
+                                               {'Team2Zh':{'$regex' : ".*%s.*"%self.search_args.get('_q')}}]
+                elif self.search_args.get('_qf') == 'Eid':
+                    argument.validate_argument(self.search_args,{'_q':[argument.int_str]})
+                    self.filter_args['Eid'] =  self.search_args.get('_q') 
+                    
             if self.search_args.get('ContrastStatus'):
                 self.filter_args['ContrastStatus'] =int( self.search_args.get('ContrastStatus') )
             if self.search_args.get('TeamSwap'):
@@ -228,7 +233,14 @@ class OtherWebMatchPage(TablePage):
         def getRowFilters(self):
             league_options = [{'value':x['LeagueId'],'label':x['LeagueNameZh']} for x in mydb['League'].find({}).sort( [('LeagueNameZh',1)])]
             return [
-                {'name':'Team','label':'球队名称','editor':'com-filter-text'},
+                #{'name':'Team','label':'球队名称','editor':'com-filter-text'},
+                #{'name':'Eid','label':'EID','editor':'com-filter-text'},
+                {'name':'_q','editor':'com-search-select','options':[
+                    {'value': 'Team', 'label': '球队名称' },
+                    {'value':'Eid','label':'EID','exact_search':True},
+                    
+                    ]},
+                
                 {'name':'EventDateTime','label':'日期','editor':'com-filter-datetime-range'},
                 #{'name':'ContrastStatus','label':'采集状态','editor':'com-filter-select','options':[
                     #{'value':1,'label':'采集中'},
