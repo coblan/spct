@@ -7,6 +7,7 @@ from urllib.parse import urljoin
 from helpers.func.sim_signal import sim_signal
 from django.conf import settings
 import os
+import time
 
 class ActiviyV2Page(TablePage):
     def get_template(self, prefer=None):
@@ -168,12 +169,12 @@ class ActivitySettingForm(ModelFields):
 def update_activity_file_v2(**kws):
     has_download_url=[]
     root_path = os.path.join(settings.MEDIA_ROOT, 'public/activityv2')
-    
-    index_url = urljoin(settings.SELF_URL, '/actv2/index')
+    tm = time.time()
+    index_url = urljoin(settings.SELF_URL, '/actv2/index?spd_tm=%s'%tm)
     spd = StaticHtmlBuilder(url= index_url, root_path= root_path,downloaded_urls=has_download_url)
     spd.run()
     
-    index_url = urljoin(settings.SELF_URL, '/actv2/index1')
+    index_url = urljoin(settings.SELF_URL, '/actv2/index1?spd_tm=%s'%tm)
     spd = StaticHtmlBuilder(url= index_url, root_path= root_path,downloaded_urls=has_download_url)
     spd.run()    
     
