@@ -104,7 +104,7 @@ Vue.component('com-shouchun',{
                     cfg.showMsg('参加成功！')
                     self.update_data()
                 }else{
-                    cfg.showError(resp.error_description)
+                    cfg.showError(resp.error || '服务器错误')
                 }
 
             },mock_data)

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'helpers.common',
     'helpers.case.jb_admin',
     'helpers.authuser',
-    
+    'helpers.mobile',
     #'orgmodel',
     #'betradar',
     'maindb',
