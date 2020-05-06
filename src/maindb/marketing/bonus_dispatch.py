@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelFields,page_dc,ModelTable,director,RowFilter,RowSearch
+from helpers.director.shortcut import TablePage,ModelFields,page_dc,ModelTable,director,RowFilter,RowSearch,director_view,RowSort
 from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord,TbAgentdaysummary
 from ..riskcontrol.black_users import AccountSelect
 from decimal import Decimal
@@ -91,7 +91,10 @@ class BonuslogForm(ModelFields):
             head['table_ctx'] = table_obj.get_head_context()
             head['options'] = []
         if head['name']=='memo':  
-            head['required']=True        
+            head['required']=True    
+        if head['name'] =='bonustypeid':
+            head['options'] = get_bonustype()
+            head['on_mounted']='live_root.$on("bonustype.changed",()=>{ ex.director_call("bonus.type.options").then(resp=>{scope.vc.head.options=resp})  }) '
         return head
     
     def get_operations(self):
@@ -145,9 +148,11 @@ class BonuslogForm(ModelFields):
         self.op_log.update({
             'clean_save_desp':'生成了对应的TbBalancelog.pk=%s,计算了用户余额'%ban.pk
         })
-    
-    
 
+@director_view('bonus.type.options')    
+def get_bonustype(**kws):
+    return [{'value':x.pk,'label':str(x)} for x in TbBonustype.objects.filter(status=1)]
+        
 class BonuslogTable(ModelTable):
     model = TbBonuslog
     exclude=[]
@@ -215,7 +220,8 @@ class BonuslogTable(ModelTable):
 class BonusTypeTable(ModelTable):
     model = TbBonustype
     exclude=[]
-    pop_edit_field='bonustypeid'
+    #pop_edit_field='bonustypeid'
+    pop_edit_fields=['bonustypeid']
     selectable=False
     
     def dict_head(self, head):
@@ -231,6 +237,11 @@ class BonusTypeTable(ModelTable):
         ops = super().get_operation()
         return ops[:1]
     
+    class sort(RowSort):
+        names=['status']
+        general_sort='-status'
+    
+    
 
 class BonusTypeForm(ModelFields):
     hide_fields=['createuser']
@@ -238,9 +249,16 @@ class BonusTypeForm(ModelFields):
         model = TbBonustype
         exclude=[]
     
+    def get_head_context(self):
+        ctx = super().get_head_context()
+        ctx['after_save']='live_root.$emit("bonustype.changed");cfg.toast("保存成功")'
+        return ctx
+    
     def dict_head(self, head):
-        if head['name'] in ['withdrawlimitmultiple','deductionmultiple']:
+        if head['name'] in ['deductionmultiple']:
             head['fv_rule']='integer(+)'
+        elif head['name']  == 'withdrawlimitmultiple':
+            head['fv_rule'] = 'range(0~)'
         return head
         
     def clean_dict(self, dc):

@@ -630,6 +630,11 @@ class TbBetstopreason(models.Model):
         db_table = 'TB_BetStopReason'
 
 
+BONUSTYPE_STATUS=(
+    (0,'无效'),
+    (1,'有效'),
+)
+
 class TbBonustype(models.Model):
     bonustypeid = models.AutoField(db_column='BonusTypeID',primary_key=True,verbose_name='红利ID')  # Field name made lowercase.
     bonustypename = models.CharField(db_column='BonusTypeName', max_length=50,verbose_name='红利名称')  # Field name made lowercase.
@@ -638,6 +643,7 @@ class TbBonustype(models.Model):
     createuser = CreateUserField(db_column='CreateUser',verbose_name='创建人',blank=True,null=True)  #
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
     deductionmultiple = models.IntegerField(db_column='DeductionMultiple',default=1, null=True,verbose_name='抵扣倍数')
+    status = models.IntegerField(db_column='Status', default=1, null=True,verbose_name='状态',choices= BONUSTYPE_STATUS)  # Field name made lowercase.
     
     class Meta:
         managed = False
