@@ -6,7 +6,7 @@ import time
 
 class SgAccountPage(TablePage):
     def get_label(self):
-        return 'SG账号管理'
+        return '账号管理'
     
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'

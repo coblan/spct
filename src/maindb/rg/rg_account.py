@@ -4,7 +4,7 @@ from ..models import TbRgaccount,TbRgmoneyoutinfo
 
 class RgAccountPage(TablePage):
     def get_label(self):
-        return 'RG账号管理'
+        return '账号管理'
     
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
