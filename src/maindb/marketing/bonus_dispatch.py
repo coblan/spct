@@ -90,6 +90,8 @@ class BonuslogForm(ModelFields):
             head['editor'] = 'com-field-pop-table-select'
             head['table_ctx'] = table_obj.get_head_context()
             head['options'] = []
+        if head['name'] =='amount':
+            head['fv_rule'] = 'range(0~3000)'
         if head['name']=='memo':  
             head['required']=True    
         if head['name'] =='bonustypeid':
@@ -112,6 +114,8 @@ class BonuslogForm(ModelFields):
         account = self.instance.accountid
         before = account.amount
         account.amount +=  self.instance.amount #self.instance.withdrawlimitamount
+        if account.amount <0:
+            raise UserWarning('发放红利后，用户余额不能为负数!')
         account.save()
         ban = TbBalancelog.objects.create(accountid=self.instance.accountid,
                                     categoryid_id=37,
