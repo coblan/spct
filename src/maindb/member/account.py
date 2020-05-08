@@ -726,6 +726,10 @@ class AccoutModifyAmount(ModelFields):
         ]
 
     def extra_valid(self):
+        '''
+        现在前端传来的 add_amount 全部为整数，所以这个函数不起作用了。
+        留在这里为了表明 extra_valid的作用。[TODO] 检查一下 clean()是否能替代改函数的作用
+        '''
         dc = {}
         if self.cleaned_data.get('amount') + Decimal( self.kw.get('add_amount',0) )< 0:
             dc['add_amount'] = '叠加值使得余额小于0'
@@ -747,6 +751,8 @@ class AccoutModifyAmount(ModelFields):
             self.changed_amount = add_amount
             #before_amount = self.instance.amount
             self.instance.amount = self.before_amount + add_amount
+            if self.instance.amount < 0 :
+                raise UserWarning('调整后用户余额为负数!')
             TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
                                         amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='Backend',
                                         memo='调账', accountid=self.instance, categoryid_id=moenycategory,

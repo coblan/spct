@@ -17,6 +17,7 @@ class RechargePage(TablePage):
         return '充值管理'
 
     class tableCls(ModelTable):
+        
         model = TbRecharge
         sort = ['createtime']
         exclude = ['account', 'apolloinfo', 'apollomsg']
@@ -156,6 +157,8 @@ class ConfirmRechargeForm(ModelFields):
         super().clean()
         if not valide_google_code(self.kw.get('google_code')):
             raise UserWarning('身份验证码错误，请联系管理员!')
+        if self.kw.get('amount') > self.instance.amount +100:
+            raise UserWarning('调整幅度不能超过原始金额+100')
     
     def save_form(self):
         inst = self.instance
