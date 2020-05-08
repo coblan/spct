@@ -101,7 +101,7 @@ class PcMenu(BaseEngine):
             {'label': _('MoneyFlow'), 'icon': fa('fa-dollar'), 'visible': True,
              'submenu': [
                  {'label': '充值记录', 'url': page('recharge'), 'visible': can_touch(TbRecharge, crt_user), },
-                 {'label': '提现记录', 'url': page('withdraw'), 'visible': can_touch(TbWithdraw, crt_user), }
+                 {'label': '提现记录', 'url': page('withdraw'), 'visible': can_touch(TbWithdraw, crt_user) and getattr(settings,'OPEN_SECRET',False), }
              ]},
 
             {'label': _('Games'), 'icon': fa('fa-globe'), 'visible': True,

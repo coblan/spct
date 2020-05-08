@@ -60,7 +60,10 @@ from .riskcontrol import new_withdraw_limit
 
 from .money import vip_paychannel
 from .money import recharge
-from .money import withdraw
+
+if getattr(settings,'OPEN_SECRET',False):
+    from .money import withdraw
+    
 from .money import balancelog
 
 from .admin_agent import agentuser
