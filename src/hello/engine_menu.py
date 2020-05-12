@@ -211,6 +211,13 @@ class PcMenu(BaseEngine):
                           {'label':'资金转入','url':page('sg_moneyinfo'),'visible':can_touch(TbSgmoneyininfo,crt_user)},
                           {'label':'资金转出','url':page('sg_moneyout'),'visible':can_touch(TbSgmoneyoutinfo,crt_user)},
                        ]},
+                      {'label': 'eBet真人', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
+                       'submenu': [
+                          {'label': '用户列表', 'url': page('eb_account'),'visible': can_touch(TbEbaccount, crt_user), },
+                          {'label':'投注列表','url':page('eb_profitloss'),'visible':can_touch(TbEbprofitloss,crt_user)},
+                          {'label':'资金转入','url':page('eb_moneyinfo'),'visible':can_touch(TbEbmoneyininfo,crt_user)},
+                          {'label':'资金转出','url':page('eb_moneyout'),'visible':can_touch(TbEbmoneyoutinfo,crt_user)},
+                       ]},
                       
             ]},
             

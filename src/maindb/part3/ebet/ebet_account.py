@@ -1,10 +1,10 @@
 from helpers.director.shortcut import TablePage,page_dc,director,ModelFields,director_view
 from maindb.im.im_account import ImAccountPage
-from ..models import TbSgaccount,TbSgmoneyoutinfo
+from maindb.models import TbEbaccount,TbEbmoneyoutinfo
 from django.utils import timezone
 import time
 
-class SgAccountPage(TablePage):
+class EbAccountPage(TablePage):
     def get_label(self):
         return '账号管理'
     
@@ -12,34 +12,34 @@ class SgAccountPage(TablePage):
         return 'jb_admin/table.html'
     
     class tableCls(ImAccountPage.tableCls):
-        model = TbSgaccount
+        model = TbEbaccount
         exclude =[]
-        redraw_left_money_director = 'sg_account/redraw_left_money'
+        redraw_left_money_director = 'eb_account/redraw_left_money'
 
-class SgAccountForm(ModelFields):
+class EbAccountForm(ModelFields):
     class Meta:
-        model = TbSgaccount
+        model = TbEbaccount
         exclude =[]
    
    
-@director_view('sg_account/redraw_left_money')
+@director_view('eb_account/redraw_left_money')
 def redraw_left_money(rows):
     out_list =[]
     now = timezone.now()
     start = int(time.time() *100000)
-    for inst in TbSgaccount.objects.filter(account_id__in=rows):
+    for inst in TbEbaccount.objects.filter(account_id__in=rows):
         start += 1
         orderid = 'B%s'%start
         if inst.availablescores >=1:
-            out_list.append( TbSgmoneyoutinfo(account=inst.account,amount= inst.availablescores ,status=0,username=inst.username,ordertime=now,orderid=orderid,) )
-    TbSgmoneyoutinfo.objects.bulk_create(out_list)
+            out_list.append( TbEbmoneyoutinfo(account=inst.account,amount= inst.availablescores ,status=0,username=inst.username,ordertime=now,orderid=orderid,) )
+    TbEbmoneyoutinfo.objects.bulk_create(out_list)
     
    
 director.update({
-    'sg_account':SgAccountPage.tableCls,
-    'sg_account.edit':SgAccountForm,
+    'eb_account':EbAccountPage.tableCls,
+    'eb_account.edit':EbAccountForm,
 })
 
 page_dc.update({
-    'sg_account':SgAccountPage
+    'eb_account':EbAccountPage
 })

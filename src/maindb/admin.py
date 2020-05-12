@@ -125,3 +125,5 @@ if getattr(settings,'OPEN_SECRET',False):
     from .sg import sg_money_in
     from .sg import sg_money_out
     from .sg import sg_profitloss
+    
+    from . part3.ebet import ebet_account,ebet_money_in,ebet_money_out,ebet_profitloss

@@ -373,6 +373,15 @@ def get_permit(ui=None):
             {'label':'资金流入','value':'TbSgmoneyininfo.edit'},
             {'label':'资金流出','value':'TbSgmoneyoutinfo.edit'}
         ]},
+        {'label':'eBet真人','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'账号','children':[
+                {'label':'查看','value':'TbEbaccount'},
+                {'label':'编辑','value':'TbEbaccount.edit','depend':['TbEbaccount']},
+                ]},
+            {'label':'投注列表','value':'TbEbprofitloss.edit'},
+            {'label':'资金流入','value':'TbEbmoneyininfo.edit'},
+            {'label':'资金流出','value':'TbEbmoneyoutinfo.edit'}
+        ]},
         
         {'label': '系统管理',
          'children': [
