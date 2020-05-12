@@ -27,7 +27,7 @@ from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
 from maindb.send_phone_message import send_message_password, send_message_fundspassword
 from django.db.models import DecimalField
-from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss,TbImprofitloss
+from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss,TbImprofitloss,TbEbprofitloss
 import json
 from maindb.rabbitmq_instance import notifyAccountFrozen
 from helpers.case.jb_admin.admin import UserPicker
@@ -42,6 +42,7 @@ from ..im.im_profitloss import IMProfitlossPage
 from ..rg.rg_profitloss import RGProfitlossPage
 from ..pt.pt_profitloss import PtProfitlossPage
 from ..sg.sg_profitloss import SgProfitlossPage
+from maindb.part3.ebet.ebet_profitloss import EbProfitlossPage
 
 from django.conf import settings
 from .userlog import UserlogPage
@@ -297,6 +298,13 @@ def account_tab(self=None):
              'pre_set':'rt={accountid:scope.par_row.accountid}',
              'table_ctx':SgporfitLosTab().get_head_context(),
              'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbSgprofitloss,crt_user)
+         },
+        {  'name':'ebet_system',
+            'label':'eBet真人',
+            'editor':'com-tab-table',
+            'pre_set':'rt={accountid:scope.par_row.accountid}',
+            'table_ctx':EbetporfitLosTab().get_head_context(),
+            'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbEbprofitloss,crt_user)
          },
          
         
@@ -1202,6 +1210,13 @@ class SgporfitLosTab(SgProfitlossPage.tableCls):
     class search(RowSearch):
         pass
 
+class EbetporfitLosTab(EbProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
+    
 director.update({
     'account': AccountPage.tableCls,
     'account.edit': AccoutBaseinfo,
@@ -1230,6 +1245,7 @@ director.update({
     'account.RGprofitLoss':RGporfitLosTab,
     'account.PTprofitLoss':PTporfitLosTab,
     'account.SGprofitLoss':SgporfitLosTab,
+    'account.eBetProfitLoss':EbetporfitLosTab,
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),
