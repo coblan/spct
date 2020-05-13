@@ -223,6 +223,7 @@ class PcMenu(BaseEngine):
             
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
+                 {'label':'商户用户管理','url':page('with_merchant_user'),'visible': can_touch(User, crt_user)},
                  {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user)},
                  {'label': _('Role'), 'url': page('jb_group'), 'visible': can_touch(Group, crt_user)},
                  {'label': '操作日志', 'url': page('operation_log'), 'visible': can_touch(TbOperationlog, crt_user)},

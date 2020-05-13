@@ -1590,6 +1590,21 @@ class TbMoneyCategories(models.Model):
         return self.categoryname
 
 
+class TbMerchants(models.Model):
+    id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    merchantname = models.CharField(db_column='MerchantName', max_length=64)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=128)  # Field name made lowercase.
+    prefix = models.CharField(db_column='Prefix', max_length=64, blank=True, null=True)  # Field name made lowercase.
+    isactive = models.BooleanField(db_column='IsActive')  # Field name made lowercase.
+    isdelected = models.BooleanField(db_column='IsDelected')  # Field name made lowercase.
+    creater = models.IntegerField(db_column='Creater')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Merchants'
+
+
 class TbMarketgroup(models.Model):
     groupid = models.IntegerField(db_column='GroupID', primary_key=True,verbose_name='组ID')  # Field name made lowercase.
     sportid = models.IntegerField(db_column='SportID',verbose_name='体育类型')  #  choices=SPORTID_OPTION_2, Field name made lowercase.
