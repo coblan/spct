@@ -30,7 +30,7 @@ from django.db.models import DecimalField
 from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss,TbImprofitloss,TbEbprofitloss
 import json
 from maindb.rabbitmq_instance import notifyAccountFrozen
-from helpers.case.jb_admin.admin import UserPicker
+from helpers.case.jb_admin.admin_user import UserPicker
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
