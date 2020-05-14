@@ -53,9 +53,9 @@ class WithDrawForm(ModelFields):
             head['editor'] = 'number'
             head['fv_rule'] = 'integer(+)'
         if head['name'] == 'value':
-            head['show'] = "!ex.isin(scope.row.tag,['IsRapidWithdraw','IsEnableWithdraw','AgInSwitch','AgOutSwitch','SportOutSwitch','SportInSwitch','IMInSwitch','IMOutSwitch','RgInSwitch','RgOutSwitch','PtInSwitch','PtOutSwitch','SgInSwitch','SgOutSwitch'])  "
+            head['show'] = "!ex.isin(scope.row.tag,['IsRapidWithdraw','IsEnableWithdraw','AgInSwitch','AgOutSwitch','SportOutSwitch','SportInSwitch','IMInSwitch','IMOutSwitch','RgInSwitch','RgOutSwitch','PtInSwitch','PtOutSwitch','SgInSwitch','SgOutSwitch','EbInSwitch','EbOutSwitch'])  "
         if head['name'] == 'daysnumber':
-            head['show'] = "!ex.isin(scope.row.tag,['SingleMaxOrderCount','IsRapidWithdraw','IsEnableWithdraw','AgInSwitch','AgOutSwitch','SportOutSwitch','SportInSwitch','IMInSwitch','IMOutSwitch','RgInSwitch','RgOutSwitch','PtInSwitch','PtOutSwitch','SgInSwitch','SgOutSwitch']) "
+            head['show'] = "!ex.isin(scope.row.tag,['SingleMaxOrderCount','IsRapidWithdraw','IsEnableWithdraw','AgInSwitch','AgOutSwitch','SportOutSwitch','SportInSwitch','IMInSwitch','IMOutSwitch','RgInSwitch','RgOutSwitch','PtInSwitch','PtOutSwitch','SgInSwitch','SgOutSwitch','EbInSwitch','EbOutSwitch']) "
             head['express']='rt={label:scope.row.memo.indexOf("分钟")!=-1 ? "分钟":"天数"}'
         return head
 

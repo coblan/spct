@@ -108,9 +108,9 @@ class Activity(View):
             pk = pk[:-5]
         if pk.startswith('index'):
             if pk =='index':
-                query = TbActivityV2.objects.filter(enabled=True,displaytype=0).order_by('sort')
+                query = TbActivityV2.objects.filter(enabled=True,displaytype=0).order_by('-sort')
             else:
-                query = TbActivityV2.objects.filter(enabled=True,displaytype=1).order_by('sort')
+                query = TbActivityV2.objects.filter(enabled=True,displaytype=1).order_by('-sort')
             baseengine = BaseEngine()
             baseengine.request = self.request
             rows=[]
