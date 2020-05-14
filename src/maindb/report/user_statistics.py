@@ -3,14 +3,14 @@ from __future__ import unicode_literals
 from django.db import connections
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter
 from helpers.director.table.row_search import SelectSearch
-from ..models import TbAccount
+from ..models import TbAccount,TbMerchants
 from helpers.director.base_data import director
 from django.utils import timezone
 from django.core.exceptions import PermissionDenied
 from helpers.director.access.permit import has_permit
 from helpers.func.sql import qn
 from helpers.director.network import argument
-
+from hello.merchant_user import get_user_merchantid
 
 class UserStatisticsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -96,6 +96,10 @@ class UserStatisticsPage(TablePage):
                 #return [{'name':'date','editor':'com-date-range-filter','label':'日期'}]
                 
                 return [
+                    {'name':'merchantid','label':'商户','editor':'com-filter-select','visible':not has_permit(self.crt_user,'-i_am_merchant'),
+                     'options':[
+                         {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
+                         ]},
                     {'name':'minAmount','label':'投注金额大于等于','editor':'com-filter-text'},
                     {'name':'MinProfit','label':'亏盈大于等于','editor':'com-filter-text'},
                     {'name':'AccountType','label':'用户类型','editor':'com-filter-select','options':[
@@ -156,7 +160,12 @@ class UserStatisticsPage(TablePage):
             }
             realsort = sort_dc.get(sort) or sort;
             AccountID = self.kw.get('accountid') or 0
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                merchantid = get_user_merchantid(self.crt_user)
+            else:
+                merchantid = self.search_args.get('merchantid','null')
             sql_args = {
+                'merchantid':merchantid,
                 'NickName': qn(nickname),
                 'AccountID':AccountID,
                 'StartTime': self.search_args.get('_start_date', ''),
@@ -169,7 +178,7 @@ class UserStatisticsPage(TablePage):
                 'minAmount':self.search_args.get('minAmount') or -10**10,
                 'MinProfit':self.search_args.get('MinProfit') or -10**10,
             }
-            sql = r"exec dbo.SP_UserStatistics %%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s',%(minAmount)s,%(MinProfit)s" \
+            sql = r"exec dbo.SP_UserStatistics %(merchantid)s,%%s,%(AccountID)s,'%(StartTime)s','%(EndTime)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s','%(SortWay)s','%(AccountType)s',%(minAmount)s,%(MinProfit)s" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql, [nickname])
@@ -199,6 +208,7 @@ class UserStatisticsPage(TablePage):
             return [
                 {'name': 'NickName', 'label': '昵称 ', 'width': 150,'fixed':True},
                 {'name':'GroupName','label':'用户组','width':100,},
+                #{'name':'merchantid','label':'商户'},
                 {'name': 'Profit', 'label': '亏盈', 'width': 100,},
                 {'name': 'WinRate', 'label': '中注率', 'width': 100},
                 {'name':'ProfitRate','label':'亏盈率','width':120},

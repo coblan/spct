@@ -3250,7 +3250,8 @@ class TbParameterinfo(models.Model):
     leveltype = models.CharField(db_column='LevelType', max_length=50,
                                  verbose_name='用户等级')  # Field name made lowercase.
     levelid = models.IntegerField(db_column='LevelId')  # Field name made lowercase.
-
+    isswitch = models.BooleanField(db_column='IsSwitch')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_ParameterInfo'

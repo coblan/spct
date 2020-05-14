@@ -479,6 +479,7 @@ ACCOUNT_POWERTYPE = (
     (6,'RG电竞'),
     (7,'PT电子'),
     (8,'双赢彩票'),
+    (9,'eBet真人'),
 )
 
 ODDSOURCE =(
