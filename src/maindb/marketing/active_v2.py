@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc ,director,director_view
+from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc ,director,director_view,RowSort,RowSearch,RowFilter
 from ..models import TbActivityV2,TbActivitySettings,TbActivityTemplate
 from helpers.director.access.permit import can_touch,has_permit
 from helpers.func.collection.container import evalue_container
@@ -108,7 +108,16 @@ class ActiviyV2Page(TablePage):
                      'visible': has_permit(self.crt_user, 'TbActivityV2.update_cache'),
                           }
             ])
-            return operations        
+            return operations       
+        
+        class sort(RowSort):
+            names=['sort']
+        
+        class filters(RowFilter):
+            names=['enabled']
+            
+        class search(RowSearch):
+            names = ['title']
     
 class ActivityV2Form(ModelFields):
     hide_fields=['creatorid','editorid']
