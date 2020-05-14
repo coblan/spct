@@ -5,7 +5,7 @@ from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelField
 from helpers.func.collection.container import evalue_container
 from helpers.director.access.permit import has_permit,can_touch,can_write
 from ..models import  TbOdds, TbMatchesoddsswitch, TbOddstypegroup,TbTournament,\
-     TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch,TbLivefeed,TbSporttypes,TbManualsettlemsg
+     TbMatch,TbPeriodscore,TbMarkets,TbMarkethcpswitch,TbLivefeed,TbSporttypes,TbManualsettlemsg,TbAccount
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.base_data import director
 from maindb.mongoInstance import updateMatchMongo
@@ -41,7 +41,8 @@ def get_match_tab(crt_user):
          'label':'基本信息',
          'com':'com-tab-fields-v1',
          'init_express':'cfg.show_load(); ex.director_call("%s",{matchid:scope.vc.par_row.matchid}).then(resp=>{cfg.hide_load();ex.vueAssign(scope.vc.row,resp.row)})'%match_form.get_director_name(),
-         'fields_ctx':match_form.get_head_context()          
+         'fields_ctx':match_form.get_head_context(),
+         'visible': can_touch(TbMatch, crt_user) ,
          },
         {
             'name':'peroidscore',
@@ -335,7 +336,10 @@ class MatchsPage(TablePage):
                   #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
                   #'fields_ctx': PeriodTypeForm_form.get_head_context(),
                  'visible': has_permit(self.crt_user,'TbMatch.quit_ticket')},
-                {'label':'清空直播','editor':'com-op-btn','confirm_msg':'确定要清空','row_match':'many_row','action':'var matchs=ex.map(scope.ps.selected,(item)=>{return item.pk});cfg.show_load();ex.director_call("match.clear_live_url",{matchs:matchs}).then((resp)=>{cfg.hide_load();cfg.toast("清空"+resp.count+"条")})'}
+                {'label':'清空直播','editor':'com-op-btn','confirm_msg':'确定要清空',
+                 'row_match':'many_row',
+                 'visible': self.permit.can_edit(),
+                 'action':'var matchs=ex.map(scope.ps.selected,(item)=>{return item.pk});cfg.show_load();ex.director_call("match.clear_live_url",{matchs:matchs}).then((resp)=>{cfg.hide_load();cfg.toast("清空"+resp.count+"条")})'}
 
             ]
             return ops

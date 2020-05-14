@@ -114,7 +114,7 @@ class PcMenu(BaseEngine):
                 {'label':'调水模板','url':page('adjusttemplate'),'visible':can_touch(TbAdjusttemplate,crt_user)},
                 #{'label':'赛事匹配','url':page('web_match_data')},
                 {'label':'赛事匹配V2','url':page('web_match_data1'),'visible':has_permit(crt_user,'web_match_data1')},
-                {'label':'跟水设置','url':page('mapping-setting')},
+                {'label':'跟水设置','url':page('mapping-setting'),'visible':has_permit(crt_user,'mapping_setting.water_switch')},
                  
              ]},
 
@@ -224,7 +224,7 @@ class PcMenu(BaseEngine):
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
                  {'label':'商户用户管理','url':page('with_merchant_user'),'visible': can_touch(User, crt_user)},
-                 {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user)},
+                 {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user) and not has_permit(crt_user,'-i_am_merchant')},
                  {'label': _('Role'), 'url': page('jb_group'), 'visible': can_touch(Group, crt_user)},
                  {'label': '操作日志', 'url': page('operation_log'), 'visible': can_touch(TbOperationlog, crt_user)},
                  {'label':'异常地址','url':page('badurl')},

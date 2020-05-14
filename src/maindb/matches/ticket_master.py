@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.utils.translation import gettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSearch, RowSort, RowFilter, director, SelectSearch, model_to_name,director_view
+    RowSearch, RowSort, RowFilter, director, SelectSearch, model_to_name,director_view,has_permit
 from ..models import TbTicketmaster, TbTicketstake, TbTicketparlay, TbMatch,TbMessageUnsend
 from django.db.models import Q, Sum, F, Case, When, FloatField,Count
 import re
@@ -14,6 +14,7 @@ from helpers.func.collection.container import evalue_container
 from django.utils import timezone
 from helpers.director.model_func.dictfy import sim_dict
 from helpers.func.collection.mylist import split_list
+from hello.merchant_user import get_user_merchantid
 
 from django.db.models import Prefetch
 import logging
@@ -219,7 +220,7 @@ class TicketMasterPage(TablePage):
     class tableCls(ModelTable):
         model = TbTicketmaster
         exclude = ['accountid']
-        fields_sort = ['sp_status','ticketid','createtime', 'accountid__nickname', 'ticketstake',] +TicketstakeEmbedTable.fields_sort + \
+        fields_sort = ['merchant','sp_status','ticketid','createtime', 'accountid__nickname', 'ticketstake',] +TicketstakeEmbedTable.fields_sort + \
         ['orderid','audit',  'status','winbet','parlayrule', 'stakeamount', 'betamount', 'betoutcome', 'profit',
          'turnover', 'bonuspa', 'bonus', 'settletime', 'memo','voidreason','terminal','updatetime']
         
@@ -310,6 +311,9 @@ class TicketMasterPage(TablePage):
             return dc
 
         def inn_filter(self, query):
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
+                
             return query.using('Sports_nolock').order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus')) \
                 .annotate(accountid__nickname=F('accountid__nickname'),stake_count=Count('tbticketstake'))
         
@@ -489,7 +493,14 @@ class TicketMasterPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime', 'settletime']
-            names = ['status','audit', 'winbet','terminal','accountid__accounttype']
+            #names = ['status','audit', 'winbet','terminal','accountid__accounttype','merchant']
+            
+            @property
+            def names(self):
+                if  has_permit( self.crt_user,'-i_am_merchant'):
+                    return ['status','audit', 'winbet','terminal','accountid__accounttype']
+                else:
+                    return ['merchant','status','audit', 'winbet','terminal','accountid__accounttype',]
             
             def clean_search_args(self, search_args):
                 #if search_args.get('createtime__gte'):

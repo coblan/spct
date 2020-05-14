@@ -9,6 +9,7 @@ from helpers.func.collection.container import evalue_container
 def get_permit(ui=None): 
     
     permit1 =[
+        {'label': '商户分组','value': '-i_am_merchant','help_text':'标识用户是否为商户;如果是商户用户分组，必须勾选!'},
         {'label':'首页统计','value':'home-statistic'},
         {'label': '待办事项',
          'children': [
@@ -208,7 +209,7 @@ def get_permit(ui=None):
                  ]},   
              {'label': '调水模板', 'value':'TbAdjusttemplate.edit'}, 
              {'label':'比赛匹配','value':'web_match_data1','depend':['TbMatches']},
-            #{'label':'跟水设置','value':'web_match_data1','depend':['TbMatches']},
+            {'label':'跟水设置','value':'mapping_setting.water_switch',},
              ],
         }, 
         
@@ -385,8 +386,8 @@ def get_permit(ui=None):
         
         {'label': '系统管理',
          'children': [
-             {'label': '管理员信息查看', 'value': 'User.read',}, 
-             {'label': '管理员信息编辑', 'value': 'User.write',}, 
+             {'label': '用户查看', 'value': 'User.read',}, 
+             {'label': '用户编辑', 'value': 'User.write',}, 
              {'label': _('Role'), 'value': 'Group',},
              {'label':'用户扩展','children':[
                  {'label':'查看','value':'TbUserex'},
@@ -394,11 +395,14 @@ def get_permit(ui=None):
              ]}
              ],
          },
+        
          {'label': '运维管理',
          'children': [
              {'label': '域名管理', 'value': 'TbDomain.edit',}, 
              ],
          },
+         
+      
          
     ]
     permit_member =  [ 

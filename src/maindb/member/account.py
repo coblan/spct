@@ -171,7 +171,8 @@ def account_tab(self=None):
          'after_save': {
              'fun': 'update_or_insert'
          },
-         **AccoutBaseinfo().get_head_context()
+         **AccoutBaseinfo().get_head_context(),
+         'visible':can_touch(TbAccount,crt_user),
          #'heads': baseinfo.get_heads(),
          #'ops': baseinfo.get_operations()
          },

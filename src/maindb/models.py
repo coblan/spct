@@ -1603,6 +1603,9 @@ class TbMerchants(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Merchants'
+    
+    def __str__(self):
+        return self.name
 
 
 class TbMarketgroup(models.Model):
@@ -2798,6 +2801,8 @@ class TbTicketmaster(models.Model):
     terminal = models.IntegerField(db_column='Terminal', blank=True, null=True,choices= TERMINAL_TYPE,verbose_name='终端')  # Field name made lowercase.
     audit = models.IntegerField(db_column='Audit',verbose_name='待审核',choices=AUDIT_OPTIONS)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime',auto_now=True, blank=True, null=True,verbose_name='更新时间')  # Field name made lowercase.
+    #merchantid = models.IntegerField(db_column='MerchantId',verbose_name='商户')  # Field name made lowercase.
+    merchant = models.ForeignKey(TbMerchants,db_column='MerchantId',verbose_name='商户',db_constraint=False)
     
     class Meta:
         managed = False

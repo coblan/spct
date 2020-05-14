@@ -2,9 +2,9 @@
 from __future__ import unicode_literals
 import re
 from django.db import connections
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, RowSort, RowFilter,has_permit
 from helpers.director.table.row_search import SelectSearch
-from ..models import TbMatch, NEW_MATCH_STATUS,TbTicketmaster,TbTournament,TbSporttypes
+from ..models import TbMatch, NEW_MATCH_STATUS,TbTicketmaster,TbTournament,TbSporttypes,TbMerchants
 from helpers.director.base_data import director
 from django.utils import timezone
 from helpers.director.table.table import PlainTable
@@ -70,7 +70,10 @@ class MatchesStatisticsPage(TablePage):
                 return [
                     {'name':'source','label':'数据源','editor':'com-filter-select','options':[
                         {'value':x[0],'label':x[1]} for x in MATCH_SOURCE
-                    ]}
+                    ]},
+                    {'name':'merchantid','label':'商户','editor':'com-filter-select','options':[
+                        {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
+                    ],'visible':not has_permit(self.crt_user,'-i_am_merchant')},
                 ]
 
             def dict_head(self, head):
@@ -135,7 +138,11 @@ class MatchesStatisticsPage(TablePage):
             sort = self.search_args.get('_sort') or '-MatchDate'
             if sort.startswith('-'):
                 sort = sort[1:] + ' desc'
-
+            
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                merchantid = self.crt_user.userprofile.merchantid
+            else:
+                merchantid = self.search_args.get('merchantid','null')
             sql_args = {
                 'TournamentID': self.search_args.get('tournamentid', 0),
                 'MatchID': matchid,
@@ -152,9 +159,10 @@ class MatchesStatisticsPage(TablePage):
                 'sportid': self.search_args.get('sportid',-1), #self.sportid
                 #'Source':self.search_args.get('source',0),
                 #'EventID':eventid,
+                'merchantid':merchantid
             }            
             #sql = self.get_statistic_sql(sql_args)
-            sql = r"exec dbo.SP_MatchesStatistics %(sportid)s,%(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s'" \
+            sql = r"exec dbo.SP_MatchesStatistics %(sportid)s,%(TournamentID)s,%(MatchID)s,%%s,%(StatusCode)s,%(LiveBet)s,%%s,%(AccountID)s,'%(MatchDateFrom)s','%(MatchDateTo)s',%(PageIndex)s,%(PageSize)s,'%(Sort)s',%(merchantid)s" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql, [teamzh, nickname ])
