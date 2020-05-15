@@ -14,8 +14,8 @@ DATABASES = {
         'ENGINE': 'sql_server.pyodbc',
         'HOST':'192.168.40.165,1433',
         'NAME':'BackendUserInfo_Merchant',
-        'USER':  'develop',
-        'PASSWORD': 'develop_cheer', 
+        'USER':  'develop_admin',
+        'PASSWORD': 'develop_admin_cheer123', 
         'OPTIONS': {
             'autocommit': True,
             'host_is_server': True,
