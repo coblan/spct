@@ -43,6 +43,7 @@ from ..rg.rg_profitloss import RGProfitlossPage
 from ..pt.pt_profitloss import PtProfitlossPage
 from ..sg.sg_profitloss import SgProfitlossPage
 from maindb.part3.ebet.ebet_profitloss import EbProfitlossPage
+from hello.merchant_user import get_user_merchantid
 
 from django.conf import settings
 from .userlog import UserlogPage
@@ -340,14 +341,21 @@ class AccountPage(TablePage):
         #include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
                    #'isenablewithdraw', 'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount',
                    #'createtime', 'source','accounttype','weight','groupid']
-        fields_sort = ['accountid', 'account', 'nickname', 'createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
+        fields_sort = ['merchant', 'accountid', 'account', 'nickname','createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
                        'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid','memo','parlayoddscheck','singleoddscheck']
         
         class filters(RowFilter):
-            names=['accounttype','groupid','csuserid__name','parlayoddscheck']
+            #names=['merchant','accounttype','groupid','csuserid__name','parlayoddscheck']
             icontains=['csuserid__name']
             range_fields = ['createtime']
+            
+            @property
+            def names(self):
+                if has_permit(self.crt_user,'-i_am_merchant'):
+                    return ['accounttype','groupid','csuserid__name','parlayoddscheck']
+                else:
+                    return ['merchant','accounttype','groupid','csuserid__name','parlayoddscheck']
             
             def getExtraHead(self):
                 return [
@@ -377,6 +385,8 @@ class AccountPage(TablePage):
                        #)
                 ##withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
             #return query
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                query = query.filter(merchant_id=get_user_merchantid(self.crt_user))
             return query.extra(select={'betfullrecord':'SELECT SUM(TB_Betfullrecord.consumeamount) FROM TB_Betfullrecord WHERE TB_Betfullrecord.ConsumeStatus=1 AND TB_Betfullrecord.AccountID=TB_Account.AccountID',
                                        'rechargeamount':'SELECT SUM(TB_Recharge.ConfirmAmount) FROM TB_Recharge WHERE TB_Recharge.status=2 AND TB_Recharge.AccountID=TB_Account.AccountID',
                                        'withdrawamount':'SELECT SUM(TB_Withdraw.Amount) FROM TB_Withdraw WHERE TB_Withdraw.Status=2 AND TB_Withdraw.AccountID =TB_Account.AccountID'})

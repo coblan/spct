@@ -1,11 +1,11 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from django.db.models import Sum
-from helpers.director.shortcut import RowSort
-from helpers.director.table.row_search import SelectSearch
+from helpers.director.shortcut import RowSort,SelectSearch,has_permit
 from ..models import TbBalancelog
 from .chargeflow import *
 from ..status_code import ACCOUNT_TYPE
+from hello.merchant_user import get_user_merchantid
 
 class BalancelogPage(TablePage):
     template = 'jb_admin/table.html'
@@ -15,7 +15,7 @@ class BalancelogPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbBalancelog
-        include = ['accountid', 'categoryid', 'beforeamount', 'amount', 'afteramount',  'createtime','memo'] # creater
+        include = ['merchant','accountid', 'categoryid', 'beforeamount', 'amount', 'afteramount',  'createtime','memo'] # creater
 
         def dict_head(self, head):
             dc = {
@@ -68,11 +68,20 @@ class BalancelogPage(TablePage):
             #return ctx
 
         def inn_filter(self, query):
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
             return query.order_by('-createtime')
 
         class filters(RowFilter):
-            names = ['categoryid','accountid__accounttype']
+            #names = ['categoryid','accountid__accounttype']
             range_fields = ['createtime']
+            
+            @property
+            def names(self):
+                if has_permit(self.crt_user,'-i_am_merchant'):
+                    return ['categoryid','accountid__accounttype']
+                else:
+                    return ['merchant','categoryid','accountid__accounttype']
             
             def dict_head(self, head):
                 if head['name']=='createtime':

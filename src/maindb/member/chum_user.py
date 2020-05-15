@@ -1,12 +1,13 @@
-from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowFilter,SelectSearch,RowSort,RawTable
+from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowFilter,SelectSearch,RowSort,RawTable,has_permit
 from ..models import TbAccount 
 from django.core.exceptions import PermissionDenied
-from helpers.director.access.permit import has_permit
+
 from django.db.models import F
 from django.utils import timezone
 from helpers.director.network import argument
 import re
 from django.db import connections
+from hello.merchant_user import get_user_merchantid
 
 class ChumUser(TablePage):
     
@@ -73,6 +74,8 @@ class ChumUser(TablePage):
             ]
         
         def inn_filter(self, query):
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                query = query.filter(merchant_id=get_user_merchantid(self.crt_user))
             return query.filter(sumrechargecount__lte=1)
         
         def get_operation(self):
@@ -100,9 +103,16 @@ class ChumUser(TablePage):
                     return super().get_query(query)
                 
         class filters(RowFilter):
-            names=['accounttype','groupid','source','sumrechargecount']
+            #names=['accounttype','groupid','source','sumrechargecount']
             range_fields = ['createtime']   
             
+            @property
+            def names(self):
+                if has_permit(self.crt_user,'-i_am_merchant'):
+                    return ['accounttype','groupid','source','sumrechargecount']
+                else:
+                    return ['merchant','accounttype','groupid','source','sumrechargecount']
+                
             def dict_head(self, head):
                 if head['name'] == 'sumrechargecount':
                     head['options'] =[]

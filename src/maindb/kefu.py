@@ -6,6 +6,7 @@ from django.conf import settings
 from .member.chum_user import ChumUser
 from .models import TbUserex,User
 from helpers.director.access.permit import has_permit
+from hello.merchant_user import get_user_merchantid
 
 import logging
 operation_log = logging.getLogger('operation_log')
@@ -69,11 +70,9 @@ class KefuPage(TablePage):
                     ''' % self.search_args.get('_q') ],
                 #tables=['(SELECT accountid FROM TB_Account mm WHERE mm.ParentID=2022) as t']
             )
-            if has_permit(self.crt_user,'kefu.watch_all_account'):
-                return query
-            else:
-                return  query.filter(csuserid=self.crt_user.pk)  #query.filter(sumrechargecount__lte=1)
-        
+            if not has_permit(self.crt_user,'kefu.watch_all_account'):
+                query=  query.filter(csuserid=self.crt_user.pk)  #query.filter(sumrechargecount__lte=1)
+            return query
   
             
         

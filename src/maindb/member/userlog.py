@@ -1,5 +1,6 @@
-from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,RowFilter
+from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,RowFilter,has_permit
 from maindb.models import TbUserLog
+from hello.merchant_user import get_user_merchantid
 
 class UserlogPage(TablePage):
     def get_label(self):
@@ -24,9 +25,10 @@ class UserlogPage(TablePage):
         
         def inn_filter(self, query):
             if self.is_export_excel:
-                return query.using('Sports_nolock')
-            else:
-                return query
+                query= query.using('Sports_nolock')
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                query = query.filter(merchant_id=get_user_merchantid(self.crt_user))
+            return query
         
         def get_operation(self):
             return [
@@ -34,9 +36,17 @@ class UserlogPage(TablePage):
                 ]
         
         class filters(RowFilter):
-            names=['account__nickname','operatetype']
+            
             range_fields=['createtime']
             icontains=['account__nickname']
+            
+            @property
+            def names(self):
+                if has_permit(self.crt_user,'-i_am_merchant'):
+                    return ['account__nickname','operatetype']
+                else:
+                    return ['merchant','account__nickname','operatetype']
+            
             def getExtraHead(self):
                 return [
                     {'name':'account__nickname','label':'用户昵称'}

@@ -132,6 +132,14 @@ class TbAccount(models.Model):
     parlayoddscheck = models.BooleanField(db_column='ParlayOddsCheck',verbose_name='串关低赔限制',default=False)  # Field name made lowercase.
     singleoddscheck = models.BooleanField(db_column='SingleOddsCheck',verbose_name='单注低陪限制',default =False)  # Field name made lowercase.
     
+    levelpoints = models.DecimalField(db_column='LevelPoints', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    downpoints = models.DecimalField(db_column='DownPoints', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    leveltime = models.DateTimeField(db_column='LevelTime', blank=True, null=True)  # Field name made lowercase.
+    agentstatus = models.IntegerField(db_column='AgentStatus')  # Field name made lowercase.
+    #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+    
+    
     class Meta:
         managed = False
         db_table = 'TB_Account'
@@ -504,6 +512,9 @@ class TbBalancelog(models.Model):
     accountid = models.ForeignKey(to=TbAccount, db_column='AccountID',
                                   db_constraint=False, verbose_name='用户昵称', blank=True,
                                   null=True)  # Field name made lowercase.
+    
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+   
 
     class Meta:
         managed = False
@@ -920,7 +931,8 @@ class TbLoginlog(models.Model):
     logintype = models.IntegerField(db_column='LoginType', verbose_name='登录方式')  # Field name made lowercase.
     area = models.CharField(db_column='Area', max_length=200, blank=True, null=True,
                             verbose_name='地区')  # Field name made lowercase.
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+   
     class Meta:
         managed = False
         db_table = 'TB_LoginLog'
@@ -3706,7 +3718,8 @@ class TbUserLog(models.Model):
     area = models.CharField(db_column='Area', max_length=255, blank=True, null=True,verbose_name='区域')  # Field name made lowercase.
     arearemark = models.CharField(db_column='AreaRemark', max_length=255, blank=True, null=True,verbose_name = '区域标记')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
     class Meta:
         managed = False
         db_table = 'TB_User_Log'

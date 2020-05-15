@@ -62,6 +62,7 @@ class WithDrawForm(ModelFields):
 
 
 
+
 director.update({
     'parameterinfo': WithDrawLimitContralPage.tableCls,
     'parameterinfo.edit': WithDrawForm,

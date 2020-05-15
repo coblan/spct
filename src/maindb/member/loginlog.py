@@ -2,12 +2,12 @@
 from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, \
-    RowSearch, RowFilter, director
-from helpers.director.table.row_search import SelectSearch
+    RowSearch, RowFilter, director,SelectSearch,has_permit
+
 from ..models import TbLoginlog
 import re
 from django.db.models import Q
-
+from hello.merchant_user import get_user_merchantid
 
 class LoginLogPage(TablePage):
     template = 'jb_admin/table.html'
@@ -18,7 +18,7 @@ class LoginLogPage(TablePage):
     class tableCls(ModelTable):
         model = TbLoginlog
         exclude = []
-        fields_sort = ['accountid_id', 'accountid__nickname', 'devicecode', 'deviceip', 'area', 'appversion',
+        fields_sort = ['merchant','accountid_id', 'accountid__nickname', 'devicecode', 'deviceip', 'area', 'appversion',
                        'devicename',
                        'deviceversion',
                        'logintype', 'createtime']
@@ -52,8 +52,11 @@ class LoginLogPage(TablePage):
         def inn_filter(self, query):
             if self.is_export_excel:
                 query =  query.using('Sports_nolock')
-            return query.values(*self.fields_sort).order_by('-createtime')
-
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                query = query.filter(merchant_id = get_user_merchantid(self.crt_user) )
+            return query
+            #return query.values(*self.fields_sort).order_by('-createtime')
+            
         class search(SelectSearch):
             names = ['accountid__nickname','area','devicecode','deviceip']
             exact_names = ['accountid']
@@ -95,6 +98,13 @@ class LoginLogPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime']
+            
+            @property
+            def names(self):
+                if has_permit(self.crt_user, '-i_am_merchant'):
+                    return  []
+                else:
+                    return ['merchant']
 
 
 director.update({
