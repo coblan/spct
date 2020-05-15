@@ -13,7 +13,7 @@ DATABASES = {
     'default': { 
         'ENGINE': 'sql_server.pyodbc',
         'HOST':'192.168.40.165,1433',
-        'NAME':'BackendUserInfo',
+        'NAME':'BackendUserInfo_Merchant',
         'USER':  'develop',
         'PASSWORD': 'develop_cheer', 
         'OPTIONS': {
