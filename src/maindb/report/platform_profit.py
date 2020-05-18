@@ -90,10 +90,15 @@ class PlatformProfit(TablePage):
                 row['Turnover'] = round(row['Turnover'], 2)
                 row['BetBonus'] = round(row['BetBonus'], 2)
                 row['BetOutCome'] = round(row['BetOutCome'], 2)
-                row['RechargeBonus'] = round(row['RechargeBonus'], 2)
-                row['BirthdayBonus'] = round(row['BirthdayBonus'], 2)
-                row['RescueBonus'] = round(row['RescueBonus'], 2)
-                row['AdjustAmount'] = round(row['AdjustAmount'], 2)
+                
+                row['ActivityAmount'] = round(row['ActivityAmount'],2)
+                row['FundTransferAmount'] = round(row['FundTransferAmount'],2)
+                
+                #row['RechargeBonus'] = round(row['RechargeBonus'], 2)
+                #row['BirthdayBonus'] = round(row['BirthdayBonus'], 2)
+                #row['RescueBonus'] = round(row['RescueBonus'], 2)
+                #row['AdjustAmount'] = round(row['AdjustAmount'], 2)
+                
                 row['Profit'] = round(row['Profit'], 2)
             return self.data
 
@@ -117,15 +122,20 @@ class PlatformProfit(TablePage):
 
         def get_heads(self):
             return [
-                {'name': 'BetAmount', 'label': '投注金额 ', 'width': 150},
+                {'name': 'BetAmount', 'label': '投注', 'width': 150},
                 {'name': 'Turnover', 'label': '流水', 'width': 130},
                 {'name': 'BetBonus', 'label': '返水', 'width': 130},
-                {'name': 'BetOutCome', 'label': '派奖金额', 'width': 130},
-                {'name': 'RechargeBonus', 'label': '充值红利', 'width': 130},
-                {'name': 'BirthdayBonus', 'label': '生日礼金', 'width': 130},
-                {'name': 'RescueBonus', 'label': '救援金', 'width': 130},
-                {'name': 'AdjustAmount', 'label': '调账', 'width': 100},
-                {'name': 'Profit', 'label': '亏盈', 'width': 100}
+                {'name': 'BetOutCome', 'label': '派奖', 'width': 130},
+                
+                {'name':'ActivityAmount','label':'活动','width':130},
+                {'name':'FundTransferAmount','label':'调账','width':130},
+                
+                #{'name': 'RechargeBonus', 'label': '充值红利', 'width': 130},
+                #{'name': 'BirthdayBonus', 'label': '生日礼金', 'width': 130},
+                #{'name': 'RescueBonus', 'label': '救援金', 'width': 130},
+                #{'name': 'AdjustAmount', 'label': '调账', 'width': 100},
+                
+                {'name': 'Profit', 'label': '平台亏盈', 'width': 100}
             ]
 
         def getRowPages(self):

@@ -71,7 +71,7 @@ DATABASES = {
         #'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
         #'USER':  'develop_admin',#'Backend'  ,  develop
         #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
-        'NAME':'Sports_20190610_Part1',
+        'NAME':'Sports_2020',
         'USER':  'develop',#'Backend'  ,  
         'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
         #'PORT': '1436',
@@ -91,7 +91,7 @@ DATABASES = {
         #'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
         #'USER':  'develop_admin',#'Backend'  ,  develop
         #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
-        'NAME':'Sports_20190610_Part1',
+        'NAME':'Sports_2020',
         'USER':  'develop',#'Backend'  ,  
         'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
         #'PORT': '1436',
