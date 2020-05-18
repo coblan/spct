@@ -1,10 +1,11 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter
-from ..models import TbVipbonus,TbProductContactUser,TbMoneyCategories
+from ..models import TbVipbonus,TbProductContactUser,TbMoneyCategories,TbMerchants
 from django.db.models import Case,When,Value,Subquery,OuterRef
 from helpers.director.shortcut import has_permit
 from maindb.aes_crypto import prpcrypt
 from django.conf import settings
 from django.db.models import F
+from hello.merchant_user import get_user_merchantid
 
 def des3_decode(code):
     try:
@@ -26,6 +27,7 @@ class VipBonusPage(TablePage):
         
         def getExtraHead(self):
             return [
+                {'name':'merchant','label':'商户','editor':'com-table-span'},
                 {'name':'user_address','label':'收货地址','editor':'com-table-click',
                  'visible':has_permit(self.crt_user,'vipbonus.account_real_address'),
                  'action':'cfg.showMsg(scope.row.user_address_detail)'}
@@ -35,6 +37,10 @@ class VipBonusPage(TablePage):
             #subque= TbProductContactUser.objects.filter(accountid = OuterRef('accountid'))
             #return query.annotate(user_address = Subquery(subque.values('userrealname')[:1]))
             #return query.using('Sports_nolock').anotate(accountid__)
+            query= query.select_related('accountid__merchant')
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                query= query.filter(accountid__merchant_id=get_user_merchantid(self.crt_user,))
+                
             return  query.using('Sports_nolock').annotate (userrealname =F('accountid__tbproductcontactuser__userrealname'),
                                                          phone =F('accountid__tbproductcontactuser__phone'),
                                                          province =F('accountid__tbproductcontactuser__province'),
@@ -90,17 +96,22 @@ class VipBonusPage(TablePage):
                 <tr><td style="width:50px;vertical-align:top">地址:</td><td>%(province)s|%(city)s|%(county)s|%(address)s</td></tr>
                 <tr><td>姓名:</td><td>%(userrealname)s</td></tr>
                 <tr><td>电话:</td><td>%(phone)s</td></tr> 
-                </table>''' %dc 
+                </table>''' %dc ,
+                'merchant':inst.accountid.merchant.name
             }
         
         class filters(RowFilter):
-            names=['level','status','ruleid','accountid__nickname']
+            names=['accountid__merchant','level','status','ruleid','accountid__nickname']
             icontains=['accountid__nickname']
             range_fields=['createtime','arrivetime','drawtime']
             
             def getExtraHead(self):
                 return [
-                    {'name':'accountid__nickname','label':'账号昵称','editor':'com-filter-text'}
+                    {'name':'accountid__nickname','label':'账号昵称','editor':'com-filter-text'},
+                    {'name':'accountid__merchant','label':'商户','editor':'com-filter-select','visible':not has_permit(self.crt_user,'-i_am_merchant'),
+                     'options':[
+                        {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
+                    ]}
                 ]
             
             def dict_head(self, head):

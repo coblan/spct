@@ -445,7 +445,8 @@ class TbAppversion(models.Model):
     plisturl = models.CharField(db_column='PListUrl', max_length=200, blank=True,
                                 null=True)  # Field name made lowercase.
     minversionname = models.CharField(db_column='MinVersionName', max_length=64, blank=True, null=True,verbose_name='最小版本号')  # Field name made lowercase.
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+   
     class Meta:
         managed = False
         db_table = 'Tb_AppVersion'
@@ -3032,7 +3033,8 @@ class TbBanner(models.Model):
                                    null=True)
     displaytype = models.IntegerField(db_column='DisplayType',default=0,choices=BANNER_DISPLAYTYPE,verbose_name='对内/对外')  # Field name made lowercase.
     #pcpicturename = models.CharField(db_column='PcPictureName', max_length=255, blank=True, null=True)  # Field name made lowercase.
-   
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
 
     class Meta:
         managed = False
@@ -3802,6 +3804,8 @@ class TbTodolist(models.Model):
     #operateuserno = models.IntegerField(db_column='OperateUserNo',verbose_name='操作人')  # Field name made lowercase.
     operateuser = UpdateUserField(db_column='OperateUserNo',verbose_name='操作人')  
     operatetime = models.DateTimeField(db_column='OperateTime', blank=True, null=True,auto_now=True,verbose_name='更新时间')  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+   
 
     class Meta:
         managed = False

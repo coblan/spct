@@ -1,20 +1,20 @@
 # encoding:utf-8
 from __future__ import unicode_literals
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSort, RowFilter
+    RowSort, RowFilter,has_permit
 from ..models import TbBanner
 from ..status_code import *
 from django.contrib.auth.models import User
 from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
-
+from hello.merchant_user import get_user_merchantid
 
 class BannerPage(TablePage):
     template = 'jb_admin/table.html'  # 'jb_admin/table_with_height.html'
 
     class tableCls(ModelTable):
         model = TbBanner
-        include = ['title', 'displaytype','status', 'picturename','pcpicturename', 'order', 'createuser', 'createtime', 'description']
+        include = ['merchant','title', 'displaytype','status', 'picturename','pcpicturename', 'order', 'createuser', 'createtime', 'description']
 
         def get_context(self):
             ctx = ModelTable.get_context(self)
@@ -26,7 +26,13 @@ class BannerPage(TablePage):
             if not search_args.get('_sort'):
                 search_args['_sort'] = '-createtime'
             return search_args
-
+        
+        def inn_filter(self, query):
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                return query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            else:
+                return query
+        
         def dict_head(self, head):
             dc = {
                 'title': 180,
@@ -96,7 +102,14 @@ class BannerPage(TablePage):
             return ops
 
         class filters(RowFilter):
-            names = ['status']
+            
+            @property
+            def names(self):
+                if has_permit(self.crt_user,'-i_am_merchant'):
+                    return ['status']
+                else:
+                    return ['merchant','status']
+
 
         # class search(RowSearch):
         # names=['channel']
@@ -109,7 +122,14 @@ class BannerPage(TablePage):
 
 class BannerForm(ModelFields):
     readonly = []
-    field_sort = ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description']
+    
+    @property
+    def field_sort(self):
+        if has_permit(self.crt_user,'-i_am_merchant'):
+            return ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description']
+        else:
+            return ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description','merchant']
+    #field_sort = ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description','merchant']
 
     class Meta:
         model = TbBanner
@@ -130,6 +150,11 @@ class BannerForm(ModelFields):
             # 'picturename':'/media/banner/'+row.picturename if row.picturename else ""
         }
 
+    def clean_dict(self, dc):
+        if has_permit(self.crt_user,'-i_am_merchant'):
+            dc['merchant'] = get_user_merchantid(self.crt_user)
+        return dc
+        
     def save_form(self):
         ModelFields.save_form(self)
         if not self.instance.createuser:

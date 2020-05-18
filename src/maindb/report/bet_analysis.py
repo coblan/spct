@@ -1,12 +1,13 @@
 from helpers.director.shortcut import page_dc,PlainTable,director,RowFilter,ModelTable
 from django.db import connections
-from maindb.models import TbSporttypes,TbTrendstatistics
+from maindb.models import TbSporttypes,TbTrendstatistics,TbMerchants
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from helpers.director.access.permit import has_permit
 from django.core.exceptions import PermissionDenied
 from helpers.director.network import argument
 from maindb.matches.matches_statistics import MatchesStatisticsPage
+from hello.merchant_user import get_user_merchantid
 
 class BetAnalysisPage(object):
     def __init__(self, request,engin):
@@ -114,8 +115,11 @@ class WinbetRatio(PlainTable):
                 raise UserWarning('必须填写开始月和结束月')
             start += '-01'
             end = ( timezone.datetime.strptime(end,'%Y-%m') + relativedelta(months=1) - relativedelta(days=1) ) .strftime('%Y-%m-%d')
+            
+        merchantid = get_user_merchantid(self.crt_user,self.search_args.get('merchantid','null'))
         
         sql_args={
+            'MerchantId':merchantid,
             'BeginDate':start , #'2019-05-01',
             'EndDate':  end , #'2019-06-11',
             'Type': self.search_args.get('Type'),
@@ -124,7 +128,7 @@ class WinbetRatio(PlainTable):
             'PageIndex':self.search_args.get('_page') or 1,
             'PageSize': self.search_args.get('_perpage') or 20 ,#20,
         }
-        sql = r"EXEC SP_Report_WinRate '%(BeginDate)s','%(EndDate)s',%(Type)s,%(SportID)s,%(AccountID)s,%(PageIndex)s,%(PageSize)s" \
+        sql = r"EXEC SP_Report_WinRate %(MerchantId)s,'%(BeginDate)s','%(EndDate)s',%(Type)s,%(SportID)s,%(AccountID)s,%(PageIndex)s,%(PageSize)s" \
                   % sql_args
         data_rows = []
         self.total=0
@@ -142,6 +146,10 @@ class WinbetRatio(PlainTable):
     
     def getRowFilters(self):
         return [
+            {'name':'merchantid','label':'商户','editor':'com-filter-select','visible':not has_permit(self.crt_user,'-i_am_merchant'),
+             'options':[
+                {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
+                ]},
              {'name':'AccountID','label':'账号ID','editor':'com-filter-text'},
              {'name':'Type','label':'报表类型','editor':'com-filter-select','required':True,'options':[
                  {'value':0,'label':'日报'},

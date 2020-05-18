@@ -3,6 +3,7 @@ from .models import TbTodolist
 from helpers.director.access.permit import has_permit
 from helpers.director.decorator import get_request_cache
 from django.utils import timezone
+from hello.merchant_user import get_user_merchantid
 
 class TodoList(TablePage):
     def get_label(self):
@@ -24,6 +25,9 @@ class TodoList(TablePage):
         
         def inn_filter(self, query):
             cat_list = get_todolist_catlist()
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                merchant_id = get_user_merchantid(self.crt_user,)
+                query = query.filter(merchant_id = merchant_id)
             return query.filter(category__in=cat_list)
         
         def get_operation(self):
@@ -66,9 +70,17 @@ class TodoList(TablePage):
                     self.sort_str ='status'
         
         class filters(RowFilter):
-            names=['title','status']
+            #names=['merchant','title','status']
             icontains=['title']
             range_fields=['createtime']
+            
+            @property
+            def names(self):
+                if has_permit(self.crt_user,'-i_am_merchant'):
+                    return ['title','status']
+                else:
+                    return ['merchant','title','status']
+            
             
 
 class TodoForm(ModelFields):

@@ -1,6 +1,6 @@
 from helpers.director.shortcut import ModelTable, TablePage, page_dc, director, RowFilter, RowSort, RowSearch, Fields, ModelFields,director_view,director_element
 from helpers.director.table.row_search import SelectSearch
-from ..models import TbAccount,TbAgentrules
+from ..models import TbAccount,TbAgentrules,TbMerchants
 from django.db import connections
 from django.utils import timezone
 from ..member.account import account_tab
@@ -12,6 +12,7 @@ from dateutil.relativedelta import relativedelta
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
 from maindb.member.account import UserPicker,can_touch,User
+from hello.merchant_user import get_user_merchantid
 
 class AgentUser(TablePage):
     template = 'jb_admin/table.html'
@@ -60,6 +61,9 @@ class AgentUser(TablePage):
             
             def getExtraHead(self):
                 return [
+                    {'name':'MerchantId','label':'商户','editor':'com-filter-select','options':[
+                        {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
+                        ]},
                     {'name':'accounttype','placeholder':'用户类型','editor':'com-filter-select','required':True,'options':[
                         #{'value':'NULL','label':'全部'},
                         {'value':'0','label':'普通'},
@@ -134,7 +138,14 @@ class AgentUser(TablePage):
             start_date = createdate.strftime('%Y-%m-%d')
             end_date = (createdate+ relativedelta(months=1) ).strftime('%Y-%m-%d')
             AccountType = self.search_args.get('accounttype')
+            
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                merchantid = get_user_merchantid(self.crt_user)
+            else:
+                merchantid = self.search_args.get('MerchantId','null')
+            
             sql_args = {
+                'MerchantId':merchantid,
                 'AccountID': par,
                 'PageIndex': self.search_args.get('_page', 1),
                 'PageSize': self.search_args.get('_perpage', 20),
@@ -145,7 +156,7 @@ class AgentUser(TablePage):
                 'OrderBy': order_by,
             }
 
-            sql = "exec dbo.SP_AgentUser %(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s',%%s,%(AccountType)s,'%(OrderBy)s'" \
+            sql = "exec dbo.SP_AgentUser %(MerchantId)s,%(AccountID)s,%(PageIndex)s,%(PageSize)s,'%(BeginDate)s','%(EndDate)s',%%s,%(AccountType)s,'%(OrderBy)s'" \
                   % sql_args
             
             #print(sql)

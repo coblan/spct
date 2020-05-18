@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 from django.contrib import admin
 from helpers.director.shortcut import TablePage,ModelTable,model_dc,page_dc,ModelFields,FieldsPage,\
-     TabPage,RowSearch,RowSort,RowFilter,model_to_name,field_map,director
+     TabPage,RowSearch,RowSort,RowFilter,model_to_name,field_map,director,has_permit
 from ..models import TbAppversion
 from ..status_code import *
 from django.core.urlresolvers import reverse
@@ -12,7 +12,7 @@ from django.conf import settings
 from helpers.director.model_func.field_proc import BaseFieldProc
 import os
 from subprocess import Popen
-
+from hello.merchant_user import get_user_merchantid
 
 import logging
 general_log = logging.getLogger('general_log')
@@ -29,7 +29,14 @@ class AppPackage(TablePage):
         pop_edit_field='versionid'
         model=TbAppversion
         exclude=[]
-        fields_sort=['versionid','versionname','md5','terminal','required','size','valid','description']
+        fields_sort=['merchant','versionid','versionname','md5','terminal','required','size','valid','description']
+        
+        def inn_filter(self, query):
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                return query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            else:
+                return query
+        
         def dict_head(self, head):
             dc={
                 'valid':80,
@@ -59,19 +66,37 @@ class AppPackage(TablePage):
             return ls
                          #'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
         class filters(RowFilter):
-            names=['description','terminal','valid']
             icontains=['description']
+            
+            @property
+            def names(self):
+                if has_permit(self.crt_user,'-i_am_merchant'):
+                    return ['description','terminal','valid']
+                else:
+                    return ['merchant','description','terminal','valid']
               
     
 class AppPackageForm(ModelFields):
     extra_mixins=['app_pkg']
     readonly = ['plisturl']
+    
     class Meta:
         model = TbAppversion
         exclude = []
     
+    @property
+    def hide_fields(self):
+        if has_permit(self.crt_user,'-i_am_merchant'):
+            return ['merchant']
+        else:
+            return []
+    
+    def clean_dict(self, dc):
+        if has_permit(self.crt_user,'-i_am_merchant'):
+            dc['merchant'] = get_user_merchantid(self.crt_user)
+        return dc
+    
     def dict_head(self, head):
-
         if head['name'] in ['md5','size']:
             head['readonly']=True
         if head['name'] == 'plisturl':
@@ -90,6 +115,7 @@ class AppPackageForm(ModelFields):
             head['fv_rule'] = 'length(~200)'
             
         return head
+    
     
     def clean_save(self): 
         if self.instance.terminal ==1:

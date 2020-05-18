@@ -1,11 +1,14 @@
 from helpers.case.jb_admin.admin_user import UserPage,UserFields
-from helpers.director.shortcut import page_dc,director,has_permit
+from helpers.director.shortcut import page_dc,director,has_permit,RowFilter
 from .models import UserProfile
 from maindb.models import TbMerchants
 from django.contrib.auth.models import User,Group
 
-def get_user_merchantid(user):
-    return 1
+def get_user_merchantid(user,default=None):
+    if has_permit(user,'-i_am_merchant'):
+        return user.userprofile.merchantid
+    else:
+        return default
 
 class Jb_with_merchant_User(UserPage):
     class tableCls(UserPage.tableCls):
@@ -38,6 +41,20 @@ class Jb_with_merchant_User(UserPage):
                 {'name':'merchantid','label':'商户号'},
             ])
             return heads
+        
+        class filters(RowFilter):
+            names=['first_name','groups__name','is_superuser','is_staff','is_active','userprofile__merchantid']
+            icontains=['first_name','groups__name']
+            
+            def getExtraHead(self):
+                return [
+                    {'name':"userprofile__merchantid",'label':'商户','editor':'com-filter-select','options':[
+                        {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
+                        ]},
+                    {'name':'groups__name','label':'权限分组','show':'!scope.ps.search_args.groups_id'}
+                ]
+            
+            
 
 class WithMerchantUserForm(UserFields):
     overlap_fields=['merchantid']
