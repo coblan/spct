@@ -433,7 +433,7 @@ sim_signal = {
 field_map = {
     maindb.cus_models_fields.CusPictureField	:maindb.cus_models_fields.CusPictureMap,
     maindb.cus_models_fields.CusFileField	:maindb.cus_models_fields.CusFielFieldProc,
-    maindb.cus_models_fields.CloudFileField	:maindb.cus_models_fields.CloudFileFieldProc,
+    #maindb.cus_models_fields.CloudFileField	:maindb.cus_models_fields.CloudFileFieldProc,
     helpers.director.model_func.cus_fields.cus_picture.PictureField	:helpers.director.model_func.cus_fields.cus_picture.PictureProc,
     helpers.director.model_func.cus_fields.cus_decimal.CusDecimalField	:helpers.director.model_func.cus_fields.cus_decimal.CusDecimalProc,
     maindb.create_user.CreateUserField	:maindb.create_user.CreateUserProc,

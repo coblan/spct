@@ -64,11 +64,11 @@ class PcMenu(BaseEngine):
                 {'label':'活动记录','url':page('activity_record'),'visible':can_touch(TbActivityRecord,crt_user)},
                 #{'label': _('Activity'), 'url': page('activity'), 'visible': can_touch(TbActivity, crt_user), },
                 {'label': '用户留言', 'url': page('feedback'), 'visible': can_touch(TbAgentleavemsg, crt_user), },
-                {'label': '用户排行', 'visible': lambda liveitem:liveitem['submenu'], 
-                 'submenu': [
-                     {'label': '虚拟用户', 'url': page('rankuser'), 'visible': can_touch(TbUserConst, crt_user), },
-                     {'label': '虚拟排行', 'url': page('rank'), 'visible': can_touch(TbUserRank, crt_user), },                      
-                     ],},
+                #{'label': '用户排行', 'visible': lambda liveitem:liveitem['submenu'], 
+                 #'submenu': [
+                     #{'label': '虚拟用户', 'url': page('rankuser'), 'visible': can_touch(TbUserConst, crt_user), },
+                     #{'label': '虚拟排行', 'url': page('rank'), 'visible': can_touch(TbUserRank, crt_user), },                      
+                     #],},
                 {'label': '红利发放', 'url': page('bonuspage'),'visible': can_touch(TbBonuslog, crt_user), },
                 {'label':'启动广告','url':page('advertise'),'visible':can_touch(TbAdvertisement,crt_user)},
                 {'label':'推送消息','url':page('message'),'visible':can_touch(TbMessage,crt_user)},

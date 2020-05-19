@@ -65,6 +65,7 @@ MIDDLEWARE_CLASSES = [
     #'maindb.middleware.password_expire.PasswordExpire',
     #'maindb.middleware.login_expire.LoginExpire',
     'helpers.director.middleware.request_cache.RequestCacheMiddleware',
+    'maindb.middleware.merchant_info.MerchantInfo',
 ]
 
 ROOT_URLCONF = 'urls'

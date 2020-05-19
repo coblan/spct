@@ -14,7 +14,6 @@ from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.access.permit import has_permit
 from .gen_help_file import gen_help_file
-from hello.merchant_user import get_user_merchantid
 
 class HelpPage(TablePage):
     template = 'jb_admin/table.html'
@@ -35,34 +34,38 @@ class HelpPage(TablePage):
         return ctx
     
     def get_named_ctx(self): 
-
+        help_form = HelpForm(crt_user=self.crt_user)
         ls = [
-             {
-                 'name':'help_form',
-                 'label':'基本信息',
-                 'com':'com-tab-fields-v1',
-                 'init_express':''' ex.vueAssign(scope.row,scope.vc.par_row)
-                    if(!scope.vc.par_row.pk){
-                         var par = scope.ps.parents.slice(-1)[0]; 
-                         ex.vueAssign(scope.row,{mtype:par.value,})
-                     }
-                 ''',
-                 'fields_ctx':HelpForm().get_head_context(),
-             }
-            ]
+            {'name': 'help_form',
+             'label': '基本信息',
+             'com': 'com-tab-fields',
+             'get_data': {
+                 'fun': 'table_row',
+                 # 'kws':{
+                 # 'director_name':help_form.get_director_name(),
+                 # 'relat_field':'pk',
+                 # }
+             },
+             'after_save': {
+                 'fun': 'update_or_insert'
+             },
+             'heads': help_form.get_heads(),
+             'ops': help_form.get_operations()
+             },
+               ]
         
         
         return {
             'helpcenter_tabs': ls,
-            #'mtype_options':  get_mtype_options(),
+            'mtype_options':  get_mtype_options(),
         }
     
     class tableCls(ModelTable):
         model = TbQa
         exclude=[]
 
-        #pop_edit_field='title' 
-        fields_sort=['merchant','title','status','priority','op']  # 'mtype',
+        #pop_edit_field='title'
+        fields_sort=['title','mtype','status','priority']
         
         #def get_operation(self):
 
@@ -71,72 +74,24 @@ class HelpPage(TablePage):
                 #if op['name'] == 'add_new':
                     #op['tab_name'] = 'help_form'
             #return ops
-        
-        def getExtraHead(self):
-            return [
-                {'name':'op','label':'操作',
-                 'editor':'com-table-ops-cell',
-                 'fields_ctx':HelpForm().get_head_context(),
-                  'ops':[
-                     {
-                         'editor':'com-op-plain-btn',
-                         'label':'编辑',
-                         'class':'btn btn-primary btn-xs',
-                         'action':"""scope.ps.switch_to_tab({ctx_name:'helpcenter_tabs',tab_name:'help_form',par_row:scope.row})"""}
-                     #'action':"""var fctx=scope.head.fields_ctx;[fctx.row,fctx.ops_loc]=[scope.row,"bottom"];cfg.pop_vue_com('com-form-one',fctx).then(row=>{ex.vueAssign(scope.row,row)}) """}
-                     
-                     ],}
-            ]
-        
-        def inn_filter(self, query):
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
-                
-            if self.kw.get('_par',0) >0:
-                query= query.filter(mtype = self.kw.get('_par')) 
-            else:
-                query= query.filter(mtype = 0)
-            return query
-        
-        def getParents(self):
-            ls =[]
-            par_pk = self.kw.get('_par',0)
-            if par_pk > 0 :
-                parent = TbQa.objects.get(type = par_pk)
-                ls.append({'value':parent.type,'label':str(parent)})
-                #if parent.type !=0:
-                    #parent = parent.parent
-                #else:
-                    #break
-                
-            ls.append({'value':0,'label':'根目录'})
-            ls.reverse()
-            return ls
 
         def dict_head(self, head):
             dc = {
                 'title': 250,
-                'mtype': 300,
-                'priority':150,
+                'mtype': 300
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             if head['name'] == 'status':
                 head['editor'] = 'com-table-bool-shower'
-                
-            #if head['name'] == 'title':
-                #head['editor'] = 'com-table-switch-to-tab'
-                #head['tab_name'] = 'help_form'
-                #head['ctx_name'] = 'helpcenter_tabs'
-            
             if head['name'] == 'title':
-                head['editor'] = 'com-table-click'
-                head['width'] = 200
-                head['action'] ='if(scope.row.type==0){cfg.toast("没有子目录了,只能有两级帮助!")}else{scope.ps.search_args._par = scope.row.type;scope.ps.search()}'
+                head['editor'] = 'com-table-switch-to-tab'
+                head['tab_name'] = 'help_form'
+                head['ctx_name'] = 'helpcenter_tabs'
                 
-            #if head['name'] == 'mtype':
-                #head['options'] = get_mtype_options()
-                #head['editor'] = 'com-table-array-option-mapper'
+            if head['name'] == 'mtype':
+                head['options'] = get_mtype_options()
+                head['editor'] = 'com-table-array-option-mapper'
 
             return head
 
@@ -151,7 +106,6 @@ class HelpPage(TablePage):
             add_new.update({
                 'tab_name': 'help_form',
                 'ctx_name': 'helpcenter_tabs',
-                'init_express':'alert("bb")'
             })
             operations.extend([
                 {
@@ -189,46 +143,39 @@ class HelpPage(TablePage):
             gen_help_file()
             return {'status': 'success',}
 
-        #class filters(RowFilter):
-            #names = ['mtype']
+        class filters(RowFilter):
+            names = ['mtype']
 
-            #def dict_head(self, head):
-                #if head['name'] == 'mtype':
-                    #head['ctx_name'] = 'mtype_options'
-                    ##head['ctx_field'] = 'options'
-                    #head['options'] = []
-                    ##get_mtype_options()
-                    ##head[] = get_mtype_options()
-                    ##head['director_name'] = 'get_mtype_options'
-                    ##head['update_options_on'] = 'row.update_or_insert'
+            def dict_head(self, head):
+                if head['name'] == 'mtype':
+                    head['ctx_name'] = 'mtype_options'
+                    #head['ctx_field'] = 'options'
+                    head['options'] = []
+                    #get_mtype_options()
+                    #head[] = get_mtype_options()
+                    #head['director_name'] = 'get_mtype_options'
+                    #head['update_options_on'] = 'row.update_or_insert'
                     
-                #return head
-            ## def get_options(self,name):
-            ## if name =='mtype':
-            ## return get_mtype_options()
-            ## else:
-            ## return RowFilter.get_options(self,name)
+                return head
+            # def get_options(self,name):
+            # if name =='mtype':
+            # return get_mtype_options()
+            # else:
+            # return RowFilter.get_options(self,name)
         class sort(RowSort):
             names = ['priority']
 
 
 class HelpForm(ModelFields):
-    @property
-    def field_sort(self):
-        if has_permit(self.crt_user,'-i_am_merchant'):
-            return ['title', 'status','priority',  'description']
-        else:
-            return ['merchant','title', 'status','priority',  'description'] # 'mtype',
-    
+    field_sort = ['title', 'status','priority', 'mtype', 'description']
+
     class Meta:
         model = TbQa
         exclude = []
 
     def clean_dict(self, dc):
         super().clean_dict(dc)
-        if has_permit(self.crt_user,'-i_am_merchant'):
-            dc['merchant'] = get_user_merchantid(self.crt_user)
-        
+        #if not dc.get('pk', None):
         if dc.get('mtype') == 0 :
             if dc.get('type') == 0:
                 dc['type'] = len(TbQa.objects.values('type').distinct())
@@ -242,14 +189,15 @@ class HelpForm(ModelFields):
     def dict_head(self, head):
         if head['name'] == 'mtype':
             head['options'] = []
-            #head['ctx_name'] = 'mtype_options'
-            #head['editor'] = 'com-field-select'
-            #head['director_name'] = 'get_mtype_options'
-            #head['update_options_on'] = 'row.update_or_insert'
+            head['ctx_name'] = 'mtype_options'
+            #head['options'] = get_mtype_options()
+            #head['remote_options'] = 'get_mtype_options'
+            head['editor'] = 'com-field-select'
+            head['director_name'] = 'get_mtype_options'
+            head['update_options_on'] = 'row.update_or_insert'
             
         elif head['name'] == 'description':
             head['editor'] = 'richtext'
-            
             #head['config'] = {
                 #'imageUploadUrl': reverse('ckeditor_img'),
             #}
@@ -258,18 +206,18 @@ class HelpForm(ModelFields):
         return head
 
 
-#@request_cache
-#def get_mtype_options(row = None, **kws):
-    #ls = [{'value': 0, 'label': '顶层'}]
-    #for i in TbQa.objects.filter(mtype=0).order_by('-priority'):
-        #ls.append({'value': i.type, 'label': i.title})
-    #return ls
+@request_cache
+def get_mtype_options(row = None, **kws):
+    ls = [{'value': 0, 'label': '顶层'}]
+    for i in TbQa.objects.filter(mtype=0).order_by('-priority'):
+        ls.append({'value': i.type, 'label': i.title})
+    return ls
 
 
 director.update({
     'help.table': HelpPage.tableCls,
     'help.table.edit': HelpForm, 
-    #'get_mtype_options': get_mtype_options,
+    'get_mtype_options': get_mtype_options,
     'gen_help_static_file': HelpPage.tableCls.gen_help_static_file,
     
 })

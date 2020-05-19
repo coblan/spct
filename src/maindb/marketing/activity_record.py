@@ -1,5 +1,7 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter,has_permit
 from maindb.models import TbActivityRecord
+from hello.merchant_user import get_user_merchantid
+
 class ActivityRecoredPage(TablePage):
     def get_label(self):
         return '活动记录'
@@ -22,8 +24,19 @@ class ActivityRecoredPage(TablePage):
                 head['width'] = width.get(head['name'])
             return head
         
+        def inn_filter(self, query):
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            return query
+        
         class filters(RowFilter):
-            names = ['account__nickname']
+            @property
+            def names(self):
+                if has_permit(self.crt_user,'-i_am_merchant'):
+                    return ['account__nickname']
+                else:
+                    return ['merchant','account__nickname']
+                    
             range_fields=['createtime']
             icontains = ['account__nickname']
             def getExtraHead(self):

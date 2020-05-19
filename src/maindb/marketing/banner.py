@@ -138,7 +138,10 @@ class BannerForm(ModelFields):
 
     def dict_head(self, head):
         if head['name'] in ['picturename','pcpicturename']:
-            head['up_url'] = '/d/upload?path=public/banner'
+            if self.crt_user.merchant:
+                head['up_url'] = '/d/upload?path=public/%s/banner'%self.crt_user.merchant.merchantname
+            else:
+                head['up_url'] = '/d/upload?path=public/banner'
         if head['name'] == 'createuser':
             head['editor'] = 'com-field-label-shower'
         return head

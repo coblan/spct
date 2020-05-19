@@ -7,6 +7,7 @@ from urllib.parse import urljoin
 from helpers.func.sim_signal import sim_signal
 from django.conf import settings
 import os
+from hello.merchant_user import get_user_merchantid
 
 class ActiviyV2Page(TablePage):
     def get_template(self, prefer=None):
@@ -49,10 +50,15 @@ class ActiviyV2Page(TablePage):
     
     class tableCls(ModelTable):
         #hide_fields=['rules','content','componentname','componentparams','templateid','ismutex']
-        fields_sort=['id','title','subtitle','enabled','categoryid','begintime','endtime','banner','image','target','displaytype','sort','remark','editorid','creatorid','createtime','edittime']
+        fields_sort=['id','merchant','title','subtitle','enabled','categoryid','begintime','endtime','banner','image','target','displaytype','sort','remark','editorid','creatorid','createtime','edittime']
         model = TbActivityV2
         exclude=['url']
-        pop_edit_field = 'id'
+        pop_edit_fields = ['id']
+        
+        def inn_filter(self, query):
+            if has_permit(self.crt_user,'-i_am_merchant'):
+                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            return query
         
         def dict_head(self, head):
             dc={
@@ -114,17 +120,33 @@ class ActiviyV2Page(TablePage):
             names=['sort']
         
         class filters(RowFilter):
-            names=['enabled']
+            @property
+            def names(self):
+                if has_permit(self.crt_user,'-i_am_merchant'):
+                    return ['enabled']
+                else:
+                    return ['merchant','enabled']
             
         class search(RowSearch):
             names = ['title']
     
 class ActivityV2Form(ModelFields):
-    hide_fields=['creatorid','editorid']
+    
+    @property
+    def hide_fields(self):
+        if has_permit(self.crt_user,'-i_am_merchant'):
+            return ['merchant','creatorid','editorid']
+        else:
+            return ['creatorid','editorid']
+        
     class Meta:
         model = TbActivityV2
         exclude=['url']
-        
+    
+    def clean_dict(self, dc):
+        if has_permit(self.crt_user,'-i_am_merchant'):
+            dc['merchant'] = get_user_merchantid(self.crt_user)
+        return dc
         
     def dict_head(self, head):
         if head['name']=='rules':

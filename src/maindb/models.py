@@ -12,7 +12,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 from .status_code import *
-from .cus_models_fields import CusPictureField, CusFileField,CloudFileField
+from .cus_models_fields import CusPictureField, CusFileField #,CloudFileField
 from helpers.director.model_func.cus_fields.multichoice import MultiChoiceField,MultiChoiceTextField
 
 from helpers.director.model_func.cus_fields.cus_picture import PictureField
@@ -328,7 +328,8 @@ class TbActivityV2(models.Model):
     #image = models.CharField(db_column='Image', max_length=512, blank=True, null=True)  # Field name made lowercase.
     image = CusPictureField(db_column='Image', max_length=512, blank=True, null=True,verbose_name='首页弹出图')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True,choices = ACTIVITY2_CATAGORY,verbose_name='活动类型')  # Field name made lowercase.
-    
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+
     
     class Meta:
         managed = False
@@ -350,7 +351,8 @@ class TbActivityRecord(models.Model):
     turnover = models.DecimalField(db_column='Turnover', max_digits=38, decimal_places=4,verbose_name='流水')  # Field name made lowercase.
     bonus = models.DecimalField(db_column='Bonus', max_digits=38, decimal_places=4,verbose_name='奖金')  # Field name made lowercase.
     state = models.IntegerField(db_column='State',verbose_name='状态',choices=ACTIVITY_RECORD_STATE)  # Field name made lowercase.
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
     class Meta:
         managed = False
         db_table = 'TB_Activity_Record'
@@ -675,7 +677,8 @@ class TbBonuslog(models.Model):
     createuser = CreateUserField(db_column='CreateUser',verbose_name='操作人',blank=True,null=True) # models.IntegerField(db_column='CreateUser')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='时间')  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=100, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_BonusLog'
@@ -2070,6 +2073,7 @@ class TbQa(models.Model):
                                       choices=ONLINE_STATUS)  # Field name made lowercase.
     updatetime = models.DateTimeField(db_column='UpdateTime', auto_now=True)  # Field name made lowercase.
     ver = models.IntegerField(db_column='Ver', default=0, blank=True)  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
 
     class Meta:
         managed = False

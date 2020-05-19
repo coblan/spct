@@ -10,6 +10,12 @@ def get_user_merchantid(user,default=None):
     else:
         return default
 
+def get_user_merchant(user,default=None):
+    if has_permit(user,'-i_am_merchant'):
+        return  TbMerchants.objects.get(id= user.userprofile.merchantid  )
+    else:
+        return default
+
 class Jb_with_merchant_User(UserPage):
     class tableCls(UserPage.tableCls):
         fields_sort = ['username','first_name','groups','is_superuser','is_staff','is_active','merchantid','last_login']
