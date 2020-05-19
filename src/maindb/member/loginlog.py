@@ -18,14 +18,14 @@ class LoginLogPage(TablePage):
     class tableCls(ModelTable):
         model = TbLoginlog
         exclude = []
-        fields_sort = ['merchant','accountid_id', 'accountid__nickname', 'devicecode', 'deviceip', 'area', 'appversion',
+        fields_sort = ['merchant','account_id', 'account__nickname', 'devicecode', 'deviceip', 'area', 'appversion',
                        'devicename',
                        'deviceversion',
                        'logintype', 'createtime']
 
         def dict_head(self, head):
             dc = {
-                'accountid_id': 120,
+                'account_id': 120,
                 'devicecode': 120,
                 'deviceip': 120,
                 'appversion': 100,
@@ -33,6 +33,7 @@ class LoginLogPage(TablePage):
                 'deviceversion': 120,
                 'area': 200,
                 'createtime': 150,
+                'account__nickname':150,
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -40,8 +41,8 @@ class LoginLogPage(TablePage):
 
         def getExtraHead(self):
             return [
-                {'name': 'accountid__nickname', 'label': '用户昵称'},
-                {'name': 'accountid_id', 'label': '用户ID'}
+                {'name': 'account__nickname', 'label': '用户昵称'},
+                {'name': 'account_id', 'label': '用户ID'}
             ]
 
         def get_operation(self):
@@ -50,22 +51,30 @@ class LoginLogPage(TablePage):
                 ]
         
         def inn_filter(self, query):
-            if self.is_export_excel:
-                query =  query.using('Sports_nolock')
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id = get_user_merchantid(self.crt_user) )
+            if self.crt_user.merchant:
+                query = query.filter(merchant_id = self.crt_user.merchant.id)
+            #if self.is_export_excel:
+            query =  query.using('Sports_nolock').select_related('account')
+            #if has_permit(self.crt_user,'-i_am_merchant'):
+                #query = query.filter(merchant_id = get_user_merchantid(self.crt_user) )
             return query
             #return query.values(*self.fields_sort).order_by('-createtime')
-            
+        
+        def dict_row(self, inst):
+            return {
+                'account_id':inst.account.accountid,
+                'account__nickname':inst.account.nickname
+            }
+        
         class search(SelectSearch):
-            names = ['accountid__nickname','area','devicecode','deviceip']
-            exact_names = ['accountid']
+            names = ['account__nickname','area','devicecode','deviceip']
+            exact_names = ['account']
 
             def get_option(self, name):
-                if name == 'accountid':
+                if name == 'account':
                     return {'value': name,
                             'label': '用户ID', }
-                elif name == 'accountid__nickname':
+                elif name == 'account__nickname':
                     return {
                         'value': name,
                         'label': '昵称',

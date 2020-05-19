@@ -30,9 +30,14 @@ class MatchesStatisticsPage(TablePage):
                 head['editor'] = 'com-table-mapper'
             if head['name'] == 'matchid':
                 if can_touch (TbTicketmaster,self.crt_user):
-                    head['editor'] = 'com-table-switch-to-tab'
-                    head['tab_name'] = 'detailStatic'
-                    head['ctx_name'] = 'match_statistic'
+                    head.update({
+                        'editor':'com-table-click',
+                        'action':'''scope.row._search_args = scope.ps.search_args;scope.ps.switch_to_tab({ctx_name:'match_statistic',tab_name:'detailStatic',par_row:scope.row})  '''
+                    })
+                    #head['editor'] = 'com-table-switch-to-tab'
+                    #head['tab_name'] = 'detailStatic'
+                    #head['ctx_name'] = 'match_statistic'
+                    
 
             
             return head
@@ -232,7 +237,10 @@ class MatchesStatisticsPage(TablePage):
             'label': '详细统计',
             'com': 'com-tab-table',
             'par_field': 'matchid',
-            'table_ctx': DetailStatistic(crt_user=crt_user).get_head_context(),
+            'table_ctx': {
+                'created_express':'scope.ps.search_args.merchantid=scope.vc.par_row._search_args.merchantid',
+                **DetailStatistic(crt_user=crt_user).get_head_context()
+                },
             'visible': True,
             },
            {'name': 'ticket_master',
@@ -284,8 +292,9 @@ class DetailStatistic(PlainTable):
             'matchid': self.kw.get('matchid'),
             'half_or_full': self.search_args.get('half_or_full', 'null'),
             'oddkind': self.search_args.get('oddkind', 'null'),
+            'merchantid':self.crt_user.merchant.id if self.crt_user.merchant else  self.kw.get('merchantid' ,'null')
         }    
-        sql = r"exec dbo.%(sql_fun)s %(matchid)s" % sql_args   
+        sql = r"exec dbo.%(sql_fun)s %(matchid)s,%(merchantid)s" % sql_args   
         
         with connections['Sports'].cursor() as cursor:
             cursor.execute(sql)
@@ -302,6 +311,13 @@ class DetailStatistic(PlainTable):
 
     
 class TickmasterTab(TicketMasterPage.tableCls):
+    
+    def get_head_context(self):
+        ctx = super().get_head_context()
+        ctx.update({
+            'created_express':'scope.ps.search_args.merchant=scope.vc.par_row._search_args.merchantid'
+        })
+        return ctx
     
     def inn_filter(self, query): 
         query = super().inn_filter(query)

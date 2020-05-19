@@ -914,7 +914,7 @@ class TbIpdata(models.Model):
 
 class TbLoginlog(models.Model):
     id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    accountid = models.ForeignKey(to=TbAccount, db_constraint=False,
+    account = models.ForeignKey(to=TbAccount, db_constraint=False,
                                   db_column='AccountId', verbose_name='账号')  # Field name made lowercase.
     # accountid = models.IntegerField(db_column='AccountId')  # Field name made lowercase.
     devicecode = models.CharField(db_column='DeviceCode', verbose_name=_('Device Code'),
