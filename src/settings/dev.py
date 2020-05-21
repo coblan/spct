@@ -285,13 +285,32 @@ NOTICE = {
 
 OPEN_SECRET = True
 
+#JPUSH = {
+    #'app_key': '28ee0a4aae701e01d974bce6',
+    #'master_secret' : '38fa20f39645037ce2eb6667',
+    #'ios_production':False,
+    #'proxy':{
+        ##'https':'http://jg.cnd3.com'
+        #},
+#}
+
 JPUSH = {
-    'app_key': '28ee0a4aae701e01d974bce6',
-    'master_secret' : '38fa20f39645037ce2eb6667',
-    'ios_production':False,
-    'proxy':{
-        #'https':'http://jg.cnd3.com'
-        },
+    'zq':{
+          'app_key': '28ee0a4aae701e01d974bce6',
+          'master_secret' : '38fa20f39645037ce2eb6667',
+          'ios_production':False,
+          'proxy':{
+              #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
+              },
+    },
+    'fq':{
+        'app_key': '28ee0a4aae701e01d974bce6',
+          'master_secret' : '38fa20f39645037ce2eb6667',
+          'ios_production':False,
+          'proxy':{
+              #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
+              },
+    }
 }
 
 DES3_KEY= '3E35EB83050243D589482F2E'

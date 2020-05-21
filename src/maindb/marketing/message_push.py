@@ -283,7 +283,7 @@ def broad_message(inst):
     push_cfg = settings.JPUSH.get(merchantname)
     msg,msgid = inst.title,inst.pk
     app_key,master_secret,proxy = push_cfg.get('app_key'),push_cfg.get('master_secret'),push_cfg.get('proxy') 
-    _jpush = MyJpush(app_key, master_secret,proxy)
+    _jpush = MyJpush(app_key, master_secret,proxy=proxy)
     push = _jpush.create_push()
     push.audience = jpush.all_
     #push.message =  jpush.message(msg_content='',extras= {'message_id':msgid} )
@@ -306,7 +306,7 @@ def jiguang_push_message(uids,inst) : # msg,msgid):
      
     #app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
     for batch_uids in split_list(uids, 1000):
-        _jpush = MyJpush(app_key, master_secret,proxy)
+        _jpush = MyJpush(app_key, master_secret,proxy=proxy)
         push = _jpush.create_push()
         push.audience = jpush.audience(
                     jpush.alias(*batch_uids)
