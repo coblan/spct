@@ -18,7 +18,7 @@ class MyJpush(jpush.JPush):
     
     def __init__(self, key, secret, timeout=30, zone='default',proxy={}):
         super().__init__(key, secret, timeout, zone)
-        secret.proxy = proxy
+        self.proxy = proxy
     
     def _request(self, method, body, url, content_type=None, version=None, params=None):
         
