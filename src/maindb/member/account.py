@@ -343,7 +343,7 @@ class AccountPage(TablePage):
                    #'createtime', 'source','accounttype','weight','groupid']
         fields_sort = ['merchant', 'accountid', 'account', 'nickname','createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
-                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid','memo','parlayoddscheck','singleoddscheck']
+                       'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid','memo','parlayoddscheck','singleoddscheck','agentstatus']
         
         class filters(RowFilter):
             #names=['merchant','accounttype','groupid','csuserid__name','parlayoddscheck']
@@ -353,9 +353,9 @@ class AccountPage(TablePage):
             @property
             def names(self):
                 if has_permit(self.crt_user,'-i_am_merchant'):
-                    return ['accounttype','groupid','csuserid__name','parlayoddscheck']
+                    return ['agentstatus','accounttype','groupid','csuserid__name','parlayoddscheck']
                 else:
-                    return ['merchant','accounttype','groupid','csuserid__name','parlayoddscheck']
+                    return ['merchant','agentstatus','accounttype','groupid','csuserid__name','parlayoddscheck']
             
             def getExtraHead(self):
                 return [
@@ -641,7 +641,7 @@ class AccoutBaseinfo(ModelFields):
     field_sort = ['account', 'nickname', 'amount', 'status', 'createtime','agent', 'verify', 'viplv', 'bonusrate',
                   'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','anomalyticketnum',
                   'powertype' if getattr(settings,'OPEN_SECRET',False) else '',
-                  'parlayoddscheck','singleoddscheck']
+                  'parlayoddscheck','singleoddscheck','agentstatus']
     
     readonly = ['createtime', 'account', 'nickname', 'amount', 'agentamount','accounttype','viplv','bonusrate']
     def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):

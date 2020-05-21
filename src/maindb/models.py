@@ -135,7 +135,7 @@ class TbAccount(models.Model):
     levelpoints = models.DecimalField(db_column='LevelPoints', max_digits=18, decimal_places=4)  # Field name made lowercase.
     downpoints = models.DecimalField(db_column='DownPoints', max_digits=18, decimal_places=4)  # Field name made lowercase.
     leveltime = models.DateTimeField(db_column='LevelTime', blank=True, null=True)  # Field name made lowercase.
-    agentstatus = models.IntegerField(db_column='AgentStatus')  # Field name made lowercase.
+    agentstatus = models.IntegerField(db_column='AgentStatus',verbose_name='开通代理',choices=ACCOUNT_AGENT_STATUS)  # Field name made lowercase.
     #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
     merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
     
@@ -1572,7 +1572,8 @@ class TbMessage(models.Model):
     status = models.IntegerField(db_column='Status',default=1,verbose_name='状态',choices=VALID_STATUS)  # Field name made lowercase.
     content = RichtextField(db_column='Content',verbose_name='内容')
     receivertype = models.IntegerField(db_column='ReceiverType',default=0,blank=True)  # Field name made lowercase.
-   
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
     
     class Meta:
         managed = False

@@ -74,6 +74,12 @@ class MessagePage(TablePage):
         #pop_edit_fields=['id']
         hide_fields = ['content','receivertype']
         
+        def inn_filter(self, query):
+            if self.crt_user.merchant:
+                return query.filter(merchant = self.crt_user.merchant)
+            else:
+                return query
+        
         def dict_head(self, head):
             width = {
                 'title':160,
@@ -107,14 +113,27 @@ class MessagePage(TablePage):
             return ops
         
         class filters(RowFilter):
-            names = ['typeid','status']
+            @property
+            def names(self):
+                if self.crt_user.merchant:
+                    return ['typeid','status']
+                else:
+                    return ['merchant','typeid','status']
+
         
         class search(RowSearch):
             names = ['title']
         
     
 class MessageForm(ModelFields):
-    hide_fields = ['issent','receivertype']
+    
+    @property
+    def hide_fields(self):
+        if self.crt_user.merchant:
+            return ['merchant','issent','receivertype']
+        else:
+            return ['issent','receivertype']
+
     class Meta:
         model = TbMessage
         exclude =['sender','abstract']
@@ -124,6 +143,8 @@ class MessageForm(ModelFields):
             ls = re.split('[^\d]+',dc.get('userids'))
             ls = [x for x in ls if x !='']
             dc['userids'] = ';'.join(ls)
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
         return dc
     
     def clean_save(self):

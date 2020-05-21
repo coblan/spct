@@ -94,6 +94,10 @@ ACCOUNT_STATUS = (
     (0, '禁用'),
     (1, '激活')
 )
+ACCOUNT_AGENT_STATUS = (
+    (0,'关闭'),
+    (1,'开启'),
+)
 
 VIP_LEVEL = (
     (1, '青铜'),
