@@ -1,7 +1,7 @@
 from helpers.director.shortcut import ModelTable,TablePage,director,page_dc,ModelFields,get_request_cache,RowFilter,RowSearch,director_view
 from helpers.director.access.permit import can_touch
 
-from maindb.models import TbMessage,TbMessageReceiver,TbMessagetype,TbAccount
+from maindb.models import TbMessage,TbMessageReceiver,TbMessagetype,TbAccount,TbMerchants
 from django.utils.html import strip_tags
 import jpush
 from django.conf import settings
@@ -15,7 +15,11 @@ logger = logging.getLogger('jpush')
 from jpush import common
 
 class MyJpush(jpush.JPush):
-
+    
+    def __init__(self, key, secret, timeout=30, zone='default',proxy={}):
+        super().__init__(key, secret, timeout, zone)
+        secret.proxy = proxy
+    
     def _request(self, method, body, url, content_type=None, version=None, params=None):
         
         headers = {}
@@ -27,7 +31,7 @@ class MyJpush(jpush.JPush):
                      method, url, '\n\t'.join('%s: %s' % (key, value) for (key, value) in headers.items()), body)
         try:
             response = self.session.request(method, url, data=body, params=params,
-                                            headers=headers, timeout=self.timeout,proxies=settings.JPUSH.get('proxy'))
+                                            headers=headers, timeout=self.timeout,proxies=self.proxy )
         except requests.exceptions.ConnectTimeout:
             raise common.APIConnectionException("Connection to api.jpush.cn timed out.")
         except Exception:
@@ -245,12 +249,13 @@ def send_user_message(inst):
         vipgroupids= inst.vipgroupids.split(';')
         query = query.filter(viplv__in =  vipgroupids,)
     userids = [str( account.accountid ) for account in query]
-    jiguang_push_message(userids, inst.title,inst.pk)
+    jiguang_push_message(userids, inst ) #inst.title,inst.pk)
 
-def broad_message(inst):
-    jiguang_broad_message(inst.title,inst.pk)
+#def broad_message(inst):
+    #jiguang_broad_message(inst)
   
 def dispatch_message(inst):
+    "写sql数据库，TbMessageReceiver,用户查询自己的消息列表"
     total_list =[]
     
     TbMessageReceiver.objects.filter(messageid = inst.pk) .delete()
@@ -273,16 +278,19 @@ def dispatch_message(inst):
     
     TbMessageReceiver.objects.bulk_create(total_list)
 
-def jiguang_broad_message(msg,msgid):
-    app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
-    _jpush = MyJpush(app_key, master_secret)
+def broad_message(inst):
+    merchantname = inst.merchant.merchantname
+    push_cfg = settings.JPUSH.get(merchantname)
+    msg,msgid = inst.title,inst.pk
+    app_key,master_secret,proxy = push_cfg.get('app_key'),push_cfg.get('master_secret'),push_cfg.get('proxy') 
+    _jpush = MyJpush(app_key, master_secret,proxy)
     push = _jpush.create_push()
     push.audience = jpush.all_
     #push.message =  jpush.message(msg_content='',extras= {'message_id':msgid} )
     android = jpush.android(alert=msg,extras={'message_id':msgid})
     ios = jpush.ios(alert=msg,extras={'message_id':msgid})
     push.notification = jpush.notification(alert= msg,android=android,ios=ios)
-    push.options = {'apns_production':settings.JPUSH.get('ios_production')}
+    push.options = {'apns_production':push_cfg.get('ios_production')}
     push.platform = jpush.all_
     
     operation_log.info('发送广播命令!')
@@ -290,10 +298,15 @@ def jiguang_broad_message(msg,msgid):
     operation_log.info('广播消息返回结果: %s'%response)
     #print(response)
     
-def jiguang_push_message(uids,msg,msgid):
-    app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
+def jiguang_push_message(uids,inst) : # msg,msgid):
+    merchantname = inst.merchant.merchantname
+    push_cfg = settings.JPUSH.get(merchantname)
+    msg,msgid = inst.title,inst.pk
+    app_key,master_secret,proxy = push_cfg.get('app_key'),push_cfg.get('master_secret'),push_cfg.get('proxy') 
+     
+    #app_key,master_secret = settings.JPUSH.get('app_key'),settings.JPUSH.get('master_secret')
     for batch_uids in split_list(uids, 1000):
-        _jpush = MyJpush(app_key, master_secret)
+        _jpush = MyJpush(app_key, master_secret,proxy)
         push = _jpush.create_push()
         push.audience = jpush.audience(
                     jpush.alias(*batch_uids)
@@ -303,7 +316,7 @@ def jiguang_push_message(uids,msg,msgid):
         android = jpush.android(alert=msg,extras={'message_id':msgid})
         ios = jpush.ios(alert=msg,extras={'message_id':msgid},)
         push.notification = jpush.notification(alert= msg,android=android,ios=ios)
-        push.options = {'apns_production':settings.JPUSH.get('ios_production')}
+        push.options = {'apns_production':push_cfg.get('ios_production')}
         push.platform = jpush.all_
         try:
             operation_log.info('发送推送命令:uids=%s'%batch_uids)

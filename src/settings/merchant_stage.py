@@ -148,13 +148,32 @@ LOGIN_SPAN=60*60*2
 ADMIN_USER_CHECK_IP=True
 LOGIN_PSWD_EXPIRE=30 # 天
 
+#JPUSH = {
+    #'app_key': '28ee0a4aae701e01d974bce6',
+    #'master_secret' : '38fa20f39645037ce2eb6667',
+    #'ios_production':False,
+    #'proxy':{
+        ##'https': 'http://1sapa_proxy006.ccxdd.com:61111',
+        #},
+#}
+
 JPUSH = {
-    'app_key': '28ee0a4aae701e01d974bce6',
-    'master_secret' : '38fa20f39645037ce2eb6667',
-    'ios_production':False,
-    'proxy':{
-        #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
-        },
+    'zq':{
+          'app_key': '28ee0a4aae701e01d974bce6',
+          'master_secret' : '38fa20f39645037ce2eb6667',
+          'ios_production':False,
+          'proxy':{
+              #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
+              },
+    },
+    'fq':{
+        'app_key': '28ee0a4aae701e01d974bce6',
+          'master_secret' : '38fa20f39645037ce2eb6667',
+          'ios_production':False,
+          'proxy':{
+              #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
+              },
+    }
 }
 
 DES3_KEY= '3E35EB83050243D589482F2E'
