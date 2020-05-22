@@ -469,6 +469,13 @@ class NewAgentUserForm(ModelFields):
         #return {
             #'_director_name': self.get_director_name(),
         #}
+        
+    def dict_row(self, inst):
+        return {
+            'NickName':inst.nickname,
+            'CreateTime':inst.createtime
+            
+        }
     
     def clean(self): 
         super().clean()
