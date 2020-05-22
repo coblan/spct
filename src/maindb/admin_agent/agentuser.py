@@ -310,10 +310,14 @@ class AgentUser(TablePage):
                  #'after_save': 'rt=scope.search()',
                  #'label': '创建下级用户','fields_ctx': agent.get_head_context(),}, 
                  
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn' ,
-                 'after_save': 'rt=scope.ps.search()','row_match':'one_row',
-                 'match_express':'scope.row.AccountType == 1','match_msg':'只有代理用户才能修改佣金比例',
-                 'label': '修改佣金比例','fields_ctx': yong.get_head_context(),}, 
+                {'fun': 'selected_set_and_save', 
+                 'editor': 'com-op-btn' ,
+                 'after_save': 'rt=scope.ps.search()',
+                 'row_match':'one_row',
+                 'match_express':'scope.row.AgentStatus == 1',
+                 'match_msg':'只有代理用户才能修改佣金比例',
+                 'label': '修改佣金比例',
+                 'fields_ctx': yong.get_head_context(),}, 
                  
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
                 
@@ -473,8 +477,8 @@ class NewAgentUserForm(ModelFields):
     def dict_row(self, inst):
         return {
             'NickName':inst.nickname,
-            'CreateTime':inst.createtime
-            
+            'CreateTime':inst.createtime,
+            'AgentStatus':inst.agentstatus,
         }
     
     def clean(self): 
@@ -514,7 +518,7 @@ class NewAgentUserForm(ModelFields):
         self.instance.agent = self.catch_parent.agent
         self.instance.password = encode_paswd(self.kw.get('pswd'))
         self.instance.status = 1
-        self.instance.accounttype=1
+        self.instance.agentstatus=1
         agent_rule,_ = TbAgentrules.objects.get_or_create(accountid=self.instance.accountid,status=1)
         agent_rule.minamount=1
         agent_rule.maxamount=999999999
