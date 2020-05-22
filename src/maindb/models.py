@@ -132,8 +132,8 @@ class TbAccount(models.Model):
     parlayoddscheck = models.BooleanField(db_column='ParlayOddsCheck',verbose_name='串关低赔限制',default=False)  # Field name made lowercase.
     singleoddscheck = models.BooleanField(db_column='SingleOddsCheck',verbose_name='单注低陪限制',default =False)  # Field name made lowercase.
     
-    levelpoints = models.DecimalField(db_column='LevelPoints', max_digits=18, decimal_places=4)  # Field name made lowercase.
-    downpoints = models.DecimalField(db_column='DownPoints', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    levelpoints = models.DecimalField(db_column='LevelPoints', max_digits=18, decimal_places=4,default=0)  # Field name made lowercase.
+    downpoints = models.DecimalField(db_column='DownPoints', max_digits=18, decimal_places=4,default=0)  # Field name made lowercase.
     leveltime = models.DateTimeField(db_column='LevelTime', blank=True, null=True)  # Field name made lowercase.
     agentstatus = models.IntegerField(db_column='AgentStatus',verbose_name='开通代理',choices=ACCOUNT_AGENT_STATUS)  # Field name made lowercase.
     #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
