@@ -135,7 +135,7 @@ class TbAccount(models.Model):
     levelpoints = models.DecimalField(db_column='LevelPoints', max_digits=18, decimal_places=4,default=0)  # Field name made lowercase.
     downpoints = models.DecimalField(db_column='DownPoints', max_digits=18, decimal_places=4,default=0)  # Field name made lowercase.
     leveltime = models.DateTimeField(db_column='LevelTime', blank=True, null=True)  # Field name made lowercase.
-    agentstatus = models.IntegerField(db_column='AgentStatus',verbose_name='开通代理',choices=ACCOUNT_AGENT_STATUS)  # Field name made lowercase.
+    agentstatus = models.IntegerField(db_column='AgentStatus',verbose_name='开通代理',choices=ACCOUNT_AGENT_STATUS,default=0)  # Field name made lowercase.
     #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
     merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
     
