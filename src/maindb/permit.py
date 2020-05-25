@@ -280,7 +280,27 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
             ('TbEbmoneyininfo.edit',model_full_permit(TbEbmoneyininfo),model_to_name(TbEbmoneyininfo),'model'),
             ('TbEbmoneyoutinfo.edit',model_full_permit(TbEbmoneyoutinfo),model_to_name(TbEbmoneyoutinfo),'model'),
 
+            # PP
+            ('TbPpaccount',model_read_permit(TbPpaccount),model_to_name(TbPpaccount),'model'),
+            ('TbPpaccount.edit',model_full_permit(TbPpaccount),model_to_name(TbPpaccount),'model'),
+            ('TbPpprofitloss.edit',model_full_permit(TbPpprofitloss),model_to_name(TbPpprofitloss),'model'),
+            ('TbPpmoneyininfo.edit',model_full_permit(TbPpmoneyininfo),model_to_name(TbPpmoneyininfo),'model'),
+            ('TbPpmoneyoutinfo.edit',model_full_permit(TbPpmoneyoutinfo),model_to_name(TbPpmoneyoutinfo),'model'),
+            
+            # IMChess
+            ('TbImchessaccount',model_read_permit(TbImchessaccount),model_to_name(TbImchessaccount),'model'),
+            ('TbImchessaccount.edit',model_full_permit(TbImchessaccount),model_to_name(TbImchessaccount),'model'),
+            ('TBIMChessProfitLoss.edit',model_full_permit(TBIMChessProfitLoss),model_to_name(TBIMChessProfitLoss),'model'),
+            ('TBIMChessMoneyInInfo.edit',model_full_permit(TBIMChessMoneyInInfo),model_to_name(TBIMChessMoneyInInfo),'model'),
+            ('TBIMChessMoneyOutInfo.edit',model_full_permit(TBIMChessMoneyOutInfo),model_to_name(TBIMChessMoneyOutInfo),'model'),
            
+            # VR
+            ('TbVraccount',model_read_permit(TbVraccount),model_to_name(TbVraccount),'model'),
+            ('TbVraccount.edit',model_full_permit(TbVraccount),model_to_name(TbVraccount),'model'),
+            ('TBVRProfitLoss.edit',model_full_permit(TBVRProfitLoss),model_to_name(TBVRProfitLoss),'model'),
+            ('TBVRMoneyInInfo.edit',model_full_permit(TBVRMoneyInInfo),model_to_name(TBVRMoneyInInfo),'model'),
+            ('TBVRMoneyOutInfo.edit',model_full_permit(TBVRMoneyOutInfo),model_to_name(TBVRMoneyOutInfo),'model'),
+            
            # system
            ('TbUserex',model_read_permit(TbUserex),model_to_name(TbUserex),'model'),
            ('TbUserex.edit',model_full_permit(TbUserex),model_to_name(TbUserex),'model'),

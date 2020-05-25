@@ -470,6 +470,7 @@ GAMEMONEY_OUT_STATUS = (
     (2,'收回完成'),
     (4,'收回失败'),
 )
+
 ACCOUNT_POWERTYPE = (
     (1,'体育类型'),
     (2,'AG游戏'),
@@ -480,6 +481,9 @@ ACCOUNT_POWERTYPE = (
     (7,'PT电子'),
     (8,'双赢彩票'),
     (9,'eBet真人'),
+    (10,'VR真人'),
+    (11,'PP电子'),
+    (12,'IM棋牌'),
 )
 
 ODDSOURCE =(

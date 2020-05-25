@@ -211,13 +211,35 @@ class PcMenu(BaseEngine):
                           {'label':'资金转入','url':page('sg_moneyinfo'),'visible':can_touch(TbSgmoneyininfo,crt_user)},
                           {'label':'资金转出','url':page('sg_moneyout'),'visible':can_touch(TbSgmoneyoutinfo,crt_user)},
                        ]},
-                      {'label': 'eBet真人', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
+                    {'label': 'eBet真人', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
                        'submenu': [
                           {'label': '用户列表', 'url': page('eb_account'),'visible': can_touch(TbEbaccount, crt_user), },
                           {'label':'投注列表','url':page('eb_profitloss'),'visible':can_touch(TbEbprofitloss,crt_user)},
                           {'label':'资金转入','url':page('eb_moneyinfo'),'visible':can_touch(TbEbmoneyininfo,crt_user)},
                           {'label':'资金转出','url':page('eb_moneyout'),'visible':can_touch(TbEbmoneyoutinfo,crt_user)},
                        ]},
+                    {'label': 'PP电子', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
+                       'submenu': [
+                          {'label': '用户列表', 'url': page('pp_account'),'visible': can_touch(TbPpaccount, crt_user), },
+                          {'label':'投注列表','url':page('pp_profitloss'),'visible':can_touch(TbPpprofitloss,crt_user)},
+                          {'label':'资金转入','url':page('pp_moneyinfo'),'visible':can_touch(TbPpmoneyininfo,crt_user)},
+                          {'label':'资金转出','url':page('pp_moneyout'),'visible':can_touch(TbPpmoneyoutinfo,crt_user)},
+                       ]},
+                     {'label': 'IM棋牌', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
+                       'submenu': [
+                          {'label': '用户列表', 'url': page('imchess_account'),'visible': can_touch(TbImchessaccount, crt_user), },
+                          {'label':'投注列表','url':page('imchess_profitloss'),'visible':can_touch(TBIMChessProfitLoss,crt_user)},
+                          {'label':'资金转入','url':page('imchess_moneyinfo'),'visible':can_touch(TBIMChessMoneyInInfo,crt_user)},
+                          {'label':'资金转出','url':page('imchess_moneyout'),'visible':can_touch(TBIMChessMoneyOutInfo,crt_user)},
+                       ]},
+                    {'label': 'VR真人', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
+                       'submenu': [
+                          {'label': '用户列表', 'url': page('vr_account'),'visible': can_touch(TbVraccount, crt_user), },
+                          {'label':'投注列表','url':page('vr_profitloss'),'visible':can_touch(TBVRProfitLoss,crt_user)},
+                          {'label':'资金转入','url':page('vr_moneyinfo'),'visible':can_touch(TBVRMoneyInInfo,crt_user)},
+                          {'label':'资金转出','url':page('vr_moneyout'),'visible':can_touch(TBVRMoneyOutInfo,crt_user)},
+                       ]},
+                      
                       
             ]},
             
