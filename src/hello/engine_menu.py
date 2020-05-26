@@ -232,7 +232,7 @@ class PcMenu(BaseEngine):
                           {'label':'资金转入','url':page('imchess_moneyinfo'),'visible':can_touch(TBIMChessMoneyInInfo,crt_user)},
                           {'label':'资金转出','url':page('imchess_moneyout'),'visible':can_touch(TBIMChessMoneyOutInfo,crt_user)},
                        ]},
-                    {'label': 'VR真人', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
+                    {'label': 'VR彩票', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
                        'submenu': [
                           {'label': '用户列表', 'url': page('vr_account'),'visible': can_touch(TbVraccount, crt_user), },
                           {'label':'投注列表','url':page('vr_profitloss'),'visible':can_touch(TBVRProfitLoss,crt_user)},
