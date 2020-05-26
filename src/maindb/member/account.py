@@ -324,7 +324,7 @@ def account_tab(self=None):
             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TBIMChessProfitLoss,crt_user)
          },
         {  'name':'vr_system',
-            'label':'VR真人',
+            'label':'VR彩票',
             'editor':'com-tab-table',
             'pre_set':'rt={accountid:scope.par_row.accountid}',
             'table_ctx':VRporfitLosTab().get_head_context(),

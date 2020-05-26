@@ -401,7 +401,7 @@ def get_permit(ui=None):
             {'label':'资金流入','value':'TBIMChessMoneyInInfo.edit'},
             {'label':'资金流出','value':'TBIMChessMoneyOutInfo.edit'}
         ]},
-        {'label':'VR真人','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+        {'label':'VR彩票','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
             {'label':'账号','children':[
                 {'label':'查看','value':'TbVraccount'},
                 {'label':'编辑','value':'TbVraccount.edit','depend':['TbVraccount']},
