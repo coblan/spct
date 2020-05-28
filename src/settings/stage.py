@@ -26,7 +26,7 @@ DATABASES = {
                
        } ,
     'Sports': {
-        'NAME': 'Sports_20190610_Part1',#'Sports',
+        'NAME': 'Sports_2020',#'Sports',
         'ENGINE': 'sql_server.pyodbc',
          'HOST':'192.168.40.165,1433',
           'USER': 'develop',#'Backend',
@@ -43,7 +43,7 @@ DATABASES = {
                
        } ,  
      'Sports_nolock': {
-        'NAME': 'Sports_20190610_Part1',#'Sports',
+        'NAME': 'Sports_2020',#'Sports',
         'ENGINE': 'sql_server.pyodbc',
          'HOST':'192.168.40.165,1433',
           'USER': 'develop',#'Backend',
