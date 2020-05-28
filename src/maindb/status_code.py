@@ -486,12 +486,12 @@ ACCOUNT_POWERTYPE = (
     (12,'IM棋牌'),
 )
 
-ODDSOURCE =(
-    (0,'--'),
-    (1,'Betradar'),
-    (2,'188'),
-    (3,'沙巴'),
-)
+#ODDSOURCE =(
+    #(0,'--'),
+    #(1,'Betradar'),
+    #(2,'188'),
+    #(3,'沙巴'),
+#)
 
 SETTLEMSG_STATUS=(
     (0,'编辑中'),
