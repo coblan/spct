@@ -128,3 +128,6 @@ if getattr(settings,'OPEN_SECRET',False):
     from .sg import sg_profitloss
     
     from . part3.ebet import ebet_account,ebet_money_in,ebet_money_out,ebet_profitloss
+    from . part3.pp import pp_account,pp_money_in,pp_money_out,pp_profitloss
+    from . part3.imchess import imchess_account,imchess_money_in,imchess_money_out,imchess_profitloss
+    from . part3.vr import vr_account,vr_money_in,vr_money_out,vr_profitloss

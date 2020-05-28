@@ -384,6 +384,34 @@ def get_permit(ui=None):
             {'label':'资金流出','value':'TbEbmoneyoutinfo.edit'}
         ]},
         
+          {'label':'PP电子','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'账号','children':[
+                {'label':'查看','value':'TbPpaccount'},
+                {'label':'编辑','value':'TbPpaccount.edit','depend':['TbPpaccount']},
+                ]},
+            {'label':'投注列表','value':'TbPpprofitloss.edit'},
+            {'label':'资金流入','value':'TbPpmoneyininfo.edit'},
+            {'label':'资金流出','value':'TbPpmoneyoutinfo.edit'}
+        ]},
+            {'label':'IM棋牌','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'账号','children':[
+                {'label':'查看','value':'TbImchessaccount'},
+                {'label':'编辑','value':'TbImchessaccount.edit','depend':['TbImchessaccount']},
+                ]},
+            {'label':'投注列表','value':'TBIMChessProfitLoss.edit'},
+            {'label':'资金流入','value':'TBIMChessMoneyInInfo.edit'},
+            {'label':'资金流出','value':'TBIMChessMoneyOutInfo.edit'}
+        ]},
+        {'label':'VR彩票','visible':getattr(settings,'OPEN_SECRET',False) ,'children':[
+            {'label':'账号','children':[
+                {'label':'查看','value':'TbVraccount'},
+                {'label':'编辑','value':'TbVraccount.edit','depend':['TbVraccount']},
+                ]},
+            {'label':'投注列表','value':'TBVRProfitLoss.edit'},
+            {'label':'资金流入','value':'TBVRMoneyInInfo.edit'},
+            {'label':'资金流出','value':'TBVRMoneyOutInfo.edit'}
+        ]},
+        
         {'label': '系统管理',
          'children': [
              {'label': '用户查看', 'value': 'User.read',}, 

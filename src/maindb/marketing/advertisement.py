@@ -12,6 +12,12 @@ class AdvertisementPage(TablePage):
         pop_edit_fields=['id']
         model = TbAdvertisement
         exclude =[]
+        
+        def inn_filter(self, query):
+            if self.crt_user.merchant:
+                query = query.filter(merchant = self.crt_user.merchant)
+            return query
+        
         def get_operation(self):
             ops = super().get_operation()
             ls =[]
@@ -24,6 +30,20 @@ class AdvertiseForm(ModelFields):
     class Meta:
         model = TbAdvertisement
         exclude =[]
+    
+    @property
+    def hide_fields(self):
+        if self.crt_user.merchant:
+            return ['merchant']
+        else:
+            return []
+    
+    def clean_dict(self, dc):
+        dc = super().clean_dict(dc)
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
+        return dc
+    
 
 director.update({
     'advertise':AdvertisementPage.tableCls,

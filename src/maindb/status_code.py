@@ -474,6 +474,7 @@ GAMEMONEY_OUT_STATUS = (
     (2,'收回完成'),
     (4,'收回失败'),
 )
+
 ACCOUNT_POWERTYPE = (
     (1,'体育类型'),
     (2,'AG游戏'),
@@ -484,14 +485,17 @@ ACCOUNT_POWERTYPE = (
     (7,'PT电子'),
     (8,'双赢彩票'),
     (9,'eBet真人'),
+    (10,'VR彩票'),
+    (11,'PP电子'),
+    (12,'IM棋牌'),
 )
 
-ODDSOURCE =(
-    (0,'--'),
-    (1,'Betradar'),
-    (2,'188'),
-    (3,'沙巴'),
-)
+#ODDSOURCE =(
+    #(0,'--'),
+    #(1,'Betradar'),
+    #(2,'188'),
+    #(3,'沙巴'),
+#)
 
 SETTLEMSG_STATUS=(
     (0,'编辑中'),

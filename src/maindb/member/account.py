@@ -27,7 +27,7 @@ from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
 from maindb.send_phone_message import send_message_password, send_message_fundspassword
 from django.db.models import DecimalField
-from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss,TbImprofitloss,TbEbprofitloss
+from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss,TbImprofitloss,TbEbprofitloss,TbPpprofitloss,TBIMChessProfitLoss,TBVRProfitLoss
 import json
 from maindb.rabbitmq_instance import notifyAccountFrozen
 from helpers.case.jb_admin.admin_user import UserPicker
@@ -44,6 +44,9 @@ from ..pt.pt_profitloss import PtProfitlossPage
 from ..sg.sg_profitloss import SgProfitlossPage
 from maindb.part3.ebet.ebet_profitloss import EbProfitlossPage
 from hello.merchant_user import get_user_merchantid
+from maindb.part3.pp.pp_profitloss import PPProfitlossPage
+from maindb.part3.imchess.imchess_profitloss import ImChessProfitlossPage
+from maindb.part3.vr.vr_profitloss import VRProfitlossPage
 
 from django.conf import settings
 from .userlog import UserlogPage
@@ -307,6 +310,27 @@ def account_tab(self=None):
             'pre_set':'rt={accountid:scope.par_row.accountid}',
             'table_ctx':EbetporfitLosTab().get_head_context(),
             'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbEbprofitloss,crt_user)
+         },
+         {  'name':'pp_system',
+            'label':'PP电子',
+            'editor':'com-tab-table',
+            'pre_set':'rt={accountid:scope.par_row.accountid}',
+            'table_ctx':PPporfitLosTab().get_head_context(),
+            'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbPpprofitloss,crt_user)
+         },
+          {  'name':'imchess_system',
+            'label':'IM棋牌',
+            'editor':'com-tab-table',
+            'pre_set':'rt={accountid:scope.par_row.accountid}',
+            'table_ctx':ImchessporfitLosTab().get_head_context(),
+            'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TBIMChessProfitLoss,crt_user)
+         },
+        {  'name':'vr_system',
+            'label':'VR彩票',
+            'editor':'com-tab-table',
+            'pre_set':'rt={accountid:scope.par_row.accountid}',
+            'table_ctx':VRporfitLosTab().get_head_context(),
+            'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TBVRProfitLoss,crt_user)
          },
          
         
@@ -1228,6 +1252,28 @@ class EbetporfitLosTab(EbProfitlossPage.tableCls):
     class search(RowSearch):
         pass
     
+class PPporfitLosTab(PPProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
+    
+class ImchessporfitLosTab(ImChessProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass
+     
+class VRporfitLosTab(VRProfitlossPage.tableCls):
+    def inn_filter(self, query):
+        return query.filter(account_id=self.kw.get('accountid'))
+    
+    class search(RowSearch):
+        pass   
+    
+    
 director.update({
     'account': AccountPage.tableCls,
     'account.edit': AccoutBaseinfo,
@@ -1257,6 +1303,9 @@ director.update({
     'account.PTprofitLoss':PTporfitLosTab,
     'account.SGprofitLoss':SgporfitLosTab,
     'account.eBetProfitLoss':EbetporfitLosTab,
+    'account.ppProfitLoss':PPporfitLosTab,
+    'account.imchessProfitLoss':ImchessporfitLosTab,
+    'account.vrProfitLoss':VRporfitLosTab
 })
 
 # permits = [('TbAccount', model_full_permit(TbAccount), model_to_name(TbAccount), 'model'),

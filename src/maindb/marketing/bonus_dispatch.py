@@ -57,7 +57,13 @@ class BonusPage(object):
         return ctx
     
 class BonuslogForm(ModelFields):
-    hide_fields=['createuser','withdrawlimitamount']
+    @property
+    def hide_fields(self):
+        if self.crt_user.merchant:
+            return ['merchant','createuser','withdrawlimitamount']
+        else:
+            return ['createuser','withdrawlimitamount']
+    
     class Meta:
         model = TbBonuslog
         exclude=[]
@@ -77,6 +83,8 @@ class BonuslogForm(ModelFields):
             total_mount = Decimal(amount)  * multi
             dc['withdrawlimitamount'] = round( total_mount ,4)
             self.multiple = bonustype.deductionmultiple  # multi
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
         return dc
     
     def clean(self):
@@ -165,6 +173,11 @@ class BonuslogTable(ModelTable):
     def get_operation(self):
         return []
     
+    def inn_filter(self, query):
+        if self.crt_user.merchant:
+            query = query.filter(merchant = self.crt_user.merchant)
+        return query
+    
     def dict_head(self, head):
         dc={
             'bonustypeid':200,
@@ -228,6 +241,11 @@ class BonusTypeTable(ModelTable):
     pop_edit_fields=['bonustypeid']
     selectable=False
     
+    def inn_filter(self, query):
+        if self.crt_user.merchant:
+            query = query .filter(merchant = self.crt_user.merchant)
+        return query
+    
     def dict_head(self, head):
         dc={
             'bonustypename':250,
@@ -248,7 +266,14 @@ class BonusTypeTable(ModelTable):
     
 
 class BonusTypeForm(ModelFields):
-    hide_fields=['createuser']
+    
+    @property
+    def hide_fields(self):
+        if self.crt_user.merchant:
+            return ['mechant','createuser']
+        else:
+            return ['createuser']
+    
     class Meta:
         model = TbBonustype
         exclude=[]
@@ -266,9 +291,12 @@ class BonusTypeForm(ModelFields):
         return head
         
     def clean_dict(self, dc):
+        dc = super().clean_dict(dc)   
         dc['createuser']=self.crt_user.pk
         dc.pop('createtime',None)
-        return super().clean_dict(dc)   
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
+        return dc
     
     def dict_row(self, inst):
         return {

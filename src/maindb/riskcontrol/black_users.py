@@ -200,7 +200,12 @@ class AccountSelect(ModelTable):
     selectable = False
     model = TbAccount
     include = ['accountid', 'nickname', ]
-
+    
+    def inn_filter(self, query):
+        if self.crt_user.merchant:
+            query = query.filter(merchant = self.crt_user.merchant)
+        return query
+    
     def dict_head(self, head):
         dc = {
             'accountid': 100,

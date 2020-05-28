@@ -47,11 +47,13 @@ class Home(object):
             {'name': 'RegNum', 'label': '注册人数',}, 
             {'name':'BetUserNum','label':'投注人数'},
             {'name': 'BetNum', 'label': '注单数',}, 
-            {'name': 'SumBetAmount', 'label': '投注金额',}, 
-            {'name': 'SumPrizeAmount', 'label': '派彩金额',}, 
-            {'name': 'SumLostAmount', 'label': '亏盈金额',},
+            {'name': 'SumBetAmount', 'label': '投注',}, 
+            {'name': 'SumPrizeAmount', 'label': '派奖',}, 
            
-            
+           {'name':'ActivityAmount','label':'活动'},
+           {'name':'FundTransferAmount','label':'调账'},
+           {'name':'BonusAmount','label':'返水'},
+            {'name': 'SumLostAmount', 'label': '亏盈',},
         ]
         
         trend = [
