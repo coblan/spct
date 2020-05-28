@@ -116,7 +116,7 @@ class TbAccount(models.Model):
                                  choices=Account_Source, default=3)  # Field name made lowercase.
     sumwithdrawcount = models.IntegerField(db_column='SumWithdrawCount', blank=True,
                                            default=0, verbose_name='提现次数')  # Field name made lowercase.
-    accounttype = models.IntegerField(db_column='AccountType',verbose_name='账号类型',choices=ACCOUNT_TYPE)  # Field name made lowercase.
+    accounttype = models.IntegerField(db_column='AccountType',verbose_name='账号类型',choices=ACCOUNT_TYPE,default=0)  # Field name made lowercase.
     #groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
     groupid = models.ForeignKey(to='TbLimitusergroup',db_constraint=False,db_column='GroupID',verbose_name='用户组',default=0,null=True) 
     weight = models.DecimalField(db_column='Weight', max_digits=18, decimal_places=4,verbose_name='权重',default=1)  # Field name made lowercase.
