@@ -14,7 +14,7 @@ Vue.component('com-home-area-chart',{
         getRows:function(){
             var self=this
             cfg.show_load()
-            ex.director_call('trend_data',{key:this.ctx.key},function(resp){
+            ex.director_call('trend_data',{key:this.ctx.key,merchant:search_args.merchant},function(resp){
                 self.barRows=resp
                 cfg.hide_load()
             })

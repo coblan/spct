@@ -91,41 +91,14 @@ from helpers.director.base_data import inspect_dict,field_map
 inspect_dict['field_map'] = field_map
 
 if getattr(settings,'OPEN_SECRET',False):
-    from . ag import ag_account
-    from . ag import profitloss
-    from . ag import gamemoneyinfo
-    from . ag import gamemoneyoutinfo
     
-    from . sport import sport_account
-    from . sport import sport_profitloss
-    from . sport import sport_money_in_info
-    from . sport import sport_money_out
-    
-    from . city import city_account
-    from . city import city_profitloss
-    from . city import city_money_in
-    from . city import city_money_out
-    
-    from . im import im_account
-    from . im import im_esb_account
-    from . im import im_money_in
-    from . im import im_money_out
-    from . im import im_profitloss
-    
-    from . rg import rg_account
-    from . rg import rg_profitloss
-    from . rg import rg_money_in
-    from . rg import rg_money_out
-    
-    from . pt import pt_account
-    from . pt import pt_money_in
-    from . pt import pt_money_out
-    from . pt import pt_profitloss
-    
-    from .sg import sg_account
-    from .sg import sg_money_in
-    from .sg import sg_money_out
-    from .sg import sg_profitloss
+    from . part3.ag import ag_account,gamemoneyinfo,gamemoneyoutinfo,profitloss
+    from . part3.sport import sport_account,sport_money_in_info,sport_money_out,sport_profitloss
+    from . part3.city import city_account,city_money_in,city_money_out,city_profitloss
+    from . part3.im import im_account,im_esb_account,im_money_in,im_money_out,im_profitloss
+    from . part3.rg import rg_account,rg_profitloss,rg_money_in,rg_money_out
+    from . part3.pt import pt_account,pt_money_in,pt_money_out,pt_profitloss
+    from . part3.sg import sg_account,sg_money_in,sg_money_out,sg_profitloss
     
     from . part3.ebet import ebet_account,ebet_money_in,ebet_money_out,ebet_profitloss
     from . part3.pp import pp_account,pp_money_in,pp_money_out,pp_profitloss

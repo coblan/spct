@@ -1,15 +1,15 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter
-from maindb.part3.ag.gamemoneyinfo import GameMoneyininfoPage
-from maindb. models import TbPpmoneyininfo
+from ..ag.gamemoneyinfo import GameMoneyininfoPage
+from maindb.models import TbPtmoneyininfo
 
-class PPMoneyInPage(TablePage):
+class PTMoneyInPage(TablePage):
     def get_label(self):
         return '资金转入'
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
     
     class tableCls(GameMoneyininfoPage.tableCls):
-        model =TbPpmoneyininfo
+        model =TbPtmoneyininfo
         exclude =[]
     
         class filters(RowFilter):
@@ -17,9 +17,9 @@ class PPMoneyInPage(TablePage):
             range_fields=['ordertime']
 
 director.update({
-    'pp_moneyinfo':PPMoneyInPage.tableCls
+    'pt_moneyinfo':PTMoneyInPage.tableCls
 })
 
 page_dc.update({
-    'pp_moneyinfo':PPMoneyInPage
+    'pt_moneyinfo':PTMoneyInPage
 })

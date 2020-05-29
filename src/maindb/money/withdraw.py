@@ -11,6 +11,7 @@ from maindb.rabbitmq_instance import notifyWithdraw
 from maindb.matches.ticket_master import TicketMasterPage
 from helpers.director.decorator import get_request_cache
 from maindb.google_validate import valide_google_code
+from hello.merchant_user import MerchantInstancCheck
 
 class WithdrawPage(TablePage):
     template = 'jb_admin/table.html'
@@ -46,7 +47,7 @@ class WithdrawPage(TablePage):
     class tableCls(ModelTable):
         model = TbWithdraw
         exclude = []
-        fields_sort = ['accountid', 'orderid', 'amount', 'status', 'createtime', 'confirmtime',
+        fields_sort = ['merchant','accountid', 'orderid', 'amount', 'status', 'createtime', 'confirmtime',
                        'amounttype', 'apollocode', 'apollomsg', 'memo']
 
         def dict_head(self, head):
@@ -147,6 +148,8 @@ class WithdrawPage(TablePage):
             ]
 
         def inn_filter(self, query):
+            if self.crt_user.merchant:
+                query = query.filter(merchant = self.crt_user.merchant)
             return query.using('Sports_nolock').order_by('-createtime')
 
         class sort(RowSort):
@@ -169,10 +172,16 @@ class WithdrawPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime', 'confirmtime']
-            names = ['status', 'amounttype']
+            
+            @property
+            def names(self):
+                if self.crt_user.merchant:
+                    return  ['status', 'amounttype']
+                else:
+                    return ['merchant','status', 'amounttype']
 
 
-class WithDrawForm(ModelFields):
+class WithDrawForm(MerchantInstancCheck , ModelFields):
     hide_fields = ['status', 'orderid', 'account', 'confirmtime', 'memo', ]
 
     class Meta:
@@ -191,13 +200,13 @@ class WithDrawForm(ModelFields):
         else:
             head['readonly'] = True
         return head
-
+    
+        
     def after_save(self):
         if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
             notifyWithdraw(self.instance.accountid_id, self.instance.orderid)
     
     def clean_save(self):
-        # super().save_form()
         append_memo = '[%s]'%self.crt_user.username + self.kw.get('fakememo')
         if 'status' in self.changed_data and self.instance.status == 1:  # 审核异常单
             self.instance.memo = (self.instance.memo or '') + '\r\n' + append_memo
@@ -235,7 +244,7 @@ class WithDrawForm(ModelFields):
                 TbBalancelog.objects.create(account=self.instance.accountid.nickname, beforeamount=beforamount,
                                             amount=self.instance.amount, afteramount=afteramount, creater='Backend',
                                             memo='提现退款', accountid=self.instance.accountid, categoryid_id=category,
-                                            cashflow=1)
+                                            cashflow=1,merchant = self.instance.accountid.merchant)
                 TbMessageUnsend.objects.create(body='提现订单【{0}】处理失败'.format(self.instance.orderid), type=3,
                                                sender='Backend',
                                                accountid=self.instance.accountid_id)

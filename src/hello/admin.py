@@ -1,14 +1,14 @@
 from django.contrib import admin
 from django.db import connections
 # Register your models here.
-from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,ModelFields,model_dc, director_view,has_permit
+from helpers.director.shortcut import TablePage,ModelTable,page_dc,FieldsPage,ModelFields,model_dc, director_view,has_permit,get_request_cache
 
 from maindb.mongoInstance import mydb,add_tzinfo,utc2local
 from django.utils import timezone
 import datetime
 from . import login
 from . import merchant_user
-
+from maindb.models import TbMerchants
 #from orgmodel.models import Exceptions
 
 #class ExceptionsPage(TablePage):
@@ -68,8 +68,12 @@ class Home(object):
             {'key': '8','label': '注册人数', 'editor':'com-bar-chart'}, 
             
         ]
-        
-        sql = "exec  SP_TodayStatistics"
+        if self.crt_user.merchant:
+            sql = 'exec  SP_TodayStatistics %s'%self.crt_user.merchant.id
+        elif self.request.GET.get('merchant'):
+            sql = 'exec  SP_TodayStatistics %s'%self.request.GET.get('merchant')
+        else:
+            sql = "exec  SP_TodayStatistics"
         today_row = {} 
         with connections['Sports'].cursor() as cursor:
             cursor.execute(sql)
@@ -82,13 +86,19 @@ class Home(object):
             'today_heads': today_heads,
             'today_row': today_row,            
             'trend_list': trend,
-            
+            'merchant_options':[{'value':str(x.pk),'label':str(x)} for x in TbMerchants.objects.all()],
         }
     
 @director_view('trend_data')
-def trend_data(key): 
+def trend_data(key,merchant=None): 
+    crt_user = get_request_cache()['request'].user
     if int(key) < 100:
-        sql = "exec SP_TrendChart %s" % key
+        if crt_user.merchant:
+            sql = "exec SP_TrendChart %s,%s" % (key,crt_user.merchant.id)
+        elif merchant:
+            sql = "exec SP_TrendChart %s,%s" % (key,merchant)
+        else:
+            sql = "exec SP_TrendChart %s" % key
         rows = []
         with connections['Sports'].cursor() as cursor:
             cursor.execute(sql)

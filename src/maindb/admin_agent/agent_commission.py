@@ -24,10 +24,15 @@ class AgentCommission(TablePage):
         model = TbAgentcommission
         exclude = ['agent', 'description', 'creater', 'updater', 'updatetime']
         sort = ['accountid', 'amount']
-        fields_sort = ['commid', 'accountid', 'amount', 'status', 'daus', 'betamount', 'bonusamount', 'expendamount',
+        fields_sort = ['merchant','commid', 'accountid', 'amount', 'status', 'daus', 'betamount', 'bonusamount', 'expendamount',
                        'rechargeamount', 'withdrawalamount', 'lostamount', 'balancelostamount',
                        'percentage', 'settleyear', 'settlemonth', 'settledate', 'createtime', 'applytime']
 
+        def inn_filter(self, query):
+            if self.crt_user.merchant:
+                query = query.filter(merchant = self.crt_user.merchant)
+            return query
+        
         def dict_head(self, head):
             dc = {
                 'commid': 80,
@@ -92,7 +97,13 @@ class AgentCommission(TablePage):
                     return super().get_option(name)
 
         class filters(RowFilter):
-            names = ['status','settleyear','settlemonth']
+            
+            @property
+            def names(self):
+                if self.crt_user.merchant:
+                    return  ['status','settleyear','settlemonth']
+                else:
+                    return ['merchant','status','settleyear','settlemonth']
 
         def get_operation(self):
             return [

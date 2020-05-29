@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter
-from maindb. ag.gamemoneyoutinfo import GamemoneyoutinfoPage
+from .. ag.gamemoneyoutinfo import GamemoneyoutinfoPage
 from maindb. models import TbEbmoneyoutinfo
 
 class EbmoneyOutInfoPage(TablePage):
@@ -12,9 +12,9 @@ class EbmoneyOutInfoPage(TablePage):
         model = TbEbmoneyoutinfo
         exclude =[]
         
-        class filters(RowFilter):
-            names=['status']
-            range_fields=['ordertime']
+        #class filters(RowFilter):
+            #names=['status']
+            #range_fields=['ordertime']
 
 director.update({
     'eb_moneyout':EbmoneyOutInfoPage.tableCls,

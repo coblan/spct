@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter
-from maindb. ag.gamemoneyoutinfo import GamemoneyoutinfoPage
+from maindb.part3.ag.gamemoneyoutinfo import GamemoneyoutinfoPage
 from maindb. models import TBIMChessMoneyOutInfo
 
 class IMChessmoneyOutInfoPage(TablePage):
@@ -12,9 +12,9 @@ class IMChessmoneyOutInfoPage(TablePage):
         model = TBIMChessMoneyOutInfo
         exclude =[]
         
-        class filters(RowFilter):
-            names=['status']
-            range_fields=['ordertime']
+        #class filters(RowFilter):
+            #names=['status']
+            #range_fields=['ordertime']
 
 director.update({
     'imchess_moneyout':IMChessmoneyOutInfoPage.tableCls,

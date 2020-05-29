@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter
-from maindb.ag.gamemoneyinfo import GameMoneyininfoPage
+from maindb.part3.ag.gamemoneyinfo import GameMoneyininfoPage
 from maindb. models import TBIMChessMoneyInInfo
 
 class IMchessMoneyInPage(TablePage):

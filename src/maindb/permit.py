@@ -206,7 +206,8 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            
            ('TbTrendstatistics',model_read_permit(TbTrendstatistics),model_to_name(TbTrendstatistics),'model'),
            
-           ('report.betAnalysis',';'.join(['TbTrendstatistics']),'','set'),
+           #('report.betAnalysis',';'.join(['TbTrendstatistics']),'','set'),
+            ('report.betAnalysis','','','single'),
            
            ('TbAdjusttemplate.edit',model_full_permit(TbAdjusttemplate),model_to_name(TbAdjusttemplate),'model'),
            

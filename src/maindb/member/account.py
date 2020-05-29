@@ -35,15 +35,15 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from django.utils import timezone
 from . relevent_user import ReleventUserPage
-from ..ag.profitloss import AgprofitlossPage
-from ..sport.sport_profitloss import SportProfitlossPage
-from ..city.city_profitloss import LcityProfitlossPage
-from ..im.im_profitloss import IMProfitlossPage
-from ..rg.rg_profitloss import RGProfitlossPage
-from ..pt.pt_profitloss import PtProfitlossPage
-from ..sg.sg_profitloss import SgProfitlossPage
+
+from maindb.part3.ag.profitloss import AgprofitlossPage
+from maindb.part3.sport.sport_profitloss import SportProfitlossPage
+from maindb.part3.city.city_profitloss import LcityProfitlossPage
 from maindb.part3.ebet.ebet_profitloss import EbProfitlossPage
-from hello.merchant_user import get_user_merchantid
+from maindb.part3.im.im_profitloss import IMProfitlossPage
+from maindb.part3.rg.rg_profitloss import RGProfitlossPage
+from maindb.part3.pt.pt_profitloss import PtProfitlossPage
+from maindb.part3.sg.sg_profitloss import SgProfitlossPage
 from maindb.part3.pp.pp_profitloss import PPProfitlossPage
 from maindb.part3.imchess.imchess_profitloss import ImChessProfitlossPage
 from maindb.part3.vr.vr_profitloss import VRProfitlossPage
@@ -409,8 +409,8 @@ class AccountPage(TablePage):
                        #)
                 ##withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
             #return query
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id=get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                query = query.filter(merchant = self.crt_user.merchant)
             return query.extra(select={'betfullrecord':'SELECT SUM(TB_Betfullrecord.consumeamount) FROM TB_Betfullrecord WHERE TB_Betfullrecord.ConsumeStatus=1 AND TB_Betfullrecord.AccountID=TB_Account.AccountID',
                                        'rechargeamount':'SELECT SUM(TB_Recharge.ConfirmAmount) FROM TB_Recharge WHERE TB_Recharge.status=2 AND TB_Recharge.AccountID=TB_Account.AccountID',
                                        'withdrawamount':'SELECT SUM(TB_Withdraw.Amount) FROM TB_Withdraw WHERE TB_Withdraw.Status=2 AND TB_Withdraw.AccountID =TB_Account.AccountID'})

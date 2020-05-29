@@ -63,7 +63,7 @@ class AgentUser(TablePage):
                 return [
                     {'name':'MerchantId','label':'商户','editor':'com-filter-select','options':[
                         {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
-                        ]},
+                        ],'visible': not bool( self.crt_user.merchant )},
                     {'name':'accounttype','placeholder':'用户类型','editor':'com-filter-select','required':True,'options':[
                         #{'value':'NULL','label':'全部'},
                         {'value':'0','label':'普通'},

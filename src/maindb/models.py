@@ -218,7 +218,8 @@ class TbAccountMatchFav(models.Model):
 
 
 class TbAgaccount(models.Model):
-    accountid = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
+    account = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
+    #accountid = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
     agusername = models.CharField(db_column='AGUserName', max_length=150,verbose_name='AG用户名')  # Field name made lowercase.
     bonusrate = models.DecimalField(db_column='BonusRate', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='反点率')  # Field name made lowercase.
     transferin = models.DecimalField(db_column='TransferIn', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='转入')  # Field name made lowercase.
@@ -2468,7 +2469,7 @@ class TbSourcecontrol(models.Model):
 # 沙巴 --start
 
 class TbSportaccount(models.Model):
-    accountid = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
+    account = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
     #accountid = models.BigIntegerField(db_column='AccountId', primary_key=True)  # Field name made lowercase.
     username = models.CharField(db_column='UserName', max_length=50,verbose_name='沙巴用户名')  # Field name made lowercase.
     transferin = models.DecimalField(db_column='TransferIn', max_digits=18, decimal_places=4,verbose_name='转入')  # Field name made lowercase.
@@ -2548,7 +2549,7 @@ class TbSportprofitloss(models.Model):
 # 沙巴 --over
 
 class TbLcityaccount(models.Model):
-    accountid = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
+    account = models.ForeignKey(to=TbAccount,db_column='AccountId', primary_key=True,verbose_name='账号')
     #accountid = models.BigIntegerField(db_column='AccountId', primary_key=True)  # Field name made lowercase.
     username = models.CharField(db_column='UserName', max_length=50,verbose_name='龙城用户名')  # Field name made lowercase.
     transferin = models.DecimalField(db_column='TransferIn', max_digits=18, decimal_places=4,verbose_name='转入')  # Field name made lowercase.
@@ -3115,7 +3116,8 @@ class TbWithdraw(models.Model):
                                      choices=AMOUNT_TYPE)  # Field name made lowercase.
     confirmtime = models.DateTimeField(db_column='ConfirmTime', blank=True, null=True,
                                        verbose_name='处理时间')  # Field name made lowercase.
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+   
     class Meta:
         managed = False
         db_table = 'TB_Withdraw'
@@ -3155,7 +3157,8 @@ class TbRecharge(models.Model):
     consumestatus = models.IntegerField(db_column='ConsumeStatus')  # Field name made lowercase.
     bankcardno = models.CharField(db_column='BankCardNo', max_length=50, blank=True, null=True,verbose_name='收款账号')  # Field name made lowercase.
     accountip = models.CharField(db_column='AccountIP', max_length=50, blank=True, null=True,verbose_name='充值ip')  # Field name made lowercase.    
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
     class Meta:
         managed = False
         db_table = 'TB_Recharge'
@@ -3243,7 +3246,8 @@ class TbAgentcommission(models.Model):
                                      null=True, verbose_name='充值金额')  # Field name made lowercase.
     withdrawalamount = CusDecimalField(db_column='WithdrawalAmount', max_digits=18, decimal_places=4, blank=True,
                                        null=True, verbose_name='提现金额')  # Field name made lowercase.
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+   
     class Meta:
         managed = False
         db_table = 'TB_AgentCommission'
@@ -3698,7 +3702,9 @@ class TbTrendstatistics(models.Model):
     rechargeusernum = models.IntegerField(db_column='RechargeUserNum',verbose_name='充值人数')  # Field name made lowercase.
     loginusernum = models.IntegerField(db_column='LoginUserNum',verbose_name='登录用户数')  # Field name made lowercase.
     rechargeonsignindaynum = models.IntegerField(db_column='RechargeOnSignInDayNum',verbose_name='每日首冲')  # Field name made lowercase.
-    
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
+  
     class Meta:
         managed = False
         db_table = 'TB_TrendStatistics'

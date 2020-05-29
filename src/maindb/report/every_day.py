@@ -13,7 +13,7 @@ class EveryDayReportPage(TablePage):
         model = TbTrendstatistics
         exclude =['tid','rescueamount','firstrechargeamount','secondrechargeamount','birthdayamount',
                   'deductionamount','ddditionamount','ebankamount','createtime']
-        fields_sort=['starttime','userprofit','betamount','finishbetamount','betoutcome','bonusamount','turnover',
+        fields_sort=['merchant','starttime','userprofit','betamount','finishbetamount','betoutcome','bonusamount','turnover',
                      'rechargeamount','withdrawamount','activityamount','backendamount','betusernum','newusernum','withdrawusernum',
                      'rechargeusernum','betnum','loginusernum','rechargeonsignindaynum']
         
@@ -21,6 +21,11 @@ class EveryDayReportPage(TablePage):
             return {
                 'userprofit': - inst.userprofit
             }
+        
+        def inn_filter(self, query):
+            if self.crt_user.merchant:
+                query = query.filter(merchant = self.crt_user.merchant)
+            return query
         
         def dict_head(self, head):
             width_dc={
@@ -73,6 +78,13 @@ class EveryDayReportPage(TablePage):
         
         class filters(RowFilter):
             range_fields=['starttime']
+            
+            @property
+            def names(self):
+                if self.crt_user.merchant:
+                    return []
+                else:
+                    return ['merchant']
         
         class sort(RowSort):
             names = ['starttime','userprofit','betamount','finishbetamount','betoutcome','bonusamount','turnover',

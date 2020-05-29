@@ -1,16 +1,16 @@
 from helpers.director.shortcut import TablePage,ModelTable,page_dc,director,RowFilter
 from ..ag.profitloss import AgprofitlossPage
-from maindb.models import TbEbprofitloss
+from maindb.models import TbRgprofitloss
 from django.db.models import Sum
 
-class EbProfitlossPage(TablePage):
+class RGProfitlossPage(TablePage):
     def get_label(self):
         return '投注列表'
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
     
     class tableCls(AgprofitlossPage.tableCls):
-        model = TbEbprofitloss
+        model = TbRgprofitloss
         exclude = ['profitlosstype','refid','parentid','bettime','savetime']
         
         def statistics(self, query):
@@ -32,9 +32,9 @@ class EbProfitlossPage(TablePage):
 
 
 director.update({
-    'eb_profitloss':EbProfitlossPage.tableCls,
+    'rg_profitloss':RGProfitlossPage.tableCls,
 })
 
 page_dc.update({
-    'eb_profitloss':EbProfitlossPage
+    'rg_profitloss':RGProfitlossPage
 })

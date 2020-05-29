@@ -21,7 +21,7 @@ class RechargePage(TablePage):
         model = TbRecharge
         sort = ['createtime']
         exclude = ['account', 'apolloinfo', 'apollomsg']
-        fields_sort = ['rechargeid', 'accountid', 'orderid','bankcardno','accountip', 'amount', 'confirmamount', 'status', 'createtime',
+        fields_sort = ['merchant','rechargeid', 'accountid', 'orderid','bankcardno','accountip', 'amount', 'confirmamount', 'status', 'createtime',
                        'confirmtime', 'channelid', 'amounttype', 'isauto','apolloinfo', 'apollomsg', 'memo']
 
         def dict_head(self, head):
@@ -60,6 +60,8 @@ class RechargePage(TablePage):
             return query
 
         def inn_filter(self, query):
+            if self.crt_user.merchant:
+                query = query.filter(merchant = self.crt_user.merchant)
             return query.using('Sports_nolock').order_by('-createtime')
 
         def get_context(self):
@@ -127,7 +129,13 @@ class RechargePage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['createtime', 'confirmtime']
-            names = ['channelid', 'status', 'amounttype']
+            
+            @property
+            def names(self):
+                if self.crt_user.merchant:
+                    return ['channelid', 'status', 'amounttype']
+                else:
+                    return ['merchant','channelid', 'status', 'amounttype']
             #def dict_head(self, head):
                 #if head['name'] =='bankcardno':
                     #head['editor'] = 'com-filter-text'

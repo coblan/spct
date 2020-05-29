@@ -12,21 +12,26 @@
     today_heads={{ today_heads | jsonify }}
     today_row={{ today_row | jsonify }}
     trend_list={{ trend_list | jsonify }}
+    merchant_options= {{ merchant_options | jsonify }}
 
     $(function(){
-
-
-
         new Vue({
             el:'#there',
             data:{
                 today_heads:today_heads,
                 today_row:today_row,
-
                 trend_list:trend_list,
                 activeName:trend_list[0].key,
+                merchant_options:merchant_options,
+                merchant: search_args.merchant,
             },
-
+            watch:{
+                merchant(nv){
+                    if(nv != search_args.merchant){
+                        location = ex.appendSearch({merchant:nv})
+                    }
+                }
+            }
         })
 
 
@@ -39,6 +44,17 @@
     欢迎访问管理后台!
 </div>
 <template v-if="today_heads">
+    <div style="float: right">
+        <el-select v-model="merchant" placeholder="请选择商户"  clearable  size="mini">
+            <el-option
+                    v-for="item in merchant_options"
+
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+            </el-option>
+        </el-select>
+    </div>
     <b>今日统计</b>
     <div class="my-panel">
         <div class="today-item" v-for="head in today_heads">
