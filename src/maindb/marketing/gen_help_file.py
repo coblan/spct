@@ -9,11 +9,13 @@ from django.conf import settings
 from helpers.func.sim_signal import sim_signal
 from ..static_html_builder import StaticHtmlBuilder
 from urllib.parse import urljoin
+from maindb.models import TbMerchants
 
-def gen_help_file(): 
-    index_url = urljoin(settings.SELF_URL, '/help/index.html')
+def gen_help_file(merchant): 
+    index_url = urljoin(settings.SELF_URL, '/help/index.html?merchant=%s'%merchant)
+    merchant_inst = TbMerchants.objects.get(pk = merchant)
     
-    root_path = os.path.join(settings.MEDIA_ROOT, 'public/help')
+    root_path = os.path.join(settings.MEDIA_ROOT, 'public/%s/help'%merchant_inst.merchantname)
     spd = StaticHtmlBuilder(url= index_url, root_path= root_path)
     spd.run()
     for itm in TbQa.objects.filter(status=1):

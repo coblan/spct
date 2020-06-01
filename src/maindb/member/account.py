@@ -51,6 +51,7 @@ from maindb.part3.vr.vr_profitloss import VRProfitlossPage
 from django.conf import settings
 from .userlog import UserlogPage
 from maindb.google_validate import valide_google_code
+from hello.merchant_user import MerchantInstancCheck
 
 def account_tab(self=None):
     named_ctx = get_request_cache()['named_ctx']
@@ -661,7 +662,7 @@ class MemoForm(Fields):
         #self.instance.save()
  
 
-class AccoutBaseinfo(ModelFields):
+class AccoutBaseinfo(MerchantInstancCheck, ModelFields):
     field_sort = ['account', 'nickname', 'amount', 'status', 'createtime','agent', 'verify', 'viplv', 'bonusrate',
                   'isenablewithdraw','accounttype', 'groupid','weight','ticketdelay','risklevel','cashchannel','anomalyticketnum',
                   'powertype' if getattr(settings,'OPEN_SECRET',False) else '',
@@ -741,7 +742,7 @@ class AccoutBaseinfo(ModelFields):
                    'sumrechargecount', 'password']
 
 
-class AccoutModifyAmount(ModelFields):
+class AccoutModifyAmount(MerchantInstancCheck, ModelFields):
     field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype','is_Betfullrecord','google_code'] 
     readonly = ['accountid', 'nickname','amount']
     readonly_change_warning = ['amount']
@@ -811,7 +812,7 @@ class AccoutModifyAmount(ModelFields):
                     'after': {'amount': self.instance.amount, }}
 
 
-class ModifyBetFullRecord(ModelFields):
+class ModifyBetFullRecord(MerchantInstancCheck,ModelFields):
     field_sort = ['accountid', 'nickname', 'betfullrecord', 'add_amount',] #'fundtype']
     readonly = ['accountid', 'nickname',]
     

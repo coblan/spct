@@ -3,7 +3,7 @@ from .models import TbTodolist
 from helpers.director.access.permit import has_permit
 from helpers.director.decorator import get_request_cache
 from django.utils import timezone
-from hello.merchant_user import get_user_merchantid
+from hello.merchant_user import MerchantInstancCheck
 
 class TodoList(TablePage):
     def get_label(self):
@@ -25,9 +25,8 @@ class TodoList(TablePage):
         
         def inn_filter(self, query):
             cat_list = get_todolist_catlist()
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                merchant_id = get_user_merchantid(self.crt_user,)
-                query = query.filter(merchant_id = merchant_id)
+            if self.crt_user.merchant:
+                query = query.filter(merchant = self.crt_user.merchant)
             return query.filter(category__in=cat_list)
         
         def get_operation(self):
@@ -83,7 +82,7 @@ class TodoList(TablePage):
             
             
 
-class TodoForm(ModelFields):
+class TodoForm(MerchantInstancCheck,ModelFields):
     nolimit=True
     hide_fields =['operatetime','operateuser']
     class Meta:
@@ -114,9 +113,16 @@ def get_todolist_catlist():
 @director_view('todolist.hasnew_todolist')
 def hasnew_todolist(lasttime):
     cat_list=get_todolist_catlist()
-    new_todo = TbTodolist.objects.filter(createtime__gte=lasttime,category__in=cat_list).order_by('-createtime').first()
+    
+    crt_user = get_request_cache()['request'].user
+    if crt_user.merchant:
+        query = TbTodolist.objects.filter(merchant = crt_user.merchant)
+    else:
+        query = TbTodolist.objects.all()
+    
+    new_todo = query.filter(createtime__gte=lasttime,category__in=cat_list).order_by('-createtime').first()
     if new_todo:
-        count = TbTodolist.objects.filter(status=0,category__in=cat_list).count()
+        count = query.filter(status=0,category__in=cat_list).count()
         dc={
             'count':count,
             'hasnew':True,
@@ -132,7 +138,12 @@ def hasnew_todolist(lasttime):
 @director_view('todolist.get_counter')
 def get_counter():
     cat_list=get_todolist_catlist()
-    count = TbTodolist.objects.filter(status=0,category__in=cat_list).count()
+    crt_user = get_request_cache()['request'].user
+    if crt_user.merchant:
+        query = TbTodolist.objects.filter(merchant = crt_user.merchant)
+    else:
+        query = TbTodolist.objects.all()
+    count = query.filter(status=0,category__in=cat_list).count()
     return count
 
 

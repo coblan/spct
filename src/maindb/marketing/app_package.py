@@ -12,7 +12,7 @@ from django.conf import settings
 from helpers.director.model_func.field_proc import BaseFieldProc
 import os
 from subprocess import Popen
-from hello.merchant_user import get_user_merchantid
+from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
 
 import logging
 general_log = logging.getLogger('general_log')
@@ -76,7 +76,7 @@ class AppPackage(TablePage):
                     return ['merchant','description','terminal','valid']
               
     
-class AppPackageForm(ModelFields):
+class AppPackageForm(MerchantInstancCheck,ModelFields):
     extra_mixins=['app_pkg']
     readonly = ['plisturl']
     

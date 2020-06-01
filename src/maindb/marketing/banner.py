@@ -7,7 +7,7 @@ from ..status_code import *
 from django.contrib.auth.models import User
 from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
-from hello.merchant_user import get_user_merchantid
+from hello.merchant_user import MerchantInstancCheck
 
 class BannerPage(TablePage):
     template = 'jb_admin/table.html'  # 'jb_admin/table_with_height.html'
@@ -28,8 +28,8 @@ class BannerPage(TablePage):
             return search_args
         
         def inn_filter(self, query):
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                return query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                return query.filter(merchant = self.crt_user.merchant )
             else:
                 return query
         
@@ -120,7 +120,7 @@ class BannerPage(TablePage):
         return 'Banner管理'
 
 
-class BannerForm(ModelFields):
+class BannerForm(MerchantInstancCheck,ModelFields):
     readonly = []
     
     @property

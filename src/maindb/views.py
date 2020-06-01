@@ -64,10 +64,15 @@ class Help(Notice):
     def get(self, request, name = None): 
         if not name or name == 'index.html':
             index_section=[]
-            for itm in TbQa.objects.filter(mtype=0,status=1).order_by('-priority'):
+            if request.GET.get('merchant'):
+                query = TbQa.objects.filter(merchant_id = request.GET.get('merchant'))
+            else:
+                raise UserWarning('必须选择一个商户')
+
+            for itm in query.filter(mtype=0,status=1).order_by('-priority'):
                 index_dc={'title':itm.title}
                 pages=[]
-                for sub_itm in TbQa.objects.filter(mtype=itm.type,status=1).order_by('-priority'):
+                for sub_itm in query.filter(mtype=itm.type,status=1).order_by('-priority'):
                     pages.append({'title':sub_itm.title,
                                   'url': '%s.html?t=%s' % (sub_itm.pk , int(time.time()) ),})
                 index_dc['items']=pages
@@ -107,10 +112,13 @@ class Activity(View):
         if pk.endswith('.html'):
             pk = pk[:-5]
         if pk.startswith('index'):
+            if not request.GET.get('merchant'):
+                raise UserWarning('必须选择一个商户')
+            query = TbActivityV2.objects.filter(merchant=request.GET.get('merchant'))
             if pk =='index':
-                query = TbActivityV2.objects.filter(enabled=True,displaytype=0).order_by('-sort')
+                query = query.filter(enabled=True,displaytype=0).order_by('-sort')
             else:
-                query = TbActivityV2.objects.filter(enabled=True,displaytype=1).order_by('-sort')
+                query = query.filter(enabled=True,displaytype=1).order_by('-sort')
             baseengine = BaseEngine()
             baseengine.request = self.request
             rows=[]

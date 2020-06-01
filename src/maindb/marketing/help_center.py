@@ -2,9 +2,9 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from helpers.director.shortcut import TablePage, ModelTable, model_dc, page_dc, ModelFields, FieldsPage, \
-    TabPage, RowSearch, RowSort, RowFilter, field_map, model_to_name, request_cache
+    TabPage, RowSearch, RowSort, RowFilter, field_map, model_to_name, request_cache,Fields
 from helpers.director.model_func.dictfy import model_to_name
-from ..models import TbQa
+from ..models import TbQa,TbMerchants
 from ..status_code import *
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -14,7 +14,8 @@ from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from helpers.director.access.permit import has_permit
 from .gen_help_file import gen_help_file
-from hello.merchant_user import get_user_merchantid
+from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
+
 
 class HelpPage(TablePage):
     template = 'jb_admin/table.html'
@@ -176,17 +177,29 @@ class HelpPage(TablePage):
                 },
                 #{'fun': 'update_help_file', 'label': '更新缓存', 'editor': 'com-op-btn', 
                  #'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
-                  {'fun': 'director_call', 
-                   'director_name': "gen_help_static_file", 
+                  #{'fun': 'director_call', 
+                   #'director_name': "gen_help_static_file", 
+                   #'label': '更新缓存', 
+                   #'editor': 'com-op-btn', 
+                   #'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
+                  
+                  {'action':'cfg.show_load(); ex.director_call("gen_help_static_file",{merchant:%s}).then(()=>{cfg.hide_load()})'%self.crt_user.merchant.id if self.crt_user.merchant else '',
                    'label': '更新缓存', 
                    'editor': 'com-op-btn', 
-                   'visible': has_permit(self.crt_user, 'TbQa.update_cache'),}, 
+                   'visible': has_permit(self.crt_user, 'TbQa.update_cache') and self.crt_user.merchant }, 
+                   
+                   
+                  {'action':'cfg.pop_vue_com("com-local-form-one",scope.head.fields_ctx).then(resp=>{cfg.show_load(); return ex.director_call("gen_help_static_file",resp.row)}).then(()=>{cfg.hide_load()})',
+                   'fields_ctx':{'title':'选择一个商户', **MerchantSelect().get_head_context()},
+                   'label': '更新缓存', 
+                   'editor': 'com-op-btn', 
+                   'visible': has_permit(self.crt_user, 'TbQa.update_cache') and not self.crt_user.merchant }, 
             ])
             return operations
         
         @staticmethod
-        def gen_help_static_file(**kws): 
-            gen_help_file()
+        def gen_help_static_file(merchant): 
+            gen_help_file(merchant)
             return {'status': 'success',}
 
         #class filters(RowFilter):
@@ -211,8 +224,16 @@ class HelpPage(TablePage):
         class sort(RowSort):
             names = ['priority']
 
+class MerchantSelect(Fields):
+    def get_heads(self):
+        return [
+            {'label':'商户','name':'merchant','editor':'com-field-select','required':True,
+             'options':[
+                {'value':x.pk ,'label':str(x)} for x in TbMerchants.objects.all()
+            ]}
+        ]
 
-class HelpForm(ModelFields):
+class HelpForm(MerchantInstancCheck,ModelFields):
     @property
     def field_sort(self):
         if has_permit(self.crt_user,'-i_am_merchant'):

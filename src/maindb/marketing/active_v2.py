@@ -1,5 +1,5 @@
 from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc ,director,director_view,RowSort,RowSearch,RowFilter
-from ..models import TbActivityV2,TbActivitySettings,TbActivityTemplate
+from ..models import TbActivityV2,TbActivitySettings,TbActivityTemplate,TbMerchants
 from helpers.director.access.permit import can_touch,has_permit
 from helpers.func.collection.container import evalue_container
 from ..static_html_builder import StaticHtmlBuilder
@@ -7,7 +7,8 @@ from urllib.parse import urljoin
 from helpers.func.sim_signal import sim_signal
 from django.conf import settings
 import os
-from hello.merchant_user import get_user_merchantid
+from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
+from .help_center import MerchantSelect
 
 class ActiviyV2Page(TablePage):
     def get_template(self, prefer=None):
@@ -106,13 +107,26 @@ class ActiviyV2Page(TablePage):
                     'confirm_msg': '确认修改为离线吗?', 
                      'visible': 'enabled' in self.permit.changeable_fields(),
                 },
-                {
-                    'fun': 'director_call',
-                    'director_name': 'update_activity_file_v2',
+                #{
+                    #'fun': 'director_call',
+                    #'director_name': 'update_activity_file_v2',
+                    #'label': '更新缓存',
+                    #'editor': 'com-op-btn', 
+                     #'visible': has_permit(self.crt_user, 'TbActivityV2.update_cache'),
+                          #},
+                 {
+                    'action':'cfg.show_load();ex.director_call("update_activity_file_v2",{merchant:%s})'%self.crt_user.merchant.id if self.crt_user.merchant else '',
                     'label': '更新缓存',
                     'editor': 'com-op-btn', 
-                     'visible': has_permit(self.crt_user, 'TbActivityV2.update_cache'),
-                          }
+                     'visible': has_permit(self.crt_user, 'TbActivityV2.update_cache') and self.crt_user.merchant,
+                  },
+                  {
+                    'action':'cfg.pop_vue_com("com-local-form-one",scope.head.fields_ctx).then(resp=>{cfg.show_load(); return ex.director_call("update_activity_file_v2",resp.row)}).then(()=>{cfg.hide_load()})',
+                    'fields_ctx':{'title':'选择一个商户', **MerchantSelect().get_head_context()},
+                    'label': '更新缓存',
+                    'editor': 'com-op-btn', 
+                     'visible': has_permit(self.crt_user, 'TbActivityV2.update_cache') and not self.crt_user.merchant,
+                  },
             ])
             return operations       
         
@@ -130,7 +144,7 @@ class ActiviyV2Page(TablePage):
         class search(RowSearch):
             names = ['title']
     
-class ActivityV2Form(ModelFields):
+class ActivityV2Form(MerchantInstancCheck,ModelFields):
     
     @property
     def hide_fields(self):
@@ -196,15 +210,16 @@ class ActivitySettingForm(ModelFields):
 
 #####################################
 @director_view('update_activity_file_v2')
-def update_activity_file_v2(**kws):
+def update_activity_file_v2(merchant):
     has_download_url=[]
-    root_path = os.path.join(settings.MEDIA_ROOT, 'public/activityv2')
+    merchant_inst = TbMerchants.objects.get(pk = merchant)
+    root_path = os.path.join(settings.MEDIA_ROOT, 'public/%s/activityv2'%merchant_inst.merchantname)
     
-    index_url = urljoin(settings.SELF_URL, '/actv2/index')
+    index_url = urljoin(settings.SELF_URL, '/actv2/index?merchant=%s'%merchant)
     spd = StaticHtmlBuilder(url= index_url, root_path= root_path,downloaded_urls=has_download_url)
     spd.run()
     
-    index_url = urljoin(settings.SELF_URL, '/actv2/index1')
+    index_url = urljoin(settings.SELF_URL, '/actv2/index1?merchant=%s'%merchant)
     spd = StaticHtmlBuilder(url= index_url, root_path= root_path,downloaded_urls=has_download_url)
     spd.run()    
     
