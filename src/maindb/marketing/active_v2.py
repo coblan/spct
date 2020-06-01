@@ -115,7 +115,7 @@ class ActiviyV2Page(TablePage):
                      #'visible': has_permit(self.crt_user, 'TbActivityV2.update_cache'),
                           #},
                  {
-                    'action':'cfg.show_load();ex.director_call("update_activity_file_v2",{merchant:%s})'%self.crt_user.merchant.id if self.crt_user.merchant else '',
+                    'action':'cfg.show_load();ex.director_call("update_activity_file_v2",{merchant:%s}).then(()=>{cfg.hide_load()})'%self.crt_user.merchant.id if self.crt_user.merchant else '',
                     'label': '更新缓存',
                     'editor': 'com-op-btn', 
                      'visible': has_permit(self.crt_user, 'TbActivityV2.update_cache') and self.crt_user.merchant,
