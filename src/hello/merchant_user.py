@@ -30,7 +30,10 @@ def get_user_merchant(user,default=None):
 class Jb_with_merchant_User(UserPage):
     class tableCls(UserPage.tableCls):
         fields_sort = ['username','first_name','groups','is_superuser','is_staff','is_active','merchantid','last_login']
+        
         def inn_filter(self, query):
+            self.merchant_map = {x.pk:str(x) for x in TbMerchants.objects.all() }
+            
             query = super().inn_filter(query)
             if has_permit(self.crt_user,'-i_am_merchant'):
                 query = query.filter(userprofile__merchantid = get_user_merchantid(self.crt_user))
@@ -39,7 +42,8 @@ class Jb_with_merchant_User(UserPage):
         
         def dict_row(self, inst):
             return {
-                'merchantid': inst.userprofile.merchantid if getattr(inst,'userprofile',None) else ''
+                'merchantid': inst.userprofile.merchantid if getattr(inst,'userprofile',None) else '',
+                '_merchantid_label':self.merchant_map[ inst.userprofile.merchantid ]
             }
          
         def get_heads(self):
@@ -56,7 +60,7 @@ class Jb_with_merchant_User(UserPage):
         def getExtraHead(self):
             heads = super().getExtraHead()
             heads.extend([
-                {'name':'merchantid','label':'商户号','required':True},
+                {'name':'merchantid','label':'商户','editor':'com-table-label-shower'},
             ])
             return heads
         
@@ -84,7 +88,9 @@ class WithMerchantUserForm(UserFields):
         extra_ls = super().getExtraHeads()
         if not getattr(self.crt_user,'userprofile',None):
             extra_ls.extend([
-                {'name':'merchantid','label':'商户号','editor':'com-field-linetext'}
+                {'name':'merchantid','label':'商户号','required':True,'editor':'com-field-select','options':[
+                    {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
+                    ]}
             ])
         return extra_ls
     
@@ -125,8 +131,10 @@ class WithMerchantUserForm(UserFields):
         if self.instance.pk:
             self.instance.refresh_from_db()
             if hasattr(self.instance,'userprofile'):
+                merchant = TbMerchants.objects.get(pk=self.instance.userprofile.merchantid )
                 dc.update({
-                    'merchantid': self.instance.userprofile.merchantid
+                    'merchantid': self.instance.userprofile.merchantid,
+                    '_merchantid_label':str(merchant)
                 })
         return dc
 

@@ -226,7 +226,7 @@ def do_push_message(pk):
     try:
         crt_user = get_request_cache()['request'].user
         if crt_user.merchant:
-            instance = TbMessage.objects.get(pk = pk ,mechant= crt_user.merchant)
+            instance = TbMessage.objects.get(pk = pk ,merchant= crt_user.merchant)
         else:
             instance = TbMessage.objects.get(pk = pk)
         if instance. typeid . needread :

@@ -271,7 +271,7 @@ class BonusTypeForm(MerchantInstancCheck,ModelFields):
     @property
     def hide_fields(self):
         if self.crt_user.merchant:
-            return ['mechant','createuser']
+            return ['merchant','createuser']
         else:
             return ['createuser']
     
