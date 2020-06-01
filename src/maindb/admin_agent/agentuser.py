@@ -13,6 +13,7 @@ import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
 from maindb.member.account import UserPicker,can_touch,User
 from hello.merchant_user import get_user_merchantid
+from helpers.director.access.permit import can_write
 
 class AgentUser(TablePage):
     template = 'jb_admin/table.html'
@@ -305,7 +306,9 @@ class AgentUser(TablePage):
                  'after_save': 'rt=scope.ps.search()', #'preset':'rt={meta_only_add_root_next_level:1}',
                  'preset':'rt={meta_par:scope.ps.parents[scope.ps.parents.length-1].value}',
                  'disabled':'scope.ps.parents.length>2',
-                 'label': '创建代理用户','fields_ctx': agent.get_head_context(),}, 
+                 'label': '创建代理用户','fields_ctx': agent.get_head_context(),
+                 'visible':can_write(TbAccount, self.crt_user),
+                 }, 
                 #{'fun': 'add_new', 'editor': 'com-op-btn' ,
                  #'after_save': 'rt=scope.search()',
                  #'label': '创建下级用户','fields_ctx': agent.get_head_context(),}, 
@@ -317,7 +320,9 @@ class AgentUser(TablePage):
                  'match_express':'scope.row.AgentStatus == 1',
                  'match_msg':'只有代理用户才能修改佣金比例',
                  'label': '修改佣金比例',
-                 'fields_ctx': yong.get_head_context(),}, 
+                 'fields_ctx': yong.get_head_context(),
+                  'visible':can_write(TbAccount, self.crt_user),
+                  }, 
                  
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
                 
@@ -484,10 +489,10 @@ class NewAgentUserForm(ModelFields):
     def clean(self): 
         super().clean()
         phone = self.cleaned_data.get('phone')
-        if TbAccount.objects.filter(phone = phone).exists():
+        if TbAccount.objects.filter(phone = phone,merchant_id = self.kw.get('merchant')).exists():
             self.add_error('phone', '手机号码已经存在')
-        nickname =  self.cleaned_data.get('nickname')
-        if TbAccount.objects.filter(nickname = nickname).exists():
+        nickname =  self.cleaned_data.get('nickname',)
+        if TbAccount.objects.filter(nickname = nickname,merchant_id = self.kw.get('merchant')).exists():
             self.add_error('nickname', '昵称已经存在')
         if False : #self.kw.get('meta_only_add_root_next_level'):
             parentid = 0
@@ -508,7 +513,8 @@ class NewAgentUserForm(ModelFields):
                 cursor.execute(sql)
                 bb = cursor.fetchall()           
                 dc['accountid'] = bb[0][0]
-        
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
         return dc
     
     def clean_save(self): 
