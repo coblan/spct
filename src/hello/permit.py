@@ -735,75 +735,75 @@ permit_merchant = [
 def get_permit(ui=None): 
     
    
-    permit_member =  [ 
-        {'label':'会员列表(标签页)','children':[
-                {'label':'基本信息','children':[
-                      {'label': '查看', 'value': 'TbAccount',}, 
-                      {'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
-                    ]},
-                {'label':'账目记录','value':'TbBalancelog'},
-                {'label':'银行卡','children':[
-                      {'label': '查看', 'value': 'TbBankcard',}, 
-                      {'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
-                ]},
-                {'label':'充值记录','value':'TbRecharge'},
-                {'label':'提现记录','value':'TbWithdraw'},
-                {'label':'注单','value':'TbTicketmaster_all_tab_read'},
-                {'label':'登录日志','value':'TbLoginlog'},
-                {'label':'会员统计','value':'member_statistic'},
-                {'label':'赛事统计','value':'TbMatch'},
+    #permit_member =  [ 
+        #{'label':'会员列表(标签页)','children':[
+                #{'label':'基本信息','children':[
+                      #{'label': '查看', 'value': 'TbAccount',}, 
+                      #{'label': '编辑', 'value': 'TbAccount.edit', 'depend': ['TbAccount'],}, 
+                    #]},
+                #{'label':'账目记录','value':'TbBalancelog'},
+                #{'label':'银行卡','children':[
+                      #{'label': '查看', 'value': 'TbBankcard',}, 
+                      #{'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
+                #]},
+                #{'label':'充值记录','value':'TbRecharge'},
+                #{'label':'提现记录','value':'TbWithdraw'},
+                #{'label':'注单','value':'TbTicketmaster_all_tab_read'},
+                #{'label':'登录日志','value':'TbLoginlog'},
+                #{'label':'会员统计','value':'member_statistic'},
+                #{'label':'赛事统计','value':'TbMatch'},
                 
-                {'label':'限额记录','children':[
-                    {'label': '查看', 'value': 'TbBetfullrecord',}, 
-                    {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
-                ]},
-            ]},
-       { 'label': '会员管理',
-         'children': [
-            {'label':'关联用户','value':'member.relevent_user'},
-            #{'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
-            {'label':'用户日志','value':'TbUserLog'},
-             ],
-         }
-        ]
-    permit_match =[
-        {'label': '比赛列表(按钮)',#_('Tb Match'), 
-         'children': [
-            {'label':'推荐','value':'TbMatch.isrecommend'},
-            {'label':'走地','value':'TbMatch.hasliveodds'},
-            {'label':'显示/隐藏','value':'TbMatch.ishidden'},
-            {'label':'退单','value':'TbMatch.quit_ticket'},
-            {'label': '编辑(除推荐、走地、显示)', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],},
-             ],
-        }, 
-        {'label':'比赛列表(标签页)','children':[
-            {'label': '查看', 'value': 'TbMatches',}, 
-            {'label':'比分','value':'TbPeriodscore'},
-            {'label':'危险球','value':'TbLivefeed.edit'},
-            {'label':'盘口','value':'manual_specialbetvalue'},
-            {'label':'手动结算','children':[
-                    {'label':'进入结算页面','value':'manual_outcome','depend':['TbMarkets']},
-                    {'label':'提交手动结算','value':'save_manual_outcome'},
-                    {'label':'审批手动结算','value':'audit_manual_outcome'},
-               ]}
-            ]},
-        {'label': '玩法设置', 'children':[
-                 {'label':'查看','value':'TbMarkets'},
-                 {'label':'修改','value': 'TbMarkets.edit','depend':['TbMarkets']}
-             ]} ,
-        {'label': _('Tb TicketMaster'), 'children': [
-                 {'label': '查看', 'value': 'TbTicketmaster_all_tab_read','depend':['TbMatches']}, 
-                 {'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', ],}
-                 ]},   
-        {'label': '调水模板', 'value':'TbAdjusttemplate.edit'},   
-    ]
+                #{'label':'限额记录','children':[
+                    #{'label': '查看', 'value': 'TbBetfullrecord',}, 
+                    #{'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
+                #]},
+            #]},
+       #{ 'label': '会员管理',
+         #'children': [
+            #{'label':'关联用户','value':'member.relevent_user'},
+            ##{'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
+            #{'label':'用户日志','value':'TbUserLog'},
+             #],
+         #}
+        #]
+    #permit_match =[
+        #{'label': '比赛列表(按钮)',#_('Tb Match'), 
+         #'children': [
+            #{'label':'推荐','value':'TbMatch.isrecommend'},
+            #{'label':'走地','value':'TbMatch.hasliveodds'},
+            #{'label':'显示/隐藏','value':'TbMatch.ishidden'},
+            #{'label':'退单','value':'TbMatch.quit_ticket'},
+            #{'label': '编辑(除推荐、走地、显示)', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],},
+             #],
+        #}, 
+        #{'label':'比赛列表(标签页)','children':[
+            #{'label': '查看', 'value': 'TbMatches',}, 
+            #{'label':'比分','value':'TbPeriodscore'},
+            #{'label':'危险球','value':'TbLivefeed.edit'},
+            #{'label':'盘口','value':'manual_specialbetvalue'},
+            #{'label':'手动结算','children':[
+                    #{'label':'进入结算页面','value':'manual_outcome','depend':['TbMarkets']},
+                    #{'label':'提交手动结算','value':'save_manual_outcome'},
+                    #{'label':'审批手动结算','value':'audit_manual_outcome'},
+               #]}
+            #]},
+        #{'label': '玩法设置', 'children':[
+                 #{'label':'查看','value':'TbMarkets'},
+                 #{'label':'修改','value': 'TbMarkets.edit','depend':['TbMarkets']}
+             #]} ,
+        #{'label': _('Tb TicketMaster'), 'children': [
+                 #{'label': '查看', 'value': 'TbTicketmaster_all_tab_read','depend':['TbMatches']}, 
+                 #{'label': '编辑', 'value': 'TbTicketmaster.edit', 'depend': ['TbTicketmaster_all_tab_read', ],}
+                 #]},   
+        #{'label': '调水模板', 'value':'TbAdjusttemplate.edit'},   
+    #]
     out_permit = []
     if ui is None:
         out_permit = permit1
-    elif ui =='member':
-        out_permit = permit_member
-    elif ui=='match':
-        out_permit = permit_match
+    #elif ui =='member':
+        #out_permit = permit_member
+    #elif ui=='match':
+        #out_permit = permit_match
     elif ui == 'merchant':
         out_permit = permit_merchant
     
@@ -821,8 +821,8 @@ def get_permit(ui=None):
 def permit_ui_options():
     return [
         #{'value':'admin_menu','label':'管理后台菜单'},
-        {'value':'member','label':'会员管理'},
-        {'value':'match','label':'比赛列表'},
+        #{'value':'member','label':'会员管理'},
+        #{'value':'match','label':'比赛列表'},
         {'value':'merchant','label':'商户'},
      ]
 
