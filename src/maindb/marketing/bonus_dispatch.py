@@ -57,7 +57,7 @@ class BonusPage(object):
         }
         return ctx
     
-class BonuslogForm(ModelFields):
+class BonuslogForm(MerchantInstancCheck,ModelFields):
     @property
     def hide_fields(self):
         if self.crt_user.merchant:
@@ -266,7 +266,7 @@ class BonusTypeTable(ModelTable):
     
     
 
-class BonusTypeForm(ModelFields):
+class BonusTypeForm(MerchantInstancCheck,ModelFields):
     
     @property
     def hide_fields(self):

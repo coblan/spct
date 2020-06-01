@@ -12,7 +12,7 @@ from dateutil.relativedelta import relativedelta
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
 from maindb.member.account import UserPicker,can_touch,User
-from hello.merchant_user import get_user_merchantid
+from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
 from helpers.director.access.permit import can_write
 
 class AgentUser(TablePage):
@@ -431,7 +431,7 @@ class ParentForm(Fields):
     
 
 
-class NewAgentUserForm(ModelFields):
+class NewAgentUserForm(MerchantInstancCheck,ModelFields):
     """新建"""
     hide_fields = ['accountid']
     

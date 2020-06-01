@@ -9,6 +9,7 @@ from helpers.director.table.row_search import SelectSearch
 from helpers.director.table.table import RowSort
 from ..models import TbRecharge
 from maindb.google_validate import valide_google_code
+from hello.merchant_user import MerchantInstancCheck
 
 class RechargePage(TablePage):
     template = 'jb_admin/table.html'
@@ -144,7 +145,7 @@ class RechargePage(TablePage):
                 
 
 
-class ConfirmRechargeForm(ModelFields):
+class ConfirmRechargeForm(MerchantInstancCheck,ModelFields):
     hide_fields = ['status', 'confirmtime', 'isauto']
 
     class Meta:

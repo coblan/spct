@@ -14,7 +14,7 @@ from helpers.func.collection.container import evalue_container
 from django.utils import timezone
 from helpers.director.model_func.dictfy import sim_dict
 from helpers.func.collection.mylist import split_list
-from hello.merchant_user import get_user_merchantid
+from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
 
 from django.db.models import Prefetch
 import logging
@@ -558,7 +558,7 @@ class TicketMasterPage(TablePage):
                      'settletime']
 
 
-class TicketMasterForm(ModelFields):
+class TicketMasterForm(MerchantInstancCheck,ModelFields):
     class Meta:
         model = TbTicketmaster
         fields = ['status', 'voidreason','audit']
@@ -648,11 +648,16 @@ def make_sure_ticketmaster(rows,**kws):
     ticket_list = [row.get('pk') for row in rows]
     #s30_ago = timezone.now() - timezone.timedelta(seconds=30)
     #count = TbTicketmaster.objects.filter(pk__in=ticket_list,createtime__lte=s30_ago).update(status=1)
+    crt_user = get_request_cache()['request'].user
+    if crt_user.merchant:
+        query = TbTicketmaster.objects.filter(merchant = crt_user.merchant)
+    else:
+        query = TbTicketmaster.objects.all()
     now = timezone.now()
-    count = TbTicketmaster.objects.filter(pk__in=ticket_list).update(status=1,updatetime=now)
+    count = query.filter(pk__in=ticket_list).update(status=1,updatetime=now)
     if count==0:
         raise UserWarning('确认不成功，不存在对应的注单')
-    master = TbTicketmaster.objects.get(pk = rows[0]['pk'])
+    master = query.get(pk = rows[0]['pk'])
     TbMessageUnsend.objects.create(body='注单%s投注成功'%master.orderid,type=1,sender='Backend',accountid = master.accountid_id,relationno=master.ticketid)
     stake_count =TbTicketstake.objects.filter(ticket_master_id__in=ticket_list,status =0).update(status =1,confirmodds=F('odds'))
     operation_log.info('确认注单%s'%ticket_list)
