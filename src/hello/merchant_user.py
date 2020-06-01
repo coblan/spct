@@ -6,9 +6,9 @@ from django.contrib.auth.models import User,Group
 
 class MerchantInstancCheck(object):
     def clean(self):
-        super().clean()
         if self.crt_user.merchant and self.instance.merchant != self.crt_user.merchant:
             raise UserWarning('没有权限修改该数据') 
+        return super().clean()
 
 def get_user_merchantid(user,default=None):
     if has_permit(user,'-i_am_merchant'):

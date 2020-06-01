@@ -596,7 +596,8 @@ class AccountPage(TablePage):
                   'row_match':'one_row',
                 'action':'var ctx=named_ctx["account.memo.form"];ctx.title="禁止提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
                  'visible': 'isenablewithdraw' in changeable_fields},
-                {'editor':'com-op-btn','label':'选择客服','visible': 'csuserid' in changeable_fields and can_touch(User,self.crt_user),
+                {'editor':'com-op-btn','label':'选择客服',
+                 'visible': 'csuserid' in changeable_fields and can_touch(User,self.crt_user),
                  'table_ctx':UserPicker().get_head_context(),
                  'action':''' cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)
             .then((row)=>{
@@ -608,10 +609,14 @@ class AccountPage(TablePage):
                  cfg.show_load()
                  
                  return ex.director_call('d.save_rows',{rows:scope.ps.selected})
-            }).then(()=>{
-                cfg.hide_load()
-                cfg.toast("操作完成")
-                scope.ps.selected = []
+            }).then((resp)=>{
+               cfg.hide_load()
+                if(resp.errors){
+                   cfg.showError(JSON.stringify( resp.errors) )
+                }else{
+                    cfg.toast("操作完成")
+                    scope.ps.selected = []
+                }
                  })
                  
                  '''}

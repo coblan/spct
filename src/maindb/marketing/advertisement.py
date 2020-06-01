@@ -1,5 +1,6 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director
 from maindb.models import TbAdvertisement
+from hello.merchant_user import MerchantInstancCheck
 
 class AdvertisementPage(TablePage):
     def get_label(self):
@@ -26,7 +27,7 @@ class AdvertisementPage(TablePage):
                     ls.append(op)
             return ls
 
-class AdvertiseForm(ModelFields):
+class AdvertiseForm(MerchantInstancCheck,ModelFields):
     class Meta:
         model = TbAdvertisement
         exclude =[]

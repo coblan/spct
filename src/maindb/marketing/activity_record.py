@@ -1,6 +1,7 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter,has_permit
-from maindb.models import TbActivityRecord
-from hello.merchant_user import get_user_merchantid
+from maindb.models import TbActivityRecord,TbMerchants
+from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
+from django.db.models import F
 
 class ActivityRecoredPage(TablePage):
     def get_label(self):
@@ -25,23 +26,37 @@ class ActivityRecoredPage(TablePage):
             return head
         
         def inn_filter(self, query):
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            query= query.annotate(account__merchant__name=F('account__merchant__name'))
+            if self.crt_user.merchant:
+                query = query.filter(account__merchant = self.crt_user.merchant)
             return query
+        
+        def getExtraHead(self):
+            return [
+                {'name':'account__merchant__name','label':'商户'}
+            ]
+        
+        def dict_row(self, inst):
+            return {
+                'account__merchant__name':inst.account__merchant__name,
+            }
         
         class filters(RowFilter):
             @property
             def names(self):
-                if has_permit(self.crt_user,'-i_am_merchant'):
+                if self.crt_user.merchant:
                     return ['account__nickname']
                 else:
-                    return ['merchant','account__nickname']
+                    return ['account__merchant','account__nickname']
                     
             range_fields=['createtime']
             icontains = ['account__nickname']
             def getExtraHead(self):
                 return [
-                    {'name':'account__nickname','label':'用户昵称'}
+                    {'name':'account__nickname','label':'用户昵称'},
+                    {'name':'account__merchant','label':'商户','editor':'com-filter-select','options':[
+                        {'value':x.pk ,'label':str(x)} for x in TbMerchants.objects.all()
+                        ]},
                 ]
 
 director.update({

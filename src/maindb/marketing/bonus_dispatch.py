@@ -7,6 +7,7 @@ from django.db.models import Q
 import json
 from maindb.google_validate import valide_google_code
 from django.utils import timezone
+from hello.merchant_user import MerchantInstancCheck
 
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')

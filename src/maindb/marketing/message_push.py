@@ -9,7 +9,7 @@ from helpers.func.collection.mylist import split_list
 import re
 import logging
 operation_log = logging.getLogger('operation_log')
-
+from hello.merchant_user import MerchantInstancCheck
 import requests
 logger = logging.getLogger('jpush')
 from jpush import common
@@ -129,7 +129,7 @@ class MessagePage(TablePage):
             names = ['title']
         
     
-class MessageForm(ModelFields):
+class MessageForm(MerchantInstancCheck,ModelFields):
     
     @property
     def hide_fields(self):
@@ -224,7 +224,11 @@ class MessageForm(ModelFields):
 @director_view('do_push_message')
 def do_push_message(pk):
     try:
-        instance = TbMessage.objects.get(pk = pk)
+        crt_user = get_request_cache['request'].user
+        if crt_user.merchant:
+            instance = TbMessage.objects.get(pk = pk ,mechant= crt_user.merchant)
+        else:
+            instance = TbMessage.objects.get(pk = pk)
         if instance. typeid . needread :
             send_user_message(instance)
         else:
