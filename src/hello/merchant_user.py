@@ -29,13 +29,14 @@ class Jb_with_merchant_User(UserPage):
             query = super().inn_filter(query)
             if has_permit(self.crt_user,'-i_am_merchant'):
                 query = query.filter(userprofile__merchantid = get_user_merchantid(self.crt_user))
+            query = query.filter(userprofile__merchantid__isnull=False)
             return query.select_related('userprofile')
         
         def dict_row(self, inst):
             return {
                 'merchantid': inst.userprofile.merchantid if getattr(inst,'userprofile',None) else ''
             }
-        
+         
         def get_heads(self):
             heads = super().get_heads()
             if has_permit(self.crt_user,'-i_am_merchant'):
@@ -50,7 +51,7 @@ class Jb_with_merchant_User(UserPage):
         def getExtraHead(self):
             heads = super().getExtraHead()
             heads.extend([
-                {'name':'merchantid','label':'商户号'},
+                {'name':'merchantid','label':'商户号','required':True},
             ])
             return heads
         
@@ -91,7 +92,7 @@ class WithMerchantUserForm(UserFields):
                 head['css']='.merchant-username input{width:19rem !important;}'
             #head['on_mounted'] = '''if(! scope.vc.row.pk){ Vue.set( scope.vc.head,'prefix','bba')  } '''
             head['readonly']='Boolean( scope.row.pk )'
-        if head['name'] =='groups' and has_permit(self.crt_user,'-i_am_merchant'):
+        if head['name'] =='groups':
             head['options']=[
                 {'value':x.pk,'label':str(x)} for x in Group.objects.filter(name__startswith='商户-')
             ]
