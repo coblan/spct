@@ -177,3 +177,8 @@ JPUSH = {
 }
 
 DES3_KEY= '3E35EB83050243D589482F2E'
+
+CKEDITOR_SAVER = {
+    'class':'hello.ckeditor_saver.StaticCkeditor',
+    'static_domain':'https://static.rrystv.com',
+}

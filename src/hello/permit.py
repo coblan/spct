@@ -513,17 +513,18 @@ permit_merchant = [
              
              {'label': _('Tb Balance Log'), 'value': 'TbBalancelog', }, 
              {'label': _('Tb Login Log'), 'value': 'TbLoginlog',}, 
-             {'label': '银行卡', 'children': [
-                {'label': '查看', 'value': 'TbBankcard',}, 
-                {'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
-                ],}, 
+             #{'label': '银行卡', 'children': [
+                #{'label': '查看', 'value': 'TbBankcard',}, 
+                #{'label': '编辑', 'value': 'TbBankcard.edit', 'depend': ['TbBankcard'],}, 
+                #],}, 
             #{'label': '限额记录', 'children': [
                 #{'label': '查看', 'value': 'TbBetfullrecord',}, 
                 #{'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
                 #],}, 
-             {'label':'关联用户','value':'member.relevent_user'},
+             #{'label':'关联用户','value':'member.relevent_user'},
              #{'label': '流失用户', 'value': 'member.chum_user','depend':['TbAccount'] }, 
              {'label':'用户日志','value':'TbUserLog'},
+             
             {'label':'限额记录','children':[
                     {'label': '查看', 'value': 'TbBetfullrecord',}, 
                     {'label': '编辑', 'value': 'TbBetfullrecord.edit', 'depend': ['TbBetfullrecord'],}, 
@@ -558,7 +559,7 @@ permit_merchant = [
         {'label': '比赛列表',#_('Tb Match'), 
          'children': [
              {'label': '比赛列表', 'children': [
-                 {'label': '查看', 'value': 'TbMatches',}, 
+                 {'label':'查看', 'value': 'TbMatches',}, 
                  {'label':'推荐','value':'TbMatch.isrecommend'},
                  {'label':'走地','value':'TbMatch.hasliveodds'},
                  {'label':'显示/隐藏','value':'TbMatch.ishidden'},
