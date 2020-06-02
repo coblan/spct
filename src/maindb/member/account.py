@@ -905,6 +905,13 @@ class WithAccoutInnFilter(ModelTable):
         else:
             return query
 
+class WithAccoutFrnInnFilter(ModelTable):
+    def inn_filter(self, query):
+        query = super().inn_filter(query)
+        if self.kw.get('accountid'):
+            return query.filter(account=self.kw.get('accountid'))
+        else:
+            return query
 
 class AccountBalanceTable(WithAccoutInnFilter, BalancelogPage.tableCls):
     @classmethod
@@ -986,7 +993,7 @@ class AccountTicketTable(WithAccoutInnFilter, TicketMasterPage.tableCls):
                     return super().clean_search()
 
 
-class AccountLoginTable(WithAccoutInnFilter, LoginLogPage.tableCls):
+class AccountLoginTable(WithAccoutFrnInnFilter, LoginLogPage.tableCls):
     @classmethod
     def get_edit_director_name(cls):
         return LoginLogPage.tableCls.get_edit_director_name()
