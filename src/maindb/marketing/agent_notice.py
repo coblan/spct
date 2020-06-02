@@ -56,12 +56,23 @@ class AgentNoticePage(TablePage):
         model = TbAgentnotice
         exclude = ['id', 'url']
         hide_fields = ['content']
+        
+        def inn_filter(self, query):
+            if self.crt_user.merchant:
+                query = query.filter(merchant = self.crt_user.merchant)
+            return query
 
         class search(RowSearch):
             names = ['title']
 
         class filters(RowFilter):
-            names = ['status', ]
+            
+            @property
+            def names(self):
+                if self.crt_user.merchant:
+                    return ['status', ]
+                else:
+                    return ['merchant','status']
 
         def dict_head(self, head):
             dc = {

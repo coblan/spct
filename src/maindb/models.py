@@ -3485,7 +3485,8 @@ class TbAgentnotice(models.Model):
                                  choices=ONLINE_STATUS)  # Field name made lowercase.
     content = models.TextField(db_column='Content', blank=True, null=True, default='',
                                verbose_name='内容')  # Field name made lowercase.
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
     class Meta:
         managed = False
         db_table = 'TB_AgentNotice'
