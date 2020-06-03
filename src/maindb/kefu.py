@@ -72,6 +72,8 @@ class KefuPage(TablePage):
             )
             if not has_permit(self.crt_user,'kefu.watch_all_account'):
                 query=  query.filter(csuserid=self.crt_user.pk)  #query.filter(sumrechargecount__lte=1)
+            if self.crt_user.merchant:
+                query = query.filter(merchant = self.crt_user.merchant)
             return query
   
             

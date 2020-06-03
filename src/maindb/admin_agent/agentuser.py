@@ -386,6 +386,7 @@ class YongJingForm(Fields):
 @director_element('agent.parentselect')
 class ParentSelect(AccountSelect):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(accounttype=1)
 
 @director_element('agent.ParentForm')
@@ -410,8 +411,12 @@ class ParentForm(Fields):
     def get_heads(self):
         table_obj = ParentSelect(crt_user=self.crt_user)
         return [
-            {'name':'parentid','editor':'com-field-pop-table-select','label':'上级账号','select_field':'account',
-             'required':True,'table_ctx':table_obj.get_head_context(),'options':[]},
+            {'name':'parentid',
+             'editor':'com-field-pop-table-select',
+             'label':'上级账号',
+             'select_field':'account',
+             'required':True,
+             'table_ctx':table_obj.get_head_context(),'options':[]},
         ]
     
     def save_form(self):
