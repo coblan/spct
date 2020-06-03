@@ -140,8 +140,8 @@ class AgentUser(TablePage):
             end_date = (createdate+ relativedelta(months=1) ).strftime('%Y-%m-%d')
             AccountType = self.search_args.get('accounttype')
             
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                merchantid = get_user_merchantid(self.crt_user)
+            if self.crt_user.merchant:
+                merchantid = self.crt_user.merchant.id
             else:
                 merchantid = self.search_args.get('MerchantId','null')
             

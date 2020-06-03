@@ -38,8 +38,8 @@ class VipBonusPage(TablePage):
             #return query.annotate(user_address = Subquery(subque.values('userrealname')[:1]))
             #return query.using('Sports_nolock').anotate(accountid__)
             query= query.select_related('accountid__merchant')
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query= query.filter(accountid__merchant_id=get_user_merchantid(self.crt_user,))
+            if self.crt_user.merchant:
+                query= query.filter(accountid__merchant_id=self.crt_user.merchant.id)
                 
             return  query.using('Sports_nolock').annotate (userrealname =F('accountid__tbproductcontactuser__userrealname'),
                                                          phone =F('accountid__tbproductcontactuser__phone'),
@@ -108,7 +108,7 @@ class VipBonusPage(TablePage):
             def getExtraHead(self):
                 return [
                     {'name':'accountid__nickname','label':'账号昵称','editor':'com-filter-text'},
-                    {'name':'accountid__merchant','label':'商户','editor':'com-filter-select','visible':not has_permit(self.crt_user,'-i_am_merchant'),
+                    {'name':'accountid__merchant','label':'商户','editor':'com-filter-select','visible':not self.crt_user.merchant,
                      'options':[
                         {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
                     ]}

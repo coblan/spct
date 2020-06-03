@@ -12,7 +12,7 @@ from hello.merchant_user import get_user_merchant
 class MerchantInfo(MiddlewareMixin):
 
     def process_request(self, request):
-        if has_permit(request.user,'-i_am_merchant'):
+        if getattr(request.user,'userprofile',None) and getattr(request.user.userprofile,'merchantid'):
             request.user.merchant = TbMerchants.objects.get(id = request.user.userprofile.merchantid )
         else:
             request.user.merchant = None

@@ -75,7 +75,7 @@ class TodoList(TablePage):
             
             @property
             def names(self):
-                if has_permit(self.crt_user,'-i_am_merchant'):
+                if self.crt_user.merchant:
                     return ['title','status']
                 else:
                     return ['merchant','title','status']

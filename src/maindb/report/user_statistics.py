@@ -96,7 +96,7 @@ class UserStatisticsPage(TablePage):
                 #return [{'name':'date','editor':'com-date-range-filter','label':'日期'}]
                 
                 return [
-                    {'name':'merchantid','label':'商户','editor':'com-filter-select','visible':not has_permit(self.crt_user,'-i_am_merchant'),
+                    {'name':'merchantid','label':'商户','editor':'com-filter-select','visible':not self.crt_user.merchant,
                      'options':[
                          {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
                          ]},
@@ -160,8 +160,8 @@ class UserStatisticsPage(TablePage):
             }
             realsort = sort_dc.get(sort) or sort;
             AccountID = self.kw.get('accountid') or 0
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                merchantid = get_user_merchantid(self.crt_user)
+            if self.crt_user.merchant:
+                merchantid = self.crt_user.merchant.id
             else:
                 merchantid = self.search_args.get('merchantid','null')
             sql_args = {

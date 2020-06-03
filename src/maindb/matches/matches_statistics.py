@@ -78,7 +78,7 @@ class MatchesStatisticsPage(TablePage):
                     ]},
                     {'name':'merchantid','label':'商户','editor':'com-filter-select','options':[
                         {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
-                    ],'visible':not has_permit(self.crt_user,'-i_am_merchant')},
+                    ],'visible':not self.crt_user.merchant},
                 ]
 
             def dict_head(self, head):
@@ -144,7 +144,7 @@ class MatchesStatisticsPage(TablePage):
             if sort.startswith('-'):
                 sort = sort[1:] + ' desc'
             
-            if has_permit(self.crt_user,'-i_am_merchant'):
+            if self.crt_user.merchant:
                 merchantid = self.crt_user.userprofile.merchantid
             else:
                 merchantid = self.search_args.get('merchantid','null')

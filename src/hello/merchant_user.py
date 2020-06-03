@@ -35,8 +35,8 @@ class Jb_with_merchant_User(UserPage):
             self.merchant_map = {x.pk:str(x) for x in TbMerchants.objects.all() }
             
             query = super().inn_filter(query)
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(userprofile__merchantid = get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                query = query.filter(userprofile__merchantid = self.crt_user.merchant.id)
             query = query.filter(userprofile__merchantid__isnull=False)
             return query.select_related('userprofile')
         
@@ -48,7 +48,7 @@ class Jb_with_merchant_User(UserPage):
          
         def get_heads(self):
             heads = super().get_heads()
-            if has_permit(self.crt_user,'-i_am_merchant'):
+            if self.crt_user.merchant:
                 out_heads = []
                 for head in heads:
                     if head['name'] != 'is_superuser':
@@ -112,14 +112,14 @@ class WithMerchantUserForm(UserFields):
     
     def clean_dict(self, dc):
         dc = super().clean_dict(dc)
-        if has_permit(self.crt_user,'-i_am_merchant') and not dc.get('pk') and dc.get('username'):
+        if self.crt_user.merchant and not dc.get('pk') and dc.get('username'):
             merchant = TbMerchants.objects.get(id=self.crt_user.userprofile.merchantid)
             dc['username'] = merchant.merchantname + '_' + dc.get('username')
         return dc
     
     def after_save(self):
         merchantid = self.kw.get('merchantid')
-        if has_permit(self.crt_user,'-i_am_merchant'):
+        if self.crt_user.merchant:
             merchantid = self.crt_user.userprofile.merchantid
         if merchantid:
             count = UserProfile.objects.filter(user = self.instance).update(merchantid= merchantid)

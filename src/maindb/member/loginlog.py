@@ -55,8 +55,8 @@ class LoginLogPage(TablePage):
                 query = query.filter(merchant_id = self.crt_user.merchant.id)
             #if self.is_export_excel:
             query =  query.using('Sports_nolock').select_related('account')
-            #if has_permit(self.crt_user,'-i_am_merchant'):
-                #query = query.filter(merchant_id = get_user_merchantid(self.crt_user) )
+            #if self.crt_user.merchant:
+                #query = query.filter(merchant_id = self.crt_user.merchant.id )
             return query
             #return query.values(*self.fields_sort).order_by('-createtime')
         
@@ -110,7 +110,7 @@ class LoginLogPage(TablePage):
             
             @property
             def names(self):
-                if has_permit(self.crt_user, '-i_am_merchant'):
+                if self.crt_user.merchant:
                     return  []
                 else:
                     return ['merchant']

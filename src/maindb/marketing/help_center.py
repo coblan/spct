@@ -90,8 +90,8 @@ class HelpPage(TablePage):
             ]
         
         def inn_filter(self, query):
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                query = query.filter(merchant_id = self.crt_user.merchant.id)
                 
             if self.kw.get('_par',0) >0:
                 query= query.filter(mtype = self.kw.get('_par')) 
@@ -236,7 +236,7 @@ class MerchantSelect(Fields):
 class HelpForm(MerchantInstancCheck,ModelFields):
     @property
     def field_sort(self):
-        if has_permit(self.crt_user,'-i_am_merchant'):
+        if self.crt_user.merchant:
             return ['title', 'status','priority',  'description']
         else:
             return ['merchant','title', 'status','priority',  'description'] # 'mtype',
@@ -247,8 +247,8 @@ class HelpForm(MerchantInstancCheck,ModelFields):
 
     def clean_dict(self, dc):
         super().clean_dict(dc)
-        if has_permit(self.crt_user,'-i_am_merchant'):
-            dc['merchant'] = get_user_merchantid(self.crt_user)
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
         
         if dc.get('mtype') == 0 :
             if dc.get('type') == 0:

@@ -105,7 +105,7 @@ class BannerPage(TablePage):
             
             @property
             def names(self):
-                if has_permit(self.crt_user,'-i_am_merchant'):
+                if self.crt_user.merchant:
                     return ['status']
                 else:
                     return ['merchant','status']
@@ -125,7 +125,7 @@ class BannerForm(MerchantInstancCheck,ModelFields):
     
     @property
     def field_sort(self):
-        if has_permit(self.crt_user,'-i_am_merchant'):
+        if self.crt_user.merchant:
             return ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description']
         else:
             return ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description','merchant']

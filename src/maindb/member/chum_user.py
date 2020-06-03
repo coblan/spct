@@ -74,8 +74,8 @@ class ChumUser(TablePage):
             ]
         
         def inn_filter(self, query):
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id=get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                query = query.filter(merchant_id=self.crt_user.merchant.id)
             return query.filter(sumrechargecount__lte=1)
         
         def get_operation(self):
@@ -108,7 +108,7 @@ class ChumUser(TablePage):
             
             @property
             def names(self):
-                if has_permit(self.crt_user,'-i_am_merchant'):
+                if self.crt_user.merchant:
                     return ['accounttype','groupid','source','sumrechargecount']
                 else:
                     return ['merchant','accounttype','groupid','source','sumrechargecount']

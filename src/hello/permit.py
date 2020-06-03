@@ -6,7 +6,7 @@ from helpers.func.nav_data import walk_dict
 from helpers.func.collection.container import evalue_container
 
 permit1 = [
-        {'label': '商户约束','value': '-i_am_merchant','help_text':'标识用户是否为商户;如果是商户用户分组，必须勾选!'},
+        #{'label': '商户约束','value': '-i_am_merchant','help_text':'标识用户是否为商户;如果是商户用户分组，必须勾选!'},
         {'label':'首页统计','value':'home-statistic'},
         {'label': '待办事项',
          'children': [
@@ -45,10 +45,10 @@ permit1 = [
             {'label':'活动记录','value':'TbActivityRecord'},
             { 'label': '代理用户留言', 'value': 'TbAgentleavemsg',}, 
             
-            { 'label': '用户排行', 'children':[
-                {'label':'虚拟用户','value':'TbUserConst.edit'},
-                {'label':'用户排行','value':'TbUserRank.edit'}
-                ],}, 
+            #{ 'label': '用户排行', 'children':[
+                #{'label':'虚拟用户','value':'TbUserConst.edit'},
+                #{'label':'用户排行','value':'TbUserRank.edit'}
+                #],}, 
            
             { 'label': '红利发放', 'children': [
                 {'label': '查看', 'value': 'Bonuse-dispatch',}, 
@@ -424,7 +424,7 @@ permit1 = [
 
 
 permit_merchant = [
-    {'label': '商户约束','value': '-i_am_merchant','help_text':'标识用户是否为商户;如果是商户用户分组，必须勾选!'},
+    #{'label': '商户约束','value': '-i_am_merchant','help_text':'标识用户是否为商户;如果是商户用户分组，必须勾选!'},
         {'label':'首页统计','value':'home-statistic'},
         {'label': '待办事项',
          'children': [
@@ -463,11 +463,6 @@ permit_merchant = [
             {'label':'活动记录','value':'TbActivityRecord'},
             { 'label': '代理用户留言', 'value': 'TbAgentleavemsg',}, 
             
-            { 'label': '用户排行', 'children':[
-                {'label':'虚拟用户','value':'TbUserConst.edit'},
-                {'label':'用户排行','value':'TbUserRank.edit'}
-                ],}, 
-           
             { 'label': '红利发放', 'children': [
                 {'label': '查看', 'value': 'Bonuse-dispatch',}, 
                 {'label': '编辑', 'value': 'Bonuse-dispatch.edit', 'depend': ['Bonuse-dispatch','TbAccount'],}, 

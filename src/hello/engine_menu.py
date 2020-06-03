@@ -246,8 +246,8 @@ class PcMenu(BaseEngine):
             {'label': '系统管理', 'icon': fa('fa-user'), 'visible': True,
              'submenu': [
                  {'label':'商户用户管理','url':page('with_merchant_user'),'visible': can_touch(User, crt_user)},
-                 {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user) and not has_permit(crt_user,'-i_am_merchant')},
-                 {'label': _('Role'), 'url': page('jb_group'), 'visible': can_touch(Group, crt_user)},
+                 {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user) and not getattr(crt_user,'merchant') },
+                 {'label': '权限分组', 'url': page('jb_group'), 'visible': can_touch(Group, crt_user)},
                  {'label': '操作日志', 'url': page('operation_log'), 'visible': can_touch(TbOperationlog, crt_user)},
                  {'label':'异常地址','url':page('badurl'),'visible':has_permit(crt_user, 'badurl.read')},
                  {'label':'账号扩展信息','url':page('userex'),'visible':can_touch(TbUserex,crt_user)},
@@ -264,7 +264,7 @@ class PcMenu(BaseEngine):
 
     def custome_ctx(self, ctx):
         ctx['js_stamp'] = js_stamp
-        ctx['fast_config_panel'] = True
+        #ctx['fast_config_panel'] = True
         if 'extra_js' not in ctx:
             ctx['extra_js'] = []
         if 'maindb' not in ctx['extra_js']:

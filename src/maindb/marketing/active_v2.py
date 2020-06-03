@@ -57,8 +57,8 @@ class ActiviyV2Page(TablePage):
         pop_edit_fields = ['id']
         
         def inn_filter(self, query):
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                query = query.filter(merchant_id = self.crt_user.merchant.id)
             return query
         
         def dict_head(self, head):
@@ -136,7 +136,7 @@ class ActiviyV2Page(TablePage):
         class filters(RowFilter):
             @property
             def names(self):
-                if has_permit(self.crt_user,'-i_am_merchant'):
+                if self.crt_user.merchant:
                     return ['enabled']
                 else:
                     return ['merchant','enabled']
@@ -148,7 +148,7 @@ class ActivityV2Form(MerchantInstancCheck,ModelFields):
     
     @property
     def hide_fields(self):
-        if has_permit(self.crt_user,'-i_am_merchant'):
+        if self.crt_user.merchant:
             return ['merchant','creatorid','editorid']
         else:
             return ['creatorid','editorid']
@@ -158,8 +158,8 @@ class ActivityV2Form(MerchantInstancCheck,ModelFields):
         exclude=['url']
     
     def clean_dict(self, dc):
-        if has_permit(self.crt_user,'-i_am_merchant'):
-            dc['merchant'] = get_user_merchantid(self.crt_user)
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
         return dc
         
     def dict_head(self, head):

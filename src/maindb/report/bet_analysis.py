@@ -115,8 +115,11 @@ class WinbetRatio(PlainTable):
                 raise UserWarning('必须填写开始月和结束月')
             start += '-01'
             end = ( timezone.datetime.strptime(end,'%Y-%m') + relativedelta(months=1) - relativedelta(days=1) ) .strftime('%Y-%m-%d')
-            
-        merchantid = get_user_merchantid(self.crt_user,self.search_args.get('merchantid','null'))
+        
+        if self.crt_user.merchant:
+            merchantid = self.crt_user.merchant.id
+        else:
+            merchantid = self.search_args.get('merchantid','null')
         
         sql_args={
             'MerchantId':merchantid,
@@ -146,7 +149,7 @@ class WinbetRatio(PlainTable):
     
     def getRowFilters(self):
         return [
-            {'name':'merchantid','label':'商户','editor':'com-filter-select','visible':not has_permit(self.crt_user,'-i_am_merchant'),
+            {'name':'merchantid','label':'商户','editor':'com-filter-select','visible':not self.crt_user.merchant,
              'options':[
                 {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
                 ]},

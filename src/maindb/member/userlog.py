@@ -26,8 +26,8 @@ class UserlogPage(TablePage):
         def inn_filter(self, query):
             if self.is_export_excel:
                 query= query.using('Sports_nolock')
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id=get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                query = query.filter(merchant_id=self.crt_user.merchant.id)
             return query
         
         def get_operation(self):
@@ -42,7 +42,7 @@ class UserlogPage(TablePage):
             
             @property
             def names(self):
-                if has_permit(self.crt_user,'-i_am_merchant'):
+                if self.crt_user.merchant:
                     return ['account__nickname','operatetype']
                 else:
                     return ['merchant','account__nickname','operatetype']

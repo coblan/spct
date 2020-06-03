@@ -377,7 +377,7 @@ class AccountPage(TablePage):
             
             @property
             def names(self):
-                if has_permit(self.crt_user,'-i_am_merchant'):
+                if self.crt_user.merchant:
                     return ['agentstatus','accounttype','groupid','csuserid__name','parlayoddscheck']
                 else:
                     return ['merchant','agentstatus','accounttype','groupid','csuserid__name','parlayoddscheck']

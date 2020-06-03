@@ -311,8 +311,8 @@ class TicketMasterPage(TablePage):
             return dc
 
         def inn_filter(self, query):
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                query = query.filter(merchant_id = self.crt_user.merchant.id)
                 
             return query.using('Sports_nolock').order_by('-createtime').annotate(profit=F('betoutcome') - F('betamount') + F('bonus')) \
                 .annotate(accountid__nickname=F('accountid__nickname'),stake_count=Count('tbticketstake'))
@@ -497,7 +497,7 @@ class TicketMasterPage(TablePage):
             
             @property
             def names(self):
-                if  has_permit( self.crt_user,'-i_am_merchant'):
+                if  self.crt_user.merchant:
                     return ['status','audit', 'winbet','terminal','accountid__accounttype']
                 else:
                     return ['merchant','status','audit', 'winbet','terminal','accountid__accounttype',]

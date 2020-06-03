@@ -33,8 +33,8 @@ class AppPackage(TablePage):
         fields_sort=['merchant','versionid','versionname','md5','terminal','required','size','valid','description']
         
         def inn_filter(self, query):
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                return query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                return query.filter(merchant_id = self.crt_user.merchant.id)
             else:
                 return query
         
@@ -73,7 +73,7 @@ class AppPackage(TablePage):
             
             @property
             def names(self):
-                if has_permit(self.crt_user,'-i_am_merchant'):
+                if self.crt_user.merchant:
                     return ['description','terminal','valid']
                 else:
                     return ['merchant','description','terminal','valid']
@@ -89,14 +89,14 @@ class AppPackageForm(MerchantInstancCheck,ModelFields):
     
     @property
     def hide_fields(self):
-        if has_permit(self.crt_user,'-i_am_merchant'):
+        if self.crt_user.merchant:
             return ['merchant']
         else:
             return []
     
     def clean_dict(self, dc):
-        if has_permit(self.crt_user,'-i_am_merchant'):
-            dc['merchant'] = get_user_merchantid(self.crt_user)
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
         return dc
     
     def dict_head(self, head):

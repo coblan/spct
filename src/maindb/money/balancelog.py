@@ -68,8 +68,8 @@ class BalancelogPage(TablePage):
             #return ctx
 
         def inn_filter(self, query):
-            if has_permit(self.crt_user,'-i_am_merchant'):
-                query = query.filter(merchant_id = get_user_merchantid(self.crt_user))
+            if self.crt_user.merchant:
+                query = query.filter(merchant_id = self.crt_user.merchant.id)
             return query.order_by('-createtime')
 
         class filters(RowFilter):
@@ -78,7 +78,7 @@ class BalancelogPage(TablePage):
             
             @property
             def names(self):
-                if has_permit(self.crt_user,'-i_am_merchant'):
+                if self.crt_user.merchant:
                     return ['categoryid','accountid__accounttype']
                 else:
                     return ['merchant','categoryid','accountid__accounttype']
