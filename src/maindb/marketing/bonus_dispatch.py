@@ -134,7 +134,8 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
                                     afteramount = account.amount,
                                     amount=self.instance.amount,
                                     creater=str(self.crt_user),
-                                    memo=self.instance.memo
+                                    memo=self.instance.memo,
+                                    merchant=self.instance.merchant
                                     )
         TbBetfullrecord.objects.create(consumeamount=self.instance.withdrawlimitamount,
                                        consumestatus=1,
@@ -154,7 +155,7 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
             'accountid':self.instance.accountid_id,
             'sumdate': timezone.now().date(),
         } 
-        sum_inst,_  =TbAgentdaysummary.objects.get_or_create(**dc) 
+        sum_inst,_  =TbAgentdaysummary.objects.get_or_create(merchant = self.instance.merchant,**dc) 
         sum_inst.sumamount += self.instance.amount
         sum_inst.save()
         

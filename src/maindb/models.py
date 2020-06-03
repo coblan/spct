@@ -423,7 +423,8 @@ class TbAgentdaysummary(models.Model):
     levelpoints = models.DecimalField(db_column='LevelPoints', max_digits=18, decimal_places=4,default =0)  # Field name made lowercase.
     sumpieaward = models.DecimalField(db_column='SumPieAward', max_digits=18, decimal_places=4,default =0)  # Field name made lowercase.
     gameid = models.IntegerField(db_column='GameId')  # Field name made lowercase.
-
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
     class Meta:
         managed = False
         db_table = 'TB_AgentDaySummary'
