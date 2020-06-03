@@ -601,6 +601,7 @@ class AccountPage(TablePage):
                  'table_ctx':UserPicker().get_head_context(),
                  'action':''' cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)
             .then((row)=>{
+                debugger
                  ex.each(scope.ps.selected,account=>{
                      account.csuserid = row.pk
                      account._csuserid_label = row.first_name+'('+ row.username +')'
