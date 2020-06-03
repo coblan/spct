@@ -13,6 +13,7 @@ from helpers.director.model_func.field_proc import BaseFieldProc
 import os
 from subprocess import Popen
 from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
+from helpers.director.access.permit import can_write
 
 import logging
 general_log = logging.getLogger('general_log')
@@ -60,8 +61,10 @@ class AppPackage(TablePage):
                 if op['name'] == 'add_new':
                     ls.append(op)
             ls += [
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废', 'confirm_msg': '确认作废已选中项？',
-                 'pre_set': 'rt={valid:false}', 'row_match': 'many_row',},
+                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 
+                 'label': '作废', 'confirm_msg': '确认作废已选中项？',
+                 'pre_set': 'rt={valid:false}', 'row_match': 'many_row',
+                 'visible':can_write(TbAppversion,self.crt_user)},
             ]
             return ls
                          #'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
