@@ -117,7 +117,8 @@ class MessagePage(TablePage):
                  'editor':'com-op-btn',
                  'label':'作废',
                  'row_match':'many_row',
-                 'pre_set':'rt = {status:0}'
+                 'pre_set':'rt = {status:0}',
+                 'visible': 'status' in self.permit.changeable_fields(),
                  }
             ]
             return ops
