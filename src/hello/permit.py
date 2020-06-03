@@ -6,7 +6,7 @@ from helpers.func.nav_data import walk_dict
 from helpers.func.collection.container import evalue_container
 
 permit1 = [
-        #{'label': '商户分组','value': '-i_am_merchant','help_text':'标识用户是否为商户;如果是商户用户分组，必须勾选!'},
+        {'label': '商户分组','value': '-i_am_merchant','help_text':'标识用户是否为商户;如果是商户用户分组，必须勾选!'},
         {'label':'首页统计','value':'home-statistic'},
         {'label': '待办事项',
          'children': [
