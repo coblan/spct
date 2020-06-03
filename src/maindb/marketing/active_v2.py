@@ -164,9 +164,9 @@ class ActivityV2Form(MerchantInstancCheck,ModelFields):
         
     def dict_head(self, head):
         if head['name']=='rules':
-            head['editor']='richtext'
+            head['editor']='com-field-richtext'
         if head['name']=='content':
-            head['editor']='richtext'
+            head['editor']='com-field-richtext'
         if head['name']=='banner':
             head['up_url'] = '/d/upload?path=public/images'      
         if head['name'] =='templateid':
