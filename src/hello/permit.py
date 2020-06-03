@@ -409,7 +409,8 @@ permit1 = [
              {'label':'用户扩展','children':[
                  {'label':'查看','value':'TbUserex'},
                  {'label':'编辑','value':'TbUserex.edit','depend':['TbUserex']},
-             ]}
+             ]},
+             {'label':'异常地址','value':'badurl.read'}
              ],
          },
         
@@ -593,9 +594,9 @@ permit_merchant = [
          'children': [
              {'label': '会员统计', 'value': 'member_statistic', 'depend': ['TbAccount'],}, 
              {'label': '平台亏盈', 'value': 'platform_profit',}, 
-             {'label':'充值安全统计','value':'report.recharge_reports','depend':['TbRecharge']},
+             #{'label':'充值安全统计','value':'report.recharge_reports','depend':['TbRecharge']},
              {'label':'每日报表','value':'TbTrendstatistics'},
-             {'label':'投注分析','value':'report.betAnalysis',},
+             #{'label':'投注分析','value':'report.betAnalysis',},
              
                      ],
         }, 

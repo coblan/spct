@@ -4,7 +4,7 @@ from django.db import connections
 from helpers.director.shortcut import TablePage, page_dc, SimTable, FieldsPage, Fields
 from helpers.director.base_data import director
 from django.utils import timezone
-
+from maindb.models import TbMerchants
 
 class PlatformProfitFieldsPage(FieldsPage):
     template = 'jb_admin/fields.html'
@@ -69,7 +69,9 @@ class PlatformProfit(TablePage):
 
         def getRowFilters(self):
             return [
-                #{'name'}
+                {'name':'merchant','label':'商户','editor':'com-filter-select','options':[
+                    {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
+                    ],'visible':not self.crt_user.merchant},
                 {'name': 'date', 'label': '日期', 'editor': 'com-filter-datetime-range'},
             ]
 
@@ -104,10 +106,14 @@ class PlatformProfit(TablePage):
             return self.data
 
         def getData(self):
+            if self.crt_user.merchant:
+                merchant = self.crt_user.merchant.id
+            else:
+                merchant = self.search_args.get('merchant','null')
             sql_args = {
                 'StartTime': self.search_args.get('_start_date', ''),
                 'EndTime': self.search_args.get('_end_date', ''),
-                'merchant':self.search_args.get('merchant','null')
+                'merchant':merchant
             }
             sql = r"exec dbo.[SP_PlatformProfit] '%(StartTime)s','%(EndTime)s',%(merchant)s" \
                   % sql_args

@@ -249,7 +249,7 @@ class PcMenu(BaseEngine):
                  {'label': _('User'), 'url': page('jb_user'), 'visible': can_touch(User, crt_user) and not has_permit(crt_user,'-i_am_merchant')},
                  {'label': _('Role'), 'url': page('jb_group'), 'visible': can_touch(Group, crt_user)},
                  {'label': '操作日志', 'url': page('operation_log'), 'visible': can_touch(TbOperationlog, crt_user)},
-                 {'label':'异常地址','url':page('badurl')},
+                 {'label':'异常地址','url':page('badurl'),'visible':has_permit(crt_user, 'badurl.read')},
                  {'label':'账号扩展信息','url':page('userex'),'visible':can_touch(TbUserex,crt_user)},
                  {'label':'后台登录IP白名单','url':page('admin_ip'),'visible':can_touch(TbBackendwhiteip,crt_user)},
                  {'label':'后台登录日志','url':page('bacnend_loginlog'),'visible':can_touch(TbBackendloginlog,crt_user)},
