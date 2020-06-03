@@ -69,6 +69,7 @@ class PlatformProfit(TablePage):
 
         def getRowFilters(self):
             return [
+                #{'name'}
                 {'name': 'date', 'label': '日期', 'editor': 'com-filter-datetime-range'},
             ]
 
@@ -105,9 +106,10 @@ class PlatformProfit(TablePage):
         def getData(self):
             sql_args = {
                 'StartTime': self.search_args.get('_start_date', ''),
-                'EndTime': self.search_args.get('_end_date', '')
+                'EndTime': self.search_args.get('_end_date', ''),
+                'merchant':self.search_args.get('merchant','null')
             }
-            sql = r"exec dbo.[SP_PlatformProfit] '%(StartTime)s','%(EndTime)s'" \
+            sql = r"exec dbo.[SP_PlatformProfit] '%(StartTime)s','%(EndTime)s',%(merchant)s" \
                   % sql_args
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql)

@@ -51,12 +51,13 @@ class ActivityRecoredPage(TablePage):
                     
             range_fields=['createtime']
             icontains = ['account__nickname']
+            
             def getExtraHead(self):
                 return [
                     {'name':'account__nickname','label':'用户昵称'},
                     {'name':'account__merchant','label':'商户','editor':'com-filter-select','options':[
                         {'value':x.pk ,'label':str(x)} for x in TbMerchants.objects.all()
-                        ]},
+                        ],'visible':not self.crt_user.merchant},
                 ]
 
 director.update({
