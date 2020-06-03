@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter,has_permit
-from maindb.models import TbActivityRecord,TbMerchants
+from maindb.models import TbActivityRecord,TbMerchants,TbActivityV2
 from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
 from django.db.models import F
 
@@ -45,9 +45,9 @@ class ActivityRecoredPage(TablePage):
             @property
             def names(self):
                 if self.crt_user.merchant:
-                    return ['account__nickname']
+                    return ['account__nickname','activity']
                 else:
-                    return ['account__merchant','account__nickname']
+                    return ['account__merchant','account__nickname','activity']
                     
             range_fields=['createtime']
             icontains = ['account__nickname']
@@ -59,6 +59,13 @@ class ActivityRecoredPage(TablePage):
                         {'value':x.pk ,'label':str(x)} for x in TbMerchants.objects.all()
                         ],'visible':not self.crt_user.merchant},
                 ]
+            
+            def dict_head(self, head):
+                if head['name'] == 'activity' and self.crt_user.merchant:
+                    head['options'] = [
+                        {'value':x.pk,'label':str(x)} for x in TbActivityV2.objects.filter(merchant = self.crt_user.merchant)
+                    ]
+                return head
 
 director.update({
     'activity_record':ActivityRecoredPage.tableCls,

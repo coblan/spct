@@ -150,7 +150,7 @@ class PcMenu(BaseEngine):
                 {'label': '每日报表', 'url': page('everyday_report'),
                   'visible': can_touch(TbTrendstatistics, crt_user), },
                 {'label':'投注分析','url':page('bet_analysis'),'visible':has_permit(crt_user,'report.betAnalysis')},
-                {'label':'活动记录','url':page('activityrecord'),},
+                #{'label':'活动记录','url':page('activityrecord'),},
              ]},
             
             {'label': '代理系统', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
