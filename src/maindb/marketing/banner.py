@@ -154,8 +154,8 @@ class BannerForm(MerchantInstancCheck,ModelFields):
         }
 
     def clean_dict(self, dc):
-        if has_permit(self.crt_user,'-i_am_merchant'):
-            dc['merchant'] = get_user_merchantid(self.crt_user)
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
         return dc
         
     def save_form(self):
