@@ -95,6 +95,12 @@ class MessagePage(TablePage):
                 head['editor'] = 'com-table-switch-to-tab'
                 head['ctx_name'] = 'message_edit_tags'
                 head['tab_name'] = 'baseinfo'
+            if head['name'] =='status':
+                head['inn_editor'] = head['editor']
+                head['editor']='com-table-rich-span'
+                head['class']='middle-col btn-like-col'
+                head['cell_class'] = 'var dc={0:"warning",1:"success",2:"ignore"};rt=dc[scope.row.status]'
+            
             return head
         
         def get_operation(self):
@@ -109,7 +115,7 @@ class MessagePage(TablePage):
             ops += [
                 {'fun':'selected_set_and_save',
                  'editor':'com-op-btn',
-                 'label':'删除',
+                 'label':'作废',
                  'row_match':'many_row',
                  'pre_set':'rt = {status:0}'
                  }
