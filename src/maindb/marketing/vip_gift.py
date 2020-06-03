@@ -23,9 +23,10 @@ class VipgiftPage(TablePage):
             return head
         
         def get_operation(self):
-            ops = super().get_operation()
-            ops = [op for op in ops if op['name'] !='delete_selected']
-            return ops
+            return []
+            #ops = super().get_operation()
+            #ops = [op for op in ops if op['name'] !='delete_selected']
+            #return ops
         
         class filters(RowFilter):
             names = ['enabled']
