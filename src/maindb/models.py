@@ -3490,6 +3490,9 @@ class TbAgentnotice(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_AgentNotice'
+    
+    def __str__(self):
+        return self.title
 
 
 #class TbMatchesBasketball(models.Model):

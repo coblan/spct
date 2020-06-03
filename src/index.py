@@ -54,7 +54,7 @@ page_dc = {
     "agent_qa"	:maindb.marketing.agent_qa.AgentQAPage,
     "advertise"	:maindb.marketing.advertisement.AdvertisementPage,
     "maindb.report.channel"	:maindb.report.report_channel.ReportChnnel,
-    "platform_profit"	:maindb.report.platform_profit.PlatformProfit,
+    "platform_profit"	:maindb.report.evalue_container.PlatformProfit,
     "recharge_reports"	:maindb.report.recharge_report.RechargeReport,
     "everyday_report"	:maindb.report.every_day.EveryDayReportPage,
     "bet_analysis"	:maindb.report.bet_analysis.BetAnalysisPage,

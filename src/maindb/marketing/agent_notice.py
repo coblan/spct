@@ -14,7 +14,7 @@ from helpers.director.base_data import director
 from helpers.maintenance.update_static_timestamp import js_stamp_dc
 from ..redisInstance import redisInst
 from helpers.director.access.permit import has_permit
-
+from hello.merchant_user import MerchantInstancCheck
 
 class AgentNoticePage(TablePage):
     template = 'jb_admin/table.html'
@@ -55,7 +55,6 @@ class AgentNoticePage(TablePage):
     class tableCls(ModelTable):
         model = TbAgentnotice
         exclude = ['id', 'url']
-        hide_fields = ['content']
         
         def inn_filter(self, query):
             if self.crt_user.merchant:
@@ -129,12 +128,24 @@ class AgentNoticePage(TablePage):
             return ctx
 
 
-class NoticeForm(ModelFields):
+class NoticeForm(MerchantInstancCheck,ModelFields):
     class Meta:
         model = TbAgentnotice
         exclude = []
 
-    hide_fields = ['createuser']
+    #hide_fields = ['createuser']
+    
+    @property
+    def hide_fields(self):
+        if self.crt_user.merchant:
+            return ['createuser','merchant']
+        else:
+            return  ['createuser']
+    
+    def clean_dict(self, dc):
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
+        return dc
 
     def dict_head(self, head):
         # if head['name'] == 'createuser':
