@@ -1,6 +1,6 @@
 # encoding:utf-8
 from __future__ import unicode_literals
-from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowSearch, director
+from helpers.director.shortcut import ModelTable, TablePage, page_dc, ModelFields, RowSearch, director,RowFilter
 from ..models import Blackiprangelist, \
     Whiteiplist, Whiteuserlist, TbAccount
 
@@ -199,7 +199,7 @@ class WhiteUserForm(ModelFields):
 class AccountSelect(ModelTable):
     selectable = False
     model = TbAccount
-    include = ['accountid', 'nickname', ]
+    include = ['accountid', 'nickname', 'merchant']
     
     def inn_filter(self, query):
         if self.crt_user.merchant:
@@ -222,7 +222,15 @@ class AccountSelect(ModelTable):
         return {
             'account': inst.accountid,
         }
-
+    
+    class filters(RowFilter):
+        @property
+        def names(self):
+            if self.crt_user.merchant:
+                return []
+            else:
+                return ['merchant']
+    
     class search(RowSearch):
         names = ['accountid', 'nickname']
 

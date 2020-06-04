@@ -556,14 +556,15 @@ permit_merchant = [
          'children': [
              {'label': '比赛列表', 'children': [
                  {'label':'查看', 'value': 'TbMatches',}, 
-                 {'label':'推荐','value':'TbMatch.isrecommend'},
-                 {'label':'走地','value':'TbMatch.hasliveodds'},
-                 {'label':'显示/隐藏','value':'TbMatch.ishidden'},
-                 {'label':'退单','value':'TbMatch.quit_ticket'},
-                 {'label': '编辑(除推荐、走地、显示)', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],},
-                 {'label':'比分','value':'TbPeriodscore'},
-                 {'label':'危险球','value':'TbLivefeed.edit'},
-                 {'label':'盘口','value':'manual_specialbetvalue'},
+                 #{'label':'推荐','value':'TbMatch.isrecommend'},
+                 #{'label':'走地','value':'TbMatch.hasliveodds'},
+                 #{'label':'显示/隐藏','value':'TbMatch.ishidden'},
+                 #{'label':'退单','value':'TbMatch.quit_ticket'},
+                 #{'label': '编辑(除推荐、走地、显示)', 'value': 'TbMatches.edit', 'depend': ['TbMatches',],},
+                 #{'label':'比分','value':'TbPeriodscore'},
+                 #{'label':'危险球','value':'TbLivefeed.edit'},
+                 #{'label':'盘口','value':'manual_specialbetvalue'},
+                 
                  #{'label':'手动结算','children':[
                       #{'label':'进入结算页面','value':'manual_outcome','depend':['TbMarkets']},
                       #{'label':'提交手动结算','value':'save_manual_outcome'},

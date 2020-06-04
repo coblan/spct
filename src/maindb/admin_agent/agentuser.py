@@ -387,7 +387,7 @@ class YongJingForm(Fields):
 class ParentSelect(AccountSelect):
     def inn_filter(self, query):
         query = super().inn_filter(query)
-        return query.filter(accounttype=1)
+        return query.filter(agentstatus=1)
 
 @director_element('agent.ParentForm')
 class ParentForm(Fields):
