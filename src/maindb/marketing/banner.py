@@ -144,6 +144,8 @@ class BannerForm(MerchantInstancCheck,ModelFields):
                 head['up_url'] = '/d/upload?path=public/banner'
         if head['name'] == 'createuser':
             head['editor'] = 'com-field-label-shower'
+        if head['name'] == 'displaytype':
+            head['editor'] = 'com-field-radio'
         return head
 
     def dict_row(self, row):
