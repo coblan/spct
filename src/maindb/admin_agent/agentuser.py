@@ -301,13 +301,30 @@ class AgentUser(TablePage):
             yong = YongJingForm(crt_user=self.crt_user)
             changeable_fields = self.permit.changeable_fields()
             return [
-                {'fun': 'add_new', 'editor': 'com-op-btn' ,
+                #{'fun': 'add_new', 'editor': 'com-op-btn' ,
+                 #'after_save': 'rt=scope.ps.search()', #'preset':'rt={meta_only_add_root_next_level:1}',
+                 #'preset':'rt={meta_par:scope.ps.parents[scope.ps.parents.length-1].value}',
+                 #'disabled':'scope.ps.parents.length>2',
+                 #'label': '创建代理用户','fields_ctx': agent.get_head_context(),
+                 #'visible':can_write(TbAccount, self.crt_user),
+                 #}, 
+                { 'editor': 'com-op-btn' ,
+                  'action':'''var row={meta_par:scope.ps.parents[scope.ps.parents.length-1].value,
+                  _director_name:scope.head.fields_ctx.director_name
+                  }; 
+                  scope.head.fields_ctx.row=row;
+                  cfg.pop_vue_com("com-form-one",scope.head.fields_ctx)
+                  .then( (resp)=>{
+                      scope.ps.update_or_insert(resp)
+                  })''' ,
                  'after_save': 'rt=scope.ps.search()', #'preset':'rt={meta_only_add_root_next_level:1}',
                  'preset':'rt={meta_par:scope.ps.parents[scope.ps.parents.length-1].value}',
                  'disabled':'scope.ps.parents.length>2',
-                 'label': '创建代理用户','fields_ctx': agent.get_head_context(),
+                 'label': '创建代理用户',
+                 'fields_ctx': agent.get_head_context(),
                  'visible':can_write(TbAccount, self.crt_user),
                  }, 
+                
                 #{'fun': 'add_new', 'editor': 'com-op-btn' ,
                  #'after_save': 'rt=scope.search()',
                  #'label': '创建下级用户','fields_ctx': agent.get_head_context(),}, 
@@ -420,8 +437,8 @@ class ParentForm(Fields):
         ]
     
     def save_form(self):
-        
-        accout = TbAccount.objects.get(accountid=self.kw.get('AccountID') )
+        accountid = self.kw.get('AccountID') or self.kw.get('accountid')
+        accout = TbAccount.objects.get(accountid=accountid)
         
         #if accout.accountid == self.kw.get('parentid'):
             #raise UserWarning('不能选择自己作为自己的上级')
