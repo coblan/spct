@@ -99,6 +99,8 @@ class MatchesStatisticsPage(TablePage):
                     head['options'] =[
                         {'value':x.sportid,'label':x.sportnamezh } for x in TbSporttypes.objects.filter(enabled = True)
                     ]
+                if head['name'] == 'matchdate':
+                    head['clearable'] = False
                 return head
 
         class sort(RowSort):
