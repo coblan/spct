@@ -33,7 +33,6 @@ class Jb_with_merchant_User(UserPage):
         
         def inn_filter(self, query):
             self.merchant_map = {x.pk:str(x) for x in TbMerchants.objects.all() }
-            
             query = super().inn_filter(query)
             if self.crt_user.merchant:
                 query = query.filter(userprofile__merchantid = self.crt_user.merchant.id)
@@ -72,7 +71,7 @@ class Jb_with_merchant_User(UserPage):
                 return [
                     {'name':"userprofile__merchantid",'label':'商户','editor':'com-filter-select','options':[
                         {'value':x.pk,'label':str(x)} for x in TbMerchants.objects.all()
-                        ]},
+                        ],'visible':not self.crt_user.merchant},
                     {'name':'groups__name','label':'权限分组','show':'!scope.ps.search_args.groups_id'}
                 ]
             
