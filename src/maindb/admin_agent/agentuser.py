@@ -299,7 +299,6 @@ class AgentUser(TablePage):
         def get_operation(self):
             agent = NewAgentUserForm(crt_user= self.crt_user)
             yong = YongJingForm(crt_user=self.crt_user)
-            par_form = ParentForm(crt_user=self.crt_user)
             changeable_fields = self.permit.changeable_fields()
             return [
                 {'fun': 'add_new', 'editor': 'com-op-btn' ,
@@ -328,7 +327,8 @@ class AgentUser(TablePage):
                 
                 {'fun': 'selected_set_and_save', 'editor': 'com-op-btn' ,
                  'after_save': 'rt=scope.ps.search()','row_match':'many_row',
-                 'label': '修改上级','fields_ctx': par_form.get_head_context(),
+                 'label': '修改上级',
+                 'fields_ctx': ParentForm().get_head_context(),
                  'visible':has_permit(self.crt_user, 'agent.parent.edit')}, 
                 {'editor':'com-op-btn','label':'选择客服',
                  'visible':  has_permit(self.crt_user, 'agent.csuserid-btn'),#'csuserid' in changeable_fields and can_touch(User,self.crt_user),
@@ -422,8 +422,17 @@ class ParentForm(Fields):
     def save_form(self):
         
         accout = TbAccount.objects.get(accountid=self.kw.get('AccountID') )
-        if accout.accountid == self.kw.get('parentid'):
-            raise UserWarning('不能选择自己作为自己的上级')
+        
+        #if accout.accountid == self.kw.get('parentid'):
+            #raise UserWarning('不能选择自己作为自己的上级')
+        par = TbAccount.objects.get(accountid = self.kw.get('parentid'))
+        while True :
+            if accout.accountid == par.accountid:
+                raise UserWarning('不能选择自己或自己的下级作为自己的上级')
+            if par.parentid <=0:
+                break
+            par = TbAccount.objects.get(accountid = par.parentid)
+      
         old_parentid = accout.parentid
         old_source = accout.source
         accout.parentid = self.kw.get('parentid')
