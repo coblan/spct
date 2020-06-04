@@ -15,7 +15,7 @@ from django.utils import timezone
 from helpers.director.model_func.dictfy import sim_dict
 from helpers.func.collection.mylist import split_list
 from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
-
+from helpers.director.access.permit import can_write
 from django.db.models import Prefetch
 import logging
 
@@ -393,7 +393,9 @@ class TicketMasterPage(TablePage):
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
                 }, 'visible': 'status' in self.permit.changeable_fields(),},
                 {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
-                {'editor':'com-op-btn','label':'审核通过','row_match':'one_row','match_express':' rt = scope.row.audit == 1', 'match_msg': '只能选择异常注单',
+                {'editor':'com-op-btn',
+                 'label':'审核通过',
+                 'row_match':'one_row','match_express':' rt = scope.row.audit == 1', 'match_msg': '只能选择异常注单',
                  'action':'''(function(){
                  if (!scope.ps.check_selected(scope.head)){return};
                  cfg.confirm("确定审核该条注单吗？")
@@ -404,15 +406,19 @@ class TicketMasterPage(TablePage):
                  })
                  .then(res=>{return cfg.showMsg("操作成功!")})
                  .then((res)=>{scope.ps.search()})
-                 })()'''},
-                {'fun':'director_call','director_name':'match.makesure_ticketmaster', 
+                 })()''',
+                 'visible': 'audit' in self.permit.changeable_fields()
+                 },
+                {'fun':'director_call',
+                 'director_name':'match.makesure_ticketmaster', 
                  'editor':'com-op-btn','label':'确认注单',
                  'confirm_msg':'确认该注单？',
                  #'icon':'fa-exclamation-triangle',
                  'row_match':'one_row',
                  'match_express':'ex.isin( scope.row.status,[0,11])',
                  'after_save':'scope.ps.search()',
-                 'match_msg':"只能选择状态为[确认中,危险球]的注单"},
+                 'match_msg':"只能选择状态为[确认中,危险球]的注单",
+                 'visible':can_write(TbTicketmaster,self.crt_user)},
                  #'action':'ex.director_call("save_rows",scope.ps.selected_rows).then((rows)=>{ex.each(rows,(row)=>{scope.ps.update_or_insert(row)})})'}
             ]
         
