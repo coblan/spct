@@ -317,9 +317,7 @@ class AgentUser(TablePage):
                   .then( (resp)=>{
                       scope.ps.update_or_insert(resp)
                   })''' ,
-                 'after_save': 'rt=scope.ps.search()', #'preset':'rt={meta_only_add_root_next_level:1}',
-                 'preset':'rt={meta_par:scope.ps.parents[scope.ps.parents.length-1].value}',
-                 'disabled':'scope.ps.parents.length>2',
+                 #'disabled':'scope.ps.parents.length>2',
                  'label': '创建代理用户',
                  'fields_ctx': agent.get_head_context(),
                  'visible':can_write(TbAccount, self.crt_user),
