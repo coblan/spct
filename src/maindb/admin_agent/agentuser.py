@@ -315,7 +315,7 @@ class AgentUser(TablePage):
                   scope.head.fields_ctx.row=row;
                   cfg.pop_vue_com("com-form-one",scope.head.fields_ctx)
                   .then( (resp)=>{
-                      scope.ps.update_or_insert(resp)
+                      scope.ps.search()
                   })''' ,
                  #'disabled':'scope.ps.parents.length>2',
                  'label': '创建代理用户',
