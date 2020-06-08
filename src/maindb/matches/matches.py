@@ -205,10 +205,11 @@ class MatchsPage(TablePage):
         class filters(RowFilter):
             range_fields = ['matchdate']
             names = ['source','sportid','isrecommend', 'marketstatus','statuscode','hasliveodds','tournamentid',]
-            fields_sort=['source','sportid','isrecommend', 'marketstatus', 'statuscode','hasliveodds','manual_settle_need_audit','tournamentid','matchdate']
+            fields_sort=['source','sportid','isrecommend', 'has_unchecked','marketstatus', 'statuscode','hasliveodds','manual_settle_need_audit','tournamentid','matchdate']
 
             def getExtraHead(self):
                 return [
+                    {'name':'has_unchecked','label':'有未结算订单','editor':'com-filter-check'},
                     {'name':'specialcategoryid','editor':'com-filter-select','placeholder':'类型',
                      'options':[
                          {'value':0,'label':'常规'},
@@ -227,6 +228,9 @@ class MatchsPage(TablePage):
                     #return query.filter(specialcategoryid__lte=0)
                 #elif self.kw.get('specialcategoryid')==1:
                     #return query.filter(specialcategoryid__gt=0)
+                if self.kw.get('has_unchecked'):
+    
+                    query =query.filter(tbticketstake__ticket_master__status=1,tbticketstake__ticket_master__accountid__accounttype=0)
                 if self.kw.get('manual_settle_need_audit') == 1:
                     query = query.extra(where=['TB_ManualSettleMsg.status=1','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
                                        tables=['TB_ManualSettleMsg'])
