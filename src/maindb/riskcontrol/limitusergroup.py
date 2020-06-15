@@ -38,7 +38,7 @@ class LimitUserForm(ModelFields):
     
     def dict_head(self, head):
         if head['name']=='singleweight':
-            head['fv_rule']='range(0.001~5)'
+            head['fv_rule']='range(0~5)'
         if head['name']=='betmatch':
             head['fv_rule']='range(1~1000)'
         if head['name'] == 'extension':
