@@ -672,7 +672,7 @@ class AccoutBaseinfo(ModelFields):
         if head['name'] == 'bonusrate':
             head['step'] = 0.001
         if head['name']=='weight':
-            head['fv_rule']='range(0.001~500);'+ head.get('fv_rule','')
+            head['fv_rule']='range(0~500);'+ head.get('fv_rule','')
         if head['name']=='risklevel':
             head['editor']='com-field-select'
             inst = TbSetting.objects.get(settingname='RiskControlLevel')

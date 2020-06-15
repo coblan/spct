@@ -2868,9 +2868,11 @@ class TbTournament(models.Model):
     minodds = models.DecimalField(db_column='MinOdds', max_digits=18, decimal_places=2,null=True,blank=True,verbose_name='最小赔率',help_text='上下盘玩法非主盘口封盘最低赔率')  # Field name made lowercase.
     #groupid = models.IntegerField(db_column='GroupID')  # Field name made lowercase.
     group = models.ForeignKey(to='TbLeagueGroup',db_constraint=False,db_column='GroupID',verbose_name='联赛组')  # Field name made lowercase.
+    
+    # 这两个字段故意屏蔽，管理后台不处理他们
     #reopenmarketsdelay = models.IntegerField(db_column='ReOpenMarketsDelay')  # Field name made lowercase.
     #liveadjusttemplateid = models.IntegerField(db_column='LiveAdjustTemplateID', blank=True, null=True)  # Field name made lowercase.
-   
+    disableparlay = models.BooleanField(db_column='DisableParlay',verbose_name='禁止串关')  # Field name made lowercase.
     
     class Meta:
         managed = False
