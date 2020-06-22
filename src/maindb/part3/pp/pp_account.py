@@ -14,7 +14,7 @@ class PPAccountPage(TablePage):
     class tableCls(ImAccountPage.tableCls):
         model = TbPpaccount
         exclude =[]
-        redraw_left_money_director = 'eb_account/redraw_left_money'
+        redraw_left_money_director = 'pp_account/redraw_left_money'
 
 class PPAccountForm(ModelFields):
     class Meta:
