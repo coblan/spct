@@ -97,6 +97,26 @@
                 },
                 on_click(tab){
                     this.filter_key = tab.key
+                    Vue.nextTick(()=>{
+                        var win_width = $(window).width()
+                        var left = $('.my-tab .tab-item.active').offset().left
+                        var element_width = $('.my-tab .tab-item.active').width()
+                        var scroll_left =  $('.my-tab').scrollLeft()
+
+                        if(left < 80){
+                            $('.my-tab').scrollLeft(scroll_left - win_width/2)
+                        }else if((left+element_width) > (win_width -80)){
+                            $('.my-tab').scrollLeft(scroll_left + win_width/2)
+                        }
+//                        var width = $('.my-tab')[0].scrollWidth
+//                        var win_width = $(window).width()
+//                        var leftwidth =  $('.my-tab').scrollLeft()
+//                        alert(width)
+//                        alert(win_width)
+//                        $('.my-tab').scrollLeft(200)
+
+                    })
+
                 },
 
             }
