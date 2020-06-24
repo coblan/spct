@@ -170,9 +170,6 @@ RABBIT_FORWORD={
 }
 
 
-PRODUCT_NAME = '飞球竞猜'
-PACKAGE_NAME = 'com.jingbo.DQGuess'
-
 BET_DATA_SOURCE=2
 
 INSPECT_DICT_STATIC = 'D:\work\sportscenter\src\index.py'
@@ -287,33 +284,25 @@ NOTICE = {
 
 OPEN_SECRET = True
 
-#JPUSH = {
-    #'app_key': '28ee0a4aae701e01d974bce6',
-    #'master_secret' : '38fa20f39645037ce2eb6667',
-    #'ios_production':False,
-    #'proxy':{
-        ##'https':'http://jg.cnd3.com'
-        #},
-#}
 
-JPUSH = {
-    'zq':{
-          'app_key': '28ee0a4aae701e01d974bce6',
-          'master_secret' : '38fa20f39645037ce2eb6667',
-          'ios_production':False,
-          'proxy':{
-              #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
-              },
-    },
-    'fq':{
-        'app_key': '28ee0a4aae701e01d974bce6',
-          'master_secret' : '38fa20f39645037ce2eb6667',
-          'ios_production':False,
-          'proxy':{
-              #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
-              },
-    }
-}
+#JPUSH = {
+    #'zq':{
+          #'app_key': '28ee0a4aae701e01d974bce6',
+          #'master_secret' : '38fa20f39645037ce2eb6667',
+          #'ios_production':False,
+          #'proxy':{
+              ##'https': 'http://1sapa_proxy006.ccxdd.com:61111',
+              #},
+    #},
+    #'fq':{
+        #'app_key': '28ee0a4aae701e01d974bce6',
+          #'master_secret' : '38fa20f39645037ce2eb6667',
+          #'ios_production':False,
+          #'proxy':{
+              ##'https': 'http://1sapa_proxy006.ccxdd.com:61111',
+              #},
+    #}
+#}
 
 DES3_KEY= '3E35EB83050243D589482F2E'
 
@@ -322,3 +311,31 @@ CKEDITOR_SAVER = {
     'static_domain':'https://static.rrystv.com',
 }
 
+MERCHANT = {
+    'zq':{
+        'jpush':{
+             'app_key': '28ee0a4aae701e01d974bce6',
+             'master_secret' : '38fa20f39645037ce2eb6667',
+             'ios_production':False,
+             'proxy':{
+                 #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
+              },
+        },
+        'PRODUCT_NAME' : '追球竞猜',
+        'PACKAGE_NAME' : 'com.jingbo.DQGuess',
+        
+    },
+    'fq':{
+        'jpush':{
+             'app_key': '28ee0a4aae701e01d974bce6',
+             'master_secret' : '38fa20f39645037ce2eb6667',
+             'ios_production':False,
+             'proxy':{
+                 #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
+              },
+        },
+        'PRODUCT_NAME' : '飞球竞猜',
+        'PACKAGE_NAME' : 'com.jingbo.DQGuess',
+        
+    }
+}

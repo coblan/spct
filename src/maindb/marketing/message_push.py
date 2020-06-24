@@ -291,7 +291,7 @@ def dispatch_message(inst):
 
 def broad_message(inst):
     merchantname = inst.merchant.merchantname
-    push_cfg = settings.JPUSH.get(merchantname)
+    push_cfg = settings.MERCHANT.get(merchantname).get('jpush')
     msg,msgid = inst.title,inst.pk
     app_key,master_secret,proxy = push_cfg.get('app_key'),push_cfg.get('master_secret'),push_cfg.get('proxy') 
     _jpush = MyJpush(app_key, master_secret,proxy=proxy)
@@ -311,7 +311,7 @@ def broad_message(inst):
     
 def jiguang_push_message(uids,inst) : # msg,msgid):
     merchantname = inst.merchant.merchantname
-    push_cfg = settings.JPUSH.get(merchantname)
+    push_cfg = settings.MERCHANT.get(merchantname).get('jpush')
     msg,msgid = inst.title,inst.pk
     app_key,master_secret,proxy = push_cfg.get('app_key'),push_cfg.get('master_secret'),push_cfg.get('proxy') 
      
