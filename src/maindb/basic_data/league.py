@@ -22,7 +22,7 @@ class League(TablePage):
         exclude = ['categoryid', 'uniquetournamentid', 'createtime',]
         pop_edit_field = 'tournamentid'
         fields_sort = ['sport','tournamentid', 'tournamentname','tournamentnamezh', 'isrecommend','issubscribe', 'openlivebet','disableparlay', 'weight','ticketdelay','sort', 'typegroupswitch',
-                       'adjusttemplate','liveadjusttemplateid','handicapcount','group']
+                       'adjusttemplate','liveadjusttemplateid','handicapcount','group','minmatchshowhours']
 
         # hide_fields = ['tournamentid']
 
@@ -51,6 +51,7 @@ class League(TablePage):
                 'handicapcount':140,
                 'adjusttemplate':130,
                 'liveadjusttemplateid':130,
+                'minmatchshowhours':150,
             }
             if head['name'] in dc:
                 head['width'] = dc.get(head['name'])
@@ -171,6 +172,9 @@ class LeagueForm(ModelFields):
             #head['fv_rule']='digit(2);range(0~1,false)'
         if head['name'] =='handicapcount':
             head['fv_rule'] = 'integer(+);range(1~6)'
+        if head['name'] =='minmatchshowhours':
+            head['fv_rule'] = 'range(0~100)'
+            head['suffix'] = '小时'
         return head
 
     def clean_save(self):

@@ -2873,7 +2873,8 @@ class TbTournament(models.Model):
     #reopenmarketsdelay = models.IntegerField(db_column='ReOpenMarketsDelay')  # Field name made lowercase.
     #liveadjusttemplateid = models.IntegerField(db_column='LiveAdjustTemplateID', blank=True, null=True)  # Field name made lowercase.
     disableparlay = models.BooleanField(db_column='DisableParlay',verbose_name='禁止串关')  # Field name made lowercase.
-    
+    minmatchshowhours = models.IntegerField(db_column='MinMatchShowHours',verbose_name='提前显示比赛时间')  # Field name made lowercase.
+     
     class Meta:
         managed = False
         db_table = 'TB_Tournament'
