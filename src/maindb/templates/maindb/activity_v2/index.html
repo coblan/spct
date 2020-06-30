@@ -27,6 +27,7 @@
     //   content = {title:'身上算个',description:'中立是双工地公安等东共爽啊gas双gas噶双噶'}
     rows={{ rows | jsonify }}
     tabs = {{ tabs | jsonify }}
+    merchantname = {{ merchantname | jsonify }}
 
 </script>
 
@@ -91,6 +92,7 @@
                         delete  search_args.t
                         location = ex.appendSearch(org_url,search_args)
                     }else{
+                        location = merchantname +'://www.'+merchantname+'.com/webview?org_url='+encodeURIComponent(org_url)
                         location='chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
                     }
 

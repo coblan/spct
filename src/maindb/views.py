@@ -5,7 +5,7 @@ from scripts.export_help import gen_help
 from .ckeditor import CusCkeditor
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import View
-from .models import TbNotice, TbQa,TbActivityV2
+from .models import TbNotice, TbQa,TbActivityV2,TbMerchants
 import re
 import json
 import time
@@ -114,7 +114,9 @@ class Activity(View):
         if pk.startswith('index'):
             if not request.GET.get('merchant'):
                 raise UserWarning('必须选择一个商户')
-            query = TbActivityV2.objects.filter(merchant=request.GET.get('merchant'))
+            merchant = TbMerchants.objects.get(pk = request.GET.get('merchant'))
+            
+            query = TbActivityV2.objects.filter(merchant= merchant) # request.GET.get('merchant'))
             if pk =='index':
                 query = query.filter(enabled=True,displaytype=0).order_by('-sort')
             else:
@@ -134,7 +136,8 @@ class Activity(View):
             ctx = {
                 'rows':rows,
                 'tabs':[{'key':-1,'label':'公用'}] + tabs,
-                'js_config':baseengine.getJsConfig()
+                'js_config':baseengine.getJsConfig(),
+                'merchantname':merchant.merchantname,
             }        
             return render(request,'maindb/activity_v2/index.html',context=ctx)                
                 
