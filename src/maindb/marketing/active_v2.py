@@ -121,7 +121,7 @@ class ActiviyV2Page(TablePage):
                      'visible': has_permit(self.crt_user, 'TbActivityV2.update_cache') and self.crt_user.merchant,
                   },
                   {
-                    'action':'cfg.pop_vue_com("com-local-form-one",scope.head.fields_ctx).then(resp=>{cfg.show_load(); return ex.director_call("update_activity_file_v2",resp.row)}).then(()=>{cfg.hide_load()})',
+                    'action':'cfg.pop_vue_com("com-local-form-one",scope.head.fields_ctx).then(resp=>{cfg.show_load(); return ex.director_call("update_activity_file_v2",resp.row)}).then(()=>{cfg.hide_load(1500);})',
                     'fields_ctx':{'title':'选择一个商户', **MerchantSelect().get_head_context()},
                     'label': '更新缓存',
                     'editor': 'com-op-btn', 
