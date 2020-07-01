@@ -221,7 +221,7 @@ class TicketMasterPage(TablePage):
         exclude = ['accountid']
         fields_sort = ['sp_status','ticketid','createtime', 'accountid__nickname', 'ticketstake',] +TicketstakeEmbedTable.fields_sort + \
         ['orderid','audit',  'status','winbet','parlayrule', 'stakeamount', 'betamount', 'betoutcome', 'profit',
-         'turnover', 'bonuspa', 'bonus', 'settletime', 'memo','voidreason','terminal','updatetime']
+         'turnover', 'bonuspa', 'bonus', 'settletime', 'memo','voidreason','terminal','updatetime','betactionelapsed']
         
         @classmethod
         def clean_search_args(cls, search_args):
