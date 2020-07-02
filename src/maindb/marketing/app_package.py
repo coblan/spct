@@ -134,10 +134,10 @@ class AppPackageForm(MerchantInstancCheck,ModelFields):
                                          'package_name': PACKAGE_NAME,
                                          'prod_name': PRODUCT_NAME,
                                          'version': self.instance.versionname,}
-            fl_path = os.path.join(settings.MEDIA_ROOT, 'public', 'package', self.instance.md5 + '.plist')
+            fl_path = os.path.join(settings.MEDIA_ROOT, 'public', merchantname,'package', self.instance.md5 + '.plist')
             with open(fl_path, 'wb') as f:
                 f.write(plist_fl.encode('utf-8'))
-            self.instance.plisturl = '/package/%s' % self.instance.md5 + '.plist'
+            self.instance.plisturl = '/%s/package/%s' % (merchantname,self.instance.md5 + '.plist')
     
     def save_form(self): 
         super().save_form()
