@@ -193,8 +193,8 @@ MERCHANT = {
                  #'https': 'http://1sapa_proxy006.ccxdd.com:61111',
               },
         },
-        'PRODUCT_NAME' : '追球竞猜',
-        'PACKAGE_NAME' : 'com.jingbo.DQGuess',
+        'PRODUCT_NAME' : '飞球商户',
+        'PACKAGE_NAME' : 'com.jingbo.flyingball.market',
         
     },
     'fq':{
@@ -207,7 +207,7 @@ MERCHANT = {
               },
         },
         'PRODUCT_NAME' : '飞球竞猜',
-        'PACKAGE_NAME' : 'com.jingbo.DQGuess',
+        'PACKAGE_NAME' : 'com.jingbo.flyingball',
         
     }
 }
