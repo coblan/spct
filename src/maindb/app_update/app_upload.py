@@ -4,21 +4,31 @@ from __future__ import unicode_literals
 from helpers.director.recv_file import BasicReciever
 from django.conf import settings
 import requests
-
+from helpers.director.shortcut import get_request_cache
 from androguard import misc
 import hashlib
 import os
 from maindb.tool_bucket.ios_ipa_parse import analyze_ipa_with_plistlib
 
 class AppPackageReciever(BasicReciever):
-
+    
+    def __init__(self, *args, **kwargs):
+        self.crt_user = get_request_cache()['request'].user
+        if not self.crt_user.merchant:
+            raise UserWarning('请使用商户管理账号上传程序包!')
+    
     def getParDir(self):
-        return os.path.join(settings.MEDIA_ROOT,'public','package')
+        return os.path.join(settings.MEDIA_ROOT,'public',self.crt_user.merchant.merchantname,'package')
     
     def procFile(self,file_data,name):
         par_dir = self.getParDir()
         file_name = self.getFileName(file_data,name)
         file_path = os.path.join(par_dir,file_name)
+        
+        try: 
+            os.makedirs(os.path.dirname( file_path) )
+        except Exception:
+            pass
         
         with open(file_path,'wb') as general_file:
             general_file.write(file_data)
@@ -27,7 +37,7 @@ class AppPackageReciever(BasicReciever):
             ext = self.getSufix(name)
             
             #relative_path = self.sendToService(file_data, ext)
-            relative_path = '/package/%s'%file_name
+            relative_path = '/%s/package/%s'%(self.crt_user.merchant.merchantname,file_name)
             md5= self.getMd5(file_data)
             size = float( len(file_data) )/(1024*1024)
             size=round(size,2)

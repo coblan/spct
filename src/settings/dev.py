@@ -130,7 +130,7 @@ APP_PKG_UPLOAD_URL='http://103.246.219.202:9004/api/upload?folder=package'
 APP_PKG_ACCESS_URL='http://103.246.219.202:9004/static' 
 
 # 各种服务地址
-STATIC_SERVICE = 'https://static.rrystv.com/'
+STATIC_SERVICE = 'https://static.rrystv.com'
 CLOUD_STORAGE = 'http://103.246.219.202:9004/static'
 
 

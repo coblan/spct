@@ -123,12 +123,12 @@ class AppPackageForm(MerchantInstancCheck,ModelFields):
     def clean_save(self): 
         if self.instance.terminal ==1:
             if self.instance.merchant:
-                merchantname = self.instance.merchant
+                merchantname = self.instance.merchant.merchantname
             elif self.crt_user.merchant:
                 merchantname = self.crt_user.merchant.merchantname
             
-            PACKAGE_NAME = settings.MERCHANT.get(merchantname).PACKAGE_NAME
-            PRODUCT_NAME = settings.MERCHANT.get(merchantname).PRODUCT_NAME
+            PACKAGE_NAME = settings.MERCHANT.get(merchantname).get('PACKAGE_NAME')
+            PRODUCT_NAME = settings.MERCHANT.get(merchantname).get('PRODUCT_NAME')
             
             plist_fl = plist_template % {'ipa_download': settings.CLOUD_STORAGE + self.instance.packageurl, 
                                          'package_name': PACKAGE_NAME,
