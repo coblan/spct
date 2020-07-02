@@ -432,6 +432,8 @@ class TbAgentdaysummary(models.Model):
 
 class TbAppversion(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+   
     terminal = models.IntegerField(db_column='Terminal', choices=PLATFORM,
                                    verbose_name='终端')  # Field name made lowercase.
     packageurl = models.CharField(db_column='PackageUrl', max_length=255, blank=True,
@@ -450,8 +452,7 @@ class TbAppversion(models.Model):
     plisturl = models.CharField(db_column='PListUrl', max_length=200, blank=True,
                                 null=True)  # Field name made lowercase.
     minversionname = models.CharField(db_column='MinVersionName', max_length=64, blank=True, null=True,verbose_name='最小版本号')  # Field name made lowercase.
-    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
-   
+    
     class Meta:
         managed = False
         db_table = 'Tb_AppVersion'

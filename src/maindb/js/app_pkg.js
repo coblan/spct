@@ -1,12 +1,32 @@
 export var field_file_uploader={
     props:['row','head'],
-    template:`<div><com-file-uploader-tmp :name='head.name' v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader-tmp></div>`,
+    template:`<div class="com-field-app-pkg-uploader">
+        <com-file-uploader-tmp v-if="has_merchant" :name='head.name' v-model="row[head.name]" :config="head.config" :readonly="head.readonly"></com-file-uploader-tmp>
+    </div>`,
+    data(){
+        return {
+            has_merchant:false
+        }
+    },
+    mounted(){
+        if(this.row.merchant){
+            this.head.config.upload_url = ex.appendSearch(this.head.config.upload_url,{merchant:this.row.merchant})
+            this.has_merchant= true
+        }
+    },
     computed:{
         url:function(){
             return this.row[this.head.name]
+        },
+        merchant(){
+            return this.row.merchant
         }
     },
     watch:{
+        merchant(){
+            this.head.config.upload_url = ex.appendSearch(this.head.config.upload_url,{merchant:this.row.merchant})
+            this.has_merchant= true
+        },
         url:function(v){
             var mt =/([^\?]+)\?([^\?]+)/.exec(v)
             if(mt){

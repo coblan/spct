@@ -108,17 +108,26 @@ class AppPackageForm(MerchantInstancCheck,ModelFields):
         if head['name'] == 'packageurl':
             head['editor']= 'com-field-app-pkg-uploader' #'com-field-plain-file'
             head['required'] = True
+            head['readonly'] = '!Boolean( scope.row.merchant )'
             head['config']={
                 'multiple':False,
                 'accept':'.apk,.ipa',
-                'upload_url':reverse('app_pkg_upload'), 
+                'upload_url': '/main/app_upload' #reverse('app_pkg_upload'), 
             }
+        if head['name'] =='merchant':
+            head['readonly'] = ' Boolean( scope.row.merchant )'
+            
         if head['name'] == 'description':
             head['editor'] = 'blocktext'
             head['fv_rule'] = 'length(~200)'
             
         return head
     
+    def dict_row(self, inst):
+        dc ={}
+        if not inst.pk and self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
+        return dc
     
     def clean_save(self): 
         if self.instance.terminal ==1:
