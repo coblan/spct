@@ -326,6 +326,7 @@ GROUP BY DATENAME(WEEK, StartTime), YEAR(StartTime))a ORDER BY StartTime asc
         
         for row in data_rows:
             row['num_week'] = '%s/%s'%( row.get('Year') ,row.get('Week') )
+        data_rows.reverse()
         return data_rows
     
     
