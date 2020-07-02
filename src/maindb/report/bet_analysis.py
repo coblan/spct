@@ -24,12 +24,12 @@ class BetAnalysisPage(object):
             raise PermissionDenied('没有权限 report.betAnalysis')
     
     def get_context(self):
-        chart_ctx = BetCondition().get_head_context()
-        chart_ctx.update({
-            'inn_editor':'com-bet-chart',
-            'autoload':True,
+        #chart_ctx = BetCondition().get_head_context()
+        #chart_ctx.update({
+            #'inn_editor':'com-bet-chart',
+            #'autoload':True,
             
-        })
+        #})
         
         bet_week_chart = BetWeekChart().get_head_context()
         bet_week_chart.update({
@@ -44,8 +44,59 @@ class BetAnalysisPage(object):
                 'menu':[
                     {'name':'ss','label':'中注率','open_editor':'live_table','open_ctx':WinbetRatio().get_head_context()},
                     {'name':'bbb','label':'用户活跃度统计','open_editor':'live_table','open_ctx':LoginNumer().get_head_context()},
-                    {'name':'aaa','label':'投注概况','open_editor':'live_table_type','open_ctx': chart_ctx,'render_type':'chart'}, # TODO 确认一下 render_type 可能没用
-                    {'name':'cc','label':'投注总额-周推移','open_editor':'live_table_type','open_ctx':bet_week_chart,'render_type':'chart'},
+                    #{'name':'aaa','label':'投注概况','open_editor':'live_table_type','open_ctx': chart_ctx,'render_type':'chart'}, # TODO 确认一下 render_type 可能没用
+                    
+                    {'name':'aaa','label':'投注概况','open_editor':'com-table-chart','open_ctx': {
+                        ** BetCondition().get_head_context(),
+                        'charts':[
+                            {'name':'betusernum',
+                             'editor':'com-table-chart-general',
+                             'x':'starttime',
+                             'y':[{'name':'betusernum','type':'bar', 'color':'#27B6AC'},
+                                  ],},
+                            {'name':'betamount','editor':"com-table-chart-general",
+                             'x':'starttime',
+                             'y':[{'name':'betamount','type':'bar','color':'#27B6AC'},
+                                  {'name':'betoutcome','type':'bar'}]},
+                            {'name':'betnum','editor':'com-table-chart-general',
+                             'x':'starttime',
+                             'y':[{'name':'betnum','type':'bar','axisIndex':0,'color':'#27B6AC'},
+                                  {'name':'betamount','type':'line','axisIndex':1}],
+                             'yAxis':[
+                                 {
+                                     'type': 'value',
+                                     'name': '投注单数',
+                                 },
+                                 {
+                                     'type': 'value',
+                                     'name': '投注金额',
+                                 }
+                             ]
+                             },
+                            {'name':'userprofit','editor':'com-table-chart-general',
+                             'x':'starttime',
+                             'y':[{'name':'userprofit','type':'bar'}]}
+                            #{'name':'cc','y':['userprofit','betoutcome'],'editor':'com-table-chart-bar'},
+                        ]
+                        },
+                    'render_type':'chart'
+                    },
+                    
+                    #{'name':'cc','label':'投注总额-周推移','open_editor':'live_table_type','open_ctx':bet_week_chart,'render_type':'chart'},
+                    {'name':'cc','label':'投注总额-周推移','open_editor':'com-table-chart','open_ctx':{
+                        **BetWeekChart().get_head_context(),
+                        'autoload':False,
+                        'charts':[
+                            {
+                                'css':'.BetAmount-chart .mychart{width:700px;height:500px}',
+                                'class':'BetAmount-chart',
+                                'editor':'com-table-chart-general',
+                                'x':'num_week',
+                                'y':[{'name':'BetAmount','type':'bar','color':'#83bff6'}]
+                            }
+                        ]}
+                       ,'render_type':'chart'},
+                     
                     {'name':'dd','label':'玩法统计','open_editor':'live_table','open_ctx':MarketAnalysis().get_head_context() },
                     {'name':'TournamentAnalysis','label':'联赛统计', 'open_editor':'live_table','open_ctx':TournamentAnalysis().get_head_context()  },
                     {'name':'ReportTicketState','label':'投注单状态分析', 'open_editor':'live_table','open_ctx':ReportTicketState().get_head_context()  },
@@ -198,6 +249,9 @@ class BetCondition(ModelTable):
     model = TbTrendstatistics
     include =['starttime','betusernum','betnum','betamount','betoutcome','userprofit',]
     
+    class pagenator(ModelTable.pagenator):
+        perPage = 300
+    
     @classmethod
     def clean_search_args(cls, search_args):
         today = timezone.now()
@@ -226,6 +280,8 @@ class BetCondition(ModelTable):
 class BetWeekChart(PlainTable):
     def get_heads(self):
         return [
+            {'name':'BetAmount','label':'投注额'},
+            {'name':'num_week','label':'周数'},
         ]
     
     @classmethod
@@ -267,7 +323,12 @@ GROUP BY DATENAME(WEEK, StartTime), YEAR(StartTime))a ORDER BY StartTime asc
                 for index, head in enumerate(cursor.description):
                     dc[head[0]] = row[index]
                 data_rows.append(dc)
+        
+        for row in data_rows:
+            row['num_week'] = '%s/%s'%( row.get('Year') ,row.get('Week') )
         return data_rows
+    
+    
     def getRowFilters(self):
         return [
             {'name':'week','label':'周','editor':'com-filter-week-range'}

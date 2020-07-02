@@ -22,7 +22,12 @@ var report_block_tree_menu = {
     },
     methods:{
         next_level(action){
-            this.$root.open_live(window[action.open_editor] ,action.open_ctx,action.label)
+            if(window[action.open_editor]){
+                this.$root.open_live(window[action.open_editor] ,action.open_ctx,action.label)
+            }else{
+                this.$root.open_com(action.open_editor ,action.open_ctx,action.label)
+            }
+
         }
     }
 }
