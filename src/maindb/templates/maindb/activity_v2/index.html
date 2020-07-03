@@ -92,8 +92,12 @@
                         delete  search_args.t
                         location = ex.appendSearch(org_url,search_args)
                     }else{
-                        location = merchantname +'://www.'+merchantname+'.com/webview?org_url='+encodeURIComponent(org_url)
-                        location='chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
+                        if(search_args.version){
+                            location =  merchantname +'://www.'+merchantname+'.com/webview?org_url='+encodeURIComponent(org_url)
+                        }else{
+                            // 旧的app没有version
+                            location =  'chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
+                        }
                     }
 
                 },
