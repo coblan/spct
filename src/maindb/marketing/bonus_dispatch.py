@@ -8,6 +8,7 @@ import json
 from maindb.google_validate import valide_google_code
 from django.utils import timezone
 from hello.merchant_user import MerchantInstancCheck
+from django.db.models import Sum
 
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
@@ -180,12 +181,27 @@ class BonuslogTable(ModelTable):
             query = query.filter(merchant = self.crt_user.merchant)
         return query
     
+    def statistics(self, query):
+        dc = query.aggregate(total_amount=Sum('amount') )
+        self.footer = {"amount":dc.get('total_amount')}
+        return query
+    
+            
+    @classmethod
+    def clean_search_args(cls, search_args):
+        if search_args.get('_first','1') =='1' :
+            search_args['_first'] = '0'
+            search_args['_start_createtime']= timezone.now().strftime('%Y-%m-%d') +' 00:00:00'
+            search_args['_end_createtime'] = timezone.now().strftime('%Y-%m-%d') +' 23:59:59'
+        return search_args
+    
     def dict_head(self, head):
         dc={
             'bonustypeid':200,
             'createtime':160,
             'accountid':120,
             'memo':200,
+            'amount':130,
         }
         if dc.get(head['name']):
             head['width']=dc.get(head['name'])

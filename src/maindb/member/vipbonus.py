@@ -6,6 +6,8 @@ from maindb.aes_crypto import prpcrypt
 from django.conf import settings
 from django.db.models import F
 from hello.merchant_user import get_user_merchantid
+from django.db.models import Sum
+from django.utils import timezone
 
 def des3_decode(code):
     try:
@@ -32,6 +34,20 @@ class VipBonusPage(TablePage):
                  'visible':has_permit(self.crt_user,'vipbonus.account_real_address'),
                  'action':'cfg.showMsg(scope.row.user_address_detail)'}
             ]
+        
+        def dict_head(self, head):
+            if head['name'] =='amount':
+                head['width'] = 130
+            return head
+        
+        @classmethod
+        def clean_search_args(cls, search_args):
+            if search_args.get('_first','1') =='1' :
+                search_args['_first'] = '0'
+                search_args['_start_createtime']= timezone.now().strftime('%Y-%m-%d') +' 00:00:00'
+                search_args['_end_createtime'] = timezone.now().strftime('%Y-%m-%d') +' 23:59:59'
+            return search_args
+            
         
         def inn_filter(self, query):
             #subque= TbProductContactUser.objects.filter(accountid = OuterRef('accountid'))
@@ -62,6 +78,13 @@ class VipBonusPage(TablePage):
                                        #'address':'TB_Product_Contact_User.address'},
                                #where=['TB_Product_Contact_User.accountid=TB_VipBonus.accountid'],
                                #tables=['TB_Product_Contact_User'])
+        
+        def statistics(self, query):
+            dc = query.aggregate(total_amount=Sum('amount') )
+            self.footer = {"amount":dc.get('total_amount')}
+            return query
+            
+        
         
         def dict_row(self, inst):
             if not has_permit(self.crt_user,'vipbonus.account_real_address'):
