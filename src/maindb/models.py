@@ -2958,7 +2958,7 @@ class TbBanner(models.Model):
         db_table = 'TB_Banner'
     
     def __str__(self):
-        return self.title
+        return self.title or '新建广告'
 
 
 class TbWithdrawlimitlog(models.Model):

@@ -553,53 +553,63 @@ class AccountPage(TablePage):
             return [
                 #'fun': 'selected_set_and_save', 
                 {
-                 'editor': 'com-op-btn', 
-                 'action':'var ctx=named_ctx["account.memo.form"];ctx.title="解冻账号";ctx.row=scope.ps.selected[0];ctx.row.status=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
+                 'editor': 'com-btn', 
+                 'action':'if(scope.ps.check_selected(scope.head)){ var ctx=named_ctx["account.memo.form"];ctx.title="解冻账号";ctx.row=scope.ps.selected[0];ctx.row.status=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})  }',
                  'label': '解冻', 
+                 'row_match':'one_row',
                  #'field': 'status',
                  #'value': 1,
                  #'confirm_msg': '确认解冻？',
                  'visible': 'status' in changeable_fields, },
-                { 'editor': 'com-op-btn',
+                { 'editor': 'com-btn',
                   'label': '冻结', 
+                  'row_match':'one_row',
                   #'field': 'status', 'value': 0, 'confirm_msg': '确认冻结？', 
-                'action':'var ctx=named_ctx["account.memo.form"];ctx.title="冻结账号";ctx.row=scope.ps.selected[0];ctx.row.status=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
+                'action':'if(scope.ps.check_selected(scope.head)){ var ctx=named_ctx["account.memo.form"];ctx.title="冻结账号";ctx.row=scope.ps.selected[0];ctx.row.status=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)}) }',
                  'visible': 'status' in changeable_fields},
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置登录密码', 'field': 'password',
+                {'action':'scope.ps.selected_set_and_save(scope.head)', 
+                 'editor': 'com-btn', 'label': '重置登录密码', 'field': 'password',
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置登录密码？',
                  'visible': 'password' in changeable_fields},
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '重置资金密码', 'field': 'fundspassword',
+                {'action':'scope.ps.selected_set_and_save(scope.head)', 
+                 'editor': 'com-btn', 'label': '重置资金密码', 'field': 'fundspassword',
                  'value': 1, 'row_match': 'one_row', 'confirm_msg': '确认重置资金密码？',
                  'visible': 'fundspassword' in changeable_fields},
                 # selected_pop_set_and_save
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '调账',
+                {'action':'scope.ps.selected_set_and_save(scope.head)', 
+                 'editor': 'com-btn', 'label': '调账',
                  'row_match':'one_row',
                  'after_error':'scope.fs.showErrors(scope.errors)',
                  'fields_ctx': AccoutModifyAmount().get_head_context(), 
                  'visible': 'amount' in changeable_fields},
                 
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 
+                {'action':'scope.ps.selected_set_and_save(scope.head)',
+                 'editor': 'com-btn', 
                  'label': '调整限额',
                   'row_match':'one_row',
                  'after_error':'scope.fs.showErrors(scope.errors)',
                  'fields_ctx': ModifyBetFullRecord().get_head_context(), 'visible': 'amount' in changeable_fields},
                 
-                { 'editor': 'com-op-btn', 'label': '允许提现',
+                { 'editor': 'com-btn',
+                  'label': '允许提现',
                   #'field': 'isenablewithdraw','value': 1, 
                   #'confirm_msg': '确认允许选中用户提现？', 
                   'row_match':'one_row',
-                'action':'var ctx=named_ctx["account.memo.form"];ctx.title="允许提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
+                'action':'if(scope.ps.check_selected(scope.head)){ var ctx=named_ctx["account.memo.form"];ctx.title="允许提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)}) }',
                  'visible': 'isenablewithdraw' in changeable_fields},
-                { 'editor': 'com-op-btn', 'label': '禁止提现', 
+                { 'editor': 'com-btn', 'label': '禁止提现', 
                   #'field': 'isenablewithdraw','value': 0, 
                   #'confirm_msg': '确认禁止选中用户提现？', 
                   'row_match':'one_row',
-                'action':'var ctx=named_ctx["account.memo.form"];ctx.title="禁止提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})',
+                  'action':'if(scope.ps.check_selected(scope.head)){ var ctx=named_ctx["account.memo.form"];ctx.title="禁止提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})  }',
                  'visible': 'isenablewithdraw' in changeable_fields},
-                {'editor':'com-op-btn','label':'选择客服',
+                {'editor':'com-btn','label':'选择客服',
                  'visible': 'csuserid' in changeable_fields and can_touch(User,self.crt_user),
                  'table_ctx':UserPicker().get_head_context(),
-                 'action':''' cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)
+                 'row_match':'one_row',
+                 
+                 'action':'''if(scope.ps.check_selected(scope.head) ){
+                 cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)
             .then((row)=>{
                 debugger
                  ex.each(scope.ps.selected,account=>{
@@ -619,6 +629,10 @@ class AccountPage(TablePage):
                     scope.ps.selected = []
                 }
                  })
+                 
+                 
+                 }
+                 
                  
                  '''}
             ]

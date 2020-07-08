@@ -6,6 +6,8 @@ from ..models import TbBalancelog
 from .chargeflow import *
 from ..status_code import ACCOUNT_TYPE
 from hello.merchant_user import get_user_merchantid
+from helpers.maintenance.update_static_timestamp import static_url
+from helpers.case.jb_admin.uidict import op_excel
 
 class BalancelogPage(TablePage):
     template = 'jb_admin/table.html'
@@ -46,7 +48,9 @@ class BalancelogPage(TablePage):
         
         def get_operation(self):
             return [
-                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
+                #{'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
+                op_excel()
+                #
             ]
 
         def statistics(self, query):

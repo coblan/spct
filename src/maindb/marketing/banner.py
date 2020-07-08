@@ -82,8 +82,10 @@ class BannerPage(TablePage):
             ops = [ModelTable.get_operation(self)[0]]
             ops.extend([
                 {
-                    'fun': 'selected_set_and_save',
-                    'editor': 'com-op-btn',
+                    #'fun': 'selected_set_and_save',
+                    #'editor': 'com-op-btn',
+                    'editor':'com-btn',
+                    'action':'if(scope.ps.check_selected(scope.head)){scope.ps.selected_set_and_save(scope.head)}',
                     'label': '在线',
                     'field': 'status',
                     'value': 1,
@@ -92,8 +94,10 @@ class BannerPage(TablePage):
                     'visible': self.permit.can_edit(),
                 },
                 {
-                    'fun': 'selected_set_and_save',
-                    'editor': 'com-op-btn',
+                    #'fun': 'selected_set_and_save',
+                    #'editor': 'com-op-btn',
+                    'editor':'com-btn',
+                    'action':'if(scope.ps.check_selected(scope.head)){scope.ps.selected_set_and_save(scope.head)}',
                     'label': '离线',
                     'field': 'status',
                     'value': 0,

@@ -18,6 +18,7 @@ from hello.merchant_user import get_user_merchantid,MerchantInstancCheck
 from helpers.director.access.permit import can_write
 from django.db.models import Prefetch
 import logging
+from helpers.case.jb_admin.uidict import op_excel
 
 operation_log =logging.getLogger('operation_log')
 
@@ -372,7 +373,9 @@ class TicketMasterPage(TablePage):
 
         def get_operation(self):
             return [
-                {'editor':'com-op-btn','label':'设置列','icon': 'fa-gear',
+                {'editor':'com-btn',
+                 'label':'设置列',
+                 'icon':'el-icon-s-tools',
                  'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"设置列"})'},
                 {'editor':'com-op-table-refresh','label':'自动刷新频率','options':[
                     {'value':10*1000,'label':'10秒'},
@@ -381,8 +384,13 @@ class TicketMasterPage(TablePage):
                     #{'value':2*60*1000,'label':'2分钟'},
                     #{'value':3*60*1000,'label':'3分钟'},
                 ],'action':'rt= scope.ps.search()'},
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '作废',
+                
+                {
+                    #'fun': 'selected_set_and_save', 
+                 'editor': 'com-btn', 'label': '作废',
+                 
                  'pre_set': 'rt={status:-1,voidreason:""}',
+                 'action':'scope.ps.selected_set_and_save(scope.head)',
                  #'field': 'status', 'value': 30,
                  'row_match': 'many_row', 
                  'match_express':'rt= ex.isin( scope.row.status,[0,1,11])',
@@ -392,8 +400,10 @@ class TicketMasterPage(TablePage):
                     'heads': [{'name': 'voidreason', 'label': '备注', 'editor': 'blocktext', }],
                     'ops': [{'fun': 'save', 'label': '确定', 'editor': 'com-op-btn', }],
                 }, 'visible': 'status' in self.permit.changeable_fields(),},
-                {'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
-                {'editor':'com-op-btn',
+                #{'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', },
+                op_excel(),
+                
+                {'editor':'com-btn',
                  'label':'审核通过',
                  'row_match':'one_row','match_express':' rt = scope.row.audit == 1', 'match_msg': '只能选择异常注单',
                  'action':'''(function(){
@@ -409,9 +419,11 @@ class TicketMasterPage(TablePage):
                  })()''',
                  'visible': 'audit' in self.permit.changeable_fields()
                  },
-                {'fun':'director_call',
+                {
+                    #'fun':'director_call',
                  'director_name':'match.makesure_ticketmaster', 
-                 'editor':'com-op-btn','label':'确认注单',
+                 'editor':'com-btn','label':'确认注单',
+                 'action':'scope.ps.director_call(scope.head)',
                  'confirm_msg':'确认该注单？',
                  #'icon':'fa-exclamation-triangle',
                  'row_match':'one_row',
@@ -433,7 +445,8 @@ class TicketMasterPage(TablePage):
                                    'TB_Match.matchid=TB_TicketStake.matchid']
                             ) ) 
                 ).all()  #'tbticketstake_set',
-            query = query[:1000] 
+            perpage = int( self.search_args.get('_perpage') )
+            query = query[:perpage] 
             out=[]
             permit_fields =  self.permited_fields()
             for inst in query:
