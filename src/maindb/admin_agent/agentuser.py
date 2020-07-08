@@ -252,7 +252,7 @@ class AgentUser(TablePage):
                 row['SumRechargeAmount'] = round(row['SumRechargeAmount'] or 0, 2)
                 row['SumWithdrawalAmount'] = round(row['SumWithdrawalAmount'] or 0, 2)
                 row['SumTurnover'] = round(row['SumTurnover'] or 0, 2)
-                row['SumLostAll'] = round(row.get('SumLostAll',0) ,2)
+                row['SumLostAll'] = round(row['SumLostAll'] or 0 ,2)
 
             return self.child_agents
 
