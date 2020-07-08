@@ -15,7 +15,7 @@ class BannerPage(TablePage):
     class tableCls(ModelTable):
         model = TbBanner
         include = ['merchant','title', 'displaytype','status', 'picturename','pcpicturename', 'order', 'createuser', 'createtime', 'description']
-
+        pop_edit_fields=['title']
         def get_context(self):
             ctx = ModelTable.get_context(self)
             #ctx['extra_table_logic'] = 'banner_logic'
@@ -53,20 +53,23 @@ class BannerPage(TablePage):
                 head['editor'] = 'com-table-bool-shower'
                 head['options'] = [{'value': x[0], 'label': x[1], } for x in ONLINE_STATUS]  # dict( ONLINE_STATUS )
 
-            if head['name'] == 'title':
-                head['editor'] = 'com-table-pop-fields'
-                head['fields_ctx'] = BannerForm(crt_user=self.crt_user).get_head_context()
-                head['get_row'] = {
-                    'fun': 'get_with_relat_field',
-                    'kws': {
-                        "director_name": 'banner.table.edit',
-                        'relat_field': 'pk'
-                    }
-                }
-                head['after_save'] = {
-                    # 'fun':'do_nothing'
-                    'fun': 'update_or_insert'
-                }
+            #if head['name'] == 'title':
+                #head['editor'] ='com-table-click'
+                #head['fields_ctx'] = BannerForm().get_head_context()
+                #head['action'] = 'cfg.show_load();ex.director_call("banner.table.edit",{pk:scope.row.pk}).then(resp=>{cfg.hide_load();scope.head.fields_ctx.row=resp.row; return cfg.pop_vue_com("com-form-one",scope.head.fields_ctx) }).then(row=>{ex.vueAssign(scope.row,row)}) '
+                ##head['editor'] = 'com-table-pop-fields'
+                ##head['fields_ctx'] = BannerForm(crt_user=self.crt_user).get_head_context()
+                ##head['get_row'] = {
+                    ##'fun': 'get_with_relat_field',
+                    ##'kws': {
+                        ##"director_name": 'banner.table.edit',
+                        ##'relat_field': 'pk'
+                    ##}
+                ##}
+                ##head['after_save'] = {
+                    ### 'fun':'do_nothing'
+                    ##'fun': 'update_or_insert'
+                ##}
 
             return head
 
