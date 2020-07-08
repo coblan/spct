@@ -31,7 +31,7 @@ class AgentUser(TablePage):
         fields_sort = ['accountid', 'NickName', 'SumActive',  'BeaeAmount', 'AgentRulePercentage','AgentAmount',
                        'BalanceLostAmount', 'SumLostAmount', 'bonusrate', 'SumBonusAmount', 'SumExpend',
                        'SumRechargeAmount', 'Poundage', 'SumBetAmount', 'SumWithdrawalAmount',
-                       'SumTurnover', 'CreateTime']
+                       'SumTurnover','SumLostAll', 'CreateTime']
 
         @classmethod
         def clean_search_args(cls, search_args):
@@ -239,7 +239,9 @@ class AgentUser(TablePage):
                 {'name': 'SumBetAmount', 'label': '投注金额', 'width': 120, },
                 {'name': 'SumWithdrawalAmount', 'label': '提现金额', 'width': 100, },
                 {'name': 'SumTurnover', 'label': '流水', 'width': 120, },
+                {'name':'SumLostAll','label':'净利','width':120},
                 {'name': 'CreateTime', 'label': '创建时间', 'width': 140, },
+                
             ]
 
         def get_rows(self):
@@ -262,6 +264,7 @@ class AgentUser(TablePage):
                 row['SumRechargeAmount'] = round(row['SumRechargeAmount'] or 0, 2)
                 row['SumWithdrawalAmount'] = round(row['SumWithdrawalAmount'] or 0, 2)
                 row['SumTurnover'] = round(row['SumTurnover'] or 0, 2)
+                row['SumLostAll'] = round(row['SumLostAll'] or 0 ,2)
 
             return self.child_agents
 
