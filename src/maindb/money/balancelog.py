@@ -49,7 +49,7 @@ class BalancelogPage(TablePage):
         def get_operation(self):
             return [
                 #{'fun': 'export_excel', 'editor': 'com-op-btn', 'label': '导出Excel', 'icon': 'fa-file-excel-o', }
-                op_excel()
+                op_excel(length=3000)
                 #
             ]
 
