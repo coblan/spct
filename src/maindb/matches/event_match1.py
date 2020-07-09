@@ -453,7 +453,9 @@ class WebMatchForm(Fields):
             {'name':'Team1Zh','label':'主队中文名','editor':'com-field-linetext','readonly':True},
             {'name':'Team2En','label':'客队英文名','editor':'com-field-linetext','readonly':True,'css':'.enname2.field-input-td .field-input span{color:blue}','class':'enname2'},
             {'name':'Team2Zh','label':'客队中文名','editor':'com-field-linetext','readonly':True},
-            {'name':'MatchID','label':'比赛','editor':'com-field-pop-table-select',
+            {'name':'MatchID','label':'比赛',
+             'editor':'com-field-pop-table-select',
+             'clearable':False,
              'init_express':'''
             scope.head.table_ctx.par_row=scope.row; 
             scope.head.table_ctx.search_args._q = scope.row.Team1En.replace(/-/g,' ');
@@ -462,7 +464,8 @@ class WebMatchForm(Fields):
             Vue.set(scope.head.table_ctx.search_args,"_end_matchdate",scope.row.EventDateTime)
             Vue.set(scope.head.table_ctx.search_args,"sportid",scope.row.SportId)
              ''',
-             'after_select':'ex.vueAssign(scope.row,scope.selected_row);',
+             'after_select':'scope.selected_row.MatchID=scope.selected_row.matchid;ex.vueAssign(scope.row,scope.selected_row); ',
+             #'clear_express':'ex.vueDelete(scope.row,["matchid","tournamentid","_tournamentid_label","matchdate","team1en","team1zh","team2en","team2zh","MatchID","_MatchID_label"])',
              'table_ctx':MatchPicker().get_head_context(),'options':[],},
             
             {'name':'TeamSwap','label':'交换主客队','class':'myteamswap','css':'.myteamswap .field-input{width:250px}','editor':'com-field-bool','help_text':'当第三方赛事主客队顺序和Betrader不一致时，必须勾选此选项，否则会导致赔率严重错误!!!'},
