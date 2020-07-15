@@ -63,7 +63,7 @@ DATABASES = {
        #} ,  
     'Sports': { 
         'ENGINE': 'sql_server.pyodbc',
-        'HOST':'192.168.40.165,1433',
+        #'HOST':'192.168.40.165,1433',
         
         #'NAME': 'Sports_Merchant', #'Sports',#'Sports', 
         #'USER':  'develop_admin',#'Backend'  ,  develop
@@ -73,12 +73,21 @@ DATABASES = {
         #'USER':  'develop_admin',#'Backend'  ,  develop
         #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
         
-        'NAME':'Sports_20190610_Part1',
-        'USER':  'develop',#'Backend'  ,  
-        'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
+        #'NAME':'Sports_20190610_Part1',
+        #'USER':  'develop',#'Backend'  ,  
+        #'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
         
-        #'PORT': '1436',
-        #192.168.40.6 Sports_20181214_2
+        
+        'HOST':'192.168.40.166,1433',
+        'NAME':'Sports',
+        'USER':  'develop_admin',  
+        'PASSWORD': 'KKRKxZq4bRUf8kAu',  
+        
+        
+        
+        
+        
+        
         'OPTIONS': {
             #'driver': 'ODBC Driver 11 for SQL Server',
             #'driver':'SQL Server Native Client 11.0',
@@ -90,24 +99,27 @@ DATABASES = {
     #https://pydigger.com/pypi/django-pyodbc-azure
     'Sports_nolock': { 
         'ENGINE': 'sql_server.pyodbc',
-        'HOST':'192.168.40.165,1433',
+        #'HOST':'192.168.40.165,1433',
         
-         
-        #'NAME': 'Sports_Merchant', #'Sports',#'Sports', 
-        #'USER':  'develop_admin',#'Backend'  ,  develop
-        #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
+        ##'NAME': 'Sports_Merchant', #'Sports',#'Sports', 
+        ##'USER':  'develop_admin',#'Backend'  ,  develop
+        ##'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
         
         
-        #'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
-        #'USER':  'develop_admin',#'Backend'  ,  develop
-        #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
+        ##'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
+        ##'USER':  'develop_admin',#'Backend'  ,  develop
+        ##'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
         
-        'NAME':'Sports_20190610_Part1',
-        'USER':  'develop',#'Backend'  ,  
-        'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
+        #'NAME':'Sports_20190610_Part1',
+        #'USER':  'develop',#'Backend'  ,  
+        #'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
         
-        #'PORT': '1436',
-        #192.168.40.6 Sports_20181214_2
+        'HOST':'192.168.40.166,1433',
+        'NAME':'Sports',
+        'USER':  'develop_admin',  
+        'PASSWORD': 'KKRKxZq4bRUf8kAu',  
+
+
         'OPTIONS': {
             'isolation_level':'READ UNCOMMITTED'
             },
@@ -339,3 +351,5 @@ MERCHANT = {
         
     }
 }
+
+ADMIN_USER_CHECK_IP = False
