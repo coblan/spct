@@ -153,52 +153,31 @@ class MatchsPage(TablePage):
                 #TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
                 #TB_TicketMaster.Status =1 AND 
                 #TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
-                'num_stake_total':'''SELECT  COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
-                WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
-                TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
-                TB_TicketMaster.Status =1 AND 
-                TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
-                'num_stake_parlay':'''SELECT  COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
-                WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
-                TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
-                TB_TicketMaster.Status =1 AND 
-                TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
+                'num_stake':'''SELECT  cast(  COUNT (1) AS varchar ) +'/' +cast(COUNT ( CASE WHEN TB_TicketMaster.ParlayRule != 11 THEN 1 ELSE NULL END ) AS varchar) 
+	FROM TB_TicketMaster,TB_TicketStake,TB_Account 
+        WHERE
+	TB_TicketStake.MatchID = TB_Match.MatchID 
+	AND TB_TicketMaster.TicketID= TB_TicketStake.TicketID 
+	AND TB_TicketMaster.Status = 1 
+	AND TB_TicketMaster.AccountID = TB_Account.AccountID 
+	AND TB_Account.AccountType= 0 ''',
+                #'num_stake_total':'''SELECT  COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                #WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
+                #TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
+                #TB_TicketMaster.Status =1 AND 
+                #TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
+                #'num_stake_parlay':'''SELECT  COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                #WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
+                #TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
+                #TB_TicketMaster.Status =1 AND 
+                #TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
                 'manual_settle_need_audit':'SELECT status FROM TB_ManualSettleMsg WHERE TB_Match.MatchID=TB_ManualSettleMsg.MatchID',
                 
                 },
                 where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1',],
                 tables =['TB_Tournament','TB_SportTypes',]
                 )
-            #query = query.extra(select={
-                #'_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
-                #'_sportid_label':'SELECT TB_SportTypes.SportNameZH',
-                #'num_stake':'''SELECT COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
-                #WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
-                #TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
-                #TB_TicketMaster.Status =1 AND 
-                #TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
-                #},
-                #where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1'],
-                #tables =['TB_Tournament WITH(NOLOCK)','TB_SportTypes']
-                #)
-            #query = query.extra(select={
-               #'_tournamentid_label':'SELECT ta.tournamentnamezh',
-               #'_sportid_label':'SELECT TB_SportTypes.SportNameZH',
-               #'num_stake':'''SELECT COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
-               #WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
-               #TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
-               #TB_TicketMaster.Status =1 AND 
-               #TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
-               #},
-               #where=['(SELECT * FROM TB_Tournament WITH(NOLOCK) ) ta.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','ta.IsSubscribe=1'],
-                #tables = [
-                   #'ta ',
-                   #'TB_SportTypes'
-               #]
-               #)
-            
-            
-            
+
             return query
 
 
@@ -415,7 +394,7 @@ class MatchsPage(TablePage):
                 'isshow': not bool(inst.ishidden),
                 '_tournamentid_label':inst._tournamentid_label,
                 '_sportid_label':inst._sportid_label,
-                'num_stake': '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
+                'num_stake': inst.num_stake, # '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
                 'manual_settle_need_audit':inst.manual_settle_need_audit
             }
 
