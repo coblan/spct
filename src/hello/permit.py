@@ -27,11 +27,11 @@ def get_permit(ui=None):
                  {'label': '查看', 'value': 'TbAppversion'}, 
                  {'label': '编辑', 'value': 'TbAppversion.edit', 'depend': ['TbAppversion'],}, 
                  ],},
-             { 'label': _('Notice'), 'children': [
-                 {'label': '查看','value': 'TbNotice',}, 
-                 {'label': '编辑','value': 'TbNotice.edit', 'depend': ['TbNotice'],}, 
-                 {'label': '更新缓存','value': 'TbNotice.update_cache', 'depend': [ 'TbNotice', 'TbNotice.edit'],}, 
-                 ],},
+             #{ 'label': _('Notice'), 'children': [
+                 #{'label': '查看','value': 'TbNotice',}, 
+                 #{'label': '编辑','value': 'TbNotice.edit', 'depend': ['TbNotice'],}, 
+                 #{'label': '更新缓存','value': 'TbNotice.update_cache', 'depend': [ 'TbNotice', 'TbNotice.edit'],}, 
+                 #],},
              {'label':'代理公告','value':'TbAgentnotice.edit'},
              { 'label': _('Help'), 'children':[
                  {'label': '查看', 'value': 'TbQa',}, 

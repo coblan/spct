@@ -54,7 +54,7 @@ class PcMenu(BaseEngine):
                  {'label': _('Banner'), 'url': page('banner'), 'visible': can_touch(TbBanner, crt_user)},
                  {'label': _('App Package'), 'url': page('app_package'),
                   'visible': can_touch(TbAppversion, crt_user), },
-                 {'label': _('Notice'), 'url': page('notice'), 'visible': can_touch(TbNotice, crt_user), },
+                 #{'label': _('Notice'), 'url': page('notice'), 'visible': can_touch(TbNotice, crt_user), },
                  {'label': '代理公告', 'url': page('agentnotice'), 'visible': can_touch(TbAgentnotice, crt_user), },
                 {'label': '代理QA', 'url': page('agent_qa'), 'visible': can_touch(TbAgentqa, crt_user), },
                  
