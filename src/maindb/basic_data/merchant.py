@@ -11,7 +11,7 @@ class MerchantsPage(TablePage):
     class tableCls(ModelTable):
         model = TbMerchants
         exclude =['atmno','atmkey']
-        pop_edit_fields = ['id']
+        #pop_edit_fields = ['id']
         
         def get_operation(self):
             return []
