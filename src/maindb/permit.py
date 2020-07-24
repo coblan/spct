@@ -48,6 +48,9 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
            ('TbCurrency', model_read_permit(TbCurrency), model_to_name(TbCurrency), 'model'), 
            ('TbCurrency.edit', model_full_permit(TbCurrency), model_to_name(TbCurrency), 'model'), 
            
+           ('TbMerchants',model_read_permit(TbMerchants),model_to_name(TbMerchants),'model'),
+           ('TbMerchants.edit',model_full_permit(TbMerchants),model_to_name(TbMerchants),'model'),
+           
            # 运动类型
            ('TbSporttypes', model_read_permit(TbSporttypes), model_to_name(TbSporttypes), 'model'), 
            ('TbSporttypes.edit', model_full_permit(TbSporttypes), model_to_name(TbSporttypes), 'model'),            

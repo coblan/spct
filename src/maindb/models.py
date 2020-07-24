@@ -1611,16 +1611,20 @@ class TbMoneyCategories(models.Model):
     def __str__(self):
         return self.categoryname
 
-
+    
 class TbMerchants(models.Model):
     id = models.IntegerField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    merchantname = models.CharField(db_column='MerchantName', max_length=64)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=128)  # Field name made lowercase.
-    prefix = models.CharField(db_column='Prefix', max_length=64, blank=True, null=True)  # Field name made lowercase.
-    isactive = models.BooleanField(db_column='IsActive')  # Field name made lowercase.
-    isdelected = models.BooleanField(db_column='IsDelected')  # Field name made lowercase.
-    creater = models.IntegerField(db_column='Creater')  # Field name made lowercase.
-    createtime = models.DateTimeField(db_column='CreateTime')  # Field name made lowercase.
+    merchantname = models.CharField('商户名称',db_column='MerchantName', max_length=64)  # Field name made lowercase.
+    name = models.CharField('商户编码',db_column='Name', max_length=128)  # Field name made lowercase.
+    prefix = models.CharField('前缀',db_column='Prefix', max_length=64, blank=True, null=True)  # Field name made lowercase.
+    isactive = models.BooleanField('激活',db_column='IsActive')  # Field name made lowercase.
+    isdelected = models.BooleanField('删除',db_column='IsDelected')  # Field name made lowercase.
+    creater = models.IntegerField('创建人',db_column='Creater')  # Field name made lowercase.
+    createtime = models.DateTimeField('创建时间',db_column='CreateTime')  # Field name made lowercase.
+    appid = models.CharField('APPID',db_column='AppId', max_length=32)  # Field name made lowercase.
+    appkey = models.CharField('APPKEY',db_column='AppKey', max_length=64)  # Field name made lowercase.
+    atmno = models.CharField(db_column='AtmNo', max_length=200, blank=True, null=True)  # Field name made lowercase.
+    atmkey = models.CharField(db_column='AtmKey', max_length=200, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -1628,6 +1632,7 @@ class TbMerchants(models.Model):
     
     def __str__(self):
         return self.name
+
 
 
 class TbMarketgroup(models.Model):

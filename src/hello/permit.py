@@ -71,6 +71,10 @@ permit1 = [
          }, 
          { 'label': '基本信息',
          'children': [
+             {'label':'商户管理','children':[
+                 {'label':'查看','value':'TbMerchants'},
+                 {'label':'编辑','value':'TbMerchants.edit'},
+                 ]},
              {'label': '运动类型', 'children': [
                  {'label': '查看', 'value': 'TbSporttypes',}, 
                  {'label': '编辑', 'value': 'TbSporttypes.edit', 'depend': ['TbSporttypes'],}
@@ -484,6 +488,7 @@ permit_merchant = [
          }, 
         { 'label': _('Member'),
          'children': [
+             
              {'label': _('Tb Account'), 'children': [
                 {'label':'基本信息','children':[
                       {'label': '查看', 'value': 'TbAccount',}, 
