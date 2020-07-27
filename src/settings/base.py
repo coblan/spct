@@ -188,3 +188,8 @@ SESSION_COOKIE_AGE=60*60*2
 #LOGIN_SPAN= 60*60*2
 ADMIN_USER_CHECK_IP=True
 LOGIN_PSWD_EXPIRE=30 # 天
+
+CKEDITOR_SAVER = {
+    'class':'hello.ckeditor_saver.StaticCkeditor',
+    'static_domain':'https://static.rrystv.com',
+}
