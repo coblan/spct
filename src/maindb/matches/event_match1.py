@@ -65,9 +65,11 @@ class OtherWebMatchPage(TablePage):
                                                {'Team2En':{'$regex' : ".*%s.*"%self.search_args.get('_q')}},
                                                {'Team1Zh':{'$regex' : ".*%s.*"%self.search_args.get('_q')}},
                                                {'Team2Zh':{'$regex' : ".*%s.*"%self.search_args.get('_q')}}]
-                elif self.search_args.get('_qf') == 'Eid':
+                elif self.search_args.get('_qf') in ['Eid','MatchID']:
                     argument.validate_argument(self.search_args,{'_q':[argument.int_str]})
-                    self.filter_args['Eid'] =  self.search_args.get('_q') 
+                    qf = self.search_args.get('_qf')
+                    self.filter_args[ qf ] =  self.search_args.get('_q') 
+
                     
             if self.search_args.get('ContrastStatus'):
                 self.filter_args['ContrastStatus'] =int( self.search_args.get('ContrastStatus') )
@@ -238,6 +240,7 @@ class OtherWebMatchPage(TablePage):
                 {'name':'_q','editor':'com-search-select','options':[
                     {'value': 'Team', 'label': '球队名称' },
                     {'value':'Eid','label':'EID','exact_search':True},
+                    {'value':'MatchID','label':'MatchID','exact_search':True},
                     
                     ]},
                 
