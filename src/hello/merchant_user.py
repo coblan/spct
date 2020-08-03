@@ -63,6 +63,16 @@ class Jb_with_merchant_User(UserPage):
             ])
             return heads
         
+        def get_operation(self):
+            ops = super().get_operation()
+            out = []
+            for op in ops:
+                if op.get('name') =='delete_selected':
+                    pass
+                else:
+                    out.append(op)
+            return out
+        
         class filters(RowFilter):
             names=['first_name','groups__name','is_superuser','is_staff','is_active','userprofile__merchantid']
             icontains=['first_name','groups__name']
