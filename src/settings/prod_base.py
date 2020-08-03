@@ -25,47 +25,65 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
             'formatter':'standard',
         },
-        'elk_warning':{
-            'level': 'WARNING',
-            'class': 'hello.log_to_elastic.EsHandler',         
-            }, 
-        'elk_info':{
-            'level': 'INFO',
-            'class': 'hello.log_to_elastic.EsHandler',         
-        },   
-        'elk_debug':{
-            'level': 'DEBUG',
-            'class': 'hello.log_to_elastic.EsHandler',         
-            },         
+        #'elk_warning':{
+            #'level': 'WARNING',
+            #'class': 'hello.log_to_elastic.EsHandler',         
+            #}, 
+        #'elk_info':{
+            #'level': 'INFO',
+            #'class': 'hello.log_to_elastic.EsHandler',         
+        #},   
+        #'elk_debug':{
+            #'level': 'DEBUG',
+            #'class': 'hello.log_to_elastic.EsHandler',         
+            #},         
         'console': {
             'level':'DEBUG',
             'class': 'logging.StreamHandler',
             'stream': sys.stdout
             },  
         'djangoout_warning':{
+            #'level': 'ERROR',
+            #'class': 'logging.handlers.RotatingFileHandler',
+            #'maxBytes': 1024*1024*5,
+            #'backupCount':3,
+            #'formatter':'standard',
+            #'filename': os.path.join(LOG_PATH,'django.log'), 
+            
             'level': 'ERROR',
-            'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'concurrent_log_handler.ConcurrentRotatingFileHandler',
             'maxBytes': 1024*1024*5,
             'backupCount':3,
             'formatter':'standard',
-            'filename': os.path.join(LOG_PATH,'django.log'),            
+            'filename': os.path.join(LOG_PATH,'errors.log'),    
+            'encoding': 'utf8',
+            
             }, 
         'operation_log': {
             'level': 'INFO',
             'class': 'hello.operation_log.DBOperationHandler',
             },   
         'general_log':{
+            #'level': 'DEBUG',
+            #'class': 'logging.handlers.RotatingFileHandler',
+            #'maxBytes': 1024*1024*5,
+            #'backupCount':3,
+            #'formatter':'standard',
+            #'filename': os.path.join(LOG_PATH,'general_log.log'),     
+            
             'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'concurrent_log_handler.ConcurrentRotatingFileHandler',
             'maxBytes': 1024*1024*5,
             'backupCount':3,
             'formatter':'standard',
-            'filename': os.path.join(LOG_PATH,'general_log.log'),            
+            'filename': os.path.join(LOG_PATH,'general_log.log'),    
+            'encoding': 'utf8',
+            
             },         
     },
     'loggers': {
         '': {
-            'handlers': ['mail_admins', 'elk_warning','djangoout_warning'],
+            'handlers': ['mail_admins', 'djangoout_warning'], # 'elk_warning',
             'level': 'WARNING',
             'propagate': False,
         },
@@ -75,27 +93,27 @@ LOGGING = {
             'propagate': True,
             },
         'general_log': {
-            'handlers': ['console', 'general_log',  'elk_info' ],  #'djangoout_warning',
+            'handlers': ['console', 'general_log', ] ,# 'elk_info' ],  #'djangoout_warning',
             'level': 'DEBUG',
             'propagate': False,            
             },
         'ModelFields.save_form': {
-            'handlers': ['operation_log', 'elk_debug'],
+            'handlers': ['operation_log','general_log'] , # 'elk_debug'],
             'level': 'DEBUG',
             'propagate': False,              
             },
         'operation_log': {
-            'handlers': ['operation_log', 'elk_debug'],
+            'handlers': ['operation_log','general_log'], # 'elk_debug'],
             'level': 'DEBUG',
             'propagate': False,               
             },
         'task': {
-            'handlers': ['elk_debug'],
+            'handlers': ['general_log',], #'elk_debug'],
             'level': 'DEBUG',
             'propagate': False,                 
             },   
         'jpush':{
-            'handlers': ['console','elk_info'],
+            'handlers': ['console','general_log'] , #'elk_info'],
             'level': 'INFO',
             'propagate': False,
         }
