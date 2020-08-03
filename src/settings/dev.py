@@ -69,13 +69,13 @@ DATABASES = {
         #'USER':  'develop_admin',#'Backend'  ,  develop
         #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
         
-        'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
-        'USER':  'develop_admin',#'Backend'  ,  develop
-        'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
+        #'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
+        #'USER':  'develop_admin',#'Backend'  ,  develop
+        #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
         
-        #'NAME':'Sports_20190610_Part1',
-        #'USER':  'develop',#'Backend'  ,  
-        #'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
+        'NAME':'Sports_20190610_Part1',
+        'USER':  'develop',#'Backend'  ,  
+        'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
         
         
         #'HOST':'192.168.40.166,1433',
@@ -106,13 +106,13 @@ DATABASES = {
         #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
         
         
-        'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
-        'USER':  'develop_admin',#'Backend'  ,  develop
-        'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
+        #'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
+        #'USER':  'develop_admin',#'Backend'  ,  develop
+        #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
         
-        #'NAME':'Sports_20190610_Part1',
-        #'USER':  'develop',#'Backend'  ,  
-        #'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
+        'NAME':'Sports_20190610_Part1',
+        'USER':  'develop',#'Backend'  ,  
+        'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
         
         #'HOST':'192.168.40.166,1433',
         #'NAME':'Sports',

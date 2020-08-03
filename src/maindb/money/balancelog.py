@@ -72,6 +72,7 @@ class BalancelogPage(TablePage):
             #return ctx
 
         def inn_filter(self, query):
+            query = query.using('Sports_nolock')
             if self.crt_user.merchant:
                 query = query.filter(merchant_id = self.crt_user.merchant.id)
             return query.order_by('-createtime')

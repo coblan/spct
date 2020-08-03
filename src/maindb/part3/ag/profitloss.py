@@ -32,6 +32,7 @@ class AgprofitlossPage(TablePage):
             ]
         
         def inn_filter(self, query):
+            query = query.using('Sports_nolock')
             if self.crt_user.merchant:
                 query = query.filter(account__merchant = self.crt_user.merchant)
             return query.annotate(account__merchant__name = F('account__merchant__name'))

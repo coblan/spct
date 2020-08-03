@@ -410,6 +410,7 @@ class AccountPage(TablePage):
                        #)
                 ##withdrawamount=Sum(Case(When(tbwithdraw__status=2, then=F('tbwithdraw__amount')), default=0)))
             #return query
+            query = query.using('Sports_nolock')
             if self.crt_user.merchant:
                 query = query.filter(merchant = self.crt_user.merchant)
             return query.extra(select={'betfullrecord':'SELECT SUM(TB_Betfullrecord.consumeamount) FROM TB_Betfullrecord WHERE TB_Betfullrecord.ConsumeStatus=1 AND TB_Betfullrecord.AccountID=TB_Account.AccountID',

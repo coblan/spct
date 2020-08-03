@@ -24,8 +24,8 @@ class UserlogPage(TablePage):
             return head
         
         def inn_filter(self, query):
-            if self.is_export_excel:
-                query= query.using('Sports_nolock')
+            #if self.is_export_excel:
+            query= query.using('Sports_nolock')
             if self.crt_user.merchant:
                 query = query.filter(merchant_id=self.crt_user.merchant.id)
             return query
