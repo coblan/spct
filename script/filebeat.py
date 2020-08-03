@@ -1,4 +1,4 @@
-from fastdog.maintain.filebeat.dfilebeat import DFileBeat,multi_tail_file,django_log_parsers,elastice_output
+from fastdog.maintain.filebeat.dfilebeat import DFileBeat,multi_tail_file,django_log_parsers
 from fastdog.maintain.filebeat.shotcut import ELKHander
 
 from fastdog.maintain.fast_log import set_log
