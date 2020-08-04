@@ -14,7 +14,7 @@ class OperationLog(TablePage):
 
     class tableCls(ModelTable):
         model = TbOperationlog
-        pop_edit_field = 'id'
+        pop_edit_fields = ['id']
         fields_sort = ['id', 'content', 'memo', 'createuser', 'createtime']
 
         class filters(RowFilter):

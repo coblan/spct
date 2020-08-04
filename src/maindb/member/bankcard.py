@@ -15,7 +15,7 @@ class BankCard(TablePage):
         exclude = ['account',]
         fields_sort = ['bankcardid', 'accountid', 'cardno', 'bankaccountname', 'bankaccountmobil','banktypeid', 
                        'bankprovince', 'bankcity', 'banksitename','createtime', 'active']
-        pop_edit_field='bankcardid'
+        pop_edit_fields= ['bankcardid']
 
         def get_operation(self):
             return [

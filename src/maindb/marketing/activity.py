@@ -22,7 +22,7 @@ class ActivityPage(TablePage):
         return '活动'
     
     class tableCls(ModelTable):
-        pop_edit_field='id'
+        pop_edit_fields = ['id']
         model = TbActivity
         exclude=[]
         fields_sort = ['id', 'status', 'priority', 'indexcover', 'cover', 'zip', 'createuser', 'createtime']

@@ -20,7 +20,7 @@ class CurrencyPage(TablePage):
     class tableCls(ModelTable):
         model=TbCurrency
         exclude=['id']
-        pop_edit_field='price'
+        pop_edit_fields = ['price']
 
         def dict_head(self, head):
             dc={

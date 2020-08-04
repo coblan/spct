@@ -10,7 +10,7 @@ class WithDrawLimitContralPage(TablePage):
         return '提现控制'
 
     class tableCls(ModelTable):
-        pop_edit_field = 'memo'
+        pop_edit_fields = ['memo']
         fields_sort = ['memo',  'value', 'daysnumber', 'leveltype','isactive', ]
         model = TbParameterinfo
         exclude = []

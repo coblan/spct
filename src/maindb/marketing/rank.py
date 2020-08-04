@@ -11,7 +11,7 @@ class RankUserPage(TablePage):
         return 'jb_admin/table.html'
     
     class tableCls(ModelTable):
-        pop_edit_field = 'id'
+        pop_edit_fields = ['id']
         model = TbUserConst
         exclude = []
         
@@ -35,7 +35,7 @@ class RankPage(TablePage):
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
     class tableCls(ModelTable):
-        pop_edit_field = 'id'
+        pop_edit_fields = ['id']
         model = TbUserRank
         exclude = []
         

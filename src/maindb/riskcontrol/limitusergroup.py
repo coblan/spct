@@ -11,7 +11,7 @@ class LimitUserGroupPage(TablePage):
     class tableCls(ModelTable):
         model = TbLimitusergroup
         exclude=['betbase']
-        pop_edit_field='groupid'
+        pop_edit_fields = ['groupid']
         
         def dict_head(self, head):
             width_dc={

@@ -25,7 +25,7 @@ class Feedback(TablePage):
     class tableCls(ModelTable):
         model = TbAgentleavemsg
         fields_sort = ['accountid', 'title', 'msg', 'createtime']
-        pop_edit_field = 'title'
+        pop_edit_fields = ['title']
 
 
         def get_operation(self):

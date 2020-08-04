@@ -15,7 +15,7 @@ class BlackIPRangeListPage(TablePage):
         model = Blackiprangelist
         exclude = []
         hide_fields = ['startipnum', 'endipnum']
-        pop_edit_field = 'blackiprangelistid'
+        pop_edit_fields = ['blackiprangelistid']
 
         def dict_head(self, head):
             dc = {
@@ -88,7 +88,7 @@ class WhiteIpListPage(TablePage):
 
     class tableCls(ModelTable):
         model = Whiteiplist
-        pop_edit_field = 'whiteiplistid'
+        pop_edit_fields = ['whiteiplistid']
 
         def dict_head(self, head):
             dc = {
@@ -146,7 +146,7 @@ class WhiteUserListPage(TablePage):
     class tableCls(ModelTable):
         model = Whiteuserlist
         exclude = ['addtime']
-        pop_edit_field = 'whiteuserlistid'
+        pop_edit_fields = ['whiteuserlistid']
 
         def dict_head(self, head):
             if head['name'] in ('account', 'memo'):

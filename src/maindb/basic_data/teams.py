@@ -26,7 +26,7 @@ class TeamsPage(TablePage):
     class tableCls(ModelTable):
         model = TbTeams
         exclue = []
-        pop_edit_field = 'enname'
+        pop_edit_fields = ['enname']
         fields_sort = ['enname', 'saenname', 'status', 'zhname', 'country', 'leaguename', 'icon']
 
         def get_operation(self):

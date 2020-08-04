@@ -17,7 +17,7 @@ class PayChannelBlackIPRangeList(TablePage):
         model = TbPaychannelblackiprange
         exclude = []
         hide_fields = ['startipnum', 'endipnum']
-        pop_edit_field = 'blackiprangelistid'
+        pop_edit_fields = ['blackiprangelistid']
 
         def dict_head(self, head):
             dc = {
