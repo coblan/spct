@@ -30,12 +30,13 @@ class AgprofitlossPage(TablePage):
                 {'name':'account__nickname','label':'昵称','editor':'com-table-span'},
                 {'name':'account__merchant__name','label':'商户'},
             ]
-        
+
         def inn_filter(self, query):
             query = query.using('Sports_nolock')
             if self.crt_user.merchant:
                 query = query.filter(account__merchant = self.crt_user.merchant)
-            return query.annotate(account__merchant__name = F('account__merchant__name'))
+            query = query.annotate(account__merchant__name = F('account__merchant__name'))
+            return query
         
         def dict_head(self, head):
             width = {

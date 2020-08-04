@@ -1233,6 +1233,7 @@ class RelatedUserTab(ReleventUserPage.tableCls):
 class AgprofitLosTab(AgprofitlossPage.tableCls):
     
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1240,6 +1241,7 @@ class AgprofitLosTab(AgprofitlossPage.tableCls):
 
 class SBprofitLosTab(SportProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1247,6 +1249,7 @@ class SBprofitLosTab(SportProfitlossPage.tableCls):
 
 class LCprofitLosTab(LcityProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1254,6 +1257,7 @@ class LCprofitLosTab(LcityProfitlossPage.tableCls):
 
 class IMporfitLosTab(IMProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1261,6 +1265,7 @@ class IMporfitLosTab(IMProfitlossPage.tableCls):
 
 class RGporfitLosTab(RGProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1268,6 +1273,7 @@ class RGporfitLosTab(RGProfitlossPage.tableCls):
     
 class PTporfitLosTab(PtProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1275,6 +1281,7 @@ class PTporfitLosTab(PtProfitlossPage.tableCls):
 
 class SgporfitLosTab(SgProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1282,6 +1289,7 @@ class SgporfitLosTab(SgProfitlossPage.tableCls):
 
 class EbetporfitLosTab(EbProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1289,6 +1297,7 @@ class EbetporfitLosTab(EbProfitlossPage.tableCls):
     
 class PPporfitLosTab(PPProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1296,6 +1305,7 @@ class PPporfitLosTab(PPProfitlossPage.tableCls):
     
 class ImchessporfitLosTab(ImChessProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
@@ -1303,6 +1313,7 @@ class ImchessporfitLosTab(ImChessProfitlossPage.tableCls):
      
 class VRporfitLosTab(VRProfitlossPage.tableCls):
     def inn_filter(self, query):
+        query = super().inn_filter(query)
         return query.filter(account_id=self.kw.get('accountid'))
     
     class search(RowSearch):
