@@ -27,7 +27,7 @@ class AppPackage(TablePage):
         return 'App包管理'
     
     class tableCls(ModelTable):
-        pop_edit_field='versionid'
+        pop_edit_fields= ['versionid']
         model=TbAppversion
         exclude=[]
         fields_sort=['merchant','versionid','versionname','md5','terminal','required','size','valid','description']

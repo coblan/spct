@@ -123,7 +123,7 @@ class MarketgroupwithmarketTable(ModelTable):
     model = TbMarketgroupwithmarket
     exclude=[]
     hide_fields=['groupid']
-    pop_edit_field='tid'
+    pop_edit_fields = ['tid']
     def inn_filter(self, query):
         if self.kw.get('marketgroup'):
             return query.filter(groupid=self.kw.get('marketgroup')) 

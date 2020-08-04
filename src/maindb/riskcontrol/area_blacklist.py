@@ -17,7 +17,7 @@ class AreaBlackList(TablePage):
     class tableCls(ModelTable):
         model = TbAreablacklist
         exclude = []
-        pop_edit_field = 'id'
+        pop_edit_fields = ['id']
 
         def dict_head(self, head):
             dc = {

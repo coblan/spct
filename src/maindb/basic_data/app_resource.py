@@ -12,7 +12,7 @@ class AppResource(TablePage):
         return 'App资源管理'
 
     class tableCls(ModelTable):
-        pop_edit_field = 'name'
+        pop_edit_fields = ['name']
         hide_fields = ['url']
         model = TbAppresource
         fields_sort = ['id', 'name', 'valid', 'md5','type', 'remark']

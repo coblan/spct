@@ -9,7 +9,7 @@ class SourceControlPage(TablePage):
     class tableCls(ModelTable):
         model=TbSourcecontrol
         exclude=[]
-        pop_edit_field='tid'
+        pop_edit_fields = ['tid']
 
 class SoureceControlForm(ModelFields):
     readonly=['source','sporttype','oddskind','sites','status','enabled','updatetime']

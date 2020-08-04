@@ -15,7 +15,7 @@ class BankTypesPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbBanktypes
-        pop_edit_field = 'banktypename'
+        pop_edit_fields = ['banktypename']
         fields_sort = ['banktypeid', 'banktypename', 'active', 'sort', 'img', 'bgimg']
 
         def get_operation(self):

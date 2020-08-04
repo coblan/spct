@@ -9,7 +9,7 @@ class OutcomePage(TablePage):
         return 'jb_admin/table.html'
     
     class tableCls(ModelTable):
-        pop_edit_field='uniqueoutcomid'
+        pop_edit_fields = ['uniqueoutcomid']
         model = TbOutcomes
         exclude = []
         

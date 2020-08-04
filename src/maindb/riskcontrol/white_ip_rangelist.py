@@ -19,7 +19,7 @@ class WhiteIPRangeList(TablePage):
         model = TbWhiteiprangelist
         exclude = []
         hide_fields = ['startipnum', 'endipnum']
-        pop_edit_field = 'id'
+        pop_edit_fields = ['id']
 
         def dict_head(self, head):
             dc = {

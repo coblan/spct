@@ -9,7 +9,7 @@ class PaychannelblackaccountPage(TablePage):
         return '充值用户黑名单'
     
     class tableCls(ModelTable):
-        pop_edit_field='blackaccountid'
+        pop_edit_fields = ['blackaccountid']
         model = TbPaychannelblackaccount
         exclude=[]
 

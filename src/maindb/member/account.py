@@ -818,9 +818,15 @@ class AccoutModifyAmount(MerchantInstancCheck, ModelFields):
             self.instance.amount = self.before_amount + add_amount
             if self.instance.amount < 0 :
                 raise UserWarning('调整后用户余额为负数!')
-            TbBalancelog.objects.create(account=self.instance.account, beforeamount=self.before_amount,
-                                        amount=abs( self.changed_amount), afteramount=self.instance.amount, creater='Backend',
-                                        memo='调账', accountid=self.instance, categoryid_id=moenycategory,
+            TbBalancelog.objects.create(account=self.instance.account,
+                                        beforeamount=self.before_amount,
+                                        amount=abs( self.changed_amount),
+                                        afteramount=self.instance.amount, 
+                                        creater='Backend',
+                                        memo='调账', 
+                                        accountid=self.instance, 
+                                        categoryid_id=moenycategory,
+                                        merchant= self.instance.merchant,
                                         cashflow=cashflow)
             if add_amount > 0 and self.kw.get('is_Betfullrecord'):
                 TbBetfullrecord.objects.create(accountid_id=self.kw.get('accountid') ,amount = add_amount,

@@ -145,7 +145,7 @@ class MatchsPage(TablePage):
 
 
         def inn_filter(self, query):
-            query = query.using('Sports_nolock').extra(select={
+            query = query.using('Sports_nolock').distinct().extra(select={
                 '_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
                 '_sportid_label':'SELECT TB_SportTypes.SportNameZH',
                 #'num_stake':'''SELECT concat( COUNT( CASE WHEN TB_TicketMaster.ParlayRule =11 then 1 ELSE null END),'/', COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END)) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
@@ -153,7 +153,7 @@ class MatchsPage(TablePage):
                 #TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
                 #TB_TicketMaster.Status =1 AND 
                 #TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
-                'num_stake':'''SELECT  cast(  COUNT (1) AS varchar ) +'/' +cast(COUNT ( CASE WHEN TB_TicketMaster.ParlayRule != 11 THEN 1 ELSE NULL END ) AS varchar) 
+                'num_stake':'''SELECT  cast(  COUNT (  CASE WHEN TB_TicketMaster.ParlayRule = 11 THEN 1 ELSE NULL END  ) AS varchar ) +'/' +cast(COUNT ( CASE WHEN TB_TicketMaster.ParlayRule != 11 THEN 1 ELSE NULL END ) AS varchar) 
 	FROM TB_TicketMaster,TB_TicketStake,TB_Account 
         WHERE
 	TB_TicketStake.MatchID = TB_Match.MatchID 

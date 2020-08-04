@@ -12,7 +12,7 @@ class MarketPage(TablePage):
     class tableCls(ModelTable):
         model = TbMarkets
         exclude=[]
-        pop_edit_field = 'marketid'
+        pop_edit_fields = ['marketid']
         
         def dict_head(self, head):
             width_dc ={

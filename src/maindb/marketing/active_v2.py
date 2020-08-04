@@ -184,7 +184,7 @@ class ActivitySettingTable(ModelTable):
     model=TbActivitySettings
     exclude=[]
     hide_fields=['activityid']
-    pop_edit_field='id'
+    pop_edit_fields= ['id']
     def inn_filter(self, query):
         return query.filter(activityid__id = self.kw.get('meta_par_pk'))
     

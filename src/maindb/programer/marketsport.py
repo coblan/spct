@@ -8,7 +8,7 @@ class MarketSportPage(TablePage):
         return 'jb_admin/table.html'
     
     class tableCls(ModelTable):
-        pop_edit_field = 'tid'
+        pop_edit_fields = ['tid']
         model = TbMarketlistwithsport
         exclude = []
         

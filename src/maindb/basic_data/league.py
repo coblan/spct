@@ -20,7 +20,7 @@ class League(TablePage):
     class tableCls(ModelTable):
         model = TbTournament
         exclude = ['categoryid', 'uniquetournamentid', 'createtime',]
-        pop_edit_field = 'tournamentid'
+        pop_edit_fields = ['tournamentid']
         fields_sort = ['sport','tournamentid', 'tournamentname','tournamentnamezh', 'isrecommend','issubscribe', 'openlivebet','disableparlay', 'weight','ticketdelay','sort', 'typegroupswitch',
                        'adjusttemplate','liveadjusttemplateid','handicapcount','group','minmatchshowhours']
 
