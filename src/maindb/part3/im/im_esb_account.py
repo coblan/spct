@@ -24,7 +24,7 @@ def redraw_left_money(rows):
     out_list =[]
     now = timezone.now()
     start = int(time.time() *100000)
-    for inst in TbImeaccount.objects.filter(accountid_id__in=rows):
+    for inst in TbImeaccount.objects.filter(account_id__in=rows):
         start += 1
         orderid = 'B%s'%start
         if inst.availablescores >=1:
