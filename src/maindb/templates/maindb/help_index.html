@@ -36,7 +36,8 @@
     ]
 
     var section_list={{ section_list | jsonify }}
-
+    var merchantname = {{ merchantname | jsonify }}
+    
 </script>
 
 <style>
@@ -156,9 +157,17 @@
                 var org_url = mt[1]+url
                 if(search_args.client == 'web'){
                     location = org_url
+                }else if(search_args.version){
+                    location =  merchantname +'://www.'+merchantname+'.com/webview?org_url='+encodeURIComponent(org_url)
                 }else{
-                    location='chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
+                    // 旧的app没有version
+                    location =  'chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
                 }
+                
+                
+               // else{
+               //     location='chaseball://www.chaseball.com/webview?org_url='+encodeURIComponent(org_url)
+               // }
             }
         }
     })

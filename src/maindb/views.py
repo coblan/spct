@@ -68,7 +68,8 @@ class Help(Notice):
                 query = TbQa.objects.filter(merchant_id = request.GET.get('merchant'))
             else:
                 raise UserWarning('必须选择一个商户')
-
+            
+            merchant = TbMerchants.objects.get(pk = request.GET.get('merchant'))
             for itm in query.filter(mtype=0,status=1).order_by('-priority'):
                 index_dc={'title':itm.title}
                 pages=[]
@@ -84,8 +85,12 @@ class Help(Notice):
                     #'items':[ {'title':x['title'],
                                #'url':'%s.html?t=%s' % (itm.pk , int(time.time()) )} for itm in index_dc['pages'] ],
                              
-                    #})             
-            return render(request, 'maindb/help_index.html', context= {'section_list': index_section})
+                    #})   
+            ctx = {
+                 'merchantname':merchant.merchantname,
+                 'section_list': index_section
+            }
+            return render(request, 'maindb/help_index.html', context= ctx)
         else:
             real_name = name[:-5]
             page = TbQa.objects.get(pk = real_name)
