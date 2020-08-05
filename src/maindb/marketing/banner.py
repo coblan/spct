@@ -14,7 +14,7 @@ class BannerPage(TablePage):
 
     class tableCls(ModelTable):
         model = TbBanner
-        include = ['merchant','title', 'displaytype','status', 'picturename','pcpicturename', 'order', 'createuser', 'createtime', 'description']
+        include = ['merchant','title', 'navigateurl','displaytype','status', 'picturename','pcpicturename', 'order', 'createuser', 'createtime', 'description']
         pop_edit_fields=['title']
         def get_context(self):
             ctx = ModelTable.get_context(self)
