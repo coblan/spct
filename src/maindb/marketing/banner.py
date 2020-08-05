@@ -154,7 +154,7 @@ class BannerForm(MerchantInstancCheck,ModelFields):
         if head['name'] =='navigateurl':
             head['explain_text'] = '''
 <ol>
-<li>活动：/activity/detail/5.html?_nt=activity&id=5</li>
+<li>活动：/sh/activityv2/5.html?_nt=activity&id=5</li>
 <li>比赛：sh://www.sh.com/match/detail?_nt=match&id=1000</li>
 <li>消息：sh://sh.com/message/detail?_nt=message&id=1000</li>
 <li>充值：sh://sh.com/user/recharge?_nt=recharge</li>
