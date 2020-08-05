@@ -326,7 +326,7 @@ class TbActivityV2(models.Model):
     editorid= UpdateUserField(db_column='EditorId',verbose_name='修改人')
     #editorid = models.IntegerField(db_column='EditorId')  # Field name made lowercase.
     remark = models.CharField(db_column='Remark', max_length=1024, blank=True, null=True,verbose_name='活动备注')  # Field name made lowercase.
-    enabled = models.BooleanField(db_column='Enabled',verbose_name='启用')  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled',verbose_name='启用',default=True)  # Field name made lowercase.
     #image = models.CharField(db_column='Image', max_length=512, blank=True, null=True)  # Field name made lowercase.
     image = CusPictureField(db_column='Image', max_length=512, blank=True, null=True,verbose_name='首页弹出图')  # Field name made lowercase.
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True,choices = ACTIVITY2_CATAGORY,verbose_name='活动类型')  # Field name made lowercase.
@@ -2952,7 +2952,7 @@ class TbBanner(models.Model):
     status = models.IntegerField(db_column='Status', verbose_name=_('status'), null=True, choices=ONLINE_STATUS,
                                  default=1)  # Field name made lowercase.
     navigateurl = models.CharField(db_column='NavigateUrl', max_length=512, verbose_name=_('Navigate Url'), blank=True,
-                                   null=True)
+                                   null=True,)
     displaytype = models.IntegerField(db_column='DisplayType',default=0,choices=BANNER_DISPLAYTYPE,verbose_name='对内/对外')  # Field name made lowercase.
     #pcpicturename = models.CharField(db_column='PcPictureName', max_length=255, blank=True, null=True)  # Field name made lowercase.
     merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.

@@ -133,9 +133,9 @@ class BannerForm(MerchantInstancCheck,ModelFields):
     @property
     def field_sort(self):
         if self.crt_user.merchant:
-            return ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description']
+            return ['title', 'navigateurl', 'picturename','pcpicturename', 'order', 'description']
         else:
-            return ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description','merchant']
+            return ['title', 'navigateurl', 'picturename','pcpicturename', 'order', 'description','merchant']
     #field_sort = ['title', 'navigateurl', 'picturename','pcpicturename', 'order','displaytype', 'description','merchant']
 
     class Meta:
@@ -151,8 +151,19 @@ class BannerForm(MerchantInstancCheck,ModelFields):
                 head['up_url'] = '/d/upload?path=public/banner'
         if head['name'] == 'createuser':
             head['editor'] = 'com-field-label-shower'
-        if head['name'] == 'displaytype':
-            head['editor'] = 'com-field-radio'
+        if head['name'] =='navigateurl':
+            head['explain_text'] = '''
+<ol>
+<li>活动：/activity/detail/5.html?_nt=activity&id=5</li>
+<li>比赛：sh://www.sh.com/match/detail?_nt=match&id=1000</li>
+<li>消息：sh://sh.com/message/detail?_nt=message&id=1000</li>
+<li>充值：sh://sh.com/user/recharge?_nt=recharge</li>
+<li>绝对url：Htttps://www.baidu.com</li>
+</ol>
+sh为商户英文名称
+                                   '''
+        #if head['name'] == 'displaytype':
+            #head['editor'] = 'com-field-radio'
         return head
 
     def dict_row(self, row):
