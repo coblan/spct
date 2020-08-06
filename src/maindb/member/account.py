@@ -922,7 +922,7 @@ class AccountTabBase(ModelTable):
 class WithAccoutInnFilter(ModelTable):
     def inn_filter(self, query):
         query = super().inn_filter(query)
-        if self.kw.get('accountid'):
+        if  'accountid' in self.kw:
             return query.filter(accountid=self.kw.get('accountid'))
         else:
             return query

@@ -152,8 +152,12 @@ class HelpPage(TablePage):
             add_new.update({
                 'tab_name': 'help_form',
                 'ctx_name': 'helpcenter_tabs',
-                'init_express':'alert("bb")'
             })
+            #add_new.update({
+                #'tab_name': 'help_form',
+                #'ctx_name': 'helpcenter_tabs',
+                #'init_express':'alert("bb")'
+            #})
             operations.extend([
                 {
                     'fun': 'selected_set_and_save',
@@ -252,7 +256,12 @@ class HelpForm(MerchantInstancCheck,ModelFields):
         
         if dc.get('mtype') == 0 :
             if dc.get('type') == 0:
-                dc['type'] = len(TbQa.objects.values('type').distinct())
+                ls = list( TbQa.objects.values('type').distinct() )
+                if ls:
+                    thistype=max(ls) +1
+                else:
+                    thistype = 1
+                dc['type'] = thistype
         else:
             dc['type'] = 0
         #else:
