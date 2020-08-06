@@ -256,7 +256,7 @@ class HelpForm(MerchantInstancCheck,ModelFields):
         
         if dc.get('mtype') == 0 :
             if dc.get('type') == 0:
-                ls = list( TbQa.objects.values('type').distinct() )
+                ls = [x.get('type') for x in TbQa.objects.values('type').distinct() ]
                 if ls:
                     thistype=max(ls) +1
                 else:
