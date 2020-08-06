@@ -103,7 +103,7 @@ class HelpPage(TablePage):
             ls =[]
             par_pk = self.kw.get('_par',0)
             if par_pk > 0 :
-                parent = TbQa.objects.get(type = par_pk)
+                parent = TbQa.objects.get(type = par_pk,merchant = self.kw.get('_merchant'))
                 ls.append({'value':parent.type,'label':str(parent)})
                 #if parent.type !=0:
                     #parent = parent.parent
@@ -133,7 +133,7 @@ class HelpPage(TablePage):
             if head['name'] == 'title':
                 head['editor'] = 'com-table-click'
                 head['width'] = 200
-                head['action'] ='if(scope.row.type==0){cfg.toast("没有子目录了,只能有两级帮助!")}else{scope.ps.search_args._par = scope.row.type;scope.ps.search()}'
+                head['action'] ='debugger;if(scope.row.type==0){cfg.toast("没有子目录了,只能有两级帮助!")}else{scope.ps.search_args._par = scope.row.type;scope.ps.search_args._merchant=scope.row.merchant;scope.ps.search()}'
                 
             #if head['name'] == 'mtype':
                 #head['options'] = get_mtype_options()
