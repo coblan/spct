@@ -133,7 +133,7 @@ class HelpPage(TablePage):
             if head['name'] == 'title':
                 head['editor'] = 'com-table-click'
                 head['width'] = 200
-                head['action'] ='debugger;if(scope.row.type==0){cfg.toast("没有子目录了,只能有两级帮助!")}else{scope.ps.search_args._par = scope.row.type;scope.ps.search_args._merchant=scope.row.merchant;scope.ps.search()}'
+                head['action'] ='if(scope.row.type==0){cfg.toast("没有子目录了,只能有两级帮助!")}else{scope.ps.search_args._par = scope.row.type;scope.ps.search_args._merchant=scope.row.merchant;scope.ps.search()}'
                 
             #if head['name'] == 'mtype':
                 #head['options'] = get_mtype_options()
@@ -152,6 +152,7 @@ class HelpPage(TablePage):
             add_new.update({
                 'tab_name': 'help_form',
                 'ctx_name': 'helpcenter_tabs',
+                'pre_set':'rt ={merchant_id:scope.search_args._merchant}'
             })
             #add_new.update({
                 #'tab_name': 'help_form',
@@ -227,6 +228,15 @@ class HelpPage(TablePage):
             ## return RowFilter.get_options(self,name)
         class sort(RowSort):
             names = ['priority']
+        
+        class filters(RowFilter):
+            
+            @property
+            def names(self):
+                if self.crt_user.merchant:
+                    return []
+                else:
+                    return ['merchant',]
 
 class MerchantSelect(Fields):
     def get_heads(self):
@@ -253,7 +263,8 @@ class HelpForm(MerchantInstancCheck,ModelFields):
         super().clean_dict(dc)
         if self.crt_user.merchant:
             dc['merchant'] = self.crt_user.merchant.id
-        
+        #if self.kw.get('merchant'):
+            #dc['merchant_id'] = self.kw.get('merchant')
         if dc.get('mtype') == 0 :
             if dc.get('type') == 0:
                 ls = [x.get('type') for x in TbQa.objects.values('type').distinct() ]
