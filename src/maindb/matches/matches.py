@@ -1053,7 +1053,7 @@ class OutcomeTab(ModelTable):
         rows = super().get_rows()
         rows = bf+rows
         try:
-            settlemsg = TbManualsettlemsg.objects.get(matchid= self.kw.get('matchid'))
+            settlemsg = TbManualsettlemsg.objects.get(match_id= self.kw.get('matchid'))
             match_outcome = json.loads(settlemsg.settlemsg)
             for msg_row in match_outcome:
                 for row in rows:
@@ -1169,7 +1169,7 @@ class OutcomeTab(ModelTable):
 
 @director_view('submit_manual_settle_to_audit')
 def submit_manual_settle_to_audit(matchid):
-    count = TbManualsettlemsg.objects.filter(matchid = matchid,status =0).update(status = 1)
+    count = TbManualsettlemsg.objects.filter(match_id = matchid,status =0).update(status = 1)
     if not count:
         return {'msg':'没有可提交的结算数据'}
     else:
@@ -1178,7 +1178,7 @@ def submit_manual_settle_to_audit(matchid):
 
 @director_view('confirm_manual_settle_to_audit')
 def confirm_manual_settle_to_audit(matchid):
-    settlemsg = TbManualsettlemsg.objects.filter(matchid = matchid,status =1).first()
+    settlemsg = TbManualsettlemsg.objects.filter(match_id = matchid,status =1).first()
     if not settlemsg:
         return {'msg':'没有结算数据可以审核'}
     else:
@@ -1190,7 +1190,7 @@ def confirm_manual_settle_to_audit(matchid):
 
 @director_view('reject_manual_settle_to_audit')
 def reject_manual_settle_to_audit(matchid):
-    count = TbManualsettlemsg.objects.filter(matchid = matchid,status =1).update(status =0)
+    count = TbManualsettlemsg.objects.filter(match_id = matchid,status =1).update(status =0)
     if not count:
         return {'msg':'没有结算数据'}
     else:
@@ -1250,12 +1250,12 @@ def get_match_outcome_info(matchid):
 def out_com_save(rows,matchid):
     if matchid:
         try:
-            settlemsg = TbManualsettlemsg.objects.get(matchid = matchid)
+            settlemsg = TbManualsettlemsg.objects.get(match_id = matchid)
             if settlemsg.status != 0:
                 raise UserWarning('当前正在审核中，不能进行编辑')
 
         except TbManualsettlemsg.DoesNotExist as e:
-            settlemsg = TbManualsettlemsg.objects.create(matchid = matchid,status=0)
+            settlemsg = TbManualsettlemsg.objects.create(match_id = matchid,status=0)
         settlemsg .settlemsg = json.dumps(rows)
         settlemsg.save()
 
