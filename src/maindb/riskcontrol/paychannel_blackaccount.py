@@ -27,6 +27,11 @@ class PaychannelblackaccountForm(ModelFields):
         model = TbPaychannelblackaccount
         exclude = []
     
+    def clean_dict(self, dc):
+        if self.crt_user.merchant:
+            dc['merchant'] = self.crt_user.merchant.id
+        return dc
+    
     def clean_save(self):     
         self.instance.account = self.instance.accountid.account
     
