@@ -543,7 +543,7 @@ class MatchForm(ModelFields):
         return head
 
     def dict_row(self, inst):
-        settlemsg = TbManualsettlemsg.objects.filter(matchid = inst.matchid).first()
+        settlemsg = TbManualsettlemsg.objects.filter(match_id = inst.matchid).first()
 
         return {'isshow': not bool(inst.ishidden),
                 '_matchdate_label':inst.matchdate.strftime('%Y-%m-%d %H:%M') if inst.matchdate else '',
