@@ -1168,10 +1168,12 @@ WINNER_TYPE=(
 )
 
 class TbMatch(models.Model):
-    sportid = models.IntegerField(db_column='SportID',verbose_name='运动类型')  # Field name made lowercase.
+    #sportid = models.IntegerField(db_column='SportID',verbose_name='运动类型')  # Field name made lowercase.
+    sportid = models.ForeignKey(to='TbSporttypes',db_constraint=False,db_column='SportID',verbose_name='运动类型')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID', primary_key=True,verbose_name='比赛ID')  # Field name made lowercase.
     eventid = models.CharField(db_column='EventID', unique=True, max_length=50)  # Field name made lowercase.
-    tournamentid = models.IntegerField(db_column='TournamentID',verbose_name='联赛')  # Field name made lowercase.
+    #tournamentid = models.IntegerField(db_column='TournamentID',verbose_name='联赛')  # Field name made lowercase.
+    tournamentid = models.ForeignKey(to='TbTournament',db_constraint=False,db_column='TournamentID',verbose_name='联赛')
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentId')  # Field name made lowercase.
     roundinfo = models.IntegerField(db_column='RoundInfo')  # Field name made lowercase.
     team1id = models.IntegerField(db_column='Team1ID')  # Field name made lowercase.
@@ -3802,7 +3804,8 @@ class TbTeammapping(models.Model):
 
 class TbManualsettlemsg(models.Model):
     id = models.AutoField(db_column='ID',primary_key=True)  # Field name made lowercase.
-    matchid = models.BigIntegerField(db_column='MatchID', verbose_name='比赛ID')  # Field name made lowercase.
+    #matchid = models.BigIntegerField(db_column='MatchID', verbose_name='比赛ID')  # Field name made lowercase.
+    match = models.ForeignKey(db_column='MatchID', verbose_name='比赛ID',db_constraint=False,to=TbMatch)
     settlemsg = models.TextField(db_column='SettleMsg', verbose_name='结算内容')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', verbose_name='状态',default=0,choices=SETTLEMSG_STATUS)  # Field 
     
