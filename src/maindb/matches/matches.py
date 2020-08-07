@@ -30,10 +30,23 @@ from django.utils import timezone
 from helpers.director.dapi import save_rows
 from maindb.mongoInstance import mydb
 from django.db.models import Sum,Case,When,Q,IntegerField,Subquery,OuterRef
+from django.db.models.functions import Concat
 
 import logging
 op_log = logging.getLogger('operation_log')
 
+
+@director_view('match.get_tournament_options')
+def get_tournament_options():
+    ls =[]
+    has_key =[]
+    for inst in TbTournament.objects.filter(issubscribe =1):
+        if inst.tournamentid not in has_key:
+            has_key.append(inst.tournamentid)
+            ls.append({'value':inst.tournamentid,'label':str(inst)})
+        else:
+            print(inst.tournamentid)
+    return ls
 
 def get_match_tab(crt_user):
     match_form = MatchForm(crt_user=crt_user)
@@ -91,53 +104,53 @@ def get_match_tab(crt_user):
 
 
 
-	     #.extra(select={
-		 #'_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
-		 #'_sportid_label':'SELECT TB_SportTypes.SportNameZH',
-		 #},
-		    #where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1',],
-		    #tables =['TB_Tournament','TB_SportTypes',])
-	    
-	    #.annotate(_tournamentid_label = F('tournamentid_label'))\
-	    
-	    #.annotate(_sportid_label = F('sporttype__sportnamezh'))\
-	   
-	    
-	    #.extra(select={
-		#'_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
-		#'_sportid_label':'SELECT TB_SportTypes.SportNameZH',
-		##'num_stake':'''SELECT concat( COUNT( CASE WHEN TB_TicketMaster.ParlayRule =11 then 1 ELSE null END),'/', COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END)) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
-		##WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
-		##TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
-		##TB_TicketMaster.Status =1 AND 
-		##TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
-		
-		##'num_stake':'''SELECT  cast(  COUNT (  CASE WHEN TB_TicketMaster.ParlayRule = 11 THEN 1 ELSE NULL END  ) AS varchar ) +'/' +cast(COUNT ( CASE WHEN TB_TicketMaster.ParlayRule != 11 THEN 1 ELSE NULL END ) AS varchar) 
-	##FROM TB_TicketMaster,TB_TicketStake,TB_Account 
-	##WHERE
-	##TB_TicketStake.MatchID = TB_Match.MatchID 
-	##AND TB_TicketMaster.TicketID= TB_TicketStake.TicketID 
-	##AND TB_TicketMaster.Status = 1 
-	##AND TB_TicketMaster.AccountID = TB_Account.AccountID 
-	##AND TB_Account.AccountType= 0 ''',
-		
-		
-		##'num_stake_total':'''SELECT  COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
-		##WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
-		##TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
-		##TB_TicketMaster.Status =1 AND 
-		##TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
-		##'num_stake_parlay':'''SELECT  COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
-		##WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
-		##TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
-		##TB_TicketMaster.Status =1 AND 
-		##TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
-		#'manual_settle_need_audit':'SELECT status FROM TB_ManualSettleMsg WHERE TB_Match.MatchID=TB_ManualSettleMsg.MatchID',
-		
-		#},
-		#where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1',],
-		#tables =['TB_Tournament','TB_SportTypes',]
-		#)
+                #.extra(select={
+                    #'_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
+                    #'_sportid_label':'SELECT TB_SportTypes.SportNameZH',
+                    #},
+                    #where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1',],
+                    #tables =['TB_Tournament','TB_SportTypes',])
+
+            #.annotate(_tournamentid_label = F('tournamentid_label'))\
+
+            #.annotate(_sportid_label = F('sporttype__sportnamezh'))\
+
+
+            #.extra(select={
+                #'_tournamentid_label':'SELECT TB_Tournament.tournamentnamezh',
+                #'_sportid_label':'SELECT TB_SportTypes.SportNameZH',
+                ##'num_stake':'''SELECT concat( COUNT( CASE WHEN TB_TicketMaster.ParlayRule =11 then 1 ELSE null END),'/', COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END)) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                ##WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
+                ##TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
+                ##TB_TicketMaster.Status =1 AND 
+                ##TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0'''
+
+                ##'num_stake':'''SELECT  cast(  COUNT (  CASE WHEN TB_TicketMaster.ParlayRule = 11 THEN 1 ELSE NULL END  ) AS varchar ) +'/' +cast(COUNT ( CASE WHEN TB_TicketMaster.ParlayRule != 11 THEN 1 ELSE NULL END ) AS varchar) 
+        ##FROM TB_TicketMaster,TB_TicketStake,TB_Account 
+        ##WHERE
+        ##TB_TicketStake.MatchID = TB_Match.MatchID 
+        ##AND TB_TicketMaster.TicketID= TB_TicketStake.TicketID 
+        ##AND TB_TicketMaster.Status = 1 
+        ##AND TB_TicketMaster.AccountID = TB_Account.AccountID 
+        ##AND TB_Account.AccountType= 0 ''',
+
+
+                ##'num_stake_total':'''SELECT  COUNT( 1) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                ##WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
+                ##TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
+                ##TB_TicketMaster.Status =1 AND 
+                ##TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
+                ##'num_stake_parlay':'''SELECT  COUNT( CASE WHEN TB_TicketMaster.ParlayRule !=11 then 1 ELSE null END) FROM TB_TicketMaster, TB_TicketStake ,TB_Account
+                ##WHERE TB_TicketStake.MatchID = TB_Match.MatchID AND 
+                ##TB_TicketMaster.TicketID=TB_TicketStake.TicketID  AND 
+                ##TB_TicketMaster.Status =1 AND 
+                ##TB_TicketMaster.AccountID = TB_Account.AccountID AND TB_Account.AccountType=0''',
+                #'manual_settle_need_audit':'SELECT status FROM TB_ManualSettleMsg WHERE TB_Match.MatchID=TB_ManualSettleMsg.MatchID',
+
+                #},
+                #where=['TB_Tournament.TournamentID=TB_Match.TournamentID ','TB_SportTypes.SportID=TB_Match.SportID','TB_Tournament.IsSubscribe=1',],
+                #tables =['TB_Tournament','TB_SportTypes',]
+                #)
 
 class MatchsPage(TablePage):
     template = 'jb_admin/table.html'
@@ -157,7 +170,7 @@ class MatchsPage(TablePage):
         sportid=1
         model = TbMatch
         exclude = []  # 'ishidden', 'iscloseliveodds'
-      
+
         fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
                        'eventid','manual_settle_need_audit'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
@@ -170,7 +183,7 @@ class MatchsPage(TablePage):
                      'tab_ctx':{
                          'tab_name':'manul_outcome',
                          'ctx_name':'match_tabs',
-                     },
+                         },
                      'inn_editor':'com-table-span',
                      'cell_class':'scope.row.num_stake !="0/0"?"mywarning clickable":"clickable"',
                      'css':'.mywarning{background-color:#ff410e;color:white}'
@@ -208,10 +221,10 @@ class MatchsPage(TablePage):
                            Q(tbticketstake__ticket_master__accountid__accounttype=0),then=1 ),
                     default = 0,
                     output_field = IntegerField()    )))\
-                 .annotate(manual_settle_need_audit =F('tbmanualsettlemsg__status'))
-	                                #~Q(tbticketstake__ticket_master__parlayrule = 11) &
-                 #.annotate(_tournamentid_label=Subquery(tourn.values('tournamentnamezh')[:1]))
-	    
+                .annotate(manual_settle_need_audit =F('tbmanualsettlemsg__status'))
+                                        #~Q(tbticketstake__ticket_master__parlayrule = 11) &
+                    #.annotate(_tournamentid_label=Subquery(tourn.values('tournamentnamezh')[:1]))
+
             return query
 
 
@@ -227,7 +240,7 @@ class MatchsPage(TablePage):
                     {'name':'specialcategoryid','editor':'com-filter-select','placeholder':'类型',
                      'options':[
                          {'value':0,'label':'常规'},
-                        {'value':1,'label':'特殊'}
+                         {'value':1,'label':'特殊'}
                         ],
                      },
                     {'name':'manual_settle_need_audit','label':'手动结算状态','editor':'com-filter-select',
@@ -244,12 +257,12 @@ class MatchsPage(TablePage):
                 if self.kw.get('manual_settle_need_audit') == 1:
                     query = query.filter(manual_settle_need_audit = 1)
                     #query = query.extra(where=['TB_ManualSettleMsg.status=1','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
-                                       #tables=['TB_ManualSettleMsg'])
+                                        #tables=['TB_ManualSettleMsg'])
                 elif self.kw.get('manual_settle_need_audit') == 0:
                     query = query.filter(manual_settle_need_audit = 0)
                     #query = query.extra(where=['TB_ManualSettleMsg.status=0','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
-                                       #tables=['TB_ManualSettleMsg'])
-                  
+                                        #tables=['TB_ManualSettleMsg'])
+
                 return query
 
             def dict_head(self, head):
@@ -261,9 +274,9 @@ class MatchsPage(TablePage):
                     head['editor'] = 'com-filter-single-select2'
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
-                    head['options']=[
-                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(issubscribe =1)
-                    ]
+                    head['options'] =[]
+                    head['mounted_express'] = 'ex.director_call("match.get_tournament_options",{},{catch:true}).then(options=>{scope.vc.options=options})'
+         
                 if head['name'] == 'sportid':
                     head['options'] =[
                         {'value':x.sportid,'label':x.sportnamezh } for x in TbSporttypes.objects.filter(enabled = True)
@@ -293,12 +306,12 @@ class MatchsPage(TablePage):
 
         def get_operation(self):
             ops = [
-            
+
                 #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
-                 #'pre_set': 'rt={isrecommend:true}', 'row_match': 'many_row', 
+                #'pre_set': 'rt={isrecommend:true}', 'row_match': 'many_row', 
                  #'after_save':' ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  #'visible': 'isrecommend' in self.permit.changeable_fields(),},
-                {'action':''' ex.each(scope.ps.selected,row=>{row.meta_change_fields="isrecommend";row.isrecommend=true});
+                 {'action':''' ex.each(scope.ps.selected,row=>{row.meta_change_fields="isrecommend";row.isrecommend=true});
                 cfg.show_load();
                 ex.director_call("batch_recommand",{rows:scope.ps.selected})
                 .then((resp)=>{
@@ -308,18 +321,18 @@ class MatchsPage(TablePage):
                     scope.ps.selected =[]
                     })''' ,
                  'editor':'com-op-btn','label':'推荐','confirm_msg': '确认推荐吗？',
-                  'row_match': 'many_row',
+                 'row_match': 'many_row',
                   'visible': 'isrecommend' in self.permit.changeable_fields()
                   },
-                 #{'fun':'director_call','editor':'com-op-btn','label':'推荐','confirm_msg': '确认推荐吗？',
-                  #'pre_set': 'rt={isrecommend:true}', 
+                #{'fun':'director_call','editor':'com-op-btn','label':'推荐','confirm_msg': '确认推荐吗？',
+                 #'pre_set': 'rt={isrecommend:true}', 
                   #'director_name':'batch_recommand',
                   #'row_match': 'many_row',
                   #'after_save':'scope.ps.update_rows(scope.resp); ex.director_call("notify_match_recommend",{rows:scope.resp})',
                   #'visible': 'isrecommend' in self.permit.changeable_fields()
                   #},
-                 
-                {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
+
+                  {'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '取消推荐', 'confirm_msg': '确认取消推荐吗？',
                  'pre_set': 'rt={isrecommend:false}', 'row_match': 'many_row',
                  'after_save':'ex.director_call("notify_match_recommend",{rows:scope.rows})',
                  'visible': 'isrecommend' in self.permit.changeable_fields()},
@@ -340,17 +353,17 @@ class MatchsPage(TablePage):
                  'label': '隐藏', 
                  'confirm_msg': '确认隐藏比赛吗？',
                  'pre_set':'rt={meta_change_fields:"ishidden",ishidden:1}',
-                  'visible': 'ishidden' in self.permit.changeable_fields()},
+                 'visible': 'ishidden' in self.permit.changeable_fields()},
                 #{'fun': 'express', 'editor': 'com-op-btn', 'label': '封盘', 'row_match': 'one_row',
                 #'express': 'rt=scope.ps.switch_to_tab({tab_name:"special_bet_value",ctx_name:"match_iscloseliveodds_tabs",par_row:scope.ps.selected[0]})',
-                    #'visible': self.permit.can_edit(),}, 
-                {'fun': 'director_call', 'editor': 'com-op-btn', 
-                  'director_name': 'match.quit_ticket',
+                #'visible': self.permit.can_edit(),}, 
+                    {'fun': 'director_call', 'editor': 'com-op-btn', 
+                 'director_name': 'match.quit_ticket',
                   'label': '退单', 'confirm_msg': '确认要退单吗？', 'row_match': 'one_row',
                   #'pre_set': 'rt={PeriodType:2}',
                   #'after_save': 'rt=cfg.showMsg(scope.new_row.Message)',
                   #'fields_ctx': PeriodTypeForm_form.get_head_context(),
-                 'visible': has_permit(self.crt_user,'TbMatch.quit_ticket')},
+                  'visible': has_permit(self.crt_user,'TbMatch.quit_ticket')},
                 {'label':'清空直播','editor':'com-op-btn','confirm_msg':'确定要清空',
                  'row_match':'many_row',
                  'visible': self.permit.can_edit(),
@@ -359,6 +372,20 @@ class MatchsPage(TablePage):
             ]
             return ops
 
+    
+        def get_rows(self):
+            rows = super().get_rows()
+            ls = []
+            mapping ={}
+            for row in rows:
+                ls.append(row.get('tournamentid'))
+            for inst in TbTournament.objects.filter(tournamentid__in = ls):
+                mapping[inst.tournamentid] = str(inst)
+            for row in rows:
+                row['_tournamentid_label'] = mapping.get(row.get('tournamentid'))
+                
+            return rows
+        
         def dict_head(self, head):
             dc = {
                 'matchid': 70,
@@ -378,11 +405,11 @@ class MatchsPage(TablePage):
                 'maxsinglepayout': 120,
                 'marketstatus': 70,
                 'iscloseliveodds': 70,
-                
+
                 'oddsadjustment' :100,
                 'oddsadjustmax' :120,
                 'baseticketeamout':100,
-                
+
             }
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
@@ -403,14 +430,17 @@ class MatchsPage(TablePage):
                 #head['editor']='com-table-label-shower'
                 head['editor'] = 'com-table-mapper'
                 head['options'] = [
-                     {'value':x.sportid,'label':x.sportnamezh } for x in TbSporttypes.objects.filter(enabled = True)
+                    {'value':x.sportid,'label':x.sportnamezh } for x in TbSporttypes.objects.filter(enabled = True)
                 ]
-        
+
             if head['name'] == 'tournamentid':
-                head['editor'] = 'com-table-mapper'
-                head['options'] = [
-                    {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(issubscribe =1)
-                ]
+                head['editor'] = 'com-table-label-shower'
+                #head['editor'] = 'com-table-mapper'
+                #head['options'] =[]
+                #head['mounted_express'] ='scope.vc.options =ex.localGet("tournament.options",[]);ex.director_call("match.get_tournament_options",{},{catch:true}).then(options=>{ex.localSet("tournament.options",options);scope.vc.options=options})'
+                #head['options'] = [
+                #{'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(issubscribe =1)
+                #]
 
             if head['name'] == 'isdangerous':
                 head['editor'] ='com-table-map-html'
@@ -446,8 +476,8 @@ def clear_liveurl(matchs):
     return {
         'count':rt.get('nModified')
     }
- 
-    
+
+
 #@director_view('get_football_league_options')
 #def get_football_league_options(source=0):
     #ls =[{'label':str(x) ,'value':x.tournamentid} for x in TbTournament.objects.filter(source=source)]
@@ -492,7 +522,7 @@ class MatchForm(ModelFields):
     class Meta:
         model = TbMatch
         exclude = [ 'matchstatustype', 'specialcategoryid', 'mainleagueid', 
-                   'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', 'prematchdate','createtime']
+                    'mainhomeid', 'mainawayid', 'mainmatchid', 'maineventid', 'settlestatus', 'prematchdate','createtime']
 
     field_sort = ['matchid', 'team1zh', 'team2zh', 'matchdate','weight','ticketdelay', 'marketstatus'] #'oddsadjustment','oddsadjustmax','baseticketeamout'
     overlap_fields =['updatetime']
@@ -509,12 +539,12 @@ class MatchForm(ModelFields):
             head['readonly'] = True
         if head['name'] in [ 'oddsadjustment','oddsadjustmax']:
             head['fv_rule']='range(0~0.99);digit(2)'
-            
+
         return head
 
     def dict_row(self, inst):
         settlemsg = TbManualsettlemsg.objects.filter(matchid = inst.matchid).first()
-        
+
         return {'isshow': not bool(inst.ishidden),
                 '_matchdate_label':inst.matchdate.strftime('%Y-%m-%d %H:%M') if inst.matchdate else '',
                 'manual_settle_need_audit': settlemsg.status if settlemsg else ''
@@ -536,14 +566,14 @@ class MatchForm(ModelFields):
 
         self.updateMongo()
         self.proc_redis()
-        
+
         if any([x in self.changed_data for x in ['oddsadjustment','baseticketeamout','oddsadjustmax'] ] ): 
             dc ={
                 'Type':2,
                 'Ids':[self.instance.matchid]
             }
             notifyAdjustOddsBase(json.dumps(dc))
-        
+
         return {'msg': msg,}
 
     def updateMongo(self): 
@@ -596,7 +626,7 @@ class TbLivescoutTable(ModelTable):
              'director_name':'match.add_livescout',
              'editor':'com-op-switch',
              'label':'危险球',
-            'pre_set':'rt={matchid:scope.self.vc.par_row.matchid,is_danger:scope.head.value}',
+             'pre_set':'rt={matchid:scope.self.vc.par_row.matchid,is_danger:scope.head.value}',
             'active_color':'red',
             'op_confirm_msg':'scope.value?"是否开启危险球?":"是否关闭危险球?"',
             'after_save':'rt=scope.ps.search()',
@@ -604,7 +634,7 @@ class TbLivescoutTable(ModelTable):
             'init_express':'rt=ex.director_call("match.livescout_status",{matchid:scope.ps.vc.par_row.matchid}).then((resp)=>scope.vc.myvalue=resp)'
             },
             {
-                  'name':'search',
+                'name':'search',
                   'editor':'com-op-btn',
                   'label':'刷新',
                   'icon':'fa-refresh',
@@ -626,9 +656,9 @@ class TbLivescoutTable(ModelTable):
             head['editor'] ='com-table-rich-span'
             head['class']='middle-col btn-like-col'
             head['cell_class'] = 'var dc={"危险球解除":"success","有危险球":"warning","危险球解除(M)":"success","有危险球(M)":"warning"};rt=dc[scope.row.eventdesc]'
-                
+
         return head
-    
+
     def dict_row(self, inst):
         return {
             'servertime':inst.servertime.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3],
@@ -672,17 +702,17 @@ class PeriodScoreTab(ModelTable):
         if head['name']=='statuscode':
             head['editor']='com-table-mapper'
         return head
-    
+
     class sort(RowSort):
         names=['statuscode','scoretype']
-        
+
         def clean_search_args(self):
             if not self.sort_str:
                 self.sort_str='statuscode'
-        
+
     class filters(RowFilter):
         names = ['scoretype']
-        
+
 
 @director_view('match.livescout_status')
 def match_livescout_status(matchid,**kws):
@@ -992,7 +1022,7 @@ class OutcomeTab(ModelTable):
              'ops':[
                  {
                      'editor':'com-op-plain-btn',
-                         'label':'清空',
+                     'label':'清空',
                          'class':'btn btn-primary btn-xs',
                          'action':""" Vue.set( scope.row,'outcome','') """}
                  ]},
@@ -1032,7 +1062,7 @@ class OutcomeTab(ModelTable):
                         break
         except TbManualsettlemsg.DoesNotExist as e:
             pass
-        
+
         return rows
 
     def dict_head(self, head):
@@ -1087,7 +1117,7 @@ class OutcomeTab(ModelTable):
                     })
                  })
             .then((res)=>{ex.vueAssign(scope.ps.vc.par_row,res)}) ''', 
-            'visible':has_permit(self.crt_user, 'save_manual_outcome')},
+                                    'visible':has_permit(self.crt_user, 'save_manual_outcome')},
             {'label':'提交审核','editor':'com-op-btn',
              'class':'btn btn-primary',
              'action':''' cfg.confirm("确定提交手动结算信息?审核过程中，将不能修改数据。")
@@ -1104,7 +1134,7 @@ class OutcomeTab(ModelTable):
              })
              ''',
              'visible':has_permit(self.crt_user, 'save_manual_outcome')},
-            
+
             {'label':'审核通过','editor':'com-op-btn','class':'btn btn-success',
              'action':'''cfg.confirm("审核通过会立即通知后台进行结算，结果不可挽回，确定通过?")
              .then(()=>{
@@ -1145,7 +1175,7 @@ def submit_manual_settle_to_audit(matchid):
     else:
         op_log.info('提交手动结算审核 matchid = %s'%matchid)
         return {}
-    
+
 @director_view('confirm_manual_settle_to_audit')
 def confirm_manual_settle_to_audit(matchid):
     settlemsg = TbManualsettlemsg.objects.filter(matchid = matchid,status =1).first()
@@ -1157,7 +1187,7 @@ def confirm_manual_settle_to_audit(matchid):
         op_log.info('审核手动结算:matchid=%s ;settlemsg = %s '%(matchid,settlemsg.settlemsg,))
         settlemsg.delete()
         return {}
-        
+
 @director_view('reject_manual_settle_to_audit')
 def reject_manual_settle_to_audit(matchid):
     count = TbManualsettlemsg.objects.filter(matchid = matchid,status =1).update(status =0)
@@ -1223,13 +1253,13 @@ def out_com_save(rows,matchid):
             settlemsg = TbManualsettlemsg.objects.get(matchid = matchid)
             if settlemsg.status != 0:
                 raise UserWarning('当前正在审核中，不能进行编辑')
-            
+
         except TbManualsettlemsg.DoesNotExist as e:
             settlemsg = TbManualsettlemsg.objects.create(matchid = matchid,status=0)
         settlemsg .settlemsg = json.dumps(rows)
         settlemsg.save()
 
-            
+
 def real_out_come_save(rows,matchid):
     send_dc = {
         'MatchID':matchid,
@@ -1390,7 +1420,7 @@ def real_out_come_save(rows,matchid):
                 away_6_1 = away_13_1 + away_14_1
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=14,scoretype=1,home=home_14_1,away=away_14_1 ,type=0) )
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home_6_1,away=away_6_1 ,type=0) )
-                
+
             if row.get('has_15_1'):
                 home_15_1 = int( row.get('home_15_1') )
                 away_15_1 = int( row.get('away_15_1') )
@@ -1401,10 +1431,10 @@ def real_out_come_save(rows,matchid):
 
                 home_7_1 = home_15_1 + home_16_1
                 away_7_1 = away_15_1 + away_16_1
-               
+
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=7,scoretype=1,home=home_7_1,away=away_7_1 ,type=0) )
                 batch_create.append( TbPeriodscore(matchid=matchid,statuscode=16,scoretype=1,home=home_16_1,away=away_16_1 ,type=0) )
-                
+
                 if row.get('has_100_1'):
                     home_100_1 = home_6_1 + home_7_1
                     away_100_1 = away_6_1 + away_7_1
@@ -1428,7 +1458,7 @@ def real_out_come_save(rows,matchid):
 
             home_6_1 = int( row.get('home_6_1') )
             away_6_1 = int( row.get('away_6_1') )
-            
+
             batch_create.append( TbPeriodscore(matchid=matchid,statuscode=6,scoretype=1,home=home_6_1,away=away_6_1 ,type=0) )
             if  row.get('has_100_1') :
                 home_100_1 = int( row.get('home_100_1') )
@@ -1447,7 +1477,7 @@ def real_out_come_save(rows,matchid):
                     home_110_1 = home_100_1 + home_40_1
                     away_110_1 = away_100_1 + away_40_1
                     batch_create.append(TbPeriodscore(matchid=matchid,statuscode=110,scoretype=1,type=1,home=home_110_1,away=away_110_1)) 
-                
+
         if row['pk'] == -109:
             send_dc['IsSettleByScore']=True
             TbPeriodscore.objects.filter(matchid=matchid,scoretype=1).delete()
@@ -1529,7 +1559,7 @@ def real_out_come_save(rows,matchid):
             if home_set == away_set:
                 raise UserWarning('主客赢的盘数不能相等')
             batch_create.append(TbPeriodscore(matchid=matchid,statuscode=100,scoretype=1,type=1,home=home_set,away=away_set  ) ) 
-            
+
     TbPeriodscore.objects.bulk_create(batch_create)
     if send_dc.get('IsSettleByScore'):
         home_score =0
@@ -1548,12 +1578,12 @@ def real_out_come_save(rows,matchid):
                     if inst.statuscode in [13,14,15,16,40,]:
                         home_score += int(inst.home)
                         away_score += int(inst.away)
-                
+
                 elif inst.statuscode==100:
                     home_score += int(inst.home)
                     away_score += int(inst.away)
 
- 
+
             #if match.sportid in [1,2] and inst.scoretype==1 and inst.statuscode in [6,7,40,50]:
                 #if inst.home >= 0 and inst.away >= 0:
                     #home_score += int(inst.home)
@@ -1564,9 +1594,9 @@ def real_out_come_save(rows,matchid):
                     #home_score =inst.home
                     #away_score =inst.away
                     #break
-                    
+
         statuscode_list = [x.statuscode for x in batch_create]
-        
+
         if 100 in statuscode_list:
             match.score = '%s:%s'%(home_score,away_score)
             if home_score <away_score:
@@ -1575,9 +1605,9 @@ def real_out_come_save(rows,matchid):
                 match.winner = 1
             else:
                 match.winner = 3
-    
+
             match.marketstatus=3
-            
+
             statuscode= max([x for x in [100,110,120] if x in statuscode_list])
             match.statuscode = statuscode
             match.terminator ='manual'
@@ -1620,11 +1650,11 @@ def batch_recommand(rows):
             #raise UserWarning('每种体育类型最多5场推荐,但是经过这次操作后,%s已经超过了此限制.'% TbSporttypes.objects.get(sportid=k) )
     return  save_rows(rows)
 
-   
-        
+
+
     #TbMatch.objects.filter(matchid__in=matchlist).update(isrecommend = True)
-    
-        
+
+
 
 @director_view('notify_match_recommend')
 def notify_match_recommend(rows):
