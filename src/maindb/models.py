@@ -1168,8 +1168,8 @@ WINNER_TYPE=(
 )
 
 class TbMatch(models.Model):
-    #sportid = models.IntegerField(db_column='SportID',verbose_name='运动类型')  # Field name made lowercase.
-    sportid = models.ForeignKey(to='TbSporttypes',db_constraint=False,db_column='SportID',verbose_name='运动类型')  # Field name made lowercase.
+    sportid = models.IntegerField(db_column='SportID',verbose_name='运动类型')  # Field name made lowercase.
+    #sportid = models.ForeignKey(to='TbSporttypes',db_constraint=False,db_column='SportID',verbose_name='运动类型')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID', primary_key=True,verbose_name='比赛ID')  # Field name made lowercase.
     eventid = models.CharField(db_column='EventID', unique=True, max_length=50)  # Field name made lowercase.
     tournamentid = models.IntegerField(db_column='TournamentID',verbose_name='联赛')  # Field name made lowercase.
@@ -3312,7 +3312,9 @@ class TbPaychannelblackaccount(models.Model):
     #paychannelid = models.IntegerField(db_column='PayChannelID')  # Field name made lowercase.
     paychannelid = models.ForeignKey(to=TbPaychannel, db_column='PayChannelID', db_constraint=False,
                                      verbose_name='充值渠道')  # Field name made lo    wercase.
-
+    #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
     class Meta:
         managed = False
         db_table = 'TB_PayChannelBlackAccount'

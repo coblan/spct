@@ -14,7 +14,15 @@ class PaychannelblackaccountPage(TablePage):
         exclude=[]
 
 class PaychannelblackaccountForm(ModelFields):
-    hide_fields=['account']
+    #hide_fields=['account']
+    
+    @property
+    def hide_fields(self):
+        if self.crt_user.merchant:
+            return ['merchant','account',]
+        else:
+            return ['account',]
+    
     class Meta:
         model = TbPaychannelblackaccount
         exclude = []

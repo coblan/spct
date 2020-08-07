@@ -203,13 +203,13 @@ class MatchsPage(TablePage):
                            Q(tbticketstake__ticket_master__accountid__accounttype=0),then=1 ),
                     default = 0,
                     output_field = IntegerField()        )))\
-                .annotate(num_stake2 =Sum( Case (
+                .annotate(total_ticket =Sum( Case (
                     When ( Q(tbticketstake__ticket_master__status = 1) &
-                            ~Q(tbticketstake__ticket_master__parlayrule = 11) &
                            Q(tbticketstake__ticket_master__accountid__accounttype=0),then=1 ),
                     default = 0,
                     output_field = IntegerField()    )))\
                  .annotate(manual_settle_need_audit =F('tbmanualsettlemsg__status'))
+	                                #~Q(tbticketstake__ticket_master__parlayrule = 11) &
                  #.annotate(_tournamentid_label=Subquery(tourn.values('tournamentnamezh')[:1]))
 	    
             return query
@@ -238,21 +238,18 @@ class MatchsPage(TablePage):
                 ]
 
             def clean_query(self, query):
-                #if self.kw.get('specialcategoryid')==0:
-                    #return query.filter(specialcategoryid__lte=0)
-                #elif self.kw.get('specialcategoryid')==1:
-                    #return query.filter(specialcategoryid__gt=0)
                 if self.kw.get('has_unchecked'):
-    
-                    query =query.filter(tbticketstake__ticket_master__status=1,tbticketstake__ticket_master__accountid__accounttype=0)
+                    query = query.exclude(total_ticket = 0)
+                    #query =query.filter(tbticketstake__ticket_master__status=1,tbticketstake__ticket_master__accountid__accounttype=0)
                 if self.kw.get('manual_settle_need_audit') == 1:
-                    query = query.extra(where=['TB_ManualSettleMsg.status=1','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
-                                       tables=['TB_ManualSettleMsg'])
+                    query = query.filter(manual_settle_need_audit = 1)
+                    #query = query.extra(where=['TB_ManualSettleMsg.status=1','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
+                                       #tables=['TB_ManualSettleMsg'])
                 elif self.kw.get('manual_settle_need_audit') == 0:
-                    query = query.extra(where=['TB_ManualSettleMsg.status=0','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
-                                       tables=['TB_ManualSettleMsg'])
-                    #return query.annotate(need_audit =F('manual_settle_need_audit')).filter(need_audit=1)
-                
+                    query = query.filter(manual_settle_need_audit = 0)
+                    #query = query.extra(where=['TB_ManualSettleMsg.status=0','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
+                                       #tables=['TB_ManualSettleMsg'])
+                  
                 return query
 
             def dict_head(self, head):
@@ -265,7 +262,7 @@ class MatchsPage(TablePage):
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
                     head['options']=[
-                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.all()
+                        {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(issubscribe =1)
                     ]
                 if head['name'] == 'sportid':
                     head['options'] =[
@@ -402,8 +399,18 @@ class MatchsPage(TablePage):
                 else:
                     head['tab_name']='match_base_info'            
 
-            if head['name'] in ['tournamentid','sportid']:
-                head['editor']='com-table-label-shower'
+            if head['name'] =='sportid':
+                #head['editor']='com-table-label-shower'
+                head['editor'] = 'com-table-mapper'
+                head['options'] = [
+                     {'value':x.sportid,'label':x.sportnamezh } for x in TbSporttypes.objects.filter(enabled = True)
+                ]
+        
+            if head['name'] == 'tournamentid':
+                head['editor'] = 'com-table-mapper'
+                head['options'] = [
+                    {'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(issubscribe =1)
+                ]
 
             if head['name'] == 'isdangerous':
                 head['editor'] ='com-table-map-html'
@@ -429,7 +436,7 @@ class MatchsPage(TablePage):
                 'isshow': not bool(inst.ishidden),
                 #'_tournamentid_label': inst._tournamentid_label,
                 #'_sportid_label':inst._sportid_label,
-                'num_stake': '%s/%s'%(inst.num_stake1,inst.num_stake2), # inst.num_stake, # '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
+                'num_stake': '%s/%s'%(inst.num_stake1,inst.total_ticket - inst.num_stake1 ), # inst.num_stake, # '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
                 'manual_settle_need_audit':inst.manual_settle_need_audit
             }
 
