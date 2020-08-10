@@ -1,6 +1,7 @@
 from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,RowFilter,has_permit
 from maindb.models import TbUserLog
 from hello.merchant_user import get_user_merchantid
+from django.utils import timezone
 
 class UserlogPage(TablePage):
     def get_label(self):
@@ -10,6 +11,15 @@ class UserlogPage(TablePage):
     class tableCls(ModelTable):
         model = TbUserLog
         exclude=[]
+        
+        @classmethod
+        def clean_search_args(cls, search_args):
+            if '_seached' not in search_args:
+                now = timezone.now()
+                search_args['_start_createtime'] = now.strftime('%Y-%m-%d 00:00:00')
+                search_args['_end_createtime'] = now.strftime('%Y-%m-%d 23:59:59')
+                search_args['_seached'] = 1
+            return search_args
         
         def dict_head(self, head):
             width = {
