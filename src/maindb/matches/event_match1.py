@@ -389,7 +389,7 @@ class NewMatchForm(ModelFields):
             ]
         if head['name'] == 'tournamentid':
             head['editor'] = 'com-field-single-select2'
-            head['init_express']='ex.director_call("get_league_options",{sportid:scope.row.sportid}).then( resp=>{scope.vc.inn_options=resp;Vue.nextTick(()=>{scope.vc.update_select2()}) })'
+            head['init_express']='ex.director_call("get_league_options",{sportid:scope.row.sportid},{catch:true}).then( resp=>{scope.vc.inn_options=resp;Vue.nextTick(()=>{scope.vc.update_select2()}) })'
             #head['init_express']='scope.vc.inn_options= named_ctx["sql_league_options"];Vue.nextTick(()=>{scope.vc.update_select2()})'
             head['options'] = []
         return head
@@ -398,7 +398,7 @@ class NewMatchForm(ModelFields):
         return {}
     
     def save_form(self):
-        tournment = TbTournament.objects.get(pk = self.kw.get('tournamentid'))
+        tournment = TbTournament.objects.get(tournamentid = self.kw.get('tournamentid'))
         eventid = int( time.time()*1000 )
         dc = {
             'SportId':self.kw.get('sportid'),
@@ -423,7 +423,7 @@ class NewMatchForm(ModelFields):
     
 @director_view('get_league_options')
 def get_league_options(sportid):
-    return [{'value':x.pk,'label':x.tournamentnamezh} for x in TbTournament.objects.filter(sport_id = sportid)]
+    return [{'value':x.tournamentid,'label':x.tournamentnamezh} for x in TbTournament.objects.filter(sport_id = sportid)]
 
 class WebMatchForm(Fields):
     
@@ -691,8 +691,22 @@ class MatchPicker(MatchsPage.tableCls):
             #head['action'] = 'delete scope.row._director_name;ex.vueAssign(scope.ps.par_row,scope.row);scope.ps.vc.$emit("finish");cfg.show_load();ex.director_call("d.save_row",{row:scope.ps.par_row}).then((resp)=>{cfg.hide_load();ex.vueAssign(scope.ps.par_row,resp.row)})'
         return head
     
+    def inn_filter(self, query):
+        return query.using('Sports_nolock').distinct()
+    
     def get_operation(self):
         return []
+    
+    def dict_row(self, inst):
+        return {
+            '_matchid_label': '%(home)s VS %(away)s' % {'home': inst.team1zh, 'away': inst.team2zh},
+            '_matchdate_label': str(inst.matchdate)[: -3],
+            'isshow': not bool(inst.ishidden),
+            ##'_tournamentid_label': inst._tournamentid_label,
+            ##'_sportid_label':inst._sportid_label,
+            #'num_stake': '%s/%s'%(inst.num_stake1,inst.total_ticket - inst.num_stake1 ), # inst.num_stake, # '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
+            #'manual_settle_need_audit':inst.manual_settle_need_audit
+        }    
     
     class filters(MatchsPage.tableCls.filters):
         names=['sportid','tournamentid']
