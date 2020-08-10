@@ -739,7 +739,7 @@ def auto_mapping_match():
         mapping_list.append(key2)
     
     mapping_dc={}
-    for mapping in TbTeammapping.objects.filter(mappingkey__in=mapping_list):
+    for mapping in TbTeammapping.objects.using('Sports_nolock').filter(mappingkey__in=mapping_list):
         mapping_dc[mapping.mappingkey] = mapping
     
     op_list =[]
