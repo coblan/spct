@@ -724,7 +724,7 @@ class AccoutBaseinfo(MerchantInstancCheck, ModelFields):
         out_str = ''.join(tmp)
         return {
             'account': out_str,
-            'createtime':inst.createtime.strftime('%Y-%m-%d %H:%M:%S')
+            'createtime':inst.createtime.strftime('%Y-%m-%d %H:%M:%S') if inst.createtime else ''
         }
 
     def clean_save(self):
