@@ -169,7 +169,7 @@ class MatchsPage(TablePage):
     class tableCls(ModelTable):
         sportid=1
         model = TbMatch
-        export_related = False
+        #export_related = False
         exclude = []  # 'ishidden', 'iscloseliveodds'
 
         fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
@@ -375,18 +375,18 @@ class MatchsPage(TablePage):
             return ops
 
     
-        def get_rows(self):
-            rows = super().get_rows()
-            ls = []
-            mapping ={}
-            for row in rows:
-                ls.append(row.get('tournamentid'))
-            for inst in TbTournament.objects.filter(tournamentid__in = ls):
-                mapping[inst.tournamentid] = str(inst)
-            for row in rows:
-                row['_tournamentid_label'] = mapping.get(row.get('tournamentid'))
+        #def get_rows(self):
+            #rows = super().get_rows()
+            #ls = []
+            #mapping ={}
+            #for row in rows:
+                #ls.append(row.get('tournamentid'))
+            #for inst in TbTournament.objects.filter(tournamentid__in = ls):
+                #mapping[inst.tournamentid] = str(inst)
+            #for row in rows:
+                #row['_tournamentid_label'] = mapping.get(row.get('tournamentid'))
                 
-            return rows
+            #return rows
         
         def dict_head(self, head):
             dc = {

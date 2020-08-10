@@ -1172,8 +1172,9 @@ class TbMatch(models.Model):
     #sportid = models.ForeignKey(to='TbSporttypes',db_constraint=False,db_column='SportID',verbose_name='运动类型')  # Field name made lowercase.
     matchid = models.BigIntegerField(db_column='MatchID', primary_key=True,verbose_name='比赛ID')  # Field name made lowercase.
     eventid = models.CharField(db_column='EventID', unique=True, max_length=50)  # Field name made lowercase.
-    tournamentid = models.IntegerField(db_column='TournamentID',verbose_name='联赛')  # Field name made lowercase.
-    #tournamentid = models.ForeignKey(to='TbTournament',db_constraint=False,db_column='TournamentID',verbose_name='联赛')
+    #tournamentid = models.IntegerField(db_column='TournamentID',verbose_name='联赛')  # Field name made lowercase.
+    tournamentid = models.ForeignKey(to='TbTournament',db_constraint=False,to_field='tournamentid',db_column='TournamentID',verbose_name='联赛')
+    
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentId')  # Field name made lowercase.
     roundinfo = models.IntegerField(db_column='RoundInfo')  # Field name made lowercase.
     team1id = models.IntegerField(db_column='Team1ID')  # Field name made lowercase.
