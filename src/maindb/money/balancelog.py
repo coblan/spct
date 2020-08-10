@@ -8,6 +8,7 @@ from ..status_code import ACCOUNT_TYPE
 from hello.merchant_user import get_user_merchantid
 from helpers.maintenance.update_static_timestamp import static_url
 from helpers.case.jb_admin.uidict import op_excel
+from django.utils import timezone
 
 class BalancelogPage(TablePage):
     template = 'jb_admin/table.html'
@@ -38,6 +39,15 @@ class BalancelogPage(TablePage):
             return [
                 {'name':'accountid__accounttype','label':'账号类型','editor':'com-table-label-shower',}
             ]
+        
+        @classmethod
+        def clean_search_args(cls, search_args):
+            if '_searched' not in search_args:
+                now = timezone.now()
+                search_args['_start_createtime'] =now.strftime('%Y-%m-%d 00:00:00')
+                search_args['_end_createtime'] =now.strftime('%Y-%m-%d 23:59:59')
+                search_args['_searched'] =1
+            return search_args
         
         def dict_row(self, inst):
             dc= dict(ACCOUNT_TYPE)

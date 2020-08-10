@@ -1,4 +1,4 @@
-from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director
+from helpers.director.shortcut import TablePage,ModelTable,ModelFields,page_dc,director,RowFilter
 from maindb.models import TbAdvertisement
 from hello.merchant_user import MerchantInstancCheck
 
@@ -26,6 +26,14 @@ class AdvertisementPage(TablePage):
                 if op != 'delete_selected':
                     ls.append(op)
             return ls
+        
+        class filters(RowFilter):
+            @property
+            def names(self):
+                if self.crt_user.merchant:
+                    return ['enabled']
+                else:
+                    return ['enabled','merchant']
 
 class AdvertiseForm(MerchantInstancCheck,ModelFields):
     class Meta:
