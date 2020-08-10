@@ -169,6 +169,7 @@ class MatchsPage(TablePage):
     class tableCls(ModelTable):
         sportid=1
         model = TbMatch
+        export_related = False
         exclude = []  # 'ishidden', 'iscloseliveodds'
 
         fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
@@ -226,7 +227,6 @@ class MatchsPage(TablePage):
                     #.annotate(_tournamentid_label=Subquery(tourn.values('tournamentnamezh')[:1]))
 
             return query
-
 
 
         class filters(RowFilter):
@@ -287,6 +287,7 @@ class MatchsPage(TablePage):
             names = ['teamname','eventid']
             exact_names = ['matchid','eventid']
             field_sort=['matchid','teamname','eventid']
+            
             def get_option(self, name):
                 if name == 'teamname':
                     return {'value': 'teamname', 'label': '球队名称', }
@@ -303,6 +304,7 @@ class MatchsPage(TablePage):
 
         class sort(RowSort):
             names = ['matchdate','ticketdelay']
+            general_sort='matchdate'
 
         def get_operation(self):
             ops = [
