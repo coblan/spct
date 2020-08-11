@@ -2,7 +2,7 @@ from helpers.director.shortcut import TablePage,PlainTable,page_dc,director
 from django.db import connections
 
 from helpers.director.access.permit import can_touch
-from ..models import TbAccount
+from ..models import TbAccount,TbMerchants
 from django.utils import timezone
 
 class ReleventUserPage(TablePage):
@@ -45,6 +45,9 @@ class ReleventUserPage(TablePage):
         def getRowFilters(self):
             return [
                 {'name':'NickName','label':'昵称','editor':'com-filter-text'},
+                {'name':'merchant','label':'商户','editor':'com-filter-select','options':[
+                    {'value':x.pk ,'label':str(x)} for x in TbMerchants.objects.all()
+                    ]},
                 {'name':'StartTime','label':'开始时间','editor':'com-filter-datetime','width':'200px'},
                 {'name':'EndTime','label':'结束时间','editor':'com-filter-datetime'},
                 #{'name':'relevent','label':'查询条件','editor':'com-filter-select',
@@ -64,7 +67,7 @@ class ReleventUserPage(TablePage):
         def clean_search_args(cls, search_args):
             now = timezone.now()
             ago_7day = now - timezone.timedelta(days=7)
-            
+            search_args['merchant'] = search_args.get('merchant') or TbMerchants.objects.first().pk
             search_args['relevent'] = search_args.get('relevent') or 1
             search_args['StartTime'] = search_args.get('StartTime') or ago_7day.strftime('%Y-%m-%d 00:00:00')
             search_args['EndTime'] = search_args.get('EndTime') or now.strftime('%Y-%m-%d 23:59:59')
@@ -78,8 +81,10 @@ class ReleventUserPage(TablePage):
                 nickname = self.search_args.get('NickName','').strip()
                 if not nickname:
                     raise UserWarning('必须输入用户昵称')
+                if not self.search_args.get('merchant'):
+                    raise UserWarning('必须选择一个商户')
                 try:
-                    account = TbAccount.objects.get(nickname=nickname)
+                    account = TbAccount.objects.get(nickname=nickname,merchant_id=self.search_args.get('merchant'))
                     self.search_args['accountid'] = account.accountid
                 except TbAccount.DoesNotExist:
                     raise UserWarning('用户不存在')
@@ -88,7 +93,6 @@ class ReleventUserPage(TablePage):
                 
         def get_data_from_db(self):
             rows=[]
-            
             
             
             sql_args={
