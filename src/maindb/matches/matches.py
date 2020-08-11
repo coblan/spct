@@ -174,7 +174,7 @@ class MatchsPage(TablePage):
 
         fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
-                       'eventid','manual_settle_need_audit'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
+                       'eventid','manual_settle_need_audit','autosettle'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
 
         def getExtraHead(self):
             return [{'name': 'isshow', 'label': '显示'},
@@ -369,7 +369,22 @@ class MatchsPage(TablePage):
                 {'label':'清空直播','editor':'com-op-btn','confirm_msg':'确定要清空',
                  'row_match':'many_row',
                  'visible': self.permit.can_edit(),
-                 'action':'var matchs=ex.map(scope.ps.selected,(item)=>{return item.pk});cfg.show_load();ex.director_call("match.clear_live_url",{matchs:matchs}).then((resp)=>{cfg.hide_load();cfg.toast("清空"+resp.count+"条")})'}
+                 'action':'var matchs=ex.map(scope.ps.selected,(item)=>{return item.pk});cfg.show_load();ex.director_call("match.clear_live_url",{matchs:matchs}).then((resp)=>{cfg.hide_load();cfg.toast("清空"+resp.count+"条")})'},
+                {'label':'启用自动结算',
+                 'editor':'com-btn',
+                 'row_match':'many_row',
+                 'match_express':'scope.row.source !=1',
+                'match_msg':'只能修改外抓比赛',
+                 'pre_set': 'rt={autosettle:true}',
+                 'action':'scope.ps.selected_set_and_save(scope.head)'},
+                {'label':'关闭自动结算',
+                 'editor':'com-btn',
+                 'row_match':'many_row',
+                 'match_express':'scope.row.source !=1',
+                 'match_msg':'只能修改外抓比赛',
+                 'pre_set': 'rt={autosettle:false}',
+                 'action':'scope.ps.selected_set_and_save(scope.head)'
+                 },
 
             ]
             return ops
@@ -596,6 +611,7 @@ class MatchForm(ModelFields):
             'MarketStatus':match.marketstatus,
             'MatchDate':match.matchdate.replace(tzinfo = beijin_tz ) ,#.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc),
             'PreMatchDate':match.prematchdate.replace(tzinfo = beijin_tz) ,#.replace(tzinfo= datetime.timezone.utc ), #datetime.timezone(datetime.timedelta(hours=8))).astimezone(datetime.timezone.utc)
+            'AutoSettle':match.autosettle,
         }        
         updateMatchMongo(dc)
 

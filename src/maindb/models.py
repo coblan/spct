@@ -1208,7 +1208,8 @@ class TbMatch(models.Model):
     coveragesource = models.CharField(db_column='CoverageSource', max_length=16, blank=True, null=True)  # Field name made lowercase.
     coveragelevel = models.CharField(db_column='CoverageLevel', max_length=16, blank=True, null=True)  # Field name made lowercase.
     source = models.IntegerField(db_column='Source',choices=MATCH_SOURCE,verbose_name='数据源')  # Field name made lowercase.
-    
+    autosettle = models.BooleanField(db_column='AutoSettle',verbose_name ='自动结算')  # Field name made lowercase.
+     
     class Meta:
         managed = False
         db_table = 'TB_Match'
