@@ -12,7 +12,6 @@ class MappingSetting(FieldsPage):
         return '跟水设置'
     
 
-    
     def get_template(self, prefer=None):
         return 'jb_admin/fields.html'
     
