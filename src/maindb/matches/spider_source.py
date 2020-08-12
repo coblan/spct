@@ -20,7 +20,7 @@ class SpiderSourcePage(TablePage):
                     {'value':x[0],'label':x[1]} for x in MATCH_SOURCE
                     ],'width':100},
                 {'name':'Enabled','label':'启用','editor':'com-table-input-bool','width':80},
-                {'name':'Index','label':'索引','editor':'com-table-input-int','width':100},
+                {'name':'Index','label':'优先级','editor':'com-table-input-int','width':100,'required':True},
             ]
         
         def get_rows(self):
@@ -29,6 +29,7 @@ class SpiderSourcePage(TablePage):
                 inst['pk'] = str( inst.pop('_id'))
                 inst['_director_name'] = self.get_edit_director_name()
                 rows.append(inst)
+            rows.sort(key=lambda x:x.get('Index'))
             return rows
         
 
