@@ -34,6 +34,23 @@ class SpiderSourcePage(TablePage):
         
 
 class SpiderSourceForm(Fields):
+    
+    def clean(self):
+        ls = list( mydb["SpiderSource"].find({}) )
+        for item in ls:
+            if str(item['_id']) == self.kw.get('pk'):
+                item.update(self.kw)
+        if len([x for x in ls if x.get('Enabled')]) <1:
+            raise UserWarning('不能同时关闭所有设置')
+        orderList = []
+        for item in ls:
+            if item['Index'] in orderList:
+                raise UserWarning('优先级不能重复')
+            else:
+                orderList.append(item['Index'])
+                
+            
+    
     def save_form(self):
         dc = {}
         for k in self.kw:

@@ -275,7 +275,7 @@ class MatchsPage(TablePage):
                     head['placeholder'] = '请选择联赛'
                     head['style'] = 'width:200px;'
                     head['options'] =[]
-                    head['mounted_express'] = 'ex.director_call("match.get_tournament_options",{},{catch:true}).then(options=>{scope.vc.options=options})'
+                    head['mounted_express'] = 'ex.director_call("match.get_tournament_options",{},{cache:true}).then(options=>{scope.vc.options=options})'
          
                 if head['name'] == 'sportid':
                     head['options'] =[
@@ -454,7 +454,7 @@ class MatchsPage(TablePage):
                 head['editor'] = 'com-table-label-shower'
                 #head['editor'] = 'com-table-mapper'
                 #head['options'] =[]
-                #head['mounted_express'] ='scope.vc.options =ex.localGet("tournament.options",[]);ex.director_call("match.get_tournament_options",{},{catch:true}).then(options=>{ex.localSet("tournament.options",options);scope.vc.options=options})'
+                #head['mounted_express'] ='scope.vc.options =ex.localGet("tournament.options",[]);ex.director_call("match.get_tournament_options",{},{cache:true}).then(options=>{ex.localSet("tournament.options",options);scope.vc.options=options})'
                 #head['options'] = [
                 #{'value':x.tournamentid,'label':str(x)} for x in TbTournament.objects.filter(issubscribe =1)
                 #]

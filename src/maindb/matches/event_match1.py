@@ -389,7 +389,7 @@ class NewMatchForm(ModelFields):
             ]
         if head['name'] == 'tournamentid':
             head['editor'] = 'com-field-single-select2'
-            head['init_express']='ex.director_call("get_league_options",{sportid:scope.row.sportid},{catch:true}).then( resp=>{scope.vc.inn_options=resp;Vue.nextTick(()=>{scope.vc.update_select2()}) })'
+            head['init_express']='ex.director_call("get_league_options",{sportid:scope.row.sportid},{cache:true}).then( resp=>{scope.vc.inn_options=resp;Vue.nextTick(()=>{scope.vc.update_select2()}) })'
             #head['init_express']='scope.vc.inn_options= named_ctx["sql_league_options"];Vue.nextTick(()=>{scope.vc.update_select2()})'
             head['options'] = []
         return head
