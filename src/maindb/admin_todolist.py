@@ -27,7 +27,7 @@ class TodoList(TablePage):
             cat_list = get_todolist_catlist()
             if self.crt_user.merchant:
                 query = query.filter(merchant = self.crt_user.merchant)
-            return query.filter(category__in=cat_list)
+            return query.using('Sports_nolock').filter(category__in=cat_list)
         
         def get_operation(self):
             return [
