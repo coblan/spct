@@ -9,6 +9,8 @@ import datetime
 from . import login
 from . import merchant_user
 from maindb.models import TbMerchants
+from django.conf import settings
+
 #from orgmodel.models import Exceptions
 
 #class ExceptionsPage(TablePage):
@@ -53,7 +55,9 @@ class Home(object):
            {'name':'ActivityAmount','label':'活动'},
            {'name':'FundTransferAmount','label':'调账'},
            {'name':'BonusAmount','label':'返水'},
-            {'name': 'SumLostAmount', 'label': '亏盈',},
+            {'name': 'SumBetAmount_SumPrizeAmount', 'label': '毛利',},
+            {'name': 'SumLostAmount', 'label': '净利',},
+          
         ]
         
         trend = [
@@ -70,10 +74,14 @@ class Home(object):
         ]
         if self.crt_user.merchant:
             sql = 'exec  SP_TodayStatistics %s'%self.crt_user.merchant.id
+            sql2= 'EXEC SP_Report_Today %s'%self.crt_user.merchant.id
         elif self.request.GET.get('merchant'):
             sql = 'exec  SP_TodayStatistics %s'%self.request.GET.get('merchant')
+            sql2 = 'EXEC SP_Report_Today %s'%self.request.GET.get('merchant')
         else:
             sql = "exec  SP_TodayStatistics"
+            sql2 = 'EXEC SP_Report_Today'
+            
         today_row = {} 
         with connections['Sports'].cursor() as cursor:
             cursor.execute(sql)
@@ -82,7 +90,29 @@ class Home(object):
             for col_data, col in zip(row, cursor.description):
                 head_name = col[0]
                 today_row[head_name] = col_data
+        
+        reportList=[]
+        report_total = {}
+        if getattr(settings,'OPEN_SECRET',False):
+            with connections['Sports'].cursor() as cursor:
+                cursor.execute(sql2) 
+                for row in cursor:
+                    row_dc= {}
+                    for col_data, col in zip(row, cursor.description):
+                        head_name = col[0]
+                        row_dc[head_name] = col_data 
+                    reportList.append(row_dc)
+                
+                cursor.nextset()
+                row =  list(cursor)[0]  # 统计数据只有一行
+                for col_data, col in zip(row, cursor.description):
+                    head_name = col[0]
+                    report_total[head_name] = col_data 
+        today_row['SumBetAmount_SumPrizeAmount'] = today_row['SumBetAmount'] - today_row['SumPrizeAmount']
+            
         return {
+            'report_list':reportList,
+            'report_total':report_total,
             'today_heads': today_heads,
             'today_row': today_row,            
             'trend_list': trend,

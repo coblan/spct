@@ -63,7 +63,11 @@ DATABASES = {
        #} ,  
     'Sports': { 
         'ENGINE': 'sql_server.pyodbc',
-        'HOST':'192.168.40.165,1433',
+        
+        #'HOST':'192.168.40.165,1433',
+        #'NAME':'Sports_20190610_Part1',
+        #'USER':  'develop',#'Backend'  ,  
+        #'PASSWORD': 'develop_cheer', #'SSDEVdev@123',          
         
         #'NAME': 'Sports_Merchant', #'Sports',#'Sports', 
         #'USER':  'develop_admin',#'Backend'  ,  develop
@@ -73,17 +77,11 @@ DATABASES = {
         #'USER':  'develop_admin',#'Backend'  ,  develop
         #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
         
-        'NAME':'Sports_20190610_Part1',
-        'USER':  'develop',#'Backend'  ,  
-        'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
-        
-        
-        #'HOST':'192.168.40.166,1433',
-        #'NAME':'Sports',
-        #'USER':  'develop_admin',  
-        #'PASSWORD': 'KKRKxZq4bRUf8kAu',  
-        
-        
+
+        'HOST':'192.168.40.166,1433',
+        'NAME':'Sports',
+        'USER':  'develop_admin',  
+        'PASSWORD': 'KKRKxZq4bRUf8kAu',  
         
         'OPTIONS': {
             #'driver': 'ODBC Driver 11 for SQL Server',
@@ -96,7 +94,12 @@ DATABASES = {
     #https://pydigger.com/pypi/django-pyodbc-azure
     'Sports_nolock': { 
         'ENGINE': 'sql_server.pyodbc',
-        'HOST':'192.168.40.165,1433',
+        
+        #'HOST':'192.168.40.165,1433',
+        #'NAME':'Sports_20190610_Part1',
+        #'USER':  'develop',#'Backend'  ,  
+        #'PASSWORD': 'develop_cheer', #'SSDEVdev@123',   
+        
         
         #'NAME': 'Sports_Merchant', #'Sports',#'Sports', 
         #'USER':  'develop_admin',#'Backend'  ,  develop
@@ -106,15 +109,11 @@ DATABASES = {
         #'NAME': 'Sports_20190829_Part1', #'Sports',#'Sports', 
         #'USER':  'develop_admin',#'Backend'  ,  develop
         #'PASSWORD': 'develop_admin_cheer123', #'SSDEVdev@123',  develop_cheer
-        
-        'NAME':'Sports_20190610_Part1',
-        'USER':  'develop',#'Backend'  ,  
-        'PASSWORD': 'develop_cheer', #'SSDEVdev@123',  
-        
-        #'HOST':'192.168.40.166,1433',
-        #'NAME':'Sports',
-        #'USER':  'develop_admin',  
-        #'PASSWORD': 'KKRKxZq4bRUf8kAu',  
+       
+        'HOST':'192.168.40.166,1433',
+        'NAME':'Sports',
+        'USER':  'develop_admin',  
+        'PASSWORD': 'KKRKxZq4bRUf8kAu',  
 
 
         'OPTIONS': {

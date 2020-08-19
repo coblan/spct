@@ -24,11 +24,23 @@
                 activeName:trend_list[0].key,
                 merchant_options:merchant_options,
                 merchant: search_args.merchant,
+                report_list:{{ report_list | jsonify}},
+                report_total:{{ report_total | jsonify}},
             },
             watch:{
                 merchant(nv){
                     if(nv != search_args.merchant){
                         location = ex.appendSearch({merchant:nv})
+                    }
+                }
+            },
+            methods:{
+                up_or_down(number){
+//                    var number = parseFloat(number)
+                    if(number > 0){
+                        return 'up'
+                    } else if(number < 0){
+                        return 'down'
                     }
                 }
             }
@@ -48,21 +60,68 @@
         <el-select v-model="merchant" placeholder="请选择商户"  clearable  size="mini">
             <el-option
                     v-for="item in merchant_options"
-
                     :key="item.value"
                     :label="item.label"
                     :value="item.value">
             </el-option>
         </el-select>
     </div>
-    <b>今日统计</b>
+    <b>今日体育</b>
     <div class="my-panel">
         <div class="today-item" v-for="head in today_heads">
             <span v-text="today_row[head.name]"></span><br>
             <span v-text="head.label"></span>
+
         </div>
     </div>
 
+    <b v-if="report_list.length > 0">今日统计</b>
+    <div v-if="report_list.length > 0" class="my-panel">
+        <div class="total-panel">
+            <span>总计:</span>
+            <span>投注</span>
+            <span v-text="report_total.SumAmount"></span>
+            <span>派奖</span>
+            <span v-text="report_total.SumPieAward"></span>
+            <span>返点</span>
+            <span v-text="report_total. SumBonusAmount "></span>
+            <span>亏盈</span>
+            <span :class="up_or_down(report_total.SumLostAmount)" v-text="report_total.SumLostAmount"></span>
+        </div>
+        <el-card class="box-card game-item" v-for="report in report_list">
+            <div slot="header" class="clearfix">
+                <span v-text="report.GameName"></span>
+                <span style="float: right; padding: 3px 0;position: relative">
+                    <img class="game-icon" :src="'/media/public'+report.Icon" alt="">
+                </span>
+
+            </div>
+            <div >
+                <table>
+                    <tr>
+                    <td>投注</td>
+                    <td> <span v-text="report.BetAmount"></span></td>
+                </tr>
+                    <tr>
+                        <td>派奖</td>
+                        <td> <span v-text="report.BetPieAward"></span></td>
+                    </tr>
+                    <tr>
+                        <td>返点</td>
+                        <td> <span v-text="report.BetBonusAmount"></span></td>
+                    </tr>
+                    <tr>
+                        <td>亏盈</td>
+                        <td> <span :class="up_or_down(report.BetLostAmount)"  v-text="report.BetLostAmount"></span></td>
+                    </tr>
+                </table>
+            </div>
+        </el-card>
+
+        <!--<div class="game-item" v-for="report in report_list">-->
+            <!--<span v-text="report.GameName"></span>-->
+        <!--</div>-->
+    </div>
     <b>趋势图</b>
     <div class="my-panel">
         <el-tabs v-model="activeName" >
@@ -80,6 +139,39 @@
 
 </div>
 
+<style>
+    .game-item{
+        display: inline-block;
+        width: 200px;
+        margin: 20px;
+    }
+    img.game-icon{
+        width: 30px;
+        height: auto;
+        position: absolute;
+        right: 0px;
+        top: -2px;
+    }
+    .game-item td{
+        padding: 0 10px;
+    }
+    .total-panel{
+        padding-top: 20px;
+    }
+    .total-panel span{
+        display: inline-block;
+        margin-right:2px;
+    }
+    .total-panel span:nth-child(2n+1){
+        margin-right:20px;
+    }
+    .up{
+        color: red;
+    }
+    .down{
+        color: #00e300;
+    }
+</style>
 
 {% block extra %}
 {% endblock %}
