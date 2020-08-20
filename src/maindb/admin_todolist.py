@@ -4,6 +4,7 @@ from helpers.director.access.permit import has_permit
 from helpers.director.decorator import get_request_cache
 from django.utils import timezone
 from hello.merchant_user import MerchantInstancCheck
+from django.db.models import Q
 
 class TodoList(TablePage):
     def get_label(self):
@@ -27,7 +28,11 @@ class TodoList(TablePage):
             cat_list = get_todolist_catlist()
             if self.crt_user.merchant:
                 query = query.filter(merchant = self.crt_user.merchant)
-            return query.using('Sports_nolock').filter(category__in=cat_list)
+            if cat_list:
+                cond=Q(category = cat_list[0])
+                for ii in cat_list[1:]:
+                    cond = cond | Q(category=ii)             
+            return query.using('Sports_nolock').filter(cond)
         
         def get_operation(self):
             return [
