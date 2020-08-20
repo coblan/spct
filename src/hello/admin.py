@@ -55,7 +55,7 @@ class Home(object):
            {'name':'ActivityAmount','label':'活动'},
            {'name':'FundTransferAmount','label':'调账'},
            {'name':'BonusAmount','label':'返水'},
-            {'name': 'SumBetAmount_SumPrizeAmount', 'label': '毛利',},
+            #{'name': 'SumBetAmount_SumPrizeAmount', 'label': '毛利',},
             {'name': 'SumLostAmount', 'label': '净利',},
           
         ]
