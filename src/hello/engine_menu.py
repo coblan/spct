@@ -299,7 +299,9 @@ class PcMenu(BaseEngine):
         # 'lans':lans,
         # 'tr':get_tr()
         # }
-
+        ctx.update({
+            'fast_config_panel':True
+        })
         return ctx
     
     def get_head_bar_data(self, request):
