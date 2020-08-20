@@ -150,19 +150,19 @@ class PlatformProfit(TablePage):
             return [
                 {'name':'GameName','label':'游戏'},
                 {'name': 'BetAmount', 'label': '投注', 'width': 150},
-                {'name': 'Turnover', 'label': '流水', 'width': 130},
-                {'name': 'BetBonusAmount', 'label': '返水', 'width': 130},
-                {'name': 'BetPieAward', 'label': '派奖', 'width': 130},
+                {'name': 'Turnover', 'label': '流水', 'width': 150},
+                {'name': 'BetBonusAmount', 'label': '返水', 'width': 150},
+                {'name': 'BetPieAward', 'label': '派奖', 'width': 150},
                 
-                {'name':'ActivityAmount','label':'活动','width':130},
-                {'name':'FundTransferAmount','label':'调账','width':130},
+                {'name':'ActivityAmount','label':'活动','width':150},
+                {'name':'FundTransferAmount','label':'调账','width':150},
                 
                 #{'name': 'RechargeBonus', 'label': '充值红利', 'width': 130},
                 #{'name': 'BirthdayBonus', 'label': '生日礼金', 'width': 130},
                 #{'name': 'RescueBonus', 'label': '救援金', 'width': 130},
                 #{'name': 'AdjustAmount', 'label': '调账', 'width': 100},
                 
-                {'name': 'BetLostAmount', 'label': '平台亏盈', 'width': 100}
+                {'name': 'BetLostAmount', 'label': '平台亏盈', 'width': 150}
             ]
 
         def getRowPages(self):

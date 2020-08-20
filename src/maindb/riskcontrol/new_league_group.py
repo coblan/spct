@@ -56,7 +56,7 @@ class LeagueGroupPage(TablePage):
             ]
         
         def inn_filter(self, query):
-            return query.annotate(league_count=Count('tbtournament',distinct=True)).annotate(marketweight_count=Count('tbleaguegroupmarketweight',distinct=True))
+            return query.using('Sports_nolock').annotate(league_count=Count('tbtournament',distinct=True)).annotate(marketweight_count=Count('tbleaguegroupmarketweight',distinct=True))
         
         def dict_row(self, inst):
             return {
