@@ -55,7 +55,7 @@ class Home(object):
            {'name':'ActivityAmount','label':'活动'},
            {'name':'FundTransferAmount','label':'调账'},
            {'name':'BonusAmount','label':'返水'},
-            #{'name': 'SumBetAmount_SumPrizeAmount', 'label': '毛利',},
+        {'name': 'grossIncome', 'label': '毛利',},
             {'name': 'SumLostAmount', 'label': '净利',},
           
         ]
@@ -108,7 +108,7 @@ class Home(object):
                 for col_data, col in zip(row, cursor.description):
                     head_name = col[0]
                     report_total[head_name] = col_data 
-        today_row['SumBetAmount_SumPrizeAmount'] = today_row['SumBetAmount'] - today_row['SumPrizeAmount']
+        today_row['grossIncome'] = today_row['SumLostAmount'] + today_row['BonusAmount'] + today_row['ActivityAmount']
             
         return {
             'report_list':reportList,
