@@ -14,6 +14,7 @@ from helpers.director.access.permit import has_permit
 # TbBalancelog, TbChargeflow, TbChannel, TbTicketmaster, TbMatches, TbRcFilter, TbRcLevel, TbRcUser, TbBlackuserlist, TbBlackuserlistLog, \
 # Blackiprangelist, Whiteiplist, Whiteuserlist, TbWithdrawlimitlog, TbTeams,
 from maindb.models import *
+from django.db.models import Q
 from . import permit
 from django.utils import timezone
 from maindb.admin_todolist import get_todolist_catlist
@@ -309,7 +310,11 @@ class PcMenu(BaseEngine):
         header_bar_widgets = dc.get('header_bar_widgets')
         cat_list = get_todolist_catlist()
         if cat_list:
-            count = TbTodolist.objects.filter(status=0,category__in = cat_list).count()
+            cond=Q(category = cat_list[0])
+            for ii in cat_list[1:]:
+                cond = cond | Q(category=ii) 
+            
+            count = TbTodolist.objects.using('Sports_nolock').filter(status=0).filter(cond).count()
             header_bar_widgets = [
                 {'editor': 'com-head-bell-msg', 'link':'/pc/todolist','count':count,'lasttime':timezone.now().strftime('%Y-%m-%d %H:%M:%S'),'init_express':'''(function(){
                 rootStore.$on('todolist_updated',()=>{
