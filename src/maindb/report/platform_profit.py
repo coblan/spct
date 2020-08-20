@@ -6,55 +6,55 @@ from helpers.director.base_data import director
 from django.utils import timezone
 from maindb.models import TbMerchants
 
-class PlatformProfitFieldsPage(FieldsPage):
-    template = 'jb_admin/fields.html'
+#class PlatformProfitFieldsPage(FieldsPage):
+    #template = 'jb_admin/fields.html'
 
-    class fieldsCls(Fields):
-        def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
-            sql_args = {
-                'StartTime': self.search_args.get('_start_date', ''),
-                'EndTime': self.search_args.get('_end_date', '')
-            }
-            sql = r"exec dbo.[SP_PlatformProfit] '%(StartTime)s','%(EndTime)s'" \
-                  % sql_args
-            with connections['Sports'].cursor() as cursor:
-                cursor.execute(sql)
-                self.row = {}
-                for row in cursor:
-                    dc = {}
-                    for index, head in enumerate(cursor.description):
-                        dc[head[0]] = row[index]
-                    self.row = dc
+    #class fieldsCls(Fields):
+        #def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw):
+            #sql_args = {
+                #'StartTime': self.search_args.get('_start_date', ''),
+                #'EndTime': self.search_args.get('_end_date', '')
+            #}
+            #sql = r"exec dbo.[SP_PlatformProfit] '%(StartTime)s','%(EndTime)s'" \
+                  #% sql_args
+            #with connections['Sports'].cursor() as cursor:
+                #cursor.execute(sql)
+                #self.row = {}
+                #for row in cursor:
+                    #dc = {}
+                    #for index, head in enumerate(cursor.description):
+                        #dc[head[0]] = row[index]
+                    #self.row = dc
 
-        def get_heads(self):
-            heads = [
-                {'name': 'BetAmount', 'label': '投注金额 ', 'width': 150},
-                {'name': 'Turnover', 'label': '流水', 'width': 130},
-                {'name': 'BetBonus', 'label': '返水', 'width': 130},
-                {'name': 'BetOutCome', 'label': '派奖金额', 'width': 130},
-                {'name': 'RechargeBonus', 'label': '充值红利', 'width': 130},
-                {'name': 'BirthdayBonus', 'label': '生日礼金', 'width': 130},
-                {'name': 'RescueBonus', 'label': '救援金', 'width': 130},
-                {'name': 'AdjustAmount', 'label': '调账', 'width': 100},
-                {'name': 'Profit', 'label': '亏盈', 'width': 100}
-            ]
-            for head in heads:
-                head['editor'] = 'linetext'
-                head['readonly'] = True
-            return heads
+        #def get_heads(self):
+            #heads = [
+                #{'name': 'BetAmount', 'label': '投注金额 ', 'width': 150},
+                #{'name': 'Turnover', 'label': '流水', 'width': 130},
+                #{'name': 'BetBonus', 'label': '返水', 'width': 130},
+                #{'name': 'BetOutCome', 'label': '派奖金额', 'width': 130},
+                #{'name': 'RechargeBonus', 'label': '充值红利', 'width': 130},
+                #{'name': 'BirthdayBonus', 'label': '生日礼金', 'width': 130},
+                #{'name': 'RescueBonus', 'label': '救援金', 'width': 130},
+                #{'name': 'AdjustAmount', 'label': '调账', 'width': 100},
+                #{'name': 'Profit', 'label': '亏盈', 'width': 100}
+            #]
+            #for head in heads:
+                #head['editor'] = 'linetext'
+                #head['readonly'] = True
+            #return heads
 
-        def get_row(self):
-            row = self.row
-            row['BetAmount'] = row['BetAmount']
-            row['Turnover'] = round(row['Turnover'], 2)
-            row['BetBonus'] = round(row['BetBonus'], 2)
-            row['BetOutCome'] = round(row['BetOutCome'], 2)
-            row['RechargeBonus'] = round(row['RechargeBonus'], 2)
-            row['BirthdayBonus'] = round(row['BirthdayBonus'], 2)
-            row['RescueBonus'] = round(row['RescueBonus'], 2)
-            row['AdjustAmount'] = round(row['AdjustAmount'], 2)
-            row['Profit'] = round(row['Profit'], 2)
-            return row
+        #def get_row(self):
+            #row = self.row
+            #row['BetAmount'] = row['BetAmount']
+            #row['Turnover'] = round(row['Turnover'], 2)
+            #row['BetBonus'] = round(row['BetBonus'], 2)
+            #row['BetOutCome'] = round(row['BetOutCome'], 2)
+            #row['RechargeBonus'] = round(row['RechargeBonus'], 2)
+            #row['BirthdayBonus'] = round(row['BirthdayBonus'], 2)
+            #row['RescueBonus'] = round(row['RescueBonus'], 2)
+            #row['AdjustAmount'] = round(row['AdjustAmount'], 2)
+            #row['Profit'] = round(row['Profit'], 2)
+            #return row
 
 
 class PlatformProfit(TablePage):
@@ -88,21 +88,21 @@ class PlatformProfit(TablePage):
 
         def get_rows(self):
             self.getData()
-            for row in self.data:
-                row['BetAmount'] = round(row['BetAmount'], 2)
-                row['Turnover'] = round(row['Turnover'], 2)
-                row['BetBonus'] = round(row['BetBonus'], 2)
-                row['BetOutCome'] = round(row['BetOutCome'], 2)
+            #for row in self.data:
+                #row['BetAmount'] = round(row['BetAmount'], 2)
+                #row['Turnover'] = round(row['Turnover'], 2)
+                #row['BetBonus'] = round(row['BetBonus'], 2)
+                #row['BetOutCome'] = round(row['BetOutCome'], 2)
                 
-                row['ActivityAmount'] = round(row['ActivityAmount'],2)
-                row['FundTransferAmount'] = round(row['FundTransferAmount'],2)
+                #row['ActivityAmount'] = round(row['ActivityAmount'],2)
+                #row['FundTransferAmount'] = round(row['FundTransferAmount'],2)
                 
-                #row['RechargeBonus'] = round(row['RechargeBonus'], 2)
-                #row['BirthdayBonus'] = round(row['BirthdayBonus'], 2)
-                #row['RescueBonus'] = round(row['RescueBonus'], 2)
-                #row['AdjustAmount'] = round(row['AdjustAmount'], 2)
+                ##row['RechargeBonus'] = round(row['RechargeBonus'], 2)
+                ##row['BirthdayBonus'] = round(row['BirthdayBonus'], 2)
+                ##row['RescueBonus'] = round(row['RescueBonus'], 2)
+                ##row['AdjustAmount'] = round(row['AdjustAmount'], 2)
                 
-                row['Profit'] = round(row['Profit'], 2)
+                #row['Profit'] = round(row['Profit'], 2)
             return self.data
 
         def getData(self):
@@ -115,8 +115,10 @@ class PlatformProfit(TablePage):
                 'EndTime': self.search_args.get('_end_date', ''),
                 'merchant':merchant
             }
-            sql = r"exec dbo.[SP_PlatformProfit] '%(StartTime)s','%(EndTime)s',%(merchant)s" \
-                  % sql_args
+            #sql = r"exec dbo.[SP_PlatformProfit] '%(StartTime)s','%(EndTime)s',%(merchant)s" \
+                  #% sql_args
+            sql = r"exec dbo.[SP_Report_Today] %(merchant)s,'%(StartTime)s','%(EndTime)s' " \
+                  % sql_args            
             with connections['Sports'].cursor() as cursor:
                 cursor.execute(sql)
                 # cursor.fetchall()
@@ -130,10 +132,11 @@ class PlatformProfit(TablePage):
 
         def get_heads(self):
             return [
+                {'name':'GameName','label':'游戏'},
                 {'name': 'BetAmount', 'label': '投注', 'width': 150},
                 {'name': 'Turnover', 'label': '流水', 'width': 130},
-                {'name': 'BetBonus', 'label': '返水', 'width': 130},
-                {'name': 'BetOutCome', 'label': '派奖', 'width': 130},
+                {'name': 'BetBonusAmount', 'label': '返水', 'width': 130},
+                {'name': 'BetPieAward', 'label': '派奖', 'width': 130},
                 
                 {'name':'ActivityAmount','label':'活动','width':130},
                 {'name':'FundTransferAmount','label':'调账','width':130},
@@ -143,7 +146,7 @@ class PlatformProfit(TablePage):
                 #{'name': 'RescueBonus', 'label': '救援金', 'width': 130},
                 #{'name': 'AdjustAmount', 'label': '调账', 'width': 100},
                 
-                {'name': 'Profit', 'label': '平台亏盈', 'width': 100}
+                {'name': 'BetLostAmount', 'label': '平台亏盈', 'width': 100}
             ]
 
         def getRowPages(self):
