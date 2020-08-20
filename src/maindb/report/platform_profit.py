@@ -128,7 +128,23 @@ class PlatformProfit(TablePage):
                     for index, head in enumerate(cursor.description):
                         dc[head[0]] = row[index]
                     self.data.append(dc)
-                self.total = 1
+                self.total = len(self.data)
+                cursor.nextset()
+                self.footer={}
+                row =  list(cursor)[0]  # 统计数据只有一行
+                namemap ={
+                    'SumAmount':'BetAmount',
+                    'SumPieAward':'BetPieAward',
+                    'SumLostAmount':'BetLostAmount',
+                    'SumBonusAmount':'BetBonusAmount',
+                    'SumTurnover':'Turnover',
+                    'SumActivityAmount':'ActivityAmount',
+                    'SumFundTransferAmount':'FundTransferAmount',
+                }
+                for col_data, col in zip(row, cursor.description):
+                    head_name = col[0]
+                    name = namemap.get(head_name)
+                    self.footer[name] = col_data 
 
         def get_heads(self):
             return [
