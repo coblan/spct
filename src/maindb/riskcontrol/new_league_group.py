@@ -21,7 +21,7 @@ class LeagueGroupPage(TablePage):
         exclude = []
         #pop_edit_fields=['id']
         hide_fields=['riskleveldelay']
-        
+        export_related=False
         def dict_head(self, head):
             width = {
                 'groupname':200,
