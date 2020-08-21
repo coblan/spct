@@ -1,6 +1,6 @@
 from helpers.director.shortcut import ModelTable,TablePage,director,page_dc,ModelFields,get_request_cache,RowFilter,RowSearch,director_view
 from helpers.director.access.permit import can_touch
-
+from django.utils import timezone
 from maindb.models import TbMessage,TbMessageReceiver,TbMessagetype,TbAccount,TbMerchants
 from django.utils.html import strip_tags
 import jpush
@@ -123,7 +123,17 @@ class MessagePage(TablePage):
             ]
             return ops
         
+        @classmethod
+        def clean_search_args(cls, search_args):
+            if '_not_first' not in search_args:
+                search_args['_not_first'] =1
+                now = timezone.now()
+                search_args['_start_createtime']=now.strftime('%Y-%m-%d 00:00:00')
+                search_args['_end_createtime']= now.strftime('%Y-%m-%d 23:59:59')
+            return search_args
+        
         class filters(RowFilter):
+            range_fields =['createtime']
             @property
             def names(self):
                 if self.crt_user.merchant:
