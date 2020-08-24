@@ -3847,6 +3847,9 @@ class TbProduct(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Product'
+    
+    def __str__(self):
+        return self.name
         
         
 class TbProductBanner(models.Model):
@@ -3905,6 +3908,9 @@ class TbProductOrder(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Product_Order'
+    
+    def __str__(self):
+        return self.orderno
 
 
 class TbProductNotice(models.Model):
@@ -3920,5 +3926,8 @@ class TbProductNotice(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_Product_Notice'
+    
+    def __str__(self):
+        return self.title
         
         

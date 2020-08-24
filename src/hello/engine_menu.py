@@ -161,7 +161,7 @@ class PcMenu(BaseEngine):
                  {'label': '代理佣金', 'url': page('agent_commission'),'visible': can_touch(TbAgentcommission, crt_user), },
              ]},
             {
-                'label':'商城','icon':fa('fa-street-view'),'visible': not getattr(settings,'OPEN_SECRET',False),
+                'label':'积分商城','icon':fa('fa-street-view'),'visible': not getattr(settings,'OPEN_SECRET',False),
                 'submenu':[
                     {'label':'商品','url':page('product')},
                     {'label':'商品广告','url':page('productBanner')},
