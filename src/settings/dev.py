@@ -291,6 +291,7 @@ NOTICE = {
 }
 
 OPEN_SECRET = True
+OPEN_SECRET = False
 
 
 #JPUSH = {

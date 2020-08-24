@@ -106,3 +106,10 @@ if getattr(settings,'OPEN_SECRET',False):
     from . part3.pp import pp_account,pp_money_in,pp_money_out,pp_profitloss
     from . part3.imchess import imchess_account,imchess_money_in,imchess_money_out,imchess_profitloss
     from . part3.vr import vr_account,vr_money_in,vr_money_out,vr_profitloss
+    
+if not getattr(settings,'OPEN_SECRET',False):
+    from . product import product
+    from . product import product_banner
+    from . product import product_category
+    from . product import product_ordery
+    from . product import product_notice

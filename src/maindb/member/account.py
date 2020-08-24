@@ -581,7 +581,7 @@ class AccountPage(TablePage):
                  'editor': 'com-btn', 'label': '调账',
                  'row_match':'one_row',
                  'after_error':'scope.fs.showErrors(scope.errors)',
-                 'fields_ctx': AccoutModifyAmount().get_head_context(), 
+                 'fields_ctx': {'mounted_express':'ex.vueAssign(scope.row,{meta_memo:"调账"} ) ',**AccoutModifyAmount().get_head_context()}, 
                  'visible': 'amount' in changeable_fields},
                 
                 {'action':'scope.ps.selected_set_and_save(scope.head)',
@@ -764,7 +764,7 @@ class AccoutBaseinfo(MerchantInstancCheck, ModelFields):
 
 
 class AccoutModifyAmount(MerchantInstancCheck, ModelFields):
-    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype','is_Betfullrecord','google_code'] 
+    field_sort = ['accountid', 'nickname', 'amount', 'add_amount','moenycategory','fundtype','is_Betfullrecord','meta_memo','google_code'] 
     readonly = ['accountid', 'nickname','amount']
     readonly_change_warning = ['amount']
     def __init__(self, *args, **kw):
@@ -787,6 +787,7 @@ class AccoutModifyAmount(MerchantInstancCheck, ModelFields):
             {'name':'moenycategory','label':'类型','editor':'com-field-select','required':True,'options':desp_options},
             {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
             {'name':'is_Betfullrecord','label':'是否添加流水','editor':'com-field-bool',},
+            {'name':'meta_memo','label':'备注','editor':'com-field-linetext'},
             {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
         ]
 
@@ -806,7 +807,7 @@ class AccoutModifyAmount(MerchantInstancCheck, ModelFields):
         
         if 'add_amount' in self.kw:
             add_amount = Decimal(self.kw.get('add_amount', 0))
-            
+            memo = self.kw.get('meta_memo','')
             moenycategory_pk = self.kw.get('moenycategory')
             moenycategory_inst = TbMoneyCategories.objects.get(categoryid =moenycategory_pk)
             cashflow, moenycategory =moenycategory_inst.cashflow,moenycategory_pk
@@ -823,7 +824,7 @@ class AccoutModifyAmount(MerchantInstancCheck, ModelFields):
                                         amount=abs( self.changed_amount),
                                         afteramount=self.instance.amount, 
                                         creater='Backend',
-                                        memo='调账', 
+                                        memo=memo, 
                                         accountid=self.instance, 
                                         categoryid_id=moenycategory,
                                         merchant= self.instance.merchant,
@@ -835,7 +836,7 @@ class AccoutModifyAmount(MerchantInstancCheck, ModelFields):
                                                consumestatus=1,rftype=3,rfid=0,content='后台管理员调账',
                                                turnover = add_amount,
                                                multiple= 1)
-            return {'memo': '调账', 'before': {'amount': self.before_amount},
+            return {'memo': memo, 'before': {'amount': self.before_amount},
                     'after': {'amount': self.instance.amount, }}
 
 

@@ -124,7 +124,7 @@ class PcMenu(BaseEngine):
              'submenu': [
                 #{'label': '足球最大赔付', 'url': page('maxpayout'), 'visible': can_touch(TbMaxpayout, crt_user), },
                 #{'label': '篮球最大赔付','url': page('maxpayout_basketball'),'visible': can_touch(TbMaxpayoutBasketball, crt_user)}, 
-                {'label': '提现控制', 'url': page('parameterinfo'), 'visible': can_touch(TbParameterinfo, crt_user), },
+                {'label': '提现控制', 'url': page('parameterinfo'), 'visible':  can_touch(TbParameterinfo, crt_user) and getattr(settings,'OPEN_SECRET',False), },
                 {'label':'登录IP黑名单','url':page('blackip_range'), 'visible': can_touch(Blackiprangelist, crt_user),},
                 {'label': '地区黑名单', 'url': page('area_blacklist'), 'visible': can_touch(TbAreablacklist, crt_user), },
                 {'label':'充值用户黑名单','url':page('Paychannelblackaccount'),'visible': can_touch(TbPaychannelblackaccount, crt_user),},
@@ -160,6 +160,16 @@ class PcMenu(BaseEngine):
                  {'label': '代理用户', 'url': page('agent_user'),'visible': has_permit(crt_user, 'agent'), },
                  {'label': '代理佣金', 'url': page('agent_commission'),'visible': can_touch(TbAgentcommission, crt_user), },
              ]},
+            {
+                'label':'商城','icon':fa('fa-street-view'),'visible': not getattr(settings,'OPEN_SECRET',False),
+                'submenu':[
+                    {'label':'商品','url':page('product')},
+                    {'label':'商品广告','url':page('productBanner')},
+                    {'label':'商品分类','url':page('product_category')},
+                    {'label':'商品订单','url':page('product_order')},
+                    {'label':'商品公告','url':page('proudct_notice')},
+                ]
+            },
             {'label':'三方平台','icon': fa('fa-chrome'), 'visible': lambda liveitem:liveitem['submenu'] and getattr(settings,'OPEN_SECRET',False) ,
              'submenu':[
                 {'label': 'AG系统', 'visible': lambda liveitem:liveitem['submenu'],

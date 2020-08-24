@@ -3819,3 +3819,103 @@ class TbManualsettlemsg(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_ManualSettleMsg'
+
+
+
+class TbProduct(models.Model):
+    id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    name = models.CharField('名称',db_column='Name', max_length=255)  # Field name made lowercase.
+    #categoryid = models.IntegerField(verbose_name='分类',db_column='CategoryId')  # Field name made lowercase.
+    category = models.ForeignKey(to='TbProductCategory',db_constraint=False,verbose_name='分类',db_column='CategoryId')  # Field name made lowercas    e.
+
+    isvirtual = models.BooleanField(db_column='IsVirtual',verbose_name='虚拟商品')  # Field name made lowercase.
+    coverimage = PictureField( db_column='CoverImage', max_length=255,verbose_name='封面图片')  # Field name made lowercase.
+    detailimage = PictureField(db_column='DetailImage', max_length=255,verbose_name='详细图片')  # Field name made lowercase.
+    refprice = models.DecimalField(db_column='RefPrice', max_digits=18, decimal_places=0,verbose_name='参考价格')  # Field name made lowercase.
+    price = models.DecimalField(db_column='Price', max_digits=18, decimal_places=0,verbose_name='真实价格')  # Field name made lowercase.
+    inventory = models.IntegerField(db_column='Inventory',verbose_name='存货')  # Field name made lowercase.
+    hot = models.BooleanField(db_column='Hot',verbose_name='热销')  # Field name made lowercase.
+    recommend = models.BooleanField(db_column='Recommend',verbose_name='推荐')  # Field name made lowercase.
+    introduction = models.CharField(db_column='Introduction', max_length=1024, blank=True, null=True,verbose_name='介绍')  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=1024, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
+    putaway = models.BooleanField(db_column='PutAway',verbose_name='是否上架')  # Field name made lowercase.
+    puttime = models.DateTimeField(db_column='PutTime',verbose_name='上架时间')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
+    #merchantid = models.IntegerField(db_column='MerchantId',verbose_name='商户')  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+  
+    class Meta:
+        managed = False
+        db_table = 'TB_Product'
+        
+        
+class TbProductBanner(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    picturename = models.CharField(db_column='PictureName', max_length=255,verbose_name='图片名称')  # Field name made lowercase.
+    navigateurl = models.CharField(db_column='NavigateUrl', max_length=255,verbose_name= '导航地址')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间',auto_now_add=True)  # Field name made lowercase.
+    enabled = models.BooleanField(db_column='Enabled',verbose_name='是否启用')  # Field name made lowercase.
+    order = models.IntegerField(db_column='Order',verbose_name='顺序')  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase    .
+ 
+    #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Product_Banner'
+        
+        
+class TbProductCategory(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=32,verbose_name='分类名称')  # Field name made lowercase.
+    description = models.CharField(db_column='Description', max_length=255, blank=True, null=True,verbose_name='描述')  # Field name made lowercase.
+    order = models.IntegerField(db_column='Order',verbose_name='顺序')  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase    .
+ 
+    #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Product_Category'
+        unique_together = (('id', 'name'),)
+        
+        
+class TbProductOrder(models.Model):
+    id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    orderno = models.CharField(db_column='OrderNo', max_length=50,verbose_name= '订单号')  # Field name made lowercase.
+    accountid = models.IntegerField(db_column='AccountId',verbose_name='账号id')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间')  # Field name made lowercase.
+    #productid = models.BigIntegerField(db_column='ProductId')  # Field name made lowercase.
+    product = models.ForeignKey(to=TbProduct,db_constraint=False,db_column='ProductId',verbose_name='商品')  # Field name made lowercase.
+    
+    state = models.IntegerField(db_column='State',verbose_name='状态')  # Field name made lowercase.
+    expressno = models.CharField(db_column='ExpressNo', max_length=50, blank=True, null=True,verbose_name='快递单号')  # Field name made lowercase.
+    backremark = models.CharField(db_column='BackRemark', max_length=255, blank=True, null=True,verbose_name='后台回复')  # Field name made lowercase.
+    userremark = models.CharField(db_column='UserRemark', max_length=255, blank=True, null=True,verbose_name='用户留言')  # Field name made lowercase.
+    chargephone = models.CharField(db_column='ChargePhone', max_length=11, blank=True, null=True,verbose_name='充值号码')  # Field name made lowercase.
+    currency = models.DecimalField(db_column='Currency', max_digits=18, decimal_places=0,verbose_name='币种')  # Field name made lowercase.
+    amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=0, blank=True, null=True,verbose_name='数量')  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase    .
+ 
+    #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Product_Order'
+
+
+class TbProductNotice(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    title = models.CharField(db_column='Title', max_length=255,verbose_name='题目')  # Field name made lowercase.
+    content = models.TextField(db_column='Content',verbose_name='内容')  # Field name made lowercase. This field type is a guess.
+    enabled = models.BooleanField(db_column='Enabled',verbose_name='启用')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间',auto_now_add=True)  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase    .
+ 
+    #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_Product_Notice'
+        
+        
