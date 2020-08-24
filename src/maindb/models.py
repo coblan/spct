@@ -3200,6 +3200,9 @@ class TbParameterinfo(models.Model):
     class Meta:
         managed = False
         db_table = 'TB_ParameterInfo'
+    
+    def __str__(self):
+        return self.memo
 
 
 class TbBanktypes(models.Model):

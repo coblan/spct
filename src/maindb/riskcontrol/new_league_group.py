@@ -129,7 +129,7 @@ class LeagureGroupForm(ModelFields):
     hide_fields=['id']
     class Meta:
         model = TbLeagueGroup
-        exclude =[]
+        exclude =['riskleveldelay']
     
     def dict_head(self, head):
         if head['name'] == 'riskleveldelay':
