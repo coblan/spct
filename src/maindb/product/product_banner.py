@@ -11,6 +11,7 @@ class ProductBannerPage(TablePage):
     class tableCls(ModelTable):
         model = TbProductBanner
         exclude = []
+        pop_edit_fields = ['id']
     
 class ProductBannerForm(ModelFields):
     class Meta:

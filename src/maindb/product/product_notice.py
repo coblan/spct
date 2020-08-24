@@ -11,6 +11,7 @@ class ProductNoticePage(TablePage):
     class tableCls(ModelTable):
         model = TbProductNotice
         exclude =[]
+         pop_edit_fields = ['id']
 
 class ProductNoticeForm(ModelFields):
     class Meta:

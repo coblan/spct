@@ -11,6 +11,7 @@ class ProductCategoryPage(TablePage):
     class tableCls(ModelTable):
         model = TbProductCategory
         exclude = []
+        pop_edit_fields = ['id']
 
 class ProdctCategoryForm(ModelFields):
     class Meta:

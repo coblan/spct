@@ -3878,6 +3878,9 @@ class TbProductCategory(models.Model):
         managed = False
         db_table = 'TB_Product_Category'
         unique_together = (('id', 'name'),)
+    
+    def __str__(self):
+        return self.name
         
         
 class TbProductOrder(models.Model):
