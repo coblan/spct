@@ -3829,8 +3829,8 @@ class TbProduct(models.Model):
     category = models.ForeignKey(to='TbProductCategory',db_constraint=False,verbose_name='分类',db_column='CategoryId')  # Field name made lowercas    e.
 
     isvirtual = models.BooleanField(db_column='IsVirtual',verbose_name='虚拟商品')  # Field name made lowercase.
-    coverimage = PictureField( db_column='CoverImage', max_length=255,verbose_name='封面图片')  # Field name made lowercase.
-    detailimage = PictureField(db_column='DetailImage', max_length=255,verbose_name='详细图片')  # Field name made lowercase.
+    coverimage = CusPictureField( db_column='CoverImage', max_length=255,verbose_name='封面图片')  # Field name made lowercase.
+    detailimage = CusPictureField(db_column='DetailImage', max_length=255,verbose_name='详细图片')  # Field name made lowercase.
     refprice = models.DecimalField(db_column='RefPrice', max_digits=18, decimal_places=0,verbose_name='参考价格')  # Field name made lowercase.
     price = models.DecimalField(db_column='Price', max_digits=18, decimal_places=0,verbose_name='真实价格')  # Field name made lowercase.
     inventory = models.IntegerField(db_column='Inventory',verbose_name='存货')  # Field name made lowercase.
