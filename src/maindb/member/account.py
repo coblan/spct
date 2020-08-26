@@ -366,7 +366,7 @@ class AccountPage(TablePage):
         #include = ['accountid', 'account', 'nickname', 'viplv', 'status', 'amount', 'bonusrate', 'agentamount',
                    #'isenablewithdraw', 'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount',
                    #'createtime', 'source','accounttype','weight','groupid']
-        fields_sort = ['merchant', 'accountid', 'account', 'nickname','createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
+        fields_sort = ['merchant', 'accountid', 'nickname','createtime','weight','ticketdelay','groupid', 'bonusrate', 'viplv','source', 'status',
                        'isenablewithdraw', 'amount', 'agentamount','betfullrecord',
                        'sumrechargecount', 'sumwithdrawcount', 'rechargeamount', 'withdrawamount','accounttype','anomalyticketnum','csuserid','memo','parlayoddscheck','singleoddscheck','agentstatus']
         
