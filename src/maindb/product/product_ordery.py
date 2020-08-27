@@ -12,6 +12,9 @@ class ProductOrderPage(TablePage):
         model = TbProductOrder
         exclude = []
         pop_edit_fields = ['id']
+        
+        def get_operation(self):
+            return []
 
 class ProdctOrderForm(ModelFields):
     class Meta:
