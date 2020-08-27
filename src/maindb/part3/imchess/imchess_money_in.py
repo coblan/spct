@@ -12,9 +12,9 @@ class IMchessMoneyInPage(TablePage):
         model =TBIMChessMoneyInInfo
         exclude =[]
     
-        class filters(RowFilter):
-            names=['status']
-            range_fields=['ordertime']
+        #class filters(RowFilter):
+            #names=['status']
+            #range_fields=['ordertime']
 
 director.update({
     'imchess_moneyinfo':IMchessMoneyInPage.tableCls

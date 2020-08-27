@@ -12,9 +12,9 @@ class EbMoneyInPage(TablePage):
         model =TbEbmoneyininfo
         exclude =[]
     
-        class filters(RowFilter):
-            names=['status']
-            range_fields=['ordertime']
+        #class filters(RowFilter):
+            #names=['status']
+            #range_fields=['ordertime']
 
 director.update({
     'eb_moneyinfo':EbMoneyInPage.tableCls

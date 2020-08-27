@@ -12,9 +12,9 @@ class PPMoneyInPage(TablePage):
         model =TbPpmoneyininfo
         exclude =[]
     
-        class filters(RowFilter):
-            names=['status']
-            range_fields=['ordertime']
+        #class filters(RowFilter):
+            #names=['status']
+            #range_fields=['ordertime']
 
 director.update({
     'pp_moneyinfo':PPMoneyInPage.tableCls

@@ -12,9 +12,9 @@ class VRMoneyInPage(TablePage):
         model =TBVRMoneyInInfo
         exclude =[]
     
-        class filters(RowFilter):
-            names=['status']
-            range_fields=['ordertime']
+        #class filters(RowFilter):
+            #names=['status']
+            #range_fields=['ordertime']
 
 director.update({
     'vr_moneyinfo':VRMoneyInPage.tableCls

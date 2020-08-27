@@ -12,9 +12,9 @@ class IMMoneyInPage(TablePage):
         model =TbImmoneyininfo
         exclude =[]
     
-        class filters(RowFilter):
-            names=['status','productid']
-            range_fields=['ordertime']
+        #class filters(RowFilter):
+            #names=['status','productid']
+            #range_fields=['ordertime']
 
 director.update({
     'immoneyinfo':IMMoneyInPage.tableCls

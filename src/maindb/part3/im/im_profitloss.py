@@ -27,9 +27,9 @@ class IMProfitlossPage(TablePage):
             self.footer = normed_dc
             return query
         
-        class filters(RowFilter):
-            names = ['productid']
-            range_fields=['profitlosstime']
+        #class filters(RowFilter):
+            #names = ['productid']
+            #range_fields=['profitlosstime']
 
 
 director.update({

@@ -27,8 +27,8 @@ class SgProfitlossPage(TablePage):
             self.footer = normed_dc
             return query
         
-        class filters(RowFilter):
-            range_fields=['profitlosstime']
+        #class filters(RowFilter):
+            #range_fields=['profitlosstime']
 
 
 director.update({

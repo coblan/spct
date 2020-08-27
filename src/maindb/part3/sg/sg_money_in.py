@@ -12,9 +12,9 @@ class SgMoneyInPage(TablePage):
         model =TbSgmoneyininfo
         exclude =[]
     
-        class filters(RowFilter):
-            names=['status']
-            range_fields=['ordertime']
+        #class filters(RowFilter):
+            #names=['status']
+            #range_fields=['ordertime']
 
 director.update({
     'sg_moneyinfo':SgMoneyInPage.tableCls

@@ -12,9 +12,9 @@ class RGMoneyInPage(TablePage):
         model =TbRgmoneyininfo
         exclude =[]
     
-        class filters(RowFilter):
-            names=['status']
-            range_fields=['ordertime']
+        #class filters(RowFilter):
+            #names=['status']
+            #range_fields=['ordertime']
 
 director.update({
     'rg_moneyinfo':RGMoneyInPage.tableCls
