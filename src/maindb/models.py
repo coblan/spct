@@ -3854,7 +3854,9 @@ class TbProduct(models.Model):
         
 class TbProductBanner(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    picturename = models.CharField(db_column='PictureName', max_length=255,verbose_name='图片名称')  # Field name made lowercase.
+    #picturename = models.CharField(db_column='PictureName', max_length=255,verbose_name='图片名称')  # Field name made lowercase.
+    picturename = CusPictureField(db_column='PictureName', max_length=255,verbose_name='图片名称')  # Field name made lowe    rcase.
+
     navigateurl = models.CharField(db_column='NavigateUrl', max_length=255,verbose_name= '导航地址')  # Field name made lowercase.
     createtime = models.DateTimeField(db_column='CreateTime',verbose_name='创建时间',auto_now_add=True)  # Field name made lowercase.
     enabled = models.BooleanField(db_column='Enabled',verbose_name='是否启用')  # Field name made lowercase.
