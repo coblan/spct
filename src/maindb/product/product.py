@@ -17,6 +17,11 @@ class ProductForm(ModelFields):
     class Meta:
         model = TbProduct
         exclude = []
+    
+    def dict_head(self, head):
+        if head['name'] =='inventory':
+            head['fv_rule'] = 'integer(+0)'
+        return head
 
 director.update({
     'product':ProductPage.tableCls,
