@@ -1,4 +1,4 @@
-from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director
+from helpers.director.shortcut import ModelTable,TablePage,ModelFields,page_dc,director,RowFilter
 from maindb.models import TbProductOrder
 
 class ProductOrderPage(TablePage):
@@ -15,11 +15,20 @@ class ProductOrderPage(TablePage):
         
         def get_operation(self):
             return []
+        
+        class filters(RowFilter):
+            names = ['state','merchant']
+            range_fields = ['createtime']
 
 class ProdctOrderForm(ModelFields):
     class Meta:
         model = TbProductOrder
         exclude = []
+    
+    def dict_head(self, head):
+        if head['name'] not in ['state','expressno']:
+            head['readonly'] = True
+        return head
 
 director.update({
     'product_order':ProductOrderPage.tableCls,
