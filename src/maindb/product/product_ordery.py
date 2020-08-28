@@ -16,11 +16,23 @@ class ProductOrderPage(TablePage):
         def get_operation(self):
             return []
         
+        def dict_row(self, inst):
+            if inst.chargephone:
+                aa= list(inst.chargephone)
+                aa[4:6]='****'
+            else:
+                aa = []
+            return {
+                'chargephone':''.join(aa)
+            }
+        
         class filters(RowFilter):
             names = ['state','merchant']
             range_fields = ['createtime']
 
 class ProdctOrderForm(ModelFields):
+    readonly =['chargephone']
+    overlap_fields =['chargephone']
     class Meta:
         model = TbProductOrder
         exclude = []
