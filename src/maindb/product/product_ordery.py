@@ -41,6 +41,16 @@ class ProdctOrderForm(ModelFields):
         if head['name'] not in ['state','expressno']:
             head['readonly'] = True
         return head
+    
+    def dict_row(self, inst):
+        if inst.chargephone:
+            aa= list(inst.chargephone)
+            aa[4:6]='****'
+        else:
+            aa = []
+        return {
+            'chargephone':''.join(aa)
+        }    
 
 director.update({
     'product_order':ProductOrderPage.tableCls,
