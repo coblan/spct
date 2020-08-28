@@ -689,6 +689,7 @@ class TbLivescoutTable(ModelTable):
 
     def inn_filter(self, query):
         query = super().inn_filter(query)
+        query = query.using('Sports_nolock')
         #query = query.extra(select={'stopreason':'SELECT TB_BetStopReason.description'},
                     #where=['TB_BetStopReason.id =TB_LiveScout.BrExtraInfo'],
                     #tables =['TB_BetStopReason'])
@@ -714,7 +715,7 @@ class PeriodScoreTab(ModelTable):
         return search_args
 
     def inn_filter(self, query):
-        return query.filter(matchid = self.kw.get('matchid'))
+        return query.using('Sports_nolock').filter(matchid = self.kw.get('matchid'))
 
     def dict_head(self, head):
         if head['name']=='statuscode':
@@ -1101,6 +1102,7 @@ class OutcomeTab(ModelTable):
 
 
     def inn_filter(self, query):
+        query= query.using('Sports_nolock')
         if self.match.sportid ==1:
             return query.filter(enabled=True,marketid__in = [8,9,100,101,102,103,104,105,106,107,108,109,110,163,174,])
         elif self.match.sportid ==2:

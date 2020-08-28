@@ -101,7 +101,7 @@ class TicketstakeEmbedTable(TicketstakeTable):
                                    'TB_Match.matchid=TB_TicketStake.matchid']
                             )
         master_id_list = self.kw.get('master_id_list')
-        return query.filter(ticket_master_id__in = master_id_list).select_related('matchid')
+        return query.using('Sports_nolock').filter(ticket_master_id__in = master_id_list).select_related('matchid')
     
     def dict_head(self, head):
         head = super().dict_head(head)
