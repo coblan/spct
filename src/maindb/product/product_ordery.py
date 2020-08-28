@@ -18,10 +18,9 @@ class ProductOrderPage(TablePage):
         
         def dict_row(self, inst):
             if inst.chargephone:
-                aa= list(inst.chargephone)
-                aa[4:6]='****'
+                aa= inst.chargephone[:3]+'****' + inst.chargephone[7:] 
             else:
-                aa = []
+                aa = ''
             return {
                 'chargephone':''.join(aa)
             }
