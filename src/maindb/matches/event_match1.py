@@ -779,7 +779,7 @@ def auto_mapping_match():
         
         if home and away:
             eventdate = mongo2tm( item.get('EventDateTime') ).strftime('%Y-%m-%d %H:%M:%S')
-            match = TbMatch.objects.filter(sportid=sportid,
+            match = TbMatch.objects.using('Sports_nolock').filter(sportid=sportid,
                                            source = 1,
                                            team1id=home.teamid,team1en = home.teamnameen,team1zh=home.teamnamezh,
                                            team2id=away.teamid,team2en = away.teamnameen,team2zh=away.teamnamezh,
@@ -795,7 +795,7 @@ def auto_mapping_match():
                 mydb['ThirdPartEvent'].update({'Eid':item.get('Eid')}, {'$set': dc})
                 op_list.append('%s=>%s'%(item.get('Eid'),match.matchid))
             else:
-                match = TbMatch.objects.filter(sportid=sportid,
+                match = TbMatch.objects.using('Sports_nolock').filter(sportid=sportid,
                                                source = 1,
                                                team1id=away.teamid,team1en = away.teamnameen,team1zh=away.teamnamezh,
                                                team2id=home.teamid,team2en = home.teamnameen,team2zh=home.teamnamezh,
