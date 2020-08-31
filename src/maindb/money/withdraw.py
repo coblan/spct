@@ -243,7 +243,8 @@ class WithDrawForm(MerchantInstancCheck , ModelFields):
                 self.instance.accountid.save()
                 TbBalancelog.objects.create(account=self.instance.accountid.nickname, beforeamount=beforamount,
                                             amount=self.instance.amount, afteramount=afteramount, creater='Backend',
-                                            memo='提现退款', accountid=self.instance.accountid, categoryid_id=category,
+                                            memo='提现退款;withdrawid=%s'%self.instance.withdrawid, 
+                                            accountid=self.instance.accountid, categoryid_id=category,
                                             cashflow=1,merchant = self.instance.accountid.merchant)
                 TbMessageUnsend.objects.create(body='提现订单【{0}】处理失败'.format(self.instance.orderid), type=3,
                                                sender='Backend',
