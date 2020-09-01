@@ -20,7 +20,9 @@ class ProductForm(ModelFields):
     
     def dict_head(self, head):
         if head['name'] =='inventory':
-            head['fv_rule'] = 'integer(+)'
+            head['fv_rule'] = 'integer(+0)'
+        if head['name'] =='price':
+            head['fv_rule'] = 'range(0~, false)'
         return head
 
 director.update({
