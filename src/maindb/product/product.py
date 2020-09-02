@@ -12,6 +12,14 @@ class ProductPage(TablePage):
         model = TbProduct
         exclude =[]
         pop_edit_fields=['id']
+        
+        def get_operation(self):
+            ops = super().get_operation()
+            out_ls =[]
+            for op in ops:
+                if op.get('name') !='delete_selected':
+                    out_ls.append(op)
+            return out_ls
 
 class ProductForm(ModelFields):
     class Meta:
