@@ -169,15 +169,17 @@ class MatchsPage(TablePage):
     class tableCls(ModelTable):
         sportid=1
         model = TbMatch
-        #export_related = False
-        exclude = []  # 'ishidden', 'iscloseliveodds'
-
-        fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
+        export_related = False
+        exclude = ['tournamentid']  # 'ishidden', 'iscloseliveodds'
+        
+        fields_sort = ['source','sportid','matchid', 'tournamename', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
                        'eventid','manual_settle_need_audit','autosettle'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
 
         def getExtraHead(self):
-            return [{'name': 'isshow', 'label': '显示'},
+            return [
+                {'name':'tournamename','label':'联赛'},
+                {'name': 'isshow', 'label': '显示'},
                     {'name':'num_stake','label':'未结算订单',
                      'editor':'com-table-rich-span',
                      'action':'scope.head.tab_ctx.par_row = scope.row;scope.ps.switch_to_tab(scope.head.tab_ctx)',
@@ -209,7 +211,8 @@ class MatchsPage(TablePage):
 
         def inn_filter(self, query):
             #tourn =  TbTournament.objects.filter(tournamentid=OuterRef('tournamentid')).filter(issubscribe=1)
-
+            #query = query.select_related('tournamentid__tournamentname')
+            query = query.annotate(tournamename = F('tournamentid__tournamentname'))
             query = query.using('Sports_nolock').distinct()\
                 .annotate(num_stake1 =Sum( Case (
                     When ( Q(tbticketstake__ticket_master__status=1) & 
@@ -231,11 +234,21 @@ class MatchsPage(TablePage):
 
         class filters(RowFilter):
             range_fields = ['matchdate']
-            names = ['source','sportid','isrecommend', 'marketstatus','statuscode','hasliveodds','tournamentid',]
-            fields_sort=['source','sportid','isrecommend', 'has_unchecked','marketstatus', 'statuscode','hasliveodds','manual_settle_need_audit','tournamentid','matchdate']
+            names = ['source','sportid','isrecommend', 'marketstatus',
+                     'statuscode',
+                     'hasliveodds'
+                     ]
+            fields_sort=['source','sportid','isrecommend', 'has_unchecked','marketstatus', 'statuscode','hasliveodds',
+                         'manual_settle_need_audit',
+                         'tournament_id','matchdate']
 
             def getExtraHead(self):
                 return [
+                    {'name':'tournament_id',
+                     'label':'联赛',
+                     'editor':'com-filter-single-select2',
+                     'mounted_express':'ex.director_call("match.get_tournament_options",{},{cache:true}).then(resp=>{scope.vc.options=resp})'
+                     },
                     {'name':'has_unchecked','label':'有未结算订单','editor':'com-filter-check'},
                     {'name':'specialcategoryid','editor':'com-filter-select','placeholder':'类型',
                      'options':[
@@ -262,7 +275,8 @@ class MatchsPage(TablePage):
                     query = query.filter(manual_settle_need_audit = 0)
                     #query = query.extra(where=['TB_ManualSettleMsg.status=0','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
                                         #tables=['TB_ManualSettleMsg'])
-
+                if self.kw.get('tournament_id'):
+                    query = query.filter(tournamentid_id=self.kw.get('tournament_id'))
                 return query
 
             def dict_head(self, head):
@@ -482,6 +496,7 @@ class MatchsPage(TablePage):
                 '_matchdate_label': str(inst.matchdate)[: -3],
                 'isshow': not bool(inst.ishidden),
                 #'_tournamentid_label': inst._tournamentid_label,
+                'tournamename':inst.tournamename,
                 #'_sportid_label':inst._sportid_label,
                 'num_stake': '%s/%s'%(inst.num_stake1,inst.total_ticket - inst.num_stake1 ), # inst.num_stake, # '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
                 'manual_settle_need_audit':inst.manual_settle_need_audit
