@@ -261,6 +261,14 @@ class WithDrawFormGoogle(WithDrawForm):
             {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
         ]
     
+    def dict_head(self, head):
+        #if head['name'] == 'memo':
+            #head['editor'] = 'blocktext'
+            #head['required'] = True
+        #else:
+            #head['readonly'] = True
+        return head        
+    
     def clean(self):
         super().clean()
         if not valide_google_code(self.kw.get('google_code')):
