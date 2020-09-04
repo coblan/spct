@@ -62,10 +62,26 @@ class BonusPage(object):
 def get_account_recharge_options(account):
     
     options = []
-    for inst in TbRecharge.objects.filter(accountid_id = account,tborderusedlogs__isnull=True):
+    for inst in TbRecharge.objects.filter(accountid_id = account,tborderusedlogs__isnull=True,status=2):
         options.append({'value':inst.pk,'label':'%s (%s)'%( inst.orderid,inst.amount) } )
     return options
 
+
+class RecharegeTab(ModelTable):
+    model = TbRecharge
+    exclude =[]
+
+    def dict_head(self, head):
+        if head['name'] == 'rechargeid':
+            head['editor'] = 'com-table-foreign-click-select'
+        return head        
+    
+    def inn_filter(self, query):
+        return query.filter(accountid_id = self.kw.get('accountid'))
+    
+    class filters(RowFilter):
+        names =['status']
+        range_fields = ['confirmtime']
 
 class BonuslogForm(MerchantInstancCheck,ModelFields):
     hide_fields =['merchant','createuser','withdrawlimitamount']
@@ -83,10 +99,18 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
     
     def getExtraHeads(self):
         return [
-            {'name':'meta_recharge','label':'充值单','editor':'com-field-select','required':True,
+            {'name':'meta_recharge','label':'充值单',
+             'editor':'com-field-pop-table-select',
+             'required':True,
+             'pop_express':'scope.head.table_ctx.search_args.accountid= scope.row.accountid',
              'recharge_types':[x.pk for x in TbBonustype.objects.filter(sourcetype=1)],
              'show':'rt = Boolean(scope.row.accountid) &&  ex.isin(scope.row.bonustypeid,scope.head.recharge_types)',
-             'mounted_express':'ex.director_call("get_account_recharge_options",{account:scope.vc.row.accountid}).then((resp)=>{scope.vc.options=resp})',
+             'table_ctx':RecharegeTab().get_head_context(),
+             'mounted_express':'scope.vc.$watch("row.accountid",()=>{scope.row.meta_recharge=""})',
+             #'mounted_express':'''var get_option= ()=>{
+             #ex.director_call("get_account_recharge_options",{account:scope.vc.row.accountid}).then((resp)=>{
+             #scope.vc.options=resp}) };
+             #get_option();scope.vc.$watch("row.accountid",get_option)''',
              'options':[]},
             {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
             {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
@@ -119,6 +143,7 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
             head['editor'] = 'com-field-pop-table-select'
             head['table_ctx'] = table_obj.get_head_context()
             head['options'] = []
+            head['changed_express'] = 'live_root.$emit("account_changed")'
         if head['name'] =='amount':
             head['fv_rule'] = 'range(0~3000)'
         if head['name']=='memo':  
@@ -356,6 +381,8 @@ director.update({
     
     'bonustype':BonusTypeTable,
     'bonustype.edit':BonusTypeForm,
+    
+    'recharge_select':RecharegeTab,
 })
 
 page_dc.update({

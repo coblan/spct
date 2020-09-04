@@ -3201,7 +3201,7 @@ class TbRecharge(models.Model):
         db_table = 'TB_Recharge'
     
     def __str__(self):
-        return str(self.rechargeid)
+        return '%s (%s)'%(self.orderid,self.amount)
 
 
 class TbParameterinfo(models.Model):
