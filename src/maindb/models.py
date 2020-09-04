@@ -653,6 +653,11 @@ BONUSTYPE_STATUS=(
     (1,'有效'),
 )
 
+BONUSTYPE_SOURCETYPE = (
+    (0,'默认'),
+    (1,'充值型'),
+)
+
 class TbBonustype(models.Model):
     bonustypeid = models.AutoField(db_column='BonusTypeID',primary_key=True,verbose_name='红利ID')  # Field name made lowercase.
     bonustypename = models.CharField(db_column='BonusTypeName', max_length=50,verbose_name='红利名称')  # Field name made lowercase.
@@ -663,7 +668,7 @@ class TbBonustype(models.Model):
     deductionmultiple = models.IntegerField(db_column='DeductionMultiple',default=1, null=True,verbose_name='抵扣倍数')
     status = models.IntegerField(db_column='Status', default=1, null=True,verbose_name='状态',choices= BONUSTYPE_STATUS)  # Field name made lowercase.
     merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
-    #sourcetype = models.IntegerField(db_column='SourceType')  # Field name made lowercase.
+    sourcetype = models.IntegerField(db_column='SourceType',verbose_name='源类型',choices=BONUSTYPE_SOURCETYPE)  # Field name made lowercase.
     
     class Meta:
         managed = False
@@ -2098,6 +2103,20 @@ class TbQa(models.Model):
     def __str__(self):
         return self.title
 
+
+class TbOrderusedlogs(models.Model):
+    tid = models.BigAutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.
+    #sourceid = models.BigIntegerField(db_column='SourceId')  # Field name made lowercase.
+    sourceid = models.ForeignKey(to='TbRecharge',db_constraint=False,db_column='SourceId')  # Field name made lowercase.
+    sourcetype = models.IntegerField(db_column='SourceType')  # Field name made lowercase.
+    status = models.IntegerField(db_column='Status')  # Field name made lowercase.
+    createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True)  # Field name made lowercase.
+    remark = models.CharField(db_column='Remark', max_length=500, blank=True, null=True)  # Field name made lowercase.
+    createuser = models.CharField(db_column='CreateUser', max_length=50, blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'TB_OrderUsedLogs'
 
 class TbRcFilter(models.Model):
     rc_rule_id = models.AutoField(db_column='RC_rule_id', primary_key=True)  # Field name made lowercase.

@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelFields,page_dc,ModelTable,director,RowFilter,RowSearch,director_view,RowSort
-from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord,TbAgentdaysummary
+from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord,TbAgentdaysummary,TbRecharge,TbOrderusedlogs
 from ..riskcontrol.black_users import AccountSelect
 from decimal import Decimal
 from django.contrib.auth.models import User
@@ -57,7 +57,16 @@ class BonusPage(object):
             'tab_name':'bonus-form'
         }
         return ctx
+
+@director_view('get_account_recharge_options')
+def get_account_recharge_options(account):
     
+    options = []
+    for inst in TbRecharge.objects.filter(accountid_id = account,tborderusedlogs__isnull=True):
+        options.append({'value':inst.pk,'label':'%s (%s)'%( inst.orderid,inst.amount) } )
+    return options
+
+
 class BonuslogForm(MerchantInstancCheck,ModelFields):
     @property
     def hide_fields(self):
@@ -72,6 +81,11 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
     
     def getExtraHeads(self):
         return [
+            {'name':'meta_recharge','label':'充值单','editor':'com-field-select','required':True,
+             'recharge_types':[x.pk for x in TbBonustype.objects.filter(sourcetype=1)],
+             'show':'rt = Boolean(scope.row.accountid) &&  ex.isin(scope.row.bonustypeid,scope.head.recharge_types)',
+             'mounted_express':'ex.director_call("get_account_recharge_options",{account:scope.vc.row.accountid}).then((resp)=>{scope.vc.options=resp})',
+             'options':[]},
             {'name':'fundtype','label':'定向体育','editor':"com-field-bool",'help_text':'勾选后只能用于体育类型消费'},
             {'name':'google_code','label':'身份验证码','editor':'com-field-linetext','required':True,'help_text':'关键操作，需要身份验证码，请联系管理员!'}
         ]
@@ -127,6 +141,12 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
         if account.amount <0:
             raise UserWarning('发放红利后，用户余额不能为负数!')
         account.save()
+        
+        if self.instance.bonustypeid.sourcetype ==1:
+            if TbOrderusedlogs.objects.filter(sourceid_id=self.kw.get('meta_recharge')).exists():
+                raise UserWarning('该充值单已经被使用过，请刷新页面重试!')
+            TbOrderusedlogs.objects.create(sourceid_id=self.kw.get('meta_recharge'),sourcetype=1,createuser=str(self.crt_user),status=1,remark='红利发放' )
+                
         ban = TbBalancelog.objects.create(accountid=self.instance.accountid,
                                     categoryid_id=37,
                                     cashflow=1,
