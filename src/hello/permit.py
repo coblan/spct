@@ -280,7 +280,7 @@ permit1 = [
              {'label':'充值安全统计','value':'report.recharge_reports','depend':['TbRecharge']},
              {'label':'每日报表','value':'TbTrendstatistics'},
              {'label':'投注分析','value':'report.betAnalysis',},
-            
+            {'label':'发放红利统计','value':'report.reportBonus'}
                      ],
         }, 
         {'label': '代理平台', 'children': [

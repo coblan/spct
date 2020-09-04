@@ -39,6 +39,7 @@ from .report import recharge_report
 from .report import every_day
 from .report import bet_analysis
 from .report import active_record
+from .report import report_bonus
 
 from .basic_data import merchant
 from .basic_data import bet_type, league, teams, app_resource, currency

@@ -114,8 +114,8 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
         if ops:
             ops[0].update({
                 'label':'发放红利',
-                'class':'btn btn-sm btn-primary',
-                'icon':'',
+                #'class':'btn btn-sm btn-primary',
+                #'icon':'',
             })
 
         return ops

@@ -281,7 +281,7 @@ def account_tab(self=None):
              'label':'IM体育/电竞',
              'editor':'com-tab-table',
              'pre_set':'rt={accountid:scope.par_row.accountid}',
-             'table_ctx':IMporfitLosTab().get_head_context(),
+             'table_ctx':lambda:IMporfitLosTab().get_head_context(),
              'visible':getattr(settings,'OPEN_SECRET',False) and can_touch(TbImprofitloss,crt_user)
          },
          {  'name':'rg_esports',

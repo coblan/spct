@@ -152,6 +152,7 @@ class PcMenu(BaseEngine):
                 {'label': '每日报表', 'url': page('everyday_report'),
                   'visible': can_touch(TbTrendstatistics, crt_user), },
                 {'label':'投注分析','url':page('bet_analysis'),'visible':has_permit(crt_user,'report.betAnalysis')},
+                {'label':'发放红利统计','url':page('report-bonus'),'visible':has_permit(crt_user,'report.reportBonus')},
                 #{'label':'活动记录','url':page('activityrecord'),},
              ]},
             
