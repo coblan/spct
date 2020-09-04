@@ -803,7 +803,7 @@ def get_permit(ui=None):
         #{'label': '调水模板', 'value':'TbAdjusttemplate.edit'},   
     #]
     out_permit = []
-    if ui is None:
+    if not ui:
         out_permit = permit1
     #elif ui =='member':
         #out_permit = permit_member
