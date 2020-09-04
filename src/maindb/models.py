@@ -667,7 +667,7 @@ class TbBonustype(models.Model):
     createtime = models.DateTimeField(db_column='CreateTime',auto_now_add=True,verbose_name='创建时间')  # Field name made lowercase.
     deductionmultiple = models.IntegerField(db_column='DeductionMultiple',default=1, null=True,verbose_name='抵扣倍数')
     status = models.IntegerField(db_column='Status', default=1, null=True,verbose_name='状态',choices= BONUSTYPE_STATUS)  # Field name made lowercase.
-    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+    #merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
     sourcetype = models.IntegerField(db_column='SourceType',verbose_name='源类型',choices=BONUSTYPE_SOURCETYPE)  # Field name made lowercase.
     
     class Meta:

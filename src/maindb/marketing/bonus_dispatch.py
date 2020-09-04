@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelFields,page_dc,ModelTable,director,RowFilter,RowSearch,director_view,RowSort
-from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord,TbAgentdaysummary,TbRecharge,TbOrderusedlogs
+from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord,TbAgentdaysummary,TbRecharge,TbOrderusedlogs,TbMerchants,TbAccount
 from ..riskcontrol.black_users import AccountSelect
 from decimal import Decimal
 from django.contrib.auth.models import User
@@ -68,12 +68,14 @@ def get_account_recharge_options(account):
 
 
 class BonuslogForm(MerchantInstancCheck,ModelFields):
-    @property
-    def hide_fields(self):
-        if self.crt_user.merchant:
-            return ['merchant','createuser','withdrawlimitamount']
-        else:
-            return ['createuser','withdrawlimitamount']
+    hide_fields =['merchant','createuser','withdrawlimitamount']
+    #@property
+    #def hide_fields(self):
+        #if self.crt_user.merchant:
+            #return ['merchant','createuser','withdrawlimitamount']
+        #else:
+            #return ['merchant''createuser','withdrawlimitamount']
+    
     
     class Meta:
         model = TbBonuslog
@@ -99,8 +101,11 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
             total_mount = Decimal(amount)  * multi
             dc['withdrawlimitamount'] = round( total_mount ,4)
             self.multiple = bonustype.deductionmultiple  # multi
-        if self.crt_user.merchant:
-            dc['merchant'] = self.crt_user.merchant.id
+        if dc.get('merchant') is None and dc.get('accountid'):
+            account = TbAccount.objects.get(pk = dc.get('accountid'))
+            dc['merchant'] =account.merchant_id
+        #if self.crt_user.merchant:
+            #dc['merchant'] = self.crt_user.merchant.id
         return dc
     
     def clean(self):
@@ -120,7 +125,10 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
             head['required']=True    
         if head['name'] =='bonustypeid':
             head['options'] = get_bonustype()
-            head['on_mounted']='live_root.$on("bonustype.changed",()=>{ ex.director_call("bonus.type.options").then(resp=>{scope.vc.head.options=resp})  }) '
+            #head['mounted_express'] = 'debugger;ex.director_call("bonus.type.options",{account:scope.vc.row.accountid}).then(resp=>{scope.vc.options=resp})'
+            #
+            #head['on_mounted']
+            head['mounted_express'] ='live_root.$on("bonustype.changed",()=>{ debugger;ex.director_call("bonus.type.options",{}).then(resp=>{scope.vc.options=resp})  }) '
         return head
     
     def get_operations(self):
@@ -185,7 +193,7 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
         })
 
 @director_view('bonus.type.options')    
-def get_bonustype(**kws):
+def get_bonustype():
     return [{'value':x.pk,'label':str(x)} for x in TbBonustype.objects.filter(status=1)]
         
 class BonuslogTable(ModelTable):
