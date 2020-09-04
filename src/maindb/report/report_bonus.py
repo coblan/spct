@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 
 class ReportBonusPage(TablePage):
     def get_label(self):
-        return '发放红利统计'
+        return '活动统计'
     
     def check_permit(self):
         if not has_permit(self.crt_user,'report.reportBonus'):
