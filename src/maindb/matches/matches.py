@@ -170,15 +170,15 @@ class MatchsPage(TablePage):
         sportid=1
         model = TbMatch
         export_related = False
-        exclude = ['tournamentid']  # 'ishidden', 'iscloseliveodds'
+        exclude = []  # 'ishidden', 'iscloseliveodds'
         
-        fields_sort = ['source','sportid','matchid', 'tournamename', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
+        fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
                        'winner', 'statuscode', 'isrecommend', 'hasliveodds', 'isshow', 'marketstatus','weight','ticketdelay','isdangerous',
                        'eventid','manual_settle_need_audit','autosettle'] #'oddsadjustment','oddsadjustmax','baseticketeamout',
 
         def getExtraHead(self):
             return [
-                {'name':'tournamename','label':'联赛'},
+                #{'name':'tournamename','label':'联赛'},
                 {'name': 'isshow', 'label': '显示'},
                     {'name':'num_stake','label':'未结算订单',
                      'editor':'com-table-rich-span',
@@ -212,7 +212,7 @@ class MatchsPage(TablePage):
         def inn_filter(self, query):
             #tourn =  TbTournament.objects.filter(tournamentid=OuterRef('tournamentid')).filter(issubscribe=1)
             #query = query.select_related('tournamentid__tournamentname')
-            query = query.annotate(tournamename = F('tournamentid__tournamentname'))
+            #query = query.annotate(tournamename = F('tournamentid__tournamentname'))
             query = query.using('Sports_nolock').distinct()\
                 .annotate(num_stake1 =Sum( Case (
                     When ( Q(tbticketstake__ticket_master__status=1) & 
@@ -466,6 +466,7 @@ class MatchsPage(TablePage):
 
             if head['name'] == 'tournamentid':
                 head['editor'] = 'com-table-label-shower'
+                head['options'] = []
                 #head['editor'] = 'com-table-mapper'
                 #head['options'] =[]
                 #head['mounted_express'] ='scope.vc.options =ex.localGet("tournament.options",[]);ex.director_call("match.get_tournament_options",{},{cache:true}).then(options=>{ex.localSet("tournament.options",options);scope.vc.options=options})'
@@ -496,7 +497,7 @@ class MatchsPage(TablePage):
                 '_matchdate_label': str(inst.matchdate)[: -3],
                 'isshow': not bool(inst.ishidden),
                 #'_tournamentid_label': inst._tournamentid_label,
-                'tournamename':inst.tournamename,
+                #'tournamename':inst.tournamename,
                 #'_sportid_label':inst._sportid_label,
                 'num_stake': '%s/%s'%(inst.num_stake1,inst.total_ticket - inst.num_stake1 ), # inst.num_stake, # '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
                 'manual_settle_need_audit':inst.manual_settle_need_audit
