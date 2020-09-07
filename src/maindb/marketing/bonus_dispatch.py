@@ -77,11 +77,11 @@ class RecharegeTab(ModelTable):
         return head        
     
     def inn_filter(self, query):
-        return query.filter(accountid_id = self.kw.get('accountid'))
+        return query.filter(accountid_id = self.kw.get('accountid'),status=2)
     
     class filters(RowFilter):
-        names =['status']
-        range_fields = ['confirmtime']
+        names =['channelid']
+        range_fields = ['createtime','confirmtime']
 
 class BonuslogForm(MerchantInstancCheck,ModelFields):
     hide_fields =['merchant','createuser','withdrawlimitamount']
@@ -105,7 +105,9 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
              'pop_express':'scope.head.table_ctx.search_args.accountid= scope.row.accountid',
              'recharge_types':[x.pk for x in TbBonustype.objects.filter(sourcetype=1)],
              'show':'rt = Boolean(scope.row.accountid) &&  ex.isin(scope.row.bonustypeid,scope.head.recharge_types)',
-             'table_ctx':RecharegeTab().get_head_context(),
+             'table_ctx':{
+                 **RecharegeTab().get_head_context(),
+                          },
              'mounted_express':'scope.vc.$watch("row.accountid",()=>{scope.row.meta_recharge=""})',
              #'mounted_express':'''var get_option= ()=>{
              #ex.director_call("get_account_recharge_options",{account:scope.vc.row.accountid}).then((resp)=>{
@@ -139,9 +141,11 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
     
     def dict_head(self, head):
         if head['name'] == 'accountid':
-            table_obj = AccountSelect(crt_user=self.crt_user)
             head['editor'] = 'com-field-pop-table-select'
-            head['table_ctx'] = table_obj.get_head_context()
+            head['table_ctx'] = {
+                **AccountSelect().get_head_context(),
+                'mounted_express':'rt="nosearch"'
+            }
             head['options'] = []
             head['changed_express'] = 'live_root.$emit("account_changed")'
         if head['name'] =='amount':

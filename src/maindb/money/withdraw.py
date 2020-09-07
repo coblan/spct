@@ -197,7 +197,7 @@ class WithDrawForm(MerchantInstancCheck , ModelFields):
         if head['name'] == 'memo':
             head['editor'] = 'blocktext'
             head['required'] = True
-        else:
+        elif head['name'] not in ['fakememo']:
             head['readonly'] = True
         return head
     
