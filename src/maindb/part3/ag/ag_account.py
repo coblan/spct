@@ -44,7 +44,7 @@ def redraw_left_money(rows):
         start += 1
         orderid = 'B%s'%start
         if inst.availablescores >=1:
-            out_list.append( TbGamemoneyoutinfo(account=inst.account,amount= inst.availablescores ,status=0,username=inst.username,ordertime=now,orderid=orderid,) )
+            out_list.append( TbGamemoneyoutinfo(account=inst.account,amount= inst.availablescores ,status=0,username=inst.agusername,ordertime=now,orderid=orderid,) )
     TbGamemoneyoutinfo.objects.bulk_create(out_list)
     
    

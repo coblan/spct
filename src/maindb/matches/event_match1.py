@@ -459,7 +459,7 @@ class WebMatchForm(Fields):
             {'name':'MatchID','label':'比赛',
              'editor':'com-field-pop-table-select',
              'clearable':False,
-             'init_express':'''
+             'pop_express':'''
             scope.head.table_ctx.par_row=scope.row; 
             scope.head.table_ctx.search_args._q = scope.row.Team1En.replace(/-/g,' ');
             scope.head.table_ctx.search_args._qf = "teamname";
