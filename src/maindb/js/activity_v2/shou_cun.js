@@ -98,8 +98,9 @@ Vue.component('com-shouchun',{
                 Type:row.Type,
             }
             var self=this
+            cfg.show_load()
             jb_js.post('/activity/charge/do',post_data,function(resp){
-
+                cfg.hide_load()
                 if(resp.success ){
                     cfg.showMsg('参加成功！')
                     self.update_data()
