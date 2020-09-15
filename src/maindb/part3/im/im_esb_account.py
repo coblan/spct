@@ -28,7 +28,7 @@ def redraw_left_money(rows):
         start += 1
         orderid = 'B%s'%start
         if inst.availablescores >=1:
-            out_list.append( TbImmoneyoutinfo(account=inst.accountid,amount= inst.availablescores ,status=0,username=inst.username,ordertime=now,orderid=orderid,productid = 401) )
+            out_list.append( TbImmoneyoutinfo(account=inst.account,amount= inst.availablescores ,status=0,username=inst.username,ordertime=now,orderid=orderid,productid = 401) )
     TbImmoneyoutinfo.objects.bulk_create(out_list)
 
 director.update({
