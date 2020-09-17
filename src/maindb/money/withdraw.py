@@ -95,9 +95,9 @@ class WithdrawPage(TablePage):
                 {
                     'fun': 'selected_set_and_save',
                     'action':'''(function(){
-                    if( !scope.ps.check_selected(scope.head) ){return};
-                    ex.director_call("has_audit_ticketmaster",{accountid:scope.ps.selected[0].accountid})
-                    .then((res)=>{
+                    scope.ps.check_selected(scope.head).then(()=>{
+                    return  ex.director_call("has_audit_ticketmaster",{accountid:scope.ps.selected[0].accountid})
+                    }).then((res)=>{
                         if(!res){
                             scope.self.$emit('operation',scope.self.head.name || scope.self.head.fun)
                         }else{

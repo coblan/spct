@@ -407,9 +407,9 @@ class TicketMasterPage(TablePage):
                  'label':'审核通过',
                  'row_match':'one_row','match_express':' rt = scope.row.audit == 1', 'match_msg': '只能选择异常注单',
                  'action':'''(function(){
-                 if (!scope.ps.check_selected(scope.head)){return};
-                 cfg.confirm("确定审核该条注单吗？")
-                 .then(res=>{
+                 scope.ps.check_selected(scope.head).then(()=>{
+                 return  cfg.confirm("确定审核该条注单吗？")
+                 }).then(res=>{
                     scope.ps.selected.forEach(row=>{row.audit=2});
                     cfg.show_load();
                     return ex.director_call("save_rows",{rows:scope.ps.selected})

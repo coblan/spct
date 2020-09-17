@@ -555,7 +555,7 @@ class AccountPage(TablePage):
                 #'fun': 'selected_set_and_save', 
                 {
                  'editor': 'com-btn', 
-                 'action':'if(scope.ps.check_selected(scope.head)){ var ctx=named_ctx["account.memo.form"];ctx.title="解冻账号";ctx.row=scope.ps.selected[0];ctx.row.status=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})  }',
+                 'action':'scope.ps.check_selected(scope.head).then(()=>{ var ctx=named_ctx["account.memo.form"];ctx.title="解冻账号";ctx.row=scope.ps.selected[0];ctx.row.status=1; cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})  })',
                  'label': '解冻', 
                  'row_match':'one_row',
                  #'field': 'status',
@@ -566,7 +566,7 @@ class AccountPage(TablePage):
                   'label': '冻结', 
                   'row_match':'one_row',
                   #'field': 'status', 'value': 0, 'confirm_msg': '确认冻结？', 
-                'action':'if(scope.ps.check_selected(scope.head)){ var ctx=named_ctx["account.memo.form"];ctx.title="冻结账号";ctx.row=scope.ps.selected[0];ctx.row.status=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)}) }',
+                'action':'scope.ps.check_selected(scope.head).then(()=>{ var ctx=named_ctx["account.memo.form"];ctx.title="冻结账号";ctx.row=scope.ps.selected[0];ctx.row.status=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)}) })',
                  'visible': 'status' in changeable_fields},
                 {'action':'scope.ps.selected_set_and_save(scope.head)', 
                  'editor': 'com-btn', 'label': '重置登录密码', 'field': 'password',
@@ -596,23 +596,22 @@ class AccountPage(TablePage):
                   #'field': 'isenablewithdraw','value': 1, 
                   #'confirm_msg': '确认允许选中用户提现？', 
                   'row_match':'one_row',
-                'action':'if(scope.ps.check_selected(scope.head)){ var ctx=named_ctx["account.memo.form"];ctx.title="允许提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)}) }',
+                'action':'scope.ps.check_selected(scope.head).then(()=>{ var ctx=named_ctx["account.memo.form"];ctx.title="允许提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=1;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)}) })',
                  'visible': 'isenablewithdraw' in changeable_fields},
                 { 'editor': 'com-btn', 'label': '禁止提现', 
                   #'field': 'isenablewithdraw','value': 0, 
                   #'confirm_msg': '确认禁止选中用户提现？', 
                   'row_match':'one_row',
-                  'action':'if(scope.ps.check_selected(scope.head)){ var ctx=named_ctx["account.memo.form"];ctx.title="禁止提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})  }',
+                  'action':'scope.ps.check_selected(scope.head).then(()=>{ var ctx=named_ctx["account.memo.form"];ctx.title="禁止提现";ctx.row=scope.ps.selected[0];ctx.row.isenablewithdraw=0;cfg.pop_vue_com("com-form-one",ctx).then(row=>{ex.vueAssign(ctx.row,row)})  })',
                  'visible': 'isenablewithdraw' in changeable_fields},
                 {'editor':'com-btn','label':'选择客服',
                  'visible': 'csuserid' in changeable_fields and can_touch(User,self.crt_user),
                  'table_ctx':UserPicker().get_head_context(),
                  'row_match':'one_row',
                  
-                 'action':'''if(scope.ps.check_selected(scope.head) ){
-                 cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)
-            .then((row)=>{
-                debugger
+                 'action':'''scope.ps.check_selected(scope.head) .then(()=>{
+                 return cfg.pop_vue_com("com-table-panel",scope.head.table_ctx)
+                 }).then((row)=>{
                  ex.each(scope.ps.selected,account=>{
                      account.csuserid = row.pk
                      account._csuserid_label = row.first_name+'('+ row.username +')'
