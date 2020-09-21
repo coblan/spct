@@ -485,7 +485,7 @@ class MatchsPage(TablePage):
             return head
 
         def dict_row(self, inst):
-            dc= {
+            return {
                 '_matchid_label': '%(home)s VS %(away)s' % {'home': inst.team1zh, 'away': inst.team2zh},
                 '_matchdate_label': str(inst.matchdate)[: -3],
                 'isshow': not bool(inst.ishidden),
