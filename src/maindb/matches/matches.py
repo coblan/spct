@@ -169,7 +169,7 @@ class MatchsPage(TablePage):
     class tableCls(ModelTable):
         sportid=1
         model = TbMatch
-        export_related = False
+        #export_related = False
         exclude = []  # 'ishidden', 'iscloseliveodds'
         
         fields_sort = ['source','sportid','matchid', 'tournamentid', 'team1zh', 'team2zh', 'matchdate', 'score','num_stake',
