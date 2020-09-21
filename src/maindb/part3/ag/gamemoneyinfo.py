@@ -7,7 +7,7 @@ from django.db.models import F
 
 class GameMoneyininfoPage(TablePage):
     def get_label(self):
-        return '资金转入AG'
+        return '资金转入'
     def get_template(self, prefer=None):
         return 'jb_admin/table.html'
     
@@ -20,6 +20,13 @@ class GameMoneyininfoPage(TablePage):
                 {'name':'account__nickname','label':"账号昵称",},
                 {'name':'account__merchant__name','label':'商户'},
             ]
+        
+        #def get_operation(self):
+            #return [
+                #{'label':'设置为0','editor':'com-btn',
+                 #'row_match':'many_row',
+                 #'action':'scope.ps.check_selected(scope.head).then(()=>{alert("jj")})'}
+            #]
         
         @classmethod
         def clean_search_args(cls, search_args):

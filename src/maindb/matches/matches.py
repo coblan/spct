@@ -213,8 +213,10 @@ class MatchsPage(TablePage):
             #tourn =  TbTournament.objects.filter(tournamentid=OuterRef('tournamentid')).filter(issubscribe=1)
             #query = query.select_related('tournamentid__tournamentname')
             #query = query.annotate(tournamename = F('tournamentid__tournamentname'))
-            query = query.using('Sports_nolock').distinct()\
-                .annotate(num_stake1 =Sum( Case (
+            
+            query = query.using('Sports_nolock').distinct() .annotate(manual_settle_need_audit =F('tbmanualsettlemsg__status'))
+            if 'num_stake' in self.search_args.get('_advise_heads',''):
+                query= query.annotate(num_stake1 =Sum( Case (
                     When ( Q(tbticketstake__ticket_master__status=1) & 
                            Q(tbticketstake__ticket_master__parlayrule=11) &
                            Q(tbticketstake__ticket_master__accountid__accounttype=0),then=1 ),
@@ -224,8 +226,8 @@ class MatchsPage(TablePage):
                     When ( Q(tbticketstake__ticket_master__status = 1) &
                            Q(tbticketstake__ticket_master__accountid__accounttype=0),then=1 ),
                     default = 0,
-                    output_field = IntegerField()    )))\
-                .annotate(manual_settle_need_audit =F('tbmanualsettlemsg__status'))
+                    output_field = IntegerField()    )))
+               
                                         #~Q(tbticketstake__ticket_master__parlayrule = 11) &
                     #.annotate(_tournamentid_label=Subquery(tourn.values('tournamentnamezh')[:1]))
 
@@ -249,7 +251,10 @@ class MatchsPage(TablePage):
                      'editor':'com-filter-single-select2',
                      'mounted_express':'ex.director_call("match.get_tournament_options",{},{cache:true}).then(resp=>{scope.vc.options=resp})'
                      },
-                    {'name':'has_unchecked','label':'有未结算订单','editor':'com-filter-check'},
+                    {'name':'has_unchecked',
+                     'label':'有未结算订单',
+                     'editor':'com-filter-check',
+                     },
                     {'name':'specialcategoryid','editor':'com-filter-select','placeholder':'类型',
                      'options':[
                          {'value':0,'label':'常规'},
@@ -323,6 +328,8 @@ class MatchsPage(TablePage):
         def get_operation(self):
             ops = [
 
+                {'editor':'com-op-btn','label':'设置列','icon': 'fa-gear',
+                 'action':'cfg.pop_vue_com("com-panel-table-setting",{table_ps:scope.ps,title:"列调整"})'},
                 #{'fun': 'selected_set_and_save', 'editor': 'com-op-btn', 'label': '推荐', 'confirm_msg': '确认推荐吗？',
                 #'pre_set': 'rt={isrecommend:true}', 'row_match': 'many_row', 
                  #'after_save':' ex.director_call("notify_match_recommend",{rows:scope.rows})',
@@ -403,20 +410,6 @@ class MatchsPage(TablePage):
             ]
             return ops
 
-    
-        #def get_rows(self):
-            #rows = super().get_rows()
-            #ls = []
-            #mapping ={}
-            #for row in rows:
-                #ls.append(row.get('tournamentid'))
-            #for inst in TbTournament.objects.filter(tournamentid__in = ls):
-                #mapping[inst.tournamentid] = str(inst)
-            #for row in rows:
-                #row['_tournamentid_label'] = mapping.get(row.get('tournamentid'))
-                
-            #return rows
-        
         def dict_head(self, head):
             dc = {
                 'matchid': 70,
@@ -492,16 +485,25 @@ class MatchsPage(TablePage):
             return head
 
         def dict_row(self, inst):
-            return {
+            dc= {
                 '_matchid_label': '%(home)s VS %(away)s' % {'home': inst.team1zh, 'away': inst.team2zh},
                 '_matchdate_label': str(inst.matchdate)[: -3],
                 'isshow': not bool(inst.ishidden),
                 #'_tournamentid_label': inst._tournamentid_label,
                 #'tournamename':inst.tournamename,
                 #'_sportid_label':inst._sportid_label,
-                'num_stake': '%s/%s'%(inst.num_stake1,inst.total_ticket - inst.num_stake1 ), # inst.num_stake, # '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
+                'num_stake': '%s/%s'%(getattr(inst,'num_stake1',0), getattr(inst,'total_ticket',0) - getattr(inst,'num_stake1',0) ) , # inst.num_stake, # '%s/%s'%(inst.num_stake_total-inst.num_stake_parlay,inst.num_stake_parlay),
                 'manual_settle_need_audit':inst.manual_settle_need_audit
             }
+        
+        def get_head_context(self):
+            ctx = super().get_head_context()
+            heads_names = [head['name'] for head in ctx.get('heads') if head['name'] not in ['num_stake'] ]
+            ctx.update({
+                'advise_heads':heads_names,
+                'advise_heads_cookie_path':'/pc/matches',
+            })
+            return ctx        
 
 @director_view('match.clear_live_url')
 def clear_liveurl(matchs):

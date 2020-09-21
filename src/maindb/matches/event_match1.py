@@ -97,6 +97,7 @@ class OtherWebMatchPage(TablePage):
             heads_names = [head['name'] for head in ctx.get('heads')]
             ctx.update({
                 'advise_heads':heads_names,
+                'advise_heads_cookie_path':'/pc/web_match_data1',
             })
             named_ctx = get_request_cache()['named_ctx']
             #if 'sql_league_options' not in named_ctx:
