@@ -2,6 +2,7 @@ from helpers.director.shortcut import TablePage,ModelTable,page_dc,ModelFields,d
 from maindb.models import TbGamemoneyoutinfo
 from . gamemoneyinfo import GameMoneyininfoPage
 from helpers.func.dict_list import sort_by_name
+from django.utils import timezone
 
 class GamemoneyoutinfoPage(TablePage):
     def get_label(self):
@@ -17,15 +18,33 @@ class GamemoneyoutinfoPage(TablePage):
             heads = super().get_heads()
             heads = sort_by_name(heads,['moneyoutid','account','account__nickname','username']) 
             return heads
+        
+        def get_operation(self):
+            return [
+                {'label':'等待转入',
+                 'editor':'com-btn',
+                 'row_match':'many_row',
+                 'match_express':'scope.row.status==1 && scope.row._ordertime_life>600',
+                 'match_msg':'只能选择下单时间超过10分钟且状态为正在转入的记录',
+                 'preset_express':'rt={status:0}',
+                 'click_express':'scope.ps.selected_set_and_save(scope.head)',
+                 'visible':self.permit.can_edit()}
+            ]   
+        
+        def dict_row(self, inst):
+            now = timezone.now()
+            return {
+                '_ordertime_life': (now - inst.ordertime).seconds
+            }        
 
-#class GamemoneyoutinfoForm(ModelFields):
-    #class Meta:
-        #model = TbGamemoneyoutinfo
-        #exclude = []
+class GamemoneyoutinfoForm(ModelFields):
+    class Meta:
+        model = TbGamemoneyoutinfo
+        exclude = []
 
 director.update({
     'gamemoneyoutinfo':GamemoneyoutinfoPage.tableCls,
-    #'gamemoneyoutinfo.edit':GamemoneyoutinfoForm,
+    'gamemoneyoutinfo.edit':GamemoneyoutinfoForm,
 })
 
 page_dc.update({

@@ -16,8 +16,14 @@ class SgmoneyOutInfoPage(TablePage):
             #names=['status']
             #range_fields=['ordertime']
 
+class SgMoneyoutInfoForm(ModelFields):
+    class Meta:
+        model = TbSgmoneyoutinfo
+        exclude =[]
+
 director.update({
     'sg_moneyout':SgmoneyOutInfoPage.tableCls,
+    'sg_moneyout.edit':SgMoneyoutInfoForm,
     
 })
 page_dc.update({

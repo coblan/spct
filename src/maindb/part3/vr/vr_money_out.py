@@ -16,8 +16,14 @@ class VRmoneyOutInfoPage(TablePage):
             #names=['status']
             #range_fields=['ordertime']
 
+class VRMoneyOutInfoForm(ModelFields):
+    class Meta:
+        model = TBVRMoneyOutInfo
+        exclude =[]
+
 director.update({
     'vr_moneyout':VRmoneyOutInfoPage.tableCls,
+    'vr_moneyout.edit':VRMoneyOutInfoForm,
     
 })
 page_dc.update({

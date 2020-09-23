@@ -16,8 +16,14 @@ class PTMoneyInPage(TablePage):
             #names=['status']
             #range_fields=['ordertime']
 
+class PtMoneyInfoForm(ModelFields):
+    class Meta:
+        model = TbPtmoneyininfo
+        exclude =[]
+
 director.update({
-    'pt_moneyinfo':PTMoneyInPage.tableCls
+    'pt_moneyinfo':PTMoneyInPage.tableCls,
+    'pt_moneyinfo.edit':PtMoneyInfoForm,
 })
 
 page_dc.update({

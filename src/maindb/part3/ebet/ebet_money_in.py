@@ -16,8 +16,14 @@ class EbMoneyInPage(TablePage):
             #names=['status']
             #range_fields=['ordertime']
 
+class EbmoneyinfoForm(ModelFields):
+    class Meta:
+        model = TbEbmoneyininfo
+        exclude =[]
+
 director.update({
-    'eb_moneyinfo':EbMoneyInPage.tableCls
+    'eb_moneyinfo':EbMoneyInPage.tableCls,
+    'eb_moneyinfo.edit':EbmoneyinfoForm,
 })
 
 page_dc.update({

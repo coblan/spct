@@ -16,8 +16,15 @@ class IMChessmoneyOutInfoPage(TablePage):
             #names=['status']
             #range_fields=['ordertime']
 
+class IMChessMoneyOutForm(ModelFields):
+    class Meta:
+        model = TBIMChessMoneyOutInfo
+        exclude =[]
+
+
 director.update({
     'imchess_moneyout':IMChessmoneyOutInfoPage.tableCls,
+    'imchess_moneyout.edit':IMChessMoneyOutForm,
     
 })
 page_dc.update({

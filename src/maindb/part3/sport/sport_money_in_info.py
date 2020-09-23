@@ -12,8 +12,14 @@ class SportMoneyInPage(TablePage):
         model =TbSportmoneyininfo
         exclude =[]
 
+class SportMoneyinfoForm(ModelFields):
+    class Meta:
+        model = TbSportmoneyininfo
+        exclude =[]
+
 director.update({
-    'sportmoneyinfo':SportMoneyInPage.tableCls
+    'sportmoneyinfo':SportMoneyInPage.tableCls,
+    'sportmoneyinfo.edit':SportMoneyinfoForm,
 })
 
 page_dc.update({

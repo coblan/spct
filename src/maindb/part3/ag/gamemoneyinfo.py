@@ -21,12 +21,17 @@ class GameMoneyininfoPage(TablePage):
                 {'name':'account__merchant__name','label':'商户'},
             ]
         
-        #def get_operation(self):
-            #return [
-                #{'label':'设置为0','editor':'com-btn',
-                 #'row_match':'many_row',
-                 #'action':'scope.ps.check_selected(scope.head).then(()=>{alert("jj")})'}
-            #]
+        def get_operation(self):
+            return [
+                {'label':'等待转入',
+                 'editor':'com-btn',
+                 'row_match':'many_row',
+                 'match_express':'scope.row.status==1 && scope.row._ordertime_life>600',
+                 'match_msg':'只能选择下单时间超过10分钟且状态为正在转入的记录',
+                 'preset_express':'rt={status:0}',
+                 'click_express':'scope.ps.selected_set_and_save(scope.head)',
+                 'visible':self.permit.can_edit()}
+            ]
         
         @classmethod
         def clean_search_args(cls, search_args):
@@ -60,9 +65,11 @@ class GameMoneyininfoPage(TablePage):
             return head
         
         def dict_row(self, inst):
+            now = timezone.now()
             return {
                 'account__nickname':inst.account.nickname,
                 'account__merchant__name':inst.account__merchant__name,
+                '_ordertime_life': (now - inst.ordertime).seconds
             }
         
         def get_heads(self):
@@ -116,8 +123,15 @@ class GameMoneyininfoPage(TablePage):
         class sort(RowSort):
             names = ['amount','handtime','ordertime']
 
+
+class GameMoneyinfoForm(ModelFields):
+    class Meta:
+        model = TbGamemoneyininfo
+        exclude =[]
+
 director.update({
-    'gamemoneyininfo':GameMoneyininfoPage.tableCls
+    'gamemoneyininfo':GameMoneyininfoPage.tableCls,
+    'gamemoneyininfo.edit':GameMoneyinfoForm
 })
 
 page_dc.update({

@@ -16,8 +16,14 @@ class IMMoneyInPage(TablePage):
             #names=['status','productid']
             #range_fields=['ordertime']
 
+class IMMoneyinfoForm(ModelFields):
+    class Meta:
+        model = TbImmoneyininfo
+        exclude =[]
+
 director.update({
-    'immoneyinfo':IMMoneyInPage.tableCls
+    'immoneyinfo':IMMoneyInPage.tableCls,
+    'immoneyinfo.edit':IMMoneyinfoForm,
 })
 
 page_dc.update({

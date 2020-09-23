@@ -16,8 +16,15 @@ class RGmoneyOutInfoPage(TablePage):
             #names=['status']
             #range_fields=['ordertime']
 
+
+class RgMoneyoutInfoForm(ModelFields):
+    class Meta:
+        model = TbRgmoneyoutinfo
+        exclude = []
+
 director.update({
     'rg_moneyout':RGmoneyOutInfoPage.tableCls,
+    'rg_moneyout.edit':RgMoneyoutInfoForm,
     
 })
 page_dc.update({

@@ -32,8 +32,14 @@ class IMmoneyOutInfoPage(TablePage):
                         ]
                     }]
 
+class IMMoneyOutInfoForm(ModelFields):
+    class Meta:
+        model = TbImmoneyoutinfo
+        exclude = []
+
 director.update({
     'immoneyout':IMmoneyOutInfoPage.tableCls,
+    'immoneyout.edit':IMMoneyOutInfoForm,
     
 })
 page_dc.update({

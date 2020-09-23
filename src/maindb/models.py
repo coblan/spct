@@ -877,7 +877,7 @@ class TbGamemoneyininfo(models.Model):
     moneyinid = models.AutoField(db_column='MoneyInID', primary_key=True,verbose_name='记录ID')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='金额')  # Field name made lowercase.
     orderid = models.CharField(db_column='OrderID', max_length=50, blank=True, null=True,verbose_name='订单号')  # Field name made lowercase.
-    ordertime = models.DateTimeField(db_column='OrderTime', blank=True, null=True,verbose_name='时间')  # Field name made lowercase.
+    ordertime = models.DateTimeField(db_column='OrderTime', blank=True, null=True,verbose_name='下单时间')  # Field name made lowercase.
     handle = models.CharField(db_column='Handle', max_length=50, blank=True, null=True,verbose_name='操作者')  # Field name made lowercase.
     handtime = models.DateTimeField(db_column='HandTime', blank=True, null=True,verbose_name='操作时间')  # Field name made lowercase.
     #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True,verbose_name='账号')  # Field name made lowercase.
@@ -895,7 +895,7 @@ class TbGamemoneyoutinfo(models.Model):
     moneyoutid = models.AutoField(db_column='MoneyOutID', primary_key=True,verbose_name='记录ID')  # Field name made lowercase.
     amount = models.DecimalField(db_column='Amount', max_digits=18, decimal_places=4, blank=True, null=True,verbose_name='金额')  # Field name made lowercase.
     orderid = models.CharField(db_column='OrderID', max_length=50, blank=True, null=True,verbose_name='订单号')  # Field name made lowercase.
-    ordertime = models.DateTimeField(db_column='OrderTime', blank=True, null=True,verbose_name='时间')  # Field name made lowercase.
+    ordertime = models.DateTimeField(db_column='OrderTime', blank=True, null=True,verbose_name='下单时间')  # Field name made lowercase.
     #accountid = models.IntegerField(db_column='AccountID', blank=True, null=True)  # Field name made lowercase.
     account = models.ForeignKey(to=TbAccount,db_constraint=False,db_column='AccountID', blank=True, null=True,verbose_name='账号')  # Field name made lowercase.
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='AG用户名')  # Field name made lowercase.
@@ -1121,7 +1121,7 @@ class TbImmoneyininfo(models.Model):
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='用户名')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', blank=True, null=True,verbose_name='状态',choices=GAMEMONEY_IN_STATUS)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=2000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
-    tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    #tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     productid = models.IntegerField(db_column='ProductId',verbose_name='类型',choices=IM_PRODUCTID)  # Field name made lowercase.
 
     class Meta:
@@ -2528,7 +2528,7 @@ class TbSportmoneyininfo(models.Model):
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='沙巴用户名')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', blank=True, null=True,verbose_name='状态',choices=GAMEMONEY_IN_STATUS)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=2000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
-    tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    #tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
 
     class Meta:
         managed = False
@@ -2608,7 +2608,7 @@ class TbLcitymoneyininfo(models.Model):
     username = models.CharField(db_column='UserName', max_length=50, blank=True, null=True,verbose_name='龙城用户名')  # Field name made lowercase.
     status = models.IntegerField(db_column='Status', blank=True, null=True,verbose_name='状态',choices=GAMEMONEY_IN_STATUS)  # Field name made lowercase.
     memo = models.CharField(db_column='Memo', max_length=2000, blank=True, null=True,verbose_name='备注')  # Field name made lowercase.
-    tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
+    #tsamp = models.TextField(db_column='Tsamp', blank=True, null=True)  # Field name made lowercase. This field type is a guess.
     
 
     class Meta:

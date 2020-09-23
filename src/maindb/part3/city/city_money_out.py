@@ -12,8 +12,14 @@ class SportmoneyOutInfo(TablePage):
         model = TbLcitymoneyoutinfo
         exclude =[]
 
+class CityMoneyOutForm(ModelFields):
+    class Meta:
+        model = TbLcitymoneyoutinfo
+        exclude = []
+
 director.update({
     'lcitymoneyout':SportmoneyOutInfo.tableCls,
+    'lcitymoneyout.edit':CityMoneyOutForm,
     
 })
 page_dc.update({
