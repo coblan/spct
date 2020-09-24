@@ -270,8 +270,10 @@ class MatchsPage(TablePage):
 
             def clean_query(self, query):
                 if self.kw.get('has_unchecked'):
-                    query = query.exclude(total_ticket = 0)
-                    #query =query.filter(tbticketstake__ticket_master__status=1,tbticketstake__ticket_master__accountid__accounttype=0)
+                    if 'num_stake' in self.search_args.get('_advise_heads',''):
+                        query = query.exclude(total_ticket = 0)
+                    else:
+                        query =query.filter(tbticketstake__ticket_master__status=1,tbticketstake__ticket_master__accountid__accounttype=0)
                 if self.kw.get('manual_settle_need_audit') == 1:
                     query = query.filter(manual_settle_need_audit = 1)
                     #query = query.extra(where=['TB_ManualSettleMsg.status=1','TB_ManualSettleMsg.Matchid=TB_Match.Matchid'],
