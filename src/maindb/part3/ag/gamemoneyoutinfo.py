@@ -21,9 +21,9 @@ class GamemoneyoutinfoPage(TablePage):
         
         def get_operation(self):
             return [
-                {'label':'等待转入',
+                {'label':'重新转出',
                  'editor':'com-btn',
-                 'row_match':'many_row',
+                 'row_match':'one_row',
                  'match_express':'scope.row.status==1 && scope.row._ordertime_life>300',
                  'match_msg':'只能选择下单时间超过5分钟且状态为正在转入的记录',
                  'preset_express':'rt={status:0}',
