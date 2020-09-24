@@ -24,8 +24,8 @@ class GamemoneyoutinfoPage(TablePage):
                 {'label':'等待转入',
                  'editor':'com-btn',
                  'row_match':'many_row',
-                 'match_express':'scope.row.status==1 && scope.row._ordertime_life>600',
-                 'match_msg':'只能选择下单时间超过10分钟且状态为正在转入的记录',
+                 'match_express':'scope.row.status==1 && scope.row._ordertime_life>300',
+                 'match_msg':'只能选择下单时间超过5分钟且状态为正在转入的记录',
                  'preset_express':'rt={status:0}',
                  'click_express':'scope.ps.selected_set_and_save(scope.head)',
                  'visible':self.permit.can_edit()}
