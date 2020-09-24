@@ -270,7 +270,7 @@ class MatchsPage(TablePage):
 
             def clean_query(self, query):
                 if self.kw.get('has_unchecked'):
-                    if 'num_stake' in self.search_args.get('_advise_heads',''):
+                    if 'num_stake' in self.kw.get('_advise_heads',''):
                         query = query.exclude(total_ticket = 0)
                     else:
                         query =query.filter(tbticketstake__ticket_master__status=1,tbticketstake__ticket_master__accountid__accounttype=0)
