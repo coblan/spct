@@ -305,6 +305,13 @@ permits = [('TbBanner', model_read_permit(TbBanner), model_to_name(TbBanner), 'm
             ('TBVRMoneyInInfo.edit',model_full_permit(TBVRMoneyInInfo),model_to_name(TBVRMoneyInInfo),'model'),
             ('TBVRMoneyOutInfo.edit',model_full_permit(TBVRMoneyOutInfo),model_to_name(TBVRMoneyOutInfo),'model'),
             
+            # GOG
+            ('TbGraccount',model_read_permit(TbGraccount),model_to_name(TbGraccount),'model'),
+            ('TbGraccount.edit',model_full_permit(TbGraccount),model_to_name(TbGraccount),'model'),
+            ('TbGrprofitloss.edit',model_full_permit(TbGrprofitloss),model_to_name(TbGrprofitloss),'model'),
+            ('TbGrmoneyininfo.edit',model_full_permit(TbGrmoneyininfo),model_to_name(TbGrmoneyininfo),'model'),
+            ('TbGrmoneyoutinfo.edit',model_full_permit(TbGrmoneyoutinfo),model_to_name(TbGrmoneyoutinfo),'model'),
+            
            # system
            ('TbUserex',model_read_permit(TbUserex),model_to_name(TbUserex),'model'),
            ('TbUserex.edit',model_full_permit(TbUserex),model_to_name(TbUserex),'model'),

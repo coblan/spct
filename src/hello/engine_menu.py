@@ -252,6 +252,13 @@ class PcMenu(BaseEngine):
                           {'label':'资金转入','url':page('vr_moneyinfo'),'visible':can_touch(TBVRMoneyInInfo,crt_user)},
                           {'label':'资金转出','url':page('vr_moneyout'),'visible':can_touch(TBVRMoneyOutInfo,crt_user)},
                        ]},
+                    {'label': 'GOG彩票', 'icon': fa('fa-street-view'), 'visible': lambda liveitem:liveitem['submenu'],
+                       'submenu': [
+                          {'label': '用户列表', 'url': page('gog_account'),'visible': can_touch(TbGraccount, crt_user), },
+                          {'label':'投注列表','url':page('gog_profitloss'),'visible':can_touch(TbGrprofitloss,crt_user)},
+                          {'label':'资金转入','url':page('gog_moneyinfo'),'visible':can_touch(TbGrmoneyininfo,crt_user)},
+                          {'label':'资金转出','url':page('gog_moneyout'),'visible':can_touch(TbGrmoneyoutinfo,crt_user)},
+                       ]},
                       
                       
             ]},

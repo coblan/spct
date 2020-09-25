@@ -401,6 +401,15 @@ permit1 = [
                 {'label':'资金流入','value':'TBVRMoneyInInfo.edit'},
                 {'label':'资金流出','value':'TBVRMoneyOutInfo.edit'}
             ]},
+            {'label':'GOG彩票','children':[
+                {'label':'账号','children':[
+                    {'label':'查看','value':'TbGraccount'},
+                    {'label':'编辑','value':'TbGraccount.edit','depend':['TbGraccount']},
+                    ]},
+                {'label':'投注列表','value':'TbGrprofitloss.edit'},
+                {'label':'资金流入','value':'TbGrmoneyininfo.edit'},
+                {'label':'资金流出','value':'TbGrmoneyoutinfo.edit'}
+            ]},
             ]
         },
         
