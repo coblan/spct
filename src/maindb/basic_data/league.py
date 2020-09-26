@@ -159,7 +159,7 @@ class LeagueForm(ModelFields):
     
     
     def dict_head(self, head):
-        if head['name'] == 'tournamentid':
+        if head['name'] in ['tournamentid','uniquetournamentid']:
             head['readonly']=True
         if head['name'] == 'typegroupswitch':
             head['options'] = [{'value': str(x.marketid), 'label': x.marketnamezh, } for x in
@@ -225,14 +225,21 @@ class LeagueForm(ModelFields):
         return max([1*1000*1000,lastone.tournamentid]) +1
     
     def dict_row(self, inst): 
-        return {
-            'openlivebet': not inst.closelivebet,
-            'tournamentid': inst.tournamentid or self.get_new_tournament_id()
-        }
+        if self.is_create:
+            tournamentid = self.get_new_tournament_id()
+            return {
+                'openlivebet': not inst.closelivebet,
+                'tournamentid': tournamentid,
+                'uniquetournamentid':tournamentid,         
+            }
+        else:
+            return {
+                'openlivebet': not inst.closelivebet,
+            }
 
     class Meta:
         model = TbTournament
-        exclude = ['categoryid', 'uniquetournamentid', 'createtime', 'specialcategoryid',
+        exclude = ['categoryid', 'createtime', 'specialcategoryid',
                    'oddsadjustment','oddsadjustmax','baseticketeamout',]
 
 #def notify_tournament_recommend(rows):

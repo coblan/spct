@@ -2840,7 +2840,7 @@ class TbTournament(models.Model):
     categoryid = models.IntegerField(db_column='CategoryID', blank=True, null=True)  # Field name made lowercase.
     
     uniquetournamentid = models.IntegerField(db_column='UniqueTournamentID',
-                                             verbose_name='联赛ID')  # Field name made lowercase.
+                                             verbose_name='联赛UID')  # Field name made lowercase.
     typegroupswitch = models.CharField(db_column='TypeGroupSwitch', max_length=200, blank=True, null=True,
                                        verbose_name='已关闭玩法')  # Field name made lowercase.
     issubscribe = models.IntegerField(db_column='IsSubscribe',default=1, verbose_name='已订阅')  # Field name made lowercase.
@@ -2857,9 +2857,9 @@ class TbTournament(models.Model):
     sport = models.ForeignKey(to= 'TbSporttypes',to_field='sportid',db_column='SportID',db_constraint=False,verbose_name='体育类型')  # Field name made lowercase.
     isrecommend = models.BooleanField(db_column='IsRecommend',verbose_name = '推荐')  # Field name made lowercase.
     
-    oddsadjustment = models.DecimalField(db_column='OddsAdjustment', max_digits=2, decimal_places=2,verbose_name='赔率调整值')  # Field name made lowercase.
-    oddsadjustmax = models.DecimalField(db_column='OddsAdjustMax', max_digits=2, decimal_places=2,verbose_name='赔率调整最大值')  # Field name made lowercase.
-    baseticketeamout = models.DecimalField(db_column='BaseTicketeAmout', max_digits=18, decimal_places=2,verbose_name='投注差额基数',help_text='每投注X元赔率调整一次')  # Field name made lowercase.
+    oddsadjustment = models.DecimalField(db_column='OddsAdjustment', max_digits=2, decimal_places=2,verbose_name='赔率调整值',default=0)  # Field name made lowercase.
+    oddsadjustmax = models.DecimalField(db_column='OddsAdjustMax', max_digits=2, decimal_places=2,verbose_name='赔率调整最大值',default=0)  # Field name made lowercase.
+    baseticketeamout = models.DecimalField(db_column='BaseTicketeAmout', max_digits=18, decimal_places=2,verbose_name='投注差额基数',help_text='每投注X元赔率调整一次',default=0)  # Field name made lowercase.
     #adjusttemplateid = models.IntegerField(db_column='AdjustTemplateID')  # Field name made lowercase.
     adjusttemplate = models.ForeignKey(TbAdjusttemplate,to_field='templateid',db_column='AdjustTemplateID',db_constraint=False,verbose_name='早盘调水模板',null=True,blank=True)  # Field name made lowercase.
     liveadjusttemplateid = models.ForeignKey(TbAdjusttemplate,to_field='templateid',related_name='liveLeague',db_column='LiveAdjustTemplateID', blank=True, null=True,verbose_name='走地调水模板')
