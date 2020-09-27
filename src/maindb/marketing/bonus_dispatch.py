@@ -1,5 +1,5 @@
 from helpers.director.shortcut import TablePage,ModelFields,page_dc,ModelTable,director,RowFilter,RowSearch,director_view,RowSort
-from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord,TbAgentdaysummary,TbRecharge,TbOrderusedlogs,TbMerchants,TbAccount
+from ..models import TbBonuslog,TbBonustype,TbBalancelog,TbBetfullrecord,TbAgentdaysummary,TbRecharge,TbOrderusedlogs,TbMerchants,TbAccount,TbBankcard
 from ..riskcontrol.black_users import AccountSelect
 from decimal import Decimal
 from django.contrib.auth.models import User
@@ -9,6 +9,7 @@ from maindb.google_validate import valide_google_code
 from django.utils import timezone
 from hello.merchant_user import MerchantInstancCheck
 from django.db.models import Sum
+from django.conf import settings
 
 import logging
 modelfields_log = logging.getLogger('ModelFields.save_form')
@@ -136,8 +137,12 @@ class BonuslogForm(MerchantInstancCheck,ModelFields):
     
     def clean(self):
         super().clean()
+        if self.kw.get('accountid') and getattr(settings,'OPEN_SECRET',False):
+            if not TbBankcard.objects.filter(accountid_id=self.kw.get('accountid'),active=True).exists():
+                raise UserWarning('用户还未绑卡，请绑定后重试')
         if not valide_google_code(self.kw.get('google_code')):
             raise UserWarning('身份验证码错误，请联系管理员!')
+        
     
     def dict_head(self, head):
         if head['name'] == 'accountid':
