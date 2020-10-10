@@ -79,9 +79,9 @@ class TbAccount(models.Model):
     status = models.SmallIntegerField(db_column='Status', choices=ACCOUNT_STATUS, null=False,
                                       default=0,verbose_name='用户状态')  # Field name made lowercase.
     agent = models.BigIntegerField(db_column='Agent')  # Field name made lowercase.
-    #viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'), choices=VIP_LEVEL, null=False,
-                                #default=1)  # Field name made lowercase.
-    viplv = models.ForeignKey(to='TbVip',db_column='VIPLv', verbose_name='VIP等级',  null=True,default=0)  # Field name made lowercase.
+    viplv = models.IntegerField(db_column='VIPLv', verbose_name=_('VIP Level'), choices=VIP_LEVEL, null=False,
+                                default=1)  # Field name made lowercase.
+    #viplv = models.ForeignKey(to='TbVip',db_column='VIPLv', verbose_name='VIP等级',  null=True,default=0)  # Field name made lowercase.
     
     createtime = models.DateTimeField(db_column='CreateTime', verbose_name='注册时间',
                               auto_now_add=True)  # 
@@ -1381,9 +1381,21 @@ class TbVip(models.Model):
     game1rebate = models.DecimalField(db_column='Game1Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
     game2rebate = models.DecimalField(db_column='Game2Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
     game3rebate = models.DecimalField(db_column='Game3Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game4rebate = models.DecimalField(db_column='Game4Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
     rebatemaxamount = models.DecimalField(db_column='RebateMaxAmount', max_digits=18, decimal_places=4, blank=True, null=True)  # Field name made lowercase.
     sort = models.IntegerField(db_column='Sort')  # Field name made lowercase.
     enabled = models.BooleanField(db_column='Enabled')  # Field name made lowercase.
+    game5rebate = models.DecimalField(db_column='Game5Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game6rebate = models.DecimalField(db_column='Game6Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game7rebate = models.DecimalField(db_column='Game7Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game8rebate = models.DecimalField(db_column='Game8Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game9rebate = models.DecimalField(db_column='Game9Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game10rebate = models.DecimalField(db_column='Game10Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game11rebate = models.DecimalField(db_column='Game11Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    game12rebate = models.DecimalField(db_column='Game12Rebate', max_digits=18, decimal_places=4)  # Field name made lowercase.
+    merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
+    tid = models.AutoField(db_column='Tid', primary_key=True)  # Field name made lowercase.    
+    
 
     class Meta:
         managed = False
@@ -1545,7 +1557,19 @@ class TbMerchants(models.Model):
     def __str__(self):
         return self.name
 
+class TbMerchantproperties(models.Model):
+    tid = models.AutoField(db_column='Tid',primary_key=True)  # Field name made lowercase.
+    agentconfig = models.CharField(db_column='AgentConfig', max_length=3000, blank=True, null=True)  # Field name made lowercase.
+    agentrules = models.CharField(db_column='AgentRules', max_length=3000, blank=True, null=True)  # Field name made lowercase.
+    cashchannel = models.CharField(db_column='CashChannel', max_length=1000, blank=True, null=True)  # Field name made lowercase.
+    betsettings = models.CharField(db_column='BetSettings', max_length=5000, blank=True, null=True)  # Field name made lowercase.
+    #merchantid = models.IntegerField(db_column='MerchantID')  # Field name made lowercase.
+    merchant = models.OneToOneField(to=TbMerchants,db_column='MerchantID')
+    riskcontrollevel = models.CharField(db_column='RiskControlLevel', max_length=2000, blank=True, null=True)  # Field name made lowercase.
 
+    class Meta:
+        managed = False
+        db_table = 'TB_MerchantProperties'
 
 class TbMarketgroup(models.Model):
     groupid = models.IntegerField(db_column='GroupID', primary_key=True,verbose_name='组ID')  # Field name made lowercase.
@@ -3004,7 +3028,11 @@ class TbPaychanneljoinlevel(models.Model):
     paychannelid = models.ForeignKey(to='TbPaychannel', db_column='PayChannelId',
                                      db_constraint=False, verbose_name='渠道', )  # Field name made lowercase.
     accountlevel = models.IntegerField(db_column='AccountLevel', verbose_name='风控等级', )  # Field name made lowercase.
-
+    minamount = models.DecimalField(db_column='MinAmount', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    maxamount = models.DecimalField(db_column='MaxAmount', max_digits=18, decimal_places=2)  # Field name made lowercase.
+    #merchantid = models.IntegerField(db_column='MerchantId')  # Field name made lowercase.
+    merchant = models.ForeignKey(to='TbMerchants',db_constraint=False,verbose_name='商户',db_column='MerchantId')  # Field name made lowercase.
+    
     class Meta:
         managed = False
         db_table = 'TB_PayChannelJoinLevel'

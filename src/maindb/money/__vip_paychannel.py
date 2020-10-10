@@ -3,7 +3,7 @@ import json
 from helpers.director.fields.fields import ModelFields
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, director, RowFilter
 from ..models import TbPaychanneljoinlevel, TbSetting, TbPaychannel
-
+from maindb.member.account import risklevel_options
 
 class VIPPayChannelPage(TablePage):
     template = 'jb_admin/table.html'
@@ -14,20 +14,22 @@ class VIPPayChannelPage(TablePage):
     class tableCls(ModelTable):
         model = TbPaychanneljoinlevel
         exclude = []
-        fields_sort = ['accountlevel', 'paychannelid']
+        fields_sort = ['accountlevel', 'paychannelid','merchant']
+        pop_edit_fields=['accountlevel']
         #pop_edit_field = 'levelname'
-        def getExtraHead(self):
-            return [
-                {'name': 'accountlevel', 'label': '风控等级',},
-                #{'name': 'channelid', 'label': '渠道ID'},
-            ]
+        #def getExtraHead(self):
+            #return [
+                #{'name': 'accountlevel', 'label': '风控等级',},
+                ##{'name': 'channelid', 'label': '渠道ID'},
+            #]
 
         def get_rows(self): 
-            inst_list = TbPaychanneljoinlevel.objects.all()
             rows = []
             row_dc = {}
-            for inst in inst_list:
-                if inst.accountlevel not in row_dc:
+            for inst in TbPaychanneljoinlevel.objects.all():
+                key = '%s__%s'%(inst.accountlevel,inst.merchant)
+                if key not in row_dc:
+                    row_dc[key] =[]
                     row_dc[inst.accountlevel] = []
                 row_dc[inst.accountlevel].append(inst.paychannelid_id)
             for k, v in row_dc.items():
@@ -35,12 +37,12 @@ class VIPPayChannelPage(TablePage):
             self.total = len(rows)
             return rows
         
-        def getRowPages(self): 
-            return {
-                'total': self.total,
-                'crt_page': 1,
-                'perpage': self.search_args.get('_perpage', 20),
-            }
+        #def getRowPages(self): 
+            #return {
+                #'total': self.total,
+                #'crt_page': 1,
+                #'perpage': self.total , #self.search_args.get('_perpage', 20),
+            #}
         def dict_head(self, head):
             dc = {
                 'id': 120,
@@ -50,18 +52,20 @@ class VIPPayChannelPage(TablePage):
             if dc.get(head['name']):
                 head['width'] = dc.get(head['name'])
             if head['name'] == 'accountlevel':
-                form_obj = ChargeTypeForm(crt_user= self.crt_user)
-                head['editor'] = 'com-table-pop-fields'
-                head['get_row'] = {
-                    'fun': 'get_table_row',
-                }
-                head['after_save'] = {
-                    'fun': 'update_or_insert',
-                }
-                head['fields_ctx'] = form_obj.get_head_context()
-                head['relat_field'] = 'accountlevel'
                 head['inn_editor'] = 'com-table-mapper'
-                head['options'] =  getRiskOptions()  # getVipOptions()   改版后改页面使用风控等级替代vip等级
+                head['options'] = getRiskOptions()
+                #form_obj = ChargeTypeForm(crt_user= self.crt_user)
+                #head['editor'] = 'com-table-pop-fields'
+                #head['get_row'] = {
+                    #'fun': 'get_table_row',
+                #}
+                #head['after_save'] = {
+                    #'fun': 'update_or_insert',
+                #}
+                #head['fields_ctx'] = form_obj.get_head_context()
+                #head['relat_field'] = 'accountlevel'
+                #head['inn_editor'] = 'com-table-mapper'
+                #head['options'] =  getRiskOptions()  # getVipOptions()   改版后改页面使用风控等级替代vip等级
 
             if head['name'] == 'paychannelid':
                 head['show_tooltip'] = False
@@ -74,12 +78,12 @@ class VIPPayChannelPage(TablePage):
 
 class ChargeTypeForm(ModelFields):
     field_sort = ['accountlevel', 'paychannelid']
-    def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
-        self.kw = dc.copy()
-        self.kw.update(kw)
-        self.crt_user = crt_user
-        self.nolimit = False
-        self.custom_permit()
+    #def __init__(self, dc={}, pk=None, crt_user=None, nolimit=False, *args, **kw): 
+        #self.kw = dc.copy()
+        #self.kw.update(kw)
+        #self.crt_user = crt_user
+        #self.nolimit = False
+        #self.custom_permit()
     
     def is_valid(self): 
         return True
@@ -121,11 +125,13 @@ class ChargeTypeForm(ModelFields):
         if head['name'] == 'accountlevel':
             #head['editor'] = 'sim_select'
             head['editor'] = 'com-field-select'
-            head['remote_options'] = 'get_no_relation_vip_level'
+            #head['remote_options'] = 'get_no_relation_vip_level'
             head['required'] = True
             head['fv_rule'] = ''
             head['placeholder'] = '请选择' 
             head['options'] = []
+
+            head['mounted_express'] = 'debugger;ex.director_call("risklevel_options",{merchant:scope.vc.row.merchant},{cache:true}).then(resp=>{scope.vc.options=resp})'
             #head['options'] = getVipOptions()
         if head['name'] == 'paychannelid':
             head['required'] = True
@@ -158,12 +164,12 @@ def getRiskOptions():
     return options
 
 
-def getVipOptions():
-    "改版后，页面将vip等级改成风控等级，这个函数无用了。"
-    level = TbSetting.objects.get(settingname='Static:VIPTOTier')
-    level_dc = json.loads(level.settingvalue) 
-    options = [{'value': x['VipLv'], 'label': x['Memo']} for x in level_dc ]       
-    return options
+#def getVipOptions():
+    #"改版后，页面将vip等级改成风控等级，这个函数无用了。"
+    #level = TbSetting.objects.get(settingname='Static:VIPTOTier')
+    #level_dc = json.loads(level.settingvalue) 
+    #options = [{'value': x['VipLv'], 'label': x['Memo']} for x in level_dc ]       
+    #return options
 
 def get_left_vip_options(**kw): 
     '由vip 调整为 RiskControlLevel'

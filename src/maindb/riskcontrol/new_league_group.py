@@ -1,7 +1,7 @@
 from helpers.director.shortcut import TablePage,ModelTable,ModelFields,director,page_dc,field_map,model_to_name,\
      RowFilter,get_request_cache,RowSort,director_view
 from helpers.director.model_func.field_procs.intBoolProc import IntBoolProc
-from maindb.models import TbLeagueGroup,TbSetting,TbTournament,TbMarkets,TbLeaguegroupMarketweight
+from maindb.models import TbLeagueGroup,TbTournament,TbMarkets,TbLeaguegroupMarketweight,TbMerchantproperties
 import json
 from django.db.models import Count
 from maindb.basic_data.league import League
@@ -132,28 +132,30 @@ class LeagureGroupForm(ModelFields):
         exclude =['riskleveldelay']
     
     def dict_head(self, head):
-        if head['name'] == 'riskleveldelay':
-            head.update({
-                'editor':'com-field-table-list',
-                'fv_rule':'风控等级:key_unique(Level)',
-                'fv_msg':'至少填写一项,且风控等级不能重复',
-                'table_heads':[
-                    {'name':'Level','label':'风控等级','editor':'com-table-pop-fields-local',
-                     'inn_editor':'com-table-mapper','options':[
-                        {'value':x["Level"],'label':x['Memo']} for x in json.loads( TbSetting.objects.get(settingname='RiskControlLevel').settingvalue)
-                    ]},
-                    {'name':'PossibleWinAmount','label':'可赢额'},
-                    {'name':'DelaySec','label':'延迟秒数'},
-                ],
-                'fields_heads':[
-                    {'name':'Level','label':'风控等级','editor':'com-field-select','required':True,
-                     'options':[
-                        {'value':x["Level"],'label':x['Memo']} for x in json.loads( TbSetting.objects.get(settingname='RiskControlLevel').settingvalue)
-                    ]},
-                    {'name':'PossibleWinAmount','label':'可赢额','required':True,'editor':'com-field-number','fv_rule':'number'},
-                    {'name':'DelaySec','label':'延迟秒数','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
-                ]
-            })
+        # riskleveldelay 字段废弃
+        #if head['name'] == 'riskleveldelay':
+            
+            #head.update({
+                #'editor':'com-field-table-list',
+                #'fv_rule':'风控等级:key_unique(Level)',
+                #'fv_msg':'至少填写一项,且风控等级不能重复',
+                #'table_heads':[
+                    #{'name':'Level','label':'风控等级','editor':'com-table-pop-fields-local',
+                     #'inn_editor':'com-table-mapper','options':[
+                        #{'value':x["Level"],'label':x['Memo']} for x in json.loads( TbSetting.objects.get(settingname='RiskControlLevel').settingvalue)
+                    #]},
+                    #{'name':'PossibleWinAmount','label':'可赢额'},
+                    #{'name':'DelaySec','label':'延迟秒数'},
+                #],
+                #'fields_heads':[
+                    #{'name':'Level','label':'风控等级','editor':'com-field-select','required':True,
+                     #'options':[
+                        #{'value':x["Level"],'label':x['Memo']} for x in json.loads( TbSetting.objects.get(settingname='RiskControlLevel').settingvalue)
+                    #]},
+                    #{'name':'PossibleWinAmount','label':'可赢额','required':True,'editor':'com-field-number','fv_rule':'number'},
+                    #{'name':'DelaySec','label':'延迟秒数','editor':'com-field-number','required':True,'fv_rule':'integer(+0)'},
+                #]
+            #})
         if head['name']=='handicapcount':
             head['fv_rule'] = 'integer(+)'
         #if head['name'] == 'reopenmarketsdelay':

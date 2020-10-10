@@ -6,7 +6,7 @@ import re
 from django.db.models import Sum, Case, When, F,Count,OuterRef,Subquery
 from django.utils.translation import ugettext as _
 from helpers.director.shortcut import TablePage, ModelTable, page_dc, ModelFields, \
-    RowSearch, RowSort, RowFilter, director,field_map,model_to_name,Fields,get_request_cache,PlainTable,director_element
+    RowSearch, RowSort, RowFilter, director,field_map,model_to_name,Fields,get_request_cache,PlainTable,director_element,director_view
 from helpers.director.table.row_search import SelectSearch
 from maindb.matches.matches_statistics import MatchesStatisticsPage
 from maindb.money.balancelog import BalancelogPage
@@ -27,7 +27,8 @@ from .loginlog import LoginLogPage
 from ..report.user_statistics import UserStatisticsPage
 from maindb.send_phone_message import send_message_password, send_message_fundspassword
 from django.db.models import DecimalField
-from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss,TbImprofitloss,TbEbprofitloss,TbPpprofitloss,TBIMChessProfitLoss,TBVRProfitLoss
+from ..models import TbMoneyCategories,TbSetting,TbRisklevellog,TbAgprofitloss,TbImprofitloss,TbEbprofitloss,TbPpprofitloss,\
+     TBIMChessProfitLoss,TBVRProfitLoss,TbMerchantproperties
 import json
 from maindb.rabbitmq_instance import notifyAccountFrozen
 from helpers.case.jb_admin.admin_user import UserPicker
@@ -415,7 +416,10 @@ class AccountPage(TablePage):
                 query = query.filter(merchant = self.crt_user.merchant)
             return query.extra(select={'betfullrecord':'SELECT SUM(TB_Betfullrecord.consumeamount) FROM TB_Betfullrecord WHERE TB_Betfullrecord.ConsumeStatus=1 AND TB_Betfullrecord.AccountID=TB_Account.AccountID',
                                        'rechargeamount':'SELECT SUM(TB_Recharge.ConfirmAmount) FROM TB_Recharge WHERE TB_Recharge.status=2 AND TB_Recharge.AccountID=TB_Account.AccountID',
-                                       'withdrawamount':'SELECT SUM(TB_Withdraw.Amount) FROM TB_Withdraw WHERE TB_Withdraw.Status=2 AND TB_Withdraw.AccountID =TB_Account.AccountID'})
+                                       'withdrawamount':'SELECT SUM(TB_Withdraw.Amount) FROM TB_Withdraw WHERE TB_Withdraw.Status=2 AND TB_Withdraw.AccountID =TB_Account.AccountID',
+                                       'viplv_label':'TB_Vip.name'},
+                               tables=['TB_Vip'],
+                               where=['TB_Vip.level=TB_Account.VIPLv','TB_Vip.MerchantId=TB_Account.MerchantId'])
         #.annotate(rechargeamount_count=Count('tbrecharge__rechargeid',distinct=True),
                                   #withdrawamount_count=Count('tbwithdraw__withdrawid',distinct=True))\
                    #.annotate( rechargeamount_total= Sum(Case(When(tbrecharge__status=2, then=F('tbrecharge__confirmamount')), default=0)),
@@ -435,6 +439,7 @@ class AccountPage(TablePage):
             out_str = ''.join(tmp)
             
             return {
+                '_viplv_label':inst.viplv_label,
                 'amount': str(inst.amount),
                 'account': out_str,
                 'group_color':inst.groupid.extension,
@@ -496,6 +501,9 @@ class AccountPage(TablePage):
                 head['inn_editor'] = head['editor']
                 head['editor'] = 'com-table-rich-span'
                 head['style'] = 'if(scope.vc.light_level(scope.row.group_color) > 192){var mycolor="black"}else{var mycolor="white"};rt={background:scope.row.group_color,color:mycolor}'
+            if head['name'] =='viplv':
+                head['editor'] = 'com-table-label-shower'
+                
             return head
 
         #def statistics(self, query):
@@ -707,12 +715,20 @@ class AccoutBaseinfo(MerchantInstancCheck, ModelFields):
             head['fv_rule']='range(0~500);'+ head.get('fv_rule','')
         if head['name']=='risklevel':
             head['editor']='com-field-select'
-            inst = TbSetting.objects.get(settingname='RiskControlLevel')
-            head['options']=[{'value':x['Level'],'label':x['Memo']} for x in json.loads(inst.settingvalue)]
+            head['options'] =[]
+            head['mounted_express'] = 'scope.vc.$watch("row.merchant",()=>{  ex.director_call("risklevel_options",{merchant:scope.vc.row.merchant},{cache:true}).then(resp=>{scope.vc.options=resp})     }) '
+            #inst = TbMerchantproperties.objects.get(merchantid = self.instance.merchantid) # TbSetting.objects.get(settingname='RiskControlLevel')
+            ##head['options']=[{'value':x['Level'],'label':x['Memo']} for x in json.loads(inst.settingvalue)]
+            #head['options']=[{'value':x['Level'],'label':x['Memo']} for x in json.loads(inst.riskcontrollevel)]
         if head['name']=='cashchannel':
             head['editor']='com-field-select'
-            inst = TbSetting.objects.get(settingname='CashChannel')
-            head['options']=[{'value':x['Channel'],'label':x['Memo']} for x in json.loads(inst.settingvalue)]  
+            head['options'] =[]
+            head['mounted_express'] = 'scope.vc.$watch("row.merchant",()=>{  ex.director_call("cashchannel_options",{merchant:scope.vc.row.merchant},{cache:true}).then(resp=>{scope.vc.options=resp})     }) '
+             
+            #inst = TbSetting.objects.get(settingname='CashChannel')
+            #head['options']=[{'value':x['Channel'],'label':x['Memo']} for x in json.loads(inst.settingvalue)]  
+            #inst = TbMerchantproperties.objects.get(merchantid = self.instance.merchantid)
+            #head['options']=[{'value':x['Channel'],'label':x['Memo']} for x in json.loads(inst.cashchannel)]              
         if head['name'] == 'anomalyticketnum':
             head['fv_rule']='integer(+0);range(0~10)'
         return head
@@ -760,6 +776,18 @@ class AccoutBaseinfo(MerchantInstancCheck, ModelFields):
         model = TbAccount
         exclude = ['actimestamp', 'agent', 'phone', 'gender', 'points', 'codeid', 'parentid',
                    'sumrechargecount', 'password']
+
+@director_view('risklevel_options')
+def risklevel_options(merchant):
+    inst = TbMerchantproperties.objects.get(merchant_id = merchant)
+    ls = [{'value':x['Level'],'label':x['Memo']} for x in json.loads(inst.riskcontrollevel)]
+    return ls
+
+@director_view('cashchannel_options')
+def cashchannel_options(merchant):
+    inst = TbMerchantproperties.objects.get(merchant_id = merchant)
+    ls = [{'value':x['Channel'],'label':x['Memo']} for x in json.loads(inst.cashchannel)] 
+    return ls             
 
 
 class AccoutModifyAmount(MerchantInstancCheck, ModelFields):

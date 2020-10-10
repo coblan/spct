@@ -61,7 +61,7 @@ from .riskcontrol import paychannel_area_blacklist
 from .riskcontrol import white_ip_rangelist
 from .riskcontrol import new_withdraw_limit
 
-from .money import vip_paychannel
+#from .money import vip_paychannel
 from .money import recharge
 
 if getattr(settings,'OPEN_SECRET',False):
